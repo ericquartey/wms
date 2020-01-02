@@ -94,8 +94,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.resolutionCalibrationWebService = resolutionCalibrationWebService ?? throw new ArgumentNullException(nameof(resolutionCalibrationWebService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.machineSensorsWebService = machineSensorsWebService ?? throw new ArgumentNullException(nameof(machineSensorsWebService));
-
-            this.currentStep = CalibrationStep.PositionMeter;
         }
 
         #endregion
@@ -247,6 +245,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             await base.OnAppearedAsync();
 
+            this.currentStep = CalibrationStep.PositionMeter;
+
             this.positionBayId = this.MachineService.Bay.Positions.Single(p => p.Height == this.MachineService.Bay.Positions.Max(pos => pos.Height)).Id;
 
             // -------------------------
@@ -370,10 +370,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected override void RaiseCanExecuteChanged()
         {
+            if (!this.IsVisible)
+            {
+                return;
+            }
+
             base.RaiseCanExecuteChanged();
 
             // Policy
-            Task.Run(async () => this.moveToBayPositionPolicy = await this.machineElevatorWebService.CanMoveToBayPositionAsync(this.positionBayId));
+            Task.Run(async () =>
+            {
+                this.moveToBayPositionPolicy = await this.machineElevatorWebService.CanMoveToBayPositionAsync(this.positionBayId);
+
+                this.moveToBayPositionCommand?.RaiseCanExecuteChanged();
+                this.moveToFirstMisurationCommand?.RaiseCanExecuteChanged();
+
+                this.UpdateStatusButtonFooter();
+            });
 
             this.RaisePropertyChanged(nameof(this.HasStepPositionMeter));
             this.RaisePropertyChanged(nameof(this.HasStepFirstMisuration));
@@ -384,16 +397,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.stopCommand?.RaiseCanExecuteChanged();
             //this.startCommand?.RaiseCanExecuteChanged();
-            this.moveToBayPositionCommand?.RaiseCanExecuteChanged();
-            this.moveToFirstMisurationCommand?.RaiseCanExecuteChanged();
         }
 
         private bool CanBaseExecute()
         {
             return
                 !this.IsKeyboardOpened
-                &&
-                !this.IsExecutingProcedure
                 &&
                 !this.IsWaitingForResponse
                 &&
@@ -421,7 +430,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanStop()
         {
             return
-                this.IsExecutingProcedure
+                this.IsMoving
                 &&
                 !this.IsWaitingForResponse;
         }
@@ -481,16 +490,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        //private void NavigateToNextStep()
-        //{
-        //    if (this.NavigationService.IsActiveView(nameof(Utils.Modules.Installation), Utils.Modules.Installation.VERTICALRESOLUTIONCALIBRATION))
-        //    {
-        //        var wizardData = new VerticalResolutionWizardData
-        //        {
-        //            CurrentResolution = this.CurrentResolution.Value,
-        //            FinalPosition = this.ProcedureParameters.FinalPosition,
-        //            InitialPosition = this.InputInitialPosition.Value,
-        //        };
+        private async Task OnSensorsChangedAsync(NotificationMessageUI<SensorsChangedMessageData> message)
+        {
+            this.luPresentInOperatorSide = message?.Data.SensorsStates[(int)IOMachineSensors.RunningState];
+            this.luPresentInMachineSide = message?.Data.SensorsStates[(int)IOMachineSensors.RunningState];
+        }
 
         //        this.NavigationService.Appear(
         //            nameof(Utils.Modules.Installation),
@@ -499,13 +503,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         //            trackCurrentView: false);
         //    }
         //}
-
-        private async Task OnSensorsChangedAsync(NotificationMessageUI<SensorsChangedMessageData> message)
-        {
-            this.luPresentInOperatorSide = message?.Data.SensorsStates[(int)IOMachineSensors.RunningState];
-            this.luPresentInMachineSide = message?.Data.SensorsStates[(int)IOMachineSensors.RunningState];
-        }
-
         private async Task RetrieveProcedureParametersAsync()
         {
             try
@@ -524,11 +521,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        //private void SetIsLoadingUnitOnBord(Sensors sensors)
-        //{
-        //    this.IsLoadingUnitOnBoard = sensors.LuPresentInMachineSide || sensors.LuPresentInOperatorSide;
-        //}
-
         private void ShowSteps()
         {
             this.ShowPrevStepSinglePage(false, false);
@@ -536,6 +528,66 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.ShowAbortStep(true, true);
         }
 
+        private async Task StopAsync()
+        {
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                await this.MachineService.StopMovingByAllAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private void UpdateStatusButtonFooter()
+        {
+            switch (this.CurrentStep)
+            {
+                case CalibrationStep.PositionMeter:
+                    this.ShowPrevStepSinglePage(false, false);
+                    this.ShowNextStepSinglePage(true, this.moveToFirstMisurationCommand?.CanExecute() ?? false);
+                    break;
+
+                case CalibrationStep.FirstMisuration:
+                    this.ShowPrevStepSinglePage(true, true);
+                    this.ShowNextStepSinglePage(true, true);
+                    break;
+
+                case CalibrationStep.LastMisuration:
+                    this.ShowPrevStepSinglePage(true, true);
+                    this.ShowNextStepSinglePage(true, true);
+                    break;
+
+                case CalibrationStep.Confirm:
+                    this.ShowPrevStepSinglePage(true, true);
+                    this.ShowNextStepSinglePage(false, false);
+                    break;
+            }
+        }
+
+        #endregion
+
+        //private void NavigateToNextStep()
+        //{
+        //    if (this.NavigationService.IsActiveView(nameof(Utils.Modules.Installation), Utils.Modules.Installation.VERTICALRESOLUTIONCALIBRATION))
+        //    {
+        //        var wizardData = new VerticalResolutionWizardData
+        //        {
+        //            CurrentResolution = this.CurrentResolution.Value,
+        //            FinalPosition = this.ProcedureParameters.FinalPosition,
+        //            InitialPosition = this.InputInitialPosition.Value,
+        //        };
+        //private void SetIsLoadingUnitOnBord(Sensors sensors)
+        //{
+        //    this.IsLoadingUnitOnBoard = sensors.LuPresentInMachineSide || sensors.LuPresentInOperatorSide;
+        //}
         //private async Task StartAsync()
         //{
         //    try
@@ -558,25 +610,5 @@ namespace Ferretto.VW.App.Installation.ViewModels
         //        this.IsWaitingForResponse = false;
         //    }
         //}
-
-        private async Task StopAsync()
-        {
-            this.IsWaitingForResponse = true;
-
-            try
-            {
-                await this.MachineService.StopMovingByAllAsync();
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-        }
-
-        #endregion
     }
 }

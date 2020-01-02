@@ -26,9 +26,7 @@
                TargetType="{x:Type controls:PpcButton}">
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="False">
-                    <!--<Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />-->
                     <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
-                    <!--<Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />-->
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -71,7 +69,8 @@
         <!--#endregion-->
         <!--#region DataTemplate Body-->
         <DataTemplate x:Key="DataTemplatePositionMeter">
-            <Grid Margin="20">
+            <Grid Margin="20"
+                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
@@ -88,7 +87,7 @@
                 <controls:PpcButton Grid.Row="1"
                                     VerticalAlignment="Top"
                                     Command="{Binding MoveToBayPositionCommand}"
-                                    Content="Vai a quota"
+                                    Content="Vai a baia"
                                     Style="{StaticResource WizardIntoButton}" />
 
                 <TextBlock Grid.Row="2"
@@ -105,7 +104,8 @@
         </DataTemplate>
 
         <DataTemplate x:Key="DataTemplateFirstMisuration">
-            <Grid Margin="20">
+            <Grid Margin="20"
+                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
@@ -142,7 +142,8 @@
         </DataTemplate>
 
         <DataTemplate x:Key="DataTemplateLastMisuration">
-            <Grid Margin="20">
+            <Grid Margin="20"
+                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
@@ -179,7 +180,8 @@
         </DataTemplate>
 
         <DataTemplate x:Key="DataTemplateConfirm">
-            <Grid Margin="20">
+            <Grid Margin="20"
+                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
@@ -308,49 +310,15 @@
                 </Grid>
             </Border>
         </Border>
-        <Border Grid.Row="5"
-                Grid.Column="3"
-                Height="90"
-                Margin="0,15,15,0"
-                VerticalAlignment="Top"
-                Background="{DynamicResource PpcBackground}"
-                Visibility="Collapsed">
-            <Border BorderBrush="{DynamicResource PpcBorderBrush}"
-                    BorderThickness="{DynamicResource PpcBorderThickness}">
 
-                <Grid Grid.Column="8"
-                      Grid.ColumnSpan="4">
-
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Margin="8,4"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Normal}"
-                               FontWeight="Normal"
-                               Foreground="{DynamicResource FerrettoLightGray}"
-                               Text="Misurazione" />
-
-                    <TextBlock Grid.Row="1"
-                               Margin="4,0,4,4"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Very_High}"
-                               Foreground="{DynamicResource PpcForeground}"
-                               Text="1 / 2"
-                               TextWrapping="Wrap" />
-
-                </Grid>
-
-            </Border>
-        </Border>
+        <controls:PpcButton Grid.Row="5"
+                            Grid.Column="3"
+                            Margin="0,0,15,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding StopCommand}"
+                            Content="{x:Static res:InstallationApp.Stop}"
+                            Style="{StaticResource WizardIntoButton}" />
         <!--#endregion-->
 
         <!--#region Wizard-->
