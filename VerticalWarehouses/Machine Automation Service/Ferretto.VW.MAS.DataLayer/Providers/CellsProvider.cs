@@ -191,7 +191,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .OrderBy(o => o.Position)
                     .ToList();
                 // for each available cell we check if there is space for the requested height
-                Parallel.ForEach(cells.Where(c => c.Status != CellStatus.Occupied && !c.IsUnusable), (cell) =>
+                Parallel.ForEach(cells.Where(c => c.Status != CellStatus.Occupied && !c.IsUnusable && !c.IsDeactivated), (cell) =>
                 {
                     // load all cells following the selected cell
                     var cellsFollowing = cells.Where(c => c.Panel.Side == cell.Side
@@ -351,6 +351,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     {
                         return;
                     }
+                    cell.LoadingUnit.IsIntoMachine = false;
 
                     var occupiedCells = this.dataContext.Cells
                         .Include(c => c.LoadingUnit)
@@ -444,13 +445,14 @@ namespace Ferretto.VW.MAS.DataLayer
                             throw new InvalidOperationException(Resources.Cells.TheCellUnexpectedlyContainsAnotherLoadingUnit);
                         }
 
-                        if (freeCell.IsDeactivated)
+                        if (freeCell.IsUnusable)
                         {
-                            throw new InvalidOperationException(Resources.Cells.TheLoadingCannotBePlacedOppositeADeactivatedCell);
+                            throw new InvalidOperationException(Resources.Cells.TheLoadingCannotBePlacedOppositeAnUnusableCell);
                         }
                     }
                     // TODO check if this could be done better
                     cell.LoadingUnit = this.dataContext.LoadingUnits.SingleOrDefault(l => l.Id == loadingUnitId);
+                    cell.LoadingUnit.IsIntoMachine = true;
 
                     double weight = loadingUnit.GrossWeight;
                     if (cell.Side == WarehouseSide.Front)

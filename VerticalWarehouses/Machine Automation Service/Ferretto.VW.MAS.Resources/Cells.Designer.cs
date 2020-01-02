@@ -97,11 +97,11 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The loading unit cannot be placed opposite a deactivated cell..
+        ///   Looks up a localized string similar to The loading unit cannot be placed opposite an unusable cell..
         /// </summary>
-        public static string TheLoadingCannotBePlacedOppositeADeactivatedCell {
+        public static string TheLoadingCannotBePlacedOppositeAnUnusableCell {
             get {
-                return ResourceManager.GetString("TheLoadingCannotBePlacedOppositeADeactivatedCell", resourceCulture);
+                return ResourceManager.GetString("TheLoadingCannotBePlacedOppositeAnUnusableCell", resourceCulture);
             }
         }
         
