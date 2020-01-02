@@ -112,10 +112,15 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
 
                         this.BarcodeReceived?.Invoke(this, new ActionEventArgs(barcode));
                     }
+                    catch (InvalidOperationException ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Error while reading from serial port {this.serialPort.PortName}: {ex.Message}");
+
+                        this.serialPort.Open();
+                    }
                     catch (Exception ex)
                     {
                         System.Diagnostics.Debug.WriteLine($"Error while reading from serial port {this.serialPort.PortName}: {ex.Message}");
-                        return;
                     }
                 }
                 while (this.serialPort.IsOpen);

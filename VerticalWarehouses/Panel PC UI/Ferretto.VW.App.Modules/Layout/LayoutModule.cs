@@ -1,7 +1,6 @@
 ﻿using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Layout.Presentation;
 using Ferretto.VW.App.Modules.Layout.Views;
-using Ferretto.VW.App.Services;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
