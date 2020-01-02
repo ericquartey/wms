@@ -134,18 +134,23 @@ namespace Ferretto.VW.App
 
         private static void RegisterWmsProviders(IContainerRegistry container)
         {
-            var wmsServiceUrl = ConfigurationManager.AppSettings.GetWMSDataServiceUrl();
+            var wmsServiceEnabled = ConfigurationManager.AppSettings.GetWmsDataServiceEnabled();
 
-            container.RegisterInstance(DataServiceFactory.GetService<IBaysWmsWebService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<IBarcodesWmsWebService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<IImagesWmsWebService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<IMissionOperationsWmsWebService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<IMissionsWmsWebService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<ILoadingUnitsWmsWebService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<IItemsWmsWebService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<IItemListsWmsWebService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<IAreasWmsWebService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<IMachinesWmsWebService>(wmsServiceUrl));
+            if (wmsServiceEnabled)
+            {
+                var wmsServiceUrl = ConfigurationManager.AppSettings.GetWMSDataServiceUrl();
+
+                container.RegisterInstance(DataServiceFactory.GetService<IBaysWmsWebService>(wmsServiceUrl));
+                container.RegisterInstance(DataServiceFactory.GetService<IBarcodesWmsWebService>(wmsServiceUrl));
+                container.RegisterInstance(DataServiceFactory.GetService<IImagesWmsWebService>(wmsServiceUrl));
+                container.RegisterInstance(DataServiceFactory.GetService<IMissionOperationsWmsWebService>(wmsServiceUrl));
+                container.RegisterInstance(DataServiceFactory.GetService<IMissionsWmsWebService>(wmsServiceUrl));
+                container.RegisterInstance(DataServiceFactory.GetService<ILoadingUnitsWmsWebService>(wmsServiceUrl));
+                container.RegisterInstance(DataServiceFactory.GetService<IItemsWmsWebService>(wmsServiceUrl));
+                container.RegisterInstance(DataServiceFactory.GetService<IItemListsWmsWebService>(wmsServiceUrl));
+                container.RegisterInstance(DataServiceFactory.GetService<IAreasWmsWebService>(wmsServiceUrl));
+                container.RegisterInstance(DataServiceFactory.GetService<IMachinesWmsWebService>(wmsServiceUrl));
+            }
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)

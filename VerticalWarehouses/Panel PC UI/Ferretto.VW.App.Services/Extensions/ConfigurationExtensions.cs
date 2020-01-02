@@ -16,6 +16,8 @@ namespace Ferretto.VW.App.Services
 
         private const string LogoutWhenUnhealthyKey = "AutomationService:HealthChecks:LogoutWhenUnhealthy";
 
+        private const string WmsServiceEnabledKey = "WMS:DataService:Enabled";
+
         #endregion
 
         #region Methods
@@ -40,6 +42,24 @@ namespace Ferretto.VW.App.Services
             }
 
             return appSettings.Get("Devices:LabelPrinter");
+        }
+
+        public static bool GetWmsDataServiceEnabled(this NameValueCollection appSettings)
+        {
+            if (appSettings is null)
+            {
+                throw new ArgumentNullException(nameof(appSettings));
+            }
+
+            try
+            {
+                var enabledString = appSettings.Get(WmsServiceEnabledKey);
+                return bool.Parse(enabledString);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"The configuration key '{WmsServiceEnabledKey}' is not specified or invalid.", ex);
+            }
         }
 
         public static bool LogoutWhenUnhealthy(this NameValueCollection appSettings)
