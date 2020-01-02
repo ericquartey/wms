@@ -17,6 +17,8 @@ namespace Ferretto.VW.App.Controls
 
         protected bool isWaitingForResponse;
 
+        private readonly IEventAggregator eventAggregator = CommonServiceLocator.ServiceLocator.Current.GetInstance<IEventAggregator>();
+
         private readonly IHealthProbeService healthProbeService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IHealthProbeService>();
 
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
@@ -64,6 +66,8 @@ namespace Ferretto.VW.App.Controls
 
         public virtual EnableMask EnableMask => EnableMask.MachinePoweredOn;
 
+        public IEventAggregator EventAggregator => this.eventAggregator;
+
         public IHealthProbeService HealthProbeService => this.healthProbeService;
 
         public bool IsEnabled
@@ -77,6 +81,8 @@ namespace Ferretto.VW.App.Controls
             get => this.isKeyboardOpened;
             set => this.SetProperty(ref this.isKeyboardOpened, value, this.RaiseCanExecuteChanged);
         }
+
+        public bool IsMoving => (this.machineService?.MachineStatus?.IsMoving ?? true) || (this.machineService?.MachineStatus?.IsMovingLoadingUnit ?? true);
 
         public virtual bool IsWaitingForResponse
         {
@@ -104,7 +110,7 @@ namespace Ferretto.VW.App.Controls
 
         public IMachineService MachineService => this.machineService;
 
-        public MachineStatus MachineStatus => this.MachineService.MachineStatus;
+        public MachineStatus MachineStatus => this.machineService.MachineStatus;
 
         public PresentationMode Mode
         {
@@ -333,6 +339,8 @@ namespace Ferretto.VW.App.Controls
                 this.machineModeService.MachineMode,
                 e.HealthStatus);
 
+            this.RaiseCanExecuteChanged();
+
             return Task.CompletedTask;
         }
 
@@ -343,6 +351,8 @@ namespace Ferretto.VW.App.Controls
                 e.MachineMode,
                 this.healthProbeService.HealthStatus);
 
+            this.RaiseCanExecuteChanged();
+
             return Task.CompletedTask;
         }
 
@@ -352,6 +362,8 @@ namespace Ferretto.VW.App.Controls
                 e.MachinePowerState,
                 this.machineModeService.MachineMode,
                 this.healthProbeService.HealthStatus);
+
+            this.RaiseCanExecuteChanged();
 
             return Task.CompletedTask;
         }
@@ -370,6 +382,9 @@ namespace Ferretto.VW.App.Controls
 
         protected virtual void RaiseCanExecuteChanged()
         {
+            this.RaisePropertyChanged(nameof(this.IsMoving));
+            this.RaisePropertyChanged(nameof(this.MachineService));
+            this.RaisePropertyChanged(nameof(this.MachineStatus));
         }
 
         private void KeyboardClose()

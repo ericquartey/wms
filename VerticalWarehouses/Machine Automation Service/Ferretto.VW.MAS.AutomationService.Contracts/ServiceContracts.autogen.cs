@@ -1947,6 +1947,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     {
         None = 0,
     
+        ElevatorInPosition = 1,
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]

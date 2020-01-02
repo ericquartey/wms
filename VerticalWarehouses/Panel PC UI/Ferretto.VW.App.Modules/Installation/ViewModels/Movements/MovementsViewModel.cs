@@ -41,8 +41,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineMissionOperationsWebService machineMissionOperationsWebService;
 
-        private readonly IMachineService machineService;
-
         private readonly ISensorsService sensorsService;
 
         private readonly IMachineShuttersWebService shuttersWebService;
@@ -107,11 +105,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ISensorsService sensorsService,
             IMachineBaysWebService machineBaysWebService,
             IMachineMissionOperationsWebService machineMissionOperationsWebService,
-            IBayManager bayManagerService,
-            IMachineService machineService)
+            IBayManager bayManagerService)
             : base(PresentationMode.Installer)
         {
-            this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.machineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
@@ -187,12 +183,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsMovementsGuided => this.isMovementsGuided;
 
         public bool IsMovementsManual => !this.isMovementsGuided;
-
-        public bool IsMoving => (this.machineService?.MachineStatus?.IsMoving ?? true) || (this.machineService?.MachineStatus?.IsMovingLoadingUnit ?? true);
-
-        public IMachineService MachineService => this.machineService;
-
-        public MachineStatus MachineStatus => this.machineService.MachineStatus;
 
         public ICommand ResetCommand =>
             this.resetCommand
@@ -648,7 +638,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                this.bay = this.machineService.Bay;
+                this.bay = this.MachineService.Bay;
 
                 this.InputCellIdPropertyChanged();
                 this.InputLoadingUnitIdPropertyChanged();
@@ -720,7 +710,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                await this.machineService.StopMovingByAllAsync();
+                await this.MachineService.StopMovingByAllAsync();
             }
             catch (System.Exception ex)
             {

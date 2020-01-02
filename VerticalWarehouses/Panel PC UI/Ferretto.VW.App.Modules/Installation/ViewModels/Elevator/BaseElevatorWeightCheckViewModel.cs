@@ -39,7 +39,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             base.Disappear();
         }
 
-        protected override abstract void RaiseCanExecuteChanged();
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+        }
 
         private void InitializeNavigationMenu()
         {

@@ -193,6 +193,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         protected override void RaiseCanExecuteChanged()
         {
+            base.RaiseCanExecuteChanged();
+
             this.loginCommand?.RaiseCanExecuteChanged();
         }
 

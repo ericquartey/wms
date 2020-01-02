@@ -226,6 +226,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 return new ActionPolicy
                 {
                     Reason = Resources.Elevator.TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedBayPosition,
+                    ReasonType = ReasonType.ElevatorInPosition
                 };
             }
 

@@ -155,6 +155,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected override void RaiseCanExecuteChanged()
         {
+            base.RaiseCanExecuteChanged();
+
             this.CanExecuteMoveBackwardsCommand = !this.IsMovingForwards && !this.IsStopping;
             this.CanExecuteMoveForwardsCommand = !this.IsMovingBackwards && !this.IsStopping;
         }

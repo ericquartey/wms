@@ -1,7 +1,11 @@
-﻿namespace Ferretto.VW.CommonUtils.Messages.Enumerations
+﻿using System;
+
+namespace Ferretto.VW.CommonUtils.Messages.Enumerations
 {
     public enum ReasonType
     {
         None,
+
+        ElevatorInPosition,
     }
 }

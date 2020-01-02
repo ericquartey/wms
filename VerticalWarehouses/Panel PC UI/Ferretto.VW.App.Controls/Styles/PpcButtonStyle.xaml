@@ -396,7 +396,7 @@
                 <ControlTemplate TargetType="{x:Type controls:PpcButton}">
                     <Grid Visibility="{TemplateBinding VisibilityPermission}">
                         <Border Name="PpcButtonMenu_MainBorder"
-                                Background="{DynamicResource PpcBackground}"
+                                Background="{TemplateBinding Background}"
                                 BorderBrush="{DynamicResource PpcBorderBrush}"
                                 BorderThickness="{DynamicResource PpcBorderThickness}"
                                 CornerRadius="{DynamicResource PpcCornerRadius}"

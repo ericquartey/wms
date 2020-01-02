@@ -66,7 +66,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.beltBurnishingCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.BeltBurnishing),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -75,7 +75,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.verticalOffsetCalibration = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.VerticalOffsetCalibration),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
 
         public ICommand VerticalOriginCalibrationCommand =>
             this.verticalOriginCalibration
@@ -89,31 +89,25 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.verticalResolutionCalibration = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.VerticalResolutionCalibration),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
 
         public ICommand WeightAnalysisCommand =>
             this.weightAnalysisCommand
             ??
             (this.weightAnalysisCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.WeightAnalysis),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
 
         public ICommand WeightMeasurementCommand =>
             this.weightMeasurement
             ??
             (this.weightMeasurement = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.WeightMeasurement),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
 
         #endregion
 
         #region Methods
-
-        internal override bool CanExecuteCommand()
-        {
-            return base.CanExecuteCommand() &&
-                  this.MachineService.IsHoming;
-        }
 
         protected override void RaiseCanExecuteChanged()
         {

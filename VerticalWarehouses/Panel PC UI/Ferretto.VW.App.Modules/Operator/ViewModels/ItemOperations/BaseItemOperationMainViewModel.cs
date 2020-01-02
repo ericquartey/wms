@@ -272,6 +272,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         protected override void RaiseCanExecuteChanged()
         {
+            base.RaiseCanExecuteChanged();
+
             this.confirmOperationCommand?.RaiseCanExecuteChanged();
             this.showDetailsCommand?.RaiseCanExecuteChanged();
             this.confirmOperationCanceledCommand?.RaiseCanExecuteChanged();
