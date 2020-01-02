@@ -478,14 +478,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private async Task ShowItemDetailsByBarcodeAsync(BarcodeMatchEventArgs e)
         {
-            var itemBarcode = e.GetItemBarCode();
+            var itemBarcode = e.GetItemId();
             if (itemBarcode != null)
             {
                 try
                 {
-                    var item = await this.itemsWmsWebService.GetByBarcodeAsync(itemBarcode);
-                    this.SelectedItem = new ItemInfo(item, this.bayManager.Identity.Id);
-                    this.ShowItemDetails();
+                    // TODO when implemented GetByBarcodeAsync skip this
+                    this.SearchItem = itemBarcode;
+                    //var item = await this.itemsWmsWebService.GetByBarcodeAsync(itemBarcode);                    
                 }
                 catch (Exception ex)
                 {

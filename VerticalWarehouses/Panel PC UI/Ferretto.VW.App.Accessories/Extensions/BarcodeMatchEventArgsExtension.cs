@@ -19,6 +19,21 @@
             return null;
         }
 
+        public static string GetItemId(this BarcodeMatchEventArgs eventArgs)
+        {
+            if (eventArgs is null)
+            {
+                throw new System.ArgumentNullException(nameof(eventArgs));
+            }
+
+            if (eventArgs.Parameters.TryGetValue(BarcodeTokens.ItemId.ToString(), out var itemBarcode))
+            {
+                return itemBarcode;
+            }
+
+            return null;
+        }
+
         public static int? GetListId(this BarcodeMatchEventArgs eventArgs)
         {
             if (eventArgs is null)

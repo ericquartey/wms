@@ -285,12 +285,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 var lastItemListId = this.selectedList?.Id;
                 var newLists = await this.areasWmsWebService.GetItemListsAsync(this.areaId.Value);
 
-                var commonListsCount = newLists.Select(l => l.Id).Intersect(this.lists.Select(l => l.Id)).Count();
-                if (commonListsCount == this.lists.Count && commonListsCount == newLists.Count())
-                {
-                    return;
-                }
-
                 this.lists.Clear();
                 newLists.ForEach(l => this.lists.Add(new ItemListExecution(l, this.machineId)));
 
