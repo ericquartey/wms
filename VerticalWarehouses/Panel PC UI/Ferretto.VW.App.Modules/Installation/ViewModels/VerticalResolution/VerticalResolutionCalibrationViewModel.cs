@@ -11,6 +11,8 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Hubs;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 using Prism.Events;
 using ReasonType = Ferretto.VW.MAS.AutomationService.Contracts.ReasonType;
@@ -28,6 +30,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         Confirm,
     }
 
+    [Warning(WarningsArea.Installation)]
     public class VerticalResolutionCalibrationViewModel : BaseMainViewModel, IDataErrorInfo
     {
         //private readonly IHealthProbeService healthProbeService;
@@ -411,10 +414,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanMoveToBayPosition()
         {
-            return
-                this.CanBaseExecute()
-                &&
-                this.moveToBayPositionPolicy?.IsAllowed == true;
+            return this.CanBaseExecute() &&
+                   this.moveToBayPositionPolicy?.IsAllowed == true &&
+                   !this.SensorsService.IsLoadingUnitOnElevator;
         }
 
         private bool CanStart()
@@ -437,12 +439,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanToFirstMisuration()
         {
-            return
-                this.CanBaseExecute()
-                &&
-                this.moveToBayPositionPolicy?.IsAllowed == false
-                &&
-                this.moveToBayPositionPolicy?.ReasonType == ReasonType.ElevatorInPosition;
+            return this.CanBaseExecute() &&
+                   this.moveToBayPositionPolicy?.IsAllowed == false &&
+                   this.moveToBayPositionPolicy?.ReasonType == ReasonType.ElevatorInPosition &&
+                   !this.SensorsService.IsLoadingUnitOnElevator;
         }
 
         private async Task GetSensorsAndLoadingUnitOnBoardAsync()

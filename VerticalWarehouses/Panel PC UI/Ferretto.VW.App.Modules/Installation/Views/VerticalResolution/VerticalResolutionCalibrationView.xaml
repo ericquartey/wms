@@ -20,6 +20,7 @@
                                         FalseColor="{StaticResource PpcBackground}"
                                         TrueColor="{StaticResource FerrettoBlue}" />
         <!--#endregion-->
+
         <!--#region Styles-->
         <Style x:Key="WizardIntoButton"
                BasedOn="{StaticResource {x:Type controls:PpcButton}}"
@@ -67,6 +68,7 @@
             <Setter Property="StrokeThickness" Value="1.5" />
         </Style>
         <!--#endregion-->
+
         <!--#region DataTemplate Body-->
         <DataTemplate x:Key="DataTemplatePositionMeter">
             <Grid Margin="20"
@@ -121,7 +123,7 @@
 
                 <controls:PpcButton Grid.Row="2"
                                     VerticalAlignment="Top"
-                                    Content="Vai a quota" />
+                                    Content="Vai a quota di destinazione" />
 
                 <StackPanel Grid.Row="1"
                             HorizontalAlignment="Center"
@@ -224,6 +226,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -270,7 +273,12 @@
                                            Width="230"
                                            Height="90"
                                            Margin="0,15,15,0" />
-        <Border Grid.Row="4"
+        <controls:CardSensorDrawer Grid.Row="4"
+                                Grid.Column="3"
+                                Width="230"
+                                Height="90"
+                                Margin="0,15,15,0" />
+        <Border Grid.Row="5"
                 Grid.Column="3"
                 Height="90"
                 Margin="0,15,15,0"
@@ -311,7 +319,7 @@
             </Border>
         </Border>
 
-        <controls:PpcButton Grid.Row="5"
+        <controls:PpcButton Grid.Row="6"
                             Grid.Column="3"
                             Margin="0,0,15,0"
                             HorizontalAlignment="Right"
@@ -323,7 +331,7 @@
 
         <!--#region Wizard-->
         <Grid Grid.Row="2"
-              Grid.RowSpan="4"
+              Grid.RowSpan="5"
               Grid.ColumnSpan="3"
               Margin="5,15,15,0">
 

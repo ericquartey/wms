@@ -3,8 +3,10 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Regions;
@@ -29,6 +31,8 @@ namespace Ferretto.VW.App.Controls
 
         private readonly IMachineService machineService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineService>();
 
+        private readonly ISensorsService sensorsService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISensorsService>();
+
         private SubscriptionToken bayChainPositionChangedToken;
 
         private SubscriptionToken healthStatusChangedToken;
@@ -50,6 +54,8 @@ namespace Ferretto.VW.App.Controls
         private SubscriptionToken machineStatusChangesToken;
 
         private PresentationMode mode;
+
+        private SubscriptionToken sensorsToken;
 
         #endregion
 
@@ -118,6 +124,8 @@ namespace Ferretto.VW.App.Controls
             set => this.SetProperty(ref this.mode, value);
         }
 
+        public ISensorsService SensorsService => this.sensorsService;
+
         protected bool IsConnectedByMAS => this.healthProbeService.HealthStatus == HealthStatus.Healthy;
 
         #endregion
@@ -134,6 +142,9 @@ namespace Ferretto.VW.App.Controls
             base.Disappear();
 
             this.IsWaitingForResponse = false;
+
+            this.sensorsToken?.Dispose();
+            this.sensorsToken = null;
 
             /*
              * Avoid unsubscribing in case of navigation to error page.
@@ -229,6 +240,17 @@ namespace Ferretto.VW.App.Controls
             {
                 await this.OnErrorStatusChangedAsync(e);
             };
+
+            this.sensorsToken = this.sensorsToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Subscribe(
+                        this.OnSensorsChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data != null &&
+                             this.IsVisible);
 
             this.UpdateIsEnabled(
                 this.machineModeService.MachinePower,
@@ -403,6 +425,11 @@ namespace Ferretto.VW.App.Controls
                 this.machineModeService.MachinePower,
                 this.machineModeService.MachineMode,
                 this.healthProbeService.HealthStatus);
+        }
+
+        private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
+        {
+            this.RaiseCanExecuteChanged();
         }
 
         private void UpdateIsEnabled(

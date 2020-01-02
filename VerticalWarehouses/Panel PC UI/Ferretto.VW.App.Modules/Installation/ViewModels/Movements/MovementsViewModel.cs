@@ -41,8 +41,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineMissionOperationsWebService machineMissionOperationsWebService;
 
-        private readonly ISensorsService sensorsService;
-
         private readonly IMachineShuttersWebService shuttersWebService;
 
         private Bay bay;
@@ -83,8 +81,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand resetCommand;
 
-        private SubscriptionToken sensorsToken;
-
         private SubscriptionToken shutterPositionToken;
 
         private DelegateCommand stopMovingCommand;
@@ -102,7 +98,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineShuttersWebService shuttersWebService,
             IMachineCarouselWebService machineCarouselWebService,
             Services.IDialogService dialogService,
-            ISensorsService sensorsService,
             IMachineBaysWebService machineBaysWebService,
             IMachineMissionOperationsWebService machineMissionOperationsWebService,
             IBayManager bayManagerService)
@@ -115,7 +110,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.shuttersWebService = shuttersWebService ?? throw new ArgumentNullException(nameof(shuttersWebService));
             this.machineCarouselWebService = machineCarouselWebService ?? throw new ArgumentNullException(nameof(machineCarouselWebService));
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
-            this.sensorsService = sensorsService ?? throw new ArgumentNullException(nameof(sensorsService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.machineMissionOperationsWebService = machineMissionOperationsWebService ?? throw new ArgumentNullException(nameof(machineMissionOperationsWebService));
         }
@@ -191,8 +185,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                async () => await this.ResetCommandAsync(),
                this.CanResetCommand));
 
-        public ISensorsService SensorsService => this.sensorsService;
-
         public ICommand StopMovingCommand =>
             this.stopMovingCommand
             ??
@@ -221,9 +213,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.cellsToken?.Dispose();
             this.cellsToken = null;
-
-            this.sensorsToken?.Dispose();
-            this.sensorsToken = null;
 
             this.shutterPositionToken?.Dispose();
             this.shutterPositionToken = null;
@@ -254,7 +243,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.RefreshMachineInfoAsync();
 
-                await this.sensorsService.RefreshAsync(true);
+                await this.SensorsService.RefreshAsync(true);
 
                 this.bays = await this.machineBaysWebService.GetAllAsync();
 
@@ -394,11 +383,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return
                 this.CanBaseExecute()
                 &&
-                !this.sensorsService.Sensors.LuPresentInMachineSide
+                !this.SensorsService.Sensors.LuPresentInMachineSide
                 &&
-                !this.sensorsService.Sensors.LuPresentInOperatorSide
+                !this.SensorsService.Sensors.LuPresentInOperatorSide
                 &&
-                this.sensorsService.IsZeroChain;
+                this.SensorsService.IsZeroChain;
         }
 
         private bool CanGoToMovementsGuidedExecuteCommand()
@@ -511,11 +500,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.OnManualPositioningOperationChanged(message);
             await this.OnGuidedPositioningOperationChangedAsync(message);
-        }
-
-        private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
-        {
-            this.RaiseCanExecuteChanged();
         }
 
         private void OnShutterPositionChanged(NotificationMessageUI<ShutterPositioningMessageData> message)
@@ -797,17 +781,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         ThreadOption.UIThread,
                         false,
                         m => this.IsVisible);
-
-            this.sensorsToken = this.sensorsToken
-                ??
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-                    .Subscribe(
-                        this.OnSensorsChanged,
-                        ThreadOption.UIThread,
-                        false,
-                        m => m.Data != null &&
-                             this.IsVisible);
         }
 
         #endregion

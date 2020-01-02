@@ -506,7 +506,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsShutterMoving
                 &&
-                (this.sensorsService.ShutterSensors != null && (this.sensorsService.ShutterSensors.Open || this.sensorsService.ShutterSensors.MidWay));
+                (this.SensorsService.ShutterSensors != null && (this.SensorsService.ShutterSensors.Open || this.SensorsService.ShutterSensors.MidWay));
         }
 
         private bool CanExecuteIntermediateCommand()
@@ -518,7 +518,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 this.BayIsShutterThreeSensors
                 &&
-                (this.sensorsService.ShutterSensors != null && (this.sensorsService.ShutterSensors.Open || this.sensorsService.ShutterSensors.Closed));
+                (this.SensorsService.ShutterSensors != null && (this.SensorsService.ShutterSensors.Open || this.SensorsService.ShutterSensors.Closed));
         }
 
         private bool CanLoadFromBay()
@@ -576,9 +576,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 this.SelectedLoadingUnit.CellId != null
                 &&
-                !this.sensorsService.Sensors.LuPresentInMachineSide
+                !this.SensorsService.Sensors.LuPresentInMachineSide
                 &&
-                !this.sensorsService.Sensors.LuPresentInOperatorSide;
+                !this.SensorsService.Sensors.LuPresentInOperatorSide;
 
             if (!canMove)
             {
@@ -589,9 +589,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     &&
                     this.MachineStatus.EmbarkedLoadingUnit != null
                     &&
-                    this.sensorsService.Sensors.LuPresentInMachineSide
+                    this.SensorsService.Sensors.LuPresentInMachineSide
                     &&
-                    this.sensorsService.Sensors.LuPresentInOperatorSide
+                    this.SensorsService.Sensors.LuPresentInOperatorSide
                     &&
                     this.loadFromCellPolicy?.IsAllowed == false
                     &&
@@ -608,7 +608,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsShutterMoving
                 &&
-                (this.sensorsService.ShutterSensors != null && (this.sensorsService.ShutterSensors.Closed || this.sensorsService.ShutterSensors.MidWay));
+                (this.SensorsService.ShutterSensors != null && (this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay));
         }
 
         private bool CanSelectBayPosition()
@@ -623,7 +623,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsTuningBay
                 &&
-                this.sensorsService.Sensors.ACUBay1S3IND;
+                this.SensorsService.Sensors.ACUBay1S3IND;
         }
 
         private bool CanTuningChain()
@@ -633,11 +633,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsTuningChain
                 &&
-                this.sensorsService.IsZeroChain
+                this.SensorsService.IsZeroChain
                 &&
-                !this.sensorsService.Sensors.LuPresentInMachineSide
+                !this.SensorsService.Sensors.LuPresentInMachineSide
                 &&
-                !this.sensorsService.Sensors.LuPresentInOperatorSide;
+                !this.SensorsService.Sensors.LuPresentInOperatorSide;
         }
 
         private bool CanUnloadToBay()
