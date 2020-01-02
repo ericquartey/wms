@@ -305,55 +305,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             }
         }
 
-        private void UpdateLoadingUnitForDeposit(int loadingUnitId, int? targetBayPositionId, int? targetCellId, IServiceProvider serviceProvider)
-        {
-            System.Diagnostics.Debug.Assert(targetBayPositionId.HasValue || targetCellId.HasValue);
-
-            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-            var cellsProvider = serviceProvider.GetRequiredService<ICellsProvider>();
-            var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
-            var loadingUnitProvider = serviceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
-
-            var loadingUnitOnBoard = elevatorDataProvider.GetLoadingUnitOnBoard();
-            if (loadingUnitOnBoard is null)
-            {
-                return;
-            }
-
-            if (loadingUnitOnBoard.Id != loadingUnitId)
-            {
-                throw new InvalidOperationException(
-                    $"The loading unit on board of the elevator (id={loadingUnitOnBoard.Id}) is not the same loading unit requested for deposit (id={loadingUnitId}).");
-            }
-
-            if (targetBayPositionId.HasValue)
-            {
-                using (var transaction = elevatorDataProvider.GetContextTransaction())
-                {
-                    baysDataProvider.SetLoadingUnit(targetBayPositionId.Value, loadingUnitOnBoard.Id);
-                    loadingUnitProvider.SetHeight(loadingUnitOnBoard.Id, 0);
-                    transaction.Commit();
-                }
-            }
-            else if (targetCellId.HasValue)
-            {
-                cellsProvider.SetLoadingUnit(targetCellId.Value, loadingUnitOnBoard.Id);
-            }
-
-            elevatorDataProvider.SetLoadingUnit(null);
-
-            this.ParentStateMachine.PublishNotificationMessage(
-                    new NotificationMessage(
-                        null,
-                        $"Load Unit position changed",
-                        MessageActor.Any,
-                        MessageActor.DeviceManager,
-                        MessageType.Positioning,
-                        this.stateData.MachineData.RequestingBay,
-                        this.stateData.MachineData.RequestingBay,
-                        MessageStatus.OperationUpdateData));
-        }
-
         private void UpdateLoadingUnitForManualMovement()
         {
             using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
@@ -469,94 +420,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             }
         }
 
-        private void UpdateLoadingUnitForPickup(int? sourceBayPositionId, int? sourceCellId, IServiceProvider serviceProvider)
-        {
-            System.Diagnostics.Debug.Assert(sourceBayPositionId.HasValue || sourceCellId.HasValue);
-
-            var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
-            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-            var cellsProvider = serviceProvider.GetRequiredService<ICellsProvider>();
-
-            var loadingUnitOnBoard = elevatorDataProvider.GetLoadingUnitOnBoard();
-            if (loadingUnitOnBoard != null)
-            {
-                throw new InvalidOperationException(
-                    $"A pickup was requested, but the elevator has already a loading unit (id={loadingUnitOnBoard.Id}) on board.");
-            }
-
-            bool isChanged = false;
-            using (var transaction = elevatorDataProvider.GetContextTransaction())
-            {
-                if (sourceBayPositionId.HasValue)
-                {
-                    var bayPosition = baysDataProvider.GetPositionById(sourceBayPositionId.Value);
-
-                    elevatorDataProvider.SetLoadingUnit(bayPosition.LoadingUnit?.Id);
-
-                    baysDataProvider.SetLoadingUnit(sourceBayPositionId.Value, null);
-                    isChanged = true;
-                }
-                else if (sourceCellId.HasValue)
-                {
-                    var cell = cellsProvider.GetById(sourceCellId.Value);
-
-                    elevatorDataProvider.SetLoadingUnit(cell.LoadingUnit?.Id);
-
-                    cellsProvider.SetLoadingUnit(sourceCellId.Value, null);
-                    isChanged = true;
-                }
-                transaction.Commit();
-            }
-            if (isChanged)
-            {
-                this.ParentStateMachine.PublishNotificationMessage(
-                        new NotificationMessage(
-                            null,
-                            $"Load Unit position changed",
-                            MessageActor.Any,
-                            MessageActor.DeviceManager,
-                            MessageType.Positioning,
-                            this.stateData.MachineData.RequestingBay,
-                            this.stateData.MachineData.RequestingBay,
-                            MessageStatus.OperationUpdateData));
-            }
-        }
-
         private void UpdateLoadingUnitLocation()
         {
-            if (this.machineData.MessageData.LoadingUnitId.HasValue)
-            {
-                if (this.machineData.MessageData.SourceCellId.HasValue
-                    ||
-                    this.machineData.MessageData.SourceBayPositionId.HasValue)
-                {
-                    using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
-                    {
-                        this.UpdateLoadingUnitForPickup(
-                            this.machineData.MessageData.SourceBayPositionId,
-                            this.machineData.MessageData.SourceCellId,
-                            scope.ServiceProvider);
-                    }
-                }
-                else if (this.machineData.MessageData.TargetCellId.HasValue
-                    ||
-                    this.machineData.MessageData.TargetBayPositionId.HasValue)
-                {
-                    using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
-                    {
-                        this.UpdateLoadingUnitForDeposit(
-                            this.machineData.MessageData.LoadingUnitId.Value,
-                            this.machineData.MessageData.TargetBayPositionId,
-                            this.machineData.MessageData.TargetCellId,
-                            scope.ServiceProvider);
-                    }
-                }
-                else
-                {
-                    this.Logger.LogWarning("No source or target cell/bay was specified for the horizontal positioning.");
-                }
-            }
-            else
+            if (!this.machineData.MessageData.LoadingUnitId.HasValue)
             {
                 this.UpdateLoadingUnitForManualMovement();
             }
