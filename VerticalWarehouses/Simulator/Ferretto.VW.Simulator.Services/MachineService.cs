@@ -394,7 +394,7 @@ namespace Ferretto.VW.Simulator.Services
             if (DateTime.UtcNow.Subtract(this.heartBeatTime).TotalMilliseconds > this.DELAY_HEARTBEAT)
             {
                 var timeout = DateTime.UtcNow.Subtract(this.heartBeatTime).TotalMilliseconds;
-                Console.WriteLine($"HeartBeat timeout {timeout}");
+                Debug.WriteLine($"{DateTime.Now}: HeartBeat timeout {timeout}");
 
                 // TODO: enable heartbeat control
                 //inverter.IsFault = true;

@@ -109,6 +109,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 throw new InvalidOperationException(Resources.Cells.NoEmptyCellsAvailable);
             }
+            this.logger.LogError($"FindDownCell: found Cell {cellId} for LU {loadingUnit.Id}; from cell {loadingUnit.Cell.Id}");
             return cellId;
         }
 
@@ -131,6 +132,7 @@ namespace Ferretto.VW.MAS.DataLayer
             var loadingUnit = this.dataContext.LoadingUnits
                 .AsNoTracking()
                 .Include(i => i.Cell)
+                    .ThenInclude(c => c.Panel)
                 .SingleOrDefault(l => l.Id == loadingUnitId);
             if (loadingUnit is null)
             {
@@ -153,7 +155,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
             if (machineStatistics.TotalWeightFront + machineStatistics.TotalWeightBack + loadingUnit.GrossWeight > machine.MaxGrossWeight)
             {
-                this.logger.LogError($"FindEmptyCell: total weight exceeded for LU {loadingUnitId}; weight {loadingUnit.GrossWeight}; " +
+                this.logger.LogError($"FindEmptyCell: total weight exceeded for LU {loadingUnitId}; weight {loadingUnit.GrossWeight:0.00}; " +
                     $"TotalWeightFront {machineStatistics.TotalWeightFront}; " +
                     $"TotalWeightBack {machineStatistics.TotalWeightBack}; " +
                     $"MaxGrossWeight {machine.MaxGrossWeight} ");
@@ -219,9 +221,13 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (!availableCell.Any())
                 {
-                    if (!isCompacting)
+                    if (isCompacting)
                     {
-                        this.logger.LogError($"FindEmptyCell: cell not found for LU {loadingUnitId}; Height {loadingUnit.Height}; total cells {cells.Count}; ");
+                        this.logger.LogDebug($"FindEmptyCell: cell not found for LU {loadingUnitId}; Height {loadingUnit.Height:0.00}; side {loadingUnit.Cell.Side}; position {loadingUnit.Cell.Position}; total cells {cells.Count}; ");
+                    }
+                    else
+                    {
+                        this.logger.LogError($"FindEmptyCell: cell not found for LU {loadingUnitId}; Height {loadingUnit.Height:0.00}; total cells {cells.Count}; ");
                     }
                     throw new InvalidOperationException(Resources.Cells.NoEmptyCellsAvailable);
                 }
@@ -229,13 +235,13 @@ namespace Ferretto.VW.MAS.DataLayer
                 // start from lower cells
                 var cellId = availableCell.OrderBy(o => (preferredSide != WarehouseSide.NotSpecified && o.Cell.Side == preferredSide) ? 0 : 1).ThenBy(t => t.Cell.Priority).First().Cell.Id;
                 this.logger.LogDebug($"FindEmptyCell: found Cell {cellId} for LU {loadingUnitId}; " +
-                    $"Height {loadingUnit.Height}; " +
-                    $"Weight {loadingUnit.GrossWeight}; " +
+                    $"Height {loadingUnit.Height:0.00}; " +
+                    $"Weight {loadingUnit.GrossWeight:0.00}; " +
                     $"preferredSide {preferredSide}; " +
                     $"total cells {cells.Count}; " +
                     $"available cells {availableCell.Count}; " +
-                    $"TotalWeightFront {machineStatistics.TotalWeightFront}; " +
-                    $"TotalWeightBack {machineStatistics.TotalWeightBack}");
+                    $"TotalWeightFront {machineStatistics.TotalWeightFront:0.00}; " +
+                    $"TotalWeightBack {machineStatistics.TotalWeightBack:0.00}");
                 return cellId;
             }
         }
