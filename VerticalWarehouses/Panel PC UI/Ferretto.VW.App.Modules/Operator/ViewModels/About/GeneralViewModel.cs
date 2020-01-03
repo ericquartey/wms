@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Windows.Media;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
@@ -25,6 +26,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
         private Brush machineServiceStatusBrush;
 
         private MachineIdentity model;
+
+        private DelegateCommand viewStatusSensorsCommand;
 
         private Brush wmsServicesStatusBrush;
 
@@ -63,6 +66,13 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public string SoftwareVersion => this.GetType().Assembly.GetName().Version.ToString();
 
+        public ICommand ViewStatusSensorsCommand =>
+                                            this.viewStatusSensorsCommand
+            ??
+            (this.viewStatusSensorsCommand = new DelegateCommand(
+                () => this.StatusSensorsCommand(),
+                this.CanExecuteCommand));
+
         public Brush WmsServicesStatusBrush
         {
             get => this.wmsServicesStatusBrush;
@@ -98,6 +108,18 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.dataHubClient.ConnectionStatusChanged += this.OperatorHubClient_ConnectionStatusChanged;
         }
 
+        internal bool CanExecuteCommand()
+        {
+            return !this.IsWaitingForResponse;
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.viewStatusSensorsCommand?.RaiseCanExecuteChanged();
+        }
+
         private Brush GetBrushForServiceStatus(MachineServiceStatus serviceStatus)
         {
             switch (serviceStatus)
@@ -121,6 +143,28 @@ namespace Ferretto.VW.App.Operator.ViewModels
             WMS.Data.WebAPI.Contracts.ConnectionStatusChangedEventArgs e)
         {
             this.UpdateWmsServicesStatus();
+        }
+
+        private void StatusSensorsCommand()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                this.NavigationService.Appear(
+                    nameof(Utils.Modules.Installation),
+                    Utils.Modules.Installation.Sensors.SECURITY,
+                    data: null,
+                    trackCurrentView: true);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
         private void UpdateWmsServicesStatus()
