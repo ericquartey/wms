@@ -62,7 +62,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.bayFirstLoadingUnitCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.BayFirstLoadingUnit),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
 
         public ICommand CellPanelsCheckCommand =>
             this.cellPanelsCheckCommand
