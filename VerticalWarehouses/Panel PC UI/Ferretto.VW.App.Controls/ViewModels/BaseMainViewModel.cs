@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Services;
@@ -176,7 +177,17 @@ namespace Ferretto.VW.App.Controls
 
             this.UpdatePresentation();
 
-            await this.machineService.OnUpdateServiceAsync();
+            try
+            {
+                await this.machineService.OnUpdateServiceAsync();
+            }
+            catch (HttpRequestException)
+            {
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
             this.InitializeSteps();
 

@@ -88,8 +88,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         {
             SplashScreenService.Hide();
 
-            await base.OnAppearedAsync();
-
             this.subscriptionToken = this.subscriptionToken
                 ??
                 this.healthProbeService.HealthStatusChanged
