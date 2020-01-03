@@ -30,8 +30,20 @@ namespace Ferretto.VW.App.Controls
             typeof(PpcSpinEdit),
             new PropertyMetadata(new decimal(1), new PropertyChangedCallback(OnIncrementChanged)));
 
+        public static readonly DependencyProperty KeyboardCloseCommandProperty = DependencyProperty.Register(
+            nameof(KeyboardCloseCommand),
+            typeof(ICommand),
+            typeof(PpcSpinEdit),
+            new PropertyMetadata(null));
+
+        public static readonly DependencyProperty KeyboardOpenCommandProperty = DependencyProperty.Register(
+            nameof(KeyboardOpenCommand),
+            typeof(ICommand),
+            typeof(PpcSpinEdit),
+            new PropertyMetadata(null));
+
         public static readonly DependencyProperty KeyboardProperty = DependencyProperty.Register(
-            nameof(Keyboard),
+                            nameof(Keyboard),
             typeof(KeyboardType),
             typeof(PpcSpinEdit),
             new PropertyMetadata(KeyboardType.NumpadCenter));
@@ -60,18 +72,6 @@ namespace Ferretto.VW.App.Controls
             typeof(PpcSpinEdit),
             new PropertyMetadata(new decimal(250)));
 
-        public static DependencyProperty KeyboardCloseCommandProperty = DependencyProperty.Register(
-            nameof(KeyboardCloseCommand),
-            typeof(ICommand),
-            typeof(PpcSpinEdit),
-            new PropertyMetadata(null));
-
-        public static DependencyProperty KeyboardOpenCommandProperty = DependencyProperty.Register(
-            nameof(KeyboardOpenCommand),
-            typeof(ICommand),
-            typeof(PpcSpinEdit),
-            new PropertyMetadata(null));
-
         private const string DECIMAL_STYLE = "VWAPP_SpinEdit_DecimalStyle";
 
         private const string DOUBLE_STYLE = "VWAPP_SpinEdit_DoubleStyle";
@@ -80,6 +80,18 @@ namespace Ferretto.VW.App.Controls
 
         private static readonly DependencyProperty EditValueProperty = DependencyProperty.Register(
             nameof(EditValue),
+            typeof(object),
+            typeof(PpcSpinEdit),
+            new FrameworkPropertyMetadata(null));
+
+        private static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
+            nameof(MaxValue),
+            typeof(object),
+            typeof(PpcSpinEdit),
+            new FrameworkPropertyMetadata(null));
+
+        private static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
+            nameof(MinValue),
             typeof(object),
             typeof(PpcSpinEdit),
             new FrameworkPropertyMetadata(null));
@@ -162,6 +174,18 @@ namespace Ferretto.VW.App.Controls
             set => this.SetValue(MaskProperty, value);
         }
 
+        public object MaxValue
+        {
+            get => this.GetValue(MaxValueProperty);
+            set => this.SetValue(MaxValueProperty, value);
+        }
+
+        public object MinValue
+        {
+            get => this.GetValue(MinValueProperty);
+            set => this.SetValue(MinValueProperty, value);
+        }
+
         public Style SpinEditStyle
         {
             get => (Style)this.GetValue(SpinEditStyleProperty);
@@ -214,18 +238,18 @@ namespace Ferretto.VW.App.Controls
             return property;
         }
 
-        private static void OnButtonSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is PpcSpinEdit ppcSpinEdit
-                &&
-                e.NewValue is double val)
-            {
-                ppcSpinEdit.Button_Add.Height = val;
-                ppcSpinEdit.Button_Add.Width = val;
-                ppcSpinEdit.Button_Min.Height = val;
-                ppcSpinEdit.Button_Min.Width = val;
-            }
-        }
+        //private static void OnButtonSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    if (d is PpcSpinEdit ppcSpinEdit
+        //        &&
+        //        e.NewValue is double val)
+        //    {
+        //        ppcSpinEdit.Button_Add.Height = val;
+        //        ppcSpinEdit.Button_Add.Width = val;
+        //        ppcSpinEdit.Button_Min.Height = val;
+        //        ppcSpinEdit.Button_Min.Width = val;
+        //    }
+        //}
 
         private static void OnIncrementChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
