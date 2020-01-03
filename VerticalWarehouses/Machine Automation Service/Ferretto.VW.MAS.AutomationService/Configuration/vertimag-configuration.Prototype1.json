@@ -1682,6 +1682,7 @@
       "FeedRate": 0.2
     },
     "VerticalResolutionCalibration": {
+      "StartPosition": 500,
       "InitialPosition": 1000, //TEMP Temporary value for software test
       "FinalPosition": 5500, //TEMP Temporary value for software test
       "FeedRate": 0.2

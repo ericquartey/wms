@@ -1,4 +1,3 @@
-{
   "$schema": "http://json-schema.org/draft-04/schema",
   "type": "object",
   "title": "JSON Schema for Vertimag Configuration",
@@ -918,17 +917,24 @@
                     "title": "The Priority Schema",
                     "default": 0
                   },
-                  "IsFree": {
-                    "$id": "#/properties/Machine/properties/Panels/items/properties/Cells/items/properties/IsFree",
-                    "type": "boolean",
-                    "title": "The IsFree Schema"
-                  },
-                  "BlockLevel": {
-                    "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/BlockLevel",
+                  "Status": {
+                    "$id": "#/properties/Machine/properties/Panels/items/properties/Cells/items/properties/Status",
                     "type": "string",
-                    "title": "The BlockLevel Schema",
-                    "default": "None",
-                    "enum": [ "None", "SpaceOnly", "Blocked" ]
+                    "title": "The Status Schema",
+                    "enum": [
+                      "Free",
+                      "Occupied"
+                    ]
+                  },
+                  "IsUnusable": {
+                    "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/IsUnusable",
+                    "type": "boolean",
+                    "title": "The IsUnusable Schema"
+                  },
+                  "IsDeactivated": {
+                    "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/IsDeactivated",
+                    "type": "boolean",
+                    "title": "The IsUnusable Schema"
                   }
                 }
               }
