@@ -187,7 +187,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn x:Name="Column5"
                                     Width="1*"
-                                    Binding="{Binding Path=Cell.Side}"
+                                    Binding="{Binding Path=Cell.Side, Converter={StaticResource EWSC}}"
                                     Header="{x:Static Resources:OperatorApp.OtherDrawerDataGridHeaderSide}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">

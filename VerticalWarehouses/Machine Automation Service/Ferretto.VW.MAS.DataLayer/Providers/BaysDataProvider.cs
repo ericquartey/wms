@@ -920,6 +920,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new EntityNotFoundException($"LoadingUnit ID={loadingUnitId}");
                 }
 
+                loadingUnit.Status = DataModels.Enumerations.LoadingUnitStatus.InBay;
                 position.LoadingUnit = loadingUnit;
             }
 

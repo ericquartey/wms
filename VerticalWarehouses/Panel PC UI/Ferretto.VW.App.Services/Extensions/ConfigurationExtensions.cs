@@ -22,8 +22,15 @@ namespace Ferretto.VW.App.Services
 
         #region Methods
 
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="System.Security.SecurityException"></exception>
         public static BayNumber GetBayNumber(this NameValueCollection appSettings)
         {
+            if (appSettings is null)
+            {
+                throw new ArgumentNullException(nameof(appSettings));
+            }
+
             var bayNumberStringEnv = Environment.GetEnvironmentVariable(BayNumberEnvKey);
             if (!string.IsNullOrWhiteSpace(bayNumberStringEnv))
             {
@@ -64,6 +71,11 @@ namespace Ferretto.VW.App.Services
 
         public static bool LogoutWhenUnhealthy(this NameValueCollection appSettings)
         {
+            if (appSettings is null)
+            {
+                throw new ArgumentNullException(nameof(appSettings));
+            }
+
             var logoutWhenUnhealthyStringEnv = Environment.GetEnvironmentVariable(LogoutWhenUnhealthyEnvKey);
             if (!string.IsNullOrWhiteSpace(logoutWhenUnhealthyStringEnv))
             {

@@ -54,20 +54,20 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
             if (commandMessage.Data is IMoveLoadingUnitMessageData messageData
-                && machineData is Mission moveData
+                && machineData is Mission mission
                 )
             {
-                this.Logger.LogDebug($"{this.GetType().Name}: {moveData}");
-                this.mission = moveData;
+                this.Logger.LogDebug($"{this.GetType().Name}: {mission}");
+                this.mission = mission;
                 this.mission.FsmStateName = nameof(MoveLoadingUnitStartState);
                 this.missionsDataProvider.Update(this.mission);
 
-                if (moveData.LoadingUnitSource is LoadingUnitLocation.Elevator)
+                if (mission.LoadingUnitSource is LoadingUnitLocation.Elevator)
                 {
-                    var destinationHeight = this.loadingUnitMovementProvider.GetDestinationHeight(moveData, out var targetBayPositionId, out var targetCellId);
+                    var destinationHeight = this.loadingUnitMovementProvider.GetDestinationHeight(mission, out var targetBayPositionId, out var targetCellId);
                     if (destinationHeight is null)
                     {
-                        var description = $"GetSourceHeight error: position not found ({moveData.LoadingUnitSource} {(moveData.LoadingUnitSource == LoadingUnitLocation.Cell ? moveData.LoadingUnitCellSourceId : moveData.LoadingUnitId)})";
+                        var description = $"GetSourceHeight error: position not found ({mission.LoadingUnitSource} {(mission.LoadingUnitSource == LoadingUnitLocation.Cell ? mission.LoadingUnitCellSourceId : mission.LoadingUnitId)})";
 
                         throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
                     }
@@ -77,17 +77,17 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                         measure: false,
                         MessageActor.MachineManager,
                         commandMessage.RequestingBay,
-                        moveData.RestoreConditions,
+                        mission.RestoreConditions,
                         targetBayPositionId,
                         targetCellId);
                 }
                 else
                 {
-                    var sourceHeight = this.loadingUnitMovementProvider.GetSourceHeight(moveData, out var targetBayPositionId, out var targetCellId);
+                    var sourceHeight = this.loadingUnitMovementProvider.GetSourceHeight(mission, out var targetBayPositionId, out var targetCellId);
 
                     if (sourceHeight is null)
                     {
-                        var description = $"GetSourceHeight error: position not found ({moveData.LoadingUnitSource} {(moveData.LoadingUnitSource == LoadingUnitLocation.Cell ? moveData.LoadingUnitCellSourceId : moveData.LoadingUnitId)})";
+                        var description = $"GetSourceHeight error: position not found ({mission.LoadingUnitSource} {(mission.LoadingUnitSource == LoadingUnitLocation.Cell ? mission.LoadingUnitCellSourceId : mission.LoadingUnitId)})";
 
                         throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
                     }
@@ -97,7 +97,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                         measure: false,
                         MessageActor.MachineManager,
                         commandMessage.RequestingBay,
-                        moveData.RestoreConditions,
+                        mission.RestoreConditions,
                         targetBayPositionId,
                         targetCellId);
                 }
@@ -115,23 +115,23 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     this.mission.LoadingUnitId,
                     (this.mission.LoadingUnitDestination == LoadingUnitLocation.Cell),
                     isEject,
-                    moveData.FsmId,
+                    mission.FsmId,
                     messageData.CommandAction,
                     messageData.StopReason,
                     messageData.Verbosity);
 
                 this.Message = new NotificationMessage(
                     newMessageData,
-                    $"Loading Unit {moveData.LoadingUnitId} start movement to bay {messageData.Destination}",
+                    $"Loading Unit {mission.LoadingUnitId} start movement to bay {messageData.Destination}",
                     MessageActor.AutomationService,
                     MessageActor.MachineManager,
                     MessageType.MoveLoadingUnit,
                     commandMessage.RequestingBay,
                     commandMessage.TargetBay,
                     MessageStatus.OperationStart);
-                moveData.Status = MissionStatus.Executing;
+                mission.Status = MissionStatus.Executing;
                 this.mission.RestoreConditions = false;
-                this.missionsDataProvider.Update(moveData);
+                this.missionsDataProvider.Update(mission);
             }
             else
             {

@@ -1081,11 +1081,11 @@
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityLocalCallHeight" xml:space="preserve">
-    <value>DrawerActivityLocalCallHeight</value>
+    <value>Height [mm]</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityLocalCallGrossWeight" xml:space="preserve">
-    <value>DrawerActivityLocalCallGrossWeight</value>
+    <value>Gross Weight [kg]</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityLocalCallActualWeight" xml:space="preserve">

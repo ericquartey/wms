@@ -378,6 +378,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                     break;
 
                 case MissionType.WMS:
+                case MissionType.OUT:
                     returnValue = (this.machineModeDataProvider.Mode == MachineMode.Automatic);
                     break;
 

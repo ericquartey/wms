@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Ferretto.VW.App.Services
 {
@@ -20,10 +16,13 @@ namespace Ferretto.VW.App.Services
 
         #region Methods
 
+        /// <exception cref="MasWebApiException"></exception>
         Task CancelCurrentAsync();
 
+        /// <exception cref="MasWebApiException"></exception>
         Task CompleteCurrentAsync(double quantity);
 
+        /// <exception cref="MasWebApiException"></exception>
         Task PartiallyCompleteCurrentAsync(double quantity);
 
         #endregion

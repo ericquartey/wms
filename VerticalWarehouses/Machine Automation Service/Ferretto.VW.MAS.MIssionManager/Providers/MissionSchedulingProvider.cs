@@ -96,6 +96,19 @@ namespace Ferretto.VW.MAS.MissionManager
             throw new NotImplementedException();
         }
 
+        public void QueueRecallMission(int loadingUnitId, BayNumber sourceBayNumber)
+        {
+            this.logger.LogDebug(
+              "Queuing local recall mission for loading unit {loadingUnitId} from bay {sourceBayNumber}.",
+              loadingUnitId,
+              sourceBayNumber);
+
+            var mission = this.missionsDataProvider.CreateRecallMission(loadingUnitId, sourceBayNumber);
+            this.machineMissionsProvider.AddMission(mission, mission.FsmId);
+
+            this.NotifyNewMachineMissionAvailable(mission);
+        }
+
         private void NotifyNewMachineMissionAvailable(Mission mission)
         {
             if (mission is null)

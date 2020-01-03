@@ -4,6 +4,7 @@ using Ferretto.VW.MAS.AutomationService.Filters;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DeviceManager;
 using Ferretto.VW.MAS.InverterDriver;
+using Ferretto.VW.MAS.TimeManagement;
 using Ferretto.VW.MAS.IODriver;
 using Ferretto.VW.MAS.LaserDriver;
 using Ferretto.VW.MAS.MachineManager;
@@ -163,7 +164,8 @@ namespace Ferretto.VW.MAS.AutomationService
                 .AddLaserDriver()
                 .AddFiniteStateMachines()
                 .AddMachineManager()
-                .AddMissionManager();
+                .AddMissionManager()
+                .AddTimeServices();
 
             services.AddHostedService<NotificationRelayService>();
 
@@ -180,7 +182,7 @@ namespace Ferretto.VW.MAS.AutomationService
             }
 
             var wmsServiceAddress = this.Configuration.GetWmsServiceUrl();
-            services.AddWebApiServices(wmsServiceAddress);
+            services.AddWmsWebServices(wmsServiceAddress);
 
             var wmsServiceAddressHubsEndpoint = this.Configuration.GetWmsServiceHubUrl();
             services.AddDataHub(wmsServiceAddressHubsEndpoint);

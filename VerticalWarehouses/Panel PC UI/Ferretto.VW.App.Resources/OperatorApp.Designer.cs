@@ -458,7 +458,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DrawerActivityLocalCallGrossWeight.
+        ///   Looks up a localized string similar to Gross Weight [kg].
         /// </summary>
         public static string DrawerActivityLocalCallGrossWeight {
             get {
@@ -476,7 +476,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DrawerActivityLocalCallHeight.
+        ///   Looks up a localized string similar to Height [mm].
         /// </summary>
         public static string DrawerActivityLocalCallHeight {
             get {

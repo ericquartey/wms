@@ -1340,7 +1340,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("MissionsCount");
 
-                    b.Property<long>("Status");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<double>("Tare");
 
@@ -1600,7 +1602,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 2, 27, 18, 6, 23, 389, DateTimeKind.Local).AddTicks(8518),
+                            InstallationDate = new DateTime(2017, 3, 3, 17, 9, 59, 7, DateTimeKind.Local).AddTicks(4440),
                             ServiceStatus = 86
                         });
                 });
@@ -1867,6 +1869,28 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("WeightMeasurements");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.WmsSettings", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("IsWmsTimeSyncEnabled");
+
+                    b.Property<int>("TimeSyncIntervalMilliseconds");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WmsSettings");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = -1,
+                            IsWmsTimeSyncEnabled = true,
+                            TimeSyncIntervalMilliseconds = 10000
+                        });
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.StepMovementParameters", b =>

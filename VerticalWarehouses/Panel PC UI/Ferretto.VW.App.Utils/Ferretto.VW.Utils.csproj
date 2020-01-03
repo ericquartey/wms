@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ferretto.Common.Controls.WPF" Version="0.13.0-alpha0039" />
+    <PackageReference Include="Ferretto.Common.Controls.WPF" Version="0.14.0-alpha0004" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

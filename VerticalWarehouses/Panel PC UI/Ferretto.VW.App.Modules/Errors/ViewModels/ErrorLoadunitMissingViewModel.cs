@@ -246,7 +246,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
                 this.Error = await this.machineErrorsWebService.GetCurrentAsync();
             }
-            catch (Exception ex)
+            catch (MasWebApiException ex)
             {
                 this.ShowNotification(ex);
             }
@@ -277,7 +277,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                         this.SelectedLoadingUnit.Id);
                 }
             }
-            catch (Exception ex)
+            catch (MasWebApiException ex)
             {
                 this.ShowNotification(ex);
             }

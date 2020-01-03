@@ -91,54 +91,59 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
             if (message.Exception != null)
             {
-                if (message.Exception is SwaggerException<ProblemDetails> swaggerException)
+                switch (message.Exception)
                 {
-                    if (swaggerException.Result is null)
-                    {
-                        this.NotificationMessage = swaggerException.Message;
-                    }
-                    else
-                    {
-                        if (swaggerException.Result.Detail is null)
+                    case MasWebApiException<ProblemDetails> webApiException:
+                        if (webApiException.Result is null)
                         {
-                            this.NotificationMessage =
-                            swaggerException.Result.Title +
-                            System.Environment.NewLine +
-                            ((!(swaggerException.Result is null)
-                             &&
-                             swaggerException.Result.AdditionalProperties.Any()) ? swaggerException.Result.AdditionalProperties.First().Value : string.Empty);
+                            this.NotificationMessage = webApiException.Message;
                         }
                         else
                         {
-                            this.NotificationMessage =
-                            swaggerException.Result.Title +
-                            System.Environment.NewLine +
-                            swaggerException.Result.Detail?.Split('\n', '\r').FirstOrDefault();
+                            if (webApiException.Result.Detail is null)
+                            {
+                                this.NotificationMessage =
+                                webApiException.Result.Title +
+                                System.Environment.NewLine +
+                                ((!(webApiException.Result is null)
+                                 &&
+                                 webApiException.Result.AdditionalProperties.Any()) ? webApiException.Result.AdditionalProperties.First().Value : string.Empty);
+                            }
+                            else
+                            {
+                                this.NotificationMessage =
+                                webApiException.Result.Title +
+                                System.Environment.NewLine +
+                                webApiException.Result.Detail?.Split('\n', '\r').FirstOrDefault();
+                            }
                         }
-                    }
-                }
-                else if (message.Exception is SwaggerException)
-                {
-                    var notificationMessage = Resources.VWApp.ErrorCommunicatingWithServices;
 
-                    if (message.Exception.InnerException != null)
-                    {
-                        notificationMessage +=
-                            System.Environment.NewLine +
-                            message.Exception.InnerException.Message;
-                    }
-                    else
-                    {
-                        notificationMessage +=
-                           System.Environment.NewLine +
-                           message.Exception.Message.Split('\n', '\r').FirstOrDefault();
-                    }
+                        break;
 
-                    this.NotificationMessage = notificationMessage;
-                }
-                else
-                {
-                    this.NotificationMessage = message.Exception.Message;
+                    case MasWebApiException webApiException:
+                        {
+                            var notificationMessage = Resources.VWApp.ErrorCommunicatingWithServices;
+
+                            if (webApiException.InnerException != null)
+                            {
+                                notificationMessage +=
+                                    System.Environment.NewLine +
+                                    webApiException.InnerException.Message;
+                            }
+                            else
+                            {
+                                notificationMessage +=
+                                   System.Environment.NewLine +
+                                   webApiException.Message.Split('\n', '\r').FirstOrDefault();
+                            }
+
+                            this.NotificationMessage = notificationMessage;
+                            break;
+                        }
+
+                    default:
+                        this.NotificationMessage = message.Exception.Message;
+                        break;
                 }
             }
             else
