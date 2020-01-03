@@ -128,7 +128,7 @@ namespace Ferretto.VW.App.Services
             set => this.SetProperty(ref this.bayZeroChainIsVisible, value);
         }
 
-        public bool IsExtraVertical => this.sensors.ANGChainMF3ID;
+        public bool IsExtraVertical => this.sensors.ExtraRunElevator;
 
         public bool IsLoadingUnitInBay
         {
