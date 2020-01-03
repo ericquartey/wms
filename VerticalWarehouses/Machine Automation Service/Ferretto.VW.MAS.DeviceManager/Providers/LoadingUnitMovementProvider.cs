@@ -170,7 +170,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     if (moveData.LoadingUnitId != 0)
                     {
                         var cell = this.cellsProvider.GetByLoadingUnitId(moveData.LoadingUnitId);
-                        if (cell != null && cell.Status == CellStatus.Free)
+                        if (cell != null && cell.IsFree)
                         {
                             targetPosition = cell.Position;
                             targetCellId = cell.Id;
@@ -183,7 +183,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     if (moveData.DestinationCellId != null)
                     {
                         var cell = this.cellsProvider.GetById(moveData.DestinationCellId.Value);
-                        if (cell != null && cell.Status == CellStatus.Free)
+                        if (cell != null && cell.IsFree)
                         {
                             targetPosition = cell.Position;
                             targetCellId = cell.Id;
@@ -246,7 +246,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     if (moveData.LoadingUnitId != 0)
                     {
                         var cell = this.cellsProvider.GetByLoadingUnitId(moveData.LoadingUnitId);
-                        if (cell != null && cell.Status == CellStatus.Occupied)
+                        if (cell != null && !cell.IsFree)
                         {
                             targetPosition = cell.Position;
                             targetCellId = cell.Id;
@@ -259,7 +259,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     if (moveData.LoadingUnitCellSourceId != null)
                     {
                         var cell = this.cellsProvider.GetById(moveData.LoadingUnitCellSourceId.Value);
-                        if (cell != null && cell.Status == CellStatus.Occupied)
+                        if (cell != null && !cell.IsFree)
                         {
                             targetPosition = cell.Position;
                             targetCellId = cell.Id;

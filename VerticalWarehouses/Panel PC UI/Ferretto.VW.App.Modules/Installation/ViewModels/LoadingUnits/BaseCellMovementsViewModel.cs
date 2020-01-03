@@ -72,7 +72,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                             {
                                 var l = this.Cells.Where(w => w.Position > this.axisBounds?.Lower &&
                                                               w.Position < this.axisBounds?.Upper &&
-                                                              w.Status == CellStatus.Free &&
+                                                              w.IsFree &&
                                                               w.Id > (old ?? 0));
                                 if (l.Any())
                                 {
@@ -83,7 +83,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                             {
                                 var l = this.Cells.Where(w => w.Position > this.axisBounds?.Lower &&
                                                               w.Position < this.axisBounds?.Upper &&
-                                                              w.Status == CellStatus.Free &&
+                                                              w.IsFree &&
                                                               old.HasValue &&
                                                               w.Id < old.Value);
                                 if (l.Any())
@@ -117,7 +117,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                                                           l.Id == this.destinationCellId.Value);
                 if (!(cellFound is null))
                 {
-                    return cellFound.Status == CellStatus.Free;
+                    return cellFound.IsFree;
                 }
 
                 return false;
@@ -173,7 +173,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 {
                     if (this.Cells.Count() > 0)
                     {
-                        this.DestinationCellId = this.Cells.Where(w => w.Status == CellStatus.Free).Min(o => o.Id);
+                        this.DestinationCellId = this.Cells.Where(w => w.IsFree).Min(o => o.Id);
                     }
                     else
                     {

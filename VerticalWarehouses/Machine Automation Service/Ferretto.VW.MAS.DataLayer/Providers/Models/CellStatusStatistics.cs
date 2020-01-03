@@ -6,11 +6,11 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Properties
 
+        public bool IsFree { get; set; }
+
         public double RatioBackCells { get; set; }
 
         public double RatioFrontCells { get; set; }
-
-        public CellStatus Status { get; set; }
 
         public int TotalBackCells { get; set; }
 

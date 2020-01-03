@@ -573,7 +573,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Side = table.Column<string>(type: "text", nullable: false),
+                    Side = table.Column<int>(nullable: false),
                     MachineId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -593,12 +593,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    IsDeactivated = table.Column<bool>(nullable: false),
-                    IsUnusable = table.Column<bool>(nullable: false),
+                    BlockLevel = table.Column<int>(nullable: false),
+                    IsFree = table.Column<bool>(nullable: false),
                     PanelId = table.Column<int>(nullable: false),
                     Position = table.Column<double>(nullable: false),
-                    Priority = table.Column<int>(nullable: false),
-                    Status = table.Column<string>(type: "text", nullable: false)
+                    Priority = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -695,7 +694,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Operation = table.Column<int>(nullable: false),
                     Resolution = table.Column<double>(nullable: false),
                     ShutterId = table.Column<int>(nullable: true),
-                    Side = table.Column<string>(type: "text", nullable: false),
+                    Side = table.Column<int>(nullable: false),
                     MachineId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -1224,7 +1223,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 3, 3, 9, 3, 44, 973, DateTimeKind.Local).AddTicks(9151), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 3, 3, 11, 36, 38, 128, DateTimeKind.Local).AddTicks(7131), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",

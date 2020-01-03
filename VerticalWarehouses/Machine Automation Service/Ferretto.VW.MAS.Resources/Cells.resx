@@ -126,8 +126,8 @@
   <data name="TheCellUnexpectedlyContainsAnotherLoadingUnit" xml:space="preserve">
     <value>The cell unexpectedly contains another loading unit.</value>
   </data>
-  <data name="TheLoadingCannotBePlacedOppositeAnUnusableCell" xml:space="preserve">
-    <value>The loading unit cannot be placed opposite an unusable cell.</value>
+  <data name="TheLoadingCannotOccupyABlockedCell" xml:space="preserve">
+    <value>The loading unit cannot occupy a blocked cell.</value>
   </data>
   <data name="TheLoadingUnitIsAlreadyLocatedInAnotherCell" xml:space="preserve">
     <value>The loading unit is already located in another cell.</value>
@@ -138,11 +138,11 @@
   <data name="TheSpecifiedHeightWouldCauseThePanelToOverlapWithOtherPanels" xml:space="preserve">
     <value>The specified height would cause the panel to overlap with other panels.</value>
   </data>
-  <data name="TheTargetCellIsDeactivated" xml:space="preserve">
-    <value>The target cell is deactivated.</value>
+  <data name="TheTargetCellIsSpaceOnly" xml:space="preserve">
+    <value>The target cell is space only, it cannot support a load unit.</value>
   </data>
-  <data name="TheTargetCellIsUnusable" xml:space="preserve">
-    <value>The target cell is unusable.</value>
+  <data name="TheTargetCellIsBlocked" xml:space="preserve">
+    <value>The target cell is blocked.</value>
   </data>
   <data name="TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds" xml:space="preserve">
     <value>The specified cell is not within the elevator's vertical bounds.</value>

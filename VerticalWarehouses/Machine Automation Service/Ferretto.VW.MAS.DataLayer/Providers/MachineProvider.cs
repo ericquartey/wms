@@ -311,6 +311,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     {
                         machineStat.TotalWeightBack += l.GrossWeight;
                     }
+                    l.IsIntoMachine = true;
                 }
             }
             );

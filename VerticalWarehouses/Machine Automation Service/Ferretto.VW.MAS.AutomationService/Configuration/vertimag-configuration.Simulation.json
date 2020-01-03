@@ -420,619 +420,631 @@
             "Id": 1,
             "Position": 1640,
             "Priority": 1,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 3,
             "Position": 1665,
             "Priority": 3,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 5,
             "Position": 1690,
             "Priority": 5,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 7,
             "Position": 1715,
             "Priority": 7,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 9,
             "Position": 1740,
             "Priority": 9,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 11,
             "Position": 1765,
             "Priority": 11,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 13,
             "Position": 1790,
             "Priority": 13,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 15,
             "Position": 1815,
             "Priority": 15,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 17,
             "Position": 1840,
             "Priority": 17,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 19,
             "Position": 1865,
             "Priority": 19,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 21,
             "Position": 1890,
             "Priority": 21,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 23,
             "Position": 1915,
             "Priority": 23,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 25,
             "Position": 1940,
             "Priority": 25,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 27,
             "Position": 1965,
             "Priority": 27,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 29,
             "Position": 1990,
             "Priority": 29,
-            "Status": "Free"
+            "IsFree": true,
+            "BlockLevel": "None"
           },
           {
             "Id": 31,
             "Position": 2015,
             "Priority": 31,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 33,
             "Position": 2040,
             "Priority": 33,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 35,
             "Position": 2065,
             "Priority": 35,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 37,
             "Position": 2090,
             "Priority": 37,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 39,
             "Position": 2115,
             "Priority": 39,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 41,
             "Position": 2140,
             "Priority": 41,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 43,
             "Position": 2165,
             "Priority": 43,
-            "Status": "Free"
+            "IsFree": true,
+            "BlockLevel": "None"
           },
           {
             "Id": 45,
             "Position": 2190,
             "Priority": 45,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 47,
             "Position": 2215,
             "Priority": 47,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 49,
             "Position": 2240,
             "Priority": 49,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 51,
             "Position": 2265,
             "Priority": 51,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 53,
             "Position": 2290,
             "Priority": 53,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 55,
             "Position": 2315,
             "Priority": 55,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 57,
             "Position": 2340,
             "Priority": 57,
-            "Status": "Free"
+            "IsFree": true,
+            "BlockLevel": "None"
           },
           {
             "Id": 59,
             "Position": 2365,
             "Priority": 59,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 61,
             "Position": 2390,
             "Priority": 61,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 63,
             "Position": 2415,
             "Priority": 63,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 65,
             "Position": 2440,
             "Priority": 65,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 67,
             "Position": 2465,
             "Priority": 67,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 69,
             "Position": 2490,
             "Priority": 69,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 71,
             "Position": 2515,
             "Priority": 71,
-            "Status": "Free"
+            "IsFree": true,
+            "BlockLevel": "None"
           },
           {
             "Id": 73,
             "Position": 2540,
             "Priority": 73,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 75,
             "Position": 2565,
             "Priority": 75,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 77,
             "Position": 2590,
             "Priority": 77,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 79,
             "Position": 2615,
             "Priority": 79,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 81,
             "Position": 2640,
             "Priority": 81,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 83,
             "Position": 2665,
             "Priority": 83,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 85,
             "Position": 2690,
             "Priority": 85,
-            "Status": "Free"
+            "IsFree": true,
+            "BlockLevel": "None"
           },
           {
             "Id": 87,
             "Position": 2715,
             "Priority": 87,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 89,
             "Position": 2740,
             "Priority": 89,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 91,
             "Position": 2765,
             "Priority": 91,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 93,
             "Position": 2790,
             "Priority": 93,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 95,
             "Position": 2815,
             "Priority": 95,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 97,
             "Position": 2840,
             "Priority": 97,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 99,
             "Position": 2865,
             "Priority": 99,
-            "Status": "Free"
+            "IsFree": true,
+            "BlockLevel": "None"
           },
           {
             "Id": 101,
             "Position": 2890,
             "Priority": 101,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 103,
             "Position": 2915,
             "Priority": 103,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 105,
             "Position": 2940,
             "Priority": 105,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 107,
             "Position": 2965,
             "Priority": 107,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 109,
             "Position": 2990,
             "Priority": 109,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 111,
             "Position": 3015,
             "Priority": 111,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 113,
             "Position": 3040,
             "Priority": 113,
-            "Status": "Free"
+            "IsFree": true,
+            "BlockLevel": "None"
           },
           {
             "Id": 115,
             "Position": 3065,
             "Priority": 115,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 117,
             "Position": 3090,
             "Priority": 117,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 119,
             "Position": 3115,
             "Priority": 119,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 121,
             "Position": 3140,
             "Priority": 121,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 123,
             "Position": 3165,
             "Priority": 123,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 125,
             "Position": 3190,
             "Priority": 125,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 127,
             "Position": 3215,
             "Priority": 127,
-            "Status": "Free"
+            "IsFree": true,
+            "BlockLevel": "None"
           },
           {
             "Id": 129,
             "Position": 3240,
             "Priority": 129,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 131,
             "Position": 3265,
             "Priority": 131,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 133,
             "Position": 3290,
             "Priority": 133,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 135,
             "Position": 3315,
             "Priority": 135,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 137,
             "Position": 3340,
             "Priority": 137,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 139,
             "Position": 3365,
             "Priority": 139,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 141,
             "Position": 3390,
             "Priority": 141,
-            "Status": "Free"
+            "IsFree": true,
+            "BlockLevel": "None"
           },
           {
             "Id": 143,
             "Position": 3415,
             "Priority": 143,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 145,
             "Position": 3440,
             "Priority": 145,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 147,
             "Position": 3465,
             "Priority": 147,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 149,
             "Position": 3490,
             "Priority": 149,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 151,
             "Position": 3515,
             "Priority": 151,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 153,
             "Position": 3540,
             "Priority": 153,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 155,
             "Position": 3565,
             "Priority": 155,
-            "Status": "Free"
+            "IsFree": true,
+            "BlockLevel": "None"
           },
           {
             "Id": 157,
             "Position": 3590,
             "Priority": 157,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 159,
             "Position": 3615,
             "Priority": 159,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 161,
             "Position": 3640,
             "Priority": 161,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 163,
             "Position": 3665,
             "Priority": 163,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 165,
             "Position": 3690,
             "Priority": 165,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 167,
             "Position": 3715,
             "Priority": 167,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 169,
             "Position": 3740,
             "Priority": 169,
-            "Status": "Free"
+            "IsFree": true,
+            "BlockLevel": "None"
           },
           {
             "Id": 171,
             "Position": 3765,
             "Priority": 171,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 173,
             "Position": 3790,
             "Priority": 173,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 175,
             "Position": 3815,
             "Priority": 175,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 177,
             "Position": 3840,
             "Priority": 177,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 179,
             "Position": 3865,
             "Priority": 179,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 181,
             "Position": 3890,
             "Priority": 181,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 183,
             "Position": 3915,
             "Priority": 183,
-            "Status": "Free"
+            "IsFree": true,
+            "BlockLevel": "None"
           },
           {
             "Id": 185,
             "Position": 3940,
             "Priority": 185,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 187,
             "Position": 3965,
             "Priority": 187,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 189,
             "Position": 3990,
             "Priority": 189,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 191,
             "Position": 4015,
             "Priority": 191,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 193,
             "Position": 4040,
             "Priority": 193,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 195,
             "Position": 4065,
             "Priority": 195,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 197,
             "Position": 4090,
             "Priority": 197,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 199,
             "Position": 4115,
             "Priority": 199,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 201,
             "Position": 4140,
             "Priority": 201,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 203,
             "Position": 4165,
             "Priority": 203,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 205,
             "Position": 4190,
             "Priority": 205,
-            "IsUnusable": false
+            "BlockLevel": "None"
           }
 
         ]
@@ -1044,619 +1056,632 @@
             "Id": 2,
             "Position": 1640,
             "Priority": 2,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 4,
             "Position": 1665,
             "Priority": 4,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 6,
             "Position": 1690,
             "Priority": 6,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 8,
             "Position": 1715,
             "Priority": 8,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 10,
             "Position": 1740,
             "Priority": 10,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 12,
             "Position": 1765,
             "Priority": 12,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 14,
             "Position": 1790,
             "Priority": 14,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 16,
             "Position": 1815,
             "Priority": 16,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 18,
             "Position": 1840,
             "Priority": 18,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 20,
             "Position": 1865,
             "Priority": 20,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 22,
             "Position": 1890,
             "Priority": 22,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 24,
             "Position": 1915,
             "Priority": 24,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 26,
             "Position": 1940,
             "Priority": 26,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 28,
             "Position": 1965,
             "Priority": 28,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 30,
             "Position": 1990,
             "Priority": 30,
-            "Status": "Free"
+            "IsFree": true,
+            "BlockLevel": "None"
           },
           {
             "Id": 32,
             "Position": 2015,
             "Priority": 32,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 34,
             "Position": 2040,
             "Priority": 34,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 36,
             "Position": 2065,
             "Priority": 36,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 38,
             "Position": 2090,
             "Priority": 38,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 40,
             "Position": 2115,
             "Priority": 40,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 42,
             "Position": 2140,
             "Priority": 42,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 44,
             "Position": 2165,
             "Priority": 44,
-            "Status": "Free"
+            "IsFree": true,
+            "BlockLevel": "None"
           },
           {
             "Id": 46,
             "Position": 2190,
             "Priority": 46,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 48,
             "Position": 2215,
             "Priority": 48,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 50,
             "Position": 2240,
             "Priority": 50,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 52,
             "Position": 2265,
             "Priority": 52,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 54,
             "Position": 2290,
             "Priority": 54,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 56,
             "Position": 2315,
             "Priority": 56,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 58,
             "Position": 2340,
             "Priority": 58,
-            "Status": "Free"
+            "IsFree": true,
+            "BlockLevel": "None"
           },
           {
             "Id": 60,
             "Position": 2365,
             "Priority": 60,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 62,
             "Position": 2390,
             "Priority": 62,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 64,
             "Position": 2415,
             "Priority": 64,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 66,
             "Position": 2440,
             "Priority": 66,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 68,
             "Position": 2465,
             "Priority": 68,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 70,
             "Position": 2490,
             "Priority": 70,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 72,
             "Position": 2515,
             "Priority": 72,
-            "Status": "Free"
+            "IsFree": true,
+            "BlockLevel": "None"
           },
           {
             "Id": 74,
             "Position": 2540,
             "Priority": 74,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 76,
             "Position": 2565,
             "Priority": 76,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 78,
             "Position": 2590,
             "Priority": 78,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 80,
             "Position": 2615,
             "Priority": 80,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 82,
             "Position": 2640,
             "Priority": 82,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 84,
             "Position": 2665,
             "Priority": 84,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 86,
             "Position": 2690,
             "Priority": 86,
-            "Status": "Free"
+            "IsFree": true,
+            "BlockLevel": "None"
           },
           {
             "Id": 88,
             "Position": 2715,
             "Priority": 88,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 90,
             "Position": 2740,
             "Priority": 90,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 92,
             "Position": 2765,
             "Priority": 92,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 94,
             "Position": 2790,
             "Priority": 94,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 96,
             "Position": 2815,
             "Priority": 96,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 98,
             "Position": 2840,
             "Priority": 98,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 100,
             "Position": 2865,
             "Priority": 100,
-            "Status": "Free"
+            "IsFree": true,
+            "BlockLevel": "None"
           },
           {
             "Id": 102,
             "Position": 2890,
             "Priority": 102,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 104,
             "Position": 2915,
             "Priority": 104,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 106,
             "Position": 2940,
             "Priority": 106,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 108,
             "Position": 2965,
             "Priority": 108,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 110,
             "Position": 2990,
             "Priority": 110,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 112,
             "Position": 3015,
             "Priority": 112,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 114,
             "Position": 3040,
             "Priority": 114,
-            "Status": "Free"
+            "IsFree": true,
+            "BlockLevel": "None"
           },
           {
             "Id": 116,
             "Position": 3065,
             "Priority": 116,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 118,
             "Position": 3090,
             "Priority": 118,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 120,
             "Position": 3115,
             "Priority": 120,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 122,
             "Position": 3140,
             "Priority": 122,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 124,
             "Position": 3165,
             "Priority": 124,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 126,
             "Position": 3190,
             "Priority": 126,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 128,
             "Position": 3215,
             "Priority": 128,
-            "Status": "Free"
+            "IsFree": true,
+            "BlockLevel": "None"
           },
           {
             "Id": 130,
             "Position": 3240,
             "Priority": 130,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 132,
             "Position": 3265,
             "Priority": 132,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 134,
             "Position": 3290,
             "Priority": 134,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 136,
             "Position": 3315,
             "Priority": 136,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 138,
             "Position": 3340,
             "Priority": 138,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 140,
             "Position": 3365,
             "Priority": 140,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 142,
             "Position": 3390,
             "Priority": 142,
-            "Status": "Free"
+            "IsFree": true,
+            "BlockLevel": "None"
           },
           {
             "Id": 144,
             "Position": 3415,
             "Priority": 144,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 146,
             "Position": 3440,
             "Priority": 146,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 148,
             "Position": 3465,
             "Priority": 148,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 150,
             "Position": 3490,
             "Priority": 150,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 152,
             "Position": 3515,
             "Priority": 152,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 154,
             "Position": 3540,
             "Priority": 154,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 156,
             "Position": 3565,
             "Priority": 156,
-            "Status": "Free"
+            "IsFree": true,
+            "BlockLevel": "None"
           },
           {
             "Id": 158,
             "Position": 3590,
             "Priority": 158,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 160,
             "Position": 3615,
             "Priority": 160,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 162,
             "Position": 3640,
             "Priority": 162,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 164,
             "Position": 3665,
             "Priority": 164,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 166,
             "Position": 3690,
             "Priority": 166,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 168,
             "Position": 3715,
             "Priority": 168,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 170,
             "Position": 3740,
             "Priority": 170,
-            "Status": "Free"
+            "IsFree": true,
+            "BlockLevel": "None"
           },
           {
             "Id": 172,
             "Position": 3765,
             "Priority": 172,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 174,
             "Position": 3790,
             "Priority": 174,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 176,
             "Position": 3815,
             "Priority": 176,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 178,
             "Position": 3840,
             "Priority": 178,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 180,
             "Position": 3865,
             "Priority": 180,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 182,
             "Position": 3890,
             "Priority": 182,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 184,
             "Position": 3915,
             "Priority": 184,
-            "Status": "Free"
+            "IsFree": true,
+            "BlockLevel": "None"
           },
           {
             "Id": 186,
             "Position": 3940,
             "Priority": 186,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 188,
             "Position": 3965,
             "Priority": 188,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 190,
             "Position": 3990,
             "Priority": 190,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 192,
             "Position": 4015,
             "Priority": 192,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 194,
             "Position": 4040,
             "Priority": 194,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 196,
             "Position": 4065,
             "Priority": 196,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 198,
             "Position": 4090,
             "Priority": 198,
-            "Status": "Free"
+            "IsFree": true,
+            "BlockLevel": "None"
           },
           {
             "Id": 200,
             "Position": 4115,
             "Priority": 200,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 202,
             "Position": 4140,
             "Priority": 202,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 204,
             "Position": 4165,
             "Priority": 204,
-            "IsUnusable": false
+            "BlockLevel": "None"
           },
           {
             "Id": 206,
             "Position": 4190,
             "Priority": 206,
-            "IsUnusable": false
+            "BlockLevel": "None"
           }
 
         ]

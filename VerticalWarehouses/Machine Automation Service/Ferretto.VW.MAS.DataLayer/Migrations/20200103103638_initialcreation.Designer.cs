@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20200103080345_initialcreation")]
+    [Migration("20200103103638_initialcreation")]
     partial class initialcreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,9 +53,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("ShutterId");
 
-                    b.Property<string>("Side")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Side");
 
                     b.HasKey("Id");
 
@@ -150,19 +148,15 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<bool>("IsDeactivated");
+                    b.Property<int>("BlockLevel");
 
-                    b.Property<bool>("IsUnusable");
+                    b.Property<bool>("IsFree");
 
                     b.Property<int>("PanelId");
 
                     b.Property<double>("Position");
 
                     b.Property<int>("Priority");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -178,9 +172,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("MachineId");
 
-                    b.Property<string>("Side")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Side");
 
                     b.HasKey("Id");
 
@@ -1641,7 +1633,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 3, 3, 9, 3, 44, 973, DateTimeKind.Local).AddTicks(9151),
+                            InstallationDate = new DateTime(2017, 3, 3, 11, 36, 38, 128, DateTimeKind.Local).AddTicks(7131),
                             ServiceStatus = 86
                         });
                 });
