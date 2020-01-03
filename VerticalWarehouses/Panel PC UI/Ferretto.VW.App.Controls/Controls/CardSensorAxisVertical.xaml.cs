@@ -63,12 +63,12 @@ namespace Ferretto.VW.App.Controls.Controls
                 this.VerticalDescription = string.Empty;
                 if (!(this.machineService.MachineStatus.VerticalTargetPosition is null))
                 {
-                    this.VerticalDescription += $"Target: {this.machineService.MachineStatus.VerticalTargetPosition?.ToString("F2")}";
+                    this.VerticalDescription += $"Target: {this.machineService.MachineStatus.VerticalTargetPosition?.ToString("F0")}";
                 }
 
                 if (!(this.machineService.MachineStatus.VerticalSpeed is null))
                 {
-                    this.VerticalDescription += $" / Speed: {this.machineService.MachineStatus.VerticalSpeed?.ToString("F2")}";
+                    this.VerticalDescription += $" Speed: {this.machineService.MachineStatus.VerticalSpeed?.ToString("F0")}";
                 }
             };
 
@@ -128,12 +128,12 @@ namespace Ferretto.VW.App.Controls.Controls
             this.VerticalDescription = string.Empty;
             if (!(this.machineService.MachineStatus.VerticalTargetPosition is null))
             {
-                this.VerticalDescription += $"Target: {this.machineService.MachineStatus.VerticalTargetPosition?.ToString("F2")}";
+                this.VerticalDescription += $"Target: {this.machineService.MachineStatus.VerticalTargetPosition?.ToString("F0")}";
             }
 
             if (!(this.machineService.MachineStatus.VerticalSpeed is null))
             {
-                this.VerticalDescription += $"; Speed:{this.machineService.MachineStatus.VerticalSpeed?.ToString("F2")}";
+                this.VerticalDescription += $" Speed: {this.machineService.MachineStatus.VerticalSpeed?.ToString("F0")}";
             }
             return Task.CompletedTask;
         }
