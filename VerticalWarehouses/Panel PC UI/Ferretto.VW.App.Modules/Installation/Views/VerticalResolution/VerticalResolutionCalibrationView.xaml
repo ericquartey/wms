@@ -365,8 +365,7 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Command="{Binding StopCommand}"
-                            Content="{x:Static res:InstallationApp.Stop}"
-                            Style="{StaticResource WizardIntoButton}" />
+                            Content="{x:Static res:InstallationApp.Stop}" />
         <!--#endregion-->
 
         <!--#region Wizard-->
