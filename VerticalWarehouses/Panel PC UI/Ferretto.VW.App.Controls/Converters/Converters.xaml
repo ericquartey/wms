@@ -20,7 +20,7 @@
     <conv:ReferenceToVisibilityConverter x:Key="RTVIC"
                                          Invert="True" />
 
-    <conv:EnumCellStatusConverter x:Key="ECSC" />
+    <conv:EnumBlockLevelConverter x:Key="EBLC" />
     <conv:EnumWarehouseSideConverter x:Key="EWSC" />
     <conv:EnumItemManagementTypeConverter x:Key="EIMTC" />
     <conv:ImageToSourceConverter x:Key="ITSC" />
