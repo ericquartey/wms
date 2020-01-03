@@ -521,9 +521,14 @@ namespace Ferretto.VW.App.Services
                                 this.WriteInfo(dataPositioning?.AxisMovement);
                             }
 
+                            ms.VerticalSpeed = null;
                             if (dataPositioning.AxisMovement == Axis.Vertical)
                             {
                                 ms.VerticalTargetPosition = dataPositioning.TargetPosition;
+                                if (dataPositioning.TargetSpeed.Length > 0)
+                                {
+                                    ms.VerticalSpeed = dataPositioning.TargetSpeed[0];
+                                }
                             }
                             else if (dataPositioning.AxisMovement == Axis.Horizontal)
                             {
@@ -623,6 +628,7 @@ namespace Ferretto.VW.App.Services
                             ms.IsMovingLoadingUnit = false;
                         }
 
+                        ms.VerticalSpeed = null;
                         ms.VerticalTargetPosition = null;
                         ms.HorizontalTargetPosition = null;
                         ms.BayChainTargetPosition = null;
@@ -701,6 +707,7 @@ namespace Ferretto.VW.App.Services
                             ms.IsMovingLoadingUnit = false;
                         }
 
+                        ms.VerticalSpeed = null;
                         ms.VerticalTargetPosition = null;
                         ms.HorizontalTargetPosition = null;
                         ms.BayChainTargetPosition = null;

@@ -128,6 +128,8 @@ namespace Ferretto.VW.App.Services
             set => this.SetProperty(ref this.bayZeroChainIsVisible, value);
         }
 
+        public bool IsExtraChain => this.sensors.ZeroVerticalSensor;
+
         public bool IsLoadingUnitInBay
         {
             get
@@ -319,6 +321,7 @@ namespace Ferretto.VW.App.Services
             this.RaisePropertyChanged(nameof(this.Sensors));
             this.RaisePropertyChanged(nameof(this.ShutterSensors));
             this.RaisePropertyChanged(nameof(this.IsZeroChain));
+            this.RaisePropertyChanged(nameof(this.IsExtraChain));
             this.RaisePropertyChanged(nameof(this.BayZeroChain));
             this.RaisePropertyChanged(nameof(this.BayZeroChainIsVisible));
             this.RaisePropertyChanged(nameof(this.IsLoadingUnitOnElevator));

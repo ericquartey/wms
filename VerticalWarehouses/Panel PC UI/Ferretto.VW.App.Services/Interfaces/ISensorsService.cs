@@ -7,6 +7,8 @@ namespace Ferretto.VW.App.Services
     {
         #region Properties
 
+        bool IsExtraChain { get; }
+
         bool IsLoadingUnitInBay { get; }
 
         bool IsLoadingUnitInMiddleBottomBay { get; }
