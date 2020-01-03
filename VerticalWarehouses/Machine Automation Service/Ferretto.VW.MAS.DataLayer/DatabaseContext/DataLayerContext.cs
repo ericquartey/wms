@@ -58,8 +58,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DbSet<ElevatorStructuralProperties> ElevatorStructuralProperties { get; set; }
 
-        public DbSet<ErrorDefinition> ErrorDefinitions { get; set; }
-
         public DbSet<MachineError> Errors { get; set; }
 
         public DbSet<ErrorStatistic> ErrorStatistics { get; set; }
@@ -160,7 +158,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 .ApplyConfiguration(new TorqueCurrentSampleConfiguration())
                 .ApplyConfiguration(new ElevatorAxisManualParametersConfiguration())
                 .ApplyConfiguration(new CarouselManualParametersConfiguration())
-                .ApplyConfiguration(new ErrorDefinitionConfiguration())
                 .ApplyConfiguration(new ErrorConfiguration())
                 .ApplyConfiguration(new ErrorStatisticConfiguration())
                 .ApplyConfiguration(new InvertersConfiguration())

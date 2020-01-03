@@ -11,4 +11,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Ferretto.VW.CommonUtils\Ferretto.VW.CommonUtils.csproj" />
+  </ItemGroup>
+
 </Project>

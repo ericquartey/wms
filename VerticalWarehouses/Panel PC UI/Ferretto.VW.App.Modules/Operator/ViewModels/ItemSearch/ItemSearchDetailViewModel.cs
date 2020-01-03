@@ -57,24 +57,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Methods
 
-        public override void Disappear()
+        public async Task CommandUserActionAsync(UserActionEventArgs e)
         {
-            base.Disappear();
-        }
-
-        public override async Task OnAppearedAsync()
-        {
-            await base.OnAppearedAsync();
-
-            this.IsBackNavigationAllowed = true;
-
-            this.Item = this.Data as Item;
-        }
-
-        protected override async Task OnBarcodeMatchedAsync(BarcodeMatchEventArgs e)
-        {
-            await base.OnBarcodeMatchedAsync(e);
-
             if (e is null)
             {
                 throw new ArgumentNullException(nameof(e));
@@ -97,7 +81,21 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
         }
 
-        private async Task ShowItemDetailsByBarcodeAsync(BarcodeMatchEventArgs e)
+        public override void Disappear()
+        {
+            base.Disappear();
+        }
+
+        public override async Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+
+            this.IsBackNavigationAllowed = true;
+
+            this.Item = this.Data as Item;
+        }
+
+        private async Task ShowItemDetailsByBarcodeAsync(UserActionEventArgs e)
         {
             var itemBarcode = e.GetItemId();
             if (itemBarcode != null)

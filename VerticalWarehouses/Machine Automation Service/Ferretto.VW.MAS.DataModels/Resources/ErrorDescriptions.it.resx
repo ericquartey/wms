@@ -118,207 +118,108 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ConditionsNotMetForPositioning" xml:space="preserve">
-    <value>Positioning conditions not met.</value>
+    <value>Condizioni per il posizionamento non soddisfatte.</value>
   </data>
   <data name="ConditionsNotMetForRunning" xml:space="preserve">
-    <value>Start conditions not met.</value>
+    <value>Condizioni per la messa in marcia non soddisfatte.</value>
   </data>
   <data name="CradleNotCompletelyLoaded" xml:space="preserve">
-    <value>Loading unit not fully loaded.</value>
-  </data>
-  <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
-    <value>CradleNotCorrectlyLoadedDuringPickup</value>
-  </data>
-  <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
-    <value>CradleNotCorrectlyUnloadedDuringDeposit</value>
-  </data>
-  <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
-    <value>ZeroSensorErrorAfterDeposit</value>
-  </data>
-  <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
-    <value>ZeroSensorErrorAfterPickup</value>
+    <value>Cassetto non caricato completamente.</value>
   </data>
   <data name="InverterErrorBaseCode" xml:space="preserve">
-    <value>INVERTER ERROR</value>
+    <value>Errore inverter.</value>
   </data>
   <data name="InverterErrorCannotWriteParameterWhileRunning" xml:space="preserve">
-    <value>The inverter parameter could not be written during execution.</value>
+    <value>Impossibile scrivere il parametro dell'inverter durante l'esecuzione.</value>
   </data>
   <data name="InverterErrorDatasetValuesAreDifferent" xml:space="preserve">
-    <value>The data of the inverter dataset do not match.</value>
+    <value>I dati del dataset dell'inverter non corrispondono.</value>
   </data>
   <data name="InverterErrorEepromChecksumError" xml:space="preserve">
-    <value>Inverter EEPROM checksum error.</value>
+    <value>Errore checksum EEPROM dell'inverter.</value>
   </data>
   <data name="InverterErrorEepromReadError" xml:space="preserve">
-    <value>Inverter EEPROM reading error.</value>
+    <value>Errore lettura EEPROM dell'inverter.</value>
   </data>
   <data name="InverterErrorEepromWriteError" xml:space="preserve">
-    <value>Inverter EEPROM writing error.</value>
+    <value>Errore scrittura EEPROM dell'inverter.</value>
   </data>
   <data name="InverterErrorInvalidDataset" xml:space="preserve">
-    <value>Invalid inverter dataset.</value>
+    <value>Dataset inverter non valido.</value>
   </data>
   <data name="InverterErrorInvalidParameter" xml:space="preserve">
-    <value>Invalid inverter parameter.</value>
+    <value>Paramentro inverter non valido.</value>
   </data>
   <data name="InverterErrorNodeNotAvailable" xml:space="preserve">
-    <value>The specified node is not available.</value>
+    <value>Il nodo specificato non è disponibile.</value>
   </data>
   <data name="InverterErrorParameterIsReadOnly" xml:space="preserve">
-    <value>Inverter parameter is read-only.</value>
+    <value>Parametro inverter è in sola lettura.</value>
   </data>
   <data name="InverterErrorParameterIsWriteOnly" xml:space="preserve">
-    <value>Inverter parameter is write-only.</value>
+    <value>Parametro inverter è in sola scrittura.</value>
   </data>
   <data name="InverterErrorSyntaxError" xml:space="preserve">
-    <value>Syntax error of the message sent to the inverter.</value>
+    <value>Errore di sintassi del messaggio inviato all'inverter.</value>
   </data>
   <data name="InverterErrorUnknownParameter" xml:space="preserve">
-    <value>Unknown parameter passed to the inverter.</value>
+    <value>Parametro sconosciuto passato all'inverter.</value>
   </data>
   <data name="InverterErrorWrongPayloadLength" xml:space="preserve">
-    <value>Inconsistency between the length of the message to the inverter and the data type of the message.!</value>
+    <value>Incoerenza tra la lunghezza del messaggio all'inverter e il tipo di dato del messaggio.</value>
   </data>
   <data name="InverterFaultStateDetected" xml:space="preserve">
-    <value>An error has been detected in one of the inverters.</value>
-  </data>
-  <data name="SecurityWasTriggered" xml:space="preserve">
-    <value>Security function has triggered.</value>
-  </data>
-  <data name="MachineManagerErrorBaseCode" xml:space="preserve">
-    <value>Errore Machine Manager</value>
-  </data>
-  <data name="MachineManagerErrorLoadingUnitDestinationCell" xml:space="preserve">
-    <value>Inconsistency database target loading unit cell</value>
-  </data>
-  <data name="MachineManagerErrorLoadingUnitElevator" xml:space="preserve">
-    <value>Elevator cradle occupied</value>
-  </data>
-  <data name="MachineManagerErrorLoadingUnitSourceDb" xml:space="preserve">
-    <value>Database source position inconsistency</value>
-  </data>
-  <data name="MachineManagerErrorNoLoadingUnitInSource" xml:space="preserve">
-    <value>No loading unit present in the bay indicated</value>
-  </data>
-  <data name="MachineManagerErrorLoadingUnitNotRemoved" xml:space="preserve">
-    <value>Loading unit detected in the extraction bay</value>
-  </data>
-  <data name="MachineManagerErrorLoadingUnitDestinationBay" xml:space="preserve">
-    <value>Tray destination bay occupied</value>
-  </data>
-  <data name="MachineManagerErrorLoadingUnitNotFound" xml:space="preserve">
-    <value>Loading unit database inconsistency</value>
-  </data>
-  <data name="MachineManagerErrorLoadingUnitNotLoaded" xml:space="preserve">
-    <value>The selected loading unit is not loaded in the warehouse</value>
-  </data>
-  <data name="MachineManagerErrorLoadingUnitSourceBay" xml:space="preserve">
-    <value>Source bay of the empty loading unit</value>
-  </data>
-  <data name="MachineManagerErrorLoadingUnitSourceCell" xml:space="preserve">
-    <value>Inconsistency loading unit source cell database</value>
-  </data>
-  <data name="BottomLevelBayOccupied" xml:space="preserve">
-    <value>BottomLevelBayOccupied</value>
-  </data>
-  <data name="InvalidPresenceSensors" xml:space="preserve">
-    <value>InvalidPresenceSensors</value>
-  </data>
-  <data name="LoadUnitPresentOnEmptyElevator" xml:space="preserve">
-    <value>LoadUnitPresentOnEmptyElevator</value>
-  </data>
-  <data name="MissingZeroSensorWithEmptyElevator" xml:space="preserve">
-    <value>MissingZeroSensorWithEmptyElevator</value>
-  </data>
-  <data name="SensorZeroBayNotActiveAtStart" xml:space="preserve">
-    <value>SensorZeroBayNotActiveAtStart</value>
-  </data>
-  <data name="TopLevelBayOccupied" xml:space="preserve">
-    <value>TopLevelBayOccupied</value>
-  </data>
-  <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
-    <value>ZeroSensorActiveWithFullElevator</value>
+    <value>È stato rilevato un errore in uno degli inverter.</value>
   </data>
   <data name="LoadingUnitWeightExceeded" xml:space="preserve">
-    <value>The maximum weight loaded on the loading unit is excessive.</value>
+    <value>Il peso massimo caricato sul cassetto è eccessivo.</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitShutterClosed" xml:space="preserve">
-    <value>MachineManagerErrorLoadingUnitShutterClosed</value>
+  <data name="MachineManagerErrorLoadingUnitDestinationBay" xml:space="preserve">
+    <value>Baia di destinazione del cassetto occupata</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitShutterOpen" xml:space="preserve">
-    <value>MachineManagerErrorLoadingUnitShutterOpen</value>
+  <data name="MachineManagerErrorLoadingUnitDestinationCell" xml:space="preserve">
+    <value>Inconsistenza database cella destinazione cassetto</value>
   </data>
-  <data name="DestinationBelowLowerBound" xml:space="preserve">
-    <value>DestinationBelowLowerBound</value>
-  </data>
-  <data name="BayInvertersBusy" xml:space="preserve">
-    <value>BayInvertersBusy</value>
-  </data>
-  <data name="DestinationOverUpperBound" xml:space="preserve">
-    <value>DestinationOverUpperBound</value>
-  </data>
-  <data name="IoDeviceError" xml:space="preserve">
-    <value>IoDeviceError</value>
-  </data>
-  <data name="MachineManagerErrorLoadingUnitPresentInCell" xml:space="preserve">
-    <value>MachineManagerErrorLoadingUnitPresentInCell</value>
-  </data>
-  <data name="MachineModeNotValid" xml:space="preserve">
-    <value>MachineModeNotValid</value>
-  </data>
-  <data name="SecurityBarrierWasTriggered" xml:space="preserve">
-    <value>SecurityBarrierWasTriggered</value>
-  </data>
-  <data name="SecurityButtonWasTriggered" xml:space="preserve">
-    <value>SecurityButtonWasTriggered</value>
-  </data>
-  <data name="SecuritySensorWasTriggered" xml:space="preserve">
-    <value>SecuritySensorWasTriggered</value>
-  </data>
-  <data name="MachineManagerErrorLoadingUnitOtherBay" xml:space="preserve">
-    <value>MachineManagerErrorLoadingUnitOtherBay</value>
-  </data>
-  <data name="MachineManagerErrorLoadingUnitSourceElevator" xml:space="preserve">
-    <value>Drawer not present on the elevator</value>
-  </data>
-  <data name="BottomLevelBayEmpty" xml:space="preserve">
-    <value>BottomLevelBayEmpty</value>
-  </data>
-  <data name="TopLevelBayEmpty" xml:space="preserve">
-    <value>TopLevelBayEmpty</value>
-  </data>
-  <data name="AnotherMissionIsActiveForThisBay" xml:space="preserve">
-    <value>AnotherMissionIsActiveForThisBay</value>
-  </data>
-  <data name="AnotherMissionIsActiveForThisLoadUnit" xml:space="preserve">
-    <value>AnotherMissionIsActiveForThisLoadUnit</value>
-  </data>
-  <data name="AnotherMissionOfThisTypeIsActive" xml:space="preserve">
-    <value>AnotherMissionOfThisTypeIsActive</value>
-  </data>
-  <data name="NoError" xml:space="preserve">
-    <value>NoError</value>
-  </data>
-  <data name="LoadingUnitWeightTooLow" xml:space="preserve">
-    <value>LoadingUnitWeightTooLow</value>
-  </data>
-  <data name="MachineWeightExceeded" xml:space="preserve">
-    <value>MachineWeightExceeded</value>
-  </data>
-  <data name="WarehouseIsFull" xml:space="preserve">
-    <value>WarehouseIsFull</value>
+  <data name="MachineManagerErrorLoadingUnitElevator" xml:space="preserve">
+    <value>Culla elevatore occupata</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitMissingOnBay1" xml:space="preserve">
-    <value>Bay 1 occupied with unknown loading unit</value>
+    <value>Baia 1 occupato con cassetto sconosciuto</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitMissingOnBay2" xml:space="preserve">
-    <value>Bay 2 occupied with unknown loading unit</value>
+    <value>Baia 2 occupato con cassetto sconosciuto</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitMissingOnBay3" xml:space="preserve">
-    <value>Bay 3 busy with unknown loading unit</value>
+    <value>Baia 3 occupato con cassetto sconosciuto</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitMissingOnElevator" xml:space="preserve">
-    <value>Elevator occupied with unknown loading unit</value>
+    <value>Elevatore occupato con cassetto sconosciuto</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitNotFound" xml:space="preserve">
+    <value>Inconsistenza database cassetto</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitNotLoaded" xml:space="preserve">
+    <value>Il cassetto selezionato non risulta caricato in magazzino</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitNotRemoved" xml:space="preserve">
+    <value>Cassetto rilevato nella baia di estrazione</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitSourceBay" xml:space="preserve">
+    <value>Baia sorgente del cassetto vuota</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitSourceCell" xml:space="preserve">
+    <value>Inconsistenza database cella sorgente cassetto</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitSourceDb" xml:space="preserve">
+    <value>Inconsistenza database posizione sorgente cassetto</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitSourceElevator" xml:space="preserve">
+    <value>Cassetto non presente sull'Elevatore</value>
+  </data>
+  <data name="MachineManagerErrorNoLoadingUnitInSource" xml:space="preserve">
+    <value>Nessun cassetto presente nella baia indicata</value>
+  </data>
+  <data name="SecurityWasTriggered" xml:space="preserve">
+    <value>È scattata la funzione di sicurezza.</value>
   </data>
 </root>
