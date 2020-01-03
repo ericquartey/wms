@@ -118,19 +118,19 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ConditionsNotMetForPositioning" xml:space="preserve">
-    <value>Controllare che il nottolino sia a zero o che il cassetto sia completamente caricato a bordo elevatore.</value>
+    <value></value>
   </data>
   <data name="ConditionsNotMetForRunning" xml:space="preserve">
-    <value>Controllare che i funghi di emergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.</value>
+    <value></value>
   </data>
   <data name="CradleNotCompletelyLoaded" xml:space="preserve">
-    <value>Il cassetto potrebbe essersi incastrato.</value>
+    <value></value>
   </data>
   <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
-    <value>Il cassetto sembra non essere completamente a bordo elevatore dopo la fase di carico.</value>
+    <value></value>
   </data>
   <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
-    <value>Il cassetto non sembra essere completamente fuori dall'elevatore dopo la fase di scarico.</value>
+    <value></value>
   </data>
   <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
     <value>ZeroSensorErrorAfterDeposit</value>
@@ -139,94 +139,94 @@
     <value>ZeroSensorErrorAfterPickup</value>
   </data>
   <data name="InverterErrorBaseCode" xml:space="preserve">
-    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+    <value></value>
   </data>
   <data name="InverterErrorCannotWriteParameterWhileRunning" xml:space="preserve">
-    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+    <value></value>
   </data>
   <data name="InverterErrorDatasetValuesAreDifferent" xml:space="preserve">
-    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+    <value></value>
   </data>
   <data name="InverterErrorEepromChecksumError" xml:space="preserve">
-    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+    <value></value>
   </data>
   <data name="InverterErrorEepromReadError" xml:space="preserve">
-    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+    <value></value>
   </data>
   <data name="InverterErrorEepromWriteError" xml:space="preserve">
-    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+    <value></value>
   </data>
   <data name="InverterErrorInvalidDataset" xml:space="preserve">
-    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+    <value></value>
   </data>
   <data name="InverterErrorInvalidParameter" xml:space="preserve">
-    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+    <value></value>
   </data>
   <data name="InverterErrorNodeNotAvailable" xml:space="preserve">
-    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+    <value></value>
   </data>
   <data name="InverterErrorParameterIsReadOnly" xml:space="preserve">
-    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+    <value></value>
   </data>
   <data name="InverterErrorParameterIsWriteOnly" xml:space="preserve">
-    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+    <value></value>
   </data>
   <data name="InverterErrorSyntaxError" xml:space="preserve">
-    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+    <value></value>
   </data>
   <data name="InverterErrorUnknownParameter" xml:space="preserve">
-    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+    <value></value>
   </data>
   <data name="InverterErrorWrongPayloadLength" xml:space="preserve">
-    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+    <value></value>
   </data>
   <data name="InverterFaultStateDetected" xml:space="preserve">
-    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+    <value></value>
   </data>
   <data name="SecurityWasTriggered" xml:space="preserve">
-    <value>Controllare che i funghi di emergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.</value>
+    <value></value>
   </data>
   <data name="MachineManagerErrorBaseCode" xml:space="preserve">
-    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+    <value></value>
   </data>
   <data name="MachineManagerErrorLoadingUnitDestinationCell" xml:space="preserve">
-    <value>Verificare che la cella destinazione del cassetto all'interno del database sia correttamente configurata</value>
+    <value></value>
   </data>
   <data name="MachineManagerErrorLoadingUnitElevator" xml:space="preserve">
-    <value>Verificare che la culla elevatore sia vuota. Verificare il corretto funzionamento dei sensori di presenza cassetto sulla culla.</value>
+    <value></value>
   </data>
   <data name="MachineManagerErrorLoadingUnitSourceDb" xml:space="preserve">
-    <value>Verificare che la posizione sorgente del cassetto all'interno del database sia correttamente configurata</value>
+    <value></value>
   </data>
   <data name="MachineManagerErrorNoLoadingUnitInSource" xml:space="preserve">
-    <value>Assicurarsi che un cassetto sia presente in baia e che i sensori di presenza funzionino correttamente</value>
+    <value></value>
   </data>
   <data name="MachineManagerErrorLoadingUnitNotRemoved" xml:space="preserve">
-    <value>Se il cassetto è stato rimosso controllare i sensori di presenza cassetto in baia, altrimenti rimuovere il cassetto dalla baia.</value>
+    <value></value>
   </data>
   <data name="MachineManagerErrorLoadingUnitDestinationBay" xml:space="preserve">
-    <value>Verificare che la baia di destinazione del cassetto sia effettivamente vuota. Verificare che i sensori di presenza cassetto in baia funzionino correttamente.</value>
+    <value></value>
   </data>
   <data name="MachineManagerErrorLoadingUnitNotFound" xml:space="preserve">
-    <value>Il cassetto selezionato non è presente nel database. Verificare il numero cassetto inserito e la corretta configurazione del database.</value>
+    <value></value>
   </data>
   <data name="MachineManagerErrorLoadingUnitNotLoaded" xml:space="preserve">
-    <value>Il cassetto selezionato risulta presente nel database ma non risulta caricato nel magazzino. Verificare la configurazione del database.</value>
+    <value></value>
   </data>
   <data name="MachineManagerErrorLoadingUnitSourceBay" xml:space="preserve">
-    <value>Verificare che il cassetto sia effettivamente presente nella baia sorgente. Verificare che i sensori di presenza cassetto in baia funzionino correttamente.</value>
+    <value></value>
   </data>
   <data name="MachineManagerErrorLoadingUnitSourceCell" xml:space="preserve">
-    <value>Verificare che la cella sorgent del cassetto all'interno del database sia correttamente configurata</value>
+    <value></value>
   </data>
   <data name="BottomLevelBayOccupied" xml:space="preserve">
-    <value>Livello basso baia occupato.</value>
+    <value></value>
   </data>
   <data name="InvalidPresenceSensors" xml:space="preserve">
-    <value>Sensori di presenza invalidi</value>
+    <value></value>
   </data>
   <data name="LoadUnitPresentOnEmptyElevator" xml:space="preserve">
-    <value>Presenza a bordo elevatore con elevatore logicamente scarico.</value>
+    <value></value>
   </data>
   <data name="MissingZeroSensorWithEmptyElevator" xml:space="preserve">
     <value>MissingZeroSensorWithEmptyElevator</value>
@@ -235,13 +235,13 @@
     <value>SensorZeroBayNotActiveAtStart</value>
   </data>
   <data name="TopLevelBayOccupied" xml:space="preserve">
-    <value>Livello alto baia occupato</value>
+    <value></value>
   </data>
   <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
     <value>ZeroSensorActiveWithFullElevator</value>
   </data>
   <data name="LoadingUnitWeightExceeded" xml:space="preserve">
-    <value>Scaricare il cassetto in baia e rimuovere il peso in eccesso.</value>
+    <value></value>
   </data>
   <data name="MachineManagerErrorLoadingUnitShutterClosed" xml:space="preserve">
     <value>MachineManagerErrorLoadingUnitShutterClosed</value>
@@ -310,16 +310,16 @@
     <value>WarehouseIsFull</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitMissingOnBay1" xml:space="preserve">
-    <value>Verificare l'id del cassetto sulla baia 1. Verificare che i sensori di presenza cassetto funzionino correttamente. Mettere la macchina in Automatico.</value>
+    <value></value>
   </data>
   <data name="MachineManagerErrorLoadingUnitMissingOnBay2" xml:space="preserve">
-    <value>Verificare l'id del cassetto sulla baia 2. Verificare che i sensori di presenza cassetto funzionino correttamente. Mettere la macchina in Automatico.</value>
+    <value></value>
   </data>
   <data name="MachineManagerErrorLoadingUnitMissingOnBay3" xml:space="preserve">
-    <value>Verificare l'id del cassetto sulla baia 3. Verificare che i sensori di presenza cassetto funzionino correttamente. Mettere la macchina in Automatico.</value>
+    <value></value>
   </data>
   <data name="MachineManagerErrorLoadingUnitMissingOnElevator" xml:space="preserve">
-    <value>Verificare l'id del cassetto sull'elevatore. Verificare che i sensori di presenza cassetto sull'elevatore funzionino correttamente. Mettere la macchina in Automatico.</value>
+    <value></value>
   </data>
   <data name="String1" xml:space="preserve">
     <value />
