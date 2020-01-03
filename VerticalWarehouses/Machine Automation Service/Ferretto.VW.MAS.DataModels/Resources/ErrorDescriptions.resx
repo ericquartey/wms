@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ConditionsNotMetForPositioning" xml:space="preserve">
-    <value></value>
+    <value>Positioning conditions not met.</value>
   </data>
   <data name="ConditionsNotMetForRunning" xml:space="preserve">
-    <value></value>
+    <value>Start conditions not met.</value>
   </data>
   <data name="CradleNotCompletelyLoaded" xml:space="preserve">
-    <value></value>
+    <value>Loading unit not fully loaded.</value>
   </data>
   <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
     <value>CradleNotCorrectlyLoadedDuringPickup</value>
@@ -139,85 +139,85 @@
     <value>ZeroSensorErrorAfterPickup</value>
   </data>
   <data name="InverterErrorBaseCode" xml:space="preserve">
-    <value></value>
+    <value>INVERTER ERROR</value>
   </data>
   <data name="InverterErrorCannotWriteParameterWhileRunning" xml:space="preserve">
-    <value></value>
+    <value>The inverter parameter could not be written during execution.</value>
   </data>
   <data name="InverterErrorDatasetValuesAreDifferent" xml:space="preserve">
-    <value></value>
+    <value>The data of the inverter dataset do not match.</value>
   </data>
   <data name="InverterErrorEepromChecksumError" xml:space="preserve">
-    <value></value>
+    <value>Inverter EEPROM checksum error.</value>
   </data>
   <data name="InverterErrorEepromReadError" xml:space="preserve">
-    <value></value>
+    <value>Inverter EEPROM reading error.</value>
   </data>
   <data name="InverterErrorEepromWriteError" xml:space="preserve">
-    <value></value>
+    <value>Inverter EEPROM writing error.</value>
   </data>
   <data name="InverterErrorInvalidDataset" xml:space="preserve">
-    <value></value>
+    <value>Invalid inverter dataset.</value>
   </data>
   <data name="InverterErrorInvalidParameter" xml:space="preserve">
-    <value></value>
+    <value>Invalid inverter parameter.</value>
   </data>
   <data name="InverterErrorNodeNotAvailable" xml:space="preserve">
-    <value></value>
+    <value>The specified node is not available.</value>
   </data>
   <data name="InverterErrorParameterIsReadOnly" xml:space="preserve">
-    <value></value>
+    <value>Inverter parameter is read-only.</value>
   </data>
   <data name="InverterErrorParameterIsWriteOnly" xml:space="preserve">
-    <value></value>
+    <value>Inverter parameter is write-only.</value>
   </data>
   <data name="InverterErrorSyntaxError" xml:space="preserve">
-    <value></value>
+    <value>Syntax error of the message sent to the inverter.</value>
   </data>
   <data name="InverterErrorUnknownParameter" xml:space="preserve">
-    <value></value>
+    <value>Unknown parameter passed to the inverter.</value>
   </data>
   <data name="InverterErrorWrongPayloadLength" xml:space="preserve">
-    <value></value>
+    <value>Inconsistency between the length of the message to the inverter and the data type of the message.!</value>
   </data>
   <data name="InverterFaultStateDetected" xml:space="preserve">
-    <value></value>
+    <value>An error has been detected in one of the inverters.</value>
   </data>
   <data name="SecurityWasTriggered" xml:space="preserve">
-    <value></value>
+    <value>Security function has triggered.</value>
   </data>
   <data name="MachineManagerErrorBaseCode" xml:space="preserve">
     <value>Errore Machine Manager</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitDestinationCell" xml:space="preserve">
-    <value></value>
+    <value>Inconsistency database target loading unit cell</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitElevator" xml:space="preserve">
-    <value></value>
+    <value>Elevator cradle occupied</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitSourceDb" xml:space="preserve">
-    <value></value>
+    <value>Database source position inconsistency</value>
   </data>
   <data name="MachineManagerErrorNoLoadingUnitInSource" xml:space="preserve">
-    <value></value>
+    <value>No loading unit present in the bay indicated</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitNotRemoved" xml:space="preserve">
-    <value></value>
+    <value>Loading unit detected in the extraction bay</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitDestinationBay" xml:space="preserve">
-    <value></value>
+    <value>Tray destination bay occupied</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitNotFound" xml:space="preserve">
-    <value></value>
+    <value>Loading unit database inconsistency</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitNotLoaded" xml:space="preserve">
-    <value></value>
+    <value>The selected loading unit is not loaded in the warehouse</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitSourceBay" xml:space="preserve">
-    <value></value>
+    <value>Source bay of the empty loading unit</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitSourceCell" xml:space="preserve">
-    <value></value>
+    <value>Inconsistency loading unit source cell database</value>
   </data>
   <data name="BottomLevelBayOccupied" xml:space="preserve">
     <value>BottomLevelBayOccupied</value>
@@ -241,7 +241,7 @@
     <value>ZeroSensorActiveWithFullElevator</value>
   </data>
   <data name="LoadingUnitWeightExceeded" xml:space="preserve">
-    <value></value>
+    <value>The maximum weight loaded on the loading unit is excessive.</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitShutterClosed" xml:space="preserve">
     <value>MachineManagerErrorLoadingUnitShutterClosed</value>
@@ -280,7 +280,7 @@
     <value>MachineManagerErrorLoadingUnitOtherBay</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitSourceElevator" xml:space="preserve">
-    <value></value>
+    <value>Drawer not present on the elevator</value>
   </data>
   <data name="BottomLevelBayEmpty" xml:space="preserve">
     <value>BottomLevelBayEmpty</value>
@@ -310,15 +310,15 @@
     <value>WarehouseIsFull</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitMissingOnBay1" xml:space="preserve">
-    <value></value>
+    <value>Bay 1 occupied with unknown loading unit</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitMissingOnBay2" xml:space="preserve">
-    <value></value>
+    <value>Bay 2 occupied with unknown loading unit</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitMissingOnBay3" xml:space="preserve">
-    <value></value>
+    <value>Bay 3 busy with unknown loading unit</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitMissingOnElevator" xml:space="preserve">
-    <value></value>
+    <value>Elevator occupied with unknown loading unit</value>
   </data>
 </root>
