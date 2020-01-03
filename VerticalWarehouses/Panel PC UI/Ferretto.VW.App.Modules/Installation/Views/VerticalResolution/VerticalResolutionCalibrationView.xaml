@@ -118,13 +118,13 @@
 
                 <controls:PpcButton Grid.Row="3"
                                     Grid.ColumnSpan="2"
-                                    Command="{Binding MoveToFirstMisurationCommand}"
+                                    Command="{Binding MoveToFirstMeasuredCommand}"
                                     Content="Avanti"
                                     Style="{StaticResource WizardIntoButton}" />
             </Grid>
         </DataTemplate>
 
-        <DataTemplate x:Key="DataTemplateFirstMisuration">
+        <DataTemplate x:Key="DataTemplateFirstMeasured">
             <Grid Margin="20"
                   DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
                 <Grid.RowDefinitions>
@@ -134,43 +134,56 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <TextBlock VerticalAlignment="Top"
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.ColumnSpan="2"
+                           VerticalAlignment="Top"
                            FontSize="24"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                            Text="Misurazione 1 / 2"
                            TextWrapping="Wrap" />
 
+                <ctrls:PpcSpinEdit Grid.Row="1"
+                                   Grid.Column="0"
+                                   Width="250"
+                                   Height="90"
+                                   Margin="0,0,15,0"
+                                   EditValue="{Binding DestinationPosition1, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                   IsEnabled="{Binding IsCanDestinationPosition1}"
+                                   LabelText="Quota di destinazione"
+                                   MaxValue="{Binding AxisUpperBound}"
+                                   MinValue="{Binding AxisLowerBound}" />
+
+                <ctrls:PpcSpinEdit Grid.Row="1"
+                                   Grid.Column="1"
+                                   Width="250"
+                                   Height="90"
+                                   Margin="0,0,15,0"
+                                   EditValue="{Binding MeasuredPosition1, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                   IsEnabled="{Binding IsCanMeasuredPosition1}"
+                                   LabelText="Quota misurata"
+                                   MaxValue="{Binding AxisUpperBound}"
+                                   MinValue="{Binding AxisLowerBound}" />
+
                 <controls:PpcButton Grid.Row="2"
+                                    Grid.ColumnSpan="2"
                                     VerticalAlignment="Top"
-                                    Command="{Binding StartCommand}"
+                                    Command="{Binding MoveToStartDestination1Command}"
                                     Content="Vai a quota di destinazione"
                                     Style="{StaticResource WizardIntoButton}" />
 
-                <StackPanel Grid.Row="1"
-                            HorizontalAlignment="Center"
-                            Orientation="Horizontal">
-                    <ctrls:PpcSpinEdit Width="250"
-                                       Height="90"
-                                       Margin="0,0,15,0"
-                                       EditValue="{Binding DestinationPosition1, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                       LabelText="Quota di destinazione"
-                                       MaxValue="{Binding AxisUpperBound}"
-                                       MinValue="{Binding AxisLowerBound}" />
-
-                    <ctrls:PpcSpinEdit Width="250"
-                                       Height="90"
-                                       Margin="0,0,15,0"
-                                       LabelText="Quota misurata"
-                                       MaxValue="{Binding AxisUpperBound}"
-                                       MinValue="{Binding AxisLowerBound}" />
-                </StackPanel>
                 <controls:PpcButton Grid.Row="3"
+                                    Grid.ColumnSpan="2"
+                                    Command="{Binding MoveToLastMeasuredCommand}"
                                     Content="Avanti"
                                     Style="{StaticResource WizardIntoButton}" />
             </Grid>
         </DataTemplate>
 
-        <DataTemplate x:Key="DataTemplateLastMisuration">
+        <DataTemplate x:Key="DataTemplateLastMeasured">
             <Grid Margin="20"
                   DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
                 <Grid.RowDefinitions>
@@ -186,12 +199,6 @@
                            Text="Misurazione 2 / 2"
                            TextWrapping="Wrap" />
 
-                <controls:PpcButton Grid.Row="2"
-                                    VerticalAlignment="Top"
-                                    Command="{Binding StartCommand}"
-                                    Content="Vai a quota"
-                                    Style="{StaticResource WizardIntoButton}" />
-
                 <StackPanel Grid.Row="1"
                             HorizontalAlignment="Center"
                             Orientation="Horizontal">
@@ -199,6 +206,7 @@
                                        Height="90"
                                        Margin="0,0,15,0"
                                        EditValue="{Binding DestinationPosition2, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                       IsEnabled="{Binding IsCanDestinationPosition2}"
                                        LabelText="Quota di destinazione"
                                        MaxValue="{Binding AxisUpperBound}"
                                        MinValue="{Binding AxisLowerBound}" />
@@ -206,11 +214,21 @@
                     <ctrls:PpcSpinEdit Width="250"
                                        Height="90"
                                        Margin="0,0,15,0"
+                                       EditValue="{Binding MeasuredPosition2, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                       IsEnabled="{Binding IsCanMeasuredPosition2}"
                                        LabelText="Quota misurata"
                                        MaxValue="{Binding AxisUpperBound}"
                                        MinValue="{Binding AxisLowerBound}" />
                 </StackPanel>
+
+                <controls:PpcButton Grid.Row="2"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding MoveToStartDestination2Command}"
+                                    Content="Vai a quota"
+                                    Style="{StaticResource WizardIntoButton}" />
+
                 <controls:PpcButton Grid.Row="3"
+                                    Command="{Binding MoveToConfirmCommand}"
                                     Content="Avanti"
                                     Style="{StaticResource WizardIntoButton}" />
             </Grid>
@@ -236,11 +254,13 @@
                                    Width="250"
                                    Height="90"
                                    Margin="0,0,15,0"
-                                   EditValue="100"
+                                   EditValue="{Binding NewResolution, StringFormat={}{0:F6}}"
                                    IsEnabled="False"
-                                   LabelText="Nuova risoluzione" />
+                                   LabelText="Nuova risoluzione"
+                                   Mask="###0.#####0" />
 
                 <controls:PpcButton Grid.Row="3"
+                                    Command="{Binding SaveCommand}"
                                     Content="Salva"
                                     Style="{StaticResource WizardIntoButton}" />
             </Grid>
@@ -248,8 +268,8 @@
 
         <local:CalibrationStepTemplateSelector x:Key="selector"
                                                EnumConfirm="{StaticResource DataTemplateConfirm}"
-                                               EnumFirstMisuration="{StaticResource DataTemplateFirstMisuration}"
-                                               EnumLastMisuration="{StaticResource DataTemplateLastMisuration}"
+                                               EnumFirstMeasured="{StaticResource DataTemplateFirstMeasured}"
+                                               EnumLastMeasured="{StaticResource DataTemplateLastMeasured}"
                                                EnumPositionMeter="{StaticResource DataTemplatePositionMeter}" />
         <!--#endregion-->
     </ctrls:View.Resources>
@@ -421,7 +441,7 @@
                   Visibility="{Binding HasStepPositionMeter, Converter={StaticResource BTVC}, Mode=OneWay}" />
 
             <Grid Grid.Row="2">
-                <Border Background="{Binding HasStepFirstMisuration, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                <Border Background="{Binding HasStepFirstMeasured, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                         Style="{DynamicResource BorderTimeLineCirle}" />
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                            Text="2" />
@@ -430,10 +450,10 @@
                   Grid.Column="1"
                   Grid.ColumnSpan="2"
                   Style="{DynamicResource BorderTimeLinePath}"
-                  Visibility="{Binding HasStepFirstMisuration, Converter={StaticResource BTVC}, Mode=OneWay}" />
+                  Visibility="{Binding HasStepFirstMeasured, Converter={StaticResource BTVC}, Mode=OneWay}" />
 
             <Grid Grid.Row="3">
-                <Border Background="{Binding HasStepLastMisuration, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                <Border Background="{Binding HasStepLastMeasured, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                         Style="{DynamicResource BorderTimeLineCirle}" />
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                            Text="3" />
@@ -442,7 +462,7 @@
                   Grid.Column="1"
                   Grid.ColumnSpan="2"
                   Style="{DynamicResource BorderTimeLinePath}"
-                  Visibility="{Binding HasStepLastMisuration, Converter={StaticResource BTVC}, Mode=OneWay}" />
+                  Visibility="{Binding HasStepLastMeasured, Converter={StaticResource BTVC}, Mode=OneWay}" />
 
             <Grid Grid.Row="4">
                 <Border Background="{Binding HasStepConfirm, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"

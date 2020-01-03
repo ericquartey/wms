@@ -15,9 +15,9 @@ namespace Ferretto.VW.App.Installation.Views
 
         public DataTemplate EnumConfirm { get; set; }
 
-        public DataTemplate EnumFirstMisuration { get; set; }
+        public DataTemplate EnumFirstMeasured { get; set; }
 
-        public DataTemplate EnumLastMisuration { get; set; }
+        public DataTemplate EnumLastMeasured { get; set; }
 
         public DataTemplate EnumPositionMeter { get; set; }
 
@@ -33,11 +33,11 @@ namespace Ferretto.VW.App.Installation.Views
                 case CalibrationStep.PositionMeter:
                     return this.EnumPositionMeter;
 
-                case CalibrationStep.FirstMisuration:
-                    return this.EnumFirstMisuration;
+                case CalibrationStep.FirstMeasured:
+                    return this.EnumFirstMeasured;
 
-                case CalibrationStep.LastMisuration:
-                    return this.EnumLastMisuration;
+                case CalibrationStep.LastMeasured:
+                    return this.EnumLastMeasured;
 
                 case CalibrationStep.Confirm:
                     return this.EnumConfirm;
