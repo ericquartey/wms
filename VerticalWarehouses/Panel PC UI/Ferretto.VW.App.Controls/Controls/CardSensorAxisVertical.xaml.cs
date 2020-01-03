@@ -68,7 +68,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
                 if (!(this.machineService.MachineStatus.VerticalSpeed is null))
                 {
-                    this.VerticalDescription += $"; Speed:{this.machineService.MachineStatus.VerticalSpeed?.ToString("F2")}";
+                    this.VerticalDescription += $" / Speed: {this.machineService.MachineStatus.VerticalSpeed?.ToString("F2")}";
                 }
             };
 
