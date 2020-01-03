@@ -84,7 +84,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken sensorsToken;
 
-        private double? startPosition = 500;
+        private double startPosition = 0;
 
         private SubscriptionToken stepChangedToken;
 
@@ -206,10 +206,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.moveToStartPositionCommand
             ??
             (this.moveToStartPositionCommand = new DelegateCommand(
-                async () => await this.StartAsync(this.StartPosition.Value),
+                async () => await this.StartAsync(this.StartPosition),
                 this.CanMoveToStartPosition));
 
-        public double? StartPosition
+        public double StartPosition
         {
             get => this.startPosition;
             set => this.SetProperty(ref this.startPosition, value, this.RaiseCanExecuteChanged);
@@ -265,22 +265,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.StartPosition):
                         if (this.CurrentStep == CalibrationStep.PositionMeter)
                         {
-                            if (!this.StartPosition.HasValue)
-                            {
-                                var error = $"Start position is required.";
-                                this.ShowNotification(error, NotificationSeverity.Warning);
-                                return error;
-                            }
-
-                            if (this.StartPosition.Value < 0)
+                            if (this.StartPosition < 0)
                             {
                                 var error = $"Start position must be strictly positive.";
                                 this.ShowNotification(error, NotificationSeverity.Warning);
                                 return error;
                             }
 
-                            if ((this.StartPosition.Value < this.axisLowerBound ||
-                                this.StartPosition.Value > this.axisUpperBound) &&
+                            if ((this.StartPosition < this.axisLowerBound ||
+                                this.StartPosition > this.axisUpperBound) &&
                                 this.axisLowerBound > 0 &&
                                 this.axisUpperBound > 0)
                             {
@@ -369,19 +362,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.positionBayId = this.MachineService.Bay.Positions.Single(p => p.Height == this.MachineService.Bay.Positions.Max(pos => pos.Height)).Id;
 
-            // -------------------------
             await this.RetrieveProcedureParametersAsync();
 
             await this.GetParametersAsync();
 
-            //this.positioningOperationChangedToken = this.positioningOperationChangedToken
-            //    ??
-            //    this.EventAggregator
-            //        .GetEvent<NotificationEventUI<PositioningMessageData>>()
-            //        .Subscribe(
-            //            this.OnPositioningOperationChanged,
-            //            ThreadOption.UIThread,
-            //            false);
+            if (this.StartPosition == 0)
+            {
+                this.StartPosition = this.ProcedureParameters.StartPosition;
+            }
+
+            if (!this.DestinationPosition1.HasValue)
+            {
+                this.DestinationPosition1 = this.ProcedureParameters.InitialPosition;
+            }
+
+            if (!this.DestinationPosition2.HasValue)
+            {
+                this.DestinationPosition2 = this.ProcedureParameters.FinalPosition;
+            }
 
             this.stepChangedToken = this.stepChangedToken
                 ?? this.EventAggregator
@@ -530,7 +528,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return this.CanBaseExecute() &&
                    string.IsNullOrEmpty(this.Error) &&
-                   Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) != Convert.ToInt32(this.StartPosition.Value) &&
+                   Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) != Convert.ToInt32(this.StartPosition) &&
                    !this.SensorsService.IsLoadingUnitOnElevator;
         }
 
@@ -553,7 +551,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return this.CanBaseExecute() &&
                    !this.SensorsService.IsLoadingUnitOnElevator &&
-                   Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) == Convert.ToInt32(this.StartPosition.Value);
+                   Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) == Convert.ToInt32(this.StartPosition);
         }
 
         private async Task GetSensorsAndLoadingUnitOnBoardAsync()

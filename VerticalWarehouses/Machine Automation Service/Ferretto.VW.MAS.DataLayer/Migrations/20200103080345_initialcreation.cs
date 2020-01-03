@@ -207,7 +207,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     PerformedCycles = table.Column<int>(nullable: true),
                     RequiredCycles = table.Column<int>(nullable: true),
                     FinalPosition = table.Column<double>(nullable: true),
-                    InitialPosition = table.Column<double>(nullable: true)
+                    InitialPosition = table.Column<double>(nullable: true),
+                    StartPosition = table.Column<double>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -993,7 +994,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 300011, 300011, "Errore stato serranda", "Serranda non in posizione chiusa. Verificare lo stato dei sensori.", 1 });
+                values: new object[] { 300011, 300011, "Errore stato serranda", "Serranda non in posizione chiusa nè aperta. Verificare lo stato dei sensori.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
@@ -1223,7 +1224,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 2, 28, 18, 6, 39, 983, DateTimeKind.Local).AddTicks(4912), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 3, 3, 9, 3, 44, 973, DateTimeKind.Local).AddTicks(9151), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",

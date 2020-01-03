@@ -1,1665 +1,1666 @@
 {
-    "$schema": "./schemas/vertimag-configuration-schema.json",
-    "LoadingUnits": [
-        {
-            "Tare": 120,
-            "MaxNetWeight": 800,
-            "Id": 1
-        },
-        {
-            "Tare": 120,
-            "MaxNetWeight": 800,
-            "Id": 2
-        },
-        {
-            "Tare": 120,
-            "MaxNetWeight": 800,
-            "Id": 3
-        }
-    ],
-    "Machine": {
-        "Id": 1,
-        "Bays": [
-            {
-                "AlphaNumericBar": null,
-                "Inverter": {
-                    "Type": "Acu",
-                    "Index": "Slave3"
-                },
-                "Side": "Front",
-                "IoDevice": {
-                    "Index": "IoDevice1",
-                    "IpAddress": "192.168.0.1",
-                    "TcpPort": 19550
-                },
-                "IsExternal": true,
-                "ChainOffset": 0,
-                "Number": "BayOne",
-                "Positions": [
-                    {
-                        "Height": 645,
-                        "Location": "InternalBay1Down"
-                    }
-                ],
-                "Resolution": 369.8453,
-                "Shutter": {
-                    "Inverter": {
-                        "Index": "Slave2",
-                        "Type": "Agl"
-                    },
-                    "Type": "TwoSensors",
-                    "ManualMovements": {
-                        "FeedRate": 0.1,
-                        "MaxSpeed": 32000,
-                        "MinSpeed": 5000,
-                        "HighSpeedDurationOpen": 16,
-                        "HighSpeedDurationClose": 16
-                    },
-                    "AssistedMovements": {
-                        "FeedRate": 0.2,
-                        "MaxSpeed": 32000,
-                        "MinSpeed": 5000,
-                        "HighSpeedDurationOpen": 16,
-                        "HighSpeedDurationClose": 16
-                    }
-                },
-                "EmptyLoadMovement": {
-                    "Acceleration": 1500,
-                    "Speed": 770
-                },
-                "FullLoadMovement": {
-                    "Acceleration": 350,
-                    "Speed": 730
-                }
-            },
-            {
-                "IoDevice": {
-                    "Index": "IoDevice2",
-                    "IpAddress": "192.168.0.2",
-                    "TcpPort": 19550
-                },
-                "Side": "Back",
-                "IsExternal": false,
-                "ChainOffset": 0,
-                "Number": "BayTwo",
-                "Positions": [
-                    {
-                        "Height": 645,
-                        "Location": "InternalBay2Down"
-                    },
-                    {
-                        "Height": 1045,
-                        "Location": "InternalBay2Up"
-                    }
-                ],
-                "Shutter": {
-                    "Type": "TwoSensors",
-                    "Inverter": {
-                        "Type": "Agl",
-                        "Index": "Slave4"
-                    },
-                    "ManualMovements": {
-                        "FeedRate": 0.1,
-                        "MaxSpeed": 32000,
-                        "MinSpeed": 5000,
-                        "HighSpeedDurationOpen": 16,
-                        "HighSpeedDurationClose": 16
-                    },
-                    "AssistedMovements": {
-                        "FeedRate": 0.2,
-                        "MaxSpeed": 32000,
-                        "MinSpeed": 5000,
-                        "HighSpeedDurationOpen": 16,
-                        "HighSpeedDurationClose": 16
-                    }
-                }
-            }
-        ],
-        "Elevator": {
-            "Axes": [
-                {
-                    "Inverter": {
-                        "Index": "MainInverter",
-                        "Type": "Ang",
-                        "IpAddress": "192.168.0.100",
-                        "TcpPort": 17221
-                    },
-                    "BrakeReleaseTime": 150,
-                    "BrakeActivatePercent": 10,
-                    "Orientation": "Vertical",
-                    "Resolution": 77.61182,
-                    "Offset": 350,
-                    "ChainOffset": 0,
-                    "HomingFastSpeed": 2000,
-                    "HomingCreepSpeed": 500,
-                    "UpperBound": 4000,
-                    "LowerBound": 350,
-                    "EmptyLoadMovement": {
-                        "Acceleration": 1000,
-                        "Deceleration": 1000,
-                        "Speed": 770
-                    },
-                    "FullLoadMovement": {
-                        "Acceleration": 400,
-                        "Deceleration": 400,
-                        "Speed": 550
-                    },
-                    "WeightMeasurement": {
-                        "MeasureConst0": -723.53,
-                        "MeasureConst1": 159.73,
-                        "MeasureConst2": -1.8163,
-                        "MeasureSpeed": 20,
-                        "MeasureTime": 15
-                    },
-                    "ManualMovements": {
-                        "FeedRate": 0.1,
-                        "FeedRateAfterZero": 0.15,
-                        "TargetDistance": 30,
-                        "TargetDistanceAfterZero": 30
-                    },
-                    "AssistedMovements": {
-                        "FeedRate": 0.3,
-                        "FeedRateAfterZero": 0.9
-                    }
-                },
-                {
-                    "Orientation": "Horizontal",
-                    "Resolution": 88.3038556,
-                    "Offset": 0,
-                    "ChainOffset": -5,
-                    "HomingFastSpeed": 2000,
-                    "HomingCreepSpeed": 500,
-                    "Inverter": null,
-                    "FullLoadMovement": {
-                        "Acceleration": 350,
-                        "Deceleration": 350,
-                        "Speed": 480
-                    },
-                    "EmptyLoadMovement": {
-                        "Acceleration": 1500,
-                        "Deceleration": 1500,
-                        "Speed": 650
-                    },
-                    "ManualMovements": {
-                        "FeedRate": 0.04,
-                        "FeedRateAfterZero": 0.3,
-                        "TargetDistance": 30,
-                        "TargetDistanceAfterZero": 200
-                    },
-                    "AssistedMovements": {
-                        "FeedRate": 0.3,
-                        "FeedRateAfterZero": 0.9
-                    },
-                    "Profiles": [
-                        {
-                            "Name": "ShortPickup",
-                            "TotalDistance": 1252,
-                            "Correction": 20,
-                            "Steps": [
-                                {
-                                    "Acceleration": 3000,
-                                    "Speed": 730,
-                                    "Number": 0,
-                                    "Position": 150
-                                },
-                                {
-                                    "Acceleration": 3000,
-                                    "Speed": 100,
-                                    "Number": 1,
-                                    "Position": 450
-                                },
-                                {
-                                    "Acceleration": 1000,
-                                    "Speed": 650,
-                                    "Number": 2,
-                                    "Position": 900,
-                                    "AdjustByWeight": 1
-                                },
-                                {
-                                    "Acceleration": 1000,
-                                    "Speed": 650,
-                                    "Number": 3,
-                                    "Position": 1100,
-                                    "AdjustByWeight": 1
-                                },
-                                {
-                                    "Acceleration": 1000,
-                                    "Speed": 200,
-                                    "Number": 4,
-                                    "Position": 1252
-                                }
-                            ]
-                        },
-                        {
-                            "Name": "ShortDeposit",
-                            "TotalDistance": 1252,
-                            "Correction": 20,
-                            "Steps": [
-                                {
-                                    "Acceleration": 1000,
-                                    "Speed": 200,
-                                    "Number": 0,
-                                    "Position": 200
-                                },
-                                {
-                                    "Acceleration": 1000,
-                                    "Speed": 200,
-                                    "Number": 1,
-                                    "Position": 350
-                                },
-                                {
-                                    "Acceleration": 1000,
-                                    "Speed": 650,
-                                    "Number": 2,
-                                    "Position": 750,
-                                    "AdjustByWeight": 1
-                                },
-                                {
-                                    "Acceleration": 3000,
-                                    "Speed": 200,
-                                    "Number": 3,
-                                    "Position": 1020,
-                                    "AdjustByWeight": 0
-                                },
-                                {
-                                    "Acceleration": 3000,
-                                    "Speed": 730,
-                                    "Number": 4,
-                                    "Position": 1252
-                                }
-                            ]
-                        },
-                        {
-                            "Name": "LongPickup",
-                            "TotalDistance": 1252,
-                            "Correction": 20,
-                            "Steps": [
-                                {
-                                    "Acceleration": 3000,
-                                    "Speed": 730,
-                                    "Position": 150,
-                                    "Number": 0
-                                },
-                                {
-                                    "Acceleration": 3000,
-                                    "Speed": 100,
-                                    "Position": 450,
-                                    "Number": 1
-                                },
-                                {
-                                    "Acceleration": 1000,
-                                    "Speed": 650,
-                                    "Position": 900,
-                                    "Number": 2,
-                                    "AdjustByWeight": 1
-                                },
-                                {
-                                    "Acceleration": 1000,
-                                    "Speed": 650,
-                                    "Position": 1100,
-                                    "Number": 3,
-                                    "AdjustByWeight": 1
-                                },
-                                {
-                                    "Acceleration": 1000,
-                                    "Speed": 200,
-                                    "Position": 1252,
-                                    "Number": 4
-                                }
-                            ]
-                        },
-                        {
-                            "Name": "LongDeposit",
-                            "TotalDistance": 1252,
-                            "Correction": 20,
-                            "Steps": [
-                                {
-                                    "Acceleration": 1000,
-                                    "Speed": 200,
-                                    "Position": 200,
-                                    "Number": 0
-                                },
-                                {
-                                    "Acceleration": 1000,
-                                    "Speed": 200,
-                                    "Position": 350,
-                                    "Number": 1
-                                },
-                                {
-                                    "Acceleration": 1000,
-                                    "Speed": 650,
-                                    "Position": 750,
-                                    "Number": 2,
-                                    "AdjustByWeight": 1
-                                },
-                                {
-                                    "Acceleration": 3000,
-                                    "Speed": 200,
-                                    "Position": 1020,
-                                    "Number": 3,
-                                    "AdjustByWeight": 0
-                                },
-                                {
-                                    "Acceleration": 3000,
-                                    "Speed": 730,
-                                    "Position": 1252,
-                                    "Number": 4
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ],
-            "StructuralProperties": {
-                "BeltRigidity": 7000000,
-                "BeltSpacing": 300,
-                "ElevatorWeight": 230,
-                "HalfShaftLength": 2084,
-                "PulleyDiameter": 160,
-                "ShaftDiameter": 45,
-                "ShaftElasticity": 210000
-            }
-        },
-        "Height": 4563,
-        "MaxGrossWeight": 50000,
-        "ModelName": "Vertimag 800kg",
-        "LoadUnitTare": 120,
-        "LoadUnitMaxNetWeight": 800,
-        "LoadUnitMaxHeight": 750,
-        "Panels": [
-            {
-                "Side": "Front",
-                "Cells": [
-                    {
-                        "Id": 1,
-                        "Position": 1640,
-                        "Priority": 1,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 3,
-                        "Position": 1665,
-                        "Priority": 3,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 5,
-                        "Position": 1690,
-                        "Priority": 5,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 7,
-                        "Position": 1715,
-                        "Priority": 7,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 9,
-                        "Position": 1740,
-                        "Priority": 9,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 11,
-                        "Position": 1765,
-                        "Priority": 11,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 13,
-                        "Position": 1790,
-                        "Priority": 13,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 15,
-                        "Position": 1815,
-                        "Priority": 15,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 17,
-                        "Position": 1840,
-                        "Priority": 17,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 19,
-                        "Position": 1865,
-                        "Priority": 19,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 21,
-                        "Position": 1890,
-                        "Priority": 21,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 23,
-                        "Position": 1915,
-                        "Priority": 23,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 25,
-                        "Position": 1940,
-                        "Priority": 25,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 27,
-                        "Position": 1965,
-                        "Priority": 27,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 29,
-                        "Position": 1990,
-                        "Priority": 29,
-                        "Status": "Free"
-                    },
-                    {
-                        "Id": 31,
-                        "Position": 2015,
-                        "Priority": 31,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 33,
-                        "Position": 2040,
-                        "Priority": 33,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 35,
-                        "Position": 2065,
-                        "Priority": 35,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 37,
-                        "Position": 2090,
-                        "Priority": 37,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 39,
-                        "Position": 2115,
-                        "Priority": 39,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 41,
-                        "Position": 2140,
-                        "Priority": 41,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 43,
-                        "Position": 2165,
-                        "Priority": 43,
-                        "Status": "Free"
-                    },
-                    {
-                        "Id": 45,
-                        "Position": 2190,
-                        "Priority": 45,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 47,
-                        "Position": 2215,
-                        "Priority": 47,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 49,
-                        "Position": 2240,
-                        "Priority": 49,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 51,
-                        "Position": 2265,
-                        "Priority": 51,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 53,
-                        "Position": 2290,
-                        "Priority": 53,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 55,
-                        "Position": 2315,
-                        "Priority": 55,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 57,
-                        "Position": 2340,
-                        "Priority": 57,
-                        "Status": "Free"
-                    },
-                    {
-                        "Id": 59,
-                        "Position": 2365,
-                        "Priority": 59,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 61,
-                        "Position": 2390,
-                        "Priority": 61,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 63,
-                        "Position": 2415,
-                        "Priority": 63,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 65,
-                        "Position": 2440,
-                        "Priority": 65,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 67,
-                        "Position": 2465,
-                        "Priority": 67,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 69,
-                        "Position": 2490,
-                        "Priority": 69,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 71,
-                        "Position": 2515,
-                        "Priority": 71,
-                        "Status": "Free"
-                    },
-                    {
-                        "Id": 73,
-                        "Position": 2540,
-                        "Priority": 73,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 75,
-                        "Position": 2565,
-                        "Priority": 75,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 77,
-                        "Position": 2590,
-                        "Priority": 77,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 79,
-                        "Position": 2615,
-                        "Priority": 79,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 81,
-                        "Position": 2640,
-                        "Priority": 81,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 83,
-                        "Position": 2665,
-                        "Priority": 83,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 85,
-                        "Position": 2690,
-                        "Priority": 85,
-                        "Status": "Free"
-                    },
-                    {
-                        "Id": 87,
-                        "Position": 2715,
-                        "Priority": 87,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 89,
-                        "Position": 2740,
-                        "Priority": 89,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 91,
-                        "Position": 2765,
-                        "Priority": 91,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 93,
-                        "Position": 2790,
-                        "Priority": 93,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 95,
-                        "Position": 2815,
-                        "Priority": 95,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 97,
-                        "Position": 2840,
-                        "Priority": 97,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 99,
-                        "Position": 2865,
-                        "Priority": 99,
-                        "Status": "Free"
-                    },
-                    {
-                        "Id": 101,
-                        "Position": 2890,
-                        "Priority": 101,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 103,
-                        "Position": 2915,
-                        "Priority": 103,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 105,
-                        "Position": 2940,
-                        "Priority": 105,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 107,
-                        "Position": 2965,
-                        "Priority": 107,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 109,
-                        "Position": 2990,
-                        "Priority": 109,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 111,
-                        "Position": 3015,
-                        "Priority": 111,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 113,
-                        "Position": 3040,
-                        "Priority": 113,
-                        "Status": "Free"
-                    },
-                    {
-                        "Id": 115,
-                        "Position": 3065,
-                        "Priority": 115,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 117,
-                        "Position": 3090,
-                        "Priority": 117,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 119,
-                        "Position": 3115,
-                        "Priority": 119,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 121,
-                        "Position": 3140,
-                        "Priority": 121,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 123,
-                        "Position": 3165,
-                        "Priority": 123,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 125,
-                        "Position": 3190,
-                        "Priority": 125,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 127,
-                        "Position": 3215,
-                        "Priority": 127,
-                        "Status": "Free"
-                    },
-                    {
-                        "Id": 129,
-                        "Position": 3240,
-                        "Priority": 129,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 131,
-                        "Position": 3265,
-                        "Priority": 131,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 133,
-                        "Position": 3290,
-                        "Priority": 133,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 135,
-                        "Position": 3315,
-                        "Priority": 135,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 137,
-                        "Position": 3340,
-                        "Priority": 137,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 139,
-                        "Position": 3365,
-                        "Priority": 139,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 141,
-                        "Position": 3390,
-                        "Priority": 141,
-                        "Status": "Free"
-                    },
-                    {
-                        "Id": 143,
-                        "Position": 3415,
-                        "Priority": 143,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 145,
-                        "Position": 3440,
-                        "Priority": 145,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 147,
-                        "Position": 3465,
-                        "Priority": 147,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 149,
-                        "Position": 3490,
-                        "Priority": 149,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 151,
-                        "Position": 3515,
-                        "Priority": 151,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 153,
-                        "Position": 3540,
-                        "Priority": 153,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 155,
-                        "Position": 3565,
-                        "Priority": 155,
-                        "Status": "Free"
-                    },
-                    {
-                        "Id": 157,
-                        "Position": 3590,
-                        "Priority": 157,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 159,
-                        "Position": 3615,
-                        "Priority": 159,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 161,
-                        "Position": 3640,
-                        "Priority": 161,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 163,
-                        "Position": 3665,
-                        "Priority": 163,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 165,
-                        "Position": 3690,
-                        "Priority": 165,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 167,
-                        "Position": 3715,
-                        "Priority": 167,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 169,
-                        "Position": 3740,
-                        "Priority": 169,
-                        "Status": "Free"
-                    },
-                    {
-                        "Id": 171,
-                        "Position": 3765,
-                        "Priority": 171,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 173,
-                        "Position": 3790,
-                        "Priority": 173,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 175,
-                        "Position": 3815,
-                        "Priority": 175,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 177,
-                        "Position": 3840,
-                        "Priority": 177,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 179,
-                        "Position": 3865,
-                        "Priority": 179,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 181,
-                        "Position": 3890,
-                        "Priority": 181,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 183,
-                        "Position": 3915,
-                        "Priority": 183,
-                        "Status": "Free"
-                    },
-                    {
-                        "Id": 185,
-                        "Position": 3940,
-                        "Priority": 185,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 187,
-                        "Position": 3965,
-                        "Priority": 187,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 189,
-                        "Position": 3990,
-                        "Priority": 189,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 191,
-                        "Position": 4015,
-                        "Priority": 191,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 193,
-                        "Position": 4040,
-                        "Priority": 193,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 195,
-                        "Position": 4065,
-                        "Priority": 195,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 197,
-                        "Position": 4090,
-                        "Priority": 197,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 199,
-                        "Position": 4115,
-                        "Priority": 199,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 201,
-                        "Position": 4140,
-                        "Priority": 201,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 203,
-                        "Position": 4165,
-                        "Priority": 203,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 205,
-                        "Position": 4190,
-                        "Priority": 205,
-                        "IsUnusable": true
-                    }
-
-                ]
-            },
-            {
-                "Side": "Back",
-                "Cells": [
-                    {
-                        "Id": 2,
-                        "Position": 1640,
-                        "Priority": 2,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 4,
-                        "Position": 1665,
-                        "Priority": 4,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 6,
-                        "Position": 1690,
-                        "Priority": 6,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 8,
-                        "Position": 1715,
-                        "Priority": 8,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 10,
-                        "Position": 1740,
-                        "Priority": 10,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 12,
-                        "Position": 1765,
-                        "Priority": 12,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 14,
-                        "Position": 1790,
-                        "Priority": 14,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 16,
-                        "Position": 1815,
-                        "Priority": 16,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 18,
-                        "Position": 1840,
-                        "Priority": 18,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 20,
-                        "Position": 1865,
-                        "Priority": 20,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 22,
-                        "Position": 1890,
-                        "Priority": 22,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 24,
-                        "Position": 1915,
-                        "Priority": 24,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 26,
-                        "Position": 1940,
-                        "Priority": 26,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 28,
-                        "Position": 1965,
-                        "Priority": 28,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 30,
-                        "Position": 1990,
-                        "Priority": 30,
-                        "Status": "Free"
-                    },
-                    {
-                        "Id": 32,
-                        "Position": 2015,
-                        "Priority": 32,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 34,
-                        "Position": 2040,
-                        "Priority": 34,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 36,
-                        "Position": 2065,
-                        "Priority": 36,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 38,
-                        "Position": 2090,
-                        "Priority": 38,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 40,
-                        "Position": 2115,
-                        "Priority": 40,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 42,
-                        "Position": 2140,
-                        "Priority": 42,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 44,
-                        "Position": 2165,
-                        "Priority": 44,
-                        "Status": "Free"
-                    },
-                    {
-                        "Id": 46,
-                        "Position": 2190,
-                        "Priority": 46,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 48,
-                        "Position": 2215,
-                        "Priority": 48,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 50,
-                        "Position": 2240,
-                        "Priority": 50,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 52,
-                        "Position": 2265,
-                        "Priority": 52,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 54,
-                        "Position": 2290,
-                        "Priority": 54,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 56,
-                        "Position": 2315,
-                        "Priority": 56,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 58,
-                        "Position": 2340,
-                        "Priority": 58,
-                        "Status": "Free"
-                    },
-                    {
-                        "Id": 60,
-                        "Position": 2365,
-                        "Priority": 60,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 62,
-                        "Position": 2390,
-                        "Priority": 62,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 64,
-                        "Position": 2415,
-                        "Priority": 64,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 66,
-                        "Position": 2440,
-                        "Priority": 66,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 68,
-                        "Position": 2465,
-                        "Priority": 68,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 70,
-                        "Position": 2490,
-                        "Priority": 70,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 72,
-                        "Position": 2515,
-                        "Priority": 72,
-                        "Status": "Free"
-                    },
-                    {
-                        "Id": 74,
-                        "Position": 2540,
-                        "Priority": 74,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 76,
-                        "Position": 2565,
-                        "Priority": 76,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 78,
-                        "Position": 2590,
-                        "Priority": 78,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 80,
-                        "Position": 2615,
-                        "Priority": 80,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 82,
-                        "Position": 2640,
-                        "Priority": 82,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 84,
-                        "Position": 2665,
-                        "Priority": 84,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 86,
-                        "Position": 2690,
-                        "Priority": 86,
-                        "Status": "Free"
-                    },
-                    {
-                        "Id": 88,
-                        "Position": 2715,
-                        "Priority": 88,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 90,
-                        "Position": 2740,
-                        "Priority": 90,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 92,
-                        "Position": 2765,
-                        "Priority": 92,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 94,
-                        "Position": 2790,
-                        "Priority": 94,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 96,
-                        "Position": 2815,
-                        "Priority": 96,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 98,
-                        "Position": 2840,
-                        "Priority": 98,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 100,
-                        "Position": 2865,
-                        "Priority": 100,
-                        "Status": "Free"
-                    },
-                    {
-                        "Id": 102,
-                        "Position": 2890,
-                        "Priority": 102,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 104,
-                        "Position": 2915,
-                        "Priority": 104,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 106,
-                        "Position": 2940,
-                        "Priority": 106,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 108,
-                        "Position": 2965,
-                        "Priority": 108,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 110,
-                        "Position": 2990,
-                        "Priority": 110,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 112,
-                        "Position": 3015,
-                        "Priority": 112,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 114,
-                        "Position": 3040,
-                        "Priority": 114,
-                        "Status": "Free"
-                    },
-                    {
-                        "Id": 116,
-                        "Position": 3065,
-                        "Priority": 116,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 118,
-                        "Position": 3090,
-                        "Priority": 118,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 120,
-                        "Position": 3115,
-                        "Priority": 120,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 122,
-                        "Position": 3140,
-                        "Priority": 122,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 124,
-                        "Position": 3165,
-                        "Priority": 124,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 126,
-                        "Position": 3190,
-                        "Priority": 126,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 128,
-                        "Position": 3215,
-                        "Priority": 128,
-                        "Status": "Free"
-                    },
-                    {
-                        "Id": 130,
-                        "Position": 3240,
-                        "Priority": 130,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 132,
-                        "Position": 3265,
-                        "Priority": 132,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 134,
-                        "Position": 3290,
-                        "Priority": 134,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 136,
-                        "Position": 3315,
-                        "Priority": 136,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 138,
-                        "Position": 3340,
-                        "Priority": 138,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 140,
-                        "Position": 3365,
-                        "Priority": 140,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 142,
-                        "Position": 3390,
-                        "Priority": 142,
-                        "Status": "Free"
-                    },
-                    {
-                        "Id": 144,
-                        "Position": 3415,
-                        "Priority": 144,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 146,
-                        "Position": 3440,
-                        "Priority": 146,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 148,
-                        "Position": 3465,
-                        "Priority": 148,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 150,
-                        "Position": 3490,
-                        "Priority": 150,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 152,
-                        "Position": 3515,
-                        "Priority": 152,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 154,
-                        "Position": 3540,
-                        "Priority": 154,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 156,
-                        "Position": 3565,
-                        "Priority": 156,
-                        "Status": "Free"
-                    },
-                    {
-                        "Id": 158,
-                        "Position": 3590,
-                        "Priority": 158,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 160,
-                        "Position": 3615,
-                        "Priority": 160,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 162,
-                        "Position": 3640,
-                        "Priority": 162,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 164,
-                        "Position": 3665,
-                        "Priority": 164,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 166,
-                        "Position": 3690,
-                        "Priority": 166,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 168,
-                        "Position": 3715,
-                        "Priority": 168,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 170,
-                        "Position": 3740,
-                        "Priority": 170,
-                        "Status": "Free"
-                    },
-                    {
-                        "Id": 172,
-                        "Position": 3765,
-                        "Priority": 172,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 174,
-                        "Position": 3790,
-                        "Priority": 174,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 176,
-                        "Position": 3815,
-                        "Priority": 176,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 178,
-                        "Position": 3840,
-                        "Priority": 178,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 180,
-                        "Position": 3865,
-                        "Priority": 180,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 182,
-                        "Position": 3890,
-                        "Priority": 182,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 184,
-                        "Position": 3915,
-                        "Priority": 184,
-                        "Status": "Free"
-                    },
-                    {
-                        "Id": 186,
-                        "Position": 3940,
-                        "Priority": 186,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 188,
-                        "Position": 3965,
-                        "Priority": 188,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 190,
-                        "Position": 3990,
-                        "Priority": 190,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 192,
-                        "Position": 4015,
-                        "Priority": 192,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 194,
-                        "Position": 4040,
-                        "Priority": 194,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 196,
-                        "Position": 4065,
-                        "Priority": 196,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 198,
-                        "Position": 4090,
-                        "Priority": 198,
-                        "Status": "Free"
-                    },
-                    {
-                        "Id": 200,
-                        "Position": 4115,
-                        "Priority": 200,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 202,
-                        "Position": 4140,
-                        "Priority": 202,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 204,
-                        "Position": 4165,
-                        "Priority": 204,
-                        "IsUnusable": true
-                    },
-                    {
-                        "Id": 206,
-                        "Position": 4190,
-                        "Priority": 206,
-                        "IsUnusable": true
-                    }
-
-                ]
-            }
-        ],
-        "ProductionDate": "2019-10-19T16:39:57-08:00",
-        "SerialNumber": "Prototype #1"
+  "$schema": "./schemas/vertimag-configuration-schema.json",
+  "LoadingUnits": [
+    {
+      "Tare": 120,
+      "MaxNetWeight": 800,
+      "Id": 1
     },
-    "SetupProcedures": {
-        "BayHeightCheck": {
-            "FeedRate": 0.2,
-            "Step": 0.5
-        },
-        "BeltBurnishingTest": {
-            "RequiredCycles": 200
-        },
-        "CarouselManualMovements": {
-            "FeedRate": 0.04
-        },
-        "CellPanelsCheck": {
-            "FeedRate": 0.2,
-            "Step": 0.5
-        },
-        "CellsHeightCheck": {
-            "FeedRate": 0.2,
-            "Step": 0.5
-        },
-        "DepositAndPickUpTest": {
-            "RequiredCycles": 10
-        },
-        "LoadFirstDrawerTest": {
-            "FeedRate": 0.2
-        },
-        "ShutterHeightCheck": {
-            "FeedRate": 0.1
-        },
-        "ShutterTest": {
-            "FeedRate": 1.0,
-            "RequiredCycles": 10000
-        },
-        "VerticalOffsetCalibration": {
-            "ReferenceCellId": 50, //TEMP Temporary value for software test
-            "Step": 0.5,
-            "FeedRate": 0.2
-        },
-        "VerticalResolutionCalibration": {
-            "InitialPosition": 1000, //TEMP Temporary value for software test
-            "FinalPosition": 5500, //TEMP Temporary value for software test
-            "FeedRate": 0.2
-        }
+    {
+      "Tare": 120,
+      "MaxNetWeight": 800,
+      "Id": 2
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 800,
+      "Id": 3
     }
+  ],
+  "Machine": {
+    "Id": 1,
+    "Bays": [
+      {
+        "AlphaNumericBar": null,
+        "Inverter": {
+          "Type": "Acu",
+          "Index": "Slave3"
+        },
+        "Side": "Front",
+        "IoDevice": {
+          "Index": "IoDevice1",
+          "IpAddress": "192.168.0.1",
+          "TcpPort": 19550
+        },
+        "IsExternal": true,
+        "ChainOffset": 0,
+        "Number": "BayOne",
+        "Positions": [
+          {
+            "Height": 645,
+            "Location": "InternalBay1Down"
+          }
+        ],
+        "Resolution": 369.8453,
+        "Shutter": {
+          "Inverter": {
+            "Index": "Slave2",
+            "Type": "Agl"
+          },
+          "Type": "TwoSensors",
+          "ManualMovements": {
+            "FeedRate": 0.1,
+            "MaxSpeed": 32000,
+            "MinSpeed": 5000,
+            "HighSpeedDurationOpen": 16,
+            "HighSpeedDurationClose": 16
+          },
+          "AssistedMovements": {
+            "FeedRate": 0.2,
+            "MaxSpeed": 32000,
+            "MinSpeed": 5000,
+            "HighSpeedDurationOpen": 16,
+            "HighSpeedDurationClose": 16
+          }
+        },
+        "EmptyLoadMovement": {
+          "Acceleration": 1500,
+          "Speed": 770
+        },
+        "FullLoadMovement": {
+          "Acceleration": 350,
+          "Speed": 730
+        }
+      },
+      {
+        "IoDevice": {
+          "Index": "IoDevice2",
+          "IpAddress": "192.168.0.2",
+          "TcpPort": 19550
+        },
+        "Side": "Back",
+        "IsExternal": false,
+        "ChainOffset": 0,
+        "Number": "BayTwo",
+        "Positions": [
+          {
+            "Height": 645,
+            "Location": "InternalBay2Down"
+          },
+          {
+            "Height": 1045,
+            "Location": "InternalBay2Up"
+          }
+        ],
+        "Shutter": {
+          "Type": "TwoSensors",
+          "Inverter": {
+            "Type": "Agl",
+            "Index": "Slave4"
+          },
+          "ManualMovements": {
+            "FeedRate": 0.1,
+            "MaxSpeed": 32000,
+            "MinSpeed": 5000,
+            "HighSpeedDurationOpen": 16,
+            "HighSpeedDurationClose": 16
+          },
+          "AssistedMovements": {
+            "FeedRate": 0.2,
+            "MaxSpeed": 32000,
+            "MinSpeed": 5000,
+            "HighSpeedDurationOpen": 16,
+            "HighSpeedDurationClose": 16
+          }
+        }
+      }
+    ],
+    "Elevator": {
+      "Axes": [
+        {
+          "Inverter": {
+            "Index": "MainInverter",
+            "Type": "Ang",
+            "IpAddress": "192.168.0.100",
+            "TcpPort": 17221
+          },
+          "BrakeReleaseTime": 150,
+          "BrakeActivatePercent": 10,
+          "Orientation": "Vertical",
+          "Resolution": 77.61182,
+          "Offset": 350,
+          "ChainOffset": 0,
+          "HomingFastSpeed": 2000,
+          "HomingCreepSpeed": 500,
+          "UpperBound": 4000,
+          "LowerBound": 350,
+          "EmptyLoadMovement": {
+            "Acceleration": 1000,
+            "Deceleration": 1000,
+            "Speed": 770
+          },
+          "FullLoadMovement": {
+            "Acceleration": 400,
+            "Deceleration": 400,
+            "Speed": 550
+          },
+          "WeightMeasurement": {
+            "MeasureConst0": -723.53,
+            "MeasureConst1": 159.73,
+            "MeasureConst2": -1.8163,
+            "MeasureSpeed": 20,
+            "MeasureTime": 15
+          },
+          "ManualMovements": {
+            "FeedRate": 0.1,
+            "FeedRateAfterZero": 0.15,
+            "TargetDistance": 30,
+            "TargetDistanceAfterZero": 30
+          },
+          "AssistedMovements": {
+            "FeedRate": 0.3,
+            "FeedRateAfterZero": 0.9
+          }
+        },
+        {
+          "Orientation": "Horizontal",
+          "Resolution": 88.3038556,
+          "Offset": 0,
+          "ChainOffset": -5,
+          "HomingFastSpeed": 2000,
+          "HomingCreepSpeed": 500,
+          "Inverter": null,
+          "FullLoadMovement": {
+            "Acceleration": 350,
+            "Deceleration": 350,
+            "Speed": 480
+          },
+          "EmptyLoadMovement": {
+            "Acceleration": 1500,
+            "Deceleration": 1500,
+            "Speed": 650
+          },
+          "ManualMovements": {
+            "FeedRate": 0.04,
+            "FeedRateAfterZero": 0.3,
+            "TargetDistance": 30,
+            "TargetDistanceAfterZero": 200
+          },
+          "AssistedMovements": {
+            "FeedRate": 0.3,
+            "FeedRateAfterZero": 0.9
+          },
+          "Profiles": [
+            {
+              "Name": "ShortPickup",
+              "TotalDistance": 1252,
+              "Correction": 20,
+              "Steps": [
+                {
+                  "Acceleration": 3000,
+                  "Speed": 730,
+                  "Number": 0,
+                  "Position": 150
+                },
+                {
+                  "Acceleration": 3000,
+                  "Speed": 100,
+                  "Number": 1,
+                  "Position": 450
+                },
+                {
+                  "Acceleration": 1000,
+                  "Speed": 650,
+                  "Number": 2,
+                  "Position": 900,
+                  "AdjustByWeight": 1
+                },
+                {
+                  "Acceleration": 1000,
+                  "Speed": 650,
+                  "Number": 3,
+                  "Position": 1100,
+                  "AdjustByWeight": 1
+                },
+                {
+                  "Acceleration": 1000,
+                  "Speed": 200,
+                  "Number": 4,
+                  "Position": 1252
+                }
+              ]
+            },
+            {
+              "Name": "ShortDeposit",
+              "TotalDistance": 1252,
+              "Correction": 20,
+              "Steps": [
+                {
+                  "Acceleration": 1000,
+                  "Speed": 200,
+                  "Number": 0,
+                  "Position": 200
+                },
+                {
+                  "Acceleration": 1000,
+                  "Speed": 200,
+                  "Number": 1,
+                  "Position": 350
+                },
+                {
+                  "Acceleration": 1000,
+                  "Speed": 650,
+                  "Number": 2,
+                  "Position": 750,
+                  "AdjustByWeight": 1
+                },
+                {
+                  "Acceleration": 3000,
+                  "Speed": 200,
+                  "Number": 3,
+                  "Position": 1020,
+                  "AdjustByWeight": 0
+                },
+                {
+                  "Acceleration": 3000,
+                  "Speed": 730,
+                  "Number": 4,
+                  "Position": 1252
+                }
+              ]
+            },
+            {
+              "Name": "LongPickup",
+              "TotalDistance": 1252,
+              "Correction": 20,
+              "Steps": [
+                {
+                  "Acceleration": 3000,
+                  "Speed": 730,
+                  "Position": 150,
+                  "Number": 0
+                },
+                {
+                  "Acceleration": 3000,
+                  "Speed": 100,
+                  "Position": 450,
+                  "Number": 1
+                },
+                {
+                  "Acceleration": 1000,
+                  "Speed": 650,
+                  "Position": 900,
+                  "Number": 2,
+                  "AdjustByWeight": 1
+                },
+                {
+                  "Acceleration": 1000,
+                  "Speed": 650,
+                  "Position": 1100,
+                  "Number": 3,
+                  "AdjustByWeight": 1
+                },
+                {
+                  "Acceleration": 1000,
+                  "Speed": 200,
+                  "Position": 1252,
+                  "Number": 4
+                }
+              ]
+            },
+            {
+              "Name": "LongDeposit",
+              "TotalDistance": 1252,
+              "Correction": 20,
+              "Steps": [
+                {
+                  "Acceleration": 1000,
+                  "Speed": 200,
+                  "Position": 200,
+                  "Number": 0
+                },
+                {
+                  "Acceleration": 1000,
+                  "Speed": 200,
+                  "Position": 350,
+                  "Number": 1
+                },
+                {
+                  "Acceleration": 1000,
+                  "Speed": 650,
+                  "Position": 750,
+                  "Number": 2,
+                  "AdjustByWeight": 1
+                },
+                {
+                  "Acceleration": 3000,
+                  "Speed": 200,
+                  "Position": 1020,
+                  "Number": 3,
+                  "AdjustByWeight": 0
+                },
+                {
+                  "Acceleration": 3000,
+                  "Speed": 730,
+                  "Position": 1252,
+                  "Number": 4
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "StructuralProperties": {
+        "BeltRigidity": 7000000,
+        "BeltSpacing": 300,
+        "ElevatorWeight": 230,
+        "HalfShaftLength": 2084,
+        "PulleyDiameter": 160,
+        "ShaftDiameter": 45,
+        "ShaftElasticity": 210000
+      }
+    },
+    "Height": 4563,
+    "MaxGrossWeight": 50000,
+    "ModelName": "Vertimag 800kg",
+    "LoadUnitTare": 120,
+    "LoadUnitMaxNetWeight": 800,
+    "LoadUnitMaxHeight": 750,
+    "Panels": [
+      {
+        "Side": "Front",
+        "Cells": [
+          {
+            "Id": 1,
+            "Position": 1640,
+            "Priority": 1,
+            "IsUnusable": true
+          },
+          {
+            "Id": 3,
+            "Position": 1665,
+            "Priority": 3,
+            "IsUnusable": true
+          },
+          {
+            "Id": 5,
+            "Position": 1690,
+            "Priority": 5,
+            "IsUnusable": true
+          },
+          {
+            "Id": 7,
+            "Position": 1715,
+            "Priority": 7,
+            "IsUnusable": true
+          },
+          {
+            "Id": 9,
+            "Position": 1740,
+            "Priority": 9,
+            "IsUnusable": true
+          },
+          {
+            "Id": 11,
+            "Position": 1765,
+            "Priority": 11,
+            "IsUnusable": true
+          },
+          {
+            "Id": 13,
+            "Position": 1790,
+            "Priority": 13,
+            "IsUnusable": true
+          },
+          {
+            "Id": 15,
+            "Position": 1815,
+            "Priority": 15,
+            "IsUnusable": true
+          },
+          {
+            "Id": 17,
+            "Position": 1840,
+            "Priority": 17,
+            "IsUnusable": true
+          },
+          {
+            "Id": 19,
+            "Position": 1865,
+            "Priority": 19,
+            "IsUnusable": true
+          },
+          {
+            "Id": 21,
+            "Position": 1890,
+            "Priority": 21,
+            "IsUnusable": true
+          },
+          {
+            "Id": 23,
+            "Position": 1915,
+            "Priority": 23,
+            "IsUnusable": true
+          },
+          {
+            "Id": 25,
+            "Position": 1940,
+            "Priority": 25,
+            "IsUnusable": true
+          },
+          {
+            "Id": 27,
+            "Position": 1965,
+            "Priority": 27,
+            "IsUnusable": true
+          },
+          {
+            "Id": 29,
+            "Position": 1990,
+            "Priority": 29,
+            "Status": "Free"
+          },
+          {
+            "Id": 31,
+            "Position": 2015,
+            "Priority": 31,
+            "IsUnusable": true
+          },
+          {
+            "Id": 33,
+            "Position": 2040,
+            "Priority": 33,
+            "IsUnusable": true
+          },
+          {
+            "Id": 35,
+            "Position": 2065,
+            "Priority": 35,
+            "IsUnusable": true
+          },
+          {
+            "Id": 37,
+            "Position": 2090,
+            "Priority": 37,
+            "IsUnusable": true
+          },
+          {
+            "Id": 39,
+            "Position": 2115,
+            "Priority": 39,
+            "IsUnusable": true
+          },
+          {
+            "Id": 41,
+            "Position": 2140,
+            "Priority": 41,
+            "IsUnusable": true
+          },
+          {
+            "Id": 43,
+            "Position": 2165,
+            "Priority": 43,
+            "Status": "Free"
+          },
+          {
+            "Id": 45,
+            "Position": 2190,
+            "Priority": 45,
+            "IsUnusable": true
+          },
+          {
+            "Id": 47,
+            "Position": 2215,
+            "Priority": 47,
+            "IsUnusable": true
+          },
+          {
+            "Id": 49,
+            "Position": 2240,
+            "Priority": 49,
+            "IsUnusable": true
+          },
+          {
+            "Id": 51,
+            "Position": 2265,
+            "Priority": 51,
+            "IsUnusable": true
+          },
+          {
+            "Id": 53,
+            "Position": 2290,
+            "Priority": 53,
+            "IsUnusable": true
+          },
+          {
+            "Id": 55,
+            "Position": 2315,
+            "Priority": 55,
+            "IsUnusable": true
+          },
+          {
+            "Id": 57,
+            "Position": 2340,
+            "Priority": 57,
+            "Status": "Free"
+          },
+          {
+            "Id": 59,
+            "Position": 2365,
+            "Priority": 59,
+            "IsUnusable": true
+          },
+          {
+            "Id": 61,
+            "Position": 2390,
+            "Priority": 61,
+            "IsUnusable": true
+          },
+          {
+            "Id": 63,
+            "Position": 2415,
+            "Priority": 63,
+            "IsUnusable": true
+          },
+          {
+            "Id": 65,
+            "Position": 2440,
+            "Priority": 65,
+            "IsUnusable": true
+          },
+          {
+            "Id": 67,
+            "Position": 2465,
+            "Priority": 67,
+            "IsUnusable": true
+          },
+          {
+            "Id": 69,
+            "Position": 2490,
+            "Priority": 69,
+            "IsUnusable": true
+          },
+          {
+            "Id": 71,
+            "Position": 2515,
+            "Priority": 71,
+            "Status": "Free"
+          },
+          {
+            "Id": 73,
+            "Position": 2540,
+            "Priority": 73,
+            "IsUnusable": true
+          },
+          {
+            "Id": 75,
+            "Position": 2565,
+            "Priority": 75,
+            "IsUnusable": true
+          },
+          {
+            "Id": 77,
+            "Position": 2590,
+            "Priority": 77,
+            "IsUnusable": true
+          },
+          {
+            "Id": 79,
+            "Position": 2615,
+            "Priority": 79,
+            "IsUnusable": true
+          },
+          {
+            "Id": 81,
+            "Position": 2640,
+            "Priority": 81,
+            "IsUnusable": true
+          },
+          {
+            "Id": 83,
+            "Position": 2665,
+            "Priority": 83,
+            "IsUnusable": true
+          },
+          {
+            "Id": 85,
+            "Position": 2690,
+            "Priority": 85,
+            "Status": "Free"
+          },
+          {
+            "Id": 87,
+            "Position": 2715,
+            "Priority": 87,
+            "IsUnusable": true
+          },
+          {
+            "Id": 89,
+            "Position": 2740,
+            "Priority": 89,
+            "IsUnusable": true
+          },
+          {
+            "Id": 91,
+            "Position": 2765,
+            "Priority": 91,
+            "IsUnusable": true
+          },
+          {
+            "Id": 93,
+            "Position": 2790,
+            "Priority": 93,
+            "IsUnusable": true
+          },
+          {
+            "Id": 95,
+            "Position": 2815,
+            "Priority": 95,
+            "IsUnusable": true
+          },
+          {
+            "Id": 97,
+            "Position": 2840,
+            "Priority": 97,
+            "IsUnusable": true
+          },
+          {
+            "Id": 99,
+            "Position": 2865,
+            "Priority": 99,
+            "Status": "Free"
+          },
+          {
+            "Id": 101,
+            "Position": 2890,
+            "Priority": 101,
+            "IsUnusable": true
+          },
+          {
+            "Id": 103,
+            "Position": 2915,
+            "Priority": 103,
+            "IsUnusable": true
+          },
+          {
+            "Id": 105,
+            "Position": 2940,
+            "Priority": 105,
+            "IsUnusable": true
+          },
+          {
+            "Id": 107,
+            "Position": 2965,
+            "Priority": 107,
+            "IsUnusable": true
+          },
+          {
+            "Id": 109,
+            "Position": 2990,
+            "Priority": 109,
+            "IsUnusable": true
+          },
+          {
+            "Id": 111,
+            "Position": 3015,
+            "Priority": 111,
+            "IsUnusable": true
+          },
+          {
+            "Id": 113,
+            "Position": 3040,
+            "Priority": 113,
+            "Status": "Free"
+          },
+          {
+            "Id": 115,
+            "Position": 3065,
+            "Priority": 115,
+            "IsUnusable": true
+          },
+          {
+            "Id": 117,
+            "Position": 3090,
+            "Priority": 117,
+            "IsUnusable": true
+          },
+          {
+            "Id": 119,
+            "Position": 3115,
+            "Priority": 119,
+            "IsUnusable": true
+          },
+          {
+            "Id": 121,
+            "Position": 3140,
+            "Priority": 121,
+            "IsUnusable": true
+          },
+          {
+            "Id": 123,
+            "Position": 3165,
+            "Priority": 123,
+            "IsUnusable": true
+          },
+          {
+            "Id": 125,
+            "Position": 3190,
+            "Priority": 125,
+            "IsUnusable": true
+          },
+          {
+            "Id": 127,
+            "Position": 3215,
+            "Priority": 127,
+            "Status": "Free"
+          },
+          {
+            "Id": 129,
+            "Position": 3240,
+            "Priority": 129,
+            "IsUnusable": true
+          },
+          {
+            "Id": 131,
+            "Position": 3265,
+            "Priority": 131,
+            "IsUnusable": true
+          },
+          {
+            "Id": 133,
+            "Position": 3290,
+            "Priority": 133,
+            "IsUnusable": true
+          },
+          {
+            "Id": 135,
+            "Position": 3315,
+            "Priority": 135,
+            "IsUnusable": true
+          },
+          {
+            "Id": 137,
+            "Position": 3340,
+            "Priority": 137,
+            "IsUnusable": true
+          },
+          {
+            "Id": 139,
+            "Position": 3365,
+            "Priority": 139,
+            "IsUnusable": true
+          },
+          {
+            "Id": 141,
+            "Position": 3390,
+            "Priority": 141,
+            "Status": "Free"
+          },
+          {
+            "Id": 143,
+            "Position": 3415,
+            "Priority": 143,
+            "IsUnusable": true
+          },
+          {
+            "Id": 145,
+            "Position": 3440,
+            "Priority": 145,
+            "IsUnusable": true
+          },
+          {
+            "Id": 147,
+            "Position": 3465,
+            "Priority": 147,
+            "IsUnusable": true
+          },
+          {
+            "Id": 149,
+            "Position": 3490,
+            "Priority": 149,
+            "IsUnusable": true
+          },
+          {
+            "Id": 151,
+            "Position": 3515,
+            "Priority": 151,
+            "IsUnusable": true
+          },
+          {
+            "Id": 153,
+            "Position": 3540,
+            "Priority": 153,
+            "IsUnusable": true
+          },
+          {
+            "Id": 155,
+            "Position": 3565,
+            "Priority": 155,
+            "Status": "Free"
+          },
+          {
+            "Id": 157,
+            "Position": 3590,
+            "Priority": 157,
+            "IsUnusable": true
+          },
+          {
+            "Id": 159,
+            "Position": 3615,
+            "Priority": 159,
+            "IsUnusable": true
+          },
+          {
+            "Id": 161,
+            "Position": 3640,
+            "Priority": 161,
+            "IsUnusable": true
+          },
+          {
+            "Id": 163,
+            "Position": 3665,
+            "Priority": 163,
+            "IsUnusable": true
+          },
+          {
+            "Id": 165,
+            "Position": 3690,
+            "Priority": 165,
+            "IsUnusable": true
+          },
+          {
+            "Id": 167,
+            "Position": 3715,
+            "Priority": 167,
+            "IsUnusable": true
+          },
+          {
+            "Id": 169,
+            "Position": 3740,
+            "Priority": 169,
+            "Status": "Free"
+          },
+          {
+            "Id": 171,
+            "Position": 3765,
+            "Priority": 171,
+            "IsUnusable": true
+          },
+          {
+            "Id": 173,
+            "Position": 3790,
+            "Priority": 173,
+            "IsUnusable": true
+          },
+          {
+            "Id": 175,
+            "Position": 3815,
+            "Priority": 175,
+            "IsUnusable": true
+          },
+          {
+            "Id": 177,
+            "Position": 3840,
+            "Priority": 177,
+            "IsUnusable": true
+          },
+          {
+            "Id": 179,
+            "Position": 3865,
+            "Priority": 179,
+            "IsUnusable": true
+          },
+          {
+            "Id": 181,
+            "Position": 3890,
+            "Priority": 181,
+            "IsUnusable": true
+          },
+          {
+            "Id": 183,
+            "Position": 3915,
+            "Priority": 183,
+            "Status": "Free"
+          },
+          {
+            "Id": 185,
+            "Position": 3940,
+            "Priority": 185,
+            "IsUnusable": true
+          },
+          {
+            "Id": 187,
+            "Position": 3965,
+            "Priority": 187,
+            "IsUnusable": true
+          },
+          {
+            "Id": 189,
+            "Position": 3990,
+            "Priority": 189,
+            "IsUnusable": true
+          },
+          {
+            "Id": 191,
+            "Position": 4015,
+            "Priority": 191,
+            "IsUnusable": true
+          },
+          {
+            "Id": 193,
+            "Position": 4040,
+            "Priority": 193,
+            "IsUnusable": true
+          },
+          {
+            "Id": 195,
+            "Position": 4065,
+            "Priority": 195,
+            "IsUnusable": true
+          },
+          {
+            "Id": 197,
+            "Position": 4090,
+            "Priority": 197,
+            "IsUnusable": true
+          },
+          {
+            "Id": 199,
+            "Position": 4115,
+            "Priority": 199,
+            "IsUnusable": true
+          },
+          {
+            "Id": 201,
+            "Position": 4140,
+            "Priority": 201,
+            "IsUnusable": true
+          },
+          {
+            "Id": 203,
+            "Position": 4165,
+            "Priority": 203,
+            "IsUnusable": true
+          },
+          {
+            "Id": 205,
+            "Position": 4190,
+            "Priority": 205,
+            "IsUnusable": true
+          }
+
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
+          {
+            "Id": 2,
+            "Position": 1640,
+            "Priority": 2,
+            "IsUnusable": true
+          },
+          {
+            "Id": 4,
+            "Position": 1665,
+            "Priority": 4,
+            "IsUnusable": true
+          },
+          {
+            "Id": 6,
+            "Position": 1690,
+            "Priority": 6,
+            "IsUnusable": true
+          },
+          {
+            "Id": 8,
+            "Position": 1715,
+            "Priority": 8,
+            "IsUnusable": true
+          },
+          {
+            "Id": 10,
+            "Position": 1740,
+            "Priority": 10,
+            "IsUnusable": true
+          },
+          {
+            "Id": 12,
+            "Position": 1765,
+            "Priority": 12,
+            "IsUnusable": true
+          },
+          {
+            "Id": 14,
+            "Position": 1790,
+            "Priority": 14,
+            "IsUnusable": true
+          },
+          {
+            "Id": 16,
+            "Position": 1815,
+            "Priority": 16,
+            "IsUnusable": true
+          },
+          {
+            "Id": 18,
+            "Position": 1840,
+            "Priority": 18,
+            "IsUnusable": true
+          },
+          {
+            "Id": 20,
+            "Position": 1865,
+            "Priority": 20,
+            "IsUnusable": true
+          },
+          {
+            "Id": 22,
+            "Position": 1890,
+            "Priority": 22,
+            "IsUnusable": true
+          },
+          {
+            "Id": 24,
+            "Position": 1915,
+            "Priority": 24,
+            "IsUnusable": true
+          },
+          {
+            "Id": 26,
+            "Position": 1940,
+            "Priority": 26,
+            "IsUnusable": true
+          },
+          {
+            "Id": 28,
+            "Position": 1965,
+            "Priority": 28,
+            "IsUnusable": true
+          },
+          {
+            "Id": 30,
+            "Position": 1990,
+            "Priority": 30,
+            "Status": "Free"
+          },
+          {
+            "Id": 32,
+            "Position": 2015,
+            "Priority": 32,
+            "IsUnusable": true
+          },
+          {
+            "Id": 34,
+            "Position": 2040,
+            "Priority": 34,
+            "IsUnusable": true
+          },
+          {
+            "Id": 36,
+            "Position": 2065,
+            "Priority": 36,
+            "IsUnusable": true
+          },
+          {
+            "Id": 38,
+            "Position": 2090,
+            "Priority": 38,
+            "IsUnusable": true
+          },
+          {
+            "Id": 40,
+            "Position": 2115,
+            "Priority": 40,
+            "IsUnusable": true
+          },
+          {
+            "Id": 42,
+            "Position": 2140,
+            "Priority": 42,
+            "IsUnusable": true
+          },
+          {
+            "Id": 44,
+            "Position": 2165,
+            "Priority": 44,
+            "Status": "Free"
+          },
+          {
+            "Id": 46,
+            "Position": 2190,
+            "Priority": 46,
+            "IsUnusable": true
+          },
+          {
+            "Id": 48,
+            "Position": 2215,
+            "Priority": 48,
+            "IsUnusable": true
+          },
+          {
+            "Id": 50,
+            "Position": 2240,
+            "Priority": 50,
+            "IsUnusable": true
+          },
+          {
+            "Id": 52,
+            "Position": 2265,
+            "Priority": 52,
+            "IsUnusable": true
+          },
+          {
+            "Id": 54,
+            "Position": 2290,
+            "Priority": 54,
+            "IsUnusable": true
+          },
+          {
+            "Id": 56,
+            "Position": 2315,
+            "Priority": 56,
+            "IsUnusable": true
+          },
+          {
+            "Id": 58,
+            "Position": 2340,
+            "Priority": 58,
+            "Status": "Free"
+          },
+          {
+            "Id": 60,
+            "Position": 2365,
+            "Priority": 60,
+            "IsUnusable": true
+          },
+          {
+            "Id": 62,
+            "Position": 2390,
+            "Priority": 62,
+            "IsUnusable": true
+          },
+          {
+            "Id": 64,
+            "Position": 2415,
+            "Priority": 64,
+            "IsUnusable": true
+          },
+          {
+            "Id": 66,
+            "Position": 2440,
+            "Priority": 66,
+            "IsUnusable": true
+          },
+          {
+            "Id": 68,
+            "Position": 2465,
+            "Priority": 68,
+            "IsUnusable": true
+          },
+          {
+            "Id": 70,
+            "Position": 2490,
+            "Priority": 70,
+            "IsUnusable": true
+          },
+          {
+            "Id": 72,
+            "Position": 2515,
+            "Priority": 72,
+            "Status": "Free"
+          },
+          {
+            "Id": 74,
+            "Position": 2540,
+            "Priority": 74,
+            "IsUnusable": true
+          },
+          {
+            "Id": 76,
+            "Position": 2565,
+            "Priority": 76,
+            "IsUnusable": true
+          },
+          {
+            "Id": 78,
+            "Position": 2590,
+            "Priority": 78,
+            "IsUnusable": true
+          },
+          {
+            "Id": 80,
+            "Position": 2615,
+            "Priority": 80,
+            "IsUnusable": true
+          },
+          {
+            "Id": 82,
+            "Position": 2640,
+            "Priority": 82,
+            "IsUnusable": true
+          },
+          {
+            "Id": 84,
+            "Position": 2665,
+            "Priority": 84,
+            "IsUnusable": true
+          },
+          {
+            "Id": 86,
+            "Position": 2690,
+            "Priority": 86,
+            "Status": "Free"
+          },
+          {
+            "Id": 88,
+            "Position": 2715,
+            "Priority": 88,
+            "IsUnusable": true
+          },
+          {
+            "Id": 90,
+            "Position": 2740,
+            "Priority": 90,
+            "IsUnusable": true
+          },
+          {
+            "Id": 92,
+            "Position": 2765,
+            "Priority": 92,
+            "IsUnusable": true
+          },
+          {
+            "Id": 94,
+            "Position": 2790,
+            "Priority": 94,
+            "IsUnusable": true
+          },
+          {
+            "Id": 96,
+            "Position": 2815,
+            "Priority": 96,
+            "IsUnusable": true
+          },
+          {
+            "Id": 98,
+            "Position": 2840,
+            "Priority": 98,
+            "IsUnusable": true
+          },
+          {
+            "Id": 100,
+            "Position": 2865,
+            "Priority": 100,
+            "Status": "Free"
+          },
+          {
+            "Id": 102,
+            "Position": 2890,
+            "Priority": 102,
+            "IsUnusable": true
+          },
+          {
+            "Id": 104,
+            "Position": 2915,
+            "Priority": 104,
+            "IsUnusable": true
+          },
+          {
+            "Id": 106,
+            "Position": 2940,
+            "Priority": 106,
+            "IsUnusable": true
+          },
+          {
+            "Id": 108,
+            "Position": 2965,
+            "Priority": 108,
+            "IsUnusable": true
+          },
+          {
+            "Id": 110,
+            "Position": 2990,
+            "Priority": 110,
+            "IsUnusable": true
+          },
+          {
+            "Id": 112,
+            "Position": 3015,
+            "Priority": 112,
+            "IsUnusable": true
+          },
+          {
+            "Id": 114,
+            "Position": 3040,
+            "Priority": 114,
+            "Status": "Free"
+          },
+          {
+            "Id": 116,
+            "Position": 3065,
+            "Priority": 116,
+            "IsUnusable": true
+          },
+          {
+            "Id": 118,
+            "Position": 3090,
+            "Priority": 118,
+            "IsUnusable": true
+          },
+          {
+            "Id": 120,
+            "Position": 3115,
+            "Priority": 120,
+            "IsUnusable": true
+          },
+          {
+            "Id": 122,
+            "Position": 3140,
+            "Priority": 122,
+            "IsUnusable": true
+          },
+          {
+            "Id": 124,
+            "Position": 3165,
+            "Priority": 124,
+            "IsUnusable": true
+          },
+          {
+            "Id": 126,
+            "Position": 3190,
+            "Priority": 126,
+            "IsUnusable": true
+          },
+          {
+            "Id": 128,
+            "Position": 3215,
+            "Priority": 128,
+            "Status": "Free"
+          },
+          {
+            "Id": 130,
+            "Position": 3240,
+            "Priority": 130,
+            "IsUnusable": true
+          },
+          {
+            "Id": 132,
+            "Position": 3265,
+            "Priority": 132,
+            "IsUnusable": true
+          },
+          {
+            "Id": 134,
+            "Position": 3290,
+            "Priority": 134,
+            "IsUnusable": true
+          },
+          {
+            "Id": 136,
+            "Position": 3315,
+            "Priority": 136,
+            "IsUnusable": true
+          },
+          {
+            "Id": 138,
+            "Position": 3340,
+            "Priority": 138,
+            "IsUnusable": true
+          },
+          {
+            "Id": 140,
+            "Position": 3365,
+            "Priority": 140,
+            "IsUnusable": true
+          },
+          {
+            "Id": 142,
+            "Position": 3390,
+            "Priority": 142,
+            "Status": "Free"
+          },
+          {
+            "Id": 144,
+            "Position": 3415,
+            "Priority": 144,
+            "IsUnusable": true
+          },
+          {
+            "Id": 146,
+            "Position": 3440,
+            "Priority": 146,
+            "IsUnusable": true
+          },
+          {
+            "Id": 148,
+            "Position": 3465,
+            "Priority": 148,
+            "IsUnusable": true
+          },
+          {
+            "Id": 150,
+            "Position": 3490,
+            "Priority": 150,
+            "IsUnusable": true
+          },
+          {
+            "Id": 152,
+            "Position": 3515,
+            "Priority": 152,
+            "IsUnusable": true
+          },
+          {
+            "Id": 154,
+            "Position": 3540,
+            "Priority": 154,
+            "IsUnusable": true
+          },
+          {
+            "Id": 156,
+            "Position": 3565,
+            "Priority": 156,
+            "Status": "Free"
+          },
+          {
+            "Id": 158,
+            "Position": 3590,
+            "Priority": 158,
+            "IsUnusable": true
+          },
+          {
+            "Id": 160,
+            "Position": 3615,
+            "Priority": 160,
+            "IsUnusable": true
+          },
+          {
+            "Id": 162,
+            "Position": 3640,
+            "Priority": 162,
+            "IsUnusable": true
+          },
+          {
+            "Id": 164,
+            "Position": 3665,
+            "Priority": 164,
+            "IsUnusable": true
+          },
+          {
+            "Id": 166,
+            "Position": 3690,
+            "Priority": 166,
+            "IsUnusable": true
+          },
+          {
+            "Id": 168,
+            "Position": 3715,
+            "Priority": 168,
+            "IsUnusable": true
+          },
+          {
+            "Id": 170,
+            "Position": 3740,
+            "Priority": 170,
+            "Status": "Free"
+          },
+          {
+            "Id": 172,
+            "Position": 3765,
+            "Priority": 172,
+            "IsUnusable": true
+          },
+          {
+            "Id": 174,
+            "Position": 3790,
+            "Priority": 174,
+            "IsUnusable": true
+          },
+          {
+            "Id": 176,
+            "Position": 3815,
+            "Priority": 176,
+            "IsUnusable": true
+          },
+          {
+            "Id": 178,
+            "Position": 3840,
+            "Priority": 178,
+            "IsUnusable": true
+          },
+          {
+            "Id": 180,
+            "Position": 3865,
+            "Priority": 180,
+            "IsUnusable": true
+          },
+          {
+            "Id": 182,
+            "Position": 3890,
+            "Priority": 182,
+            "IsUnusable": true
+          },
+          {
+            "Id": 184,
+            "Position": 3915,
+            "Priority": 184,
+            "Status": "Free"
+          },
+          {
+            "Id": 186,
+            "Position": 3940,
+            "Priority": 186,
+            "IsUnusable": true
+          },
+          {
+            "Id": 188,
+            "Position": 3965,
+            "Priority": 188,
+            "IsUnusable": true
+          },
+          {
+            "Id": 190,
+            "Position": 3990,
+            "Priority": 190,
+            "IsUnusable": true
+          },
+          {
+            "Id": 192,
+            "Position": 4015,
+            "Priority": 192,
+            "IsUnusable": true
+          },
+          {
+            "Id": 194,
+            "Position": 4040,
+            "Priority": 194,
+            "IsUnusable": true
+          },
+          {
+            "Id": 196,
+            "Position": 4065,
+            "Priority": 196,
+            "IsUnusable": true
+          },
+          {
+            "Id": 198,
+            "Position": 4090,
+            "Priority": 198,
+            "Status": "Free"
+          },
+          {
+            "Id": 200,
+            "Position": 4115,
+            "Priority": 200,
+            "IsUnusable": true
+          },
+          {
+            "Id": 202,
+            "Position": 4140,
+            "Priority": 202,
+            "IsUnusable": true
+          },
+          {
+            "Id": 204,
+            "Position": 4165,
+            "Priority": 204,
+            "IsUnusable": true
+          },
+          {
+            "Id": 206,
+            "Position": 4190,
+            "Priority": 206,
+            "IsUnusable": true
+          }
+
+        ]
+      }
+    ],
+    "ProductionDate": "2019-10-19T16:39:57-08:00",
+    "SerialNumber": "Prototype #1"
+  },
+  "SetupProcedures": {
+    "BayHeightCheck": {
+      "FeedRate": 0.2,
+      "Step": 0.5
+    },
+    "BeltBurnishingTest": {
+      "RequiredCycles": 200
+    },
+    "CarouselManualMovements": {
+      "FeedRate": 0.04
+    },
+    "CellPanelsCheck": {
+      "FeedRate": 0.2,
+      "Step": 0.5
+    },
+    "CellsHeightCheck": {
+      "FeedRate": 0.2,
+      "Step": 0.5
+    },
+    "DepositAndPickUpTest": {
+      "RequiredCycles": 10
+    },
+    "LoadFirstDrawerTest": {
+      "FeedRate": 0.2
+    },
+    "ShutterHeightCheck": {
+      "FeedRate": 0.1
+    },
+    "ShutterTest": {
+      "FeedRate": 1.0,
+      "RequiredCycles": 10000
+    },
+    "VerticalOffsetCalibration": {
+      "ReferenceCellId": 50, //TEMP Temporary value for software test
+      "Step": 0.5,
+      "FeedRate": 0.2
+    },
+    "VerticalResolutionCalibration": {
+      "StartPosition": 500,
+      "InitialPosition": 1000, //TEMP Temporary value for software test
+      "FinalPosition": 5500, //TEMP Temporary value for software test
+      "FeedRate": 0.2
+    }
+  }
 }

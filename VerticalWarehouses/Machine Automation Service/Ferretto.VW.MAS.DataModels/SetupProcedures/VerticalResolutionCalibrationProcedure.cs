@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.MAS.DataModels
+﻿using System;
+
+namespace Ferretto.VW.MAS.DataModels
 {
     public class VerticalResolutionCalibrationProcedure : SetupProcedure
     {
@@ -7,6 +9,8 @@
         private double finalPosition;
 
         private double initialPosition;
+
+        private double startPosition;
 
         #endregion
 
@@ -19,7 +23,7 @@
             {
                 if (value <= 0)
                 {
-                    throw new System.ArgumentOutOfRangeException(nameof(value));
+                    throw new ArgumentOutOfRangeException(nameof(value));
                 }
 
                 this.finalPosition = value;
@@ -33,10 +37,24 @@
             {
                 if (value < 0)
                 {
-                    throw new System.ArgumentOutOfRangeException(nameof(value));
+                    throw new ArgumentOutOfRangeException(nameof(value));
                 }
 
                 this.initialPosition = value;
+            }
+        }
+
+        public double StartPosition
+        {
+            get => this.startPosition;
+            set
+            {
+                if (value <= 0)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value));
+                }
+
+                this.startPosition = value;
             }
         }
 
