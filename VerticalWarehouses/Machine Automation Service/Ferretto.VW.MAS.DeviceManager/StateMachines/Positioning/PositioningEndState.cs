@@ -324,7 +324,26 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 bool isChanged = false;
                 using (var transaction = elevatorDataProvider.GetContextTransaction())
                 {
-                    if (bayPosition != null)
+                    if (this.machineData.MessageData.AxisMovement is Axis.BayChain)
+                    {
+                        var bay = baysDataProvider.GetByNumber(this.machineData.RequestingBay);
+                        if (this.machineData.MessageData.TargetPosition > 0
+                            && machineResourcesProvider.IsDrawerInBayTop(bay.Number)
+                            && !machineResourcesProvider.IsDrawerInBayBottom(bay.Number))
+                        {
+                            var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
+                            var origin = bay.Positions.FirstOrDefault(p => !p.IsUpper);
+                            if (origin != null
+                                && destination != null
+                                && origin.LoadingUnit != null)
+                            {
+                                baysDataProvider.SetLoadingUnit(destination.Id, origin.LoadingUnit.Id);
+                                baysDataProvider.SetLoadingUnit(origin.Id, null);
+                                isChanged = true;
+                            }
+                        }
+                    }
+                    else if (bayPosition != null)
                     {
                         var bay = baysDataProvider.GetByBayPositionId(bayPosition.Id);
                         var isDrawerInBay = bayPosition.IsUpper
@@ -380,25 +399,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                 {
                                     this.Logger.LogWarning("Detected loading unit leaving the cradle, but cell cannot store it.");
                                 }
-                            }
-                        }
-                    }
-                    else if (this.machineData.MessageData.AxisMovement is Axis.BayChain)
-                    {
-                        var bay = baysDataProvider.GetByNumber(this.machineData.RequestingBay);
-                        if (this.machineData.MessageData.TargetPosition > 0
-                            && machineResourcesProvider.IsDrawerInBayTop(bay.Number)
-                            && !machineResourcesProvider.IsDrawerInBayBottom(bay.Number))
-                        {
-                            var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
-                            var origin = bay.Positions.FirstOrDefault(p => !p.IsUpper);
-                            if (origin != null
-                                && destination != null
-                                && origin.LoadingUnit != null)
-                            {
-                                baysDataProvider.SetLoadingUnit(destination.Id, origin.LoadingUnit.Id);
-                                baysDataProvider.SetLoadingUnit(origin.Id, null);
-                                isChanged = true;
                             }
                         }
                     }
