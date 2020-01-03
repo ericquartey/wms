@@ -116,6 +116,8 @@
                           Foreground="{DynamicResource PpcForeground}"
                           Increment="1"
                           IsEnabled="{Binding IsEnabled}"
+                          MaxValue="{Binding MaxValue}"
+                          MinValue="{Binding MinValue}"
                           Template="{StaticResource SpinEditControlTemplate}">
                 <dxe:SpinEdit.Buttons>
                     <dxe:ButtonInfo Command="{Binding SpinDownCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dxe:SpinEdit}}"

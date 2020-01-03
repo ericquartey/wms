@@ -32,6 +32,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
         {
         }
 
+        public async override Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+            this.RaiseCanExecuteChanged();
+        }
+
         #endregion
 
         #region Enums
@@ -54,14 +60,14 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.bayControlCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.BayControl),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
 
         public ICommand BayHeightCommand =>
             this.bayHeightCommand
             ??
             (this.bayHeightCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.BayHeight),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
 
         public override EnableMask EnableMask => EnableMask.Any;
 

@@ -29,8 +29,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand testCompleteCommand;
 
-        private DelegateCommand testDepositAndPickUpCommand;
-
         #endregion
 
         #region Constructors
@@ -56,8 +54,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
             LoadingUnitsBayToBay,
 
-            TestDepositAndPickUp,
-
             TestComplete,
         }
 
@@ -70,21 +66,21 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.extractionLoadingUnitsCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.ExtractionLoadingUnits),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
 
         public ICommand InsertionLoadingUnitsCommand =>
             this.insertionLoadingUnitsCommand
             ??
             (this.insertionLoadingUnitsCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.InsertionLoadingUnits),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
 
         public ICommand LoadingUnitsBayToBayCommand =>
             this.loadingUnitsBayToBayCommand
             ??
             (this.loadingUnitsBayToBayCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.LoadingUnitsBayToBay),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
 
         public ICommand LoadingUnitsCommand =>
             this.loadingUnitsCommand
@@ -98,25 +94,24 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.moveLoadingUnitsCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.MoveLoadingUnits),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
 
         public ICommand TestCompleteCommand =>
             this.testCompleteCommand
             ??
             (this.testCompleteCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.TestComplete),
-                this.CanExecuteCommand));
-
-        public ICommand TestDepositAndPickUpCommand =>
-            this.testDepositAndPickUpCommand
-            ??
-            (this.testDepositAndPickUpCommand = new DelegateCommand(
-                () => this.ExecuteCommand(Menu.TestDepositAndPickUp),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
 
         #endregion
 
         #region Methods
+
+        public async override Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+            this.RaiseCanExecuteChanged();
+        }
 
         protected override void RaiseCanExecuteChanged()
         {
@@ -127,7 +122,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.loadingUnitsCommand?.RaiseCanExecuteChanged();
             this.moveLoadingUnitsCommand?.RaiseCanExecuteChanged();
             this.testCompleteCommand?.RaiseCanExecuteChanged();
-            this.testDepositAndPickUpCommand?.RaiseCanExecuteChanged();
             this.loadingUnitsBayToBayCommand?.RaiseCanExecuteChanged();
         }
 
@@ -163,14 +157,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     this.NavigationService.Appear(
                        nameof(Utils.Modules.Installation),
                        Utils.Modules.Installation.LoadingUnits.LOADINGUNITFROMCELLTOBAY,
-                       data: null,
-                       trackCurrentView: true);
-                    break;
-
-                case Menu.TestDepositAndPickUp:
-                    this.NavigationService.Appear(
-                       nameof(Utils.Modules.Installation),
-                       Utils.Modules.Installation.Bays.DEPOSITANDPICKUPTEST,
                        data: null,
                        trackCurrentView: true);
                     break;

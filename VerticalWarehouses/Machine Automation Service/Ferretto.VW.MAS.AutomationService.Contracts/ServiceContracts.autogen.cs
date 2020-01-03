@@ -2513,6 +2513,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("initialPosition", Required = Newtonsoft.Json.Required.Always)]
         public double InitialPosition { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("startPosition", Required = Newtonsoft.Json.Required.Always)]
+        public double StartPosition { get; set; }
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });

@@ -83,7 +83,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         public override bool KeepAlive => false;
 
         public ICommand LoginCommand =>
-                    this.loginCommand
+            this.loginCommand
             ??
             (this.loginCommand = new DelegateCommand(
                 async () => await this.LoginAsync(),
@@ -172,6 +172,10 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 this.MachineIdentity = machineIdentity;
                 this.sessionService.MachineIdentity = machineIdentity;
             }
+            else
+            {
+                this.MachineIdentity = this.sessionService.MachineIdentity;
+            }
         }
 
         public void OnHealthStatusChanged(HealthStatusChangedEventArgs e)
@@ -202,9 +206,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         {
             return
                 this.machineIdentity != null
-
-                // &&
-                // string.IsNullOrEmpty(this.UserLogin.Error)
                 &&
                 !this.IsWaitingForResponse
                 &&

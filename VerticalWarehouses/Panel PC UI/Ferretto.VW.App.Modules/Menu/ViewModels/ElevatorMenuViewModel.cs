@@ -29,6 +29,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand weightMeasurement;
 
+        private DelegateCommand testDepositAndPickUpCommand;
+
         #endregion
 
         #region Constructors
@@ -39,6 +41,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
         }
 
         #endregion
+
+        public async override Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+            this.RaiseCanExecuteChanged();
+        }
 
         #region Enums
 
@@ -55,6 +63,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             VerticalResolutionCalibration,
 
             VerticalOriginCalibration,
+            TestDepositAndPickUp,
         }
 
         #endregion
@@ -69,6 +78,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.CanExecuteCommand() && this.MachineService.IsHoming));
 
         public override EnableMask EnableMask => EnableMask.Any;
+
+        public ICommand TestDepositAndPickUpCommand =>
+            this.testDepositAndPickUpCommand
+            ??
+            (this.testDepositAndPickUpCommand = new DelegateCommand(
+                () => this.ExecuteCommand(Menu.TestDepositAndPickUp),
+                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
 
         public ICommand VerticalOffsetCalibrationCommand =>
             this.verticalOffsetCalibration
@@ -119,6 +135,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.verticalResolutionCalibration?.RaiseCanExecuteChanged();
             this.weightAnalysisCommand?.RaiseCanExecuteChanged();
             this.weightMeasurement?.RaiseCanExecuteChanged();
+            this.testDepositAndPickUpCommand?.RaiseCanExecuteChanged();
         }
 
         private void ExecuteCommand(Menu menu)
@@ -172,6 +189,15 @@ namespace Ferretto.VW.App.Menu.ViewModels
                         data: null,
                         trackCurrentView: true);
                     break;
+
+                case Menu.TestDepositAndPickUp:
+                    this.NavigationService.Appear(
+                       nameof(Utils.Modules.Installation),
+                       Utils.Modules.Installation.Bays.DEPOSITANDPICKUPTEST,
+                       data: null,
+                       trackCurrentView: true);
+                    break;
+
             }
         }
 

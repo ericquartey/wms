@@ -105,6 +105,17 @@
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
+
+                    <controls:PpcButton Title="Imbarco / Sbarco"
+                                        Margin="0,0,30,30"
+                                        Padding="-2,1,0,0"
+                                        Abbrevation="4.2.5"
+                                        BorderBrush="{DynamicResource FerrettoOrange}"
+                                        Command="{Binding TestDepositAndPickUpCommand}"
+                                        Kind="Account"
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}" />
+
+
                 </WrapPanel>
             </Grid>
 

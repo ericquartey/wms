@@ -44,6 +44,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -504,6 +505,18 @@
                     </Grid>
                 </Border>
             </Border>
+
+
+            <controls:PpcButton Grid.Row="6"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="12"
+                                Width="60"
+                                Margin="0,0,15,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                Command="{Binding ViewStatusSensorsCommand}"
+                                Foreground="{StaticResource FerrettoPureWhite}"
+                                Kind="LightbulbOn" />
         </Grid>
 
     </Grid>

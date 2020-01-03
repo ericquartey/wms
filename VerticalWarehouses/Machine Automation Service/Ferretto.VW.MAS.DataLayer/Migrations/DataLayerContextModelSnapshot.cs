@@ -1631,7 +1631,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 3, 3, 10, 56, 25, 116, DateTimeKind.Local).AddTicks(9204),
+                            InstallationDate = new DateTime(2017, 3, 3, 9, 3, 44, 973, DateTimeKind.Local).AddTicks(9151),
                             ServiceStatus = 86
                         });
                 });
@@ -1944,6 +1944,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<double>("FinalPosition");
 
                     b.Property<double>("InitialPosition");
+
+                    b.Property<double>("StartPosition");
 
                     b.HasDiscriminator().HasValue("VerticalResolutionCalibrationProcedure");
                 });
