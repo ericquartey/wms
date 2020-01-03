@@ -11,16 +11,16 @@
 
     <local:CardSensor CardBadge1="{Binding EmbarkedLoadingUnit.Id}"
                       CardBadgeLabel1="Cassetto"
-                      CardDescription="{Binding VerticalTargetPosition, StringFormat={}{0:F2}}"
-                      CardSensorLabel1="{x:Null}"
-                      CardSensorLabel2="{x:Null}"
+                      CardDescription="{Binding VerticalDescription}"
+                      CardSensorLabel1="Zero"
+                      CardSensorLabel2="Extra"
                       CardSensorLabel3="{x:Null}"
                       CardText="Verticale (mm)"
                       CardValue="{Binding ElevatorVerticalPosition, StringFormat={}{0:F2}}"
                       LuHeight="{Binding EmbarkedLoadingUnit.Height, StringFormat={}{0:F2}}"
                       LuWeight="{Binding EmbarkedLoadingUnit.GrossWeight, StringFormat={}{0:F2}}"
-                      Sensor1="False"
-                      Sensor2="False"
+                      Sensor1="{Binding SensorsService.IsZeroChain}"
+                      Sensor2="{Binding SensorsService.IsExtraChain}"
                       Sensor3="False"
                       Type="Axis" />
 
