@@ -479,8 +479,19 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
 
+                        <controls:PpcButton Grid.Row="0"
+                                            Grid.Column="0"
+                                            Margin="5"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Top"
+                                            Command="{Binding MoveToCellHeightCommand}"
+                                            Content="Vai a cella"
+                                            IsBusy="{Binding IsElevatorMovingToCell}" />
+
                         <ctrls:PpcSpinEdit Grid.Row="0"
-                                           Grid.Column="0"
+                                           Grid.Column="1"
+                                           Width="200"
+                                           Height="60"
                                            Margin="5"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center"
@@ -488,11 +499,21 @@
                                            IsEnabled="{Binding CanInputCellId}"
                                            KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                                            KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
-                                           LabelText=""
-                                           WidthNumber="220" />
+                                           LabelText="" />
 
-                        <ctrls:PpcSpinEdit Grid.Row="0"
+                        <controls:PpcButton Grid.Row="1"
+                                            Grid.Column="0"
+                                            Margin="5"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Top"
+                                            Command="{Binding MoveToHeightCommand}"
+                                            Content="{x:Static res:InstallationApp.GoToPosition}"
+                                            IsBusy="{Binding IsElevatorMovingToHeight}" />
+
+                        <ctrls:PpcSpinEdit Grid.Row="1"
                                            Grid.Column="1"
+                                           Width="200"
+                                           Height="60"
                                            Margin="5"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center"
@@ -500,26 +521,7 @@
                                            IsEnabled="{Binding CanInputHeight}"
                                            KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                                            KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
-                                           LabelText=""
-                                           WidthNumber="220" />
-
-                        <controls:PpcButton Grid.Row="1"
-                                            Grid.Column="0"
-                                            Margin="5"
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Top"
-                                            Command="{Binding MoveToCellHeightCommand}"
-                                            Content="{x:Static res:InstallationApp.MoveToCellHeight}"
-                                            IsBusy="{Binding IsElevatorMovingToCell}" />
-
-                        <controls:PpcButton Grid.Row="1"
-                                            Grid.Column="1"
-                                            Margin="5"
-                                            HorizontalAlignment="Left"
-                                            VerticalAlignment="Top"
-                                            Command="{Binding MoveToHeightCommand}"
-                                            Content="{x:Static res:InstallationApp.GoToPosition}"
-                                            IsBusy="{Binding IsElevatorMovingToHeight}" />
+                                           LabelText="" />
 
                     </Grid>
 

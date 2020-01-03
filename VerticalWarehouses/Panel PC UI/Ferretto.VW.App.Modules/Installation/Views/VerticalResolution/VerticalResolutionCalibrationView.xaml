@@ -80,7 +80,13 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <TextBlock VerticalAlignment="Top"
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.ColumnSpan="2"
+                           VerticalAlignment="Top"
                            FontSize="24"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                            Text="Posizionare l'elevatore ad una altezza tale che permetta di attaccare il metro."
@@ -88,17 +94,30 @@
 
                 <controls:PpcButton Grid.Row="1"
                                     VerticalAlignment="Top"
-                                    Command="{Binding MoveToBayPositionCommand}"
-                                    Content="Vai a baia"
+                                    Command="{Binding MoveToStartPositionCommand}"
+                                    Content="Vai a quota"
                                     Style="{StaticResource WizardIntoButton}" />
+                <ctrls:PpcSpinEdit Grid.Row="1"
+                                   Grid.Column="1"
+                                   Width="250"
+                                   Height="90"
+                                   Margin="0,-15,15,0"
+                                   VerticalAlignment="Top"
+                                   EditValue="{Binding StartPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                   IsEnabled="{Binding IsCanStartPosition}"
+                                   LabelText="Quota di partenza"
+                                   MaxValue="{Binding AxisUpperBound}"
+                                   MinValue="{Binding AxisLowerBound}" />
 
                 <TextBlock Grid.Row="2"
+                           Grid.ColumnSpan="2"
                            FontSize="24"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                            Text="Procedere alla rimozione di uno dei carter laterali e al posizionamento del metro. Competare ripozisionando il carter e ripristinare lo stato di marcia."
                            TextWrapping="Wrap" />
 
                 <controls:PpcButton Grid.Row="3"
+                                    Grid.ColumnSpan="2"
                                     Command="{Binding MoveToFirstMisurationCommand}"
                                     Content="Avanti"
                                     Style="{StaticResource WizardIntoButton}" />
@@ -134,12 +153,16 @@
                                        Height="90"
                                        Margin="0,0,15,0"
                                        EditValue="{Binding DestinationPosition1, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                       LabelText="Quota di destinazione" />
+                                       LabelText="Quota di destinazione"
+                                       MaxValue="{Binding AxisUpperBound}"
+                                       MinValue="{Binding AxisLowerBound}" />
 
                     <ctrls:PpcSpinEdit Width="250"
                                        Height="90"
                                        Margin="0,0,15,0"
-                                       LabelText="Quota misurata" />
+                                       LabelText="Quota misurata"
+                                       MaxValue="{Binding AxisUpperBound}"
+                                       MinValue="{Binding AxisLowerBound}" />
                 </StackPanel>
                 <controls:PpcButton Grid.Row="3"
                                     Content="Avanti"
@@ -176,12 +199,16 @@
                                        Height="90"
                                        Margin="0,0,15,0"
                                        EditValue="{Binding DestinationPosition2, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                       LabelText="Quota di destinazione" />
+                                       LabelText="Quota di destinazione"
+                                       MaxValue="{Binding AxisUpperBound}"
+                                       MinValue="{Binding AxisLowerBound}" />
 
                     <ctrls:PpcSpinEdit Width="250"
                                        Height="90"
                                        Margin="0,0,15,0"
-                                       LabelText="Quota misurata" />
+                                       LabelText="Quota misurata"
+                                       MaxValue="{Binding AxisUpperBound}"
+                                       MinValue="{Binding AxisLowerBound}" />
                 </StackPanel>
                 <controls:PpcButton Grid.Row="3"
                                     Content="Avanti"
