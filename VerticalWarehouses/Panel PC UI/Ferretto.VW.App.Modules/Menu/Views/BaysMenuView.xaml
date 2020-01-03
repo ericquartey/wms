@@ -93,7 +93,8 @@
                                         Command="{Binding TestBayCommand}"
                                         Content="Permette di effettuare una serie di test ripetitivi per la baia"
                                         Kind="Account"
-                                        Style="{DynamicResource PpcButtonMenuCardStyle}" />
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}"
+                                        Visibility="{Binding IsTestBayVisible, Converter={StaticResource BTVC}}" />
                 </WrapPanel>
             </Grid>
 
