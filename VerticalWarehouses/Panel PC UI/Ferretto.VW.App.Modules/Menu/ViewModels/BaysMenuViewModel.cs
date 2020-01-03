@@ -32,12 +32,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
         {
         }
 
-        public async override Task OnAppearedAsync()
-        {
-            await base.OnAppearedAsync();
-            this.RaiseCanExecuteChanged();
-        }
-
         #endregion
 
         #region Enums
@@ -71,6 +65,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
+        public bool IsTestBayVisible => this.MachineService.HasBayExternal || this.MachineService.HasCarousel;
+
         public ICommand TestShutterCommand =>
             this.testShutterCommand
             ??
@@ -81,6 +77,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
         #endregion
 
         #region Methods
+
+        public async override Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+            this.RaiseCanExecuteChanged();
+        }
 
         protected override void RaiseCanExecuteChanged()
         {
