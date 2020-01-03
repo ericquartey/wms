@@ -134,7 +134,10 @@ namespace Ferretto.VW.App.Controls
 
         public void ClearNotifications()
         {
-            this.MachineService?.ClearNotifications();
+            if (this.IsVisible)
+            {
+                this.MachineService?.ClearNotifications();
+            }
         }
 
         public override void Disappear()
