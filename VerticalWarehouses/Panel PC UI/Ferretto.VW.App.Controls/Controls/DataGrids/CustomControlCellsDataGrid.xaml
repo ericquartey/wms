@@ -7,7 +7,7 @@
              xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources">
 
     <UserControl.Resources>
-        <conv:EnumCellStatusConverter x:Key="ECSC" />
+        <conv:EnumBlockLevelConverter x:Key="EBLC" />
     </UserControl.Resources>
     <Border BorderBrush="White"
             BorderThickness="1">
@@ -114,7 +114,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn x:Name="Column1"
                                     Width="1.5*"
-                                    Binding="{Binding Path=Status, Converter={StaticResource ECSC}}"
+                                    Binding="{Binding Path=BlockLevel, Converter={StaticResource EBLC}}"
                                     Header="Status">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
@@ -221,6 +221,32 @@
                                     Width="1*"
                                     Binding="{Binding Path=Priority}"
                                     Header="Priority">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                            <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
+                            <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn x:Name="Column7"
+                                    Width="1*"
+                                    Binding="{Binding Path=IsFree}"
+                                    Header="IsFree">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="BorderThickness" Value="0,0,0,1" />

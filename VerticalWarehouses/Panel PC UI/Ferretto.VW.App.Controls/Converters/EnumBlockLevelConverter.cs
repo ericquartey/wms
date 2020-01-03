@@ -5,7 +5,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Controls.Converters
 {
-    public class EnumCellStatusConverter : IValueConverter
+    public class EnumBlockLevelConverter : IValueConverter
     {
         #region Methods
 
@@ -13,11 +13,17 @@ namespace Ferretto.VW.App.Controls.Converters
         {
             switch (value)
             {
-                case true:
-                    return Resources.OperatorApp.Cell_Status_Free;
+                case BlockLevel.None:
+                    return Resources.OperatorApp.BlockLevelNone;
 
-                case false:
-                    return Resources.OperatorApp.Cell_Status_Occupied;
+                case BlockLevel.Undefined:
+                    return Resources.OperatorApp.BlockLevelUndefined;
+
+                case BlockLevel.SpaceOnly:
+                    return Resources.OperatorApp.BlockLevelSpaceOnly;
+
+                case BlockLevel.Blocked:
+                    return Resources.OperatorApp.BlockLevelBlocked;
             }
 
             return string.Empty;
