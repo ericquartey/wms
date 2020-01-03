@@ -572,7 +572,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Side = table.Column<string>(type: "text", nullable: false),
+                    Side = table.Column<int>(nullable: false),
                     MachineId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -592,12 +592,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    IsDeactivated = table.Column<bool>(nullable: false),
-                    IsUnusable = table.Column<bool>(nullable: false),
+                    BlockLevel = table.Column<int>(nullable: false),
+                    IsFree = table.Column<bool>(nullable: false),
                     PanelId = table.Column<int>(nullable: false),
                     Position = table.Column<double>(nullable: false),
-                    Priority = table.Column<int>(nullable: false),
-                    Status = table.Column<string>(type: "text", nullable: false)
+                    Priority = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -694,7 +693,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Operation = table.Column<int>(nullable: false),
                     Resolution = table.Column<double>(nullable: false),
                     ShutterId = table.Column<int>(nullable: true),
-                    Side = table.Column<string>(type: "text", nullable: false),
+                    Side = table.Column<int>(nullable: false),
                     MachineId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -993,7 +992,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 300011, 300011, "Errore stato serranda", "Serranda non in posizione chiusa. Verificare lo stato dei sensori.", 1 });
+                values: new object[] { 300011, 300011, "Errore stato serranda", "Serranda non in posizione chiusa nè aperta. Verificare lo stato dei sensori.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
@@ -1223,7 +1222,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 2, 28, 18, 6, 39, 983, DateTimeKind.Local).AddTicks(4912), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 3, 3, 10, 56, 25, 116, DateTimeKind.Local).AddTicks(9204), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",

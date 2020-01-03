@@ -1110,6 +1110,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public Shutter Shutter { get; set; }
     
         [Newtonsoft.Json.JsonProperty("side", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public WarehouseSide Side { get; set; }
     
         [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
@@ -1691,11 +1693,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Cell : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("isDeactivated", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsDeactivated { get; set; }
+        [Newtonsoft.Json.JsonProperty("blockLevel", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public BlockLevel BlockLevel { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("isUnusable", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsUnusable { get; set; }
+        [Newtonsoft.Json.JsonProperty("isFree", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsFree { get; set; }
     
         [Newtonsoft.Json.JsonProperty("panelId", Required = Newtonsoft.Json.Required.Always)]
         public int PanelId { get; set; }
@@ -1707,10 +1711,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public int Priority { get; set; }
     
         [Newtonsoft.Json.JsonProperty("side", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public WarehouseSide Side { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
-        public CellStatus Status { get; set; }
     
         public string ToJson() 
         {
@@ -1725,22 +1728,33 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum WarehouseSide
+    public enum BlockLevel
     {
-        NotSpecified = 0,
+        [System.Runtime.Serialization.EnumMember(Value = @"Undefined")]
+        Undefined = 0,
     
-        Front = 1,
+        [System.Runtime.Serialization.EnumMember(Value = @"None")]
+        None = 1,
     
-        Back = 2,
+        [System.Runtime.Serialization.EnumMember(Value = @"SpaceOnly")]
+        SpaceOnly = 2,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Blocked")]
+        Blocked = 3,
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum CellStatus
+    public enum WarehouseSide
     {
-        Free = 0,
+        [System.Runtime.Serialization.EnumMember(Value = @"NotSpecified")]
+        NotSpecified = 0,
     
-        Occupied = 1,
+        [System.Runtime.Serialization.EnumMember(Value = @"Front")]
+        Front = 1,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Back")]
+        Back = 2,
     
     }
     
@@ -1980,6 +1994,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public System.Collections.Generic.IEnumerable<Cell> Cells { get; set; }
     
         [Newtonsoft.Json.JsonProperty("side", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public WarehouseSide Side { get; set; }
     
         public string ToJson() 
@@ -2027,14 +2043,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class CellStatusStatistics 
     {
+        [Newtonsoft.Json.JsonProperty("isFree", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsFree { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("ratioBackCells", Required = Newtonsoft.Json.Required.Always)]
         public double RatioBackCells { get; set; }
     
         [Newtonsoft.Json.JsonProperty("ratioFrontCells", Required = Newtonsoft.Json.Required.Always)]
         public double RatioFrontCells { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
-        public CellStatus Status { get; set; }
     
         [Newtonsoft.Json.JsonProperty("totalBackCells", Required = Newtonsoft.Json.Required.Always)]
         public int TotalBackCells { get; set; }

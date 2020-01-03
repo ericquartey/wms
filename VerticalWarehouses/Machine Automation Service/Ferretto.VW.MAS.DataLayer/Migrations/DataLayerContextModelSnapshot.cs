@@ -51,9 +51,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("ShutterId");
 
-                    b.Property<string>("Side")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Side");
 
                     b.HasKey("Id");
 
@@ -148,19 +146,15 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<bool>("IsDeactivated");
+                    b.Property<int>("BlockLevel");
 
-                    b.Property<bool>("IsUnusable");
+                    b.Property<bool>("IsFree");
 
                     b.Property<int>("PanelId");
 
                     b.Property<double>("Position");
 
                     b.Property<int>("Priority");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -176,9 +170,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("MachineId");
 
-                    b.Property<string>("Side")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Side");
 
                     b.HasKey("Id");
 
@@ -854,7 +846,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 300011,
                             Code = 300011,
                             Description = "Errore stato serranda",
-                            Reason = "Serranda non in posizione chiusa. Verificare lo stato dei sensori.",
+                            Reason = "Serranda non in posizione chiusa nè aperta. Verificare lo stato dei sensori.",
                             Severity = 1
                         },
                         new
@@ -1639,7 +1631,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 2, 28, 18, 6, 39, 983, DateTimeKind.Local).AddTicks(4912),
+                            InstallationDate = new DateTime(2017, 3, 3, 10, 56, 25, 116, DateTimeKind.Local).AddTicks(9204),
                             ServiceStatus = 86
                         });
                 });

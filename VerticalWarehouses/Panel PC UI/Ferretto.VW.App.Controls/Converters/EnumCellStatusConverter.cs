@@ -13,10 +13,10 @@ namespace Ferretto.VW.App.Controls.Converters
         {
             switch (value)
             {
-                case CellStatus.Free:
+                case true:
                     return Resources.OperatorApp.Cell_Status_Free;
 
-                case CellStatus.Occupied:
+                case false:
                     return Resources.OperatorApp.Cell_Status_Occupied;
             }
 

@@ -847,7 +847,7 @@ namespace Ferretto.VW.App.Services
                     ms.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.CellWithNumber, dataElevatorPosition.CellId);
 
                     var cell = this.cells?.FirstOrDefault(l => l.Id.Equals(dataElevatorPosition.CellId));
-                    ms.LogicalPosition = cell?.Status.ToString() + " / " + cell?.Side.ToString();
+                    ms.LogicalPosition = cell?.IsFree.ToString() + " / " + cell?.Side.ToString();
                     ms.LogicalPositionId = dataElevatorPosition.CellId.ToString();
 
                     ms.ElevatorPositionLoadingUnit = this.loadingUnits.FirstOrDefault(l => l.CellId.Equals(dataElevatorPosition.CellId));

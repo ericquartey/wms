@@ -3,6 +3,6 @@ UPDATE LoadingUnits SET GrossWeight = 500, CellId = 20 WHERE Id = 44;
 UPDATE LoadingUnits SET GrossWeight = 500, CellId = 30 WHERE Id = 45;
 
 
-UPDATE Cells SET Status = 'Occupied'  WHERE Id = 10;
-UPDATE Cells SET Status = 'Occupied'  WHERE Id = 20;
-UPDATE Cells SET Status = 'Occupied'  WHERE Id = 30;
+UPDATE Cells SET IsFree = 0  WHERE Id = 10;
+UPDATE Cells SET IsFree = 0  WHERE Id = 20;
+UPDATE Cells SET IsFree = 0  WHERE Id = 30;
