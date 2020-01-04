@@ -1,10 +1,10 @@
 ﻿namespace Ferretto.VW.App.Installation.Views
 {
-    public partial class VerticalOffsetCalibrationStep2View
+    public partial class VerticalOffsetCalibrationView
     {
         #region Constructors
 
-        public VerticalOffsetCalibrationStep2View()
+        public VerticalOffsetCalibrationView()
         {
             this.InitializeComponent();
         }
