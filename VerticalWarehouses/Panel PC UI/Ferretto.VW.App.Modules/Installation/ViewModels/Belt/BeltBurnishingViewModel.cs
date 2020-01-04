@@ -176,23 +176,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public override bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            protected set
-            {
-                if (this.SetProperty(ref this.isWaitingForResponse, value))
-                {
-                    if (this.isWaitingForResponse)
-                    {
-                        this.ClearNotifications();
-                    }
-
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
         public int? PerformedCyclesThisSession
         {
             get => this.completedCyclesThisSession;
@@ -379,8 +362,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             await base.OnMachinePowerChangedAsync(e);
 
-            this.ClearNotifications();
-
             if (e.MachinePowerState == MachinePowerState.Unpowered)
             {
                 this.IsExecutingProcedure = false;
@@ -443,7 +424,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (message.Data?.MovementMode == MovementMode.BeltBurnishing)
             {
                 this.CumulativePerformedCycles = message.Data.ExecutedCycles;
-                this.CyclesPercent = (message.Data.ExecutedCycles / message.Data.RequiredCycles) * 100.0;
+                this.CyclesPercent = ((double)this.PerformedCyclesThisSession / (double)message.Data.RequiredCycles) * 100.0;
             }
 
             if (message.Status == MessageStatus.OperationEnd &&

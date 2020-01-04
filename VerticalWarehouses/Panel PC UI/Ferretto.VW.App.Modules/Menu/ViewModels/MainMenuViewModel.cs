@@ -177,7 +177,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     var bay = await this.bayManager.GetBayAsync();
                     if (!(bay is null))
                     {
-                        this.bayNumber = (int)bay.Number;
+                        this.BayNumber = (int)bay.Number;
                     }
 
                     if (this.Data is MachineIdentity machineIdentity)

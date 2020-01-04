@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Regions;
@@ -17,6 +20,8 @@ namespace Ferretto.VW.App.Controls
 
         protected bool isWaitingForResponse;
 
+        private readonly IEventAggregator eventAggregator = CommonServiceLocator.ServiceLocator.Current.GetInstance<IEventAggregator>();
+
         private readonly IHealthProbeService healthProbeService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IHealthProbeService>();
 
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
@@ -26,6 +31,8 @@ namespace Ferretto.VW.App.Controls
         private readonly IMachineModeService machineModeService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineModeService>();
 
         private readonly IMachineService machineService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineService>();
+
+        private readonly ISensorsService sensorsService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISensorsService>();
 
         private SubscriptionToken bayChainPositionChangedToken;
 
@@ -49,6 +56,8 @@ namespace Ferretto.VW.App.Controls
 
         private PresentationMode mode;
 
+        private SubscriptionToken sensorsToken;
+
         #endregion
 
         #region Constructors
@@ -64,6 +73,8 @@ namespace Ferretto.VW.App.Controls
 
         public virtual EnableMask EnableMask => EnableMask.MachinePoweredOn;
 
+        public IEventAggregator EventAggregator => this.eventAggregator;
+
         public IHealthProbeService HealthProbeService => this.healthProbeService;
 
         public bool IsEnabled
@@ -77,6 +88,8 @@ namespace Ferretto.VW.App.Controls
             get => this.isKeyboardOpened;
             set => this.SetProperty(ref this.isKeyboardOpened, value, this.RaiseCanExecuteChanged);
         }
+
+        public bool IsMoving => (this.machineService?.MachineStatus?.IsMoving ?? true) || (this.machineService?.MachineStatus?.IsMovingLoadingUnit ?? true);
 
         public virtual bool IsWaitingForResponse
         {
@@ -104,13 +117,15 @@ namespace Ferretto.VW.App.Controls
 
         public IMachineService MachineService => this.machineService;
 
-        public MachineStatus MachineStatus => this.MachineService.MachineStatus;
+        public MachineStatus MachineStatus => this.machineService.MachineStatus;
 
         public PresentationMode Mode
         {
             get => this.mode;
             set => this.SetProperty(ref this.mode, value);
         }
+
+        public ISensorsService SensorsService => this.sensorsService;
 
         protected bool IsConnectedByMAS => this.healthProbeService.HealthStatus == HealthStatus.Healthy;
 
@@ -120,9 +135,10 @@ namespace Ferretto.VW.App.Controls
 
         public void ClearNotifications()
         {
-            this.EventAggregator
-                .GetEvent<PresentationNotificationPubSubEvent>()
-                .Publish(new PresentationNotificationMessage(true));
+            if (this.IsVisible)
+            {
+                this.MachineService?.ClearNotifications();
+            }
         }
 
         public override void Disappear()
@@ -130,6 +146,9 @@ namespace Ferretto.VW.App.Controls
             base.Disappear();
 
             this.IsWaitingForResponse = false;
+
+            this.sensorsToken?.Dispose();
+            this.sensorsToken = null;
 
             /*
              * Avoid unsubscribing in case of navigation to error page.
@@ -145,6 +164,8 @@ namespace Ferretto.VW.App.Controls
 
         public virtual void InitializeSteps()
         {
+            this.ShowPrevStepSinglePage(false, false);
+            this.ShowNextStepSinglePage(false, false);
             this.ShowPrevStep(false, false);
             this.ShowNextStep(false, false);
             this.ShowAbortStep(false, false);
@@ -156,7 +177,17 @@ namespace Ferretto.VW.App.Controls
 
             this.UpdatePresentation();
 
-            await this.machineService.OnUpdateServiceAsync();
+            try
+            {
+                await this.machineService.OnUpdateServiceAsync();
+            }
+            catch (HttpRequestException)
+            {
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
             this.InitializeSteps();
 
@@ -224,6 +255,17 @@ namespace Ferretto.VW.App.Controls
                 await this.OnErrorStatusChangedAsync(e);
             };
 
+            this.sensorsToken = this.sensorsToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Subscribe(
+                        this.OnSensorsChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data != null &&
+                             this.IsVisible);
+
             this.UpdateIsEnabled(
                 this.machineModeService.MachinePower,
                 this.machineModeService.MachineMode,
@@ -246,6 +288,11 @@ namespace Ferretto.VW.App.Controls
         public void ShowNextStep(bool isEnabled, bool isVisible, string moduleName = null, string viewName = null)
         {
             this.ShowStep(PresentationTypes.Next, isEnabled, isVisible, moduleName, viewName);
+        }
+
+        public void ShowNextStepSinglePage(bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
+        {
+            this.ShowStep(PresentationTypes.NextStep, isVisible, isEnabled, moduleName, viewName);
         }
 
         public void ShowNotification(string message, NotificationSeverity severity = NotificationSeverity.Info)
@@ -278,6 +325,11 @@ namespace Ferretto.VW.App.Controls
         public void ShowPrevStep(bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
         {
             this.ShowStep(PresentationTypes.Prev, isVisible, isEnabled, moduleName, viewName);
+        }
+
+        public void ShowPrevStepSinglePage(bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
+        {
+            this.ShowStep(PresentationTypes.PrevStep, isVisible, isEnabled, moduleName, viewName);
         }
 
         public void ShowStep(PresentationTypes presentationType, bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
@@ -323,6 +375,8 @@ namespace Ferretto.VW.App.Controls
                 this.machineModeService.MachineMode,
                 e.HealthStatus);
 
+            this.RaiseCanExecuteChanged();
+
             return Task.CompletedTask;
         }
 
@@ -333,6 +387,8 @@ namespace Ferretto.VW.App.Controls
                 e.MachineMode,
                 this.healthProbeService.HealthStatus);
 
+            this.RaiseCanExecuteChanged();
+
             return Task.CompletedTask;
         }
 
@@ -342,6 +398,8 @@ namespace Ferretto.VW.App.Controls
                 e.MachinePowerState,
                 this.machineModeService.MachineMode,
                 this.healthProbeService.HealthStatus);
+
+            this.RaiseCanExecuteChanged();
 
             return Task.CompletedTask;
         }
@@ -360,6 +418,9 @@ namespace Ferretto.VW.App.Controls
 
         protected virtual void RaiseCanExecuteChanged()
         {
+            this.RaisePropertyChanged(nameof(this.IsMoving));
+            this.RaisePropertyChanged(nameof(this.MachineService));
+            this.RaisePropertyChanged(nameof(this.MachineStatus));
         }
 
         private void KeyboardClose()
@@ -378,6 +439,11 @@ namespace Ferretto.VW.App.Controls
                 this.machineModeService.MachinePower,
                 this.machineModeService.MachineMode,
                 this.healthProbeService.HealthStatus);
+        }
+
+        private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
+        {
+            this.RaiseCanExecuteChanged();
         }
 
         private void UpdateIsEnabled(

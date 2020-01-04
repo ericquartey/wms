@@ -127,7 +127,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             var inverterIndex = this.machineData.CurrentInverterIndex;
             this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {inverterIndex}");
 
-            if (!this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate != Axis.BayChain)
+            if (!this.machineData.IsOneTonMachine && this.machineData.AxisToCalibrate != Axis.BayChain)
             {
                 var ioCommandMessageData = new SwitchAxisFieldMessageData(this.machineData.AxisToCalibrate);
                 var ioCommandMessage = new FieldCommandMessage(

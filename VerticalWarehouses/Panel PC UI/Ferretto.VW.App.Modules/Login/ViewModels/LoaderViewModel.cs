@@ -70,6 +70,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
+        public override bool KeepAlive => false;
+
         #endregion
 
         #region Methods
@@ -85,8 +87,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         public override async Task OnAppearedAsync()
         {
             SplashScreenService.Hide();
-
-            await base.OnAppearedAsync();
 
             this.subscriptionToken = this.subscriptionToken
                 ??

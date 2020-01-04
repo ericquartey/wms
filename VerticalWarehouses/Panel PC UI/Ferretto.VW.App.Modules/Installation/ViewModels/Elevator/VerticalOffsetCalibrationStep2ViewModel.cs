@@ -10,7 +10,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    internal sealed class VerticalOffsetCalibrationStep2ViewModel : BaseVerticalOffsetCalibrationViewModel
+    internal class VerticalOffsetCalibrationStep2ViewModel : BaseVerticalOffsetCalibrationViewModel
     {
         #region Fields
 
@@ -82,15 +82,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public string Error => string.Join(
+            Environment.NewLine,
+            this[nameof(this.Displacement)]);
+
         public double? InitialPosition
         {
             get => this.initialPosition;
             set => this.SetProperty(ref this.initialPosition, value);
         }
-
-        public string Error => string.Join(
-            Environment.NewLine,
-            this[nameof(this.Displacement)]);
 
         public double InputStepValue
         {
@@ -189,6 +189,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.InitialPosition = this.CurrentPosition;
         }
 
+        protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
+        {
+            await base.OnMachinePowerChangedAsync(e);
+
+            if (e.MachinePowerState != MachinePowerState.Powered)
+            {
+                this.IsWaitingForResponse = false;
+                this.IsElevatorMovingUp = false;
+                this.IsElevatorMovingDown = false;
+            }
+        }
+
         protected override void OnPositioningOperationChanged(NotificationMessageUI<PositioningMessageData> message)
         {
             base.OnPositioningOperationChanged(message);
@@ -219,20 +231,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
-        {
-            await base.OnMachinePowerChangedAsync(e);
-
-            if (e.MachinePowerState != MachinePowerState.Powered)
-            {
-                this.IsWaitingForResponse = false;
-                this.IsElevatorMovingUp = false;
-                this.IsElevatorMovingDown = false;
-            }
-        }
-
         protected override void RaiseCanExecuteChanged()
         {
+            base.RaiseCanExecuteChanged();
+
             this.moveDownCommand?.RaiseCanExecuteChanged();
             this.moveUpCommand?.RaiseCanExecuteChanged();
             this.applyCorrectionCommand?.RaiseCanExecuteChanged();

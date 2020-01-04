@@ -29,7 +29,9 @@
                                         Visibility="{Binding ShowEditorButtons, Converter={StaticResource BTVC}, RelativeSource={RelativeSource TemplatedParent}}" />
                     <dxe:EditorControl x:Name="PART_Content"
                                        Grid.Column="2"
-                                       VerticalAlignment="Stretch"
+                                       Margin="4,0"
+                                       HorizontalContentAlignment="Center"
+                                       Foreground="{DynamicResource PpcForeground}"
                                        MouseDoubleClick="OnKeyboardOpenHandler"
                                        Template="{TemplateBinding ActualEditorControlTemplate}"
                                        TouchEnter="OnKeyboardOpenHandler" />
@@ -42,7 +44,17 @@
                 </Grid>
             </ContentControl>
             <ControlTemplate.Triggers>
-                <MultiTrigger>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)/ErrorContent}" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="true">
+                    <Setter Property="Foreground" Value="{DynamicResource PpcForeground}" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Foreground" Value="{DynamicResource PpcForeground}" />
+                </Trigger>
+                <!--<MultiTrigger>
                     <MultiTrigger.Conditions>
                         <Condition Property="IsTextEditable" Value="true" />
                         <Condition Property="EditMode" Value="Standalone" />
@@ -55,82 +67,93 @@
                         <Condition Property="EditMode" Value="Standalone" />
                     </MultiTrigger.Conditions>
                     <Setter TargetName="PART_Content" Property="Template" Value="{Binding EditNonEditableTemplate, RelativeSource={RelativeSource TemplatedParent}}" />
-                </MultiTrigger>
+                </MultiTrigger>-->
             </ControlTemplate.Triggers>
         </ControlTemplate>
     </UserControl.Resources>
 
-    <Grid>
-        <Border Margin="0"
-                Background="{DynamicResource PpcBackground}"
-                BorderBrush="{DynamicResource PpcBorderBrush}"
-                BorderThickness="{DynamicResource PpcBorderThickness}"
-                CornerRadius="{DynamicResource PpcCornerRadius}">
+    <Border Margin="0"
+            Background="{DynamicResource PpcBackground}"
+            BorderBrush="{DynamicResource PpcBorderBrush}"
+            BorderThickness="{DynamicResource PpcBorderThickness}"
+            CornerRadius="{DynamicResource PpcCornerRadius}">
 
-            <StackPanel x:Name="LayoutRoot"
-                        VerticalAlignment="Center">
-                <TextBlock Margin="0"
-                           Text="{Binding LabelText}">
-                    <TextBlock.Style>
-                        <Style BasedOn="{StaticResource VWAPP_PpcSpinEdit_TextBlockStyle}"
-                               TargetType="{x:Type TextBlock}">
-                            <Style.Triggers>
-                                <Trigger Property="Text" Value="">
-                                    <Setter Property="Visibility" Value="Collapsed" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
-                <dxe:SpinEdit Name="InnerSpinEdit"
-                              Width="{Binding WidthNumber, FallbackValue=200}"
-                              Margin="0"
-                              AllowDefaultButton="False"
-                              EditValue="{Binding EditValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              Increment="1"
-                              IsEnabled="{Binding IsEnabled}"
-                              Template="{StaticResource SpinEditControlTemplate}">
-                    <dxe:SpinEdit.Buttons>
-                        <dxe:ButtonInfo Command="{Binding SpinDownCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dxe:SpinEdit}}"
-                                        IsLeft="True"
-                                        TextBlock.FontSize="20">
-                            <dxe:ButtonInfo.Content>
-                                <Grid x:Name="Button_Min"
-                                      Width="56"
-                                      Height="56"
-                                      HorizontalAlignment="Stretch"
-                                      VerticalAlignment="Stretch">
-                                    <TextBlock Margin="0,-10,0,0"
-                                               VerticalAlignment="Center"
-                                               FontSize="50"
-                                               FontWeight="Normal"
-                                               Foreground="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}"
-                                               Text="-"
-                                               TextAlignment="Center" />
-                                </Grid>
-                            </dxe:ButtonInfo.Content>
-                        </dxe:ButtonInfo>
-                        <dxe:ButtonInfo Command="{Binding SpinUpCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dxe:SpinEdit}}"
-                                        TextBlock.FontSize="20">
-                            <dxe:ButtonInfo.Content>
-                                <Grid x:Name="Button_Add"
-                                      Width="56"
-                                      Height="56"
-                                      HorizontalAlignment="Stretch"
-                                      VerticalAlignment="Stretch">
-                                    <TextBlock Margin="0,-10,0,0"
-                                               VerticalAlignment="Center"
-                                               FontSize="50"
-                                               FontWeight="Normal"
-                                               Foreground="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}"
-                                               Text="+"
-                                               TextAlignment="Center" />
-                                </Grid>
-                            </dxe:ButtonInfo.Content>
-                        </dxe:ButtonInfo>
-                    </dxe:SpinEdit.Buttons>
-                </dxe:SpinEdit>
-            </StackPanel>
-        </Border>
-    </Grid>
+        <Grid x:Name="LayoutRoot"
+              Margin="4">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0"
+                       Margin="4,0"
+                       FontSize="{StaticResource FontSize_Normal}"
+                       FontWeight="Normal"
+                       Foreground="{DynamicResource FerrettoLightGray}"
+                       Text="{Binding LabelText}">
+                <TextBlock.Style>
+                    <Style BasedOn="{StaticResource VWAPP_PpcSpinEdit_TextBlockStyle}"
+                           TargetType="{x:Type TextBlock}">
+                        <Style.Triggers>
+                            <Trigger Property="Text" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </Trigger>
+                            <Trigger Property="Text" Value="">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+            <dxe:SpinEdit Name="InnerSpinEdit"
+                          Grid.Row="1"
+                          Margin="0"
+                          HorizontalContentAlignment="Center"
+                          AllowDefaultButton="False"
+                          EditValue="{Binding EditValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          FontSize="{StaticResource FontSize_Very_High}"
+                          Foreground="{DynamicResource PpcForeground}"
+                          Increment="1"
+                          IsEnabled="{Binding IsEnabled}"
+                          MaxValue="{Binding MaxValue}"
+                          MinValue="{Binding MinValue}"
+                          Template="{StaticResource SpinEditControlTemplate}">
+                <dxe:SpinEdit.Buttons>
+                    <dxe:ButtonInfo Command="{Binding SpinDownCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dxe:SpinEdit}}"
+                                    IsLeft="True"
+                                    TextBlock.FontSize="20">
+                        <dxe:ButtonInfo.Content>
+                            <Grid x:Name="Button_Min"
+                                  Width="{Binding ElementName=Button_Add, Path=ActualWidth}">
+                                <TextBlock Margin="2,-10,4,0"
+                                           VerticalAlignment="Center"
+                                           FontSize="50"
+                                           FontWeight="Normal"
+                                           Foreground="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}"
+                                           Text="-"
+                                           TextAlignment="Center"
+                                           Visibility="{Binding IsEnabled, Converter={StaticResource BTVC}}" />
+                            </Grid>
+                        </dxe:ButtonInfo.Content>
+                    </dxe:ButtonInfo>
+                    <dxe:ButtonInfo Command="{Binding SpinUpCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dxe:SpinEdit}}"
+                                    TextBlock.FontSize="20">
+                        <dxe:ButtonInfo.Content>
+                            <Grid x:Name="Button_Add">
+                                <TextBlock Margin="4,-10,2,0"
+                                           VerticalAlignment="Center"
+                                           FontSize="50"
+                                           FontWeight="Normal"
+                                           Foreground="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}"
+                                           Text="+"
+                                           TextAlignment="Center"
+                                           Visibility="{Binding IsEnabled, Converter={StaticResource BTVC}}" />
+                            </Grid>
+                        </dxe:ButtonInfo.Content>
+                    </dxe:ButtonInfo>
+                </dxe:SpinEdit.Buttons>
+            </dxe:SpinEdit>
+        </Grid>
+    </Border>
 </UserControl>

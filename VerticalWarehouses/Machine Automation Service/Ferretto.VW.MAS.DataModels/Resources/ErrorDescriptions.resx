@@ -127,19 +127,19 @@
     <value>Loading unit not fully loaded.</value>
   </data>
   <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
-    <value>CradleNotCorrectlyLoadedDuringPickup</value>
+    <value>Inconsistenza sensori elevatore</value>
   </data>
   <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
-    <value>CradleNotCorrectlyUnloadedDuringDeposit</value>
+    <value>Inconsistenza sensori elevatore</value>
   </data>
   <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
-    <value>ZeroSensorErrorAfterDeposit</value>
+    <value>Inconsistenza stato sensori elevatore</value>
   </data>
   <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
-    <value>ZeroSensorErrorAfterPickup</value>
+    <value>Inconsistenza stato sensori elevatore</value>
   </data>
   <data name="InverterErrorBaseCode" xml:space="preserve">
-    <value>INVERTER ERROR</value>
+    <value>Errore generico inverter</value>
   </data>
   <data name="InverterErrorCannotWriteParameterWhileRunning" xml:space="preserve">
     <value>The inverter parameter could not be written during execution.</value>
@@ -220,94 +220,94 @@
     <value>Inconsistency loading unit source cell database</value>
   </data>
   <data name="BottomLevelBayOccupied" xml:space="preserve">
-    <value>BottomLevelBayOccupied</value>
+    <value>Errore esecuzione comando di deposito</value>
   </data>
   <data name="InvalidPresenceSensors" xml:space="preserve">
-    <value>InvalidPresenceSensors</value>
+    <value>Inconsistenza stato sensori elevatore</value>
   </data>
   <data name="LoadUnitPresentOnEmptyElevator" xml:space="preserve">
-    <value>LoadUnitPresentOnEmptyElevator</value>
+    <value>Inconsistenza stato sensori</value>
   </data>
   <data name="MissingZeroSensorWithEmptyElevator" xml:space="preserve">
-    <value>MissingZeroSensorWithEmptyElevator</value>
+    <value>Inconsistenza stato sensori</value>
   </data>
   <data name="SensorZeroBayNotActiveAtStart" xml:space="preserve">
-    <value>SensorZeroBayNotActiveAtStart</value>
+    <value>Inconsistenza stato sensori baia</value>
   </data>
   <data name="TopLevelBayOccupied" xml:space="preserve">
-    <value>TopLevelBayOccupied</value>
+    <value>Errore esecuzione comando di deposito</value>
   </data>
   <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
-    <value>ZeroSensorActiveWithFullElevator</value>
+    <value>Inconsistenza stato sensori elevatore</value>
   </data>
   <data name="LoadingUnitWeightExceeded" xml:space="preserve">
     <value>The maximum weight loaded on the loading unit is excessive.</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitShutterClosed" xml:space="preserve">
-    <value>MachineManagerErrorLoadingUnitShutterClosed</value>
+    <value>Errore stato serranda</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitShutterOpen" xml:space="preserve">
-    <value>MachineManagerErrorLoadingUnitShutterOpen</value>
+    <value>Errore stato serranda</value>
   </data>
   <data name="DestinationBelowLowerBound" xml:space="preserve">
-    <value>DestinationBelowLowerBound</value>
+    <value>Destinazione non valida</value>
   </data>
   <data name="BayInvertersBusy" xml:space="preserve">
-    <value>BayInvertersBusy</value>
+    <value>Errore esecuzione comando</value>
   </data>
   <data name="DestinationOverUpperBound" xml:space="preserve">
-    <value>DestinationOverUpperBound</value>
+    <value>Destinazione non valida</value>
   </data>
   <data name="IoDeviceError" xml:space="preserve">
-    <value>IoDeviceError</value>
+    <value>Errore esecuzione comando</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitPresentInCell" xml:space="preserve">
-    <value>MachineManagerErrorLoadingUnitPresentInCell</value>
+    <value>Errore cassetto in posizione inattesa</value>
   </data>
   <data name="MachineModeNotValid" xml:space="preserve">
-    <value>MachineModeNotValid</value>
+    <value>Errore missione</value>
   </data>
   <data name="SecurityBarrierWasTriggered" xml:space="preserve">
-    <value>SecurityBarrierWasTriggered</value>
+    <value>Una barriera di sicurezza è stata interrotta</value>
   </data>
   <data name="SecurityButtonWasTriggered" xml:space="preserve">
-    <value>SecurityButtonWasTriggered</value>
+    <value>Un pulsante di emergenza è stato premuto</value>
   </data>
   <data name="SecuritySensorWasTriggered" xml:space="preserve">
-    <value>SecuritySensorWasTriggered</value>
+    <value>Uno o più sensori dei pannelli laterali è stato interrotto</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitOtherBay" xml:space="preserve">
-    <value>MachineManagerErrorLoadingUnitOtherBay</value>
+    <value>Errore cassetto in posizione inattesa</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitSourceElevator" xml:space="preserve">
     <value>Drawer not present on the elevator</value>
   </data>
   <data name="BottomLevelBayEmpty" xml:space="preserve">
-    <value>BottomLevelBayEmpty</value>
+    <value>Errore esecuzione comando di prelievo</value>
   </data>
   <data name="TopLevelBayEmpty" xml:space="preserve">
-    <value>TopLevelBayEmpty</value>
+    <value>Errore esecuzione comando di prelievo</value>
   </data>
   <data name="AnotherMissionIsActiveForThisBay" xml:space="preserve">
-    <value>AnotherMissionIsActiveForThisBay</value>
+    <value>Errore esecuzione missione</value>
   </data>
   <data name="AnotherMissionIsActiveForThisLoadUnit" xml:space="preserve">
-    <value>AnotherMissionIsActiveForThisLoadUnit</value>
+    <value>Errore esecuzione missione</value>
   </data>
   <data name="AnotherMissionOfThisTypeIsActive" xml:space="preserve">
-    <value>AnotherMissionOfThisTypeIsActive</value>
+    <value>Errore esecuzione missione</value>
   </data>
   <data name="NoError" xml:space="preserve">
     <value>NoError</value>
   </data>
   <data name="LoadingUnitWeightTooLow" xml:space="preserve">
-    <value>LoadingUnitWeightTooLow</value>
+    <value>Errore peso</value>
   </data>
   <data name="MachineWeightExceeded" xml:space="preserve">
-    <value>MachineWeightExceeded</value>
+    <value>Errore peso</value>
   </data>
   <data name="WarehouseIsFull" xml:space="preserve">
-    <value>WarehouseIsFull</value>
+    <value>Magazzino pieno</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitMissingOnBay1" xml:space="preserve">
     <value>Bay 1 occupied with unknown loading unit</value>
@@ -320,5 +320,14 @@
   </data>
   <data name="MachineManagerErrorLoadingUnitMissingOnElevator" xml:space="preserve">
     <value>Elevator occupied with unknown loading unit</value>
+  </data>
+  <data name="InverterConnectionError" xml:space="preserve">
+    <value>Errore di connessione</value>
+  </data>
+  <data name="IoDeviceConnectionError" xml:space="preserve">
+    <value>Errore di connessione</value>
+  </data>
+  <data name="LaserConnectionError" xml:space="preserve">
+    <value>Errore di connessione</value>
   </data>
 </root>

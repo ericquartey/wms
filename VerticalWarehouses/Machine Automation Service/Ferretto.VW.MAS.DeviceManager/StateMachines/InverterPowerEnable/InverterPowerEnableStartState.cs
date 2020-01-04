@@ -8,6 +8,7 @@ using Ferretto.VW.MAS.DeviceManager.InverterPowerEnable.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
@@ -86,6 +87,22 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
                     }
                     else
                     {
+                        foreach (var bayInverter in this.machineData.BayInverters.Where(x => x.Type == InverterType.Acu || x.Type == InverterType.Ang))
+                        {
+                            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.AxisPosition, true, 0);
+                            var inverterMessage = new FieldCommandMessage(
+                                inverterDataMessage,
+                                "Update Inverter timer",
+                                FieldMessageActor.InverterDriver,
+                                FieldMessageActor.DeviceManager,
+                                FieldMessageType.InverterSetTimer,
+                                (byte)bayInverter.Index);
+
+                            this.Logger.LogTrace($"1:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
+
+                            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
+                        }
+
                         this.ParentStateMachine.ChangeState(new InverterPowerEnableEndState(this.stateData));
                     }
                 }

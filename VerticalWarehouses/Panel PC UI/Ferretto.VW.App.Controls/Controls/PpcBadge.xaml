@@ -25,9 +25,8 @@
             <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="Stroke" Value="{DynamicResource PpcBorderBrush}" />
             <Setter Property="Fill" Value="{DynamicResource PpcBackground}" />
-            <Setter Property="StrokeThickness" Value="3" />
+            <Setter Property="StrokeThickness" Value="4" />
         </Style>
-
     </UserControl.Resources>
 
     <Viewbox Stretch="Uniform"

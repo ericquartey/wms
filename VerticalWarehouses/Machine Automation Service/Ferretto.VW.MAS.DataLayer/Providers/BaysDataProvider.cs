@@ -360,6 +360,21 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public Bay GetByCell(Cell cell)
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Bays
+                    .AsNoTracking()
+                    .Include(b => b.Shutter)
+                    .Include(b => b.Carousel)
+                    .Include(b => b.Positions)
+                    .Where(b => b.Side == cell.Side && b.Positions.First().Height < cell.Position)
+                    .OrderBy(o => cell.Position - o.Positions.First().Height)
+                    .FirstOrDefault();
+            }
+        }
+
         public Bay GetByIdOrDefault(int id)
         {
             lock (this.dataContext)

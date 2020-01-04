@@ -1,6 +1,4 @@
-using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataModels;
-using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -34,7 +32,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void Update(Machine machine, DataLayerContext context);
 
-        void UpdateStatistics(MachineStatistics statistics);
+        void UpdateWeightStatistics(DataLayerContext dataContext);
 
         #endregion
     }

@@ -99,8 +99,9 @@
                         <TextBlock Margin="0,20,0,0"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
-                                   FontSize="{DynamicResource FontSize_Small}"
-                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                                   FontSize="{StaticResource FontSize_Normal}"
+                                   FontWeight="Normal"
+                                   Foreground="{DynamicResource FerrettoLightGray}"
                                    Text="{x:Static res:InstallationApp.LowerBound}"
                                    TextAlignment="Left" />
 
@@ -108,8 +109,8 @@
                                    Margin="0"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Top"
-                                   FontSize="36"
-                                   Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
+                                   FontSize="{StaticResource FontSize_Very_High}"
+                                   Foreground="{DynamicResource PpcForeground}"
                                    Text="{Binding LowerBound}"
                                    TextWrapping="Wrap" />
 
@@ -138,8 +139,9 @@
                         <TextBlock Margin="0,20,0,0"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
-                                   FontSize="{DynamicResource FontSize_Small}"
-                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                                   FontSize="{StaticResource FontSize_Normal}"
+                                   FontWeight="Normal"
+                                   Foreground="{DynamicResource FerrettoLightGray}"
                                    Text="{x:Static res:InstallationApp.UpperBound}"
                                    TextAlignment="Left" />
 
@@ -147,8 +149,8 @@
                                    Margin="0"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Top"
-                                   FontSize="36"
-                                   Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
+                                   FontSize="{StaticResource FontSize_Very_High}"
+                                   Foreground="{DynamicResource PpcForeground}"
                                    Text="{Binding UpperBound}"
                                    TextWrapping="Wrap" />
 
@@ -177,17 +179,18 @@
                         <TextBlock Margin="0,20,0,0"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
-                                   FontSize="{DynamicResource FontSize_Small}"
-                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                                   FontSize="{StaticResource FontSize_Normal}"
+                                   FontWeight="Normal"
+                                   Foreground="{DynamicResource FerrettoLightGray}"
                                    Text="{x:Static res:InstallationApp.Offset}" />
 
                         <TextBlock Grid.Row="1"
                                    Margin="0"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Top"
-                                   FontSize="36"
-                                   Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
-                                   Text="{Binding Offset}"
+                                   FontSize="{StaticResource FontSize_Very_High}"
+                                   Foreground="{DynamicResource PpcForeground}"
+                                   Text="{Binding Offset, StringFormat={}{0:F2}}"
                                    TextWrapping="Wrap" />
 
                         <Border Grid.RowSpan="2"
@@ -211,8 +214,9 @@
                         <TextBlock Margin="0,20,0,0"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
-                                   FontSize="{DynamicResource FontSize_Small}"
-                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                                   FontSize="{StaticResource FontSize_Normal}"
+                                   FontWeight="Normal"
+                                   Foreground="{DynamicResource FerrettoLightGray}"
                                    Text="{x:Static res:InstallationApp.Resolution}"
                                    TextAlignment="Left" />
 
@@ -220,8 +224,8 @@
                                    Margin="0"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Top"
-                                   FontSize="36"
-                                   Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
+                                   FontSize="{StaticResource FontSize_Very_High}"
+                                   Foreground="{DynamicResource PpcForeground}"
                                    Text="{Binding Resolution, StringFormat={}{0:F6}}"
                                    TextWrapping="Wrap" />
 

@@ -88,6 +88,42 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Blocked.
+        /// </summary>
+        public static string BlockLevelBlocked {
+            get {
+                return ResourceManager.GetString("BlockLevelBlocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string BlockLevelNone {
+            get {
+                return ResourceManager.GetString("BlockLevelNone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SpaceOnly.
+        /// </summary>
+        public static string BlockLevelSpaceOnly {
+            get {
+                return ResourceManager.GetString("BlockLevelSpaceOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Undefined.
+        /// </summary>
+        public static string BlockLevelUndefined {
+            get {
+                return ResourceManager.GetString("BlockLevelUndefined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel pick.
         /// </summary>
         public static string CancelPick {
@@ -102,42 +138,6 @@ namespace Ferretto.VW.App.Resources {
         public static string CancelPut {
             get {
                 return ResourceManager.GetString("CancelPut", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Disabled.
-        /// </summary>
-        public static string Cell_Status_Disabled {
-            get {
-                return ResourceManager.GetString("Cell_Status_Disabled", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Free.
-        /// </summary>
-        public static string Cell_Status_Free {
-            get {
-                return ResourceManager.GetString("Cell_Status_Free", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Occupied.
-        /// </summary>
-        public static string Cell_Status_Occupied {
-            get {
-                return ResourceManager.GetString("Cell_Status_Occupied", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unusable.
-        /// </summary>
-        public static string Cell_Status_Unusable {
-            get {
-                return ResourceManager.GetString("Cell_Status_Unusable", resourceCulture);
             }
         }
         

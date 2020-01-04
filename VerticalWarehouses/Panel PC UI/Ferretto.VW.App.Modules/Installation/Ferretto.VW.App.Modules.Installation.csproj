@@ -106,6 +106,9 @@
     <Compile Update="Views\CellsLoadingUnits\CellsLoadingUnitsMenuView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
+    <Compile Update="Views\VerticalResolution\VerticalResolutionCalibrationView.xaml.cs">
+      <DependentUpon>VerticalResolutionCalibrationView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

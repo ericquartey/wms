@@ -52,6 +52,8 @@ namespace Ferretto.VW.App.Services.Models
 
         private string logicalPositionId;
 
+        private double? verticalSpeed;
+
         private double? verticalTargetPosition;
 
         #endregion
@@ -176,6 +178,12 @@ namespace Ferretto.VW.App.Services.Models
         {
             get => this.logicalPositionId;
             set => this.SetProperty(ref this.logicalPositionId, value);
+        }
+
+        public double? VerticalSpeed
+        {
+            get => this.verticalSpeed;
+            set => this.SetProperty(ref this.verticalSpeed, value);
         }
 
         public double? VerticalTargetPosition

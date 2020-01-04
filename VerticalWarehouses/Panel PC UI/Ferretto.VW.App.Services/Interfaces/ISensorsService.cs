@@ -7,6 +7,8 @@ namespace Ferretto.VW.App.Services
     {
         #region Properties
 
+        bool IsExtraVertical { get; }
+
         bool IsLoadingUnitInBay { get; }
 
         bool IsLoadingUnitInMiddleBottomBay { get; }
@@ -14,6 +16,8 @@ namespace Ferretto.VW.App.Services
         bool IsLoadingUnitOnElevator { get; }
 
         bool IsZeroChain { get; }
+
+        bool IsZeroVertical { get; }
 
         Sensors Sensors { get; }
 

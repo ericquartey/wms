@@ -21,5 +21,7 @@ namespace Ferretto.VW.Utils.Enumerators
         Installation,
 
         Maintenance,
+
+        MovementsView,
     }
 }

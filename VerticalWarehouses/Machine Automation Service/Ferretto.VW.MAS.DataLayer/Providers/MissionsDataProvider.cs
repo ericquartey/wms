@@ -149,6 +149,19 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public IEnumerable<Mission> GetAllActiveMissions()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Missions
+                    .AsNoTracking()
+                    .Where(m => m.Status != MissionStatus.Completed && m.Status != MissionStatus.Aborted)
+                    .OrderBy(o => o.Priority)
+                    .ThenBy(o => o.CreationDate)
+                    .ToArray();
+            }
+        }
+
         public IEnumerable<Mission> GetAllActiveMissionsByBay(BayNumber bayNumber)
         {
             lock (this.dataContext)

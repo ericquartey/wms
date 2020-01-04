@@ -299,6 +299,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
         }
 
+        public void OnFaultStateChanged(StatusUpdateEventArgs e)
+        {
+            if (e.NewState != this.IsMachineInFaultState)
+            {
+                this.sensorStatus[(int)IOMachineSensors.InverterInFault1] = e.NewState;
+                var handler = this.FaultStateChanged;
+                handler?.Invoke(this, e);
+            }
+        }
+
         //INFO Inputs from the inverter
         public bool UpdateInputs(byte ioIndex, bool[] newSensorStatus, FieldMessageActor messageActor)
         {
@@ -390,12 +400,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 this.logger.LogError(ex, "Error while updating inputs");
                 return false;
             }
-        }
-
-        protected virtual void OnFaultStateChanged(StatusUpdateEventArgs e)
-        {
-            var handler = this.FaultStateChanged;
-            handler?.Invoke(this, e);
         }
 
         protected virtual void OnRunningStateChanged(StatusUpdateEventArgs e)

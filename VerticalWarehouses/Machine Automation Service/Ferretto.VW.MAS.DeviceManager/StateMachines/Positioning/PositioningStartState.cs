@@ -120,7 +120,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         public override void Start()
         {
             this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.CurrentInverterIndex}");
-            if (!this.machineData.MessageData.IsOneKMachine &&
+            if (!this.machineData.MessageData.IsOneTonMachine &&
                 this.machineData.MessageData.MovementMode < MovementMode.ShutterPosition)
             {
                 var ioCommandMessageData = new SwitchAxisFieldMessageData(this.machineData.MessageData.AxisMovement);

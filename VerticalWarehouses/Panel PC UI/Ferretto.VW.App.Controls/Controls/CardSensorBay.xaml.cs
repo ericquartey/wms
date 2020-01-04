@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using CommonServiceLocator;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
 using Prism.Events;
@@ -16,6 +17,14 @@ namespace Ferretto.VW.App.Controls.Controls
     public partial class CardSensorBay : UserControl
     {
         #region Fields
+
+        [Browsable(false)]
+        public static readonly DependencyProperty CardSensorLabel2Property =
+            DependencyProperty.Register(nameof(CardSensorLabel2), typeof(string), typeof(CardSensorBay));
+
+        [Browsable(false)]
+        public static readonly DependencyProperty CardSensorLabel3Property =
+            DependencyProperty.Register(nameof(CardSensorLabel3), typeof(string), typeof(CardSensorBay));
 
         [Browsable(false)]
         public static readonly DependencyProperty MachineStatusProperty =
@@ -57,6 +66,17 @@ namespace Ferretto.VW.App.Controls.Controls
                 this.sensorsService.RefreshAsync(true);
                 this.SensorsService = this.sensorsService;
                 this.MachineStatus = this.machineService.MachineStatus;
+
+                if (this.machineService.Bay.IsDouble)
+                {
+                    this.CardSensorLabel2 = "Alta";
+                    this.CardSensorLabel3 = "Bassa";
+                }
+                else
+                {
+                    this.CardSensorLabel2 = "Baia";
+                    this.CardSensorLabel3 = null;
+                }
             };
 
             this.machineStatusChangesToken = this.machineStatusChangesToken
@@ -73,6 +93,18 @@ namespace Ferretto.VW.App.Controls.Controls
         #endregion
 
         #region Properties
+
+        public string CardSensorLabel2
+        {
+            get => (string)this.GetValue(CardSensorLabel2Property);
+            set => this.SetValue(CardSensorLabel2Property, value);
+        }
+
+        public string CardSensorLabel3
+        {
+            get => (string)this.GetValue(CardSensorLabel3Property);
+            set => this.SetValue(CardSensorLabel3Property, value);
+        }
 
         public MachineStatus MachineStatus
         {

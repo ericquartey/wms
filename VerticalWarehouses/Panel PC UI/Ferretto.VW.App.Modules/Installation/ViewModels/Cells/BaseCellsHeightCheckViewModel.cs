@@ -159,7 +159,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected abstract void OnPositioningOperationChanged(NotificationMessageUI<PositioningMessageData> message);
 
-        protected override abstract void RaiseCanExecuteChanged();
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+        }
 
         private void InitializeNavigationMenu()
         {

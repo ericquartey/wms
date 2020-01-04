@@ -19,6 +19,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void Delete(int id);
 
+        IEnumerable<Mission> GetAllActiveMissions();
+
         /// <summary>
         /// Gets the list of new or executing missions, ordered by priority, allocated to the specified bay.
         /// </summary>

@@ -170,7 +170,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 this.CanExecuteCommand));
 
         public ICommand MenuMovementsCommand =>
-                                                                                                                            this.menuMovementsCommand
+            this.menuMovementsCommand
             ??
             (this.menuMovementsCommand = new DelegateCommand(
                 () => this.MovementsCommand(),
@@ -184,7 +184,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 this.CanExecuteCommand));
 
         public ICommand ViewStatusSensorsCommand =>
-                    this.viewStatusSensorsCommand
+            this.viewStatusSensorsCommand
             ??
             (this.viewStatusSensorsCommand = new DelegateCommand(
                 () => this.StatusSensorsCommand(),
@@ -268,6 +268,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         protected override void RaiseCanExecuteChanged()
         {
+            base.RaiseCanExecuteChanged();
+
             this.menuAccessoriesCommand?.RaiseCanExecuteChanged();
             this.menuBaysCommand?.RaiseCanExecuteChanged();
             this.menuCellsCommand?.RaiseCanExecuteChanged();
@@ -287,8 +289,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private void MenuCommand(Menu menu)
         {
-            this.ClearNotifications();
-
             this.Logger.Trace($"MenuCommand({menu})");
 
             this.IsWaitingForResponse = true;

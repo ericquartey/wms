@@ -1,18 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 using Prism.Events;
+using Ferretto.VW.MAS.Utils.Enumerations;
 
 namespace Ferretto.VW.MAS.MissionManager
 {
     internal sealed class MissionSchedulingProvider : IMissionSchedulingProvider
     {
         #region Fields
+
+        private readonly ICellsProvider cellsProvider;
+
+        private readonly ILoadingUnitsDataProvider loadingUnitsDataProvider;
 
         private readonly ILogger<MissionSchedulingService> logger;
 
@@ -27,7 +36,9 @@ namespace Ferretto.VW.MAS.MissionManager
         #region Constructors
 
         public MissionSchedulingProvider(
+            ICellsProvider cellsProvider,
             IEventAggregator eventAggregator,
+            ILoadingUnitsDataProvider loadingUnitsDataProvider,
             IMachineMissionsProvider missionsProvider,
             IMissionsDataProvider missionsDataProvider,
             ILogger<MissionSchedulingService> logger)
@@ -37,6 +48,8 @@ namespace Ferretto.VW.MAS.MissionManager
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
 
+            this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
+            this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
             this.machineMissionsProvider = missionsProvider ?? throw new ArgumentNullException(nameof(missionsProvider));
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
@@ -91,9 +104,80 @@ namespace Ferretto.VW.MAS.MissionManager
             throw new NotImplementedException();
         }
 
-        public void QueueLoadingUnitCompactingMission()
+        public void QueueLoadingUnitCompactingMission(IServiceProvider serviceProvider)
         {
-            throw new NotImplementedException();
+            var loadUnits = this.loadingUnitsDataProvider.GetAll().Where(x => x.Cell != null);
+            int? cellId;
+            int? loadUnitId;
+            // first we try to find a lower place for each load unit, matching exactly the height
+            if (this.CompactFindEmptyCell(loadUnits, CompactingType.ExactMatchCompacting, out loadUnitId, out cellId)
+                // then we try to find a lower place for each load unit
+                || this.CompactFindEmptyCell(loadUnits, CompactingType.AnySpaceCompacting, out loadUnitId, out cellId)
+                // then we try to shift down the load units
+                || this.CompactDownCell(loadUnits, out loadUnitId, out cellId)
+                )
+            {
+                var moveLoadingUnitProvider = serviceProvider.GetRequiredService<IMoveLoadingUnitProvider>();
+                var loadUnit = loadUnits.First(x => x.Id == loadUnitId.Value);
+                moveLoadingUnitProvider.MoveFromCellToCell(MissionType.Compact, loadUnit.Cell.Id, cellId, BayNumber.BayOne, MessageActor.MissionManager);
+            }
+            else
+            {
+                // no more compacting is possible. Exit from compact mode
+                var machineModeDataProvider = serviceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
+                machineModeDataProvider.Mode = MachineMode.Manual;
+                this.logger.LogInformation($"Compacting terminated. Machine status switched to {machineModeDataProvider.Mode}");
+            }
+        }
+
+        private bool CompactDownCell(IEnumerable<LoadingUnit> loadUnits, out int? loadUnitId, out int? cellId)
+        {
+            loadUnitId = null;
+            cellId = null;
+            if (!loadUnits.Any())
+            {
+                return false;
+            }
+            this.logger.LogDebug("Compacting down cells");
+            foreach (var loadUnit in loadUnits.OrderBy(o => o.Cell.Position))
+            {
+                try
+                {
+                    cellId = this.cellsProvider.FindDownCell(loadUnit);
+                    loadUnitId = loadUnit.Id;
+                    return true;
+                }
+                catch (InvalidOperationException)
+                {
+                    // continue with next Load Unit
+                }
+            }
+            return false;
+        }
+
+        private bool CompactFindEmptyCell(IEnumerable<LoadingUnit> loadUnits, CompactingType compactingType, out int? loadUnitId, out int? cellId)
+        {
+            loadUnitId = null;
+            cellId = null;
+            if (!loadUnits.Any())
+            {
+                return false;
+            }
+            this.logger.LogDebug($"Compacting empty cells {compactingType}");
+            foreach (var loadUnit in loadUnits.OrderByDescending(o => o.Cell.Position))
+            {
+                try
+                {
+                    cellId = this.cellsProvider.FindEmptyCell(loadUnit.Id, compactingType);
+                    loadUnitId = loadUnit.Id;
+                    return true;
+                }
+                catch (InvalidOperationException)
+                {
+                    // continue with next Load Unit
+                }
+            }
+            return false;
         }
 
         public void QueueRecallMission(int loadingUnitId, BayNumber sourceBayNumber)

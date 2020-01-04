@@ -133,10 +133,10 @@
     <value>The loading unit does not appear to be completely out of the elevator after the unloading phase.</value>
   </data>
   <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
-    <value>ZeroSensorErrorAfterDeposit</value>
+    <value>Inconsistenza stato sensori. Il sensore di nottolino a zero risulta non attivo dopo un'operazione di deposito.</value>
   </data>
   <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
-    <value>ZeroSensorErrorAfterPickup</value>
+    <value>Inconsistenza stato sensori. I sensori di presenza su elevatore risultano non attivi dopo un'operazione di carico.</value>
   </data>
   <data name="InverterErrorBaseCode" xml:space="preserve">
     <value>Switch the machine off and on again. If the problem persists, contact support.</value>
@@ -220,94 +220,94 @@
     <value>Check that the source cell of the loading unit inside the database is correctly configured</value>
   </data>
   <data name="BottomLevelBayOccupied" xml:space="preserve">
-    <value>Busy low bay level.</value>
+    <value>Lower bay position is already occupied by a drawer.</value>
   </data>
   <data name="InvalidPresenceSensors" xml:space="preserve">
-    <value>Invalid presence sensors</value>
+    <value>Invalid elevator presence sensors.</value>
   </data>
   <data name="LoadUnitPresentOnEmptyElevator" xml:space="preserve">
     <value>Presence on the elevator with the elevator logically unloaded.</value>
   </data>
   <data name="MissingZeroSensorWithEmptyElevator" xml:space="preserve">
-    <value>MissingZeroSensorWithEmptyElevator</value>
+    <value>Inconsistenza stato sensori. Il sensore di nottolino a zero risulta non attivo.</value>
   </data>
   <data name="SensorZeroBayNotActiveAtStart" xml:space="preserve">
-    <value>SensorZeroBayNotActiveAtStart</value>
+    <value>Inconsistenza stato sensori. Il sensore di zero della baia non risulta attivo.</value>
   </data>
   <data name="TopLevelBayOccupied" xml:space="preserve">
-    <value>Busy high bay level</value>
+    <value>Upper bay position is already occupied by a drawer.</value>
   </data>
   <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
-    <value>ZeroSensorActiveWithFullElevator</value>
+    <value>Inconsistenza stato sensori. Il sensore di nottolino a zero risulta attivo in concomitanza con i sensori di presenza a bordo elevatore.</value>
   </data>
   <data name="LoadingUnitWeightExceeded" xml:space="preserve">
     <value>Unload the loading unit in the bay and remove the excess weight.</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitShutterClosed" xml:space="preserve">
-    <value>MachineManagerErrorLoadingUnitShutterClosed</value>
+    <value>Serranda non in posizione aperta. Verificare lo stato dei sensori.</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitShutterOpen" xml:space="preserve">
-    <value>MachineManagerErrorLoadingUnitShutterOpen</value>
+    <value>Serranda non in posizione chiusa nè aperta. Verificare lo stato dei sensori.</value>
   </data>
   <data name="DestinationBelowLowerBound" xml:space="preserve">
-    <value>DestinationBelowLowerBound</value>
+    <value>Errore destinazione asse sotto livello minimo. Verificare i parametri della macchina.</value>
   </data>
   <data name="BayInvertersBusy" xml:space="preserve">
-    <value>BayInvertersBusy</value>
+    <value>La baia ha già un comando in esecuzione e non può accettarne un altro.</value>
   </data>
   <data name="DestinationOverUpperBound" xml:space="preserve">
-    <value>DestinationOverUpperBound</value>
+    <value>Errore destinazione asse sopra livello massimo. Verificare i parametri della macchina.</value>
   </data>
   <data name="IoDeviceError" xml:space="preserve">
-    <value>IoDeviceError</value>
+    <value>Errore nella gestione del dispositivo I/O o nell'esecuzione di un comando.</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitPresentInCell" xml:space="preserve">
-    <value>MachineManagerErrorLoadingUnitPresentInCell</value>
+    <value>Cassetto già presente in cella.</value>
   </data>
   <data name="MachineModeNotValid" xml:space="preserve">
-    <value>MachineModeNotValid</value>
+    <value>La macchina non è in grado di accettare la missione richiesta a causa del modo macchina non valido.</value>
   </data>
   <data name="SecurityBarrierWasTriggered" xml:space="preserve">
-    <value>SecurityBarrierWasTriggered</value>
+    <value>Una barriera di sicurezza è stata interrotta. Verificare lo stato delle fotocellule della barriera e ritentare.</value>
   </data>
   <data name="SecurityButtonWasTriggered" xml:space="preserve">
-    <value>SecurityButtonWasTriggered</value>
+    <value>Un pulsante (fungo) di emergenza è stato premuto. Verificare lo stato e riprovare.</value>
   </data>
   <data name="SecuritySensorWasTriggered" xml:space="preserve">
-    <value>SecuritySensorWasTriggered</value>
+    <value>Uno o più sensori dei pannelli laterali è stato interrotto (aperto). Verificare che i pannelli della macchina siano correttamente posizionati e chiusi.</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitOtherBay" xml:space="preserve">
-    <value>MachineManagerErrorLoadingUnitOtherBay</value>
+    <value>Cassetto già presente in un'altra baia.</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitSourceElevator" xml:space="preserve">
-    <value>MachineManagerErrorLoadingUnitSourceElevator</value>
+    <value>Impossibile determinare il cassetto a bordo elevatore.</value>
   </data>
   <data name="BottomLevelBayEmpty" xml:space="preserve">
-    <value>BottomLevelBayEmpty</value>
+    <value>Livello baia bassa  vuoto.</value>
   </data>
   <data name="TopLevelBayEmpty" xml:space="preserve">
-    <value>TopLevelBayEmpty</value>
+    <value>Livello alto baia vuoto.</value>
   </data>
   <data name="AnotherMissionIsActiveForThisBay" xml:space="preserve">
-    <value>AnotherMissionIsActiveForThisBay</value>
+    <value>E' stato rilevato che esiste già una missione in esecuzione per questa baia.</value>
   </data>
   <data name="AnotherMissionIsActiveForThisLoadUnit" xml:space="preserve">
-    <value>AnotherMissionIsActiveForThisLoadUnit</value>
+    <value>E' stato rilevato che esiste già una missione in esecuzione per questo cassetto.</value>
   </data>
   <data name="AnotherMissionOfThisTypeIsActive" xml:space="preserve">
-    <value>AnotherMissionOfThisTypeIsActive</value>
+    <value>E' stato rilevato che esiste già una missione in esecuzione per questa tipologia di missione.</value>
   </data>
   <data name="NoError" xml:space="preserve">
-    <value>NoError</value>
+    <value>Nessun errore rilevato.</value>
   </data>
   <data name="LoadingUnitWeightTooLow" xml:space="preserve">
-    <value>LoadingUnitWeightTooLow</value>
+    <value>Peso cassetto inferiore al peso atteso.</value>
   </data>
   <data name="MachineWeightExceeded" xml:space="preserve">
-    <value>MachineWeightExceeded</value>
+    <value>Limite peso macchina totale superato. Verificare lo stato di carico della macchina e dei suoi cassetti.</value>
   </data>
   <data name="WarehouseIsFull" xml:space="preserve">
-    <value>WarehouseIsFull</value>
+    <value>Il magazzino risulta pieno e non è possibile determinare una cella libera per il cassetto selezionato.</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitMissingOnBay1" xml:space="preserve">
     <value>Check the loading unit id on the bay 1. Check that the loading unit presence sensors are working properly. Put the machine in Automatic.</value>
@@ -321,7 +321,13 @@
   <data name="MachineManagerErrorLoadingUnitMissingOnElevator" xml:space="preserve">
     <value>Check the id of the loading unit on the elevator. Check that the loading unit presence sensors on the elevator are working properly. Put the machine in Automatic.</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
+  <data name="InverterConnectionError" xml:space="preserve">
+    <value>Problema di connessione con inverter(s). Controllare lo stato delle connessioni ethernet.</value>
+  </data>
+  <data name="IoDeviceConnectionError" xml:space="preserve">
+    <value>Errore di connessione al dispositivo I/O. Controllare lo stato delle connessioni ethernet.</value>
+  </data>
+  <data name="LaserConnectionError" xml:space="preserve">
+    <value>Errore di connessione con il laser. Controllare lo stato delle connessioni ethernet.</value>
   </data>
 </root>

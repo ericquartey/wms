@@ -35,7 +35,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             Axis axisToCalibrate,
             Calibration calibration,
             int? loadingUnitId,
-            bool isOneKMachine,
+            bool isOneTonMachine,
             BayNumber requestingBay,
             BayNumber targetBay,
             IMachineResourcesProvider machineResourcesProvider,
@@ -50,7 +50,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             this.loadingUnitId = loadingUnitId;
 
             this.machineData = new HomingMachineData(
-                isOneKMachine,
+                isOneTonMachine,
                 loadingUnitId,
                 requestingBay,
                 targetBay,
@@ -59,6 +59,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 eventAggregator,
                 logger,
                 serviceScopeFactory);
+            this.machineData.RequestedAxisToCalibrate = axisToCalibrate;
         }
 
         #endregion
@@ -119,7 +120,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                         this.machineData.CalibrationType = Calibration.Elevator;
                         this.machineData.CurrentInverterIndex = InverterIndex.MainInverter;
                     }
-                    else if (this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate == Axis.Horizontal)
+                    else if (this.machineData.IsOneTonMachine && this.machineData.AxisToCalibrate == Axis.Horizontal)
                     {
                         this.machineData.CurrentInverterIndex = InverterIndex.Slave1;
                     }

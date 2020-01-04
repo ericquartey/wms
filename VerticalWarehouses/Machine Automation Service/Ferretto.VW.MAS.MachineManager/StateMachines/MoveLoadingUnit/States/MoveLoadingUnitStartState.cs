@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -25,6 +26,10 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         private readonly IMissionsDataProvider missionsDataProvider;
 
+        private readonly Dictionary<MessageType, MessageStatus> stateMachineResponses;
+
+        private BayNumber closeShutter;
+
         private Mission mission;
 
         #endregion
@@ -39,6 +44,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         {
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
+            this.stateMachineResponses = new Dictionary<MessageType, MessageStatus>();
+            this.closeShutter = BayNumber.None;
         }
 
         #endregion
@@ -71,9 +78,17 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                         throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
                     }
+                    if (targetCellId != null)
+                    {
+                        var bay = this.loadingUnitMovementProvider.GetBayByCell(targetCellId.Value);
+                        if (bay != BayNumber.None)
+                        {
+                            this.closeShutter = bay;
+                        }
+                    }
 
                     this.loadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value,
-                        closeShutter: false,
+                        this.closeShutter,
                         measure: false,
                         MessageActor.MachineManager,
                         commandMessage.RequestingBay,
@@ -92,8 +107,17 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                         throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
                     }
 
+                    if (targetCellId != null)
+                    {
+                        var bay = this.loadingUnitMovementProvider.GetBayByCell(targetCellId.Value);
+                        if (bay != BayNumber.None)
+                        {
+                            this.closeShutter = bay;
+                        }
+                    }
+
                     this.loadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight.Value,
-                        closeShutter: false,
+                        this.closeShutter,
                         measure: false,
                         MessageActor.MachineManager,
                         commandMessage.RequestingBay,
@@ -150,13 +174,17 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-                    if (this.mission.LoadingUnitSource is LoadingUnitLocation.Elevator)
+                    this.UpdateResponseList(notificationStatus, notification.Type);
+                    if ((this.closeShutter != BayNumber.None && this.stateMachineResponses.Count == 2) || (this.closeShutter == BayNumber.None && this.stateMachineResponses.Count == 1))
                     {
-                        returnValue = this.GetState<IMoveLoadingUnitDepositUnitState>();
-                    }
-                    else
-                    {
-                        returnValue = this.GetState<IMoveLoadingUnitLoadElevatorState>();
+                        if (this.mission.LoadingUnitSource is LoadingUnitLocation.Elevator)
+                        {
+                            returnValue = this.GetState<IMoveLoadingUnitDepositUnitState>();
+                        }
+                        else
+                        {
+                            returnValue = this.GetState<IMoveLoadingUnitLoadElevatorState>();
+                        }
                     }
                     break;
 
@@ -194,6 +222,19 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             }
 
             return returnValue;
+        }
+
+        private void UpdateResponseList(MessageStatus status, MessageType messageType)
+        {
+            if (this.stateMachineResponses.TryGetValue(messageType, out var stateMachineResponse))
+            {
+                stateMachineResponse = status;
+                this.stateMachineResponses[messageType] = stateMachineResponse;
+            }
+            else
+            {
+                this.stateMachineResponses.Add(messageType, status);
+            }
         }
 
         #endregion

@@ -33,6 +33,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Methods
 
+        public async override Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+            this.RaiseCanExecuteChanged();
+        }
+
         protected override async Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
         {
             await base.OnHealthStatusChangedAsync(e);
