@@ -401,6 +401,8 @@ namespace Ferretto.VW.MAS.MissionManager
                     missionsDataProvider.Complete(mission.Id);
                 }
             }
+
+            await this.InvokeSchedulerAsync();
         }
 
         private async Task OnMachineModeChangedAsync()

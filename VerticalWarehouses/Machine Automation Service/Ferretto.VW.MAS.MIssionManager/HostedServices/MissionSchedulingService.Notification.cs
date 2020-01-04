@@ -37,13 +37,6 @@ namespace Ferretto.VW.MAS.MissionManager
                     await this.OnBayOperationalStatusChangedAsync();
                     break;
 
-                case MessageType.MoveLoadingUnit:
-                    if (message.Status == MessageStatus.OperationEnd)
-                    {
-                        await this.InvokeSchedulerAsync();
-                    }
-                    break;
-
                 case MessageType.NewMachineMissionAvailable:
                     await this.OnNewMachineMissionAvailableAsync();
                     break;
