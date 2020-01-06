@@ -12,10 +12,11 @@ using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS.MachineManager.MissionMove
 {
-    public class MissionMoveNewState : MissionMoveBase, IMissionMoveNewState
+    public class MissionMoveNewState : MissionMoveBase
     {
         private readonly IMissionsDataProvider missionsDataProvider;
 
@@ -38,8 +39,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         #region Constructors
 
         public MissionMoveNewState(Mission mission,
-            IServiceProvider serviceProvider)
-            : base(mission, serviceProvider)
+            IServiceProvider serviceProvider,
+            IEventAggregator eventAggregator)
+            : base(mission, serviceProvider, eventAggregator)
         {
             this.missionsDataProvider = this.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
             this.cellsProvider = this.ServiceProvider.GetRequiredService<ICellsProvider>();

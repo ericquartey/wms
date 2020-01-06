@@ -2,12 +2,15 @@
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Messages;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces
 {
     public interface IMissionMoveBase
     {
         #region Properties
+
+        IEventAggregator EventAggregator { get; }
 
         Mission Mission { get; set; }
 

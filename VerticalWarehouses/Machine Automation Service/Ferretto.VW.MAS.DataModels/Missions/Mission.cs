@@ -8,6 +8,12 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
+        public BayNumber CloseShutterBayNumber;
+
+        public BayNumber OpenShutterBayNumber;
+
+        public MissionDeviceNotifications DeviceNotifications;
+
         public DateTime CreationDate { get; set; }
 
         public int? DestinationCellId { get; set; }

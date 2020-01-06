@@ -18,6 +18,8 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
     {
         #region Fields
 
+        private readonly IEventAggregator eventAggregator;
+
         private readonly NotificationEvent notificationEvent;
 
         #endregion
@@ -33,6 +35,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
+            this.eventAggregator = eventAggregator;
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
             this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
@@ -56,7 +59,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 switch (mission.FsmStateName)
                 {
                     case nameof(MissionMoveStartState):
-                        var startState = new MissionMoveStartState(mission, serviceProvider);
+                        var startState = new MissionMoveStartState(mission, serviceProvider, this.eventAggregator);
                         startState.OnCommand(message);
                         break;
                 }
@@ -72,7 +75,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 switch (mission.FsmStateName)
                 {
                     case nameof(MissionMoveStartState):
-                        var startState = new MissionMoveStartState(mission, serviceProvider);
+                        var startState = new MissionMoveStartState(mission, serviceProvider, this.eventAggregator);
                         startState.OnNotification(message);
                         break;
                 }
@@ -83,7 +86,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
             var mission = missionsDataProvider.GetById(missionId);
-            var newState = new MissionMoveNewState(mission, serviceProvider);
+            var newState = new MissionMoveNewState(mission, serviceProvider, this.eventAggregator);
 
             return newState.OnEnter(commandMessage);
         }

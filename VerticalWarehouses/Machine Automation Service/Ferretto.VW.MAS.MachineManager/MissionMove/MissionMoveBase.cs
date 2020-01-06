@@ -3,6 +3,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS.MachineManager.MissionMove
 {
@@ -11,15 +12,19 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         #region Constructors
 
         protected MissionMoveBase(Mission mission,
-            IServiceProvider serviceProvider)
+            IServiceProvider serviceProvider,
+            IEventAggregator eventAggregator)
         {
             this.Mission = mission;
             this.ServiceProvider = serviceProvider;
+            this.EventAggregator = eventAggregator;
         }
 
         #endregion
 
         #region Properties
+
+        public IEventAggregator EventAggregator { get; }
 
         public Mission Mission { get; set; }
 
