@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.MAS.DataModels
+﻿using System;
+
+namespace Ferretto.VW.MAS.DataModels
 {
     public sealed class User : DataModel
     {
@@ -13,6 +15,8 @@
         public string PasswordHash { get; set; }
 
         public string PasswordSalt { get; set; }
+
+        public DateTime Validity { get; set; }
 
         #endregion
 

@@ -103,16 +103,34 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public string GetSupportToken()
         {
-            Random random = new Random();
+            if (!string.IsNullOrEmpty(User.Values.Support.PasswordSalt) && DateTime.UtcNow < User.Values.Support.Validity)
+            {
+                return User.Values.Support.PasswordSalt;
+            }
 
-            // Please note that not all characters are allowed due to Base32 encoding not supporting it (eg. numbers)
-            //const string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
-            const string alphabet = "ABCDEFGHKMNPQRSTUVWXYZ234567";
+            lock (User.Values.Support)
+            {
+                Random random = new Random();
 
-            // Generate a string of six characters as secret key using the above alphabet
-            var secretKey = new string(Enumerable.Repeat(alphabet, 6).Select(s => s[random.Next(s.Length)]).ToArray());
+                // Please note that not all characters are allowed due to Base32 encoding not supporting it (eg. numbers)
+                //const string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+                const string alphabet = "ABCDEFGHKMNPQRSTUVWXYZ234567";
 
-            return secretKey;
+                // Generate a string of six characters as secret key using the above alphabet
+                var secretKey = new string(Enumerable.Repeat(alphabet, 6).Select(s => s[random.Next(s.Length)]).ToArray());
+
+                // Encode secret key in Base32 encoding
+                var encodedSecretKey = Base32Encoding.ToBytes(secretKey);
+
+                // Generate Time based One Time password with a time window of 30 minutes
+                var validity = new TimeSpan(0, 30, 0);
+                var totp = new Totp(encodedSecretKey, (int)validity.TotalSeconds, OtpHashMode.Sha512);
+
+                User.Values.Support.PasswordSalt = secretKey;
+                User.Values.Support.Validity = DateTime.UtcNow.AddSeconds(totp.RemainingSeconds());
+
+                return secretKey;
+            }
         }
 
         private static string GeneratePasswordHash(string password, string salt)
