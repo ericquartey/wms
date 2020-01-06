@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -285,7 +286,13 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             {
                 if (e.PropertyName == nameof(this.UserLogin.UserName) && this.UserLogin.IsSupport)
                 {
-                    this.UserLogin.SupportToken = await this.authenticationService.GetToken();
+                    try
+                    {
+                        this.UserLogin.SupportToken = await this.authenticationService.GetToken();
+                    }
+                    catch (HttpRequestException)
+                    {
+                    }
                 }
             }));
         }
