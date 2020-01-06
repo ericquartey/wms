@@ -12020,14 +12020,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<string> GenerateSupportTokenAsync()
+        public System.Threading.Tasks.Task<string> GetSupportTokenAsync()
         {
-            return GenerateSupportTokenAsync(System.Threading.CancellationToken.None);
+            return GetSupportTokenAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<string> GenerateSupportTokenAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<string> GetSupportTokenAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/users/token");

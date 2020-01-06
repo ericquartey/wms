@@ -101,7 +101,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public string GenerateSupportToken()
+        public string GetSupportToken()
         {
             Random random = new Random();
 

@@ -6,7 +6,7 @@
 
         int? Authenticate(string userName, string password, string supportToken);
 
-        string GenerateSupportToken();
+        string GetSupportToken();
 
         #endregion
     }
