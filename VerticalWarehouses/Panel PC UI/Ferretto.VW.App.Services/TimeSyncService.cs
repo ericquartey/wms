@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.App.Services.Extensions;
+using Ferretto.VW.CommonUtils;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Services
@@ -20,11 +20,7 @@ namespace Ferretto.VW.App.Services
 
         private bool isDisposed;
 
-        private bool started;
-
         private int syncIntervalMilliseconds = DefaultSyncInterval;
-
-        private CancellationToken token;
 
         private CancellationTokenSource tokenSource;
 

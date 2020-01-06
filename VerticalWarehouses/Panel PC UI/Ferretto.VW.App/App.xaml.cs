@@ -116,16 +116,9 @@ namespace Ferretto.VW.App
             containerRegistry.RegisterMasHubs(serviceUrl, operatorHubPath, installationHubPath);
 
             // WMS Web API services
-            RegisterWmsHubs(containerRegistry);
-
             RegisterWmsProviders(containerRegistry);
-        }
-
-        private static void RegisterWmsHubs(IContainerRegistry container)
-        {
             var wmsHubPath = ConfigurationManager.AppSettings.GetWMSDataServiceHubDataPath();
-            var hubClient = DataServiceFactory.GetService<IDataHubClient>(wmsHubPath);
-            container.RegisterInstance(hubClient);
+            containerRegistry.RegisterWmsHub(wmsHubPath);
         }
 
         private static void RegisterWmsProviders(IContainerRegistry container)
