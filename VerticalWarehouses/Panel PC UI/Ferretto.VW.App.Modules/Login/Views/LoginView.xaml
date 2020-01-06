@@ -160,7 +160,7 @@
                             </ComboBox>
 
                             <Label Content="{Binding UserLogin.SupportToken}"
-                                   ContentStringFormat="Token: {0}"
+                                   ContentStringFormat="chiave temporanea: {0}"
                                    FontFamily="{DynamicResource VWAPP_TitleFont}"
                                    FontSize="22"
                                    FontWeight="Light"

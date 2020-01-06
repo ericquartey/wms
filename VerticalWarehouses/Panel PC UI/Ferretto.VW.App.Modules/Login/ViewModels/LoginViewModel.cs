@@ -67,9 +67,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 Password = "password",
             };
 
-            this.UserLogin.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(
-                async (s, e) => await this.UserLogin_PropertyChanged(s, e)
-                );
+            this.UserLogin.PropertyChanged += this.UserLogin_PropertyChanged;
         }
 
         #endregion
@@ -281,12 +279,15 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 trackCurrentView: true);
         }
 
-        private async Task UserLogin_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void UserLogin_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(this.UserLogin.UserName) && this.UserLogin.IsSupport)
+            Application.Current.Dispatcher.BeginInvoke(new Action(async () =>
             {
-                this.UserLogin.SupportToken = await this.authenticationService.GetToken();
-            }
+                if (e.PropertyName == nameof(this.UserLogin.UserName) && this.UserLogin.IsSupport)
+                {
+                    this.UserLogin.SupportToken = await this.authenticationService.GetToken();
+                }
+            }));
         }
 
         #endregion
