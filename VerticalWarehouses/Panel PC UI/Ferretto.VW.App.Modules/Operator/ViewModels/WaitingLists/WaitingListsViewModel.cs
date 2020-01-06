@@ -128,49 +128,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.SelectLoadingUnit();
         }
 
-        public async Task ExecuteListAsync()
+        public async Task CommandUserActionAsync(UserActionEventArgs e)
         {
-            try
-            {
-                if (!this.areaId.HasValue)
-                {
-                    return;
-                }
-
-                var bay = await this.bayManager.GetBayAsync();
-                await this.itemListsWmsWebService.ExecuteAsync(this.selectedList.Id, this.areaId.Value, bay.Id);
-                await this.LoadListsAsync();
-            }
-            catch
-            {
-                this.ShowNotification($"Cannot execute List.", Services.Models.NotificationSeverity.Warning);
-            }
-        }
-
-        public override async Task OnAppearedAsync()
-        {
-            await base.OnAppearedAsync();
-
-            this.IsBackNavigationAllowed = true;
-
-            var machineIdentity = await this.identityService.GetAsync();
-            if (machineIdentity is null)
-            {
-                return;
-            }
-
-            this.machineId = machineIdentity.Id;
-            this.areaId = machineIdentity.AreaId;
-
-            await this.LoadListsAsync();
-
-            await this.RefreshListsAsync();
-        }
-
-        protected override async Task OnBarcodeMatchedAsync(BarcodeMatchEventArgs e)
-        {
-            await base.OnBarcodeMatchedAsync(e);
-
             if (e is null)
             {
                 throw new ArgumentNullException(nameof(e));
@@ -221,6 +180,45 @@ namespace Ferretto.VW.App.Operator.ViewModels
                         }
                 }
             }
+        }
+
+        public async Task ExecuteListAsync()
+        {
+            try
+            {
+                if (!this.areaId.HasValue)
+                {
+                    return;
+                }
+
+                var bay = await this.bayManager.GetBayAsync();
+                await this.itemListsWmsWebService.ExecuteAsync(this.selectedList.Id, this.areaId.Value, bay.Id);
+                await this.LoadListsAsync();
+            }
+            catch
+            {
+                this.ShowNotification($"Cannot execute List.", Services.Models.NotificationSeverity.Warning);
+            }
+        }
+
+        public override async Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+
+            this.IsBackNavigationAllowed = true;
+
+            var machineIdentity = await this.identityService.GetAsync();
+            if (machineIdentity is null)
+            {
+                return;
+            }
+
+            this.machineId = machineIdentity.Id;
+            this.areaId = machineIdentity.AreaId;
+
+            await this.LoadListsAsync();
+
+            await this.RefreshListsAsync();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -284,12 +282,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
                 var lastItemListId = this.selectedList?.Id;
                 var newLists = await this.areasWmsWebService.GetItemListsAsync(this.areaId.Value);
-
-                var commonListsCount = newLists.Select(l => l.Id).Intersect(this.lists.Select(l => l.Id)).Count();
-                if (commonListsCount == this.lists.Count && commonListsCount == newLists.Count())
-                {
-                    return;
-                }
 
                 this.lists.Clear();
                 newLists.ForEach(l => this.lists.Add(new ItemListExecution(l, this.machineId)));

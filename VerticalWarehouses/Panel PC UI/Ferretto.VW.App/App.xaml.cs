@@ -2,20 +2,16 @@ using System;
 using System.Configuration;
 using System.Reflection;
 using System.Windows;
-using CommonServiceLocator;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Controls.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.Utils;
 using Ferretto.WMS.Data.WebAPI.Contracts;
-using Prism.Events;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
-using Prism.Regions;
 using Prism.Unity;
 using Unity;
 
@@ -106,7 +102,7 @@ namespace Ferretto.VW.App
             // MAS Web API services
             var operatorHubPath = ConfigurationManager.AppSettings.GetAutomationServiceOperatorHubPath();
             var installationHubPath = ConfigurationManager.AppSettings.GetAutomationServiceInstallationHubPath();
-            containerRegistry.RegisterMachineAutomationWebServices(serviceUrl, c =>
+            containerRegistry.RegisterMasWebServices(serviceUrl, c =>
             {
                 var client = c.Resolve<RetryHttpClient>();
 
@@ -117,35 +113,30 @@ namespace Ferretto.VW.App
                 return client;
             });
 
-            containerRegistry.RegisterMachineAutomationHubs(serviceUrl, operatorHubPath, installationHubPath);
+            containerRegistry.RegisterMasHubs(serviceUrl, operatorHubPath, installationHubPath);
 
             // WMS Web API services
-            RegisterWmsHubs(containerRegistry);
-
             RegisterWmsProviders(containerRegistry);
-        }
-
-        private static void RegisterWmsHubs(IContainerRegistry container)
-        {
             var wmsHubPath = ConfigurationManager.AppSettings.GetWMSDataServiceHubDataPath();
-            var hubClient = DataServiceFactory.GetService<IDataHubClient>(wmsHubPath);
-            container.RegisterInstance(hubClient);
+            containerRegistry.RegisterWmsHub(wmsHubPath);
         }
 
         private static void RegisterWmsProviders(IContainerRegistry container)
         {
-            var wmsServiceUrl = ConfigurationManager.AppSettings.GetWMSDataServiceUrl();
+            var wmsServiceEnabled = ConfigurationManager.AppSettings.GetWmsDataServiceEnabled();
+            if (wmsServiceEnabled)
+            {
+                var wmsServiceUrl = ConfigurationManager.AppSettings.GetWMSDataServiceUrl();
 
-            container.RegisterInstance(DataServiceFactory.GetService<IBaysWmsWebService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<IBarcodesWmsWebService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<IImagesWmsWebService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<IMissionOperationsWmsWebService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<IMissionsWmsWebService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<ILoadingUnitsWmsWebService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<IItemsWmsWebService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<IItemListsWmsWebService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<IAreasWmsWebService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<IMachinesWmsWebService>(wmsServiceUrl));
+                container.RegisterWmsWebServices(wmsServiceUrl, c =>
+                {
+                    var client = c.Resolve<RetryHttpClient>();
+
+                    client.DefaultRequestHeaders.Add("Accept-Language", System.Globalization.CultureInfo.CurrentUICulture.Name);
+
+                    return client;
+                });
+            }
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)

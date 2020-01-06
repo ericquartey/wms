@@ -58,8 +58,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DbSet<ElevatorStructuralProperties> ElevatorStructuralProperties { get; set; }
 
-        public DbSet<ErrorDefinition> ErrorDefinitions { get; set; }
-
         public DbSet<MachineError> Errors { get; set; }
 
         public DbSet<ErrorStatistic> ErrorStatistics { get; set; }
@@ -103,6 +101,8 @@ namespace Ferretto.VW.MAS.DataLayer
         public DbSet<User> Users { get; set; }
 
         public DbSet<WeightMeasurement> WeightMeasurements { get; set; }
+
+        public DbSet<WmsSettings> WmsSettings { get; set; }
 
         #endregion
 
@@ -158,7 +158,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 .ApplyConfiguration(new TorqueCurrentSampleConfiguration())
                 .ApplyConfiguration(new ElevatorAxisManualParametersConfiguration())
                 .ApplyConfiguration(new CarouselManualParametersConfiguration())
-                .ApplyConfiguration(new ErrorDefinitionConfiguration())
                 .ApplyConfiguration(new ErrorConfiguration())
                 .ApplyConfiguration(new ErrorStatisticConfiguration())
                 .ApplyConfiguration(new InvertersConfiguration())
@@ -173,7 +172,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 .ApplyConfiguration(new ShutterManualParametersConfiguration())
                 .ApplyConfiguration(new ShuttersConfiguration())
                 .ApplyConfiguration(new TorqueCurrentMeasurementSessionsConfiguration())
-                .ApplyConfiguration(new UsersConfiguration());
+                .ApplyConfiguration(new UsersConfiguration())
+                .ApplyConfiguration(new WmsSettingsConfiguration());
         }
 
         #endregion

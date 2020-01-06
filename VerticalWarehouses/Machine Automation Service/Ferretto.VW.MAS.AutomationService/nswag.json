@@ -64,7 +64,7 @@
       "disposeHttpClient": true,
       "protectedMethods": [],
       "generateExceptionClasses": true,
-      "exceptionClass": "SwaggerException",
+      "exceptionClass": "MasWebApiException",
       "wrapDtoExceptions": true,
       "useHttpClientCreationMethod": false,
       "httpClientType": "Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient",

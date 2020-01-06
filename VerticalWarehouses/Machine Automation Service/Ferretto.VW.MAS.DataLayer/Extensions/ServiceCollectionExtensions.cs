@@ -54,6 +54,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 .AddTransient<ISetupStatusProvider, SetupStatusProvider>()
                 .AddTransient<ISetupProceduresDataProvider, SetupProceduresDataProvider>()
                 .AddTransient<ITorqueCurrentMeasurementsDataProvider, TorqueCurrentMeasurementsDataProvider>()
+                .AddTransient<IWmsSettingsProvider, WmsSettingsProvider>()
                 .AddTransient<IUsersProvider, UsersProvider>();
 
             services

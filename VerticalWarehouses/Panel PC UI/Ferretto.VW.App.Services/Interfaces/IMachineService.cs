@@ -11,7 +11,7 @@ namespace Ferretto.VW.App.Services
 
         Bay Bay { get; }
 
-        MAS.AutomationService.Contracts.BayNumber BayNumber { get; }
+        BayNumber BayNumber { get; }
 
         IEnumerable<Cell> Cells { get; }
 
@@ -27,11 +27,13 @@ namespace Ferretto.VW.App.Services
 
         IEnumerable<LoadingUnit> Loadunits { get; }
 
-        MachineStatus MachineStatus { get; }
         MachineMode MachineMode { get; }
+
         MachinePowerState MachinePower { get; }
 
         void ClearNotifications();
+
+        MachineStatus MachineStatus { get; }
 
         #endregion
 
@@ -39,7 +41,7 @@ namespace Ferretto.VW.App.Services
 
         Task OnUpdateServiceAsync();
 
-        void ServiceStart();
+        void Start();
 
         Task StopMovingByAllAsync();
 

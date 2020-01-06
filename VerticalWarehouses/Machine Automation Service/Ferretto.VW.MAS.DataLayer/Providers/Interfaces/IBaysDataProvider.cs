@@ -31,6 +31,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IEnumerable<Bay> GetAll();
 
+        int GetAllCount();
+
         CarouselManualParameters GetAssistedMovementsCarousel(BayNumber bayNumber);
 
         ShutterManualParameters GetAssistedMovementsShutter(BayNumber bayNumber);

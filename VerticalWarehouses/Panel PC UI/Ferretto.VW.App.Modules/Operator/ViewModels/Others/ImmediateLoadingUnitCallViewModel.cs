@@ -21,13 +21,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
+        private readonly IMachineService machineService;
+
+        private DelegateCommand callLoadingUnitCommand;
+
         private int currentItemIndex;
 
         private DelegateCommand downSelectionCommand;
 
         private bool isSearching;
-
-        private DelegateCommand loadingUnitCallCommand;
 
         private int? loadingUnitId;
 
@@ -40,10 +42,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Constructors
 
         public ImmediateLoadingUnitCallViewModel(
+            IMachineService machineService,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService)
             : base(PresentationMode.Operator)
         {
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
+            this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
         }
 
         #endregion
@@ -79,11 +83,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public override bool KeepAlive => true;
 
         public ICommand LoadingUnitCallCommand =>
-            this.loadingUnitCallCommand
+            this.callLoadingUnitCommand
             ??
-            (this.loadingUnitCallCommand = new DelegateCommand(
-                async () => await this.RequestLoadingUnitCallAsync(),
-                this.CanRequestLoadingUnitCall));
+            (this.callLoadingUnitCommand = new DelegateCommand(
+                async () => await this.CallLoadingUnitAsync(),
+                this.CanCallLoadingUnit));
 
         public int? LoadingUnitId
         {
@@ -107,6 +111,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 if (this.SetProperty(ref this.selectedUnitUnit, value))
                 {
                     this.LoadingUnitId = this.selectedUnitUnit?.Id;
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -122,13 +127,39 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Methods
 
+        public async Task CallLoadingUnitAsync()
+        {
+            if (!this.loadingUnitId.HasValue)
+            {
+                this.ShowNotification("Id loading unit does not exists.", Services.Models.NotificationSeverity.Warning);
+                return;
+            }
+
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                await this.machineLoadingUnitsWebService.MoveToBayAsync(this.LoadingUnitId.Value);
+
+                this.ShowNotification($"Successfully requested loading unit '{this.SelectedLoadingUnit.Id}'.", Services.Models.NotificationSeverity.Success);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.LoadingUnitId = null;
+                this.IsWaitingForResponse = false;
+            }
+        }
+
         public async Task GetLoadingUnitsAsync()
         {
             try
             {
                 this.loadingUnits.Clear();
-                var loadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
-                this.loadingUnits.AddRange(loadingUnits);
+                this.loadingUnits.AddRange(this.machineService.Loadunits);
             }
             catch (Exception ex)
             {
@@ -156,39 +187,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.SelectLoadingUnit();
         }
 
-        public async Task RequestLoadingUnitCallAsync()
-        {
-            try
-            {
-                if (!this.loadingUnitId.HasValue)
-                {
-                    this.ShowNotification("Id loading unit does not exists.", Services.Models.NotificationSeverity.Warning);
-                    return;
-                }
-
-                this.IsWaitingForResponse = true;
-
-                await this.machineLoadingUnitsWebService.MoveToBayAsync(this.LoadingUnitId.Value);
-
-                this.ShowNotification($"Successfully requested loading unit '{this.SelectedLoadingUnit.Id}'.", Services.Models.NotificationSeverity.Success);
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.LoadingUnitId = null;
-                this.IsWaitingForResponse = false;
-            }
-        }
-
         public void SelectNextLoadingUnitAsync()
         {
-            if (this.currentItemIndex == (this.loadingUnits.Count - 1))
-            {
-                return;
-            }
+            System.Diagnostics.Debug.Assert(this.currentItemIndex < this.loadingUnits.Count - 1);
 
             this.currentItemIndex++;
             this.SelectLoadingUnit();
@@ -196,10 +197,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public void SelectPreviousLoadingUnitAsync()
         {
-            if (this.currentItemIndex == 0)
-            {
-                return;
-            }
+            System.Diagnostics.Debug.Assert(this.currentItemIndex > 0);
 
             this.currentItemIndex--;
             this.SelectLoadingUnit();
@@ -209,19 +207,17 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             base.RaiseCanExecuteChanged();
 
-            this.loadingUnitCallCommand?.RaiseCanExecuteChanged();
+            this.callLoadingUnitCommand?.RaiseCanExecuteChanged();
             this.upSelectionCommand?.RaiseCanExecuteChanged();
             this.downSelectionCommand?.RaiseCanExecuteChanged();
         }
 
-        private bool CanRequestLoadingUnitCall()
+        private bool CanCallLoadingUnit()
         {
             return
                 this.SelectedLoadingUnit != null
                 &&
                 this.LoadingUnitId.HasValue
-                &&
-                this.LoadingUnitId > 0
                 &&
                 !this.IsWaitingForResponse
                 &&
@@ -265,13 +261,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private void SelectLoadingUnit()
         {
-            if (this.loadingUnits.Count == 0)
-            {
-                return;
-            }
-
-            this.SelectedLoadingUnit = this.loadingUnits.ElementAt(this.currentItemIndex);
-            this.RaiseCanExecuteChanged();
+            this.SelectedLoadingUnit = this.loadingUnits.ElementAtOrDefault(this.currentItemIndex);
         }
 
         #endregion

@@ -77,7 +77,7 @@ namespace Ferretto.VW.App.Accessories
             }
         }
 
-        private BarcodeRule GetActiveContextRule(string barcode)
+        private IOperationalContextViewModel GetActiveContext()
         {
             IOperationalContextViewModel activeViewModel = null;
             Application.Current.Dispatcher.Invoke(() =>
@@ -85,18 +85,30 @@ namespace Ferretto.VW.App.Accessories
                 activeViewModel = this.navigationService.GetActiveViewModel() as IOperationalContextViewModel;
             });
 
-            if (activeViewModel is null)
-            {
-                System.Diagnostics.Debug.WriteLine($"Current view model does not specify an operational context.");
-                return null;
-            }
+            return activeViewModel;
+        }
 
+        private BarcodeRule GetActiveContextRule(string barcode, string activeContextName)
+        {
             System.Diagnostics.Debug.Assert(this.ruleSet != null);
 
-            return this.ruleSet.FirstOrDefault(r =>
-                r.ContextName == activeViewModel.ActiveContextName
-                &&
-                Regex.IsMatch(barcode, r.Pattern));
+            var validRuleSet = new List<BarcodeRule>();
+            foreach (var rule in this.ruleSet)
+            {
+                if (Enum.TryParse<ContextAction>(rule.ContextName, out var contextAction))
+                {
+                    validRuleSet.Add(rule);
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine($"No valid context found for {rule.ContextName}");
+                }
+            }
+
+            return validRuleSet.FirstOrDefault(r =>
+                 r.ContextName == activeContextName
+                 &&
+                 Regex.IsMatch(barcode, r.Pattern));
         }
 
         private async Task LoadRuleSetAsync()
@@ -124,33 +136,39 @@ namespace Ferretto.VW.App.Accessories
                 .Publish(new PresentationNotificationMessage(ex));
         }
 
-        private async Task OnBarcodeReceivedAsync(object sender, BarcodeEventArgs e)
+        private async Task OnBarcodeReceivedAsync(object sender, ActionEventArgs e)
         {
+            var activeContext = this.GetActiveContext();
+
+            if (activeContext is null)
+            {
+                System.Diagnostics.Debug.WriteLine($"Current view model does not specify an operational context.");
+                return;
+            }
+
             await this.LoadRuleSetAsync();
 
-            var rule = this.GetActiveContextRule(e.Barcode);
+            var rule = this.GetActiveContextRule(e.Code, activeContext.ActiveContextName);
+
             if (rule is null)
             {
-                System.Diagnostics.Debug.WriteLine($"Barcode {e.Barcode} does not match any rule.");
+                System.Diagnostics.Debug.WriteLine($"Barcode {e.Code} does not match any rule.");
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine($"Barcode {e.Barcode} matched rule: '{rule.ContextName}'");
+                System.Diagnostics.Debug.WriteLine($"Barcode {e.Code} matched rule: '{rule.ContextName}'");
 
-                var match = Regex.Match(e.Barcode, rule.Pattern);
+                var match = Regex.Match(e.Code, rule.Pattern);
                 System.Diagnostics.Debug.Assert(match.Success);
 
-                var eventArgs = new BarcodeMatchEventArgs(e.Barcode, rule.Action);
-                for (int i = 0; i < match.Groups.Count; i++)
+                var eventArgs = new UserActionEventArgs(e.Code, rule.Action);
+                for (var i = 0; i < match.Groups.Count; i++)
                 {
                     var group = match.Groups[i];
                     eventArgs.Parameters.Add(group.Name, group.Value);
                 }
 
-                // 3. publish event
-                this.eventAggregator
-                    .GetEvent<PubSubEvent<BarcodeMatchEventArgs>>()
-                    .Publish(eventArgs);
+                await activeContext.CommandUserActionAsync(eventArgs);
             }
         }
 

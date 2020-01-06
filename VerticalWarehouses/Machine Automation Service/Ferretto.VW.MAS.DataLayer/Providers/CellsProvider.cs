@@ -369,8 +369,8 @@ namespace Ferretto.VW.MAS.DataLayer
                             c.Position <= cell.Position + cell.LoadingUnit.Height + VerticalPositionTolerance)
                         .ToArray();
 
-                    double weight = cell.LoadingUnit.GrossWeight;
-                    if (cell.Side == WarehouseSide.Front)
+                    var weight = cell.LoadingUnit.GrossWeight;
+                    if (cell.Side is WarehouseSide.Front)
                     {
                         statistics.TotalWeightFront -= weight;
                         if (statistics.TotalWeightFront < 0)
@@ -421,7 +421,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     }
 
                     var loadingUnit = this.dataContext.LoadingUnits
-                        .AsNoTracking()
                         .SingleOrDefault(l => l.Id == loadingUnitId);
                     if (loadingUnit is null)
                     {
@@ -456,11 +455,12 @@ namespace Ferretto.VW.MAS.DataLayer
                             throw new InvalidOperationException(Resources.Cells.TheLoadingCannotOccupyABlockedCell);
                         }
                     }
-                    // TODO check if this could be done better
-                    cell.LoadingUnit = this.dataContext.LoadingUnits.SingleOrDefault(l => l.Id == loadingUnitId);
-                    cell.LoadingUnit.IsIntoMachine = true;
 
-                    double weight = loadingUnit.GrossWeight;
+                    loadingUnit.IsIntoMachine = true;
+                    loadingUnit.Status = DataModels.Enumerations.LoadingUnitStatus.InLocation;
+                    cell.LoadingUnit = loadingUnit;
+
+                    var weight = loadingUnit.GrossWeight;
                     if (cell.Side == WarehouseSide.Front)
                     {
                         statistics.TotalWeightFront += weight;

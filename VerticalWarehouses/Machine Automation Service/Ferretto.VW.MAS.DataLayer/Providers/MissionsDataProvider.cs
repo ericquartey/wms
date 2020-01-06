@@ -74,7 +74,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         CreationDate = DateTime.Now,
                         LoadingUnitId = loadingUnitId,
                         TargetBay = bayNumber,
-                        MissionType = MissionType.Manual
+                        MissionType = MissionType.OUT
                     });
 
                 this.dataContext.SaveChanges();
@@ -106,6 +106,28 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.dataContext.SaveChanges();
 
                 this.logger.LogInformation($"Created MAS bay mission from WMS mission id={wmsId}");
+
+                return entry.Entity;
+            }
+        }
+
+        public Mission CreateRecallMission(int loadingUnitId, BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                var entry = this.dataContext.Missions.Add(
+                    new Mission
+                    {
+                        FsmId = Guid.NewGuid(),
+                        CreationDate = DateTime.Now,
+                        LoadingUnitId = loadingUnitId,
+                        TargetBay = bayNumber,
+                        MissionType = MissionType.IN
+                    });
+
+                this.dataContext.SaveChanges();
+
+                this.logger.LogInformation("Created internal MAS recall mission.");
 
                 return entry.Entity;
             }
@@ -172,6 +194,23 @@ namespace Ferretto.VW.MAS.DataLayer
                     .AsNoTracking()
                     .Where(m => m.WmsId != null)
                     .ToArray();
+            }
+        }
+
+        public Mission GetByGuid(Guid id)
+        {
+            lock (this.dataContext)
+            {
+                var mission = this.dataContext.Missions
+                    .AsNoTracking()
+                    .SingleOrDefault(m => m.FsmId == id);
+
+                if (mission is null)
+                {
+                    throw new EntityNotFoundException(id.ToString());
+                }
+
+                return mission;
             }
         }
 

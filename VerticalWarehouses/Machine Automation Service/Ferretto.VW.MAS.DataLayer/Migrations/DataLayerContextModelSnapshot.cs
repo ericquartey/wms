@@ -315,609 +315,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.ToTable("ElevatorStructuralProperties");
                 });
 
-            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ErrorDefinition", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("Code");
-
-                    b.Property<string>("Description")
-                        .IsRequired();
-
-                    b.Property<string>("Reason");
-
-                    b.Property<int>("Severity");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Code")
-                        .IsUnique();
-
-                    b.ToTable("ErrorDefinitions");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = -1,
-                            Code = -1,
-                            Description = "NoError",
-                            Reason = "Nessun errore rilevato.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 1,
-                            Code = 1,
-                            Description = "Cassetto non caricato completamente",
-                            Reason = "Il cassetto potrebbe essersi incastrato.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Code = 2,
-                            Description = "Condizioni per il posizionamento non soddisfatte",
-                            Reason = "Controllare che il nottolino sia a zero o che il cassetto sia completamente caricato a bordo elevatore.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Code = 3,
-                            Description = "Condizioni per la messa in marcia non soddisfatte",
-                            Reason = "Controllare che i funghi di emergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Code = 4,
-                            Description = "È scattata la funzione di sicurezza",
-                            Reason = "Controllare che i funghi di emergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Code = 5,
-                            Description = "Un pulsante di emergenza è stato premuto",
-                            Reason = "Un pulsante (fungo) di emergenza è stato premuto. Verificare lo stato e riprovare.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Code = 6,
-                            Description = "Una barriera di sicurezza è stata interrotta",
-                            Reason = "Una barriera di sicurezza è stata interrotta. Verificare lo stato delle fotocellule della barriera e ritentare.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Code = 7,
-                            Description = "Uno o più sensori dei pannelli laterali è stato interrotto",
-                            Reason = "Uno o più sensori dei pannelli laterali è stato interrotto (aperto). Verificare che i pannelli della macchina siano correttamente posizionati e chiusi.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Code = 8,
-                            Description = "È stato rilevato un errore in uno degli inverter",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Code = 9,
-                            Description = "Inconsistenza sensori elevatore",
-                            Reason = "Il cassetto sembra non essere completamente a bordo elevatore dopo la fase di carico.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Code = 10,
-                            Description = "Inconsistenza sensori elevatore",
-                            Reason = "Il cassetto non sembra essere completamente fuori dall'elevatore dopo la fase di scarico.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Code = 11,
-                            Description = "Inconsistenza stato sensori elevatore",
-                            Reason = "Inconsistenza stato sensori. I sensori di presenza su elevatore risultano non attivi dopo un'operazione di carico.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Code = 12,
-                            Description = "Inconsistenza stato sensori elevatore",
-                            Reason = "Inconsistenza stato sensori. Il sensore di nottolino a zero risulta non attivo dopo un'operazione di deposito.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Code = 13,
-                            Description = "Inconsistenza stato sensori elevatore",
-                            Reason = "Inconsistenza sensori di presenza a bordo elevatore.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Code = 14,
-                            Description = "Inconsistenza stato sensori",
-                            Reason = "Inconsistenza stato sensori. Il sensore di nottolino a zero risulta non attivo.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 15,
-                            Code = 15,
-                            Description = "Inconsistenza stato sensori elevatore",
-                            Reason = "Inconsistenza stato sensori. Il sensore di nottolino a zero risulta attivo in concomitanza con i sensori di presenza a bordo elevatore.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 16,
-                            Code = 16,
-                            Description = "Inconsistenza stato sensori",
-                            Reason = "Presenza a bordo elevatore con elevatore logicamente scarico.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 17,
-                            Code = 17,
-                            Description = "Errore esecuzione comando di deposito",
-                            Reason = "Livello alto baia occupato.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 18,
-                            Code = 18,
-                            Description = "Errore esecuzione comando di deposito",
-                            Reason = "Livello baia bassa occupato.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 19,
-                            Code = 19,
-                            Description = "Errore esecuzione comando di prelievo",
-                            Reason = "Livello alto baia vuoto.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 20,
-                            Code = 20,
-                            Description = "Errore esecuzione comando di prelievo",
-                            Reason = "Livello baia bassa  vuoto.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 21,
-                            Code = 21,
-                            Description = "Inconsistenza stato sensori baia",
-                            Reason = "Inconsistenza stato sensori. Il sensore di zero della baia non risulta attivo.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 22,
-                            Code = 22,
-                            Description = "Errore di connessione",
-                            Reason = "Problema di connessione con inverter(s). Controllare lo stato delle connessioni ethernet.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 23,
-                            Code = 23,
-                            Description = "Errore di connessione",
-                            Reason = "Errore di connessione al dispositivo I/O. Controllare lo stato delle connessioni ethernet.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 24,
-                            Code = 24,
-                            Description = "Errore di connessione",
-                            Reason = "Errore di connessione con il laser. Controllare lo stato delle connessioni ethernet.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 25,
-                            Code = 25,
-                            Description = "Errore peso",
-                            Reason = "Il peso del cassetto supera il valore massimo accettato. Scaricare il cassetto in baia e rimuovere il peso in eccesso.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 26,
-                            Code = 26,
-                            Description = "Errore peso",
-                            Reason = "Peso cassetto inferiore al peso atteso.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 27,
-                            Code = 27,
-                            Description = "Errore peso",
-                            Reason = "Limite peso macchina totale superato. Verificare lo stato di carico della macchina e dei suoi cassetti.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 28,
-                            Code = 28,
-                            Description = "Destinazione non valida",
-                            Reason = "Errore destinazione asse sotto livello minimo. Verificare i parametri della macchina.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 29,
-                            Code = 29,
-                            Description = "Destinazione non valida",
-                            Reason = "Errore destinazione asse sopra livello massimo. Verificare i parametri della macchina.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 30,
-                            Code = 30,
-                            Description = "Errore esecuzione comando",
-                            Reason = "La baia ha già un comando in esecuzione e non può accettarne un altro.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 31,
-                            Code = 31,
-                            Description = "Errore esecuzione comando",
-                            Reason = "Errore nella gestione del dispositivo I/O o nell'esecuzione di un comando.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 32,
-                            Code = 32,
-                            Description = "Errore missione",
-                            Reason = "La macchina non è in grado di accettare la missione richiesta a causa del modo macchina non valido.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 33,
-                            Code = 33,
-                            Description = "Errore esecuzione missione",
-                            Reason = "E' stato rilevato che esiste già una missione in esecuzione per questo cassetto.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 34,
-                            Code = 34,
-                            Description = "Errore esecuzione missione",
-                            Reason = "E' stato rilevato che esiste già una missione in esecuzione per questa baia.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 35,
-                            Code = 35,
-                            Description = "Errore esecuzione missione",
-                            Reason = "E' stato rilevato che esiste già una missione in esecuzione per questa tipologia di missione.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 36,
-                            Code = 36,
-                            Description = "Magazzino pieno",
-                            Reason = "Il magazzino risulta pieno e non è possibile determinare una cella libera per il cassetto selezionato.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200000,
-                            Code = 200000,
-                            Description = "Errore generico inverter",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200001,
-                            Code = 200001,
-                            Description = "Parametro inverter non valido",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200002,
-                            Code = 200002,
-                            Description = "Dataset inverter non valido",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200003,
-                            Code = 200003,
-                            Description = "Parametro inverter è in sola scrittura",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200004,
-                            Code = 200004,
-                            Description = "Parametro inverter è in sola lettura",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200005,
-                            Code = 200005,
-                            Description = "Errore lettura EEPROM dell'inverter",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200006,
-                            Code = 200006,
-                            Description = "Errore scrittura EEPROM dell'inverter",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200007,
-                            Code = 200007,
-                            Description = "Errore checksum EEPROM dell'inverter",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200008,
-                            Code = 200008,
-                            Description = "Impossibile scrivere il parametro dell'inverter durante l'esecuzione",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200009,
-                            Code = 200009,
-                            Description = "I dati del dataset dell'inverter non corrispondono",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200011,
-                            Code = 200011,
-                            Description = "Parametro sconosciuto passato all'inverter",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200013,
-                            Code = 200013,
-                            Description = "Errore di sintassi del messaggio inviato all'inverter",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200014,
-                            Code = 200014,
-                            Description = "Incoerenza tra la lunghezza del messaggio all'inverter e il tipo di dato del messaggio",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200020,
-                            Code = 200020,
-                            Description = "Il nodo specificato non è disponibile",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200030,
-                            Code = 200030,
-                            Description = "Errore di sintassi del messaggio inviato all'inverter",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300000,
-                            Code = 300000,
-                            Description = "Errore Machine Manager",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300001,
-                            Code = 300001,
-                            Description = "Nessun cassetto presente nella baia indicata",
-                            Reason = "Assicurarsi che un cassetto sia presente in baia e che i sensori di presenza funzionino correttamente.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300002,
-                            Code = 300002,
-                            Description = "Inconsistenza database posizione sorgente cassetto",
-                            Reason = "Verificare che la posizione sorgente del cassetto all'interno del database sia correttamente configurata.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300003,
-                            Code = 300003,
-                            Description = "Inconsistenza database cella destinazione cassetto",
-                            Reason = "Verificare che la cella destinazione del cassetto all'interno del database sia correttamente configurata.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300004,
-                            Code = 300004,
-                            Description = "Culla elevatore occupata",
-                            Reason = "Verificare che la culla elevatore sia vuota. Verificare il corretto funzionamento dei sensori di presenza cassetto sulla culla.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300005,
-                            Code = 300005,
-                            Description = "Cassetto rilevato nella baia di estrazione",
-                            Reason = "Se il cassetto è stato rimosso controllare i sensori di presenza cassetto in baia, altrimenti rimuovere il cassetto dalla baia.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300006,
-                            Code = 300006,
-                            Description = "Baia di destinazione del cassetto occupata",
-                            Reason = "Verificare che la baia di destinazione del cassetto sia effettivamente vuota. Verificare che i sensori di presenza cassetto in baia funzionino correttamente.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300007,
-                            Code = 300007,
-                            Description = "Inconsistenza database cella sorgente cassetto",
-                            Reason = "Verificare che la cella sorgent del cassetto all'interno del database sia correttamente configurata.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300008,
-                            Code = 300008,
-                            Description = "Inconsistenza database cassetto",
-                            Reason = "Il cassetto selezionato non è presente nel database. Verificare il numero cassetto inserito e la corretta configurazione del database.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300009,
-                            Code = 300009,
-                            Description = "Il cassetto selezionato non risulta caricato in magazzino",
-                            Reason = "Il cassetto selezionato risulta presente nel database ma non risulta caricato nel magazzino. Verificare la configurazione del database.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300010,
-                            Code = 300010,
-                            Description = "Baia sorgente del cassetto vuota",
-                            Reason = "Verificare che il cassetto sia effettivamente presente nella baia sorgente. Verificare che i sensori di presenza cassetto in baia funzionino correttamente.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300011,
-                            Code = 300011,
-                            Description = "Errore stato serranda",
-                            Reason = "Serranda non in posizione chiusa nè aperta. Verificare lo stato dei sensori.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300012,
-                            Code = 300012,
-                            Description = "Errore stato serranda",
-                            Reason = "Serranda non in posizione aperta. Verificare lo stato dei sensori.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300013,
-                            Code = 300013,
-                            Description = "Errore cassetto in posizione inattesa",
-                            Reason = "Cassetto già presente in cella.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300014,
-                            Code = 300014,
-                            Description = "Errore cassetto in posizione inattesa",
-                            Reason = "Cassetto già presente in un'altra baia.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300015,
-                            Code = 300015,
-                            Description = "Cassetto non presente sull'Elevatore",
-                            Reason = "Impossibile determinare il cassetto a bordo elevatore.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300016,
-                            Code = 300016,
-                            Description = "Elevatore occupato con cassetto sconosciuto",
-                            Reason = "Verificare l'id del cassetto sull'elevatore. Verificare che i sensori di presenza cassetto sull'elevatore funzionino correttamente. Mettere la macchina in Automatico.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300017,
-                            Code = 300017,
-                            Description = "Baia 1 occupato con cassetto sconosciuto",
-                            Reason = "Verificare l'id del cassetto sulla baia 1. Verificare che i sensori di presenza cassetto funzionino correttamente. Mettere la macchina in Automatico.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300018,
-                            Code = 300018,
-                            Description = "Baia 2 occupato con cassetto sconosciuto",
-                            Reason = "Verificare l'id del cassetto sulla baia 2. Verificare che i sensori di presenza cassetto funzionino correttamente. Mettere la macchina in Automatico.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300019,
-                            Code = 300019,
-                            Description = "Baia 3 occupato con cassetto sconosciuto",
-                            Reason = "Verificare l'id del cassetto sulla baia 3. Verificare che i sensori di presenza cassetto funzionino correttamente. Mettere la macchina in Automatico.",
-                            Severity = 1
-                        });
-                });
-
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ErrorStatistic", b =>
                 {
-                    b.Property<int>("Code");
+                    b.Property<int>("Code")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("TotalErrors");
 
@@ -1371,7 +772,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("MissionsCount");
 
-                    b.Property<long>("Status");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<double>("Tare");
 
@@ -1453,8 +856,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<DateTime?>("ResolutionDate");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Code");
 
                     b.ToTable("Errors");
                 });
@@ -1631,7 +1032,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 3, 3, 11, 36, 38, 128, DateTimeKind.Local).AddTicks(7131),
+                            InstallationDate = new DateTime(2017, 3, 4, 14, 3, 34, 137, DateTimeKind.Local).AddTicks(8705),
                             ServiceStatus = 86
                         });
                 });
@@ -1900,6 +1301,28 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.ToTable("WeightMeasurements");
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.WmsSettings", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("IsWmsTimeSyncEnabled");
+
+                    b.Property<int>("TimeSyncIntervalMilliseconds");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WmsSettings");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = -1,
+                            IsWmsTimeSyncEnabled = true,
+                            TimeSyncIntervalMilliseconds = 10000
+                        });
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.StepMovementParameters", b =>
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.MovementParameters");
@@ -2081,13 +1504,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .HasForeignKey("WeightMeasurementId");
                 });
 
-            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ErrorStatistic", b =>
-                {
-                    b.HasOne("Ferretto.VW.MAS.DataModels.ErrorDefinition", "Error")
-                        .WithOne("Statistics")
-                        .HasForeignKey("Ferretto.VW.MAS.DataModels.ErrorStatistic", "Code");
-                });
-
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Laser", b =>
                 {
                     b.HasOne("Ferretto.VW.MAS.DataModels.Bay", "Bay")
@@ -2108,13 +1524,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.Elevator", "Elevator")
                         .WithMany()
                         .HasForeignKey("ElevatorId");
-                });
-
-            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.MachineError", b =>
-                {
-                    b.HasOne("Ferretto.VW.MAS.DataModels.ErrorDefinition", "Definition")
-                        .WithMany("Occurrences")
-                        .HasForeignKey("Code");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.MovementProfile", b =>

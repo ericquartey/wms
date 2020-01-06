@@ -89,10 +89,20 @@
                                     Kind="Account"
                                     Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                <controls:PpcButton Title="Menu OLD"
+                <controls:PpcButton Title="Data e Ora"
                                     Margin="0,0,30,30"
                                     Padding="-2,1,0,0"
                                     Abbrevation="4.7.5"
+                                    BorderBrush="{DynamicResource FerrettoRed}"
+                                    Command="{Binding MenuDateTimeCommand}"
+                                    Content="Impostazione Data e Ora di Sistema"
+                                    Kind="Account"
+                                    Style="{DynamicResource PpcButtonMenuCardStyle}" />
+
+                <controls:PpcButton Title="Menu OLD"
+                                    Margin="0,0,30,30"
+                                    Padding="-2,1,0,0"
+                                    Abbrevation="4.7.6"
                                     BorderBrush="{DynamicResource FerrettoMediumGray}"
                                     Command="{Binding MenuOldCommand}"
                                     Content="Collegamento al menu versione prototipo"

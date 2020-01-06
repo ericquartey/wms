@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 // 3. Select the new unknown WMS missions and queue them
                 var newWmsMissions = wmsMissions
                     .Where(m => m.BayId.HasValue)
-                    .Where(m => !localMissions.Any(lm => lm.WmsId == m.Id));
+                    .Where(m => localMissions.All(lm => lm.WmsId != m.Id));
 
                 this.Logger.LogDebug(newWmsMissions.Any()
                     ? "A total of {newMissionsCount} new WMS mission(s) are available."
@@ -78,19 +78,20 @@ namespace Ferretto.VW.MAS.MissionManager
 
                 foreach (var wmsMission in newWmsMissions)
                 {
-                    var bay = baysDataProvider.GetByIdOrDefault(wmsMission.BayId.Value);
+                    var bayNumber = (CommonUtils.Messages.Enumerations.BayNumber)wmsMission.BayId.Value;
+                    try
+                    {
+                        var bay = baysDataProvider.GetByNumber(bayNumber);
 
-                    if (bay is null)
-                    {
-                        this.Logger.LogWarning($"The WMS mission id={wmsMission.Id} cannot be accepted: no bay with id={wmsMission.BayId.Value} exists on the machine.");
-                    }
-                    else
-                    {
                         missionSchedulingProvider.QueueBayMission(
                             wmsMission.LoadingUnitId,
                             bay.Number,
                             wmsMission.Id,
                             wmsMission.Priority);
+                    }
+                    catch (Exception ex)
+                    {
+                        this.Logger.LogError(ex, "Unable to queue mission on bay.");
                     }
                 }
 

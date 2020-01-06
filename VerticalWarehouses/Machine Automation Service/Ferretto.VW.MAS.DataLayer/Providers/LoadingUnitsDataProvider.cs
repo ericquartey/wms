@@ -94,7 +94,9 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.LoadingUnits
-                    .Include(i => i.Cell)
+                    .AsNoTracking()
+                    .Include(l => l.Cell)
+                    .ThenInclude(c => c.Panel)
                     .ToArray();
             }
         }

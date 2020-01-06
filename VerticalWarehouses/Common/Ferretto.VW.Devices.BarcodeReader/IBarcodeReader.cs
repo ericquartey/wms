@@ -6,7 +6,7 @@ namespace Ferretto.VW.Devices.BarcodeReader
     {
         #region Events
 
-        event EventHandler<BarcodeEventArgs> BarcodeReceived;
+        event EventHandler<ActionEventArgs> BarcodeReceived;
 
         #endregion
 

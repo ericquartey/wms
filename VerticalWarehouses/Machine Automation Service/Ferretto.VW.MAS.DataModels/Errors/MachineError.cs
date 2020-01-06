@@ -1,5 +1,6 @@
 using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataModels.Extensions;
 
 namespace Ferretto.VW.MAS.DataModels
 {
@@ -11,12 +12,14 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int Code { get; set; }
 
-        public ErrorDefinition Definition { get; set; }
+        public string Description => ((MachineErrorCode)this.Code).GetDescription();
 
         /// <summary>
         /// The occurrence date, in local time.
         /// </summary>
         public DateTime OccurrenceDate { get; set; }
+
+        public string Reason => ((MachineErrorCode)this.Code).GetReason();
 
         /// <summary>
         /// The resolution date, in local time.

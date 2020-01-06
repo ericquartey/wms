@@ -90,99 +90,96 @@ namespace Ferretto.VW.MAS.MissionManager
                 if (mission is null)
                 {
                     // no more missions are available for scheduling on this bay
-                    this.NotifyAssignedMissionOperationChanged(bayNumber, null, null, activeMissions.Count());
+                    this.NotifyAssignedMissionOperationChanged(bayNumber, null, null);
                     return;
                 }
             }
 
-            if (!this.configuration.IsWmsEnabled())
-            {
-                this.Logger.LogTrace("Cannot perform mission scheduling, because WMS is not enabled.");
-                return;
-            }
-
             System.Diagnostics.Debug.Assert(mission != null);
 
-            if (!mission.WmsId.HasValue)
+            if (mission.WmsId.HasValue)
             {
-                // TODO: we do not handle non-WMS missions for now
-                return;
-            }
-
-            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-            var wmsMission = await this.missionsWmsWebService.GetByIdAsync(mission.WmsId.Value);
-            var newOperations = wmsMission.Operations.Where(o => o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Completed && o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Error);
-            if (newOperations.Any())
-            {
-                if (mission.Status == MissionStatus.New)
+                if (this.configuration.IsWmsEnabled())
                 {
-                    // activate new mission
-                    var cellsProvider = serviceProvider.GetRequiredService<ICellsProvider>();
-                    var sourceCell = cellsProvider.GetByLoadingUnitId(mission.LoadingUnitId);
-                    if (sourceCell is null)
+                    this.Logger.LogTrace("Cannot perform mission scheduling, because WMS is not enabled.");
+                    return;
+                }
+
+                var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                var wmsMission = await this.missionsWmsWebService.GetByIdAsync(mission.WmsId.Value);
+                var newOperations = wmsMission.Operations.Where(o => o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Completed && o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Error);
+                if (newOperations.Any())
+                {
+                    if (mission.Status == MissionStatus.New)
                     {
-                        this.Logger.LogDebug($"Bay {bayNumber}: WMS mission {mission.WmsId} can not start because LoadUnit {mission.LoadingUnitId} is not in a cell.");
+                        // activate new mission
+                        var cellsProvider = serviceProvider.GetRequiredService<ICellsProvider>();
+                        var sourceCell = cellsProvider.GetByLoadingUnitId(mission.LoadingUnitId);
+                        if (sourceCell is null)
+                        {
+                            this.Logger.LogDebug($"Bay {bayNumber}: WMS mission {mission.WmsId} can not start because LoadUnit {mission.LoadingUnitId} is not in a cell.");
+                        }
+                        else
+                        {
+                            moveLoadingUnitProvider.ActivateMove(mission.FsmId, mission.MissionType, mission.LoadingUnitId, bayNumber, MessageActor.MissionManager);
+                        }
+                    }
+                    else if (mission.Status == MissionStatus.Waiting)
+                    {
+                        var position = baysDataProvider.GetPositionByLocation(mission.LoadingUnitDestination);
+                        if (!position.IsUpper)
+                        {
+                            var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(mission.LoadingUnitId);
+                            moveLoadingUnitProvider.ResumeMoveLoadUnit(mission.FsmId, loadingUnitSource, loadingUnitSource, bayNumber, null, MessageActor.MissionManager);
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    // wms mission is finished
+                    this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} completed.", bayNumber, mission.WmsId.Value);
+
+                    missionsDataProvider.Complete(mission.Id);
+                    baysDataProvider.ClearMission(bayNumber);
+                    this.NotifyAssignedMissionOperationChanged(bayNumber, null, null);
+
+                    // check if there are other missions for this LU in this bay
+                    var nextMission = activeMissions.FirstOrDefault(m =>
+                        m.LoadingUnitId == mission.LoadingUnitId
+                        &&
+                        m.WmsId.HasValue
+                        &&
+                        m.WmsId != mission.WmsId);
+
+                    var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(mission.LoadingUnitId);
+
+                    if (nextMission is null)
+                    {
+                        // send back the loading unit to the cell
+                        moveLoadingUnitProvider.ResumeMoveLoadUnit(mission.FsmId, loadingUnitSource, LoadingUnitLocation.Cell, bayNumber, null, MessageActor.MissionManager);
                     }
                     else
                     {
-                        moveLoadingUnitProvider.ActivateMove(mission.FsmId, mission.MissionType, mission.LoadingUnitId, bayNumber, MessageActor.MissionManager);
-                    }
-                }
-                else if (mission.Status == MissionStatus.Waiting)
-                {
-                    var position = baysDataProvider.GetPositionByLocation(mission.LoadingUnitDestination);
-                    if (!position.IsUpper)
-                    {
-                        var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(mission.LoadingUnitId);
-                        moveLoadingUnitProvider.ResumeMoveLoadUnit(mission.FsmId, loadingUnitSource, loadingUnitSource, bayNumber, null, MessageActor.MissionManager);
-                        return;
-                    }
-                }
-                /******************** MOVE THIS PIECE OF CODE AFTER THE END OF THE MACHINE MISSION*/
-                // there are more operations for the same wms mission
-                var newOperation = newOperations.OrderBy(o => o.Priority).First();
-                this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", bayNumber, mission.WmsId.Value, newOperation.Id);
+                        // close current mission
+                        moveLoadingUnitProvider.StopMove(mission.FsmId, bayNumber, bayNumber, MessageActor.MissionManager);
 
-                baysDataProvider.AssignWmsMission(bayNumber, mission, newOperation.Id);
-                this.NotifyAssignedMissionOperationChanged(bayNumber, wmsMission.Id, newOperation.Id, activeMissions.Count());
-                /******************************/
+                        // activate new mission
+                        moveLoadingUnitProvider.ActivateMove(nextMission.FsmId, nextMission.MissionType, nextMission.LoadingUnitId, bayNumber, MessageActor.MissionManager);
+                    }
+                }
             }
-            else
+            else if (mission.Status is MissionStatus.New)
             {
-                // wms mission is finished
-                this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} completed.", bayNumber, mission.WmsId.Value);
-
-                missionsDataProvider.Complete(mission.Id);
-                baysDataProvider.ClearMission(bayNumber);
-                this.NotifyAssignedMissionOperationChanged(bayNumber, null, null, activeMissions.Count());
-
-                // check if there are other missions for this LU in this bay
-                var nextMission = activeMissions.FirstOrDefault(m =>
-                    m.LoadingUnitId == mission.LoadingUnitId
-                    &&
-                    m.WmsId.HasValue
-                    &&
-                    m.WmsId != mission.WmsId);
-
-                var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(mission.LoadingUnitId);
-
-                if (nextMission is null)
+                var cellsProvider = serviceProvider.GetRequiredService<ICellsProvider>();
+                var sourceCell = cellsProvider.GetByLoadingUnitId(mission.LoadingUnitId);
+                if (sourceCell is null)
                 {
-                    // send back the LU
-
-                    moveLoadingUnitProvider.ResumeMoveLoadUnit(mission.FsmId, loadingUnitSource, LoadingUnitLocation.Cell, bayNumber, null, MessageActor.MissionManager);
+                    this.Logger.LogDebug($"Bay {bayNumber}: WMS mission {mission.WmsId} can not start because LoadUnit {mission.LoadingUnitId} is not in a cell.");
                 }
-                // else are there other missions for this LU and another bay?
-                //{
-                // update WmsId in the current machine mission and move to another bay
-                //}
                 else
                 {
-                    // close current mission
-                    moveLoadingUnitProvider.StopMove(mission.FsmId, bayNumber, bayNumber, MessageActor.MissionManager);
-
-                    // activate new mission
-                    moveLoadingUnitProvider.ActivateMove(nextMission.FsmId, nextMission.MissionType, nextMission.LoadingUnitId, bayNumber, MessageActor.MissionManager);
+                    moveLoadingUnitProvider.ActivateMove(mission.FsmId, mission.MissionType, mission.LoadingUnitId, bayNumber, MessageActor.MissionManager);
                 }
             }
         }
@@ -334,15 +331,13 @@ namespace Ferretto.VW.MAS.MissionManager
         private void NotifyAssignedMissionOperationChanged(
             BayNumber bayNumber,
             int? missionId,
-            int? missionOperationId,
-            int pendingMissionsCount)
+            int? missionOperationId)
         {
             var data = new AssignedMissionOperationChangedMessageData
             {
                 BayNumber = bayNumber,
                 MissionId = missionId,
                 MissionOperationId = missionOperationId,
-                PendingMissionsCount = pendingMissionsCount,
             };
 
             var notificationMessage = new NotificationMessage(
@@ -367,6 +362,46 @@ namespace Ferretto.VW.MAS.MissionManager
         {
             GetPersistedMissions(serviceProvider);
             this.dataLayerIsReady = true;
+            await this.InvokeSchedulerAsync();
+        }
+
+        private async Task OnLoadingUnitMovedAsync(NotificationMessage message, IServiceProvider serviceProvider)
+        {
+            Contract.Requires(message != null);
+            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+
+            if (message.Data is MoveLoadingUnitMessageData luData)
+            {
+                var mission = missionsDataProvider.GetByGuid(luData.MissionId.Value);
+                if (!luData.DestinationCellId.HasValue)
+                // loading unit to bay mission
+                {
+                    var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                    if (mission.WmsId.HasValue)
+                    {
+                        var wmsMission = await this.missionsWmsWebService.GetByIdAsync(mission.WmsId.Value);
+                        var newOperations = wmsMission.Operations.Where(o => o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Completed && o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Error);
+                        if (newOperations.Any())
+                        {
+                            var newOperation = newOperations.OrderBy(o => o.Priority).First();
+                            this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", mission.TargetBay, mission.WmsId.Value, newOperation.Id);
+
+                            baysDataProvider.AssignWmsMission(mission.TargetBay, mission, newOperation.Id);
+                            this.NotifyAssignedMissionOperationChanged(mission.TargetBay, wmsMission.Id, newOperation.Id);
+                        }
+                    }
+                    else
+                    {
+                        missionsDataProvider.Complete(mission.Id);
+                    }
+                }
+                else
+                // any other mission type
+                {
+                    missionsDataProvider.Complete(mission.Id);
+                }
+            }
+
             await this.InvokeSchedulerAsync();
         }
 
