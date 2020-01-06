@@ -4,7 +4,9 @@
     {
         #region Methods
 
-        int? Authenticate(string userName, string password);
+        int? Authenticate(string userName, string password, string supportToken);
+
+        string GenerateSupportToken();
 
         #endregion
     }

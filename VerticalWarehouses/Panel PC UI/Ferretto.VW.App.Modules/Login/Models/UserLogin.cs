@@ -1,4 +1,6 @@
-﻿using Ferretto.VW.Utils;
+﻿using System;
+using System.Linq;
+using Ferretto.VW.Utils;
 
 namespace Ferretto.VW.App.Modules.Login.Models
 {
@@ -10,11 +12,15 @@ namespace Ferretto.VW.App.Modules.Login.Models
 
         private string password;
 
+        private string supportToken;
+
         private string userName;
 
         #endregion
 
         #region Properties
+
+        public bool IsSupport => string.CompareOrdinal(this.UserName, "support") == 0;
 
         public string Password
         {
@@ -22,10 +28,26 @@ namespace Ferretto.VW.App.Modules.Login.Models
             set => this.SetProperty(ref this.password, value);
         }
 
+        public string SupportToken
+        {
+            get
+            {
+                return this.supportToken ?? (this.supportToken = GenerateSupportToken());
+            }
+        }
+
         public string UserName
         {
             get => this.userName;
-            set => this.SetProperty(ref this.userName, value);
+            set
+            {
+                this.SetProperty(ref this.userName, value);
+                this.RaisePropertyChanged(nameof(this.IsSupport));
+                if (this.IsSupport)
+                {
+                    this.RaisePropertyChanged(nameof(this.SupportToken));
+                }
+            }
         }
 
         #endregion

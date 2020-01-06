@@ -6,6 +6,8 @@
 
         public int AccessLevel { get; set; }
 
+        public bool IsSupport => string.CompareOrdinal(this.Name, "support") == 0;
+
         public string Name { get; set; }
 
         public string PasswordHash { get; set; }
@@ -45,6 +47,15 @@
                 AccessLevel = 1,
                 PasswordHash = "e1IrRSpcUNLIQAmdtSzQqrKT4DLcMaYMh662pgMh2xY=",
                 PasswordSalt = "iB+IdMnlzvXvitHWJff38A==",
+            };
+
+            public static readonly User Support = new User
+            {
+                Id = -3,
+                Name = "support",
+                AccessLevel = 2,
+                PasswordHash = "",
+                PasswordSalt = "",
             };
 
             #endregion

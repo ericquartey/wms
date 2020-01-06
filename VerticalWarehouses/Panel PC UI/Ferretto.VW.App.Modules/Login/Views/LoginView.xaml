@@ -92,7 +92,7 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="50" />
-                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="120" />
                         </Grid.RowDefinitions>
 
@@ -142,16 +142,41 @@
                                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                        Text="LOGIN" />
 
-                            <ComboBox Margin="0,5"
+                            <ComboBox Name="comboBox"
+                                      Margin="0,5"
                                       FontFamily="{DynamicResource VWAPP_TitleFont}"
                                       FontSize="22"
                                       FontWeight="Light"
                                       SelectedValue="{Binding UserLogin.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                       Style="{DynamicResource FlatComboBoxStyle}">
-                                <clr:String>installer</clr:String>
-                                <clr:String>operator</clr:String>
-                                <clr:String>admin</clr:String>
+                                <ComboBox.ItemsSource>
+                                    <x:Array Type="{x:Type clr:String}">
+                                        <clr:String>operator</clr:String>
+                                        <clr:String>installer</clr:String>
+                                        <clr:String>support</clr:String>
+                                        <clr:String>admin</clr:String>
+                                    </x:Array>
+                                </ComboBox.ItemsSource>
                             </ComboBox>
+
+                            <Label Content="{Binding UserLogin.SupportToken}"
+                                   ContentStringFormat="Token: {0}"
+                                   FontFamily="{DynamicResource VWAPP_TitleFont}"
+                                   FontSize="22"
+                                   FontWeight="Light"
+                                   Foreground="{DynamicResource FerrettoDarkGray}">
+                                <Label.Style>
+                                    <Style TargetType="Label">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=SelectedItem, ElementName=comboBox}"
+                                                         Value="support">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Label.Style>
+                            </Label>
 
                             <dxe:PasswordBoxEdit x:Name="txtPassword"
                                                  Margin="0,5"

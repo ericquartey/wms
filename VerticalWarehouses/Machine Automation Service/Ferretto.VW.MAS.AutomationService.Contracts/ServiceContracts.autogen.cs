@@ -1054,11 +1054,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineUsersWebService
     {
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<UserClaims> AuthenticateWithResourceOwnerPasswordAsync(string userName, string password);
+        System.Threading.Tasks.Task<UserClaims> AuthenticateWithResourceOwnerPasswordAsync(string userName, string password, string supportToken);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<UserClaims> AuthenticateWithResourceOwnerPasswordAsync(string userName, string password, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<UserClaims> AuthenticateWithResourceOwnerPasswordAsync(string userName, string password, string supportToken, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<string> GenerateSupportTokenAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<string> GenerateSupportTokenAsync(System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -3417,6 +3424,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         Operator = 1,
     
         Installer = 2,
+    
+        Support = 3,
     
         Admin = 99,
     
