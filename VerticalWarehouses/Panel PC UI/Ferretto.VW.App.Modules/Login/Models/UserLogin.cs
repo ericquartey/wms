@@ -30,10 +30,8 @@ namespace Ferretto.VW.App.Modules.Login.Models
 
         public string SupportToken
         {
-            get
-            {
-                return this.supportToken ?? (this.supportToken = GenerateSupportToken());
-            }
+            get => this.supportToken;
+            set => this.SetProperty(ref this.supportToken, value);
         }
 
         public string UserName

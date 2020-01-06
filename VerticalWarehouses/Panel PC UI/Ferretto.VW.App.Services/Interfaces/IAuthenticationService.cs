@@ -22,6 +22,8 @@ namespace Ferretto.VW.App.Services
 
         #region Methods
 
+        Task<string> GetToken();
+
         /// <summary>
         /// Logs in the user.
         /// </summary>
