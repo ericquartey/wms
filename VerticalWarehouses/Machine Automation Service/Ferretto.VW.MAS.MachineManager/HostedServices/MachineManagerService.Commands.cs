@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS.MachineManager
                     break;
 
                 case MessageType.MoveLoadingUnit:
-                    this.OnMoveLoadingUnit(command);
+                    this.OnMoveLoadingUnit(command, serviceProvider);
                     break;
             }
 
@@ -109,7 +109,7 @@ namespace Ferretto.VW.MAS.MachineManager
             }
         }
 
-        private void OnMoveLoadingUnit(CommandMessage command)
+        private void OnMoveLoadingUnit(CommandMessage command, IServiceProvider serviceProvider)
         {
             if (command is null)
             {
@@ -129,13 +129,13 @@ namespace Ferretto.VW.MAS.MachineManager
                 {
                     case CommandAction.Start:
 
-                        if (this.missionMoveProvider.TryCreateMachineMission(command, out var missionId)
+                        if (this.missionMoveProvider.TryCreateMachineMission(command, serviceProvider, out var missionId)
                             && missionId.HasValue
                             )
                         {
                             try
                             {
-                                this.missionMoveProvider.Start(missionId.Value, command);
+                                this.missionMoveProvider.Start(missionId.Value, command, serviceProvider);
                             }
                             catch (Exception ex)
                             {

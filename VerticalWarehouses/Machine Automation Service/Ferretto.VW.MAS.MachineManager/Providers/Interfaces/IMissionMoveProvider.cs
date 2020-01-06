@@ -1,4 +1,5 @@
 ﻿using System;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.MAS.Utils.Messages;
 
 namespace Ferretto.VW.MAS.MachineManager.Providers.Interfaces
@@ -7,9 +8,13 @@ namespace Ferretto.VW.MAS.MachineManager.Providers.Interfaces
     {
         #region Methods
 
-        bool Start(int missionId, CommandMessage commandMessage);
+        void OnCommand(CommandMessage message, IServiceProvider serviceProvider);
 
-        bool TryCreateMachineMission(CommandMessage command, out int? missionId);
+        void OnNotification(NotificationMessage message, IServiceProvider serviceProvider);
+
+        bool Start(int missionId, CommandMessage commandMessage, IServiceProvider serviceProvider);
+
+        bool TryCreateMachineMission(CommandMessage command, IServiceProvider serviceProvider, out int? missionId);
 
         #endregion
     }
