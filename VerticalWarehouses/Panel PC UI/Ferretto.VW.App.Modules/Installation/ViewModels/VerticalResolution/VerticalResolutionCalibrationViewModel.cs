@@ -37,13 +37,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly bool isLoadingUnitOnBoard;
-
-        private readonly IMachineElevatorService machineElevatorService;
-
         private readonly IMachineElevatorWebService machineElevatorWebService;
-
-        private readonly IMachineSensorsWebService machineSensorsWebService;
 
         private readonly IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService;
 
@@ -112,16 +106,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public VerticalResolutionCalibrationViewModel(
             IMachineElevatorWebService machineElevatorWebService,
             IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService,
-            IMachineVerticalOriginProcedureWebService verticalOriginProcedureWebService,
-            IMachineSensorsWebService machineSensorsWebService,
-            IMachineElevatorService machineElevatorService)
+            IMachineVerticalOriginProcedureWebService verticalOriginProcedureWebService)
           : base(PresentationMode.Installer)
         {
-            this.machineElevatorService = machineElevatorService ?? throw new ArgumentNullException(nameof(machineElevatorService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.resolutionCalibrationWebService = resolutionCalibrationWebService ?? throw new ArgumentNullException(nameof(resolutionCalibrationWebService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
-            this.machineSensorsWebService = machineSensorsWebService ?? throw new ArgumentNullException(nameof(machineSensorsWebService));
             this.verticalOriginProcedureWebService = verticalOriginProcedureWebService ?? throw new ArgumentNullException(nameof(verticalOriginProcedureWebService));
         }
 
@@ -285,7 +275,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public ICommand SaveCommand =>
-                    this.saveCommand
+            this.saveCommand
             ??
             (this.saveCommand = new DelegateCommand(
                 async () => await this.ApplyCorrectionAsync()));
@@ -316,7 +306,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 switch (columnName)
                 {
                     case nameof(this.DestinationPosition1):
-                        if (this.CurrentStep == CalibrationStep.FirstMeasured)
+                        if (this.CurrentStep == CalibrationStep.FirstMeasured &&
+                            !this.IsMoving)
                         {
                             if (!this.DestinationPosition1.HasValue)
                             {
@@ -348,7 +339,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         break;
 
                     case nameof(this.MeasuredPosition1):
-                        if (this.CurrentStep == CalibrationStep.FirstMeasured)
+                        if (this.CurrentStep == CalibrationStep.FirstMeasured &&
+                            !this.IsMoving)
                         {
                             if (this.MeasuredPosition1.HasValue &&
                                 (this.MeasuredPosition1.Value < this.axisLowerBound ||
@@ -368,7 +360,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         break;
 
                     case nameof(this.StartPosition):
-                        if (this.CurrentStep == CalibrationStep.PositionMeter)
+                        if (this.CurrentStep == CalibrationStep.PositionMeter &&
+                            !this.IsMoving)
                         {
                             if (this.StartPosition < 0)
                             {
@@ -397,7 +390,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     case nameof(this.MeasuredPosition2):
                     case nameof(this.DestinationPosition2):
-                        if (this.CurrentStep == CalibrationStep.LastMeasured)
+                        if (this.CurrentStep == CalibrationStep.LastMeasured &&
+                            !this.IsMoving)
                         {
                             if (columnName.Equals(nameof(this.DestinationPosition2)))
                             {
@@ -587,12 +581,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
-        //    if (message.Status == MessageStatus.OperationEnd)
-        //    {
-        //        this.isOperationCompleted = true;
-        //        this.NavigateToNextStep();
-        //    }
-        //}
         protected override void RaiseCanExecuteChanged()
         {
             if (!this.IsVisible)
@@ -802,7 +790,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void ShowSteps()
         {
-            this.ShowPrevStepSinglePage(false, false);
+            this.ShowPrevStepSinglePage(true, false);
             this.ShowNextStepSinglePage(true, true);
             this.ShowAbortStep(true, true);
         }
@@ -854,20 +842,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     break;
 
                 case CalibrationStep.FirstMeasured:
-                    this.ShowPrevStepSinglePage(true, true);
+                    this.ShowPrevStepSinglePage(true, !this.IsMoving);
                     this.ShowNextStepSinglePage(true, this.moveToLastMeasuredCommand?.CanExecute() ?? false);
                     break;
 
                 case CalibrationStep.LastMeasured:
-                    this.ShowPrevStepSinglePage(true, true);
+                    this.ShowPrevStepSinglePage(true, !this.IsMoving);
                     this.ShowNextStepSinglePage(true, this.moveToConfirmCommand?.CanExecute() ?? false);
                     break;
 
                 case CalibrationStep.Confirm:
-                    this.ShowPrevStepSinglePage(true, true);
+                    this.ShowPrevStepSinglePage(true, !this.IsMoving);
                     this.ShowNextStepSinglePage(true, false);
                     break;
             }
+
+            this.ShowAbortStep(true, !this.IsMoving);
         }
 
         #endregion

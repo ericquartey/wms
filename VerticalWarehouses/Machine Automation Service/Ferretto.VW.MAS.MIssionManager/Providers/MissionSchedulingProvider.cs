@@ -104,21 +104,26 @@ namespace Ferretto.VW.MAS.MissionManager
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Search for a single compacting mission and activate it.
+        /// This method will be repeated after each mission has finished when machine is in Compact mode.
+        /// When no compacting mission is available machine returns to manual mode
+        /// </summary>
+        /// <param name="serviceProvider"></param>
         public void QueueLoadingUnitCompactingMission(IServiceProvider serviceProvider)
         {
             var loadUnits = this.loadingUnitsDataProvider.GetAll().Where(x => x.Cell != null);
             int? cellId;
-            int? loadUnitId;
+            LoadingUnit loadUnit;
             // first we try to find a lower place for each load unit, matching exactly the height
-            if (this.CompactFindEmptyCell(loadUnits, CompactingType.ExactMatchCompacting, out loadUnitId, out cellId)
+            if (this.CompactFindEmptyCell(loadUnits, CompactingType.ExactMatchCompacting, out loadUnit, out cellId)
                 // then we try to find a lower place for each load unit
-                || this.CompactFindEmptyCell(loadUnits, CompactingType.AnySpaceCompacting, out loadUnitId, out cellId)
+                || this.CompactFindEmptyCell(loadUnits, CompactingType.AnySpaceCompacting, out loadUnit, out cellId)
                 // then we try to shift down the load units
-                || this.CompactDownCell(loadUnits, out loadUnitId, out cellId)
+                || this.CompactDownCell(loadUnits, out loadUnit, out cellId)
                 )
             {
                 var moveLoadingUnitProvider = serviceProvider.GetRequiredService<IMoveLoadingUnitProvider>();
-                var loadUnit = loadUnits.First(x => x.Id == loadUnitId.Value);
                 moveLoadingUnitProvider.MoveFromCellToCell(MissionType.Compact, loadUnit.Cell.Id, cellId, BayNumber.BayOne, MessageActor.MissionManager);
             }
             else
@@ -130,9 +135,9 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
-        private bool CompactDownCell(IEnumerable<LoadingUnit> loadUnits, out int? loadUnitId, out int? cellId)
+        private bool CompactDownCell(IEnumerable<LoadingUnit> loadUnits, out LoadingUnit loadUnitOut, out int? cellId)
         {
-            loadUnitId = null;
+            loadUnitOut = null;
             cellId = null;
             if (!loadUnits.Any())
             {
@@ -144,7 +149,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 try
                 {
                     cellId = this.cellsProvider.FindDownCell(loadUnit);
-                    loadUnitId = loadUnit.Id;
+                    loadUnitOut = loadUnit;
                     return true;
                 }
                 catch (InvalidOperationException)
@@ -155,9 +160,9 @@ namespace Ferretto.VW.MAS.MissionManager
             return false;
         }
 
-        private bool CompactFindEmptyCell(IEnumerable<LoadingUnit> loadUnits, CompactingType compactingType, out int? loadUnitId, out int? cellId)
+        private bool CompactFindEmptyCell(IEnumerable<LoadingUnit> loadUnits, CompactingType compactingType, out LoadingUnit loadUnitOut, out int? cellId)
         {
-            loadUnitId = null;
+            loadUnitOut = null;
             cellId = null;
             if (!loadUnits.Any())
             {
@@ -169,7 +174,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 try
                 {
                     cellId = this.cellsProvider.FindEmptyCell(loadUnit.Id, compactingType);
-                    loadUnitId = loadUnit.Id;
+                    loadUnitOut = loadUnit;
                     return true;
                 }
                 catch (InvalidOperationException)

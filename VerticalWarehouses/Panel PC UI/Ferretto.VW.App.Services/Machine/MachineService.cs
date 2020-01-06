@@ -361,6 +361,8 @@ namespace Ferretto.VW.App.Services
             return attribute?.Area ?? WarningsArea.None;
         }
 
+        // TODO: Suddividere, tra inizializzazione e update
+
         private async Task InitializationBay()
         {
             this.bays = await this.machineBaysWebService.GetAllAsync();

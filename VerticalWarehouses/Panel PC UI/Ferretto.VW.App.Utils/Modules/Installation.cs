@@ -34,6 +34,8 @@
 
         public const string USERS = "UsersViewModel";
 
+        public const string VERTICALOFFSETCALIBRATION = "VerticalOffsetCalibrationViewModel";
+
         public const string VERTICALORIGINCALIBRATION = "VerticalOriginCalibrationViewModel";
 
         public const string VERTICALRESOLUTIONCALIBRATION = "VerticalResolutionCalibrationViewModel";
@@ -187,17 +189,6 @@
             public const string SECURITY = "OtherSensorsViewModel";
 
             public const string VERTICALAXIS = "VerticalAxisSensorsViewModel";
-
-            #endregion
-        }
-
-        public static class VerticalOffsetCalibration
-        {
-            #region Fields
-
-            public const string STEP1 = "VerticalOffsetCalibrationStep1ViewModel";
-
-            public const string STEP2 = "VerticalOffsetCalibrationStep2ViewModel";
 
             #endregion
         }

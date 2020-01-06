@@ -113,7 +113,7 @@
                            Grid.ColumnSpan="2"
                            FontSize="24"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="Procedere alla rimozione di uno dei carter laterali e al posizionamento del metro. Competare ripozisionando il carter e ripristinare lo stato di marcia."
+                           Text="Procedere alla rimozione di uno dei carter laterali e al posizionamento del metro. Completare riposizionando il carter e ripristinare lo stato di marcia."
                            TextWrapping="Wrap" />
 
                 <controls:PpcButton Grid.Row="3"
