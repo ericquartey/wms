@@ -238,6 +238,12 @@
                                                     <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundPressed}" />
                                                     <Setter Property="Cursor" Value="Hand" />
                                                 </Trigger>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <!--<Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />-->
+                                                    <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
+                                                    <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
+                                                </Trigger>
+
                                             </Style.Triggers>
                                         </Style>
                                     </Button.Style>

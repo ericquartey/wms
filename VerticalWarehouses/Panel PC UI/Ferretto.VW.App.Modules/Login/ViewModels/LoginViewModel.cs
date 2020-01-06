@@ -196,6 +196,11 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             {
                 this.ClearNotifications();
             }
+            else
+            {
+                this.ShowNotification("Connection to Automation Service is lost, trying to resume...", Services.Models.NotificationSeverity.Error);
+                this.RaiseCanExecuteChanged();
+            }
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -288,6 +293,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 {
                     try
                     {
+                        this.UserLogin.Password = string.Empty;
                         this.UserLogin.SupportToken = await this.authenticationService.GetToken();
                     }
                     catch (HttpRequestException)
