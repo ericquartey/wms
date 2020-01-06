@@ -96,9 +96,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public async Task<ActionResult<string>> GetSupportToken()
         {
-            this.logger.LogInformation($"Token generation");
+            var token = this.usersProvider.GetSupportToken();
 
-            return this.Ok(this.usersProvider.GetSupportToken());
+            this.logger.LogInformation($"Get token: {token}");
+
+            return this.Ok(token);
         }
 
         #endregion
