@@ -128,11 +128,14 @@ namespace Ferretto.VW.MAS.MachineManager
                 switch (messageData.CommandAction)
                 {
                     case CommandAction.Start:
-                        if (this.machineMissionsProvider.TryCreateMachineMission(FsmType.MoveLoadingUnit, command, out var missionId))
+
+                        if (this.missionMoveProvider.TryCreateMachineMission(command, out var missionId)
+                            && missionId.HasValue
+                            )
                         {
                             try
                             {
-                                this.machineMissionsProvider.StartMachineMission(missionId, command);
+                                this.missionMoveProvider.Start(missionId.Value, command);
                             }
                             catch (Exception ex)
                             {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 
@@ -7,6 +8,8 @@ namespace Ferretto.VW.MAS.DataLayer
     public interface IMissionsDataProvider
     {
         #region Methods
+
+        bool CanCreateMission(int loadingUnitId, BayNumber targetBay);
 
         Mission Complete(int id);
 
@@ -28,6 +31,8 @@ namespace Ferretto.VW.MAS.DataLayer
         IEnumerable<Mission> GetAllExecutingMissions();
 
         IEnumerable<Mission> GetAllWmsMissions();
+
+        Mission GetById(int id);
 
         bool IsMissionInWaitState(BayNumber bayNumber, int loadingUnitId);
 

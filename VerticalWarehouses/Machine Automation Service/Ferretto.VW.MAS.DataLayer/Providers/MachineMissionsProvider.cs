@@ -156,64 +156,72 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return true;
         }
 
-        public bool TryCreateMachineMission(FsmType fsmType, CommandMessage command, out Guid fsmId)
+        public bool TryCreateMachineMission(FsmType fsmType, CommandMessage command, out Guid missionId)
         {
             if (command is null)
             {
                 throw new ArgumentNullException(nameof(command));
             }
 
-            fsmId = Guid.Empty;
+            missionId = Guid.Empty;
 
-            if (this.CanCreateStateMachine(fsmType, command))
+            switch (fsmType)
             {
-                IMission newMission = null;
-                switch (fsmType)
-                {
-                    case FsmType.ChangeRunningType:
+                case FsmType.ChangeRunningType:
+                    if (this.CanCreateStateMachine(fsmType, command))
+                    {
+                        IMission newMission = null;
                         newMission = new MachineMission<IChangeRunningStateStateMachine>(this.serviceScopeFactory, this.OnActiveStateMachineCompleted);
-                        break;
 
-                    case FsmType.MoveLoadingUnit:
-                        if (command.Data is MoveLoadingUnitMessageData messageData)
+                        if (newMission != null)
+                        {
+                            if (newMission.MachineData is DataModels.Mission mission)
+                            {
+                                mission.MissionType = MissionType.Manual;
+                                mission.TargetBay = command.RequestingBay;
+                                mission.CreationDate = DateTime.Now;
+                            }
+                            this.machineMissions.Add(newMission);
+                            missionId = newMission.FsmId;
+
+                            return true;
+                        }
+                    }
+                    break;
+
+                case FsmType.MoveLoadingUnit:
+                    if (command.Data is MoveLoadingUnitMessageData messageData
+                        && messageData.LoadingUnitId.HasValue
+                        )
+                    {
+                        var serviceScope = this.serviceScopeFactory.CreateScope();
+                        var missionsDataProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
+                        if (missionsDataProvider.CanCreateMission(messageData.LoadingUnitId.Value, command.RequestingBay))
                         {
                             // if there is a mission waiting we have to take her place
-                            var waitMission = this.machineMissions.FirstOrDefault(m =>
-                                m.Type == fsmType
-                                && ((DataModels.Mission)m.MachineData).MissionType == messageData.MissionType
-                                && ((DataModels.Mission)m.MachineData).LoadingUnitId == messageData.LoadingUnitId
-                                && ((DataModels.Mission)m.MachineData).Status == MissionStatus.Waiting
+                            var waitMission = missionsDataProvider.GetAllExecutingMissions().FirstOrDefault(m =>
+                                m.LoadingUnitId == messageData.LoadingUnitId.Value
+                                && m.Status == MissionStatus.Waiting
                                 );
-                            if (waitMission != null
-                                && waitMission.MachineData is DataModels.Mission waitData)
+                            if (waitMission != null)
                             {
                                 try
                                 {
-                                    this.StopMachineMission(waitData.FsmId, StopRequestReason.Stop);
+                                    this.StopMachineMission(waitMission.FsmId, StopRequestReason.Stop);
                                 }
                                 catch (Exception)
                                 {
                                     return false;
                                 }
                             }
+
+                            var newMission = missionsDataProvider.CreateBayMission(messageData.LoadingUnitId.Value, command.RequestingBay);
+                            this.AddMission(newMission, newMission.FsmId);
+                            missionId = newMission.FsmId;
+                            return true;
                         }
-                        newMission = new MachineMission<IMoveLoadingUnitStateMachine>(this.serviceScopeFactory, this.OnActiveStateMachineCompleted);
-                        break;
-                }
-
-                if (newMission != null)
-                {
-                    if (newMission.MachineData is DataModels.Mission mission)
-                    {
-                        mission.MissionType = MissionType.Manual;
-                        mission.TargetBay = command.RequestingBay;
-                        mission.CreationDate = DateTime.Now;
                     }
-                    this.machineMissions.Add(newMission);
-                    fsmId = newMission.FsmId;
-
-                    return true;
-                }
+                    break;
             }
 
             return false;

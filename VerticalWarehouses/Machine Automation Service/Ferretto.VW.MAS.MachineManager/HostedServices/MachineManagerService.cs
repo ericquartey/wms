@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -18,6 +19,8 @@ namespace Ferretto.VW.MAS.MachineManager
 
         private readonly IMachineMissionsProvider machineMissionsProvider;
 
+        private readonly IMissionMoveProvider missionMoveProvider;
+
         private readonly IServiceScope serviceScope;
 
         private bool isDisposed;
@@ -28,12 +31,14 @@ namespace Ferretto.VW.MAS.MachineManager
 
         public MachineManagerService(
             IMachineMissionsProvider missionsProvider,
+            IMissionMoveProvider missionMoveProvider,
             IEventAggregator eventAggregator,
             ILogger<MachineManagerService> logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.machineMissionsProvider = missionsProvider ?? throw new ArgumentNullException(nameof(missionsProvider));
+            this.missionMoveProvider = missionMoveProvider ?? throw new ArgumentNullException(nameof(missionMoveProvider));
 
             this.serviceScope = serviceScopeFactory.CreateScope();
 
