@@ -283,17 +283,24 @@
             <Grid Margin="20"
                   DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
                     <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <TextBlock VerticalAlignment="Top"
-                           FontSize="24"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="Conferma misurazione rilevata"
-                           TextWrapping="Wrap" />
+                <StackPanel Grid.ColumnSpan="2">
+                    <TextBlock FontSize="24"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               Text="Conferma nuova risoluzione:"
+                               TextWrapping="Wrap" />
+
+                    <TextBlock FontSize="18"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               Text="Verificare il nuovo valore di risoluzione calcolato e premere Salva per rendere la modifica effettiva"
+                               TextWrapping="Wrap" />
+                </StackPanel>
+
 
                 <ctrls:PpcSpinEdit Grid.Row="1"
                                    Width="250"

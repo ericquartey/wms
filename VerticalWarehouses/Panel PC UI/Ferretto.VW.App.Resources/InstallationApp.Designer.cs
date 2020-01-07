@@ -763,7 +763,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current resolution [imp/mm].
+        ///   Looks up a localized string similar to Current resolution (imp/mm).
         /// </summary>
         public static string CurrentResolution {
             get {
@@ -2311,7 +2311,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New resolution [imp/mm].
+        ///   Looks up a localized string similar to New resolution (imp/mm).
         /// </summary>
         public static string NewResolution {
             get {
