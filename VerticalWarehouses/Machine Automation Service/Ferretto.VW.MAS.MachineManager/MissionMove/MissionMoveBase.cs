@@ -1,5 +1,7 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -39,6 +41,67 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         public abstract bool OnEnter(CommandMessage command);
 
         public abstract void OnNotification(NotificationMessage message);
+
+        public virtual void OnResume(CommandMessage command)
+        {
+        }
+
+        public virtual void OnStop(StopRequestReason reason)
+        {
+            if (this.Mission != null)
+            {
+                var msgData = new MoveLoadingUnitMessageData(
+                    this.Mission.MissionType,
+                    this.Mission.LoadingUnitSource,
+                    this.Mission.LoadingUnitDestination,
+                    null,
+                    null,
+                    this.Mission.LoadingUnitId,
+                    false,
+                    false,
+                    this.Mission.FsmId,
+                    this.Mission.Action,
+                    reason);    // this is the only necessary parameter
+
+                var msg = new CommandMessage(
+                    msgData,
+                    $"Loading Unit {this.Mission.LoadingUnitId} stop movement for bay {msgData.Destination}",
+                    MessageActor.AutomationService,
+                    MessageActor.MachineManager,
+                    MessageType.MoveLoadingUnit,
+                    this.Mission.TargetBay);
+
+                if (this.Mission.IsRestoringType())
+                {
+                    this.Mission.FsmRestoreStateName = this.Mission.FsmStateName;
+                    var newStep = new MissionMoveErrorState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    newStep.OnEnter(msg);
+                }
+                else
+                {
+                    var newStep = new MissionMoveEndState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    newStep.OnEnter(msg);
+                }
+            }
+        }
+
+        public virtual void UpdateResponseList(MessageType type)
+        {
+            switch (type)
+            {
+                case MessageType.Positioning:
+                    this.Mission.DeviceNotifications |= MissionDeviceNotifications.Positioning;
+                    break;
+
+                case MessageType.ShutterPositioning:
+                    this.Mission.DeviceNotifications |= MissionDeviceNotifications.Shutter;
+                    break;
+
+                case MessageType.Homing:
+                    this.Mission.DeviceNotifications |= MissionDeviceNotifications.Homing;
+                    break;
+            }
+        }
 
         #endregion
     }

@@ -7,7 +7,6 @@ using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
-using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
@@ -69,11 +68,18 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if (returnValue)
             {
                 this.Mission.Status = MissionStatus.New;
+                if (command != null
+                    && command.Data is IMoveLoadingUnitMessageData messageData
+                    )
+                {
+                    this.Mission.Action = messageData.CommandAction;
+                    this.Mission.TargetBay = command.RequestingBay;
+                }
                 this.missionsDataProvider.Update(this.Mission);
                 this.logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
-                var startState = new MissionMoveStartState(this.Mission, this.ServiceProvider);
-                returnValue = startState.OnEnter(command);
+                var startState = new MissionMoveStartState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                returnValue = startState.OnEnter(null);
             }
 
             return returnValue;
@@ -90,7 +96,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             bool returnValue;
 
-            if (commandMessage.Data is IMoveLoadingUnitMessageData messageData)
+            if (commandMessage != null
+                && commandMessage.Data is IMoveLoadingUnitMessageData messageData)
             {
                 returnValue = this.IsMachineOk(messageData);
 
@@ -111,7 +118,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             else
             {
-                var description = $"Attempting to start {this.GetType()} Finite state machine with wrong ({commandMessage.Data.GetType()}) message data";
+                var description = $"Attempting to start {this.GetType()} Finite state machine with wrong ({commandMessage?.Data.GetType()}) message data";
 
                 throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
             }

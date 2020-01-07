@@ -6,14 +6,16 @@ namespace Ferretto.VW.CommonUtils.Messages.Enumerations
 {
     [JsonConverter(typeof(StringEnumConverter))]
     [Flags]
-    public enum MissionDeviceNotifications
+    public enum MissionBayNotifications
     {
         None = 0,
 
-        Positioning = 1,
+        BayOne = 1,
 
-        Shutter = 2,
+        BayTwo = 2,
 
-        Homing = 4,
+        BayThree = 4,
+
+        ElevatorBay = 8,
     }
 }

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Text;
+using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Ferretto.VW.MAS.DataModels
 {
@@ -8,11 +11,19 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
-        public BayNumber CloseShutterBayNumber;
+        [JsonConverter(typeof(StringEnumConverter))]
+        public BayNumber CloseShutterBayNumber { get; set; }
 
-        public BayNumber OpenShutterBayNumber;
+        [JsonConverter(typeof(StringEnumConverter))]
+        public ShutterPosition OpenShutterPosition { get; set; }
 
-        public MissionDeviceNotifications DeviceNotifications;
+        public MissionDeviceNotifications DeviceNotifications { get; set; }
+
+        public CommandAction Action { get; set; }
+
+        public MissionBayNotifications BayNotifications { get; set; }
+
+        public HorizontalMovementDirection Direction { get; set; }
 
         public DateTime CreationDate { get; set; }
 
@@ -44,6 +55,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public MissionStatus Status { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public BayNumber TargetBay { get; set; }
 
         public int? WmsId { get; set; }

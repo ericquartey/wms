@@ -1,5 +1,6 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Messages;
 using Prism.Events;
@@ -25,6 +26,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces
         bool OnEnter(CommandMessage command);
 
         void OnNotification(NotificationMessage message);
+
+        void OnResume(CommandMessage command);
+
+        void OnStop(StopRequestReason reason);
+
+        void UpdateResponseList(MessageType type);
 
         #endregion
     }

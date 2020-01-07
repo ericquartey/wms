@@ -135,7 +135,7 @@ namespace Ferretto.VW.MAS.MachineManager
                         {
                             try
                             {
-                                this.missionMoveProvider.Start(missionId.Value, command, serviceProvider);
+                                this.missionMoveProvider.StartMission(missionId.Value, command, serviceProvider);
                             }
                             catch (Exception ex)
                             {
@@ -154,7 +154,8 @@ namespace Ferretto.VW.MAS.MachineManager
                     case CommandAction.Activate:
                         try
                         {
-                            this.machineMissionsProvider.StartMachineMission(messageData.MissionId.Value, command);
+                            var mission = this.missionsDataProvider.GetByGuid(messageData.MissionId.Value);
+                            this.missionMoveProvider.StartMission(mission.Id, command, serviceProvider);
                         }
                         catch (Exception ex)
                         {
@@ -162,29 +163,29 @@ namespace Ferretto.VW.MAS.MachineManager
                         }
                         break;
 
-                    case CommandAction.Abort:
-                        if (messageData.MissionId != null)
-                        {
-                            if (!this.machineMissionsProvider.AbortMachineMission(messageData.MissionId.Value))
-                            {
-                                this.Logger.LogError("Supplied mission Id to be aborted is no longer valid");
-                                this.NotifyCommandError(command);
-                            }
-                        }
-                        else
-                        {
-                            foreach (var mission in this.machineMissionsProvider.GetMissionsByFsmType(FsmType.MoveLoadingUnit))
-                            {
-                                mission.AbortMachineMission();
-                            }
-                        }
+                    //case CommandAction.Abort:
+                    //    if (messageData.MissionId != null)
+                    //    {
+                    //        if (!this.machineMissionsProvider.AbortMachineMission(messageData.MissionId.Value))
+                    //        {
+                    //            this.Logger.LogError("Supplied mission Id to be aborted is no longer valid");
+                    //            this.NotifyCommandError(command);
+                    //        }
+                    //    }
+                    //    else
+                    //    {
+                    //        foreach (var mission in this.machineMissionsProvider.GetMissionsByFsmType(FsmType.MoveLoadingUnit))
+                    //        {
+                    //            mission.AbortMachineMission();
+                    //        }
+                    //    }
 
-                        break;
+                    //    break;
 
                     case CommandAction.Stop:
                         if (messageData.MissionId != null)
                         {
-                            if (!this.machineMissionsProvider.StopMachineMission(messageData.MissionId.Value, StopRequestReason.Stop))
+                            if (!this.missionMoveProvider.StopMission(messageData.MissionId.Value, StopRequestReason.Stop, serviceProvider))
                             {
                                 this.Logger.LogError("Supplied mission Id to be stopped is no longer valid");
                                 this.NotifyCommandError(command);
@@ -192,37 +193,37 @@ namespace Ferretto.VW.MAS.MachineManager
                         }
                         else
                         {
-                            foreach (var mission in this.machineMissionsProvider.GetMissionsByFsmType(FsmType.MoveLoadingUnit))
+                            foreach (var mission in this.missionsDataProvider.GetAllActiveMissions())
                             {
-                                mission.StopMachine(StopRequestReason.Stop);
+                                this.missionMoveProvider.StopMission(mission.FsmId, StopRequestReason.Stop, serviceProvider);
                             }
                         }
 
                         break;
 
-                    case CommandAction.Pause:
-                        if (messageData.MissionId != null)
-                        {
-                            if (!this.machineMissionsProvider.PauseMachineMission(messageData.MissionId.Value))
-                            {
-                                this.Logger.LogError("Supplied mission Id to be stopped is no longer valid");
-                                this.NotifyCommandError(command);
-                            }
-                        }
-                        else
-                        {
-                            foreach (var mission in this.machineMissionsProvider.GetMissionsByFsmType(FsmType.MoveLoadingUnit))
-                            {
-                                mission.PauseMachineMission();
-                            }
-                        }
+                    //case CommandAction.Pause:
+                    //    if (messageData.MissionId != null)
+                    //    {
+                    //        if (!this.machineMissionsProvider.PauseMachineMission(messageData.MissionId.Value))
+                    //        {
+                    //            this.Logger.LogError("Supplied mission Id to be stopped is no longer valid");
+                    //            this.NotifyCommandError(command);
+                    //        }
+                    //    }
+                    //    else
+                    //    {
+                    //        foreach (var mission in this.machineMissionsProvider.GetMissionsByFsmType(FsmType.MoveLoadingUnit))
+                    //        {
+                    //            mission.PauseMachineMission();
+                    //        }
+                    //    }
 
-                        break;
+                    //    break;
 
                     case CommandAction.Resume:
                         if (messageData.MissionId != null)
                         {
-                            if (!this.machineMissionsProvider.ResumeMachineMission(messageData.MissionId.Value, command))
+                            if (!this.missionMoveProvider.ResumeMission(messageData.MissionId.Value, command, serviceProvider))
                             {
                                 this.Logger.LogError("Supplied mission Id to be stopped is no longer valid");
                                 this.NotifyCommandError(command);
@@ -230,9 +231,9 @@ namespace Ferretto.VW.MAS.MachineManager
                         }
                         else
                         {
-                            foreach (var mission in this.machineMissionsProvider.GetMissionsByFsmType(FsmType.MoveLoadingUnit))
+                            foreach (var mission in this.missionsDataProvider.GetAllActiveMissions())
                             {
-                                mission.ResumeMachineMission(command);
+                                this.missionMoveProvider.ResumeMission(mission.FsmId, command, serviceProvider);
                             }
                         }
 

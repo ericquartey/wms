@@ -1,5 +1,6 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 
 namespace Ferretto.VW.MAS.MachineManager.Providers.Interfaces
@@ -12,7 +13,11 @@ namespace Ferretto.VW.MAS.MachineManager.Providers.Interfaces
 
         void OnNotification(NotificationMessage message, IServiceProvider serviceProvider);
 
-        bool Start(int missionId, CommandMessage commandMessage, IServiceProvider serviceProvider);
+        bool ResumeMission(Guid missionId, CommandMessage command, IServiceProvider serviceProvider);
+
+        bool StartMission(int missionId, CommandMessage command, IServiceProvider serviceProvider);
+
+        bool StopMission(Guid missionId, StopRequestReason stopRequest, IServiceProvider serviceProvider);
 
         bool TryCreateMachineMission(CommandMessage command, IServiceProvider serviceProvider, out int? missionId);
 
