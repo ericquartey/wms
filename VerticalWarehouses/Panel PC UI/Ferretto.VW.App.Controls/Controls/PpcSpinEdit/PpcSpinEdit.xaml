@@ -86,6 +86,8 @@
                               Width="{Binding WidthNumber, FallbackValue=200}"
                               Margin="0"
                               AllowDefaultButton="False"
+                              MinValue="{Binding MinValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              MaxValue="{Binding MaxValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               EditValue="{Binding EditValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               Increment="1"
                               IsEnabled="{Binding IsEnabled}"

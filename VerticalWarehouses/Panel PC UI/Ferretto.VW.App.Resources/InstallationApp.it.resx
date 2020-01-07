@@ -1343,4 +1343,31 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="SecuritySensors" xml:space="preserve">
     <value>Sensori di sicurezza</value>
   </data>
+  <data name="Hour" xml:space="preserve">
+    <value>Ora</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Anno</value>
+  </data>
+  <data name="Month" xml:space="preserve">
+    <value>Mese</value>
+  </data>
+  <data name="Day" xml:space="preserve">
+    <value>Giorno</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>Minuti</value>
+  </data>
+  <data name="SystemDateTime" xml:space="preserve">
+    <value>Data e ora di sistema</value>
+  </data>
+  <data name="WMSAutoSync" xml:space="preserve">
+    <value>Sincronizzazione automatica WMS</value>
+  </data>
+  <data name="SetManualSystemDateTime" xml:space="preserve">
+    <value>Imposta data e ora manualmente</value>
+  </data>
 </root>

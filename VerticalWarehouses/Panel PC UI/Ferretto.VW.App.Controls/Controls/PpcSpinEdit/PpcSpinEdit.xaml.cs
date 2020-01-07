@@ -54,8 +54,20 @@ namespace Ferretto.VW.App.Controls
             typeof(PpcSpinEdit),
             new PropertyMetadata(null, new PropertyChangedCallback(OnMaskChanged)));
 
+        public static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
+           nameof(MaxValue),
+           typeof(decimal?),
+           typeof(PpcSpinEdit),
+           new PropertyMetadata(null));
+
+        public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
+           nameof(MinValue),
+           typeof(decimal?),
+           typeof(PpcSpinEdit),
+           new PropertyMetadata(null));
+
         public static readonly DependencyProperty SpinEditStyleProperty = DependencyProperty.Register(
-            nameof(SpinEditStyle),
+                            nameof(SpinEditStyle),
             typeof(Style),
             typeof(PpcSpinEdit),
             new PropertyMetadata(null, new PropertyChangedCallback(OnSpinEditStyleChanged)));
@@ -83,6 +95,8 @@ namespace Ferretto.VW.App.Controls
         private const string DOUBLE_STYLE = "VWAPP_SpinEdit_DoubleStyle";
 
         private const string INTEGER_STYLE = "VWAPP_SpinEdit_IntegerStyle";
+
+        private const string SHORTINTEGER_STYLE = "VWAPP_SpinEdit_ShortIntegerStyle";
 
         private static readonly DependencyProperty EditValueProperty = DependencyProperty.Register(
             nameof(EditValue),
@@ -172,6 +186,18 @@ namespace Ferretto.VW.App.Controls
         {
             get => (string)this.GetValue(MaskProperty);
             set => this.SetValue(MaskProperty, value);
+        }
+
+        public decimal? MaxValue
+        {
+            get => (decimal?)this.GetValue(MaxValueProperty);
+            set => this.SetValue(MaxValueProperty, value);
+        }
+
+        public decimal? MinValue
+        {
+            get => (decimal?)this.GetValue(MinValueProperty);
+            set => this.SetValue(MinValueProperty, value);
         }
 
         public Style SpinEditStyle
@@ -357,6 +383,12 @@ namespace Ferretto.VW.App.Controls
             if (Nullable.GetUnderlyingType(property.PropertyType) is Type nullType)
             {
                 type = nullType;
+            }
+
+            if (type == typeof(ushort))
+            {
+                this.SetStyle(SHORTINTEGER_STYLE);
+                return;
             }
 
             if (type == typeof(int))

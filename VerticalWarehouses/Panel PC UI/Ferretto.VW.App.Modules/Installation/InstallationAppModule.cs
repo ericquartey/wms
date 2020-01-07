@@ -1,12 +1,9 @@
 ﻿using Ferretto.VW.App.Controls.Interfaces;
-using Ferretto.VW.App.Installation.HelpWindows;
 using Ferretto.VW.App.Installation.Views;
 using Ferretto.VW.App.Modules.Installation.Views;
-using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Ioc;
 using Prism.Modularity;
-using Prism.Mvvm;
 using Unity;
 
 namespace Ferretto.VW.App.Modules.Installation
@@ -108,6 +105,7 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<UsersView>();
             containerRegistry.RegisterForNavigation<ParameterInverterView>();
             containerRegistry.RegisterForNavigation<ComunicationWmsView>();
+            containerRegistry.RegisterForNavigation<DateTimeView>();
 
             containerRegistry.Register<INavigableView, DevicesView>(nameof(DevicesView));
         }

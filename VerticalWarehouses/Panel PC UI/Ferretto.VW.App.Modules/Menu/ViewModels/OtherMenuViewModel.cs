@@ -71,8 +71,15 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.MenuCommandOther(MenuOther.ComunicationWms),
                 this.CanExecuteCommand));
 
+        public ICommand MenuDateTimeCommand =>
+            this.menuDateTimeCommand
+            ??
+            (this.menuDateTimeCommand = new DelegateCommand(
+                () => this.MenuCommandOther(MenuOther.DateTime),
+                this.CanExecuteCommand));
+
         public ICommand MenuOldCommand =>
-            this.menuOldCommand
+                    this.menuOldCommand
             ??
             (this.menuOldCommand = new DelegateCommand(
                 () => this.MenuCommandOther(MenuOther.Old),
