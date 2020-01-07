@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.MachineManager;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -12,8 +9,23 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class CompactingController : ControllerBase
     {
-        public CompactingController()
-        { }
+        #region Fields
+
+        private readonly IMachineModeProvider machineModeProvider;
+
+        #endregion
+
+        #region Constructors
+
+        public CompactingController(
+            IMachineModeProvider machineModeProvider)
+        {
+            this.machineModeProvider = machineModeProvider ?? throw new ArgumentNullException(nameof(machineModeProvider));
+        }
+
+        #endregion
+
+        #region Methods
 
         [HttpPost("compacting")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
@@ -21,14 +33,19 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Compacting()
         {
+            this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Compact);
             return this.Accepted();
         }
+
         [HttpPost("stop")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
         public IActionResult Stop()
         {
+            this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Manual);
             return this.Accepted();
         }
+
+        #endregion
     }
 }

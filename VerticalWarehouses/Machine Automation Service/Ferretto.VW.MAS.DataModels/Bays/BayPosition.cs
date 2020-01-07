@@ -36,5 +36,14 @@ namespace Ferretto.VW.MAS.DataModels
         public LoadingUnitLocation Location { get; set; }
 
         #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            return $"{this.Bay} {this.Location}";
+        }
+
+        #endregion
     }
 }

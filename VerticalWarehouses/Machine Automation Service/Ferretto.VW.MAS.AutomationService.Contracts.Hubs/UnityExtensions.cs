@@ -6,7 +6,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
     {
         #region Methods
 
-        public static IContainerRegistry RegisterMachineAutomationHubs(
+        public static IContainerRegistry RegisterMasHubs(
             this IContainerRegistry container,
             System.Uri webServiceUrl,
             string operatorHubPath,

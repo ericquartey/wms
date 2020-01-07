@@ -16,12 +16,6 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
             }
 
             builder.HasKey(p => p.Id);
-
-            builder.Property(p => p.Side)
-             .HasColumnType("text")
-             .HasConversion(
-                 enumValue => enumValue.ToString(),
-                 stringValue => System.Enum.Parse<WarehouseSide>(stringValue));
         }
 
         #endregion

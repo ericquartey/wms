@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing.Interfaces
 
         InverterIndex InverterIndexOld { get; set; }
 
-        bool IsOneKMachine { get; }
+        bool IsOneTonMachine { get; }
 
         int? LoadingUnitId { get; }
 
@@ -25,6 +25,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing.Interfaces
         int MaximumSteps { get; set; }
 
         int NumberOfExecutedSteps { get; set; }
+
+        Axis RequestedAxisToCalibrate { get; set; }
 
         #endregion
     }

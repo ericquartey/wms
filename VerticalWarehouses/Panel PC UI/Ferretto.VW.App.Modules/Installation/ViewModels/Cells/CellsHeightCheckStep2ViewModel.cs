@@ -214,6 +214,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected override void RaiseCanExecuteChanged()
         {
+            base.RaiseCanExecuteChanged();
+
             this.moveDownCommand?.RaiseCanExecuteChanged();
             this.moveUpCommand?.RaiseCanExecuteChanged();
             this.applyCorrectionCommand?.RaiseCanExecuteChanged();

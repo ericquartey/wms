@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 
@@ -16,7 +17,9 @@ namespace Ferretto.VW.MAS.MissionManager
 
         void QueueCellMission(int loadingUnitId, int targetCellId);
 
-        void QueueLoadingUnitCompactingMission();
+        void QueueLoadingUnitCompactingMission(IServiceProvider serviceProvider);
+
+        void QueueRecallMission(int loadingUnitId, BayNumber sourceBayNumber);
 
         #endregion
     }

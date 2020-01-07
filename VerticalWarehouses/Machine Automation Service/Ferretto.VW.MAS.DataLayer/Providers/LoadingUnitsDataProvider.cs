@@ -94,7 +94,9 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.LoadingUnits
-                    .Include(i => i.Cell)
+                    .AsNoTracking()
+                    .Include(l => l.Cell)
+                    .ThenInclude(c => c.Panel)
                     .ToArray();
             }
         }
@@ -188,6 +190,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
             context.Delete(loadingUnits, (e) => e.Id);
             loadingUnits.ForEach((l) => context.AddOrUpdate(l, (e) => e.Id));
+
+            this.machineProvider.UpdateWeightStatistics(context);
         }
 
         public void Insert(int loadingUnitsId)
@@ -200,7 +204,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     Id = loadingUnitsId,
                     Tare = machine.LoadUnitTare,
                     MaxNetWeight = machine.LoadUnitMaxNetWeight,
-                    Height = machine.LoadUnitMaxHeight
+                    Height = 0
                 };
 
                 this.dataContext.LoadingUnits.Add(loadingUnits);

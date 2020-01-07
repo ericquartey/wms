@@ -19,12 +19,6 @@ namespace Ferretto.VW.App.Controls
             typeof(SolidColorBrush),
             typeof(PpcSpinEdit));
 
-        public static readonly DependencyProperty ButtonSizeProperty = DependencyProperty.Register(
-            nameof(ButtonSize),
-            typeof(double),
-            typeof(PpcSpinEdit),
-            new PropertyMetadata(60D, new PropertyChangedCallback(OnButtonSizeChanged)));
-
         public static readonly DependencyProperty HighlightedProperty = DependencyProperty.Register(
             nameof(Highlighted),
             typeof(bool),
@@ -36,8 +30,20 @@ namespace Ferretto.VW.App.Controls
             typeof(PpcSpinEdit),
             new PropertyMetadata(new decimal(1), new PropertyChangedCallback(OnIncrementChanged)));
 
+        public static readonly DependencyProperty KeyboardCloseCommandProperty = DependencyProperty.Register(
+            nameof(KeyboardCloseCommand),
+            typeof(ICommand),
+            typeof(PpcSpinEdit),
+            new PropertyMetadata(null));
+
+        public static readonly DependencyProperty KeyboardOpenCommandProperty = DependencyProperty.Register(
+            nameof(KeyboardOpenCommand),
+            typeof(ICommand),
+            typeof(PpcSpinEdit),
+            new PropertyMetadata(null));
+
         public static readonly DependencyProperty KeyboardProperty = DependencyProperty.Register(
-            nameof(Keyboard),
+                            nameof(Keyboard),
             typeof(KeyboardType),
             typeof(PpcSpinEdit),
             new PropertyMetadata(KeyboardType.NumpadCenter));
@@ -77,18 +83,6 @@ namespace Ferretto.VW.App.Controls
             typeof(decimal),
             typeof(PpcSpinEdit),
             new PropertyMetadata(new decimal(250)));
-
-        public static DependencyProperty KeyboardCloseCommandProperty = DependencyProperty.Register(
-            nameof(KeyboardCloseCommand),
-            typeof(ICommand),
-            typeof(PpcSpinEdit),
-            new PropertyMetadata(null));
-
-        public static DependencyProperty KeyboardOpenCommandProperty = DependencyProperty.Register(
-            nameof(KeyboardOpenCommand),
-            typeof(ICommand),
-            typeof(PpcSpinEdit),
-            new PropertyMetadata(null));
 
         private const string DECIMAL_STYLE = "VWAPP_SpinEdit_DecimalStyle";
 
@@ -130,12 +124,6 @@ namespace Ferretto.VW.App.Controls
         {
             get => (SolidColorBrush)this.GetValue(BorderColorProperty);
             set => this.SetValue(BorderColorProperty, value);
-        }
-
-        public double ButtonSize
-        {
-            get => (double)this.GetValue(ButtonSizeProperty);
-            set => this.SetValue(ButtonSizeProperty, value);
         }
 
         public object EditValue
@@ -252,18 +240,18 @@ namespace Ferretto.VW.App.Controls
             return property;
         }
 
-        private static void OnButtonSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is PpcSpinEdit ppcSpinEdit
-                &&
-                e.NewValue is double val)
-            {
-                ppcSpinEdit.Button_Add.Height = val;
-                ppcSpinEdit.Button_Add.Width = val;
-                ppcSpinEdit.Button_Min.Height = val;
-                ppcSpinEdit.Button_Min.Width = val;
-            }
-        }
+        //private static void OnButtonSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    if (d is PpcSpinEdit ppcSpinEdit
+        //        &&
+        //        e.NewValue is double val)
+        //    {
+        //        ppcSpinEdit.Button_Add.Height = val;
+        //        ppcSpinEdit.Button_Add.Width = val;
+        //        ppcSpinEdit.Button_Min.Height = val;
+        //        ppcSpinEdit.Button_Min.Width = val;
+        //    }
+        //}
 
         private static void OnIncrementChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -368,6 +356,10 @@ namespace Ferretto.VW.App.Controls
             }
 
             var bindingExpression = BindingOperations.GetBindingExpression(this, PpcSpinEdit.EditValueProperty);
+            if (bindingExpression is null)
+            {
+                return;
+            }
 
             var dataContextType = this.DataContext.GetType();
             var path = bindingExpression.ParentBinding.Path.Path;

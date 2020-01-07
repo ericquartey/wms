@@ -17,7 +17,7 @@ using Axis = Ferretto.VW.CommonUtils.Messages.Enumerations.Axis;
 namespace Ferretto.VW.App.Installation.ViewModels
 {
     [Warning(WarningsArea.Installation)]
-    internal sealed class VerticalOriginCalibrationViewModel : BaseMainViewModel
+    public class VerticalOriginCalibrationViewModel : BaseMainViewModel
     {
         #region Fields
 
@@ -78,23 +78,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.currentVerticalPosition;
             private set => this.SetProperty(ref this.currentVerticalPosition, value);
-        }
-
-        public override bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            protected set
-            {
-                if (this.SetProperty(ref this.isWaitingForResponse, value))
-                {
-                    if (this.isWaitingForResponse)
-                    {
-                        this.ClearNotifications();
-                    }
-
-                    this.RaiseCanExecuteChanged();
-                }
-            }
         }
 
         public double LowerBound

@@ -13,6 +13,9 @@
            xmlns:prism="http://prismlibrary.com/"
            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
            xmlns:view="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+           xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Modules.Login.ViewModels"
+           d:DataContext="{d:DesignInstance Type=viewmodels:LoginViewModel,
+                                            IsDesignTimeCreatable=False}"
            d:DesignHeight="450"
            d:DesignWidth="800"
            prism:ViewModelLocator.AutoWireViewModel="True"
@@ -205,6 +208,7 @@
                                         Margin="0,0,20,20"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Bottom"
+                                        BayNumber="{Binding BayNumber, Mode=OneWay}"
                                         TextBadge="{Binding BayNumber, StringFormat={x:Static res:VWApp.BayNumber}}" />
 
                     </Grid>

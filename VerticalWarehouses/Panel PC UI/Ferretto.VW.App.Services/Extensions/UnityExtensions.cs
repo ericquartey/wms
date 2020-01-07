@@ -27,6 +27,7 @@ namespace Ferretto.VW.App.Services
             containerRegistry.RegisterSingleton<IHubNotificationService, HubNotificationService>();
             containerRegistry.RegisterSingleton<IMachineModeService, MachineModeService>();
             containerRegistry.RegisterSingleton<IMachineElevatorService, MachineElevatorService>();
+            containerRegistry.RegisterSingleton<ITimeSyncService, TimeSyncService>();
 
             containerRegistry.RegisterSingleton<ISensorsService, SensorsService>();
             containerRegistry.RegisterSingleton<IMachineService, MachineService>();
@@ -59,7 +60,8 @@ namespace Ferretto.VW.App.Services
             _ = containerProvider.Resolve<IMachineService>();
 
             containerProvider.Resolve<IHealthProbeService>().Start();
-            containerProvider.Resolve<IMachineService>().ServiceStart();
+            containerProvider.Resolve<IMachineService>().Start();
+            containerProvider.Resolve<ITimeSyncService>().Start();
 
             return containerProvider;
         }

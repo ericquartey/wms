@@ -1081,32 +1081,32 @@
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityLocalCallHeight" xml:space="preserve">
-    <value>DrawerActivityLocalCallHeight</value>
+    <value>Height [mm]</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityLocalCallGrossWeight" xml:space="preserve">
-    <value>DrawerActivityLocalCallGrossWeight</value>
+    <value>Gross Weight [kg]</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityLocalCallActualWeight" xml:space="preserve">
     <value>DrawerActivityLocalCallActualWeight</value>
     <comment>Label text</comment>
   </data>
-  <data name="Cell_Status_Free" xml:space="preserve">
-    <value>Free</value>
-    <comment>Cell Status</comment>
+  <data name="BlockLevelNone" xml:space="preserve">
+    <value>None</value>
+    <comment>Block Level</comment>
   </data>
-  <data name="Cell_Status_Disabled" xml:space="preserve">
-    <value>Disabled</value>
-    <comment>Cell Status</comment>
+  <data name="BlockLevelUndefined" xml:space="preserve">
+    <value>Undefined</value>
+    <comment>Block Level</comment>
   </data>
-  <data name="Cell_Status_Occupied" xml:space="preserve">
-    <value>Occupied</value>
-    <comment>Cell Status</comment>
+  <data name="BlockLevelSpaceOnly" xml:space="preserve">
+    <value>SpaceOnly</value>
+    <comment>Block Level</comment>
   </data>
-  <data name="Cell_Status_Unusable" xml:space="preserve">
-    <value>Unusable</value>
-    <comment>Cell Status</comment>
+  <data name="BlockLevelBlocked" xml:space="preserve">
+    <value>Blocked</value>
+    <comment>BlockLevel</comment>
   </data>
   <data name="WmsServicesOffline" xml:space="preserve">
     <value>WMS Services offline</value>

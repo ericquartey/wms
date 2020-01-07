@@ -51,9 +51,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("ShutterId");
 
-                    b.Property<string>("Side")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Side");
 
                     b.HasKey("Id");
 
@@ -148,19 +146,15 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<bool>("IsDeactivated");
+                    b.Property<int>("BlockLevel");
 
-                    b.Property<bool>("IsUnusable");
+                    b.Property<bool>("IsFree");
 
                     b.Property<int>("PanelId");
 
                     b.Property<double>("Position");
 
                     b.Property<int>("Priority");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -176,9 +170,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("MachineId");
 
-                    b.Property<string>("Side")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Side");
 
                     b.HasKey("Id");
 
@@ -502,6 +494,21 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Code = 34,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 35,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 36,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
                             Code = 200000,
                             TotalErrors = 0
                         },
@@ -765,7 +772,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("MissionsCount");
 
-                    b.Property<long>("Status");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<double>("Tare");
 
@@ -1023,7 +1032,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 3, 3, 9, 22, 35, 327, DateTimeKind.Local).AddTicks(6556),
+                            InstallationDate = new DateTime(2017, 3, 4, 14, 3, 34, 137, DateTimeKind.Local).AddTicks(8705),
                             ServiceStatus = 86
                         });
                 });
@@ -1292,6 +1301,28 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.ToTable("WeightMeasurements");
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.WmsSettings", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("IsWmsTimeSyncEnabled");
+
+                    b.Property<int>("TimeSyncIntervalMilliseconds");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WmsSettings");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = -1,
+                            IsWmsTimeSyncEnabled = true,
+                            TimeSyncIntervalMilliseconds = 10000
+                        });
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.StepMovementParameters", b =>
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.MovementParameters");
@@ -1336,6 +1367,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<double>("FinalPosition");
 
                     b.Property<double>("InitialPosition");
+
+                    b.Property<double>("StartPosition");
 
                     b.HasDiscriminator().HasValue("VerticalResolutionCalibrationProcedure");
                 });

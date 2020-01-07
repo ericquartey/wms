@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
@@ -17,7 +18,11 @@ namespace Ferretto.VW.App.Menu.ViewModels
     {
         #region Fields
 
+        private readonly IMachineVerticalResolutionCalibrationProcedureWebService verticalResolutionCalibrationProcedureWebService;
+
         private DelegateCommand beltBurnishingCommand;
+
+        private DelegateCommand testDepositAndPickUpCommand;
 
         private DelegateCommand verticalOffsetCalibration;
 
@@ -33,9 +38,11 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Constructors
 
-        public ElevatorMenuViewModel()
+        public ElevatorMenuViewModel(
+            IMachineVerticalResolutionCalibrationProcedureWebService verticalResolutionCalibrationProcedureWebService)
             : base()
         {
+            this.verticalResolutionCalibrationProcedureWebService = verticalResolutionCalibrationProcedureWebService ?? throw new ArgumentNullException(nameof(verticalResolutionCalibrationProcedureWebService));
         }
 
         #endregion
@@ -55,6 +62,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             VerticalResolutionCalibration,
 
             VerticalOriginCalibration,
+
+            TestDepositAndPickUp,
         }
 
         #endregion
@@ -66,48 +75,69 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.beltBurnishingCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.BeltBurnishing),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
 
         public override EnableMask EnableMask => EnableMask.Any;
+
+        public ICommand TestDepositAndPickUpCommand =>
+            this.testDepositAndPickUpCommand
+            ??
+            (this.testDepositAndPickUpCommand = new DelegateCommand(
+                () => this.ExecuteCommand(Menu.TestDepositAndPickUp),
+                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
 
         public ICommand VerticalOffsetCalibrationCommand =>
             this.verticalOffsetCalibration
             ??
             (this.verticalOffsetCalibration = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.VerticalOffsetCalibration),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() &&
+                      this.MachineService.IsHoming &&
+                      this.VerticalResolutionCalibrationProcedureParameters != null &&
+                      this.VerticalResolutionCalibrationProcedureParameters.IsCompleted));
 
         public ICommand VerticalOriginCalibrationCommand =>
             this.verticalOriginCalibration
             ??
             (this.verticalOriginCalibration = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.VerticalOriginCalibration),
-                this.CanExecuteCommand));
+                () => !this.IsWaitingForResponse));
 
         public ICommand VerticalResolutionCalibrationCommand =>
             this.verticalResolutionCalibration
             ??
             (this.verticalResolutionCalibration = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.VerticalResolutionCalibration),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
 
         public ICommand WeightAnalysisCommand =>
             this.weightAnalysisCommand
             ??
             (this.weightAnalysisCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.WeightAnalysis),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
 
         public ICommand WeightMeasurementCommand =>
             this.weightMeasurement
             ??
             (this.weightMeasurement = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.WeightMeasurement),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
+
+        protected VerticalResolutionCalibrationProcedure VerticalResolutionCalibrationProcedureParameters { get; private set; }
 
         #endregion
 
         #region Methods
+
+        public async override Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+
+            this.VerticalResolutionCalibrationProcedureParameters = await this.verticalResolutionCalibrationProcedureWebService.GetParametersAsync();
+
+            this.RaiseCanExecuteChanged();
+        }
 
         protected override void RaiseCanExecuteChanged()
         {
@@ -119,6 +149,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.verticalResolutionCalibration?.RaiseCanExecuteChanged();
             this.weightAnalysisCommand?.RaiseCanExecuteChanged();
             this.weightMeasurement?.RaiseCanExecuteChanged();
+            this.testDepositAndPickUpCommand?.RaiseCanExecuteChanged();
         }
 
         private void ExecuteCommand(Menu menu)
@@ -152,7 +183,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 case Menu.VerticalOffsetCalibration:
                     this.NavigationService.Appear(
                        nameof(Utils.Modules.Installation),
-                       Utils.Modules.Installation.VerticalOffsetCalibration.STEP1,
+                       Utils.Modules.Installation.VERTICALOFFSETCALIBRATION,
                        data: null,
                        trackCurrentView: true);
                     break;
@@ -160,7 +191,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 case Menu.VerticalResolutionCalibration:
                     this.NavigationService.Appear(
                        nameof(Utils.Modules.Installation),
-                       Utils.Modules.Installation.VerticalResolutionCalibration.STEP1,
+                       Utils.Modules.Installation.VERTICALRESOLUTIONCALIBRATION,
                        data: null,
                        trackCurrentView: true);
                     break;
@@ -171,6 +202,14 @@ namespace Ferretto.VW.App.Menu.ViewModels
                         Utils.Modules.Installation.VERTICALORIGINCALIBRATION,
                         data: null,
                         trackCurrentView: true);
+                    break;
+
+                case Menu.TestDepositAndPickUp:
+                    this.NavigationService.Appear(
+                       nameof(Utils.Modules.Installation),
+                       Utils.Modules.Installation.Bays.DEPOSITANDPICKUPTEST,
+                       data: null,
+                       trackCurrentView: true);
                     break;
             }
         }

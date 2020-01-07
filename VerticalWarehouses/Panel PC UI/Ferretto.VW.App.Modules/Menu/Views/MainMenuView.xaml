@@ -151,6 +151,7 @@
                            Margin="15,15,30,-47"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Bottom"
+                           Tag="{Binding BayNumber}"
                            TextBadge="{Binding BayNumber, StringFormat={x:Static res:VWApp.BayNumber}}" />
 
     </Grid>

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 using Prism.Events;
@@ -93,7 +94,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 await this.MissionOperationsService.PartiallyCompleteCurrentAsync(this.InputQuantity.Value);
             }
-            catch (Exception ex)
+            catch (MasWebApiException ex)
             {
                 this.ShowNotification(ex);
             }

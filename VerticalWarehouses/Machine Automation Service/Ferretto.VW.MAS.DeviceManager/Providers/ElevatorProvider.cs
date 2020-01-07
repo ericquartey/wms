@@ -190,22 +190,22 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             // check #5: the shutters on the same side of the cell must be completely closed
             //           TODO: this is a conservative approach and it could be optimized by inhibiting the operation
             //                 only for cells that are actually obscured by the shutter
-            var baysOnSameSide = this.baysDataProvider.GetAll().Where(b => b.Side == cell.Side);
-            foreach (var bayOnSameSide in baysOnSameSide)
-            {
-                if (bayOnSameSide.Shutter != null)
-                {
-                    var shutterPosition = this.machineResourcesProvider.GetShutterPosition(bayOnSameSide.Number);
-                    if (shutterPosition != ShutterPosition.Closed
-                        && shutterPosition != ShutterPosition.NotSpecified)
-                    {
-                        return new ActionPolicy
-                        {
-                            Reason = string.Format(Resources.Shutters.TheShutterOfBayIsNotCompletelyClosed, (int)bayOnSameSide.Number)
-                        };
-                    }
-                }
-            }
+            //var baysOnSameSide = this.baysDataProvider.GetAll().Where(b => b.Side == cell.Side);
+            //foreach (var bayOnSameSide in baysOnSameSide)
+            //{
+            //    if (bayOnSameSide.Shutter != null)
+            //    {
+            //        var shutterPosition = this.machineResourcesProvider.GetShutterPosition(bayOnSameSide.Number);
+            //        if (shutterPosition != ShutterPosition.Closed
+            //            && shutterPosition != ShutterPosition.NotSpecified)
+            //        {
+            //            return new ActionPolicy
+            //            {
+            //                Reason = string.Format(Resources.Shutters.TheShutterOfBayIsNotCompletelyClosed, (int)bayOnSameSide.Number)
+            //            };
+            //        }
+            //    }
+            //}
 
             // check #6: the cell's vertical position must be within the elevator's vertical bounds
             var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
@@ -226,6 +226,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 return new ActionPolicy
                 {
                     Reason = Resources.Elevator.TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedBayPosition,
+                    ReasonType = ReasonType.ElevatorInPosition
                 };
             }
 
@@ -398,24 +399,24 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             // check #4: the shutters on the same side of the cell must be completely closed
             //           TODO: this is a conservative approach and it could be optimized by inhibiting the operation
             //                 only for cells that are actually obscured by the shutter
-            var baysOnSameSide = this.baysDataProvider
-                .GetAll()
-                .Where(b => b.Side == elevatorCell.Side);
-            foreach (var bayOnSameSide in baysOnSameSide)
-            {
-                if (bayOnSameSide.Shutter != null)
-                {
-                    var shutterPosition = this.machineResourcesProvider.GetShutterPosition(bayOnSameSide.Number);
-                    if (shutterPosition != ShutterPosition.Closed
-                        && shutterPosition != ShutterPosition.NotSpecified)
-                    {
-                        return new ActionPolicy
-                        {
-                            Reason = string.Format(Resources.Shutters.TheShutterOfBayIsNotCompletelyClosed, (int)bayOnSameSide.Number)
-                        };
-                    }
-                }
-            }
+            //var baysOnSameSide = this.baysDataProvider
+            //    .GetAll()
+            //    .Where(b => b.Side == elevatorCell.Side);
+            //foreach (var bayOnSameSide in baysOnSameSide)
+            //{
+            //    if (bayOnSameSide.Shutter != null)
+            //    {
+            //        var shutterPosition = this.machineResourcesProvider.GetShutterPosition(bayOnSameSide.Number);
+            //        if (shutterPosition != ShutterPosition.Closed
+            //            && shutterPosition != ShutterPosition.NotSpecified)
+            //        {
+            //            return new ActionPolicy
+            //            {
+            //                Reason = string.Format(Resources.Shutters.TheShutterOfBayIsNotCompletelyClosed, (int)bayOnSameSide.Number)
+            //            };
+            //        }
+            //    }
+            //}
 
             // check #5: the cell's vertical position must be within the elvator's vertical bounds
             var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);

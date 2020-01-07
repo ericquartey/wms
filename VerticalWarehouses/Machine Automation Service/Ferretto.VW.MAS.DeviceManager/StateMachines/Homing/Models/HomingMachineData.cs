@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing.Models
         #region Constructors
 
         public HomingMachineData(
-            bool isOneKMachine,
+            bool isOneTonMachine,
             int? loadingUnitId,
             BayNumber requestingBay,
             BayNumber targetBay,
@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing.Models
             ILogger logger,
             IServiceScopeFactory serviceScopeFactory)
         {
-            this.IsOneKMachine = isOneKMachine;
+            this.IsOneTonMachine = isOneTonMachine;
             this.LoadingUnitId = loadingUnitId;
             this.RequestingBay = requestingBay;
             this.TargetBay = targetBay;
@@ -52,7 +52,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing.Models
 
         public InverterIndex InverterIndexOld { get; set; }
 
-        public bool IsOneKMachine { get; }
+        public bool IsOneTonMachine { get; }
 
         public int? LoadingUnitId { get; }
 
@@ -64,6 +64,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing.Models
         public int MaximumSteps { get; set; }
 
         public int NumberOfExecutedSteps { get; set; }
+
+        public Axis RequestedAxisToCalibrate { get; set; }
 
         public BayNumber RequestingBay { get; set; }
 

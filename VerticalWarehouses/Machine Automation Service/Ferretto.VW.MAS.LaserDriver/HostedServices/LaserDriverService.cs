@@ -27,6 +27,8 @@ namespace Ferretto.VW.MAS.LaserDriver
 
         private readonly IDigitalDevicesDataProvider digitalDevicesDataProvider;
 
+        private readonly IErrorsProvider errorsProvider;
+
         private IDictionary<BayNumber, LaserDevice> lasers;
 
         #endregion
@@ -37,6 +39,7 @@ namespace Ferretto.VW.MAS.LaserDriver
             IEventAggregator eventAggregator,
             IDigitalDevicesDataProvider digitalDevicesDataProvider,
             IBaysDataProvider baysDataProvider,
+            IErrorsProvider errorsProvider,
             ILogger<LaserDriverService> logger,
             IConfiguration configuration,
             IServiceScopeFactory serviceScopeFactory)
@@ -44,6 +47,7 @@ namespace Ferretto.VW.MAS.LaserDriver
         {
             this.digitalDevicesDataProvider = digitalDevicesDataProvider ?? throw new ArgumentNullException(nameof(digitalDevicesDataProvider));
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
+            this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
@@ -143,7 +147,11 @@ namespace Ferretto.VW.MAS.LaserDriver
             this.lasers = lasersDto.ToDictionary(
                 x => x.Bay.Number,
                 y => new LaserDevice(y.Bay.Number, y.IpAddress, y.TcpPort,
-                     new SocketTransport(readTimeoutMilliseconds), this.EventAggregator, this.Logger, this.CancellationToken)
+                     new SocketTransport(readTimeoutMilliseconds),
+                     this.EventAggregator,
+                     this.errorsProvider,
+                     this.Logger,
+                     this.CancellationToken)
                 );
         }
 

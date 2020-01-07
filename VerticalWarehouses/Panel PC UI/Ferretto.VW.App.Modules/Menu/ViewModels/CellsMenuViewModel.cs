@@ -62,21 +62,21 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.bayFirstLoadingUnitCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.BayFirstLoadingUnit),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
 
         public ICommand CellPanelsCheckCommand =>
             this.cellPanelsCheckCommand
             ??
             (this.cellPanelsCheckCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.CellPanelsCheck),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
 
         public ICommand CellsBlockTuningCommand =>
             this.cellsBlockTuningCommand
             ??
             (this.cellsBlockTuningCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.CellsBlockTuning),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
 
         public ICommand CellsCommand =>
             this.cellsCommand
@@ -90,11 +90,17 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.cellsHeightCheckCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.CellsHeightCheck),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
 
         #endregion
 
         #region Methods
+
+        public async override Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+            this.RaiseCanExecuteChanged();
+        }
 
         protected override void RaiseCanExecuteChanged()
         {

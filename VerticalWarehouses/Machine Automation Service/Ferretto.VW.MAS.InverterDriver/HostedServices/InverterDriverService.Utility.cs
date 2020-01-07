@@ -45,8 +45,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly object syncAxisTimer = new object();
 
-        private readonly object syncHeartBeatTimer = new object();
-
         private readonly object syncSensorTimer = new object();
 
         private readonly object syncStatusTimer = new object();
@@ -212,9 +210,6 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
             else if (message.ParameterId == InverterParameterId.DigitalInputsOutputs)
             {
-                this.sensorStopwatch.Stop();
-                this.SensorTimeData.AddValue(this.sensorStopwatch.ElapsedTicks);
-
                 this.Logger.LogTrace($"4:StatusDigitalSignals.StringPayload={message.StringPayload}");
 
                 foreach (var inverter in invertersProvider.GetAll())
@@ -291,9 +286,6 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
             else if (message.ParameterId == InverterParameterId.ActualPositionShaft)
             {
-                this.axisStopwatch.Stop();
-                this.AxisTimeData.AddValue(this.axisStopwatch.ElapsedTicks);
-
                 this.Logger.LogTrace($"5:ActualPositionShaft.UIntPayload={message.IntPayload}");
 
                 var inverter = invertersProvider.GetByIndex(message.SystemIndex);
@@ -312,7 +304,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         axis = Axis.BayChain;
                     }
 
-                    this.Logger.LogTrace($"ActualPositionShaft inverter={inverter.SystemIndex}; axis={axis}; value={message.IntPayload}; current={this.currentAxis}");
+                    this.Logger.LogTrace($"5a:ActualPositionShaft inverter={inverter.SystemIndex}; axis={axis}; value={message.IntPayload}; current={this.currentAxis}");
 
                     if ((axis == this.currentAxis || currentStateMachine == null || axis == Axis.BayChain) &&
                         (positioningInverter.UpdateInverterCurrentPosition(axis, message.IntPayload) || this.forceStatusPublish[(int)message.SystemIndex]))
@@ -336,6 +328,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             ? elevatorDataProvider.GetAxis(Orientation.Vertical).Offset
                             : elevatorDataProvider.GetAxis(Orientation.Horizontal).Offset;
                         currentAxisPosition += offset;
+                        this.Logger.LogTrace($"5b:ActualPositionShaft inverter={inverter.SystemIndex}; axis={axis}; currentAxisPosition={currentAxisPosition}");
 
                         var notificationData = new InverterStatusUpdateFieldMessageData(axis, inverter.Inputs, currentAxisPosition);
                         var msgNotification = new FieldNotificationMessage(
@@ -539,40 +532,20 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.refreshTargetTable = true;
         }
 
-        private async Task<bool> ProcessInverterCommand()
+        private async Task<bool> ProcessInverterCommand(InverterMessage message)
         {
             var result = false;
 
-            if (this.inverterCommandQueue.Peek(out var message))
+            var inverterMessagePacket = message.IsWriteMessage ? message.ToBytes() : message.GetReadMessage();
+
+            try
             {
+                result = await this.socketTransport.WriteAsync(inverterMessagePacket, message.SendDelay, this.CancellationToken) == inverterMessagePacket.Length;
                 this.Logger.LogTrace($"1:ParameterId={message.ParameterId}:SendDelay{message.SendDelay}:Queue{this.inverterCommandQueue.Count}:inverterMessage={message}");
-
-                var inverterMessagePacket = message.IsWriteMessage ? message.ToBytes() : message.GetReadMessage();
-
-                this.roundTripStopwatch.Reset();
-                this.roundTripStopwatch.Start();
-
-                try
-                {
-                    result = await this.socketTransport.WriteAsync(inverterMessagePacket, message.SendDelay, this.CancellationToken) == inverterMessagePacket.Length;
-                }
-                catch (InverterDriverException ex)
-                {
-                    this.Logger.LogError(ex, $"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
-                }
-
-                if (result)
-                {
-                    this.inverterCommandQueue.Dequeue(out _);
-                }
-                else if (Debugger.IsAttached)
-                {
-                    Debugger.Break();
-                }
             }
-            else if (Debugger.IsAttached)
+            catch (InverterDriverException ex)
             {
-                Debugger.Break();
+                this.Logger.LogError(ex, $"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
             }
 
             return result;
@@ -979,11 +952,14 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private void ProcessReadCurrentError(IInverterStatusBase inverter)
         {
-            var inverterMessage = new InverterMessage(inverter.SystemIndex, InverterParameterId.CurrentError);
+            if (!this.inverterCommandQueue.Any(x => x.ParameterId == InverterParameterId.CurrentError && x.SystemIndex == inverter.SystemIndex))
+            {
+                var inverterMessage = new InverterMessage(inverter.SystemIndex, InverterParameterId.CurrentError);
 
-            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+                this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
-            this.inverterCommandQueue.Enqueue(inverterMessage);
+                this.inverterCommandQueue.Enqueue(inverterMessage);
+            }
         }
 
         private void ProcessShutterPositioningMessage(FieldCommandMessage receivedMessage, IInverterStatusBase inverter)
@@ -1068,14 +1044,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     this.Logger.LogTrace($"1:ReadAxisPositionMessage={readAxisPositionMessage}");
 
-                    this.axisIntervalStopwatch.Stop();
-                    this.AxisIntervalTimeData.AddValue(this.axisIntervalStopwatch.ElapsedTicks);
-                    this.axisIntervalStopwatch.Reset();
-                    this.axisIntervalStopwatch.Start();
-
-                    this.axisStopwatch.Reset();
-                    this.axisStopwatch.Start();
-
                     if (this.inverterCommandQueue
                             .Count(x =>
                                 x.ParameterId == InverterParameterId.ActualPositionShaft
@@ -1097,7 +1065,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     && this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.HeartBeatTimer1) < 2
                     )
                 {
-                    short value = (this.isHeartBeatOn ? HeartBeatOn : HeartBeatOff);
+                    var value = (this.isHeartBeatOn ? HeartBeatOn : HeartBeatOff);
 
                     var heartBeatMessage = new InverterMessage(
                         (byte)state,
@@ -1118,14 +1086,6 @@ namespace Ferretto.VW.MAS.InverterDriver
             lock (this.syncSensorTimer)
             {
                 var readSensorStatusMessage = new InverterMessage(InverterIndex.MainInverter, InverterParameterId.DigitalInputsOutputs);
-
-                this.sensorIntervalStopwatch.Stop();
-                this.SensorIntervalTimeData.AddValue(this.sensorIntervalStopwatch.ElapsedTicks);
-                this.sensorIntervalStopwatch.Reset();
-                this.sensorIntervalStopwatch.Start();
-
-                this.sensorStopwatch.Reset();
-                this.sensorStopwatch.Start();
 
                 if (this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.DigitalInputsOutputs) < 2)
                 {

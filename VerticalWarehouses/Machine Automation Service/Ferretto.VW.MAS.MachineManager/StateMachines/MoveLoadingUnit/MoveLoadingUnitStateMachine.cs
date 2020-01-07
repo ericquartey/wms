@@ -181,7 +181,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                     if (messageData.DestinationCellId != null)
                     {
                         var destinationCell = this.cellsProvider.GetById(messageData.DestinationCellId.Value);
-                        returnValue = destinationCell.LoadingUnit == null && destinationCell.Status == CellStatus.Free;
+                        returnValue = (destinationCell.LoadingUnit == null && destinationCell.IsFree);
                         machineData.DestinationCellId = messageData.DestinationCellId;
                         machineData.LoadingUnitDestination = LoadingUnitLocation.Cell;
                     }
@@ -377,7 +377,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                     returnValue = (this.machineModeDataProvider.Mode == MachineMode.Manual);
                     break;
 
+                case MissionType.Compact:
+                    returnValue = (this.machineModeDataProvider.Mode == MachineMode.Compact);
+                    break;
+
                 case MissionType.WMS:
+                case MissionType.OUT:
                     returnValue = (this.machineModeDataProvider.Mode == MachineMode.Automatic);
                     break;
 

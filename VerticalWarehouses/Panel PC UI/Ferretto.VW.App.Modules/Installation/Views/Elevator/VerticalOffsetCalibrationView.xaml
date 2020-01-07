@@ -1,0 +1,797 @@
+﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.VerticalOffsetCalibrationView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:convertes="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:local="clr-namespace:Ferretto.VW.App.Installation.Views"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            d:DesignHeight="700"
+            d:DesignWidth="1024"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            mc:Ignorable="d">
+
+    <ctrls:View.Resources>
+        <!--#region Converters-->
+        <convertes:BoolToBrushConverter x:Key="BoolToBrushConverter"
+                                        FalseColor="{StaticResource PpcBackground}"
+                                        TrueColor="{StaticResource FerrettoBlue}" />
+        <!--#endregion-->
+
+        <!--#region Styles-->
+        <Style x:Key="WizardIntoButton"
+               BasedOn="{StaticResource {x:Type controls:PpcButton}}"
+               TargetType="{x:Type controls:PpcButton}">
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="BorderTimeLine"
+               TargetType="{x:Type Border}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="BorderBrush" Value="{DynamicResource FerrettoLightGray}" />
+            <Setter Property="BorderThickness" Value="2.5" />
+            <Setter Property="CornerRadius" Value="2" />
+        </Style>
+        <Style x:Key="BorderTimeLineCirle"
+               TargetType="{x:Type Border}">
+            <Setter Property="Width" Value="40" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Background" Value="{DynamicResource PpcBackground}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource FerrettoLightGray}" />
+            <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
+            <Setter Property="CornerRadius" Value="20" />
+        </Style>
+        <Style x:Key="BorderTimeLineCirleTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="-1,-1,0,0" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="{StaticResource FontSize_High}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="{DynamicResource FerrettoLightGray}" />
+        </Style>
+        <Style x:Key="BorderTimeLinePath"
+               TargetType="{x:Type Path}">
+            <Setter Property="Width" Value="26" />
+            <Setter Property="Height" Value="26" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Data" Value="M18,5L0,11 18,17" />
+            <Setter Property="Fill" Value="{DynamicResource PpcBackground}" />
+            <Setter Property="Stretch" Value="Fill" />
+            <Setter Property="Stroke" Value="{DynamicResource PpcBorderBrush}" />
+            <Setter Property="StrokeThickness" Value="1.5" />
+        </Style>
+        <!--#endregion-->
+
+        <!--#region DataTemplate Body-->
+        <DataTemplate x:Key="DataTemplateStart">
+            <Grid Margin="20"
+                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.ColumnSpan="2"
+                           VerticalAlignment="Top"
+                           FontSize="24"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="Posizionare l'elevatore ad una altezza tale che permetta di attaccare il metro."
+                           TextWrapping="Wrap" />
+
+                <ctrls:PpcSpinEdit Grid.Row="1"
+                                   Width="250"
+                                   Height="90"
+                                   Margin="15,-15,15,15"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Top"
+                                   EditValue="{Binding StartPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                   IsEnabled="{Binding IsCanStartPosition}"
+                                   LabelText="Quota di partenza"
+                                   MaxValue="{Binding AxisUpperBound}"
+                                   MinValue="{Binding AxisLowerBound}" />
+
+                <controls:PpcButton Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="15,-45,15,15"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding MoveToStartPositionCommand}"
+                                    Content="Vai a quota"
+                                    Style="{StaticResource WizardIntoButton}" />
+
+                <TextBlock Grid.Row="2"
+                           Grid.ColumnSpan="2"
+                           FontSize="24"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="Procedere alla rimozione di uno dei carter laterali e al posizionamento del metro. Completare riposizionando il carter e ripristinare lo stato di marcia."
+                           TextWrapping="Wrap" />
+
+                <controls:PpcButton Grid.Row="3"
+                                    Grid.ColumnSpan="2"
+                                    Command="{Binding MoveToCellPositioningCommand}"
+                                    Content="Avanti"
+                                    Style="{StaticResource WizardIntoButton}" />
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="DataTemplateCellPositioning">
+            <Grid Margin="20"
+                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.RowSpan="3"
+                      Grid.ColumnSpan="2"
+                      VerticalAlignment="Top">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.ColumnSpan="2"
+                               VerticalAlignment="Top"
+                               FontSize="24"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               Text="Posizionamento cella"
+                               TextWrapping="Wrap" />
+
+                    <Border Grid.Row="1"
+                            Grid.ColumnSpan="2"
+                            Background="{DynamicResource PpcBackground}">
+                        <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                                BorderThickness="{DynamicResource PpcBorderThickness}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid Grid.ColumnSpan="3">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border Grid.RowSpan="2"
+                                            Grid.Column="1"
+                                            Margin="0,25"
+                                            VerticalAlignment="Stretch"
+                                            BorderBrush="{DynamicResource FerrettoMediumGray}"
+                                            BorderThickness="1" />
+
+                                </Grid>
+
+                                <Grid Grid.Column="3"
+                                      Grid.ColumnSpan="3">
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+
+                                    <TextBlock Margin="0,20,0,0"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               FontSize="{StaticResource FontSize_Normal}"
+                                               FontWeight="Normal"
+                                               Foreground="{DynamicResource FerrettoLightGray}"
+                                               Text="{x:Static res:InstallationApp.CellHeight}"
+                                               TextAlignment="Left" />
+
+                                    <TextBlock Grid.Row="1"
+                                               Margin="0"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Top"
+                                               FontSize="{StaticResource FontSize_Very_High}"
+                                               Foreground="{DynamicResource PpcForeground}"
+                                               Text="{Binding SelectedCell.Position}"
+                                               TextWrapping="Wrap" />
+
+                                    <Border Grid.RowSpan="2"
+                                            Grid.Column="1"
+                                            Margin="0,25"
+                                            VerticalAlignment="Stretch"
+                                            BorderBrush="{DynamicResource FerrettoMediumGray}"
+                                            BorderThickness="1" />
+
+                                </Grid>
+
+                                <Grid Grid.Column="6"
+                                      Grid.ColumnSpan="3">
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+
+                                    <TextBlock Margin="0,20,0,0"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               FontSize="{StaticResource FontSize_Normal}"
+                                               FontWeight="Normal"
+                                               Foreground="{DynamicResource FerrettoLightGray}"
+                                               Text="{x:Static res:InstallationApp.CellSide}" />
+
+                                    <TextBlock Grid.Row="1"
+                                               Margin="0"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Top"
+                                               FontSize="{StaticResource FontSize_Very_High}"
+                                               Foreground="{DynamicResource PpcForeground}"
+                                               Text="{Binding SelectedCell.Side, Converter={StaticResource EWSC}}"
+                                               TextWrapping="Wrap" />
+
+                                    <Border Grid.RowSpan="2"
+                                            Grid.Column="1"
+                                            Margin="0,25"
+                                            VerticalAlignment="Stretch"
+                                            BorderBrush="{DynamicResource FerrettoMediumGray}"
+                                            BorderThickness="1" />
+
+                                </Grid>
+
+                            </Grid>
+                        </Border>
+                    </Border>
+
+                    <Grid Grid.Row="2"
+                          Margin="0,30,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <ctrls:PpcSpinEdit Width="220"
+                                           Height="90"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Center"
+                                           EditValue="{Binding CurrentCellId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                           IsEnabled="{Binding IsCanStartPosition}"
+                                           LabelText="Cella selezionata"
+                                           MaxValue="999"
+                                           MinValue="1" />
+
+                        <controls:PpcButton Grid.Column="1"
+                                            Margin="30,0,0,0"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Center"
+                                            Command="{Binding MoveToCellCommand}"
+                                            Content="Vai a cella"
+                                            Style="{StaticResource WizardIntoButton}" />
+
+                    </Grid>
+                </Grid>
+
+                <controls:PpcButton Grid.Row="3"
+                                    Grid.ColumnSpan="2"
+                                    Command="{Binding MoveToCellMeasuredCommand}"
+                                    Content="Avanti"
+                                    Style="{StaticResource WizardIntoButton}" />
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="DataTemplateCellMeasured">
+            <Grid Margin="20"
+                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0"
+                      Grid.RowSpan="3"
+                      VerticalAlignment="Top">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock VerticalAlignment="Top"
+                               FontSize="24"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               Text="Misurazione cella"
+                               TextWrapping="Wrap" />
+
+                    <Border Grid.Row="1"
+                            Background="{DynamicResource PpcBackground}">
+                        <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                                BorderThickness="{DynamicResource PpcBorderThickness}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid Grid.ColumnSpan="3">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Margin="0,20,0,0"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               FontSize="{StaticResource FontSize_Normal}"
+                                               FontWeight="Normal"
+                                               Foreground="{DynamicResource FerrettoLightGray}"
+                                               Text="{x:Static res:InstallationApp.CurrentCell}"
+                                               TextAlignment="Left" />
+
+                                    <TextBlock Grid.Row="1"
+                                               Margin="0"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Top"
+                                               FontSize="{StaticResource FontSize_Very_High}"
+                                               Foreground="{DynamicResource PpcForeground}"
+                                               Text="{Binding SelectedCell.Id}"
+                                               TextWrapping="Wrap" />
+
+                                    <Border Grid.RowSpan="2"
+                                            Grid.Column="1"
+                                            Margin="0,25"
+                                            VerticalAlignment="Stretch"
+                                            BorderBrush="{DynamicResource FerrettoMediumGray}"
+                                            BorderThickness="1" />
+
+                                </Grid>
+
+                                <Grid Grid.Column="3"
+                                      Grid.ColumnSpan="3">
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+
+                                    <TextBlock Margin="0,20,0,0"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               FontSize="{StaticResource FontSize_Normal}"
+                                               FontWeight="Normal"
+                                               Foreground="{DynamicResource FerrettoLightGray}"
+                                               Text="{x:Static res:InstallationApp.InitialPosition}"
+                                               TextAlignment="Left" />
+
+                                    <TextBlock Grid.Row="1"
+                                               Margin="0"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Top"
+                                               FontSize="{StaticResource FontSize_Very_High}"
+                                               Foreground="{DynamicResource PpcForeground}"
+                                               Text="{Binding SelectedCell.Position}"
+                                               TextWrapping="Wrap" />
+
+                                    <Border Grid.RowSpan="2"
+                                            Grid.Column="1"
+                                            Margin="0,25"
+                                            VerticalAlignment="Stretch"
+                                            BorderBrush="{DynamicResource FerrettoMediumGray}"
+                                            BorderThickness="1" />
+
+                                </Grid>
+
+                                <Grid Grid.Column="6"
+                                      Grid.ColumnSpan="3">
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+
+                                    <TextBlock Margin="0,20,0,0"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               FontSize="{StaticResource FontSize_Normal}"
+                                               FontWeight="Normal"
+                                               Foreground="{DynamicResource FerrettoLightGray}"
+                                               Text="{x:Static res:InstallationApp.CellSide}" />
+
+                                    <TextBlock Grid.Row="1"
+                                               Margin="0"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Top"
+                                               FontSize="{StaticResource FontSize_Very_High}"
+                                               Foreground="{DynamicResource PpcForeground}"
+                                               Text="{Binding SelectedCell.Side, Converter={StaticResource EWSC}}"
+                                               TextWrapping="Wrap" />
+
+                                    <Border Grid.RowSpan="2"
+                                            Grid.Column="1"
+                                            Margin="0,25"
+                                            VerticalAlignment="Stretch"
+                                            BorderBrush="{DynamicResource FerrettoMediumGray}"
+                                            BorderThickness="1" />
+
+                                </Grid>
+
+                                <Grid Grid.Column="9"
+                                      Grid.ColumnSpan="3"
+                                      Margin="0,0,15,0">
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Margin="0,20,0,0"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               FontSize="{StaticResource FontSize_Normal}"
+                                               FontWeight="Normal"
+                                               Foreground="{DynamicResource FerrettoLightGray}"
+                                               Text="{x:Static res:InstallationApp.Displacement}"
+                                               TextAlignment="Left" />
+
+                                    <TextBlock Grid.Row="1"
+                                               Margin="0"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Top"
+                                               FontSize="{StaticResource FontSize_Very_High}"
+                                               Foreground="{DynamicResource PpcForeground}"
+                                               Text="{Binding Displacement, StringFormat={}{0:F1}, FallbackValue=0}"
+                                               TextWrapping="Wrap" />
+
+                                </Grid>
+
+                            </Grid>
+                        </Border>
+                    </Border>
+
+                    <Grid Grid.Row="2"
+                          Margin="0,30,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <ctrls:PpcSpinEdit Width="220"
+                                           Height="90"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Center"
+                                           EditValue="{Binding StepValue, Mode=TwoWay}"
+                                           Increment="0.5"
+                                           IsEnabled="{Binding IsCanStepValue}"
+                                           LabelText="{x:Static res:InstallationApp.StepValue}"
+                                           Mask="#0.0" />
+
+                        <controls:PpcButton Grid.Column="1"
+                                            Margin="30,0,0,0"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Center"
+                                            Command="{Binding DisplacementCommand}"
+                                            Content="Spostamento"
+                                            Style="{StaticResource WizardIntoButton}" />
+                    </Grid>
+                </Grid>
+
+                <StackPanel Grid.Row="3"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <controls:PpcButton Grid.Column="1"
+                                        Command="{Binding MoveToConfirmCommand}"
+                                        Content="Correggi"
+                                        Style="{StaticResource WizardIntoButton}" />
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="DataTemplateConfirm">
+            <Grid Margin="20"
+                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <TextBlock VerticalAlignment="Top"
+                           FontSize="24"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="Calibrazione offset."
+                           TextWrapping="Wrap" />
+
+                <TextBlock Grid.Row="1"
+                           VerticalAlignment="Top"
+                           FontSize="24"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="Settaggio offset corretto. Per tornare a a verificare l'offset premere ripeti, altrimeni uscire."
+                           TextWrapping="Wrap" />
+
+                <controls:PpcButton Grid.Row="3"
+                                    Command="{Binding ReloadCommand}"
+                                    Content="Ripeti"
+                                    Style="{StaticResource WizardIntoButton}" />
+            </Grid>
+        </DataTemplate>
+
+        <local:OffsetCalibrationStepTemplateSelector x:Key="selector"
+                                                     EnumCellMeasured="{StaticResource DataTemplateCellMeasured}"
+                                                     EnumCellPositioning="{StaticResource DataTemplateCellPositioning}"
+                                                     EnumConfirm="{StaticResource DataTemplateConfirm}"
+                                                     EnumStart="{StaticResource DataTemplateStart}" />
+        <!--#endregion-->
+    </ctrls:View.Resources>
+
+    <Grid Margin="15,0,0,0"
+          UseLayoutRounding="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="60" />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <!--#region Title-->
+        <StackPanel Grid.ColumnSpan="4"
+                    Orientation="Horizontal">
+            <TextBlock Margin="0,10,15,10"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="4.2.3" />
+            <TextBlock Grid.ColumnSpan="2"
+                       Margin="0,10,15,10"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{x:Static res:InstallationApp.VerticalOffsetCalibration}" />
+        </StackPanel>
+        <!--#endregion-->
+
+        <!--#region Description-->
+        <TextBlock Grid.Row="1"
+                   Grid.ColumnSpan="4"
+                   Height="Auto"
+                   Margin="0,0,15,0"
+                   VerticalAlignment="Top"
+                   FontSize="{DynamicResource FontSize_Small}"
+                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpVOCDescription}"
+                   TextWrapping="Wrap" />
+        <!--#endregion-->
+
+        <!--#region Tails-->
+        <controls:CardSensorAxisVertical Grid.Row="2"
+                                         Grid.Column="3"
+                                         Width="230"
+                                         Height="90"
+                                         MinHeight="90"
+                                         Margin="0,15,15,0" />
+        <controls:CardSensorAxisHorizontal Grid.Row="3"
+                                           Grid.Column="3"
+                                           Width="230"
+                                           Height="90"
+                                           MinHeight="90"
+                                           Margin="0,15,15,0" />
+        <controls:CardSensorDrawer Grid.Row="4"
+                                   Grid.Column="3"
+                                   Width="230"
+                                   Height="90"
+                                   MinHeight="90"
+                                   Margin="0,15,15,0" />
+        <Border Grid.Row="5"
+                Grid.Column="3"
+                Height="90"
+                MinHeight="90"
+                Margin="0,15,15,0"
+                Background="{DynamicResource PpcBackground}">
+            <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                    BorderThickness="{DynamicResource PpcBorderThickness}">
+
+                <Grid Grid.Column="8"
+                      Grid.ColumnSpan="4">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Margin="8,4"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               FontSize="{StaticResource FontSize_Normal}"
+                               FontWeight="Normal"
+                               Foreground="{DynamicResource FerrettoLightGray}"
+                               Text="{x:Static res:InstallationApp.CurrentOffset}" />
+
+                    <TextBlock Grid.Row="1"
+                               Margin="4,0,4,4"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="{StaticResource FontSize_Very_High}"
+                               Foreground="{DynamicResource PpcForeground}"
+                               Text="{Binding CurrentVerticalOffset, Mode=OneWay, StringFormat={}{0:F1}}"
+                               TextWrapping="Wrap" />
+
+                </Grid>
+            </Border>
+        </Border>
+
+        <controls:PpcButton Grid.Row="6"
+                            Grid.Column="3"
+                            Margin="0,0,15,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding StopCommand}"
+                            Content="{x:Static res:InstallationApp.Stop}" />
+        <!--#endregion-->
+
+        <!--#region Wizard-->
+        <Grid Grid.Row="2"
+              Grid.RowSpan="5"
+              Grid.ColumnSpan="3"
+              Margin="5,15,15,0">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="42" />
+                <ColumnDefinition Width="17" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="1" />
+            </Grid.RowDefinitions>
+            <!--#region Body-->
+            <Border Grid.Row="0"
+                    Grid.RowSpan="6"
+                    Grid.Column="2"
+                    Grid.ColumnSpan="2"
+                    Margin="8,0,0,0"
+                    Background="{StaticResource PpcBackground}"
+                    BorderBrush="{StaticResource PpcBorderBrush}"
+                    BorderThickness="{StaticResource PpcBorderThickness}"
+                    CornerRadius="2,0,0,2">
+                <ContentControl Content="{Binding CurrentStep, Mode=OneWay}"
+                                ContentTemplateSelector="{StaticResource selector}" />
+            </Border>
+            <!--#endregion-->
+            <!--#region TimeLine-->
+            <Border Grid.Row="0"
+                    Grid.RowSpan="6"
+                    Style="{DynamicResource BorderTimeLine}" />
+
+            <Grid Grid.Row="1">
+                <Border Background="{Binding HasStepStart, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                        Style="{DynamicResource BorderTimeLineCirle}" />
+                <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                           Text="1" />
+            </Grid>
+            <Path Grid.Row="1"
+                  Grid.Column="1"
+                  Grid.ColumnSpan="2"
+                  Style="{DynamicResource BorderTimeLinePath}"
+                  Visibility="{Binding HasStepStart, Converter={StaticResource BTVC}, Mode=OneWay}" />
+
+            <Grid Grid.Row="2">
+                <Border Background="{Binding HasStepCellPositioning, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                        Style="{DynamicResource BorderTimeLineCirle}" />
+                <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                           Text="2" />
+            </Grid>
+            <Path Grid.Row="2"
+                  Grid.Column="1"
+                  Grid.ColumnSpan="2"
+                  Style="{DynamicResource BorderTimeLinePath}"
+                  Visibility="{Binding HasStepCellPositioning, Converter={StaticResource BTVC}, Mode=OneWay}" />
+
+            <Grid Grid.Row="3">
+                <Border Background="{Binding HasStepCellMeasured, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                        Style="{DynamicResource BorderTimeLineCirle}" />
+                <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                           Text="3" />
+            </Grid>
+            <Path Grid.Row="3"
+                  Grid.Column="1"
+                  Grid.ColumnSpan="2"
+                  Style="{DynamicResource BorderTimeLinePath}"
+                  Visibility="{Binding HasStepCellMeasured, Converter={StaticResource BTVC}, Mode=OneWay}" />
+
+            <Grid Grid.Row="4">
+                <Border Background="{Binding HasStepConfirm, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                        Style="{DynamicResource BorderTimeLineCirle}" />
+                <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                           Text="4" />
+            </Grid>
+            <Path Grid.Row="4"
+                  Grid.Column="1"
+                  Grid.ColumnSpan="2"
+                  Style="{DynamicResource BorderTimeLinePath}"
+                  Visibility="{Binding HasStepConfirm, Converter={StaticResource BTVC}, Mode=OneWay}" />
+            <!--#endregion-->
+        </Grid>
+        <!--#endregion-->
+    </Grid>
+</ctrls:View>

@@ -7,6 +7,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -16,6 +17,12 @@ namespace Ferretto.VW.MAS.MachineManager
 {
     internal partial class MachineManagerService
     {
+        #region Fields
+
+        private bool isDataLayerReady;
+
+        #endregion
+
         #region Methods
 
         protected override bool FilterNotification(NotificationMessage notification)
@@ -39,6 +46,8 @@ namespace Ferretto.VW.MAS.MachineManager
                     // performance optimization
                     this.serviceScope.ServiceProvider.GetRequiredService<ICellsProvider>().GetAll();
                     this.serviceScope.ServiceProvider.GetRequiredService<IMachineProvider>().Get();
+
+                    this.isDataLayerReady = true;
                     break;
             }
 

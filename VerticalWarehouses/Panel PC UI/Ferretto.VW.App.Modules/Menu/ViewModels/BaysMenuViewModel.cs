@@ -54,16 +54,18 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.bayControlCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.BayControl),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
 
         public ICommand BayHeightCommand =>
             this.bayHeightCommand
             ??
             (this.bayHeightCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.BayHeight),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
 
         public override EnableMask EnableMask => EnableMask.Any;
+
+        public bool IsTestBayVisible => this.MachineService.HasBayExternal || this.MachineService.HasCarousel;
 
         public ICommand TestShutterCommand =>
             this.testShutterCommand
@@ -75,6 +77,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
         #endregion
 
         #region Methods
+
+        public async override Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+            this.RaiseCanExecuteChanged();
+        }
 
         protected override void RaiseCanExecuteChanged()
         {

@@ -74,7 +74,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         CreationDate = DateTime.Now,
                         LoadingUnitId = loadingUnitId,
                         TargetBay = bayNumber,
-                        MissionType = MissionType.Manual
+                        MissionType = MissionType.OUT
                     });
 
                 this.dataContext.SaveChanges();
@@ -111,6 +111,28 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public Mission CreateRecallMission(int loadingUnitId, BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                var entry = this.dataContext.Missions.Add(
+                    new Mission
+                    {
+                        FsmId = Guid.NewGuid(),
+                        CreationDate = DateTime.Now,
+                        LoadingUnitId = loadingUnitId,
+                        TargetBay = bayNumber,
+                        MissionType = MissionType.IN
+                    });
+
+                this.dataContext.SaveChanges();
+
+                this.logger.LogInformation("Created internal MAS recall mission.");
+
+                return entry.Entity;
+            }
+        }
+
         public void Delete(int id)
         {
             lock (this.dataContext)
@@ -124,6 +146,19 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.dataContext.Missions.Remove(mission);
 
                 this.dataContext.SaveChanges();
+            }
+        }
+
+        public IEnumerable<Mission> GetAllActiveMissions()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Missions
+                    .AsNoTracking()
+                    .Where(m => m.Status != MissionStatus.Completed && m.Status != MissionStatus.Aborted)
+                    .OrderBy(o => o.Priority)
+                    .ThenBy(o => o.CreationDate)
+                    .ToArray();
             }
         }
 

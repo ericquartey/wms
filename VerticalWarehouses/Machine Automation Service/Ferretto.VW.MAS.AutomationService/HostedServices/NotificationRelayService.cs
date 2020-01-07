@@ -5,6 +5,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.TimeManagement.Models;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -63,6 +64,10 @@ namespace Ferretto.VW.MAS.AutomationService
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
 
             this.dataHubClient.EntityChanged += this.OnDataHubClientEntityChanged;
+
+            this.EventAggregator
+                .GetEvent<PubSubEvent<SystemTimeChangedEventArgs>>()
+                .Subscribe(async e => await this.OnSystemTimeChangedAsync());
         }
 
         #endregion

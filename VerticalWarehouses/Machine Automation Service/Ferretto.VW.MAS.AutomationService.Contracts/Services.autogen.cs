@@ -49,14 +49,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<Bay> ActivateAsync()
         {
             return ActivateAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<Bay> ActivateAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -98,12 +98,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "404") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -118,14 +118,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<Bay> DeactivateAsync()
         {
             return DeactivateAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<Bay> DeactivateAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -167,12 +167,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "404") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -187,14 +187,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task FindZeroAsync()
         {
             return FindZeroAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task FindZeroAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -233,7 +233,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -248,14 +248,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Bay>> GetAllAsync()
         {
             return GetAllAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Bay>> GetAllAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -295,7 +295,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -310,14 +310,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<Bay> GetByNumberAsync(BayNumber bayNumber)
         {
             return GetByNumberAsync(bayNumber, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<Bay> GetByNumberAsync(BayNumber bayNumber, System.Threading.CancellationToken cancellationToken)
         {
             if (bayNumber == null)
@@ -362,12 +362,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "404") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -382,14 +382,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<PositioningProcedure> GetHeightCheckParametersAsync()
         {
             return GetHeightCheckParametersAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<PositioningProcedure> GetHeightCheckParametersAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -430,7 +430,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(PositioningProcedure);
@@ -447,14 +447,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task HomingAsync()
         {
             return HomingAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task HomingAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -493,7 +493,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -508,14 +508,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task LightAsync(bool enable)
         {
             return LightAsync(enable, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task LightAsync(bool enable, System.Threading.CancellationToken cancellationToken)
         {
             if (enable == null)
@@ -559,7 +559,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -574,14 +574,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task RemoveLoadUnitAsync(int loadingUnitId)
         {
             return RemoveLoadUnitAsync(loadingUnitId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task RemoveLoadUnitAsync(int loadingUnitId, System.Threading.CancellationToken cancellationToken)
         {
             if (loadingUnitId == null)
@@ -624,7 +624,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -639,14 +639,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<Bay> UpdateHeightAsync(int position, double height)
         {
             return UpdateHeightAsync(position, height, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<Bay> UpdateHeightAsync(int position, double height, System.Threading.CancellationToken cancellationToken)
         {
             if (position == null)
@@ -697,18 +697,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "404") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -756,7 +756,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -775,7 +775,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -848,14 +848,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<ActionPolicy> CanMoveAsync(VerticalMovementDirection direction, MovementCategory movementCategory)
         {
             return CanMoveAsync(direction, movementCategory, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<ActionPolicy> CanMoveAsync(VerticalMovementDirection direction, MovementCategory movementCategory, System.Threading.CancellationToken cancellationToken)
         {
             if (direction == null)
@@ -906,7 +906,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(ActionPolicy);
@@ -923,14 +923,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task FindZeroAsync()
         {
             return FindZeroAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task FindZeroAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -969,7 +969,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -984,14 +984,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<double> GetPositionAsync()
         {
             return GetPositionAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<double> GetPositionAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -1032,7 +1032,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(double);
@@ -1049,14 +1049,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task HomingAsync()
         {
             return HomingAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task HomingAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -1095,7 +1095,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -1110,14 +1110,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task MoveAsync(VerticalMovementDirection direction)
         {
             return MoveAsync(direction, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task MoveAsync(VerticalMovementDirection direction, System.Threading.CancellationToken cancellationToken)
         {
             if (direction == null)
@@ -1162,7 +1162,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -1177,14 +1177,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task MoveAssistedAsync(VerticalMovementDirection direction)
         {
             return MoveAssistedAsync(direction, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task MoveAssistedAsync(VerticalMovementDirection direction, System.Threading.CancellationToken cancellationToken)
         {
             if (direction == null)
@@ -1229,7 +1229,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -1244,14 +1244,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task MoveManualAsync(VerticalMovementDirection direction)
         {
             return MoveManualAsync(direction, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task MoveManualAsync(VerticalMovementDirection direction, System.Threading.CancellationToken cancellationToken)
         {
             if (direction == null)
@@ -1296,7 +1296,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -1311,14 +1311,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StopAsync()
         {
             return StopAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -1357,7 +1357,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -1405,7 +1405,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -1424,7 +1424,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -1497,14 +1497,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<CellPanel>> GetAllAsync()
         {
             return GetAllAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<CellPanel>> GetAllAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -1545,7 +1545,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(System.Collections.Generic.IEnumerable<CellPanel>);
@@ -1562,14 +1562,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<PositioningProcedure> GetProcedureParametersAsync()
         {
             return GetProcedureParametersAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<PositioningProcedure> GetProcedureParametersAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -1610,7 +1610,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(PositioningProcedure);
@@ -1627,14 +1627,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<CellPanel> UpdateHeightAsync(int cellId, double newHeight)
         {
             return UpdateHeightAsync(cellId, newHeight, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<CellPanel> UpdateHeightAsync(int cellId, double newHeight, System.Threading.CancellationToken cancellationToken)
         {
             if (cellId == null)
@@ -1679,13 +1679,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "200") 
@@ -1696,7 +1696,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -1744,7 +1744,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -1763,7 +1763,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -1836,14 +1836,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Cell>> GetAllAsync()
         {
             return GetAllAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Cell>> GetAllAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -1884,7 +1884,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(System.Collections.Generic.IEnumerable<Cell>);
@@ -1901,14 +1901,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<PositioningProcedure> GetHeightCheckProcedureParametersAsync()
         {
             return GetHeightCheckProcedureParametersAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<PositioningProcedure> GetHeightCheckProcedureParametersAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -1949,7 +1949,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(PositioningProcedure);
@@ -1966,14 +1966,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<CellStatisticsSummary> GetStatisticsAsync()
         {
             return GetStatisticsAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<CellStatisticsSummary> GetStatisticsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -2014,7 +2014,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(CellStatisticsSummary);
@@ -2031,14 +2031,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<Cell> UpdateHeightAsync(int id, double height)
         {
             return UpdateHeightAsync(id, height, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<Cell> UpdateHeightAsync(int id, double height, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
@@ -2083,13 +2083,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "200") 
@@ -2100,7 +2100,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -2115,14 +2115,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Cell>> UpdatesHeightAsync(int fromid, int toid, WarehouseSide side, double height)
         {
             return UpdatesHeightAsync(fromid, toid, side, height, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Cell>> UpdatesHeightAsync(int fromid, int toid, WarehouseSide side, double height, System.Threading.CancellationToken cancellationToken)
         {
             if (fromid == null)
@@ -2175,13 +2175,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "200") 
@@ -2192,7 +2192,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -2240,7 +2240,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -2259,7 +2259,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -2332,14 +2332,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task CompactingAsync()
         {
             return CompactingAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task CompactingAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -2379,12 +2379,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<string>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<string>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<string>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -2399,14 +2399,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StopAsync()
         {
             return StopAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -2445,7 +2445,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -2493,7 +2493,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -2512,7 +2512,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -2585,14 +2585,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<VertimagConfiguration> GetAsync()
         {
             return GetAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<VertimagConfiguration> GetAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -2633,7 +2633,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(VertimagConfiguration);
@@ -2650,14 +2650,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task SetAsync(VertimagConfiguration vertimagConfiguration)
         {
             return SetAsync(vertimagConfiguration, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task SetAsync(VertimagConfiguration vertimagConfiguration, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -2694,7 +2694,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "200") 
@@ -2704,7 +2704,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -2719,14 +2719,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task ImportAsync(VertimagConfiguration vertimagConfiguration)
         {
             return ImportAsync(vertimagConfiguration, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task ImportAsync(VertimagConfiguration vertimagConfiguration, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -2763,7 +2763,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "200") 
@@ -2773,7 +2773,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -2821,7 +2821,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -2840,7 +2840,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -2913,14 +2913,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<ValueTupleOfIEnumerableOfInverterDeviceInfoAndIEnumerableOfIoDeviceInfo> GetAllAsync()
         {
             return GetAllAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<ValueTupleOfIEnumerableOfInverterDeviceInfoAndIEnumerableOfIoDeviceInfo> GetAllAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -2961,12 +2961,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "500") 
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SwaggerException("A server side error occurred.", (int)response_.StatusCode, responseText_, headers_, null);
+                            throw new MasWebApiException("A server side error occurred.", (int)response_.StatusCode, responseText_, headers_, null);
                         }
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -3014,7 +3014,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -3033,7 +3033,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -3106,14 +3106,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<ActionPolicy> CanExtractFromBayAsync(int bayPositionId)
         {
             return CanExtractFromBayAsync(bayPositionId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<ActionPolicy> CanExtractFromBayAsync(int bayPositionId, System.Threading.CancellationToken cancellationToken)
         {
             if (bayPositionId == null)
@@ -3158,7 +3158,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(ActionPolicy);
@@ -3175,14 +3175,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<ActionPolicy> CanLoadFromBayAsync(int bayPositionId, bool isGuided)
         {
             return CanLoadFromBayAsync(bayPositionId, isGuided, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<ActionPolicy> CanLoadFromBayAsync(int bayPositionId, bool isGuided, System.Threading.CancellationToken cancellationToken)
         {
             if (bayPositionId == null)
@@ -3232,7 +3232,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(ActionPolicy);
@@ -3249,14 +3249,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<ActionPolicy> CanLoadFromCellAsync(int cellId)
         {
             return CanLoadFromCellAsync(cellId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<ActionPolicy> CanLoadFromCellAsync(int cellId, System.Threading.CancellationToken cancellationToken)
         {
             if (cellId == null)
@@ -3301,7 +3301,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(ActionPolicy);
@@ -3318,14 +3318,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<ActionPolicy> CanMoveToBayPositionAsync(int bayPositionId)
         {
             return CanMoveToBayPositionAsync(bayPositionId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<ActionPolicy> CanMoveToBayPositionAsync(int bayPositionId, System.Threading.CancellationToken cancellationToken)
         {
             if (bayPositionId == null)
@@ -3371,7 +3371,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(ActionPolicy);
@@ -3388,14 +3388,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<ActionPolicy> CanMoveToCellAsync(int cellId)
         {
             return CanMoveToCellAsync(cellId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<ActionPolicy> CanMoveToCellAsync(int cellId, System.Threading.CancellationToken cancellationToken)
         {
             if (cellId == null)
@@ -3441,7 +3441,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(ActionPolicy);
@@ -3458,14 +3458,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<ActionPolicy> CanUnloadToBayAsync(int bayPositionId, bool isGuided)
         {
             return CanUnloadToBayAsync(bayPositionId, isGuided, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<ActionPolicy> CanUnloadToBayAsync(int bayPositionId, bool isGuided, System.Threading.CancellationToken cancellationToken)
         {
             if (bayPositionId == null)
@@ -3515,7 +3515,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(ActionPolicy);
@@ -3532,14 +3532,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<ActionPolicy> CanUnloadToCellAsync(int cellId)
         {
             return CanUnloadToCellAsync(cellId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<ActionPolicy> CanUnloadToCellAsync(int cellId, System.Threading.CancellationToken cancellationToken)
         {
             if (cellId == null)
@@ -3584,7 +3584,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(ActionPolicy);
@@ -3601,14 +3601,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task FindZeroAsync()
         {
             return FindZeroAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task FindZeroAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -3647,7 +3647,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -3662,14 +3662,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<ElevatorAxisManualParameters> GetHorizontalAssistedMovementsParametersAsync()
         {
             return GetHorizontalAssistedMovementsParametersAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<ElevatorAxisManualParameters> GetHorizontalAssistedMovementsParametersAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -3710,7 +3710,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(ElevatorAxisManualParameters);
@@ -3727,14 +3727,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<ElevatorAxisManualParameters> GetHorizontalManualMovementsParametersAsync()
         {
             return GetHorizontalManualMovementsParametersAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<ElevatorAxisManualParameters> GetHorizontalManualMovementsParametersAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -3775,7 +3775,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(ElevatorAxisManualParameters);
@@ -3792,14 +3792,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<LoadingUnit> GetLoadingUnitOnBoardAsync()
         {
             return GetLoadingUnitOnBoardAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<LoadingUnit> GetLoadingUnitOnBoardAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -3840,7 +3840,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(LoadingUnit);
@@ -3857,14 +3857,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<ElevatorPosition> GetPositionAsync()
         {
             return GetPositionAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<ElevatorPosition> GetPositionAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -3905,7 +3905,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(ElevatorPosition);
@@ -3922,14 +3922,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<ElevatorAxisManualParameters> GetVerticalAssistedMovementsParametersAsync()
         {
             return GetVerticalAssistedMovementsParametersAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<ElevatorAxisManualParameters> GetVerticalAssistedMovementsParametersAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -3970,7 +3970,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(ElevatorAxisManualParameters);
@@ -3987,14 +3987,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<AxisBounds> GetVerticalBoundsAsync()
         {
             return GetVerticalBoundsAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<AxisBounds> GetVerticalBoundsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -4035,7 +4035,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(AxisBounds);
@@ -4052,14 +4052,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<ElevatorAxisManualParameters> GetVerticalManualMovementsParametersAsync()
         {
             return GetVerticalManualMovementsParametersAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<ElevatorAxisManualParameters> GetVerticalManualMovementsParametersAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -4100,7 +4100,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(ElevatorAxisManualParameters);
@@ -4117,14 +4117,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<double> GetVerticalOffsetAsync()
         {
             return GetVerticalOffsetAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<double> GetVerticalOffsetAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -4165,7 +4165,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(double);
@@ -4182,14 +4182,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<decimal> GetVerticalResolutionAsync()
         {
             return GetVerticalResolutionAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<decimal> GetVerticalResolutionAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -4230,7 +4230,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(decimal);
@@ -4247,14 +4247,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<FileResponse> UpdateVerticalResolutionAsync(decimal newResolution)
         {
             return UpdateVerticalResolutionAsync(newResolution, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<FileResponse> UpdateVerticalResolutionAsync(decimal newResolution, System.Threading.CancellationToken cancellationToken)
         {
             if (newResolution == null)
@@ -4303,7 +4303,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(FileResponse);
@@ -4320,14 +4320,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task LoadFromBayAsync(int bayPositionId)
         {
             return LoadFromBayAsync(bayPositionId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task LoadFromBayAsync(int bayPositionId, System.Threading.CancellationToken cancellationToken)
         {
             if (bayPositionId == null)
@@ -4371,7 +4371,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -4386,14 +4386,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task LoadFromCellAsync(int cellId)
         {
             return LoadFromCellAsync(cellId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task LoadFromCellAsync(int cellId, System.Threading.CancellationToken cancellationToken)
         {
             if (cellId == null)
@@ -4437,7 +4437,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -4452,14 +4452,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task MoveHorizontalManualAsync(HorizontalMovementDirection direction)
         {
             return MoveHorizontalManualAsync(direction, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task MoveHorizontalManualAsync(HorizontalMovementDirection direction, System.Threading.CancellationToken cancellationToken)
         {
             if (direction == null)
@@ -4503,7 +4503,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -4518,14 +4518,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task MoveManualToVerticalPositionAsync(double targetPosition, bool performWeighting, bool computeElongation)
         {
             return MoveManualToVerticalPositionAsync(targetPosition, performWeighting, computeElongation, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task MoveManualToVerticalPositionAsync(double targetPosition, bool performWeighting, bool computeElongation, System.Threading.CancellationToken cancellationToken)
         {
             if (targetPosition == null)
@@ -4578,18 +4578,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "422") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -4604,14 +4604,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task MoveToBayPositionAsync(int bayPositionId, bool computeElongation, bool performWeighting)
         {
             return MoveToBayPositionAsync(bayPositionId, computeElongation, performWeighting, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task MoveToBayPositionAsync(int bayPositionId, bool computeElongation, bool performWeighting, System.Threading.CancellationToken cancellationToken)
         {
             if (bayPositionId == null)
@@ -4664,18 +4664,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "422") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -4690,14 +4690,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task MoveToCellAsync(int cellId, bool computeElongation, bool performWeighting)
         {
             return MoveToCellAsync(cellId, computeElongation, performWeighting, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task MoveToCellAsync(int cellId, bool computeElongation, bool performWeighting, System.Threading.CancellationToken cancellationToken)
         {
             if (cellId == null)
@@ -4750,18 +4750,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "422") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -4776,14 +4776,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task MoveToFreeCellAsync(int loadUnitId, bool computeElongation, bool performWeighting)
         {
             return MoveToFreeCellAsync(loadUnitId, computeElongation, performWeighting, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task MoveToFreeCellAsync(int loadUnitId, bool computeElongation, bool performWeighting, System.Threading.CancellationToken cancellationToken)
         {
             if (loadUnitId == null)
@@ -4836,18 +4836,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "422") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -4862,14 +4862,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task MoveToVerticalPositionAsync(double targetPosition, bool performWeighting, bool computeElongation)
         {
             return MoveToVerticalPositionAsync(targetPosition, performWeighting, computeElongation, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task MoveToVerticalPositionAsync(double targetPosition, bool performWeighting, bool computeElongation, System.Threading.CancellationToken cancellationToken)
         {
             if (targetPosition == null)
@@ -4922,18 +4922,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "422") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -4948,14 +4948,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task MoveVerticalManualAsync(VerticalMovementDirection direction)
         {
             return MoveVerticalManualAsync(direction, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task MoveVerticalManualAsync(VerticalMovementDirection direction, System.Threading.CancellationToken cancellationToken)
         {
             if (direction == null)
@@ -4999,7 +4999,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -5014,14 +5014,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task MoveVerticalOfDistanceAsync(double distance)
         {
             return MoveVerticalOfDistanceAsync(distance, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task MoveVerticalOfDistanceAsync(double distance, System.Threading.CancellationToken cancellationToken)
         {
             if (distance == null)
@@ -5065,7 +5065,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -5080,14 +5080,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task SearchHorizontalZeroAsync()
         {
             return SearchHorizontalZeroAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task SearchHorizontalZeroAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -5126,7 +5126,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -5141,14 +5141,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StopAsync()
         {
             return StopAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -5187,7 +5187,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -5202,14 +5202,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StopWeightCheckAsync()
         {
             return StopWeightCheckAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StopWeightCheckAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -5248,7 +5248,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -5263,14 +5263,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task UnloadToBayAsync(int bayPositionId)
         {
             return UnloadToBayAsync(bayPositionId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task UnloadToBayAsync(int bayPositionId, System.Threading.CancellationToken cancellationToken)
         {
             if (bayPositionId == null)
@@ -5314,7 +5314,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -5329,14 +5329,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task UnloadToCellAsync(int cellId)
         {
             return UnloadToCellAsync(cellId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task UnloadToCellAsync(int cellId, System.Threading.CancellationToken cancellationToken)
         {
             if (cellId == null)
@@ -5380,7 +5380,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -5395,14 +5395,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task WeightCheckAsync(int loadingUnitId, double runToTest, double weight)
         {
             return WeightCheckAsync(loadingUnitId, runToTest, weight, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task WeightCheckAsync(int loadingUnitId, double runToTest, double weight, System.Threading.CancellationToken cancellationToken)
         {
             if (loadingUnitId == null)
@@ -5454,7 +5454,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -5502,7 +5502,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -5521,7 +5521,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -5594,14 +5594,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<MachineError> GetCurrentAsync()
         {
             return GetCurrentAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<MachineError> GetCurrentAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -5642,7 +5642,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(MachineError);
@@ -5659,14 +5659,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<ErrorStatisticsSummary> GetStatisticsAsync()
         {
             return GetStatisticsAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<ErrorStatisticsSummary> GetStatisticsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -5707,7 +5707,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(ErrorStatisticsSummary);
@@ -5724,14 +5724,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<MachineError> ResolveAsync(int id)
         {
             return ResolveAsync(id, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<MachineError> ResolveAsync(int id, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
@@ -5777,12 +5777,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "404") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -5797,14 +5797,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<MachineError> ResolveAllAsync()
         {
             return ResolveAllAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<MachineError> ResolveAllAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -5846,12 +5846,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "404") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -5866,14 +5866,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<MachineError> SetErrorPPCAsync(MachineErrorCode errorCode)
         {
             return SetErrorPPCAsync(errorCode, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<MachineError> SetErrorPPCAsync(MachineErrorCode errorCode, System.Threading.CancellationToken cancellationToken)
         {
             if (errorCode == null)
@@ -5920,12 +5920,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "404") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -5973,7 +5973,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -5992,7 +5992,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -6065,14 +6065,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<MachineIdentity> GetAsync()
         {
             return GetAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<MachineIdentity> GetAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -6113,7 +6113,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(MachineIdentity);
@@ -6130,14 +6130,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<MachineStatistics> GetStatisticsAsync()
         {
             return GetStatisticsAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<MachineStatistics> GetStatisticsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -6178,7 +6178,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(MachineStatistics);
@@ -6228,7 +6228,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -6247,7 +6247,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -6320,14 +6320,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task AbortAsync(System.Guid? missionId, BayNumber targetBay)
         {
             return AbortAsync(missionId, targetBay, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task AbortAsync(System.Guid? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken)
         {
             if (targetBay == null)
@@ -6371,7 +6371,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -6386,14 +6386,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task EjectLoadingUnitAsync(LoadingUnitLocation destination, int loadingUnitId)
         {
             return EjectLoadingUnitAsync(destination, loadingUnitId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task EjectLoadingUnitAsync(LoadingUnitLocation destination, int loadingUnitId, System.Threading.CancellationToken cancellationToken)
         {
             if (destination == null)
@@ -6442,12 +6442,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -6462,14 +6462,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnit>> GetAllAsync()
         {
             return GetAllAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnit>> GetAllAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -6510,7 +6510,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(System.Collections.Generic.IEnumerable<LoadingUnit>);
@@ -6527,14 +6527,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnitSpaceStatistics>> GetSpaceStatisticsAsync()
         {
             return GetSpaceStatisticsAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnitSpaceStatistics>> GetSpaceStatisticsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -6575,7 +6575,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(System.Collections.Generic.IEnumerable<LoadingUnitSpaceStatistics>);
@@ -6592,14 +6592,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnitWeightStatistics>> GetWeightStatisticsAsync()
         {
             return GetWeightStatisticsAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnitWeightStatistics>> GetWeightStatisticsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -6640,7 +6640,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(System.Collections.Generic.IEnumerable<LoadingUnitWeightStatistics>);
@@ -6657,14 +6657,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task InsertLoadingUnitAsync(LoadingUnitLocation source, int? destinationCellId, int loadingUnitId)
         {
             return InsertLoadingUnitAsync(source, destinationCellId, loadingUnitId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task InsertLoadingUnitAsync(LoadingUnitLocation source, int? destinationCellId, int loadingUnitId, System.Threading.CancellationToken cancellationToken)
         {
             if (source == null)
@@ -6714,12 +6714,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -6734,14 +6734,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task InsertLoadingUnitOnlyDbAsync(int loadingUnitId)
         {
             return InsertLoadingUnitOnlyDbAsync(loadingUnitId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task InsertLoadingUnitOnlyDbAsync(int loadingUnitId, System.Threading.CancellationToken cancellationToken)
         {
             if (loadingUnitId == null)
@@ -6785,7 +6785,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -6800,14 +6800,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task MoveToBayAsync(int id)
         {
             return MoveToBayAsync(id, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task MoveToBayAsync(int id, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
@@ -6851,12 +6851,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -6871,14 +6871,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task PauseAsync(System.Guid? missionId, BayNumber targetBay)
         {
             return PauseAsync(missionId, targetBay, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task PauseAsync(System.Guid? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken)
         {
             if (targetBay == null)
@@ -6922,7 +6922,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -6937,14 +6937,85 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task RecallAsync(int id)
+        {
+            return RecallAsync(id, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task RecallAsync(int id, System.Threading.CancellationToken cancellationToken)
+        {
+            if (id == null)
+                throw new System.ArgumentNullException("id");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/{id}/recall");
+            urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "202") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task ResumeAsync(System.Guid? missionId, BayNumber targetBay)
         {
             return ResumeAsync(missionId, targetBay, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task ResumeAsync(System.Guid? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken)
         {
             if (targetBay == null)
@@ -6988,7 +7059,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -7003,14 +7074,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StartMovingLoadingUnitToBayAsync(int loadingUnitId, LoadingUnitLocation destination)
         {
             return StartMovingLoadingUnitToBayAsync(loadingUnitId, destination, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StartMovingLoadingUnitToBayAsync(int loadingUnitId, LoadingUnitLocation destination, System.Threading.CancellationToken cancellationToken)
         {
             if (loadingUnitId == null)
@@ -7059,12 +7130,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -7079,14 +7150,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StartMovingLoadingUnitToCellAsync(int loadingUnitId, int destinationCellId)
         {
             return StartMovingLoadingUnitToCellAsync(loadingUnitId, destinationCellId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StartMovingLoadingUnitToCellAsync(int loadingUnitId, int destinationCellId, System.Threading.CancellationToken cancellationToken)
         {
             if (loadingUnitId == null)
@@ -7134,7 +7205,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -7149,14 +7220,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StartMovingSourceDestinationAsync(LoadingUnitLocation source, LoadingUnitLocation destination, int? sourceCellId, int? destinationCellId)
         {
             return StartMovingSourceDestinationAsync(source, destination, sourceCellId, destinationCellId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StartMovingSourceDestinationAsync(LoadingUnitLocation source, LoadingUnitLocation destination, int? sourceCellId, int? destinationCellId, System.Threading.CancellationToken cancellationToken)
         {
             if (source == null)
@@ -7207,12 +7278,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -7227,14 +7298,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StopAsync(System.Guid? missionId, BayNumber targetBay)
         {
             return StopAsync(missionId, targetBay, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StopAsync(System.Guid? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken)
         {
             if (targetBay == null)
@@ -7278,7 +7349,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -7326,7 +7397,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -7345,7 +7416,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -7418,14 +7489,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<RepeatedTestProcedure> GetParametersAsync()
         {
             return GetParametersAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<RepeatedTestProcedure> GetParametersAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -7466,7 +7537,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(RepeatedTestProcedure);
@@ -7483,14 +7554,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StartAsync(double upperPosition, double lowerPosition, int delayStart)
         {
             return StartAsync(upperPosition, lowerPosition, delayStart, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StartAsync(double upperPosition, double lowerPosition, int delayStart, System.Threading.CancellationToken cancellationToken)
         {
             if (upperPosition == null)
@@ -7543,12 +7614,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -7563,14 +7634,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StopAsync()
         {
             return StopAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -7609,7 +7680,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -7657,7 +7728,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -7676,7 +7747,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -7749,14 +7820,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<RepeatedTestProcedure> GetParametersAsync()
         {
             return GetParametersAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<RepeatedTestProcedure> GetParametersAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -7797,7 +7868,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(RepeatedTestProcedure);
@@ -7814,7 +7885,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         [System.Obsolete]
         public System.Threading.Tasks.Task<int> IncreasePerformedCyclesAsync()
         {
@@ -7822,7 +7893,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         [System.Obsolete]
         public async System.Threading.Tasks.Task<int> IncreasePerformedCyclesAsync(System.Threading.CancellationToken cancellationToken)
         {
@@ -7865,7 +7936,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(int);
@@ -7915,7 +7986,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -7934,7 +8005,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -8007,14 +8078,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<SetupStatusCapabilities> GetAsync()
         {
             return GetAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<SetupStatusCapabilities> GetAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -8055,7 +8126,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(SetupStatusCapabilities);
@@ -8105,7 +8176,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -8124,7 +8195,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -8197,14 +8268,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<FileResponse> CompleteAsync(double newOffset)
         {
             return CompleteAsync(newOffset, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<FileResponse> CompleteAsync(double newOffset, System.Threading.CancellationToken cancellationToken)
         {
             if (newOffset == null)
@@ -8253,7 +8324,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(FileResponse);
@@ -8270,14 +8341,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<OffsetCalibrationProcedure> GetParametersAsync()
         {
             return GetParametersAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<OffsetCalibrationProcedure> GetParametersAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -8318,7 +8389,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(OffsetCalibrationProcedure);
@@ -8335,14 +8406,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task MoveDownAsync()
         {
             return MoveDownAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task MoveDownAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -8381,7 +8452,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -8396,14 +8467,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task MoveUpAsync()
         {
             return MoveUpAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task MoveUpAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -8442,7 +8513,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -8490,7 +8561,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -8509,7 +8580,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -8582,14 +8653,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<HomingProcedureParameters> GetParametersAsync()
         {
             return GetParametersAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<HomingProcedureParameters> GetParametersAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -8630,7 +8701,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(HomingProcedureParameters);
@@ -8647,14 +8718,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StartAsync()
         {
             return StartAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StartAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -8693,7 +8764,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -8708,14 +8779,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StopAsync()
         {
             return StopAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -8754,7 +8825,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -8802,7 +8873,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -8821,7 +8892,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -8894,14 +8965,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<decimal> GetAdjustedResolutionAsync(double measuredDistance, double expectedDistance)
         {
             return GetAdjustedResolutionAsync(measuredDistance, expectedDistance, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<decimal> GetAdjustedResolutionAsync(double measuredDistance, double expectedDistance, System.Threading.CancellationToken cancellationToken)
         {
             if (measuredDistance == null)
@@ -8951,12 +9022,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -8971,14 +9042,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<VerticalResolutionCalibrationProcedure> GetParametersAsync()
         {
             return GetParametersAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<VerticalResolutionCalibrationProcedure> GetParametersAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -9019,7 +9090,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(VerticalResolutionCalibrationProcedure);
@@ -9069,7 +9140,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -9088,7 +9159,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -9161,14 +9232,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<SetupProcedure> GetParametersAsync(Orientation orientation)
         {
             return GetParametersAsync(orientation, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<SetupProcedure> GetParametersAsync(Orientation orientation, System.Threading.CancellationToken cancellationToken)
         {
             if (orientation == null)
@@ -9214,7 +9285,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(SetupProcedure);
@@ -9231,14 +9302,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StartAsync(double displacement, double netWeight, int? loadingUnitId)
         {
             return StartAsync(displacement, netWeight, loadingUnitId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StartAsync(double displacement, double netWeight, int? loadingUnitId, System.Threading.CancellationToken cancellationToken)
         {
             if (displacement == null)
@@ -9288,12 +9359,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -9308,14 +9379,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StopAsync()
         {
             return StopAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -9354,7 +9425,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -9402,7 +9473,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -9421,7 +9492,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -9494,14 +9565,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<FileResponse> AbortAsync(int id)
         {
             return AbortAsync(id, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<FileResponse> AbortAsync(int id, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
@@ -9549,7 +9620,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(FileResponse);
@@ -9566,14 +9637,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<FileResponse> CancelAsync()
         {
             return CancelAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<FileResponse> CancelAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -9617,7 +9688,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(FileResponse);
@@ -9634,14 +9705,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<FileResponse> CompleteAsync(int id, double quantity, string printerName)
         {
             return CompleteAsync(id, quantity, printerName, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<FileResponse> CompleteAsync(int id, double quantity, string printerName, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
@@ -9695,7 +9766,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(FileResponse);
@@ -9712,14 +9783,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<int> GetByBayCountAsync()
         {
             return GetByBayCountAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<int> GetByBayCountAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -9760,7 +9831,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(int);
@@ -9777,14 +9848,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<FileResponse> PartiallyCompleteAsync(int id, double quantity, string printerName)
         {
             return PartiallyCompleteAsync(id, quantity, printerName, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<FileResponse> PartiallyCompleteAsync(int id, double quantity, string printerName, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
@@ -9838,7 +9909,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(FileResponse);
@@ -9855,7 +9926,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         [System.Obsolete]
         public System.Threading.Tasks.Task<FileResponse> ResetMachineAsync()
         {
@@ -9863,7 +9934,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         [System.Obsolete]
         public async System.Threading.Tasks.Task<FileResponse> ResetMachineAsync(System.Threading.CancellationToken cancellationToken)
         {
@@ -9908,7 +9979,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(FileResponse);
@@ -9958,7 +10029,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -9977,7 +10048,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -10050,14 +10121,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<MachineMode> GetAsync()
         {
             return GetAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<MachineMode> GetAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -10098,7 +10169,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(MachineMode);
@@ -10115,14 +10186,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task SetAutomaticAsync()
         {
             return SetAutomaticAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task SetAutomaticAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -10162,13 +10233,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -10183,14 +10254,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task SetManualAsync()
         {
             return SetManualAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task SetManualAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -10230,13 +10301,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -10284,7 +10355,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -10303,7 +10374,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -10376,14 +10447,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<MachinePowerState> GetAsync()
         {
             return GetAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<MachinePowerState> GetAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -10424,7 +10495,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(MachinePowerState);
@@ -10441,14 +10512,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<bool> GetIsHomingAsync()
         {
             return GetIsHomingAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<bool> GetIsHomingAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -10489,12 +10560,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "404") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -10509,14 +10580,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task PowerOffAsync()
         {
             return PowerOffAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task PowerOffAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -10556,13 +10627,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -10577,14 +10648,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task PowerOnAsync()
         {
             return PowerOnAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task PowerOnAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -10624,13 +10695,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -10645,14 +10716,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StopAsync()
         {
             return StopAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -10692,13 +10763,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -10746,7 +10817,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -10765,7 +10836,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -10838,14 +10909,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task CalibrationAsync(HorizontalMovementDirection direction)
         {
             return CalibrationAsync(direction, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task CalibrationAsync(HorizontalMovementDirection direction, System.Threading.CancellationToken cancellationToken)
         {
             if (direction == null)
@@ -10890,12 +10961,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<string>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<string>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<string>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -10910,14 +10981,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task SaveAsync(int bayNumber)
         {
             return SaveAsync(bayNumber, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task SaveAsync(int bayNumber, System.Threading.CancellationToken cancellationToken)
         {
             if (bayNumber == null)
@@ -10961,12 +11032,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<string>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<string>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<string>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -10981,14 +11052,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StopAsync()
         {
             return StopAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -11027,7 +11098,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -11075,7 +11146,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -11094,7 +11165,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -11167,14 +11238,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<bool>> GetAsync()
         {
             return GetAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<bool>> GetAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -11215,7 +11286,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(System.Collections.Generic.IEnumerable<bool>);
@@ -11265,7 +11336,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -11284,7 +11355,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -11357,14 +11428,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<ShutterPosition> GetShutterPositionAsync()
         {
             return GetShutterPositionAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<ShutterPosition> GetShutterPositionAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -11405,7 +11476,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(ShutterPosition);
@@ -11422,14 +11493,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<RepeatedTestProcedure> GetTestParametersAsync()
         {
             return GetTestParametersAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<RepeatedTestProcedure> GetTestParametersAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -11470,7 +11541,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
                         return default(RepeatedTestProcedure);
@@ -11487,14 +11558,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task MoveAsync(ShutterMovementDirection direction)
         {
             return MoveAsync(direction, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task MoveAsync(ShutterMovementDirection direction, System.Threading.CancellationToken cancellationToken)
         {
             if (direction == null)
@@ -11538,7 +11609,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -11553,14 +11624,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task MoveToAsync(ShutterPosition targetPosition)
         {
             return MoveToAsync(targetPosition, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task MoveToAsync(ShutterPosition targetPosition, System.Threading.CancellationToken cancellationToken)
         {
             if (targetPosition == null)
@@ -11604,7 +11675,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -11619,14 +11690,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task RunTestAsync(int delayInSeconds, int testCycleCount)
         {
             return RunTestAsync(delayInSeconds, testCycleCount, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task RunTestAsync(int delayInSeconds, int testCycleCount, System.Threading.CancellationToken cancellationToken)
         {
             if (delayInSeconds == null)
@@ -11674,7 +11745,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -11689,14 +11760,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task StopAsync()
         {
             return StopAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -11735,7 +11806,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -11783,7 +11854,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -11802,7 +11873,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -11875,14 +11946,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<UserClaims> AuthenticateWithResourceOwnerPasswordAsync(string userName, string password)
         {
             return AuthenticateWithResourceOwnerPasswordAsync(userName, password, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<UserClaims> AuthenticateWithResourceOwnerPasswordAsync(string userName, string password, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -11927,12 +11998,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         if (status_ == "401") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -11980,7 +12051,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -11999,7 +12070,471 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SwaggerException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new MasWebApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                }
+            }
+        }
+    
+        private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
+        {
+            if (value is System.Enum)
+            {
+                string name = System.Enum.GetName(value.GetType(), value);
+                if (name != null)
+                {
+                    var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
+                    if (field != null)
+                    {
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
+                            as System.Runtime.Serialization.EnumMemberAttribute;
+                        if (attribute != null)
+                        {
+                            return attribute.Value != null ? attribute.Value : name;
+                        }
+                    }
+                }
+            }
+            else if (value is bool) {
+                return System.Convert.ToString(value, cultureInfo).ToLowerInvariant();
+            }
+            else if (value is byte[])
+            {
+                return System.Convert.ToBase64String((byte[]) value);
+            }
+            else if (value != null && value.GetType().IsArray)
+            {
+                var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
+                return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
+            }
+        
+            return System.Convert.ToString(value, cultureInfo);
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
+    internal partial class MachineUtcTimeWebService : ServiceBase, IMachineUtcTimeWebService
+    {
+        private string _baseUrl = "";
+        private Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient _httpClient;
+        private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
+    
+        public MachineUtcTimeWebService(string baseUrl, Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient httpClient)
+        {
+            BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
+            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
+            {
+                var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() } };
+                UpdateJsonSerializerSettings(settings);
+                return settings;
+            });
+        }
+    
+        public string BaseUrl 
+        {
+            get { return _baseUrl; }
+            set { _baseUrl = value; }
+        }
+    
+        protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
+    
+        partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
+        partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, string url);
+        partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
+        partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<bool> CanEnableWmsAutoSyncModeAsync()
+        {
+            return CanEnableWmsAutoSyncModeAsync(System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<bool> CanEnableWmsAutoSyncModeAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/utc-time/wms-auto-sync/can-enable");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<bool>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(bool);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<System.DateTime> GetAsync()
+        {
+            return GetAsync(System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<System.DateTime> GetAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/utc-time");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<System.DateTime>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(System.DateTime);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<System.DateTime> SetAsync(System.DateTime dateTime)
+        {
+            return SetAsync(dateTime, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<System.DateTime> SetAsync(System.DateTime dateTime, System.Threading.CancellationToken cancellationToken)
+        {
+            if (dateTime == null)
+                throw new System.ArgumentNullException("dateTime");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/utc-time?");
+            urlBuilder_.Append(System.Uri.EscapeDataString("dateTime") + "=").Append(System.Uri.EscapeDataString(dateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<System.DateTime>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(System.DateTime);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<bool> IsWmsAutoSyncEnabledAsync()
+        {
+            return IsWmsAutoSyncEnabledAsync(System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<bool> IsWmsAutoSyncEnabledAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/utc-time/wms-auto-sync/enabled");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<bool>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(bool);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<FileResponse> SetWmsAutoSyncAsync(bool isEnabled)
+        {
+            return SetWmsAutoSyncAsync(isEnabled, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<FileResponse> SetWmsAutoSyncAsync(bool isEnabled, System.Threading.CancellationToken cancellationToken)
+        {
+            if (isEnabled == null)
+                throw new System.ArgumentNullException("isEnabled");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/utc-time/wms-auto-sync/enabled?");
+            urlBuilder_.Append(System.Uri.EscapeDataString("isEnabled") + "=").Append(System.Uri.EscapeDataString(ConvertToString(isEnabled, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/octet-stream");
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200" || status_ == "206") 
+                        {
+                            var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                            var fileResponse_ = new FileResponse((int)response_.StatusCode, headers_, responseStream_, null, response_); 
+                            client_ = null; response_ = null; // response and client are disposed by FileResponse
+                            return fileResponse_;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(FileResponse);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        protected struct ObjectResponseResult<T>
+        {
+            public ObjectResponseResult(T responseObject, string responseText)
+            {
+                this.Object = responseObject;
+                this.Text = responseText;
+            }
+    
+            public T Object { get; }
+    
+            public string Text { get; }
+        }
+    
+        public bool ReadResponseAsString { get; set; }
+        
+        protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers)
+        {
+            if (response == null || response.Content == null)
+            {
+                return new ObjectResponseResult<T>(default(T), string.Empty);
+            }
+        
+            if (ReadResponseAsString)
+            {
+                var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    var typedBody = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(responseText, JsonSerializerSettings);
+                    return new ObjectResponseResult<T>(typedBody, responseText);
+                }
+                catch (Newtonsoft.Json.JsonException exception)
+                {
+                    var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
+                    throw new MasWebApiException(message, (int)response.StatusCode, responseText, headers, exception);
+                }
+            }
+            else
+            {
+                try
+                {
+                    using (var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                    using (var streamReader = new System.IO.StreamReader(responseStream))
+                    using (var jsonTextReader = new Newtonsoft.Json.JsonTextReader(streamReader))
+                    {
+                        var serializer = Newtonsoft.Json.JsonSerializer.Create(JsonSerializerSettings);
+                        var typedBody = serializer.Deserialize<T>(jsonTextReader);
+                        return new ObjectResponseResult<T>(typedBody, string.Empty);
+                    }
+                }
+                catch (Newtonsoft.Json.JsonException exception)
+                {
+                    var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
+                    throw new MasWebApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }

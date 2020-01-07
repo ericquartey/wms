@@ -102,6 +102,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DbSet<WeightMeasurement> WeightMeasurements { get; set; }
 
+        public DbSet<WmsSettings> WmsSettings { get; set; }
+
         #endregion
 
         #region Methods
@@ -170,7 +172,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 .ApplyConfiguration(new ShutterManualParametersConfiguration())
                 .ApplyConfiguration(new ShuttersConfiguration())
                 .ApplyConfiguration(new TorqueCurrentMeasurementSessionsConfiguration())
-                .ApplyConfiguration(new UsersConfiguration());
+                .ApplyConfiguration(new UsersConfiguration())
+                .ApplyConfiguration(new WmsSettingsConfiguration());
         }
 
         #endregion

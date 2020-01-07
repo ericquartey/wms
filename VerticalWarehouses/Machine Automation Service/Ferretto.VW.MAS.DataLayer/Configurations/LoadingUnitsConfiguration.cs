@@ -1,5 +1,6 @@
 ﻿using System;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Enumerations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,9 +19,16 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
 
             builder.HasKey(l => l.Id);
 
+            builder.Property(l => l.Status)
+                .HasColumnType("text")
+                .HasConversion(
+                    enumValue => enumValue.ToString(),
+                    stringValue => Enum.Parse<LoadingUnitStatus>(stringValue));
+
             builder
                 .Ignore(l => l.Code)
                 .Ignore(l => l.NetWeight);
+
         }
 
         #endregion

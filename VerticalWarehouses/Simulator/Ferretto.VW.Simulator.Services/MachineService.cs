@@ -46,7 +46,7 @@ namespace Ferretto.VW.Simulator.Services
 
         private CancellationTokenSource cts = new CancellationTokenSource();
 
-        private int DELAY_HEARTBEAT = 600;
+        private int DELAY_HEARTBEAT = 800;
 
         private DateTime heartBeatTime;
 
@@ -292,7 +292,7 @@ namespace Ferretto.VW.Simulator.Services
 
                     this.ReplyToInverterMessage(client, message);
 
-                    //Thread.Sleep(DELAY_INVERTER_CLIENT * random.Next(1, 10));
+                    Thread.Sleep(DELAY_INVERTER_CLIENT * random.Next(1, 10));
                 }
             }
             else
@@ -394,14 +394,14 @@ namespace Ferretto.VW.Simulator.Services
             if (DateTime.UtcNow.Subtract(this.heartBeatTime).TotalMilliseconds > this.DELAY_HEARTBEAT)
             {
                 var timeout = DateTime.UtcNow.Subtract(this.heartBeatTime).TotalMilliseconds;
-                Console.WriteLine($"HeartBeat timeout {timeout}");
+                Debug.WriteLine($"{DateTime.Now}: HeartBeat timeout {timeout}");
 
                 // TODO: enable heartbeat control
+                //inverter.IsFault = true;
                 //if (Debugger.IsAttached)
                 //{
                 //    Debugger.Break();
                 //}
-                //inverter.IsFault = true;
             }
 
             var result = 0;

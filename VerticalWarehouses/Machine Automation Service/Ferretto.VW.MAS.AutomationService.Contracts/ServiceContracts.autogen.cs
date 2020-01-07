@@ -19,74 +19,74 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineBaysWebService
     {
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Bay> ActivateAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Bay> ActivateAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Bay> DeactivateAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Bay> DeactivateAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task FindZeroAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task FindZeroAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Bay>> GetAllAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Bay>> GetAllAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Bay> GetByNumberAsync(BayNumber bayNumber);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Bay> GetByNumberAsync(BayNumber bayNumber, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<PositioningProcedure> GetHeightCheckParametersAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<PositioningProcedure> GetHeightCheckParametersAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task HomingAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task HomingAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task LightAsync(bool enable);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task LightAsync(bool enable, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task RemoveLoadUnitAsync(int loadingUnitId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task RemoveLoadUnitAsync(int loadingUnitId, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Bay> UpdateHeightAsync(int position, double height);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Bay> UpdateHeightAsync(int position, double height, System.Threading.CancellationToken cancellationToken);
     
     }
@@ -94,60 +94,60 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineCarouselWebService
     {
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ActionPolicy> CanMoveAsync(VerticalMovementDirection direction, MovementCategory movementCategory);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ActionPolicy> CanMoveAsync(VerticalMovementDirection direction, MovementCategory movementCategory, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task FindZeroAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task FindZeroAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<double> GetPositionAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<double> GetPositionAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task HomingAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task HomingAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveAsync(VerticalMovementDirection direction);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveAsync(VerticalMovementDirection direction, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveAssistedAsync(VerticalMovementDirection direction);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveAssistedAsync(VerticalMovementDirection direction, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveManualAsync(VerticalMovementDirection direction);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveManualAsync(VerticalMovementDirection direction, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken);
     
     }
@@ -155,25 +155,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineCellPanelsWebService
     {
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<CellPanel>> GetAllAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<CellPanel>> GetAllAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<PositioningProcedure> GetProcedureParametersAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<PositioningProcedure> GetProcedureParametersAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<CellPanel> UpdateHeightAsync(int cellId, double newHeight);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<CellPanel> UpdateHeightAsync(int cellId, double newHeight, System.Threading.CancellationToken cancellationToken);
     
     }
@@ -181,39 +181,39 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineCellsWebService
     {
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Cell>> GetAllAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Cell>> GetAllAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<PositioningProcedure> GetHeightCheckProcedureParametersAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<PositioningProcedure> GetHeightCheckProcedureParametersAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<CellStatisticsSummary> GetStatisticsAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<CellStatisticsSummary> GetStatisticsAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Cell> UpdateHeightAsync(int id, double height);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Cell> UpdateHeightAsync(int id, double height, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Cell>> UpdatesHeightAsync(int fromid, int toid, WarehouseSide side, double height);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Cell>> UpdatesHeightAsync(int fromid, int toid, WarehouseSide side, double height, System.Threading.CancellationToken cancellationToken);
     
     }
@@ -221,18 +221,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineCompactingWebService
     {
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task CompactingAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task CompactingAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken);
     
     }
@@ -240,25 +240,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineConfigurationWebService
     {
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<VertimagConfiguration> GetAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<VertimagConfiguration> GetAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task SetAsync(VertimagConfiguration vertimagConfiguration);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task SetAsync(VertimagConfiguration vertimagConfiguration, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task ImportAsync(VertimagConfiguration vertimagConfiguration);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task ImportAsync(VertimagConfiguration vertimagConfiguration, System.Threading.CancellationToken cancellationToken);
     
     }
@@ -266,11 +266,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineDevicesWebService
     {
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ValueTupleOfIEnumerableOfInverterDeviceInfoAndIEnumerableOfIoDeviceInfo> GetAllAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ValueTupleOfIEnumerableOfInverterDeviceInfoAndIEnumerableOfIoDeviceInfo> GetAllAsync(System.Threading.CancellationToken cancellationToken);
     
     }
@@ -278,242 +278,242 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineElevatorWebService
     {
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ActionPolicy> CanExtractFromBayAsync(int bayPositionId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ActionPolicy> CanExtractFromBayAsync(int bayPositionId, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ActionPolicy> CanLoadFromBayAsync(int bayPositionId, bool isGuided);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ActionPolicy> CanLoadFromBayAsync(int bayPositionId, bool isGuided, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ActionPolicy> CanLoadFromCellAsync(int cellId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ActionPolicy> CanLoadFromCellAsync(int cellId, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ActionPolicy> CanMoveToBayPositionAsync(int bayPositionId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ActionPolicy> CanMoveToBayPositionAsync(int bayPositionId, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ActionPolicy> CanMoveToCellAsync(int cellId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ActionPolicy> CanMoveToCellAsync(int cellId, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ActionPolicy> CanUnloadToBayAsync(int bayPositionId, bool isGuided);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ActionPolicy> CanUnloadToBayAsync(int bayPositionId, bool isGuided, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ActionPolicy> CanUnloadToCellAsync(int cellId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ActionPolicy> CanUnloadToCellAsync(int cellId, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task FindZeroAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task FindZeroAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ElevatorAxisManualParameters> GetHorizontalAssistedMovementsParametersAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ElevatorAxisManualParameters> GetHorizontalAssistedMovementsParametersAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ElevatorAxisManualParameters> GetHorizontalManualMovementsParametersAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ElevatorAxisManualParameters> GetHorizontalManualMovementsParametersAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<LoadingUnit> GetLoadingUnitOnBoardAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<LoadingUnit> GetLoadingUnitOnBoardAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ElevatorPosition> GetPositionAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ElevatorPosition> GetPositionAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ElevatorAxisManualParameters> GetVerticalAssistedMovementsParametersAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ElevatorAxisManualParameters> GetVerticalAssistedMovementsParametersAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AxisBounds> GetVerticalBoundsAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AxisBounds> GetVerticalBoundsAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ElevatorAxisManualParameters> GetVerticalManualMovementsParametersAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ElevatorAxisManualParameters> GetVerticalManualMovementsParametersAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<double> GetVerticalOffsetAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<double> GetVerticalOffsetAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<decimal> GetVerticalResolutionAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<decimal> GetVerticalResolutionAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> UpdateVerticalResolutionAsync(decimal newResolution);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> UpdateVerticalResolutionAsync(decimal newResolution, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task LoadFromBayAsync(int bayPositionId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task LoadFromBayAsync(int bayPositionId, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task LoadFromCellAsync(int cellId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task LoadFromCellAsync(int cellId, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveHorizontalManualAsync(HorizontalMovementDirection direction);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveHorizontalManualAsync(HorizontalMovementDirection direction, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveManualToVerticalPositionAsync(double targetPosition, bool performWeighting, bool computeElongation);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveManualToVerticalPositionAsync(double targetPosition, bool performWeighting, bool computeElongation, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveToBayPositionAsync(int bayPositionId, bool computeElongation, bool performWeighting);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveToBayPositionAsync(int bayPositionId, bool computeElongation, bool performWeighting, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveToCellAsync(int cellId, bool computeElongation, bool performWeighting);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveToCellAsync(int cellId, bool computeElongation, bool performWeighting, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveToFreeCellAsync(int loadUnitId, bool computeElongation, bool performWeighting);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveToFreeCellAsync(int loadUnitId, bool computeElongation, bool performWeighting, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveToVerticalPositionAsync(double targetPosition, bool performWeighting, bool computeElongation);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveToVerticalPositionAsync(double targetPosition, bool performWeighting, bool computeElongation, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveVerticalManualAsync(VerticalMovementDirection direction);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveVerticalManualAsync(VerticalMovementDirection direction, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveVerticalOfDistanceAsync(double distance);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveVerticalOfDistanceAsync(double distance, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task SearchHorizontalZeroAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task SearchHorizontalZeroAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopWeightCheckAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopWeightCheckAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UnloadToBayAsync(int bayPositionId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UnloadToBayAsync(int bayPositionId, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UnloadToCellAsync(int cellId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UnloadToCellAsync(int cellId, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task WeightCheckAsync(int loadingUnitId, double runToTest, double weight);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task WeightCheckAsync(int loadingUnitId, double runToTest, double weight, System.Threading.CancellationToken cancellationToken);
     
     }
@@ -521,39 +521,39 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineErrorsWebService
     {
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MachineError> GetCurrentAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MachineError> GetCurrentAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ErrorStatisticsSummary> GetStatisticsAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ErrorStatisticsSummary> GetStatisticsAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MachineError> ResolveAsync(int id);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MachineError> ResolveAsync(int id, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MachineError> ResolveAllAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MachineError> ResolveAllAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MachineError> SetErrorPPCAsync(MachineErrorCode errorCode);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MachineError> SetErrorPPCAsync(MachineErrorCode errorCode, System.Threading.CancellationToken cancellationToken);
     
     }
@@ -561,18 +561,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineIdentityWebService
     {
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MachineIdentity> GetAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MachineIdentity> GetAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MachineStatistics> GetStatisticsAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MachineStatistics> GetStatisticsAsync(System.Threading.CancellationToken cancellationToken);
     
     }
@@ -580,102 +580,109 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineLoadingUnitsWebService
     {
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task AbortAsync(System.Guid? missionId, BayNumber targetBay);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task AbortAsync(System.Guid? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task EjectLoadingUnitAsync(LoadingUnitLocation destination, int loadingUnitId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task EjectLoadingUnitAsync(LoadingUnitLocation destination, int loadingUnitId, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnit>> GetAllAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnit>> GetAllAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnitSpaceStatistics>> GetSpaceStatisticsAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnitSpaceStatistics>> GetSpaceStatisticsAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnitWeightStatistics>> GetWeightStatisticsAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnitWeightStatistics>> GetWeightStatisticsAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task InsertLoadingUnitAsync(LoadingUnitLocation source, int? destinationCellId, int loadingUnitId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task InsertLoadingUnitAsync(LoadingUnitLocation source, int? destinationCellId, int loadingUnitId, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task InsertLoadingUnitOnlyDbAsync(int loadingUnitId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task InsertLoadingUnitOnlyDbAsync(int loadingUnitId, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveToBayAsync(int id);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveToBayAsync(int id, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task PauseAsync(System.Guid? missionId, BayNumber targetBay);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task PauseAsync(System.Guid? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task RecallAsync(int id);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task RecallAsync(int id, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task ResumeAsync(System.Guid? missionId, BayNumber targetBay);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task ResumeAsync(System.Guid? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StartMovingLoadingUnitToBayAsync(int loadingUnitId, LoadingUnitLocation destination);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StartMovingLoadingUnitToBayAsync(int loadingUnitId, LoadingUnitLocation destination, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StartMovingLoadingUnitToCellAsync(int loadingUnitId, int destinationCellId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StartMovingLoadingUnitToCellAsync(int loadingUnitId, int destinationCellId, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StartMovingSourceDestinationAsync(LoadingUnitLocation source, LoadingUnitLocation destination, int? sourceCellId, int? destinationCellId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StartMovingSourceDestinationAsync(LoadingUnitLocation source, LoadingUnitLocation destination, int? sourceCellId, int? destinationCellId, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync(System.Guid? missionId, BayNumber targetBay);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync(System.Guid? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
     
     }
@@ -683,25 +690,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineBeltBurnishingProcedureWebService
     {
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<RepeatedTestProcedure> GetParametersAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<RepeatedTestProcedure> GetParametersAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StartAsync(double upperPosition, double lowerPosition, int delayStart);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StartAsync(double upperPosition, double lowerPosition, int delayStart, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken);
     
     }
@@ -709,19 +716,19 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineDepositAndPickupProcedureWebService
     {
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<RepeatedTestProcedure> GetParametersAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<RepeatedTestProcedure> GetParametersAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         [System.Obsolete]
         System.Threading.Tasks.Task<int> IncreasePerformedCyclesAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         [System.Obsolete]
         System.Threading.Tasks.Task<int> IncreasePerformedCyclesAsync(System.Threading.CancellationToken cancellationToken);
     
@@ -730,11 +737,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineSetupStatusWebService
     {
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SetupStatusCapabilities> GetAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SetupStatusCapabilities> GetAsync(System.Threading.CancellationToken cancellationToken);
     
     }
@@ -742,32 +749,32 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineVerticalOffsetProcedureWebService
     {
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> CompleteAsync(double newOffset);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> CompleteAsync(double newOffset, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<OffsetCalibrationProcedure> GetParametersAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<OffsetCalibrationProcedure> GetParametersAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveDownAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveDownAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveUpAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveUpAsync(System.Threading.CancellationToken cancellationToken);
     
     }
@@ -775,25 +782,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineVerticalOriginProcedureWebService
     {
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<HomingProcedureParameters> GetParametersAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<HomingProcedureParameters> GetParametersAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StartAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StartAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken);
     
     }
@@ -801,18 +808,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineVerticalResolutionCalibrationProcedureWebService
     {
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<decimal> GetAdjustedResolutionAsync(double measuredDistance, double expectedDistance);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<decimal> GetAdjustedResolutionAsync(double measuredDistance, double expectedDistance, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<VerticalResolutionCalibrationProcedure> GetParametersAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<VerticalResolutionCalibrationProcedure> GetParametersAsync(System.Threading.CancellationToken cancellationToken);
     
     }
@@ -820,25 +827,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineWeightAnalysisProcedureWebService
     {
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SetupProcedure> GetParametersAsync(Orientation orientation);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SetupProcedure> GetParametersAsync(Orientation orientation, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StartAsync(double displacement, double netWeight, int? loadingUnitId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StartAsync(double displacement, double netWeight, int? loadingUnitId, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken);
     
     }
@@ -846,47 +853,47 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineMissionOperationsWebService
     {
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> AbortAsync(int id);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> AbortAsync(int id, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> CancelAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> CancelAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> CompleteAsync(int id, double quantity, string printerName);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> CompleteAsync(int id, double quantity, string printerName, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<int> GetByBayCountAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<int> GetByBayCountAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> PartiallyCompleteAsync(int id, double quantity, string printerName);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> PartiallyCompleteAsync(int id, double quantity, string printerName, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         [System.Obsolete]
         System.Threading.Tasks.Task<FileResponse> ResetMachineAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         [System.Obsolete]
         System.Threading.Tasks.Task<FileResponse> ResetMachineAsync(System.Threading.CancellationToken cancellationToken);
     
@@ -895,25 +902,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineModeWebService
     {
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MachineMode> GetAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MachineMode> GetAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task SetAutomaticAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task SetAutomaticAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task SetManualAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task SetManualAsync(System.Threading.CancellationToken cancellationToken);
     
     }
@@ -921,39 +928,39 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachinePowerWebService
     {
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MachinePowerState> GetAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MachinePowerState> GetAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<bool> GetIsHomingAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<bool> GetIsHomingAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task PowerOffAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task PowerOffAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task PowerOnAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task PowerOnAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken);
     
     }
@@ -961,25 +968,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineProfileProcedureWebService
     {
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task CalibrationAsync(HorizontalMovementDirection direction);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task CalibrationAsync(HorizontalMovementDirection direction, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task SaveAsync(int bayNumber);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task SaveAsync(int bayNumber, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken);
     
     }
@@ -987,11 +994,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineSensorsWebService
     {
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<bool>> GetAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<bool>> GetAsync(System.Threading.CancellationToken cancellationToken);
     
     }
@@ -999,46 +1006,46 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineShuttersWebService
     {
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ShutterPosition> GetShutterPositionAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ShutterPosition> GetShutterPositionAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<RepeatedTestProcedure> GetTestParametersAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<RepeatedTestProcedure> GetTestParametersAsync(System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveAsync(ShutterMovementDirection direction);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveAsync(ShutterMovementDirection direction, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveToAsync(ShutterPosition targetPosition);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveToAsync(ShutterPosition targetPosition, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task RunTestAsync(int delayInSeconds, int testCycleCount);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task RunTestAsync(int delayInSeconds, int testCycleCount, System.Threading.CancellationToken cancellationToken);
     
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken);
     
     }
@@ -1046,12 +1053,52 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineUsersWebService
     {
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<UserClaims> AuthenticateWithResourceOwnerPasswordAsync(string userName, string password);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<UserClaims> AuthenticateWithResourceOwnerPasswordAsync(string userName, string password, System.Threading.CancellationToken cancellationToken);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial interface IMachineUtcTimeWebService
+    {
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> CanEnableWmsAutoSyncModeAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> CanEnableWmsAutoSyncModeAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.DateTime> GetAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.DateTime> GetAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.DateTime> SetAsync(System.DateTime dateTime);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.DateTime> SetAsync(System.DateTime dateTime, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> IsWmsAutoSyncEnabledAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> IsWmsAutoSyncEnabledAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> SetWmsAutoSyncAsync(bool isEnabled);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> SetWmsAutoSyncAsync(bool isEnabled, System.Threading.CancellationToken cancellationToken);
     
     }
 
@@ -1110,6 +1157,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public Shutter Shutter { get; set; }
     
         [Newtonsoft.Json.JsonProperty("side", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public WarehouseSide Side { get; set; }
     
         [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
@@ -1330,6 +1379,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         OUT = 4,
     
         Test = 5,
+    
+        Compact = 6,
     
     }
     
@@ -1689,11 +1740,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Cell : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("isDeactivated", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsDeactivated { get; set; }
+        [Newtonsoft.Json.JsonProperty("blockLevel", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public BlockLevel BlockLevel { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("isUnusable", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsUnusable { get; set; }
+        [Newtonsoft.Json.JsonProperty("isFree", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsFree { get; set; }
     
         [Newtonsoft.Json.JsonProperty("panelId", Required = Newtonsoft.Json.Required.Always)]
         public int PanelId { get; set; }
@@ -1705,10 +1758,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public int Priority { get; set; }
     
         [Newtonsoft.Json.JsonProperty("side", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public WarehouseSide Side { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
-        public CellStatus Status { get; set; }
     
         public string ToJson() 
         {
@@ -1723,22 +1775,33 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum WarehouseSide
+    public enum BlockLevel
     {
-        NotSpecified = 0,
+        [System.Runtime.Serialization.EnumMember(Value = @"Undefined")]
+        Undefined = 0,
     
-        Front = 1,
+        [System.Runtime.Serialization.EnumMember(Value = @"None")]
+        None = 1,
     
-        Back = 2,
+        [System.Runtime.Serialization.EnumMember(Value = @"SpaceOnly")]
+        SpaceOnly = 2,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Blocked")]
+        Blocked = 3,
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum CellStatus
+    public enum WarehouseSide
     {
-        Free = 0,
+        [System.Runtime.Serialization.EnumMember(Value = @"NotSpecified")]
+        NotSpecified = 0,
     
-        Occupied = 1,
+        [System.Runtime.Serialization.EnumMember(Value = @"Front")]
+        Front = 1,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Back")]
+        Back = 2,
     
     }
     
@@ -1945,6 +2008,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     {
         None = 0,
     
+        ElevatorInPosition = 1,
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
@@ -1976,6 +2041,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public System.Collections.Generic.IEnumerable<Cell> Cells { get; set; }
     
         [Newtonsoft.Json.JsonProperty("side", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public WarehouseSide Side { get; set; }
     
         public string ToJson() 
@@ -2023,14 +2090,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class CellStatusStatistics 
     {
+        [Newtonsoft.Json.JsonProperty("isFree", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsFree { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("ratioBackCells", Required = Newtonsoft.Json.Required.Always)]
         public double RatioBackCells { get; set; }
     
         [Newtonsoft.Json.JsonProperty("ratioFrontCells", Required = Newtonsoft.Json.Required.Always)]
         public double RatioFrontCells { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
-        public CellStatus Status { get; set; }
     
         [Newtonsoft.Json.JsonProperty("totalBackCells", Required = Newtonsoft.Json.Required.Always)]
         public int TotalBackCells { get; set; }
@@ -2493,6 +2560,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("initialPosition", Required = Newtonsoft.Json.Required.Always)]
         public double InitialPosition { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("startPosition", Required = Newtonsoft.Json.Required.Always)]
+        public double StartPosition { get; set; }
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
@@ -2817,29 +2887,35 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         SensorZeroBayNotActiveAtStart = 21,
     
-        LoadingUnitWeightExceeded = 22,
+        InverterConnectionError = 22,
     
-        LoadingUnitWeightTooLow = 23,
+        IoDeviceConnectionError = 23,
     
-        MachineWeightExceeded = 24,
+        LaserConnectionError = 24,
     
-        DestinationBelowLowerBound = 25,
+        LoadingUnitWeightExceeded = 25,
     
-        DestinationOverUpperBound = 26,
+        LoadingUnitWeightTooLow = 26,
     
-        BayInvertersBusy = 27,
+        MachineWeightExceeded = 27,
     
-        IoDeviceError = 28,
+        DestinationBelowLowerBound = 28,
     
-        MachineModeNotValid = 29,
+        DestinationOverUpperBound = 29,
     
-        AnotherMissionIsActiveForThisLoadUnit = 30,
+        BayInvertersBusy = 30,
     
-        AnotherMissionIsActiveForThisBay = 31,
+        IoDeviceError = 31,
     
-        AnotherMissionOfThisTypeIsActive = 32,
+        MachineModeNotValid = 32,
     
-        WarehouseIsFull = 33,
+        AnotherMissionIsActiveForThisLoadUnit = 33,
+    
+        AnotherMissionIsActiveForThisBay = 34,
+    
+        AnotherMissionOfThisTypeIsActive = 35,
+    
+        WarehouseIsFull = 36,
     
         InverterErrorBaseCode = 200000,
     
@@ -3261,9 +3337,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         Test = 3,
     
-        SwitchingToAutomatic = 4,
+        Compact = 4,
     
-        SwitchingToManual = 5,
+        SwitchingToAutomatic = 5,
+    
+        SwitchingToManual = 6,
+    
+        SwitchingToCompact = 7,
     
     }
     
@@ -3379,7 +3459,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
-    public partial class SwaggerException : System.Exception
+    public partial class MasWebApiException : System.Exception
     {
         public int StatusCode { get; private set; }
 
@@ -3387,7 +3467,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         public System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> Headers { get; private set; }
 
-        public SwaggerException(string message, int statusCode, string response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.Exception innerException) 
+        public MasWebApiException(string message, int statusCode, string response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.Exception innerException) 
             : base(message + "\n\nStatus: " + statusCode + "\nResponse: \n" + response.Substring(0, response.Length >= 512 ? 512 : response.Length), innerException)
         {
             StatusCode = statusCode;
@@ -3402,11 +3482,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
-    public partial class SwaggerException<TResult> : SwaggerException
+    public partial class MasWebApiException<TResult> : MasWebApiException
     {
         public TResult Result { get; private set; }
 
-        public SwaggerException(string message, int statusCode, string response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, TResult result, System.Exception innerException) 
+        public MasWebApiException(string message, int statusCode, string response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, TResult result, System.Exception innerException) 
             : base(message, statusCode, response, headers, innerException)
         {
             Result = result;

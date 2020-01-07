@@ -106,13 +106,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
         {
             this.Logger.LogDebug($"Start {this.GetType().Name}");
 
-            if (this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate == Axis.Horizontal)
+            if (this.machineData.IsOneTonMachine && this.machineData.AxisToCalibrate == Axis.Horizontal)
             {
                 this.machineData.CurrentInverterIndex = InverterIndex.Slave1;
             }
             var inverterIndex = this.machineData.CurrentInverterIndex;
 
-            if (!this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate != Axis.BayChain)
+            if (!this.machineData.IsOneTonMachine && this.machineData.AxisToCalibrate != Axis.BayChain)
             {
                 var ioCommandMessageData = new SwitchAxisFieldMessageData(this.machineData.AxisToCalibrate);
                 var ioCommandMessage = new FieldCommandMessage(
@@ -157,7 +157,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
-            var notificationMessageData = new HomingMessageData(this.machineData.AxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, MessageVerbosity.Info);
+            var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
                 "Homing Started",

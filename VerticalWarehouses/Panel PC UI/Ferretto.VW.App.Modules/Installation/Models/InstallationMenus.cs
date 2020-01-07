@@ -19,11 +19,11 @@ namespace Ferretto.VW.App.Installation.Resources
         [Display(Description = "Rodaggio cinghia")]
         BeltBurnishing,
 
-        [View(Utils.Modules.Installation.VerticalResolutionCalibration.STEP1, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
+        [View(Utils.Modules.Installation.VERTICALRESOLUTIONCALIBRATION, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Calibrazione risoluzione asse verticale")]
         VerticalResolutionCalibration,
 
-        [View(Utils.Modules.Installation.VerticalOffsetCalibration.STEP1, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
+        [View(Utils.Modules.Installation.VERTICALOFFSETCALIBRATION, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Calibrazione offset asse verticale")]
         VerticalOffsetCalibration,
 

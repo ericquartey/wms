@@ -480,6 +480,10 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     }
                     this.openShutter = this.loadingUnitMovementProvider.GetShutterOpenPosition(bay, this.mission.LoadingUnitDestination);
                     var shutterPosition = this.sensorsProvider.GetShutterPosition(this.mission.TargetBay);
+                    if (this.openShutter == ShutterPosition.Half && shutterPosition == ShutterPosition.Opened)
+                    {
+                        this.openShutter = shutterPosition;
+                    }
                     if (shutterPosition != this.openShutter)
                     {
                         this.Logger.LogDebug($"MoveLoadingUnitErrorState: Manual Shutter positioning start");
@@ -646,6 +650,10 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     this.openShutter = this.loadingUnitMovementProvider.GetShutterOpenPosition(bay, this.mission.LoadingUnitSource);
                     this.measure = true;
                     var shutterPosition = this.sensorsProvider.GetShutterPosition(this.mission.TargetBay);
+                    if (this.openShutter == ShutterPosition.Half && shutterPosition == ShutterPosition.Opened)
+                    {
+                        this.openShutter = shutterPosition;
+                    }
                     if (shutterPosition != this.openShutter)
                     {
                         this.Logger.LogDebug($"MoveLoadingUnitErrorState: Manual Shutter positioning start");

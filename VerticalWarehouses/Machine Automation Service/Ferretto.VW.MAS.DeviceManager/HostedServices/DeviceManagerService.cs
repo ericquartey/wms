@@ -620,6 +620,9 @@ namespace Ferretto.VW.MAS.DeviceManager
                                 MessageStatus.OperationError,
                                 receivedMessage.ErrorLevel));
 
+                    var args = new StatusUpdateEventArgs();
+                    args.NewState = true;
+                    machineResourcesProvider.OnFaultStateChanged(args);
                     break;
 
                 // INFO Catch Exception from IoDriver, to forward to the AS

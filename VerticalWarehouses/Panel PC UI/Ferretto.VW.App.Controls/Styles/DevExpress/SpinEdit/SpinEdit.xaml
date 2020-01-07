@@ -16,8 +16,8 @@
     <Style x:Key="PpcSpinEditStyle"
            TargetType="{x:Type ctrls:PpcSpinEdit}">
         <Setter Property="BorderColor" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_Normal}" />
-        <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Foreground" Value="{DynamicResource PpcForeground}" />
+        <Setter Property="MinHeight" Value="60" />
 
         <Style.Triggers>
             <Trigger Property="Validation.HasError" Value="True">
@@ -26,9 +26,11 @@
             </Trigger>
             <Trigger Property="IsEnabled" Value="true">
                 <Setter Property="BorderColor" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_Normal}" />
+                <Setter Property="Foreground" Value="{DynamicResource PpcForeground}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
                 <Setter Property="BorderColor" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_TextBox_Disabled}" />
+                <Setter Property="Foreground" Value="{DynamicResource PpcForeground}" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -40,7 +42,7 @@
         <Setter Property="FontSize" Value="{DynamicResource VWAPP_PpcTextBox_TextBlock_FontSize}" />
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="false">
-                <Setter Property="Foreground" Value="{DynamicResource VWAPP_PpcTextBox_TextBlock_Foreground_Disabled}" />
+                <Setter Property="Foreground" Value="{DynamicResource PpcForeground}" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -134,6 +136,7 @@
                 <dxe:EditorControl x:Name="PART_Content"
                                    Grid.Column="2"
                                    VerticalAlignment="Stretch"
+                                   HorizontalContentAlignment="Center"
                                    Template="{TemplateBinding ActualEditorControlTemplate}" />
                 <dxe:ButtonsControl x:Name="PART_RightButtons"
                                     Grid.Column="3"
@@ -191,14 +194,18 @@
                     </ColumnDefinition.SharedSizeGroup>
                 </ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Border x:Name="HoverState"
+
+
+            <!--<Border x:Name="HoverState"
                     Background="{DynamicResource PpcButtonBackground}"
                     Opacity="1">
-                <Border Margin="1"
+                <Border Margin="0,10"
                         Background="Transparent"
-                        BorderBrush="{DynamicResource PpcButtonBackgroundPressed}"
-                        BorderThickness="1,1,1,1" />
-            </Border>
+                        BorderBrush="{DynamicResource FerrettoLightGray}"
+                        BorderThickness="0,0,2,0" />
+            </Border>-->
+
+
             <ContentControl x:Name="PressedState"
                             Opacity="0"
                             Style="{StaticResource PressedElementStyle}" />
@@ -221,14 +228,14 @@
             <VisualStateManager.VisualStateGroups>
                 <VisualStateGroup x:Name="CommonStates">
                     <VisualState x:Name="Normal" />
-                    <VisualState x:Name="MouseOver">
+                    <!--<VisualState x:Name="MouseOver">
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetName="HoverState"
                                              Storyboard.TargetProperty="Opacity"
                                              To="1"
                                              Duration="0" />
                         </Storyboard>
-                    </VisualState>
+                    </VisualState>-->
                     <VisualState x:Name="Pressed">
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetName="PressedState"

@@ -85,6 +85,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool IsSensorZeroOnBay(BayNumber bayNumber);
 
+        void OnFaultStateChanged(StatusUpdateEventArgs e);
+
         bool UpdateInputs(byte ioIndex, bool[] newRawInputs, FieldMessageActor messageActor);
 
         #endregion

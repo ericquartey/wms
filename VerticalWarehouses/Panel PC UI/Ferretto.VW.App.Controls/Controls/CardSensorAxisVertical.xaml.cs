@@ -26,12 +26,18 @@ namespace Ferretto.VW.App.Controls.Controls
             DependencyProperty.Register(nameof(EmbarkedLoadingUnit), typeof(LoadingUnit), typeof(CardSensorAxisVertical));
 
         [Browsable(false)]
-        public static readonly DependencyProperty VerticalTargetPositionProperty =
-            DependencyProperty.Register(nameof(VerticalTargetPosition), typeof(double?), typeof(CardSensorAxisVertical));
+        public static readonly DependencyProperty SensorsServiceProperty =
+            DependencyProperty.Register(nameof(SensorsService), typeof(ISensorsService), typeof(CardSensorAxisVertical));
+
+        [Browsable(false)]
+        public static readonly DependencyProperty VerticalDescriptionProperty =
+            DependencyProperty.Register(nameof(VerticalDescription), typeof(string), typeof(CardSensorAxisVertical));
 
         private readonly IEventAggregator eventAggregator;
 
         private readonly IMachineService machineService;
+
+        private readonly ISensorsService sensorsService;
 
         private SubscriptionToken machineStatusChangesToken;
 
@@ -50,15 +56,27 @@ namespace Ferretto.VW.App.Controls.Controls
 
             this.Loaded += (s, e) =>
             {
+                this.sensorsService.RefreshAsync(true);
+                this.SensorsService = this.sensorsService;
                 this.EmbarkedLoadingUnit = this.machineService.MachineStatus.EmbarkedLoadingUnit;
                 this.ElevatorVerticalPosition = this.machineService.MachineStatus.ElevatorVerticalPosition;
-                this.VerticalTargetPosition = this.machineService.MachineStatus.VerticalTargetPosition;
+                this.VerticalDescription = string.Empty;
+                if (!(this.machineService.MachineStatus.VerticalTargetPosition is null))
+                {
+                    this.VerticalDescription += $"Target: {this.machineService.MachineStatus.VerticalTargetPosition?.ToString("F0")}";
+                }
+
+                if (!(this.machineService.MachineStatus.VerticalSpeed is null))
+                {
+                    this.VerticalDescription += $" Speed: {this.machineService.MachineStatus.VerticalSpeed?.ToString("F0")}";
+                }
             };
 
             this.Dispatcher.ShutdownStarted += this.Dispatcher_ShutdownStarted;
 
             this.eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
             this.machineService = ServiceLocator.Current.GetInstance<IMachineService>();
+            this.sensorsService = ServiceLocator.Current.GetInstance<ISensorsService>();
 
             this.machineStatusChangesToken = this.machineStatusChangesToken
                 ?? this.eventAggregator
@@ -87,10 +105,16 @@ namespace Ferretto.VW.App.Controls.Controls
             set => this.SetValue(EmbarkedLoadingUnitProperty, value);
         }
 
-        public double? VerticalTargetPosition
+        public ISensorsService SensorsService
         {
-            get => (double?)this.GetValue(VerticalTargetPositionProperty);
-            set => this.SetValue(VerticalTargetPositionProperty, value);
+            get => (ISensorsService)this.GetValue(SensorsServiceProperty);
+            set => this.SetValue(SensorsServiceProperty, value);
+        }
+
+        public string VerticalDescription
+        {
+            get => (string)this.GetValue(VerticalDescriptionProperty);
+            set => this.SetValue(VerticalDescriptionProperty, value);
         }
 
         #endregion
@@ -101,8 +125,16 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             this.EmbarkedLoadingUnit = this.machineService.MachineStatus.EmbarkedLoadingUnit;
             this.ElevatorVerticalPosition = this.machineService.MachineStatus.ElevatorVerticalPosition;
-            this.VerticalTargetPosition = this.machineService.MachineStatus.VerticalTargetPosition;
+            this.VerticalDescription = string.Empty;
+            if (!(this.machineService.MachineStatus.VerticalTargetPosition is null))
+            {
+                this.VerticalDescription += $"Target: {this.machineService.MachineStatus.VerticalTargetPosition?.ToString("F0")}";
+            }
 
+            if (!(this.machineService.MachineStatus.VerticalSpeed is null))
+            {
+                this.VerticalDescription += $" Speed: {this.machineService.MachineStatus.VerticalSpeed?.ToString("F0")}";
+            }
             return Task.CompletedTask;
         }
 
