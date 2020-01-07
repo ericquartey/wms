@@ -6,6 +6,12 @@ namespace Ferretto.VW.App.Services
 {
     public interface INavigableViewModel : IDisposable
     {
+        #region Properties
+
+        bool IsVisible { get; }
+
+        #endregion
+
         #region Methods
 
         bool CanClose();
@@ -14,11 +20,11 @@ namespace Ferretto.VW.App.Services
 
         Task OnAppearedAsync();
 
+        Task OnInitializedAsync();
+
         void OnNavigatedFrom(NavigationContext navigationContext);
 
         void OnNavigatedTo(NavigationContext navigationContext);
-
-        bool IsVisible { get; }
 
         #endregion
     }

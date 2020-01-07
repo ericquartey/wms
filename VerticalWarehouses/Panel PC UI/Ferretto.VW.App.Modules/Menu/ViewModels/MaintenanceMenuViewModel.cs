@@ -82,10 +82,11 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.menuCompactionCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Compaction),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() &&
+                      this.MachineModeService.MachineMode == MachineMode.Manual));
 
         public ICommand MenuMaintenanceCommand =>
-                    this.menuMaintenanceCommand
+            this.menuMaintenanceCommand
             ??
             (this.menuMaintenanceCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Maintenance),
@@ -111,15 +112,15 @@ namespace Ferretto.VW.App.Menu.ViewModels
         {
             try
             {
-                this.IsWaitingForResponse = true;
-
-                await base.OnAppearedAsync();
-
                 this.IsBackNavigationAllowed = true;
+
+                this.IsWaitingForResponse = true;
 
                 await this.GetBayNumber();
 
                 this.RaiseCanExecuteChanged();
+
+                await base.OnAppearedAsync();
             }
             catch (Exception ex)
             {

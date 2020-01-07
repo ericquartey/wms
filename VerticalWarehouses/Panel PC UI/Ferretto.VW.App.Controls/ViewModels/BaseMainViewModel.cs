@@ -451,7 +451,10 @@ namespace Ferretto.VW.App.Controls
             MachineMode machineMode,
             HealthStatus healthStatus)
         {
-            var enabeIfPoweredOn = (this.EnableMask & EnableMask.MachinePoweredOn) == EnableMask.MachinePoweredOn;
+            if (!this.IsVisible)
+            {
+                return;
+            }
 
             var enableIfAutomatic = (this.EnableMask & EnableMask.MachineAutomaticMode) == EnableMask.MachineAutomaticMode;
 
@@ -459,13 +462,6 @@ namespace Ferretto.VW.App.Controls
 
             this.IsEnabled =
                 (this.EnableMask == EnableMask.Any) ||
-                //
-                (enabeIfPoweredOn &&
-                 machinePower == MachinePowerState.Powered &&
-                 healthStatus == HealthStatus.Healthy
-                 //&& this.MachineError is null
-                 ) ||
-                //
                 (enableIfAutomatic &&
                  machinePower == MachinePowerState.Powered &&
                  machineMode == MachineMode.Automatic
