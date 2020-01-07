@@ -32,8 +32,7 @@ namespace Ferretto.VW.MAS.MachineManager
                 .AddTransient<IMachineModeProvider, MachineModeProvider>();
 
             services
-                .AddTransient<IChangeRunningStateStateMachine, ChangeRunningStateStateMachine>()
-                .AddTransient<IMoveLoadingUnitStateMachine, MoveLoadingUnitStateMachine>();
+                .AddTransient<IChangeRunningStateStateMachine, ChangeRunningStateStateMachine>();
 
             services
                 .AddTransient<IChangeRunningStateStartState, ChangeRunningStateStartState>()
@@ -41,17 +40,6 @@ namespace Ferretto.VW.MAS.MachineManager
                 .AddTransient<IChangeRunningStateResetSecurity, ChangeRunningStateResetSecurity>()
                 .AddTransient<IChangeRunningStateInverterPowerSwitch, ChangeRunningStateInverterPowerSwitch>()
                 .AddTransient<IChangeRunningStateEndState, ChangeRunningStateEndState>();
-
-            services
-                .AddTransient<IMoveLoadingUnitStartState, MoveLoadingUnitStartState>()
-                .AddTransient<IMoveLoadingUnitLoadElevatorState, MoveLoadingUnitLoadElevatorState>()
-                .AddTransient<IMoveLoadingUnitCloseShutterState, MoveLoadingUnitCloseShutterState>()
-                .AddTransient<IMoveLoadingUnitBayChainState, MoveLoadingUnitBayChainState>()
-                .AddTransient<IMoveLoadingUnitMoveToTargetState, MoveLoadingUnitMoveToTargetState>()
-                .AddTransient<IMoveLoadingUnitEndState, MoveLoadingUnitEndState>()
-                .AddTransient<IMoveLoadingUnitErrorState, MoveLoadingUnitErrorState>()
-                .AddTransient<IMoveLoadingUnitDepositUnitState, MoveLoadingUnitDepositUnitState>()
-                .AddTransient<IMoveLoadingUnitWaitPickConfirm, MoveLoadingUnitWaitPickConfirm>();
 
             return services;
         }

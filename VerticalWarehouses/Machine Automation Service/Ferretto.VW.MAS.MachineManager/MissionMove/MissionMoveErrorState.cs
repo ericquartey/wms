@@ -112,7 +112,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                         }
                                     }
                                 }
-                                if ((this.Mission.ErrorMovements & (MissionErrorMovements.MoveForward | MissionErrorMovements.MoveBackward)) == 0)
+                                if (!this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveForward) && !this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward))
                                 {
                                     this.RestoreOriginalStep();
                                 }
@@ -129,7 +129,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         else
                         {
                             this.logger.LogDebug($"{this.GetType().Name}: Manual Horizontal positioning end");
-                            if ((this.Mission.ErrorMovements & MissionErrorMovements.MoveBackward) != 0)
+                            if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward))
                             {
                                 this.Mission.NeedMovingBackward = false;
                                 if (this.Mission.NeedHomingAxis == Axis.Horizontal
@@ -488,7 +488,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
             }
 
-            if ((this.Mission.ErrorMovements & (MissionErrorMovements.MoveForward | MissionErrorMovements.MoveBackward)) == 0)
+            if (!this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveForward) && !this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward))
             {
                 this.RestoreOriginalStep();
             }
@@ -664,7 +664,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
             }
 
-            if ((this.Mission.ErrorMovements & (MissionErrorMovements.MoveForward | MissionErrorMovements.MoveBackward)) == 0)
+            if (!this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveForward) && !this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward))
             {
                 this.RestoreOriginalStep();
             }

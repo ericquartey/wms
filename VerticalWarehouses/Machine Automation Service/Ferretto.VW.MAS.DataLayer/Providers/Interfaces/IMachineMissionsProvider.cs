@@ -14,8 +14,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         bool AbortMachineMission(Guid fsmId);
 
-        void AddMission(Mission mission, Guid fsmId);
-
         IMission GetMissionById(Guid fsmId);
 
         List<IMission> GetMissionsByFsmType(FsmType fsmType);
