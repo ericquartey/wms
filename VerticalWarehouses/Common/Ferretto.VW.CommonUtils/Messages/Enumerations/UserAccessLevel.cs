@@ -14,6 +14,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Enumerations
 
         Installer = 2,  // Con sicurezze
 
+        Support = 3,
+
         Admin = 99,     // Tutto
     }
 }

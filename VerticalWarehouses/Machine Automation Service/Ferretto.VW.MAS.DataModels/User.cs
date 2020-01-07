@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.MAS.DataModels
+﻿using System;
+
+namespace Ferretto.VW.MAS.DataModels
 {
     public sealed class User : DataModel
     {
@@ -6,11 +8,15 @@
 
         public int AccessLevel { get; set; }
 
+        public bool IsSupport => string.CompareOrdinal(this.Name, "support") == 0;
+
         public string Name { get; set; }
 
         public string PasswordHash { get; set; }
 
         public string PasswordSalt { get; set; }
+
+        public DateTime Validity { get; set; }
 
         #endregion
 
@@ -45,6 +51,15 @@
                 AccessLevel = 1,
                 PasswordHash = "e1IrRSpcUNLIQAmdtSzQqrKT4DLcMaYMh662pgMh2xY=",
                 PasswordSalt = "iB+IdMnlzvXvitHWJff38A==",
+            };
+
+            public static readonly User Support = new User
+            {
+                Id = -3,
+                Name = "support",
+                AccessLevel = 2,
+                PasswordHash = "",
+                PasswordSalt = "",
             };
 
             #endregion

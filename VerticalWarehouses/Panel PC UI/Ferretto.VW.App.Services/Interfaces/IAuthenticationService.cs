@@ -22,13 +22,15 @@ namespace Ferretto.VW.App.Services
 
         #region Methods
 
+        Task<string> GetToken();
+
         /// <summary>
         /// Logs in the user.
         /// </summary>
         /// <param name="userName"></param>
         /// <param name="password"></param>
         /// <returns>The user claims if the user was successfully logged in, <c>null</c> otherwise.</returns>
-        Task<UserClaims> LogInAsync(string userName, string password);
+        Task<UserClaims> LogInAsync(string userName, string password, string supportToken);
 
         /// <summary>
         /// Logs out the user.
