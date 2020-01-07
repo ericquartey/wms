@@ -14,6 +14,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
+        private readonly TimeSpan tokenValidity = new TimeSpan(0, 30, 0);
+
         #endregion
 
         #region Constructors
@@ -50,7 +52,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (user != null
                     &&
-                    IsPasswordValid(user, password, supportToken)
+                    IsPasswordValid(user, password, supportToken, this.tokenValidity)
                     &&
                     (UserAccessLevel)user.AccessLevel != UserAccessLevel.NoAccess)
                 {
@@ -110,7 +112,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             lock (User.Values.Support)
             {
-                Random random = new Random();
+                var random = new Random();
 
                 // Please note that not all characters are allowed due to Base32 encoding not supporting it (eg. numbers)
                 //const string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
@@ -119,15 +121,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 // Generate a string of six characters as secret key using the above alphabet
                 var secretKey = new string(Enumerable.Repeat(alphabet, 6).Select(s => s[random.Next(s.Length)]).ToArray());
 
-                // Encode secret key in Base32 encoding
-                var encodedSecretKey = Base32Encoding.ToBytes(secretKey);
-
-                // Generate Time based One Time password with a time window of 30 minutes
-                var validity = new TimeSpan(0, 30, 0);
-                var totp = new Totp(encodedSecretKey, (int)validity.TotalSeconds, OtpHashMode.Sha512);
-
                 User.Values.Support.PasswordSalt = secretKey;
-                User.Values.Support.Validity = DateTime.UtcNow.AddSeconds(totp.RemainingSeconds());
+                User.Values.Support.Validity = DateTime.UtcNow.Add(this.tokenValidity);
 
                 return secretKey;
             }
@@ -158,7 +153,7 @@ namespace Ferretto.VW.MAS.DataLayer
             return salt;
         }
 
-        private static bool IsPasswordValid(User user, string password, string supportToken)
+        private static bool IsPasswordValid(User user, string password, string supportToken, TimeSpan validity)
         {
             if (!user.IsSupport)
             {
@@ -168,16 +163,17 @@ namespace Ferretto.VW.MAS.DataLayer
             }
             else
             {
-                var validity = new TimeSpan(0, 30, 0);
-
                 // Encode secret key in Base32 encoding
                 var encodedSecretKey = Base32Encoding.ToBytes(supportToken);
 
-                var totp = new Totp(encodedSecretKey, (int)validity.TotalSeconds, OtpHashMode.Sha512);
+                // Generate Time based One Time password with a time window of 30 minutes
+                var totp = new Totp(encodedSecretKey, step: (int)validity.TotalSeconds, mode: OtpHashMode.Sha512);
+
+                // Set verification window
                 var window = new VerificationWindow(previous: 1, future: 1);
 
-                bool verification = totp.VerifyTotp(password, out long timeStep, window);
-
+                // Execute validation
+                bool verification = totp.VerifyTotp(DateTime.Now, password, out _, window);
                 return verification;
             }
         }
