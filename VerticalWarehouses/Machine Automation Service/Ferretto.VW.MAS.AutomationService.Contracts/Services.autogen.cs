@@ -12279,14 +12279,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.DateTime> GetAsync()
+        public System.Threading.Tasks.Task<System.DateTimeOffset> GetAsync()
         {
             return GetAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.DateTime> GetAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.DateTimeOffset> GetAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/utc-time");
@@ -12319,7 +12319,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         var status_ = ((int)response_.StatusCode).ToString();
                         if (status_ == "200") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.DateTime>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<System.DateTimeOffset>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
                         }
                         else
@@ -12329,7 +12329,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(System.DateTime);
+                        return default(System.DateTimeOffset);
                     }
                     finally
                     {
@@ -12344,14 +12344,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.DateTime> SetAsync(System.DateTime dateTime)
+        public System.Threading.Tasks.Task<System.DateTimeOffset> SetAsync(System.DateTimeOffset dateTime)
         {
             return SetAsync(dateTime, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.DateTime> SetAsync(System.DateTime dateTime, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.DateTimeOffset> SetAsync(System.DateTimeOffset dateTime, System.Threading.CancellationToken cancellationToken)
         {
             if (dateTime == null)
                 throw new System.ArgumentNullException("dateTime");
@@ -12390,7 +12390,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         var status_ = ((int)response_.StatusCode).ToString();
                         if (status_ == "200") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.DateTime>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<System.DateTimeOffset>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
                         }
                         else
@@ -12400,7 +12400,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(System.DateTime);
+                        return default(System.DateTimeOffset);
                     }
                     finally
                     {
