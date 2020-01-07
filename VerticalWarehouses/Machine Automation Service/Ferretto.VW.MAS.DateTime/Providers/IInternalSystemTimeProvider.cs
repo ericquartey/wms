@@ -4,7 +4,7 @@
     {
         #region Methods
 
-        void SetTime(System.DateTime dateTime);
+        void SetUtcTime(System.DateTime dateTime);
 
         #endregion
     }

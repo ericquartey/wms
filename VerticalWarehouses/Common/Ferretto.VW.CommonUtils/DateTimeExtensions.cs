@@ -7,7 +7,7 @@ namespace Ferretto.VW.CommonUtils
     {
         #region Methods
 
-        public static void SetAsSystemTime(this DateTime dateTime)
+        public static void SetAsUtcSystemTime(this DateTime dateTime)
         {
             var time = new SYSTEMTIME(dateTime);
             var success = SetSystemTime(ref time);
