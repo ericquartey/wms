@@ -29,6 +29,7 @@ namespace Ferretto.VW.MAS.MachineManager
             services
                 .AddTransient<IRunningStateProvider, RunningStateProvider>()
                 .AddTransient<IMoveLoadingUnitProvider, MoveLoadingUnitProvider>()
+                .AddTransient<IMissionMoveProvider, MissionMoveProvider>()
                 .AddTransient<IMachineModeProvider, MachineModeProvider>();
 
             services

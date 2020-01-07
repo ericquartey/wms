@@ -920,9 +920,23 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("Action");
+
+                    b.Property<int>("BayNotifications");
+
+                    b.Property<int>("CloseShutterBayNumber");
+
                     b.Property<DateTime>("CreationDate");
 
                     b.Property<int?>("DestinationCellId");
+
+                    b.Property<int>("DeviceNotifications");
+
+                    b.Property<int>("Direction");
+
+                    b.Property<bool>("EjectLoadUnit");
+
+                    b.Property<int>("ErrorMovements");
 
                     b.Property<Guid>("FsmId");
 
@@ -947,6 +961,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("NeedHomingAxis");
 
                     b.Property<bool>("NeedMovingBackward");
+
+                    b.Property<int>("OpenShutterPosition");
 
                     b.Property<int>("Priority");
 
@@ -1032,7 +1048,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 3, 7, 9, 25, 12, 615, DateTimeKind.Local).AddTicks(8423),
+                            InstallationDate = new DateTime(2017, 3, 7, 16, 46, 33, 307, DateTimeKind.Local).AddTicks(1383),
                             ServiceStatus = 86
                         });
                 });
