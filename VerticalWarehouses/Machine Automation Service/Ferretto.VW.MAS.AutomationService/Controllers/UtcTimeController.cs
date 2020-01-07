@@ -46,7 +46,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost]
         public ActionResult<DateTimeOffset> Set(DateTime dateTime)
         {
-            this.systemTimeProvider.SetSystemTime(dateTime);
+            this.systemTimeProvider.SetUtcSystemTime(dateTime);
             return this.Ok();
         }
 

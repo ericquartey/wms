@@ -155,7 +155,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.DisplacementCommandAsync(),
                 this.CanDisplacementCommand));
 
-        public override EnableMask EnableMask => EnableMask.MachineManualMode;
+        public override EnableMask EnableMask => EnableMask.MachineManualMode | EnableMask.MachinePoweredOn;
 
         public string Error => string.Join(
             this[nameof(this.StartPosition)],

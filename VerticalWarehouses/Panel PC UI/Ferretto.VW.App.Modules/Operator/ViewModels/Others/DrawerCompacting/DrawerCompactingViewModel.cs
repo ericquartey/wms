@@ -50,7 +50,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                             this.detailButtonCommand ??
             (this.detailButtonCommand = new DelegateCommand(() => this.Detail(), this.CanDetailCommand));
 
-        public override EnableMask EnableMask => EnableMask.MachineAutomaticMode;
+        public override EnableMask EnableMask => EnableMask.MachineAutomaticMode | EnableMask.MachinePoweredOn;
 
         #endregion
 

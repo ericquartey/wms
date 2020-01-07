@@ -108,7 +108,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.cyclesPercent, value);
         }
 
-        public override EnableMask EnableMask => EnableMask.MachineManualMode;
+        public override EnableMask EnableMask => EnableMask.MachineManualMode | EnableMask.MachinePoweredOn;
 
         public string Error => string.Join(
             this[nameof(this.InputLowerBound)],
