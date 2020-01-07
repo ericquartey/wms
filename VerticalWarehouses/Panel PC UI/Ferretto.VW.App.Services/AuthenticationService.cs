@@ -41,12 +41,18 @@ namespace Ferretto.VW.App.Services
 
         #region Methods
 
-        public async Task<UserClaims> LogInAsync(string userName, string password)
+        public async Task<string> GetToken()
+        {
+            return await this.usersService.GetSupportTokenAsync();
+        }
+
+        public async Task<UserClaims> LogInAsync(string userName, string password, string supportToken)
         {
             var userClaims = await this.usersService
                 .AuthenticateWithResourceOwnerPasswordAsync(
                     userName,
-                    password);
+                    password,
+                    supportToken);
 
             this.UserName = userName;
             this.AccessLevel = userClaims.AccessLevel;

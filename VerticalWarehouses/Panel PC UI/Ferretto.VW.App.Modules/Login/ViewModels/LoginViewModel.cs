@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -66,6 +67,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 UserName = "installer",
                 Password = "password",
             };
+
+            this.UserLogin.PropertyChanged += this.UserLogin_PropertyChanged;
         }
 
         #endregion
@@ -193,6 +196,11 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             {
                 this.ClearNotifications();
             }
+            else
+            {
+                this.ShowNotification("Connection to Automation Service is lost, trying to resume...", Services.Models.NotificationSeverity.Error);
+                this.RaiseCanExecuteChanged();
+            }
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -229,7 +237,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             {
                 var claims = await this.authenticationService.LogInAsync(
                    this.UserLogin.UserName,
-                   this.UserLogin.Password);
+                   this.UserLogin.Password,
+                   this.UserLogin.SupportToken);
 
                 if (claims != null)
                 {
@@ -274,6 +283,24 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 Utils.Modules.Operator.OPERATOR_MENU,
                 data: null,
                 trackCurrentView: true);
+        }
+
+        private void UserLogin_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            Application.Current.Dispatcher.BeginInvoke(new Action(async () =>
+            {
+                if (e.PropertyName == nameof(this.UserLogin.UserName) && this.UserLogin.IsSupport)
+                {
+                    try
+                    {
+                        this.UserLogin.Password = string.Empty;
+                        this.UserLogin.SupportToken = await this.authenticationService.GetToken();
+                    }
+                    catch (HttpRequestException)
+                    {
+                    }
+                }
+            }));
         }
 
         #endregion

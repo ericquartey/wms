@@ -237,16 +237,6 @@ namespace Ferretto.VW.App.Services
             await this.InitializationLoadUnits();
         }
 
-        public void Start()
-        {
-            this.machineStatus = new MachineStatus();
-            this.loadingUnits = new List<LoadingUnit>();
-
-            this.OnUpdateServiceAsync().ConfigureAwait(false);
-
-            this.SubscribeToEvents();
-        }
-
         public void ShowNotification(Exception exception)
         {
             if (exception is null)
@@ -259,6 +249,16 @@ namespace Ferretto.VW.App.Services
             this.eventAggregator
                 .GetEvent<PresentationNotificationPubSubEvent>()
                 .Publish(new PresentationNotificationMessage(exception));
+        }
+
+        public void Start()
+        {
+            this.machineStatus = new MachineStatus();
+            this.loadingUnits = new List<LoadingUnit>();
+
+            this.OnUpdateServiceAsync().ConfigureAwait(false);
+
+            this.SubscribeToEvents();
         }
 
         public async Task StopMovingByAllAsync()
@@ -473,19 +473,19 @@ namespace Ferretto.VW.App.Services
                 {
                     this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status};");
 
-                Task.Run(async () =>
-                        {
-                    var isHoming = await this.machinePowerWebService.GetIsHomingAsync();
+                    Task.Run(async () =>
+                            {
+                                var isHoming = await this.machinePowerWebService.GetIsHomingAsync();
                                 if (isHoming != this.IsHoming ||
-                                    isHoming && message?.Status == MessageStatus.OperationEnd ||
-                                    !isHoming && message?.Status == MessageStatus.OperationError)
+                                isHoming && message?.Status == MessageStatus.OperationEnd ||
+                                !isHoming && message?.Status == MessageStatus.OperationError)
                                 {
                                     this.eventAggregator
-                                        .GetEvent<HomingChangedPubSubEvent>()
-                                        .Publish(new HomingChangedMessage(isHoming));
+                                    .GetEvent<HomingChangedPubSubEvent>()
+                                    .Publish(new HomingChangedMessage(isHoming));
                                 }
                                 this.IsHoming = isHoming;
-                }).Wait();
+                            }).Wait();
                 }
 
                 switch (message.Status)
@@ -525,14 +525,14 @@ namespace Ferretto.VW.App.Services
                                     this.WriteInfo(dataPositioning?.AxisMovement);
                                 }
 
-                            ms.VerticalSpeed = null;
+                                ms.VerticalSpeed = null;
                                 if (dataPositioning.AxisMovement == Axis.Vertical)
                                 {
                                     ms.VerticalTargetPosition = dataPositioning.TargetPosition;
-                                if (dataPositioning.TargetSpeed.Length > 0)
-                                {
-                                    ms.VerticalSpeed = dataPositioning.TargetSpeed[0];
-                                }
+                                    if (dataPositioning.TargetSpeed.Length > 0)
+                                    {
+                                        ms.VerticalSpeed = dataPositioning.TargetSpeed[0];
+                                    }
                                 }
                                 else if (dataPositioning.AxisMovement == Axis.Horizontal)
                                 {
@@ -632,7 +632,7 @@ namespace Ferretto.VW.App.Services
                                 ms.IsMovingLoadingUnit = false;
                             }
 
-                        ms.VerticalSpeed = null;
+                            ms.VerticalSpeed = null;
                             ms.VerticalTargetPosition = null;
                             ms.HorizontalTargetPosition = null;
                             ms.BayChainTargetPosition = null;
@@ -651,15 +651,15 @@ namespace Ferretto.VW.App.Services
                                 }
                             }
 
-                        if (this.Bay.IsDouble &&
-                            this.Bay.Positions?.OrderBy(o => o.Height).FirstOrDefault() is BayPosition bayPositionDown)
-                        {
-                            ms.LoadingUnitPositionDownInBay = bayPositionDown.LoadingUnit;
-                            if (bayPositionDown.LoadingUnit != null)
+                            if (this.Bay.IsDouble &&
+                                this.Bay.Positions?.OrderBy(o => o.Height).FirstOrDefault() is BayPosition bayPositionDown)
                             {
-                                ms.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
+                                ms.LoadingUnitPositionDownInBay = bayPositionDown.LoadingUnit;
+                                if (bayPositionDown.LoadingUnit != null)
+                                {
+                                    ms.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
+                                }
                             }
-                        }
 
                             this.MachineStatus = ms;
 
@@ -711,7 +711,7 @@ namespace Ferretto.VW.App.Services
                                 ms.IsMovingLoadingUnit = false;
                             }
 
-                        ms.VerticalSpeed = null;
+                            ms.VerticalSpeed = null;
                             ms.VerticalTargetPosition = null;
                             ms.HorizontalTargetPosition = null;
                             ms.BayChainTargetPosition = null;
@@ -960,12 +960,6 @@ namespace Ferretto.VW.App.Services
                         break;
 
                     case WarningsArea.Maintenance:
-                        if (!this.IsHoming)
-                        {
-                            this.ShowNotification("Homing non eseguito.", NotificationSeverity.Error);
-                        }
-                        break;
-
                     case WarningsArea.Picking:
                         if (this.machineModeService.MachineMode != MachineMode.Automatic)
                         {
@@ -974,6 +968,10 @@ namespace Ferretto.VW.App.Services
                         else if (this.machineModeService.MachinePower != MachinePowerState.Powered)
                         {
                             this.ShowNotification("Manca marcia.", NotificationSeverity.Warning);
+                        }
+                        else
+                        {
+                            this.ClearNotifications();
                         }
                         break;
 

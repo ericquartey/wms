@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using OtpNet;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -13,6 +14,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
+        private readonly TimeSpan tokenValidity = new TimeSpan(0, 30, 0);
+
         #endregion
 
         #region Constructors
@@ -21,6 +24,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
 
+            this.dataContext.Users.Local.Add(User.Values.Support);
             this.dataContext.Users.Local.Add(User.Values.Operator);
             this.dataContext.Users.Local.Add(User.Values.Installer);
             this.dataContext.Users.Local.Add(User.Values.Admin);
@@ -30,7 +34,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Methods
 
-        public int? Authenticate(string userName, string password)
+        public int? Authenticate(string userName, string password, string supportToken)
         {
             if (string.IsNullOrWhiteSpace(userName))
             {
@@ -45,9 +49,10 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 var user = this.dataContext.Users.Concat(this.dataContext.Users.Local).SingleOrDefault(u => u.Name == userName);
+
                 if (user != null
                     &&
-                    IsPasswordValid(password, user)
+                    IsPasswordValid(user, password, supportToken, this.tokenValidity)
                     &&
                     (UserAccessLevel)user.AccessLevel != UserAccessLevel.NoAccess)
                 {
@@ -98,6 +103,31 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public string GetSupportToken()
+        {
+            if (!string.IsNullOrEmpty(User.Values.Support.PasswordSalt) && DateTime.UtcNow < User.Values.Support.Validity)
+            {
+                return User.Values.Support.PasswordSalt;
+            }
+
+            lock (User.Values.Support)
+            {
+                var random = new Random();
+
+                // Please note that not all characters are allowed due to Base32 encoding not supporting it (eg. numbers)
+                //const string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+                const string alphabet = "ABCDEFGHKMNPQRSTUVWXYZ234567";
+
+                // Generate a string of six characters as secret key using the above alphabet
+                var secretKey = new string(Enumerable.Repeat(alphabet, 6).Select(s => s[random.Next(s.Length)]).ToArray());
+
+                User.Values.Support.PasswordSalt = secretKey;
+                User.Values.Support.Validity = DateTime.UtcNow.Add(this.tokenValidity);
+
+                return secretKey;
+            }
+        }
+
         private static string GeneratePasswordHash(string password, string salt)
         {
             var saltBytes = Convert.FromBase64String(salt);
@@ -123,11 +153,29 @@ namespace Ferretto.VW.MAS.DataLayer
             return salt;
         }
 
-        private static bool IsPasswordValid(string password, User user)
+        private static bool IsPasswordValid(User user, string password, string supportToken, TimeSpan validity)
         {
-            var providedPasswordHash = GeneratePasswordHash(password, user.PasswordSalt);
+            if (!user.IsSupport)
+            {
+                var providedPasswordHash = GeneratePasswordHash(password, user.PasswordSalt);
 
-            return providedPasswordHash == user.PasswordHash;
+                return providedPasswordHash == user.PasswordHash;
+            }
+            else
+            {
+                // Encode secret key in Base32 encoding
+                var encodedSecretKey = Base32Encoding.ToBytes(supportToken);
+
+                // Generate Time based One Time password with a time window of 30 minutes
+                var totp = new Totp(encodedSecretKey, step: (int)validity.TotalSeconds, mode: OtpHashMode.Sha512);
+
+                // Set verification window
+                var window = new VerificationWindow(previous: 1, future: 1);
+
+                // Execute validation
+                bool verification = totp.VerifyTotp(DateTime.Now, password, out _, window);
+                return verification;
+            }
         }
 
         #endregion
