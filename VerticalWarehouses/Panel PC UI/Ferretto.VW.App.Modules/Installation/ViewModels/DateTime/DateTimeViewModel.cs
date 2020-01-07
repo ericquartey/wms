@@ -29,6 +29,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isBusy;
 
+        private bool isManual;
+
         private bool isManualEnabled;
 
         private ushort? minute;
@@ -90,7 +92,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isAuto, value))
                 {
+                    this.isManual = !this.isAuto;
                     ((DelegateCommand)this.saveCommand)?.RaiseCanExecuteChanged();
+                    this.RaisePropertyChanged(nameof(this.IsManual));
                 }
             }
         }
@@ -104,6 +108,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     ((DelegateCommand)this.saveCommand)?.RaiseCanExecuteChanged();
                     this.IsBackNavigationAllowed = !this.isBusy;
+                }
+            }
+        }
+
+        public bool IsManual
+        {
+            get => this.isManual;
+            set
+            {
+                if (this.SetProperty(ref this.isManual, value))
+                {
+                    this.isAuto = !this.isManual;
+                    ((DelegateCommand)this.saveCommand)?.RaiseCanExecuteChanged();
+                    this.RaisePropertyChanged(nameof(this.IsAuto));
                 }
             }
         }
@@ -150,9 +168,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            await this.GetTimeAsync();
-
             await base.OnAppearedAsync();
+
+            await this.GetTimeAsync();
         }
 
         private bool CanSave()
@@ -166,11 +184,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DateTime? GetNewDateTime()
         {
-            var dateToCheck = $"{this.day}/{this.Month}/{this.Year}";
-            var formats = new[] { "dd/MM/yyyy" };
-            if (DateTime.TryParseExact(dateToCheck, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out var newDateValue))
+            if (this.year >= 2020 && this.year <= 3000
+                && this.month >= 1 && this.month <= 12
+                && this.day >= 1 && this.day <= DateTime.DaysInMonth(this.year.Value, this.month.Value)
+                && this.hour >= 0 && this.hour <= 23
+                && this.minute >= 0 && this.minute <= 59)
             {
-                return newDateValue;
+                return new DateTime(this.year.Value, this.month.Value, this.day.Value, this.hour.Value, this.minute.Value, 0);
             }
 
             return null;
@@ -182,6 +202,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsBusy = true;
+
+                this.IsManualEnabled = true;
 
                 this.CanGoAutoSync = await this.machineUtcTimeWebService.CanEnableWmsAutoSyncModeAsync();
 
