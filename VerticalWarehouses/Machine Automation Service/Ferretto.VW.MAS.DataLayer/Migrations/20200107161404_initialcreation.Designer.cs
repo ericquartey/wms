@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20200107154633_initialcreation")]
+    [Migration("20200107161404_initialcreation")]
     partial class initialcreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1050,7 +1050,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 3, 7, 16, 46, 33, 307, DateTimeKind.Local).AddTicks(1383),
+                            InstallationDate = new DateTime(2017, 3, 7, 17, 14, 3, 360, DateTimeKind.Local).AddTicks(3009),
                             ServiceStatus = 86
                         });
                 });

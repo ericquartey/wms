@@ -2,8 +2,6 @@
 using System.Text;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Ferretto.VW.MAS.DataModels
 {
@@ -11,25 +9,18 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
-        [JsonConverter(typeof(StringEnumConverter))]
         public BayNumber CloseShutterBayNumber { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
         public ShutterPosition OpenShutterPosition { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
         public MissionDeviceNotifications DeviceNotifications { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
         public CommandAction Action { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
         public MissionBayNotifications BayNotifications { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
         public MissionErrorMovements ErrorMovements { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
         public HorizontalMovementDirection Direction { get; set; }
 
         public bool EjectLoadUnit { get; set; }
@@ -46,12 +37,10 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int? LoadingUnitCellSourceId { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
         public LoadingUnitLocation LoadingUnitDestination { get; set; }
 
         public int LoadingUnitId { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
         public LoadingUnitLocation LoadingUnitSource { get; set; }
 
         public MissionType MissionType { get; set; }
@@ -66,7 +55,6 @@ namespace Ferretto.VW.MAS.DataModels
 
         public MissionStatus Status { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
         public BayNumber TargetBay { get; set; }
 
         public int? WmsId { get; set; }

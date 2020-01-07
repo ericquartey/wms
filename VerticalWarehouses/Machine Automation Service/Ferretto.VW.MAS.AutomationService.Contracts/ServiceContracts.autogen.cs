@@ -48,11 +48,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Bay>> GetAllAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Bay> GetByNumberAsync(BayNumber2 bayNumber);
+        System.Threading.Tasks.Task<Bay> GetByNumberAsync(BayNumber bayNumber);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Bay> GetByNumberAsync(BayNumber2 bayNumber, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Bay> GetByNumberAsync(BayNumber bayNumber, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<PositioningProcedure> GetHeightCheckParametersAsync();
@@ -419,11 +419,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task LoadFromCellAsync(int cellId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveHorizontalManualAsync(HorizontalMovementDirection2 direction);
+        System.Threading.Tasks.Task MoveHorizontalManualAsync(HorizontalMovementDirection direction);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveHorizontalManualAsync(HorizontalMovementDirection2 direction, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task MoveHorizontalManualAsync(HorizontalMovementDirection direction, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveManualToVerticalPositionAsync(double targetPosition, bool performWeighting, bool computeElongation);
@@ -581,18 +581,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineLoadingUnitsWebService
     {
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task AbortAsync(System.Guid? missionId, BayNumber2 targetBay);
+        System.Threading.Tasks.Task AbortAsync(System.Guid? missionId, BayNumber targetBay);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task AbortAsync(System.Guid? missionId, BayNumber2 targetBay, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task AbortAsync(System.Guid? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task EjectLoadingUnitAsync(LoadingUnitLocation2 destination, int loadingUnitId);
+        System.Threading.Tasks.Task EjectLoadingUnitAsync(LoadingUnitLocation destination, int loadingUnitId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task EjectLoadingUnitAsync(LoadingUnitLocation2 destination, int loadingUnitId, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task EjectLoadingUnitAsync(LoadingUnitLocation destination, int loadingUnitId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnit>> GetAllAsync();
@@ -616,11 +616,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnitWeightStatistics>> GetWeightStatisticsAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task InsertLoadingUnitAsync(LoadingUnitLocation2 source, int? destinationCellId, int loadingUnitId);
+        System.Threading.Tasks.Task InsertLoadingUnitAsync(LoadingUnitLocation source, int? destinationCellId, int loadingUnitId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task InsertLoadingUnitAsync(LoadingUnitLocation2 source, int? destinationCellId, int loadingUnitId, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task InsertLoadingUnitAsync(LoadingUnitLocation source, int? destinationCellId, int loadingUnitId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task InsertLoadingUnitOnlyDbAsync(int loadingUnitId);
@@ -637,11 +637,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task MoveToBayAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task PauseAsync(System.Guid? missionId, BayNumber2 targetBay);
+        System.Threading.Tasks.Task PauseAsync(System.Guid? missionId, BayNumber targetBay);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task PauseAsync(System.Guid? missionId, BayNumber2 targetBay, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task PauseAsync(System.Guid? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task RecallAsync(int id);
@@ -651,18 +651,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task RecallAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ResumeAsync(System.Guid? missionId, BayNumber2 targetBay);
+        System.Threading.Tasks.Task ResumeAsync(System.Guid? missionId, BayNumber targetBay);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ResumeAsync(System.Guid? missionId, BayNumber2 targetBay, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task ResumeAsync(System.Guid? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task StartMovingLoadingUnitToBayAsync(int loadingUnitId, LoadingUnitLocation2 destination);
+        System.Threading.Tasks.Task StartMovingLoadingUnitToBayAsync(int loadingUnitId, LoadingUnitLocation destination);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task StartMovingLoadingUnitToBayAsync(int loadingUnitId, LoadingUnitLocation2 destination, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task StartMovingLoadingUnitToBayAsync(int loadingUnitId, LoadingUnitLocation destination, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StartMovingLoadingUnitToCellAsync(int loadingUnitId, int destinationCellId);
@@ -672,18 +672,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task StartMovingLoadingUnitToCellAsync(int loadingUnitId, int destinationCellId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task StartMovingSourceDestinationAsync(LoadingUnitLocation2 source, LoadingUnitLocation2 destination, int? sourceCellId, int? destinationCellId);
+        System.Threading.Tasks.Task StartMovingSourceDestinationAsync(LoadingUnitLocation source, LoadingUnitLocation destination, int? sourceCellId, int? destinationCellId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task StartMovingSourceDestinationAsync(LoadingUnitLocation2 source, LoadingUnitLocation2 destination, int? sourceCellId, int? destinationCellId, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task StartMovingSourceDestinationAsync(LoadingUnitLocation source, LoadingUnitLocation destination, int? sourceCellId, int? destinationCellId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task StopAsync(System.Guid? missionId, BayNumber2 targetBay);
+        System.Threading.Tasks.Task StopAsync(System.Guid? missionId, BayNumber targetBay);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task StopAsync(System.Guid? missionId, BayNumber2 targetBay, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task StopAsync(System.Guid? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -969,11 +969,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineProfileProcedureWebService
     {
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task CalibrationAsync(HorizontalMovementDirection2 direction);
+        System.Threading.Tasks.Task CalibrationAsync(HorizontalMovementDirection direction);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task CalibrationAsync(HorizontalMovementDirection2 direction, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task CalibrationAsync(HorizontalMovementDirection direction, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task SaveAsync(int bayNumber);
@@ -1007,11 +1007,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineShuttersWebService
     {
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ShutterPosition2> GetShutterPositionAsync();
+        System.Threading.Tasks.Task<ShutterPosition> GetShutterPositionAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ShutterPosition2> GetShutterPositionAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<ShutterPosition> GetShutterPositionAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<RepeatedTestProcedure> GetTestParametersAsync();
@@ -1028,11 +1028,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task MoveAsync(ShutterMovementDirection direction, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveToAsync(ShutterPosition2 targetPosition);
+        System.Threading.Tasks.Task MoveToAsync(ShutterPosition targetPosition);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveToAsync(ShutterPosition2 targetPosition, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task MoveToAsync(ShutterPosition targetPosition, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task RunTestAsync(int delayInSeconds, int testCycleCount);
@@ -1149,7 +1149,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public Laser Laser { get; set; }
     
         [Newtonsoft.Json.JsonProperty("number", Required = Newtonsoft.Json.Required.Always)]
-        public BayNumber2 Number { get; set; }
+        public BayNumber Number { get; set; }
     
         [Newtonsoft.Json.JsonProperty("operation", Required = Newtonsoft.Json.Required.Always)]
         public BayOperation Operation { get; set; }
@@ -1259,13 +1259,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial class Mission : DataModel
     {
         [Newtonsoft.Json.JsonProperty("closeShutterBayNumber", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public BayNumber CloseShutterBayNumber { get; set; }
     
         [Newtonsoft.Json.JsonProperty("openShutterPosition", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public ShutterPosition OpenShutterPosition { get; set; }
     
         [Newtonsoft.Json.JsonProperty("deviceNotifications", Required = Newtonsoft.Json.Required.Always)]
@@ -1274,8 +1270,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public MissionDeviceNotifications DeviceNotifications { get; set; }
     
         [Newtonsoft.Json.JsonProperty("action", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public CommandAction Action { get; set; }
     
         [Newtonsoft.Json.JsonProperty("bayNotifications", Required = Newtonsoft.Json.Required.Always)]
@@ -1289,8 +1283,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public MissionErrorMovements ErrorMovements { get; set; }
     
         [Newtonsoft.Json.JsonProperty("direction", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public HorizontalMovementDirection Direction { get; set; }
     
         [Newtonsoft.Json.JsonProperty("ejectLoadUnit", Required = Newtonsoft.Json.Required.Always)]
@@ -1317,16 +1309,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public int? LoadingUnitCellSourceId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("loadingUnitDestination", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public LoadingUnitLocation LoadingUnitDestination { get; set; }
     
         [Newtonsoft.Json.JsonProperty("loadingUnitId", Required = Newtonsoft.Json.Required.Always)]
         public int LoadingUnitId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("loadingUnitSource", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public LoadingUnitLocation LoadingUnitSource { get; set; }
     
         [Newtonsoft.Json.JsonProperty("missionType", Required = Newtonsoft.Json.Required.Always)]
@@ -1350,8 +1338,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public MissionStatus Status { get; set; }
     
         [Newtonsoft.Json.JsonProperty("targetBay", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public BayNumber TargetBay { get; set; }
     
         [Newtonsoft.Json.JsonProperty("wmsId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -1372,42 +1358,31 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum BayNumber
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"None")]
         None = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"BayOne")]
         BayOne = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"BayTwo")]
         BayTwo = 2,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"BayThree")]
         BayThree = 3,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ElevatorBay")]
         ElevatorBay = 4,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"All")]
-        All = 5,
+        All = 10,
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum ShutterPosition
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"NotSpecified")]
         NotSpecified = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Opened")]
         Opened = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Half")]
         Half = 2,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Closed")]
         Closed = 3,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Intermediate")]
         Intermediate = 4,
     
     }
@@ -1433,22 +1408,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum CommandAction
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"Start")]
         Start = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Activate")]
         Activate = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Pause")]
         Pause = 2,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Resume")]
         Resume = 3,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Abort")]
         Abort = 4,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Stop")]
         Stop = 5,
     
     }
@@ -1495,13 +1464,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum HorizontalMovementDirection
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"NotSpecified")]
         NotSpecified = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Forwards")]
         Forwards = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Backwards")]
         Backwards = 2,
     
     }
@@ -1509,70 +1475,48 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum LoadingUnitLocation
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"NoLocation")]
         NoLocation = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InternalBay1Up")]
         InternalBay1Up = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InternalBay1Down")]
         InternalBay1Down = 2,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InternalBay2Up")]
         InternalBay2Up = 3,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InternalBay2Down")]
         InternalBay2Down = 4,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InternalBay3Up")]
         InternalBay3Up = 5,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InternalBay3Down")]
         InternalBay3Down = 6,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ExternalBay1Up")]
         ExternalBay1Up = 7,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ExternalBay1Down")]
         ExternalBay1Down = 8,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ExternalBay2Up")]
         ExternalBay2Up = 9,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ExternalBay2Down")]
         ExternalBay2Down = 10,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ExternalBay3Up")]
         ExternalBay3Up = 11,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ExternalBay3Down")]
         ExternalBay3Down = 12,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"CarouselBay1Up")]
         CarouselBay1Up = 13,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"CarouselBay1Down")]
         CarouselBay1Down = 14,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"CarouselBay2Up")]
         CarouselBay2Up = 15,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"CarouselBay2Down")]
         CarouselBay2Down = 16,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"CarouselBay3Up")]
         CarouselBay3Up = 17,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"CarouselBay3Down")]
         CarouselBay3Down = 18,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Cell")]
         Cell = 19,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"LoadingUnit")]
         LoadingUnit = 20,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Elevator")]
         Elevator = 21,
     
     }
@@ -1851,23 +1795,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum BayNumber2
-    {
-        None = 0,
-    
-        BayOne = 1,
-    
-        BayTwo = 2,
-    
-        BayThree = 3,
-    
-        ElevatorBay = 4,
-    
-        All = 10,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum BayOperation
     {
         Idle = 0,
@@ -1889,7 +1816,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public LoadingUnit LoadingUnit { get; set; }
     
         [Newtonsoft.Json.JsonProperty("location", Required = Newtonsoft.Json.Required.Always)]
-        public LoadingUnitLocation2 Location { get; set; }
+        public LoadingUnitLocation Location { get; set; }
     
         public string ToJson() 
         {
@@ -2034,55 +1961,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         OnMovementToBay = 3,
     
         InLocation = 4,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum LoadingUnitLocation2
-    {
-        NoLocation = 0,
-    
-        InternalBay1Up = 1,
-    
-        InternalBay1Down = 2,
-    
-        InternalBay2Up = 3,
-    
-        InternalBay2Down = 4,
-    
-        InternalBay3Up = 5,
-    
-        InternalBay3Down = 6,
-    
-        ExternalBay1Up = 7,
-    
-        ExternalBay1Down = 8,
-    
-        ExternalBay2Up = 9,
-    
-        ExternalBay2Down = 10,
-    
-        ExternalBay3Up = 11,
-    
-        ExternalBay3Down = 12,
-    
-        CarouselBay1Up = 13,
-    
-        CarouselBay1Down = 14,
-    
-        CarouselBay2Up = 15,
-    
-        CarouselBay2Down = 16,
-    
-        CarouselBay3Up = 17,
-    
-        CarouselBay3Down = 18,
-    
-        Cell = 19,
-    
-        LoadingUnit = 20,
-    
-        Elevator = 21,
     
     }
     
@@ -3007,21 +2885,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum HorizontalMovementDirection2
-    {
-        NotSpecified = 0,
-    
-        Forwards = 1,
-    
-        Backwards = 2,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class MachineError : DataModel
     {
         [Newtonsoft.Json.JsonProperty("bayNumber", Required = Newtonsoft.Json.Required.Always)]
-        public BayNumber2 BayNumber { get; set; }
+        public BayNumber BayNumber { get; set; }
     
         [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Always)]
         public int Code { get; set; }
@@ -3625,21 +3492,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         Powered = 3,
     
         PoweringDown = 4,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum ShutterPosition2
-    {
-        NotSpecified = 0,
-    
-        Opened = 1,
-    
-        Half = 2,
-    
-        Closed = 3,
-    
-        Intermediate = 4,
     
     }
     
