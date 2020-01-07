@@ -306,6 +306,13 @@
                                     Command="{Binding MoveToCellCommand}"
                                     Content="Vai a quota"
                                     Style="{StaticResource WizardIntoButton}" />
+
+                <controls:PpcButton Grid.Row="3"
+                                    Grid.ColumnSpan="2"
+                                    Command="{Binding MoveToCellMeasuredCommand}"
+                                    Content="Avanti"
+                                    Style="{StaticResource WizardIntoButton}" />
+
             </Grid>
         </DataTemplate>
 

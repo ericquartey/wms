@@ -75,6 +75,11 @@ namespace Ferretto.VW.App.Controls
             return Task.CompletedTask;
         }
 
+        public virtual Task OnInitializedAsync()
+        {
+            return Task.CompletedTask;
+        }
+
         public virtual void OnNavigatedFrom(NavigationContext navigationContext)
         {
             this.IsVisible = false;

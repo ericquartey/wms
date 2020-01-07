@@ -19,6 +19,7 @@
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/ProgressBarStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/ComboBoxStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/PasswordBoxEditStyle.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/RadioButton/RadioButtonStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary>
