@@ -1,5 +1,5 @@
-﻿using Ferretto.VW.App.Scaffolding.DataAnnotations;
-using Ferretto.VW.App.Scaffolding.Exceptions;
+﻿using Ferretto.VW.App.Scaffolding.Exceptions;
+using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -47,12 +47,23 @@ namespace Ferretto.VW.App.Scaffolding.Services
                 {
                     object[] categoryProperties = member.GetCustomAttributes<CategoryParameterAttribute>().Select(p =>
                     {
+                        if (instance == null)
+                        {
+                            return null;
+                        }
                         // Does the very type on the property contain a 'PropertyReference'-named property?
                         var subPropInfo = p.GetType().GetProperty(p.PropertyReference);
                         if (subPropInfo != null)
                         {
-                            object subValue = member.MemberType == MemberTypes.Field ? ((FieldInfo)member).GetValue(instance) : ((PropertyInfo)member).GetValue(instance); 
-                            return GetUnderlyingType(subPropInfo.GetValue(subValue));
+                            object subValue = member.MemberType == MemberTypes.Field ? ((FieldInfo)member).GetValue(instance) : ((PropertyInfo)member).GetValue(instance);
+                            if (subValue != null)
+                            {
+                                return GetUnderlyingType(subPropInfo.GetValue(subValue));
+                            }
+                            else
+                            {
+                                return null;
+                            }
                         }
                         // Ok, does then the owning type contain a 'PropertyReference'-named property?
                         return GetUnderlyingType(instance.GetType().GetProperty(p.PropertyReference).GetValue(instance));
@@ -67,7 +78,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
             /// <summary>
             /// Overload method for ARRAYS.
             /// </summary>
-            private static string GetCategoryName(Type itemtype, string format, object item, params string[] propertyReferences)
+            private static string GetCategoryName(Type itemtype, string format, object item, params CategoryParameterAttribute[] propertyReferences)
             {
                 if (!(propertyReferences?.Length > 0))
                 {
@@ -75,12 +86,33 @@ namespace Ferretto.VW.App.Scaffolding.Services
                 }
                 object[] categoryProperties = propertyReferences.Select(p =>
                 {
-                    var subPropInfo = itemtype.GetProperty(p);
-                    return GetUnderlyingType(subPropInfo.GetValue(item));
+                    if (item == null)
+                    {
+                        return null;
+                    }
+                    var subPropInfo = itemtype.GetProperty(p.PropertyReference);
+                    object itemValue = subPropInfo.GetValue(item);
+                    if (p.ValueStringifierType != null)
+                    {
+                        try
+                        {
+                            var converter = Activator.CreateInstance(p.ValueStringifierType);
+                            if (!(converter is IValueStringifier stringifier))
+                            {
+                                throw new ScaffoldingException($"{p.ValueStringifierType} does not implement {typeof(IValueStringifier)}.");
+                            }
+                            return stringifier.Stringify(itemValue);
+                        }
+                        catch
+                        {
+                            throw new ScaffoldingException($"Cannot create an instance of {p.ValueStringifierType}. No public empty constructor found.");
+                        }
+                    }
+                    return GetUnderlyingType(itemValue);
 
                 }).ToArray();
 
-                IFormatProvider culture = Thread.CurrentThread.CurrentUICulture;
+                IFormatProvider culture = System.Globalization.CultureInfo.CurrentCulture;
                 return string.Format(culture, format, categoryProperties);
             }
 
@@ -95,19 +127,20 @@ namespace Ferretto.VW.App.Scaffolding.Services
                 if (obj is Enum @enum)
                 {
                     Type baseType = Enum.GetUnderlyingType(@enum.GetType());
-                    return System.Convert.ChangeType(obj, baseType);
+                    return System.Convert.ChangeType(obj, baseType, System.Globalization.CultureInfo.CurrentCulture);
                 }
                 return obj;
             }
 
             public Models.ScaffoldedStructure ScaffoldTypeInternal(Type type, object instance, ScaffoldedStructureInternal branch, ScaffoldedStructureInternal root = default, bool unfoldingBranch = false)
             {
+
                 root = root ?? branch;
                 if (instance != null && instance.GetType() != type)
                 {
                     throw new ArgumentException($"Type mismatch: '{ instance.GetType() }' does not match '{ type }'.");
                 }
-                var modelType = type.GetCustomAttribute<MetadataTypeAttribute>()?.MetadataClassType ?? type;
+                var modelType = type.GetCustomAttribute<Ferretto.VW.MAS.Scaffolding.DataAnnotations.MetadataTypeAttribute>()?.MetadataClassType ?? type;
                 Dictionary<string, List<Type>> dict = new Dictionary<string, List<Type>>();
 
                 foreach (var prop in GetMemberInfos(modelType))
@@ -142,17 +175,16 @@ namespace Ferretto.VW.App.Scaffolding.Services
                     {
                         if (!hasCategory)
                         {
-                            throw new ScaffoldingException($"Cannot find a {nameof(CategoryAttribute)} on this enumerable property.");
+                            throw new ScaffoldingException($"Cannot find a {nameof(CategoryAttribute)} on the enumerable property {prop.Name} ({modelType}).");
                         }
                         if (!hasCategoryParameters)
                         {
-                            throw new ScaffoldingException($"Cannot find at least one {nameof(CategoryParameterAttribute)} on this enumerable property.");
+                            throw new ScaffoldingException($"Cannot find at least one {nameof(CategoryParameterAttribute)} on the enumerable property {prop.Name} ({modelType}).");
                         }
                         Type elementType = propertyType.GetElementType() ?? propertyType.GetGenericArguments().Single();
 
                         if (instance == null)
                         {
-
                             // cannot retrieve flattening properties from a null instance, skipping...
                             continue;
                         }
@@ -160,10 +192,15 @@ namespace Ferretto.VW.App.Scaffolding.Services
                         if (actualProp.GetValue(instance) is System.Collections.IEnumerable collection)
                         {
                             string format = categoryAttr.Category();
-                            string[] propertyReferences = categoryParameters.Select(c => c.PropertyReference).ToArray();
                             foreach (var item in collection)
                             {
-                                string categoryName = GetCategoryName(elementType, format, item, propertyReferences);
+                                if (item == null)
+                                {
+                                    // there might be missing/null items
+                                    continue;
+                                }
+
+                                string categoryName = GetCategoryName(elementType, format, item, categoryParameters.ToArray());
                                 var newBranch = target.Children.FirstOrDefault(b => b.Category == categoryName);
                                 if (newBranch != null)
                                 {
@@ -211,7 +248,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                                 Id = ++this.idSeed
                             });
                         }
-                        else
+                        else if (instance != null)
                         {
                             object propertyValue = actualProp.GetValue(instance);
                             bool unfold = prop.GetCustomAttribute<UnfoldAttribute>() != null || unfoldingBranch;
@@ -223,6 +260,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
 
                 // at the end of all recursions...
                 return root.Publish();
+
             }
 
         }
@@ -237,7 +275,10 @@ namespace Ferretto.VW.App.Scaffolding.Services
 
         private static Models.ScaffoldedStructure Publish(this ScaffoldedStructureInternal tree)
         {
-            return new Models.ScaffoldedStructure(tree.Category, tree.Entities.Select(e => e.Publish()), tree.Children.Select(c => c.Publish()));
+            return new Models.ScaffoldedStructure(tree.Category,
+                tree.Entities.Where(e => e.Property != null && e.Instance != null).Select(e => e.Publish()),
+                tree.Children.Select(c => c.Publish()).Where(c => c.Entities.Any())
+                );
         }
 
         #endregion
@@ -250,7 +291,8 @@ namespace Ferretto.VW.App.Scaffolding.Services
             return attribute != null;
         }
 
-        public static Models.ScaffoldedStructure Scaffold(this object instance) => new MetadataServiceExecutor().ScaffoldTypeInternal(instance?.GetType() ?? throw new ArgumentNullException(nameof(instance)), instance, new ScaffoldedStructureInternal());
+        public static Models.ScaffoldedStructure Scaffold(this object instance)
+        => new MetadataServiceExecutor().ScaffoldTypeInternal(instance?.GetType() ?? throw new ArgumentNullException(nameof(instance)), instance, new ScaffoldedStructureInternal());
 
         #endregion
     }

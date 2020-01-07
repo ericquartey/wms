@@ -45,7 +45,13 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             {
                 return;
             }
-            this.OriginalValue = entity.Property.GetValue(entity.Instance);
+
+            object originalValue = null;
+            if (entity.Instance != null)
+            {
+                originalValue = entity.Property.GetValue(entity.Instance);
+            }
+            this.OriginalValue = originalValue;
             var type = entity.Property.PropertyType;
             if (type.IsValueType)
             {
@@ -54,13 +60,20 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             }
             else if (type.IsSerializable)
             {
-                // deep copy
-                using (MemoryStream ms = new MemoryStream())
+                if (originalValue != null)
                 {
-                    BinaryFormatter formatter = new BinaryFormatter();
-                    formatter.Serialize(ms, this.OriginalValue);
-                    ms.Position = 0;
-                    this.Value = formatter.Deserialize(ms);
+                    // deep copy
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        BinaryFormatter formatter = new BinaryFormatter();
+                        formatter.Serialize(ms, originalValue);
+                        ms.Position = 0;
+                        this.Value = formatter.Deserialize(ms);
+                    }
+                }
+                else
+                {
+                    this.Value = null;
                 }
             }
             else

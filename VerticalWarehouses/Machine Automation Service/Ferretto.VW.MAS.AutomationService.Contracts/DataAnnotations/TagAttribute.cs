@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ferretto.VW.App.Scaffolding.DataAnnotations
+namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
     public class TagAttribute : Attribute, ILocalizableString
@@ -15,12 +15,10 @@ namespace Ferretto.VW.App.Scaffolding.DataAnnotations
         }
 
         public string Tag { get; set; }
-        public Type TagResourceType { get; set; }
-        public string TagResourceName { get; set; }
+        public Type ResourceType { get; set; }
 
-        public string DefaultValue => this.Tag;
-        Type ILocalizableString.ResourceType => this.TagResourceType;
-        string ILocalizableString.ResourceName => this.TagResourceName;
+        string ILocalizableString.DefaultValue => this.Tag;
+        string ILocalizableString.ResourceName => this.Tag;
     }
 
 }

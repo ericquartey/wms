@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ferretto.VW.App.Scaffolding.DataAnnotations
+namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple =true)]
     public class CategoryParameterAttribute : Attribute
@@ -11,5 +11,9 @@ namespace Ferretto.VW.App.Scaffolding.DataAnnotations
         }
 
         public string PropertyReference { get; }
+
+        public Type ValueStringifierType { get; set; }
     }
+
+
 }

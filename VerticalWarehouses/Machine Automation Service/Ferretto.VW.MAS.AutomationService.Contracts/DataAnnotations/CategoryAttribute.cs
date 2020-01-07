@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ferretto.VW.App.Scaffolding.DataAnnotations
+namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
 {
 
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
@@ -16,11 +16,9 @@ namespace Ferretto.VW.App.Scaffolding.DataAnnotations
         }
 
         public string Category { get; set; }
-        public Type CategoryResourceType { get; set; }
-        public string CategoryResourceName { get; set; }
+        public Type ResourceType { get; set; }
 
-        Type ILocalizableString.ResourceType => this.CategoryResourceType;
-        string ILocalizableString.ResourceName => this.CategoryResourceName;
+        string ILocalizableString.ResourceName => this.Category;
         string ILocalizableString.DefaultValue => this.Category;
     }
 

@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.App.Scaffolding.DataAnnotations;
+﻿using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ferretto.VW.App.Scaffolding.DataAnnotations
+namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
 {
     /// <summary>
     /// Placeholder attribute that defines whether the properties of the target type should be unfolded in a plain list, or not.
