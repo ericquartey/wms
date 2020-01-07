@@ -101,7 +101,9 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.testCompleteCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.TestComplete),
-                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
+                () => this.CanExecuteCommand() &&
+                      this.MachineService.IsHoming &&
+                      false));
 
         #endregion
 

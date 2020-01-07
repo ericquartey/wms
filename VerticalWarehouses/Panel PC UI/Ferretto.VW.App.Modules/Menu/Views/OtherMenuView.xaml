@@ -107,7 +107,8 @@
                                     Command="{Binding MenuOldCommand}"
                                     Content="Collegamento al menu versione prototipo"
                                     Kind="Account"
-                                    Style="{DynamicResource PpcButtonMenuCardStyle}" />
+                                    Style="{DynamicResource PpcButtonMenuCardStyle}"
+                                    Visibility="Collapsed" />
             </WrapPanel>
 
             <views:InstallationNavigationFooterView Grid.Row="2"

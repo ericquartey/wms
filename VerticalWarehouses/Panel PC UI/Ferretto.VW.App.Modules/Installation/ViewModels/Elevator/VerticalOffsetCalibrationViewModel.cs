@@ -35,6 +35,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
+        private readonly IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService;
+
         private readonly IMachineVerticalOffsetProcedureWebService verticalOffsetWebService;
 
         private readonly IMachineVerticalOriginProcedureWebService verticalOriginProcedureWebService;
@@ -83,6 +85,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public VerticalOffsetCalibrationViewModel(
             IMachineElevatorWebService machineElevatorWebService,
+            IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService,
             IMachineVerticalOriginProcedureWebService verticalOriginProcedureWebService,
             IMachineVerticalOffsetProcedureWebService verticalOffsetWebService)
             : base(PresentationMode.Installer)
@@ -90,6 +93,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.verticalOriginProcedureWebService = verticalOriginProcedureWebService ?? throw new ArgumentNullException(nameof(verticalOriginProcedureWebService));
             this.verticalOffsetWebService = verticalOffsetWebService ?? throw new ArgumentNullException(nameof(verticalOffsetWebService));
+            this.resolutionCalibrationWebService = resolutionCalibrationWebService ?? throw new ArgumentNullException(nameof(resolutionCalibrationWebService));
         }
 
         #endregion
@@ -326,13 +330,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             await base.OnAppearedAsync();
 
-            this.currentStep = VerticalOffsetCalibrationStep.Start;
+            this.CurrentStep = VerticalOffsetCalibrationStep.Start;
 
             await this.RetrieveVerticalOffset();
 
             var procedureParameters = await this.verticalOriginProcedureWebService.GetParametersAsync();
             this.AxisUpperBound = procedureParameters.UpperBound;
             this.AxisLowerBound = procedureParameters.LowerBound;
+
+            var procedureCalibrationParameters = await this.resolutionCalibrationWebService.GetParametersAsync();
+            this.StartPosition = procedureCalibrationParameters.StartPosition;
 
             this.stepChangedToken = this.stepChangedToken
                 ?? this.EventAggregator

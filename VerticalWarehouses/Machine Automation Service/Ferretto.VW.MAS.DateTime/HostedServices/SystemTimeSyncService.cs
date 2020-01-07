@@ -57,7 +57,7 @@ namespace Ferretto.VW.MAS.TimeManagement
         {
             this.Disable();
 
-            Task.Run(this.ExecutePollingAsync);
+            //Task.Run(this.ExecutePollingAsync);
         }
 
         public void SetSystemTime(DateTime dateTime)
