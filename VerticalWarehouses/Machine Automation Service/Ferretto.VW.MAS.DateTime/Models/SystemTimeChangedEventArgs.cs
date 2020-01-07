@@ -2,11 +2,11 @@
 
 namespace Ferretto.VW.MAS.TimeManagement.Models
 {
-    public class SyncStateChangedEventArgs : EventArgs
+    public class SystemTimeChangedEventArgs : EventArgs
     {
         #region Constructors
 
-        public SyncStateChangedEventArgs(DateTime dateTime)
+        public SystemTimeChangedEventArgs(DateTime dateTime)
         {
             this.DateTime = dateTime;
         }

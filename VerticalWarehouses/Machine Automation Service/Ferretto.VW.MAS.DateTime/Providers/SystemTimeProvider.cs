@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS.TimeManagement
 
         private readonly PubSubEvent<SyncStateChangeRequestEventArgs> syncStateChangeRequestEvent;
 
-        private readonly PubSubEvent<SyncStateChangedEventArgs> timeChangedEvent;
+        private readonly PubSubEvent<SystemTimeChangedEventArgs> timeChangedEvent;
 
         private readonly IWmsSettingsProvider wmsSettingsProvider;
 
@@ -37,7 +37,7 @@ namespace Ferretto.VW.MAS.TimeManagement
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
             this.syncStateChangeRequestEvent = eventAggregator.GetEvent<PubSubEvent<SyncStateChangeRequestEventArgs>>();
-            this.timeChangedEvent = eventAggregator.GetEvent<PubSubEvent<SyncStateChangedEventArgs>>();
+            this.timeChangedEvent = eventAggregator.GetEvent<PubSubEvent<SystemTimeChangedEventArgs>>();
         }
 
         #endregion
@@ -80,7 +80,7 @@ namespace Ferretto.VW.MAS.TimeManagement
         {
             dateTime.SetAsSystemTime();
 
-            this.timeChangedEvent.Publish(new SyncStateChangedEventArgs(dateTime));
+            this.timeChangedEvent.Publish(new SystemTimeChangedEventArgs(dateTime));
         }
 
         #endregion
