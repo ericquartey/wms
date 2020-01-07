@@ -155,7 +155,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.destinationPosition2, value, () => { this.currentError = string.Empty; this.RaiseCanExecuteChanged(); });
         }
 
-        public override EnableMask EnableMask => EnableMask.MachineManualMode;
+        public override EnableMask EnableMask => EnableMask.MachineManualMode | EnableMask.MachinePoweredOn;
 
         public string Error => string.Join(
             this[nameof(this.DestinationPosition1)],
