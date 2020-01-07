@@ -8,6 +8,7 @@ using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.TimeManagement.Models;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.WMS.Data.WebAPI.Contracts;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -21,6 +22,8 @@ namespace Ferretto.VW.MAS.TimeManagement
         private const int MinResyncPeriodMilliseconds = 10000;
 
         private const int SyncToleranceMilliseconds = 5000;
+
+        private readonly IConfiguration configuration;
 
         private readonly IDataLayerService dataLayerService;
 
@@ -48,6 +51,7 @@ namespace Ferretto.VW.MAS.TimeManagement
             IWmsSettingsProvider wmsSettingsProvider,
             IUtcTimeWmsWebService utcTimeWmsWebService,
             IInternalSystemTimeProvider systemTimeProvider,
+            IConfiguration configuration,
             ILogger<SystemTimeSyncService> logger)
         {
             if (eventAggregator is null)
@@ -59,6 +63,7 @@ namespace Ferretto.VW.MAS.TimeManagement
             this.wmsSettingsProvider = wmsSettingsProvider ?? throw new ArgumentNullException(nameof(wmsSettingsProvider));
             this.utcTimeWmsWebService = utcTimeWmsWebService ?? throw new ArgumentNullException(nameof(utcTimeWmsWebService));
             this.systemTimeProvider = systemTimeProvider ?? throw new ArgumentNullException(nameof(systemTimeProvider));
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
@@ -131,7 +136,7 @@ namespace Ferretto.VW.MAS.TimeManagement
                     {
                         this.logger.LogDebug("Attempting sync time with WMS.");
                         var remoteUtcTime = await this.utcTimeWmsWebService.GetAsync(cancellationToken);
-                        var machineUtcTime = DateTimeOffset.UtcNow;
+                        var machineUtcTime = DateTimeOffset.Now;
 
                         var timeDifference = machineUtcTime - remoteUtcTime;
 
@@ -145,12 +150,12 @@ namespace Ferretto.VW.MAS.TimeManagement
                         var timeDifferenceMilliseconds = Math.Abs(timeDifference.TotalMilliseconds);
                         if (timeDifferenceMilliseconds > SyncToleranceMilliseconds)
                         {
-                            var newMachineLocalTime = remoteUtcTime.LocalDateTime;
-                            this.systemTimeProvider.SetTime(newMachineLocalTime);
+                            this.systemTimeProvider.SetUtcTime(remoteUtcTime.UtcDateTime);
 
-                            this.wmsSettingsProvider.LastWmsSyncTime = DateTimeOffset.UtcNow;
                             this.logger.LogDebug("Time synced successfully.");
                         }
+
+                        this.wmsSettingsProvider.LastWmsSyncTime = DateTimeOffset.UtcNow;
                     }
                     catch (Exception ex)
                     {
@@ -180,7 +185,7 @@ namespace Ferretto.VW.MAS.TimeManagement
 
         private void OnDataLayerReady(NotificationMessage message)
         {
-            if (this.wmsSettingsProvider.IsWmsTimeSyncEnabled)
+            if (this.wmsSettingsProvider.IsWmsTimeSyncEnabled && this.configuration.IsWmsEnabled())
             {
                 this.logger.LogDebug("Data layer is ready, starting WMS time sync service.");
 

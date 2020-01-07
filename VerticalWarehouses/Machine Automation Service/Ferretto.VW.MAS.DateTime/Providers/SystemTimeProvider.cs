@@ -66,19 +66,19 @@ namespace Ferretto.VW.MAS.TimeManagement
 
         #region Methods
 
-        public void SetSystemTime(DateTime dateTime)
+        public void SetUtcSystemTime(DateTime dateTime)
         {
             if (this.IsWmsAutoSyncEnabled)
             {
                 throw new InvalidOperationException("Cannot manually set system time when WMS auto sync is enabled.");
             }
 
-            this.SetTime(dateTime);
+            this.SetUtcTime(dateTime);
         }
 
-        public void SetTime(DateTime dateTime)
+        public void SetUtcTime(DateTime dateTime)
         {
-            dateTime.SetAsSystemTime();
+            dateTime.SetAsUtcSystemTime();
 
             this.timeChangedEvent.Publish(new SystemTimeChangedEventArgs(dateTime));
         }

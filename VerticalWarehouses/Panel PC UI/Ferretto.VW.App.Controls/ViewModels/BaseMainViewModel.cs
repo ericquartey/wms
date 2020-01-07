@@ -456,23 +456,36 @@ namespace Ferretto.VW.App.Controls
                 return;
             }
 
-            var enableIfAutomatic = (this.EnableMask & EnableMask.MachineAutomaticMode) == EnableMask.MachineAutomaticMode;
+            bool result = true;
+            if (this.EnableMask != EnableMask.Any)
+            {
+                foreach (EnableMask flag in Enum.GetValues(typeof(EnableMask)))
+                {
+                    if (this.EnableMask.HasFlag(flag))
+                    {
+                        switch (flag)
+                        {
+                            case EnableMask.MachinePoweredOff:
+                                result &= machinePower == MachinePowerState.Unpowered;
+                                break;
 
-            var enableIfManual = (this.EnableMask & EnableMask.MachineManualMode) == EnableMask.MachineManualMode;
+                            case EnableMask.MachinePoweredOn:
+                                result &= machinePower == MachinePowerState.Powered;
+                                break;
 
-            this.IsEnabled =
-                (this.EnableMask == EnableMask.Any) ||
-                (enableIfAutomatic &&
-                 machinePower == MachinePowerState.Powered &&
-                 machineMode == MachineMode.Automatic
-                 //&& this.MachineError is null
-                 ) ||
-                //
-                (enableIfManual &&
-                 machinePower == MachinePowerState.Powered &&
-                 (machineMode == MachineMode.Manual || machineMode == MachineMode.Test)
-                 //&& this.MachineError is null
-                 );
+                            case EnableMask.MachineManualMode:
+                                result &= (machineMode == MachineMode.Manual || machineMode == MachineMode.Test);
+                                break;
+
+                            case EnableMask.MachineAutomaticMode:
+                                result &= (machineMode == MachineMode.Automatic || machineMode == MachineMode.Compact);
+                                break;
+                        }
+                    }
+                }
+            }
+
+            this.IsEnabled = result;
         }
 
         private void UpdatePresentation()
