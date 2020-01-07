@@ -29,6 +29,7 @@
         </Grid>
 
         <ContentControl Grid.Row="2"
+                        Panel.ZIndex="-1"
                         prism:RegionManager.RegionName="{x:Static modules:Layout.REGION_FOOTER}" />
     </Grid>
 </ctrls:View>

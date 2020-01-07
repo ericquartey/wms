@@ -14,7 +14,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.TimeManagement
 {
-    internal sealed class SystemTimeSyncService : BackgroundService, ISystemTimeSyncService
+    internal sealed class SystemTimeSyncService : BackgroundService
     {
         #region Fields
 
@@ -28,7 +28,9 @@ namespace Ferretto.VW.MAS.TimeManagement
 
         private readonly NotificationEvent notificationEvent;
 
-        private readonly PubSubEvent<SystemTimeChangedEventArgs> timeChangedEvent;
+        private readonly PubSubEvent<SyncStateChangeRequestEventArgs> syncStateChangeRequestEvent;
+
+        private readonly IInternalSystemTimeProvider systemTimeProvider;
 
         private readonly IUtcTimeWmsWebService utcTimeWmsWebService;
 
@@ -45,6 +47,7 @@ namespace Ferretto.VW.MAS.TimeManagement
             IDataLayerService dataLayerService,
             IWmsSettingsProvider wmsSettingsProvider,
             IUtcTimeWmsWebService utcTimeWmsWebService,
+            IInternalSystemTimeProvider systemTimeProvider,
             ILogger<SystemTimeSyncService> logger)
         {
             if (eventAggregator is null)
@@ -55,35 +58,16 @@ namespace Ferretto.VW.MAS.TimeManagement
             this.dataLayerService = dataLayerService ?? throw new ArgumentNullException(nameof(dataLayerService));
             this.wmsSettingsProvider = wmsSettingsProvider ?? throw new ArgumentNullException(nameof(wmsSettingsProvider));
             this.utcTimeWmsWebService = utcTimeWmsWebService ?? throw new ArgumentNullException(nameof(utcTimeWmsWebService));
-            this.logger = logger ?? throw new ArgumentNullException(nameof(utcTimeWmsWebService));
-            this.timeChangedEvent = eventAggregator.GetEvent<PubSubEvent<SystemTimeChangedEventArgs>>();
+            this.systemTimeProvider = systemTimeProvider ?? throw new ArgumentNullException(nameof(systemTimeProvider));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
+            this.syncStateChangeRequestEvent = eventAggregator.GetEvent<PubSubEvent<SyncStateChangeRequestEventArgs>>();
         }
 
         #endregion
 
         #region Methods
-
-        public void Disable()
-        {
-            this.cancellationTokenSource?.Cancel();
-        }
-
-        public void Enable()
-        {
-            this.Disable();
-
-            //Task.Run(this.ExecutePollingAsync);
-        }
-
-        public void SetSystemTime(DateTime dateTime)
-        {
-#if !DEBUG
-            dateTime.SetAsSystemTime();
-#endif
-
-            this.timeChangedEvent.Publish(new SystemTimeChangedEventArgs(dateTime));
-        }
 
         public async override Task StartAsync(CancellationToken cancellationToken)
         {
@@ -101,6 +85,11 @@ namespace Ferretto.VW.MAS.TimeManagement
                     false,
                     m => m.Type is CommonUtils.Messages.Enumerations.MessageType.DataLayerReady);
             }
+
+            this.syncStateChangeRequestEvent.Subscribe(
+                  this.OnSyncStateChangeRequested,
+                  ThreadOption.PublisherThread,
+                  false);
         }
 
         public override async Task StopAsync(CancellationToken cancellationToken)
@@ -113,6 +102,18 @@ namespace Ferretto.VW.MAS.TimeManagement
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             return Task.CompletedTask;
+        }
+
+        private void Disable()
+        {
+            this.cancellationTokenSource?.Cancel();
+        }
+
+        private void Enable()
+        {
+            this.Disable();
+
+            Task.Run(this.ExecutePollingAsync);
         }
 
         private async Task ExecutePollingAsync()
@@ -128,19 +129,27 @@ namespace Ferretto.VW.MAS.TimeManagement
                 {
                     try
                     {
-                        this.logger.LogTrace("Attempting sync time with WMS.");
+                        this.logger.LogDebug("Attempting sync time with WMS.");
                         var remoteUtcTime = await this.utcTimeWmsWebService.GetAsync(cancellationToken);
                         var machineUtcTime = DateTimeOffset.UtcNow;
 
-                        var timeDifferenceMilliseconds = Math.Abs((machineUtcTime - remoteUtcTime).TotalMilliseconds);
+                        var timeDifference = machineUtcTime - remoteUtcTime;
+
+                        this.logger.LogTrace("Machine (UTC offset): '{time}'.", machineUtcTime);
+                        this.logger.LogTrace("Remote  (UTC offset): '{time}' .", remoteUtcTime);
+                        this.logger.LogTrace("Time difference: '{timespan}'.", machineUtcTime - remoteUtcTime);
+
+                        this.logger.LogTrace("Machine (local time): '{time}'.", machineUtcTime.LocalDateTime);
+                        this.logger.LogTrace("Remote  (local time): '{time}' .", remoteUtcTime.LocalDateTime);
+
+                        var timeDifferenceMilliseconds = Math.Abs(timeDifference.TotalMilliseconds);
                         if (timeDifferenceMilliseconds > SyncToleranceMilliseconds)
                         {
-                            System.Diagnostics.Debug.Assert(remoteUtcTime.Kind is DateTimeKind.Utc);
+                            var newMachineLocalTime = remoteUtcTime.LocalDateTime;
+                            this.systemTimeProvider.SetTime(newMachineLocalTime);
 
-                            var newMachineLocalTime = remoteUtcTime.ToLocalTime();
-                            this.SetSystemTime(newMachineLocalTime);
                             this.wmsSettingsProvider.LastWmsSyncTime = DateTimeOffset.UtcNow;
-                            this.logger.LogTrace("Time synced successfully.");
+                            this.logger.LogDebug("Time synced successfully.");
                         }
                     }
                     catch (Exception ex)
@@ -173,9 +182,21 @@ namespace Ferretto.VW.MAS.TimeManagement
         {
             if (this.wmsSettingsProvider.IsWmsTimeSyncEnabled)
             {
-                this.logger.LogTrace("Data layer is ready, starting WMS time sync service.");
+                this.logger.LogDebug("Data layer is ready, starting WMS time sync service.");
 
                 this.Enable();
+            }
+        }
+
+        private void OnSyncStateChangeRequested(SyncStateChangeRequestEventArgs e)
+        {
+            if (e.Enable)
+            {
+                this.Enable();
+            }
+            else
+            {
+                this.Disable();
             }
         }
 

@@ -961,13 +961,13 @@ namespace Ferretto.VW.App.Services
 
                     case WarningsArea.Maintenance:
                     case WarningsArea.Picking:
-                        if (this.machineModeService.MachineMode != MachineMode.Automatic)
-                        {
-                            this.ShowNotification("Manca automatico.", NotificationSeverity.Warning);
-                        }
-                        else if (this.machineModeService.MachinePower != MachinePowerState.Powered)
+                        if (this.machineModeService.MachinePower != MachinePowerState.Powered)
                         {
                             this.ShowNotification("Manca marcia.", NotificationSeverity.Warning);
+                        }
+                        else if (this.machineModeService.MachineMode != MachineMode.Automatic)
+                        {
+                            this.ShowNotification("Manca automatico.", NotificationSeverity.Warning);
                         }
                         else
                         {

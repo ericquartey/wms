@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
@@ -21,8 +22,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
         private DelegateCommand menuComunicationWMSCommand;
 
         private DelegateCommand menuDateTimeCommand;
-
-        private DelegateCommand menuOldCommand;
 
         private DelegateCommand menuParameterInverterCommand;
 
@@ -71,11 +70,11 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.MenuCommandOther(MenuOther.ComunicationWms),
                 this.CanExecuteCommand));
 
-        public ICommand MenuOldCommand =>
-            this.menuOldCommand
+        public ICommand MenuDateTimeCommand =>
+            this.menuDateTimeCommand
             ??
-            (this.menuOldCommand = new DelegateCommand(
-                () => this.MenuCommandOther(MenuOther.Old),
+            (this.menuDateTimeCommand = new DelegateCommand(
+                () => this.MenuCommandOther(MenuOther.DateTime),
                 this.CanExecuteCommand));
 
         public ICommand MenuParameterInverterCommand =>
@@ -83,14 +82,16 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.menuParameterInverterCommand = new DelegateCommand(
                 () => this.MenuCommandOther(MenuOther.ParameterInverter),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() &&
+                      this.MachineModeService.MachineMode == MachineMode.Manual));
 
         public ICommand MenuParametersCommand =>
             this.menuParametersCommand
             ??
             (this.menuParametersCommand = new DelegateCommand(
                 () => this.MenuCommandOther(MenuOther.Parameters),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() &&
+                      this.MachineModeService.MachineMode == MachineMode.Manual));
 
         public ICommand MenuUsersCommand =>
             this.menuUsersCommand
@@ -114,7 +115,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
             base.RaiseCanExecuteChanged();
             this.menuComunicationWMSCommand?.RaiseCanExecuteChanged();
             this.menuUsersCommand?.RaiseCanExecuteChanged();
-            this.menuOldCommand?.RaiseCanExecuteChanged();
             this.menuParametersCommand?.RaiseCanExecuteChanged();
             this.menuParameterInverterCommand?.RaiseCanExecuteChanged();
         }

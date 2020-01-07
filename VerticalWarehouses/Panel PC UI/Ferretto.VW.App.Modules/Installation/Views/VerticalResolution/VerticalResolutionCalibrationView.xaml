@@ -12,6 +12,7 @@
             d:DesignHeight="700"
             d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
+            UseLayoutRounding="True"
             mc:Ignorable="d">
 
     <ctrls:View.Resources>
@@ -198,8 +199,6 @@
                                    MaxValue="{Binding AxisUpperBound}"
                                    MinValue="{Binding AxisLowerBound}" />
 
-
-
                 <controls:PpcButton Grid.Row="3"
                                     Grid.Column="1"
                                     VerticalAlignment="Center"
@@ -326,8 +325,7 @@
         <!--#endregion-->
     </ctrls:View.Resources>
 
-    <Grid Margin="15,0,0,0"
-          UseLayoutRounding="True">
+    <Grid Margin="15,0,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -466,7 +464,7 @@
                     Grid.RowSpan="6"
                     Grid.Column="2"
                     Grid.ColumnSpan="2"
-                    Margin="7,0,0,0"
+                    Margin="8,0,0,0"
                     Background="{StaticResource PpcBackground}"
                     BorderBrush="{StaticResource PpcBorderBrush}"
                     BorderThickness="{StaticResource PpcBorderThickness}"

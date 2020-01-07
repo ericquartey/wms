@@ -1,15 +1,106 @@
 ﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.DateTimeView"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
-            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-            xmlns:prism="http://prismlibrary.com/"
-            xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid>
-        <TextBlock>Date and Time</TextBlock>
+
+    <Grid x:Name="Root"
+          Margin="50,15">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height=".2*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height=".5*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width=".3*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock x:Name="Title"
+                   VerticalAlignment="Top"
+                   Grid.ColumnSpan="3"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.SystemDateTime}" />
+
+        <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <RadioButton IsChecked="{Binding IsAuto, Mode=TwoWay}" IsEnabled="{Binding CanGoAutoSync}" GroupName="test" >
+                <RadioButton.Content>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Grid.Row="2"
+                       Margin="0,25"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       FontSize="{DynamicResource FontSize_High}"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{x:Static res:InstallationApp.WMSAutoSync}" />
+                    </StackPanel>
+                </RadioButton.Content>
+            </RadioButton>
+            <RadioButton IsEnabled="{Binding IsManualEnabled}" GroupName="test" >
+                <RadioButton.Content>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Grid.Row="2"
+                                   Margin="0,25"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   FontSize="{DynamicResource FontSize_High}"
+                                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                                   Text="{x:Static res:InstallationApp.SetManualSystemDateTime}" />
+                        <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsAuto, Converter={StaticResource BNC}}">
+                            <ctrls:PpcSpinEdit EditValue="{Binding Hour, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                               MinValue="0"
+                                               MaxValue="23"
+                                               MinWidth="200"
+                                               LabelText="{x:Static res:InstallationApp.Hour}" />
+                            <ctrls:PpcSpinEdit Margin="10 0 0 0"
+                                               EditValue="{Binding Minute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                               MinValue="0"
+                                               MaxValue="59"
+                                               MinWidth="200"
+                                               LabelText="{x:Static res:InstallationApp.Minutes}" />
+                        </StackPanel>
+                        <StackPanel Margin="0 10 0 0" Orientation="Horizontal" IsEnabled="{Binding IsAuto, Converter={StaticResource BNC}}">
+                            <ctrls:PpcSpinEdit EditValue="{Binding Day, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                               MinValue="1"
+                                               MaxValue="31"
+                                               MinWidth="200"
+                                               LabelText="{x:Static res:InstallationApp.Day}" />
+                            <ctrls:PpcSpinEdit Margin="10 0 0 0"
+                                               EditValue="{Binding Month, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                               MinValue="1"
+                                               MaxValue="12"
+                                               MinWidth="200"
+                                               LabelText="{x:Static res:InstallationApp.Month}" />
+                            <ctrls:PpcSpinEdit Margin="10 0 0 0"
+                                               EditValue="{Binding Year, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                               MinValue="2020"
+                                               MaxValue="3000"
+                                               MinWidth="200"
+                                               LabelText="{x:Static res:InstallationApp.Year}" />
+                        </StackPanel>
+                    </StackPanel>
+                </RadioButton.Content>
+            </RadioButton>
+        </StackPanel>
+
+        <controls:PpcButton Grid.Row="4"
+                            Grid.ColumnSpan="3"
+                                Margin="15,15,15,0"
+                                VerticalAlignment="Bottom"
+                                 HorizontalAlignment="Right"
+                                Command="{Binding SaveCommand}"
+                                Content="{x:Static res:General.Save}"
+                                IsBusy="{Binding IsBusy}" />
     </Grid>
 </ctrls:View>

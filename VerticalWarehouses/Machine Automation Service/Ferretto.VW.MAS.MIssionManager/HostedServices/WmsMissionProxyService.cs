@@ -91,7 +91,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     }
                     catch (Exception ex)
                     {
-                        this.Logger.LogError(ex, "Unable to queue mission on bay.");
+                        this.Logger.LogError("Unable to queue mission on bay: '{details}'.", ex.Message);
                     }
                 }
 

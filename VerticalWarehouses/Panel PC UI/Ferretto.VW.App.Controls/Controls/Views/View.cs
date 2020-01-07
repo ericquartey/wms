@@ -12,12 +12,30 @@ namespace Ferretto.VW.App.Controls
 
         public View()
         {
+            this.Initialized += async (sender, e) => await this.View_Initialized();
             this.Loaded += async (sender, e) => await this.View_Loaded(sender, e);
         }
 
         #endregion
 
         #region Methods
+
+        private async Task View_Initialized()
+        {
+            if (this.DataContext is INavigableViewModel viewModel)
+            {
+                try
+                {
+                    await viewModel.OnInitializedAsync();
+                }
+                catch (System.Exception ex)
+                {
+                    NLog.LogManager
+                        .GetCurrentClassLogger()
+                        .Error(ex, "An error occurred while initialing view.");
+                }
+            }
+        }
 
         private async Task View_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
