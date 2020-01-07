@@ -196,9 +196,9 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            this.IsWaitingForResponse = true;
+            this.IsBackNavigationAllowed = true;
 
-            await base.OnAppearedAsync();
+            this.IsWaitingForResponse = true;
 
             if (this.IsVisible)
             {
@@ -242,9 +242,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 }
             }
 
-            this.IsBackNavigationAllowed = true;
-
             this.IsWaitingForResponse = false;
+
+            await base.OnAppearedAsync();
+
         }
 
         internal virtual bool CanExecuteCommand()
