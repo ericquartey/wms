@@ -218,6 +218,42 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
+        private void GenerateHoming(IBaysDataProvider bayProvider)
+        {
+            var bays = bayProvider.GetAll();
+            if (bays.Any(x => x.Carousel != null && !x.Carousel.IsHomingExecuted))
+            {
+                var bayNumber = bays.First(x => x.Carousel != null && !x.Carousel.IsHomingExecuted).Number;
+                IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, Calibration.FindSensor, null);
+
+                this.EventAggregator
+                    .GetEvent<CommandEvent>()
+                    .Publish(
+                        new CommandMessage(
+                            homingData,
+                            "Execute Homing Command",
+                            MessageActor.DeviceManager,
+                            MessageActor.MissionManager,
+                            MessageType.Homing,
+                            bayNumber));
+            }
+            else
+            {
+                IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical, Calibration.FindSensor, null);
+
+                this.EventAggregator
+                    .GetEvent<CommandEvent>()
+                    .Publish(
+                        new CommandMessage(
+                            homingData,
+                            "Execute Homing Command",
+                            MessageActor.DeviceManager,
+                            MessageActor.MissionManager,
+                            MessageType.Homing,
+                            BayNumber.BayOne));
+            }
+        }
+
         private async Task InvokeSchedulerAsync()
         {
             if (!this.dataLayerIsReady)
@@ -245,38 +281,7 @@ namespace Ferretto.VW.MAS.MissionManager
                             }
                             else
                             {
-                                var bays = bayProvider.GetAll();
-                                if (bays.Any(x => x.Carousel != null && !x.Carousel.IsHomingExecuted))
-                                {
-                                    var bayNumber = bays.First(x => x.Carousel != null && !x.Carousel.IsHomingExecuted).Number;
-                                    IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, Calibration.FindSensor, null);
-
-                                    this.EventAggregator
-                                        .GetEvent<CommandEvent>()
-                                        .Publish(
-                                            new CommandMessage(
-                                                homingData,
-                                                "Execute Homing Command",
-                                                MessageActor.DeviceManager,
-                                                MessageActor.MissionManager,
-                                                MessageType.Homing,
-                                                bayNumber));
-                                }
-                                else
-                                {
-                                    IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical, Calibration.FindSensor, null);
-
-                                    this.EventAggregator
-                                        .GetEvent<CommandEvent>()
-                                        .Publish(
-                                            new CommandMessage(
-                                                homingData,
-                                                "Execute Homing Command",
-                                                MessageActor.DeviceManager,
-                                                MessageActor.MissionManager,
-                                                MessageType.Homing,
-                                                BayNumber.BayOne));
-                                }
+                                this.GenerateHoming(bayProvider);
                             }
                         }
                         break;
@@ -303,12 +308,20 @@ namespace Ferretto.VW.MAS.MissionManager
                     case MachineMode.SwitchingToCompact:
                         {
                             var missionsDataProvider = scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
+                            var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
 
                             if (!missionsDataProvider.GetAllActiveMissions().Any())
                             {
-                                var machineModeDataProvider = scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
-                                machineModeDataProvider.Mode = MachineMode.Compact;
-                                this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
+                                if (machineProvider.IsHomingExecuted)
+                                {
+                                    var machineModeDataProvider = scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
+                                    machineModeDataProvider.Mode = MachineMode.Compact;
+                                    this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
+                                }
+                                else
+                                {
+                                    this.GenerateHoming(bayProvider);
+                                }
                             }
                         }
                         break;

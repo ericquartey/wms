@@ -65,7 +65,7 @@ namespace Ferretto.VW.MAS.TimeManagement
         {
             if (this.IsWmsAutoSyncEnabled)
             {
-                throw new InvalidOperationException("Unable to set system time because WMS auto sync is enabled");
+                throw new InvalidOperationException("Cannot manually set system time when WMS auto sync is enabled.");
             }
 
             this.systemTimeSyncService.SetSystemTime(dateTime);
