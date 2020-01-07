@@ -199,8 +199,6 @@
                                    MaxValue="{Binding AxisUpperBound}"
                                    MinValue="{Binding AxisLowerBound}" />
 
-
-
                 <controls:PpcButton Grid.Row="3"
                                     Grid.Column="1"
                                     VerticalAlignment="Center"

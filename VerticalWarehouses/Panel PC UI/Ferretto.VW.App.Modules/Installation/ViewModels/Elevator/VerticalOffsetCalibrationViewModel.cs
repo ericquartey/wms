@@ -644,7 +644,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.Displacement = null;
 
                     this.ShowPrevStepSinglePage(true, !this.IsMoving);
-                    this.ShowNextStepSinglePage(true, this.moveToCellMeasuredCommand?.CanExecute() ?? false);
+                    this.ShowNextStepSinglePage(true, this.CanBaseExecute() &&
+                                                      !this.SensorsService.IsLoadingUnitOnElevator &&
+                                                      Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) == Convert.ToInt32(this.SelectedCell?.Position ?? 0));
                     break;
 
                 case VerticalOffsetCalibrationStep.CellMeasured:
