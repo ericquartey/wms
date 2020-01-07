@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20200104130337_Initial")]
-    partial class Initial
+    [Migration("20200107082513_initialcreation")]
+    partial class initialcreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1034,7 +1034,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 3, 4, 14, 3, 34, 137, DateTimeKind.Local).AddTicks(8705),
+                            InstallationDate = new DateTime(2017, 3, 7, 9, 25, 12, 615, DateTimeKind.Local).AddTicks(8423),
                             ServiceStatus = 86
                         });
                 });
@@ -1310,6 +1310,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("IsWmsTimeSyncEnabled");
 
+                    b.Property<DateTimeOffset>("LastWmsTimeSync");
+
                     b.Property<int>("TimeSyncIntervalMilliseconds");
 
                     b.HasKey("Id");
@@ -1321,6 +1323,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = -1,
                             IsWmsTimeSyncEnabled = true,
+                            LastWmsTimeSync = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             TimeSyncIntervalMilliseconds = 10000
                         });
                 });

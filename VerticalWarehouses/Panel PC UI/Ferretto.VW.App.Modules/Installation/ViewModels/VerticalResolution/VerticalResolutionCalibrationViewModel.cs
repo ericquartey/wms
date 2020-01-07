@@ -476,7 +476,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             await base.OnAppearedAsync();
 
-            this.currentStep = CalibrationStep.PositionMeter;
+            this.CurrentStep = CalibrationStep.PositionMeter;
 
             var procedureParameters = await this.verticalOriginProcedureWebService.GetParametersAsync();
             this.AxisUpperBound = procedureParameters.UpperBound;
@@ -634,7 +634,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated,
                     Services.Models.NotificationSeverity.Success);
 
-                this.CurrentStep = CalibrationStep.PositionMeter;
+                this.NavigationService.GoBack();
             }
             catch (Exception ex)
             {

@@ -65,7 +65,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public bool IsTestBayVisible => this.MachineService.HasBayExternal || this.MachineService.HasCarousel;
+        public bool IsTestBayVisible => (this.MachineService.HasBayExternal || this.MachineService.HasCarousel);
 
         public ICommand TestShutterCommand =>
             this.testShutterCommand
