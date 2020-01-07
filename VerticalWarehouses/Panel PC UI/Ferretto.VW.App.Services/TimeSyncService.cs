@@ -85,7 +85,7 @@ namespace Ferretto.VW.App.Services
 
                             if ((machineUtcTime - remoteUtcTime).TotalSeconds > SyncToleranceMilliseconds)
                             {
-                                remoteUtcTime.LocalDateTime.SetAsSystemTime();
+                                remoteUtcTime.LocalDateTime.SetAsUtcSystemTime();
                                 this.logger.Trace("PPC time was synced with MAS time.");
                             }
                             else
