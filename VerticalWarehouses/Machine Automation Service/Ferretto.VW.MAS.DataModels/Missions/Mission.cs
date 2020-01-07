@@ -17,13 +17,22 @@ namespace Ferretto.VW.MAS.DataModels
         [JsonConverter(typeof(StringEnumConverter))]
         public ShutterPosition OpenShutterPosition { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public MissionDeviceNotifications DeviceNotifications { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public CommandAction Action { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public MissionBayNotifications BayNotifications { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
+        public MissionErrorMovements ErrorMovements { get; set; }
+
+        [JsonConverter(typeof(StringEnumConverter))]
         public HorizontalMovementDirection Direction { get; set; }
+
+        public bool EjectLoadUnit { get; set; }
 
         public DateTime CreationDate { get; set; }
 
@@ -37,10 +46,12 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int? LoadingUnitCellSourceId { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public LoadingUnitLocation LoadingUnitDestination { get; set; }
 
         public int LoadingUnitId { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public LoadingUnitLocation LoadingUnitSource { get; set; }
 
         public MissionType MissionType { get; set; }

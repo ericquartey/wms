@@ -175,6 +175,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         private void BayChainEnd()
         {
+            this.missionsDataProvider.Update(this.Mission);
             if (this.Mission.WmsId.HasValue)
             {
                 var newStep = new MissionMoveWaitPickState(this.Mission, this.ServiceProvider, this.EventAggregator);

@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces
 
         void OnResume(CommandMessage command);
 
-        void OnStop(StopRequestReason reason);
+        void OnStop(StopRequestReason reason, bool moveBackward = false);
 
         void UpdateResponseList(MessageType type);
 

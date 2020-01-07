@@ -142,7 +142,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
         }
 
-        public override void OnStop(StopRequestReason reason)
+        public override void OnStop(StopRequestReason reason, bool moveBackward = false)
         {
             // no action
         }

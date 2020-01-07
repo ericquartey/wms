@@ -231,7 +231,9 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var mission = this.dataContext.Missions.SingleOrDefault(m => m.FsmId == fsmId);
+                var mission = this.dataContext.Missions
+                    .AsNoTracking()
+                    .SingleOrDefault(m => m.FsmId == fsmId);
                 if (mission is null)
                 {
                     throw new EntityNotFoundException(nameof(mission));
@@ -244,7 +246,9 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var mission = this.dataContext.Missions.SingleOrDefault(m => m.Id == id);
+                var mission = this.dataContext.Missions
+                    .AsNoTracking()
+                    .SingleOrDefault(m => m.Id == id);
                 if (mission is null)
                 {
                     throw new EntityNotFoundException(nameof(mission));

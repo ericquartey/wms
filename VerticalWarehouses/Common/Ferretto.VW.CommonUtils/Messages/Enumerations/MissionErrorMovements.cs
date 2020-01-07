@@ -3,14 +3,14 @@
 namespace Ferretto.VW.CommonUtils.Messages.Enumerations
 {
     [Flags]
-    public enum MissionDeviceNotifications
+    public enum MissionErrorMovements
     {
         None = 0,
 
-        Positioning = 1,
+        MoveForward = 1,
 
-        Shutter = 2,
+        MoveBackward = 2,
 
-        Homing = 4,
+        MoveShutter = 4,
     }
 }

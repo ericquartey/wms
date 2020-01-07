@@ -46,7 +46,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
         }
 
-        public virtual void OnStop(StopRequestReason reason)
+        public virtual void OnStop(StopRequestReason reason, bool moveBackward = false)
         {
             if (this.Mission != null)
             {
@@ -71,9 +71,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     MessageType.MoveLoadingUnit,
                     this.Mission.TargetBay);
 
-                if (this.Mission.IsRestoringType())
+                if (this.GetType().Name != nameof(MissionMoveErrorState)
+                    && this.Mission.IsRestoringType()
+                    )
                 {
                     this.Mission.FsmRestoreStateName = this.Mission.FsmStateName;
+                    if (moveBackward)
+                    {
+                        this.Mission.NeedMovingBackward = true;
+                    }
                     var newStep = new MissionMoveErrorState(this.Mission, this.ServiceProvider, this.EventAggregator);
                     newStep.OnEnter(msg);
                 }

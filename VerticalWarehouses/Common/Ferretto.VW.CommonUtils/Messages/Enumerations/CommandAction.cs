@@ -1,9 +1,5 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-
-namespace Ferretto.VW.CommonUtils
+﻿namespace Ferretto.VW.CommonUtils
 {
-    [JsonConverter(typeof(StringEnumConverter))]
     public enum CommandAction
     {
         Start,
