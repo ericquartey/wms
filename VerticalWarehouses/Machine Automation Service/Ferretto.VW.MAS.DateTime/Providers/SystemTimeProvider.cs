@@ -1,16 +1,21 @@
 ﻿using System;
+using Ferretto.VW.CommonUtils;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.TimeManagement.Models;
 using Microsoft.Extensions.Configuration;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS.TimeManagement
 {
-    public sealed class SystemTimeProvider : ISystemTimeProvider
+    internal sealed class SystemTimeProvider : ISystemTimeProvider, IInternalSystemTimeProvider
     {
         #region Fields
 
         private readonly IConfiguration configuration;
 
-        private readonly ISystemTimeSyncService systemTimeSyncService;
+        private readonly PubSubEvent<SyncStateChangeRequestEventArgs> syncStateChangeRequestEvent;
+
+        private readonly PubSubEvent<SyncStateChangedEventArgs> timeChangedEvent;
 
         private readonly IWmsSettingsProvider wmsSettingsProvider;
 
@@ -21,11 +26,18 @@ namespace Ferretto.VW.MAS.TimeManagement
         public SystemTimeProvider(
             IWmsSettingsProvider wmsSettingsProvider,
             IConfiguration configuration,
-            ISystemTimeSyncService systemTimeService)
+            IEventAggregator eventAggregator)
         {
+            if (eventAggregator is null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
             this.wmsSettingsProvider = wmsSettingsProvider ?? throw new ArgumentNullException(nameof(wmsSettingsProvider));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            this.systemTimeSyncService = systemTimeService ?? throw new ArgumentNullException(nameof(configuration));
+
+            this.syncStateChangeRequestEvent = eventAggregator.GetEvent<PubSubEvent<SyncStateChangeRequestEventArgs>>();
+            this.timeChangedEvent = eventAggregator.GetEvent<PubSubEvent<SyncStateChangedEventArgs>>();
         }
 
         #endregion
@@ -46,14 +58,7 @@ namespace Ferretto.VW.MAS.TimeManagement
 
                 this.wmsSettingsProvider.IsWmsTimeSyncEnabled = value;
 
-                if (value)
-                {
-                    this.systemTimeSyncService.Enable();
-                }
-                else
-                {
-                    this.systemTimeSyncService.Disable();
-                }
+                this.syncStateChangeRequestEvent.Publish(new SyncStateChangeRequestEventArgs(value));
             }
         }
 
@@ -68,7 +73,14 @@ namespace Ferretto.VW.MAS.TimeManagement
                 throw new InvalidOperationException("Cannot manually set system time when WMS auto sync is enabled.");
             }
 
-            this.systemTimeSyncService.SetSystemTime(dateTime);
+            this.SetTime(dateTime);
+        }
+
+        public void SetTime(DateTime dateTime)
+        {
+            dateTime.SetAsSystemTime();
+
+            this.timeChangedEvent.Publish(new SyncStateChangedEventArgs(dateTime));
         }
 
         #endregion

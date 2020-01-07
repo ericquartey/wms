@@ -2,20 +2,20 @@
 
 namespace Ferretto.VW.MAS.TimeManagement.Models
 {
-    public class SyncStateChangedEventArgs : EventArgs
+    internal class SyncStateChangeRequestEventArgs : EventArgs
     {
         #region Constructors
 
-        public SyncStateChangedEventArgs(DateTime dateTime)
+        public SyncStateChangeRequestEventArgs(bool enable)
         {
-            this.DateTime = dateTime;
+            this.Enable = enable;
         }
 
         #endregion
 
         #region Properties
 
-        public DateTime DateTime { get; }
+        public bool Enable { get; }
 
         #endregion
     }
