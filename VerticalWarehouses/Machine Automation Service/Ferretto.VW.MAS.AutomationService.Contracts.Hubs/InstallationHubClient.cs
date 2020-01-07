@@ -28,6 +28,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         public event EventHandler<MessageNotifiedEventArgs> MessageReceived;
 
+        public event EventHandler<SystemTimeChangedEventArgs> SystemTimeChanged;
+
         #endregion
 
         #region Methods
@@ -87,6 +89,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
             connection.On<NotificationMessageUI<FsmExceptionMessageData>>(
                 nameof(IInstallationHub.FsmException), this.OnFsmException);
+
+            connection.On(
+                nameof(IInstallationHub.SystemTimeChanged), this.OnSystemTimeChanged);
         }
 
         private void OnBayChainPositionChanged(double position, BayNumber bayNumber)
@@ -181,6 +186,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         private void OnSwitchAxisNotify(NotificationMessageUI<SwitchAxisMessageData> message)
         {
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnSystemTimeChanged()
+        {
+            this.SystemTimeChanged?.Invoke(this, new SystemTimeChangedEventArgs());
         }
 
         #endregion
