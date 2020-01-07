@@ -18,9 +18,9 @@ namespace Ferretto.VW.MAS.TimeManagement
             services.AddSingleton<IEventAggregator, EventAggregator>();
 
             services.AddHostedService<SystemTimeSyncService>();
-            services.AddSingleton<ISystemTimeSyncService>(s => s.GetRequiredService<SystemTimeSyncService>());
 
             services.AddTransient<ISystemTimeProvider, SystemTimeProvider>();
+            services.AddTransient(s => s.GetRequiredService<ISystemTimeProvider>() as IInternalSystemTimeProvider);
 
             return services;
         }

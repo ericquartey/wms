@@ -1436,4 +1436,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="SetManualSystemDateTime" xml:space="preserve">
     <value>Set manual system date time</value>
   </data>
+  <data name="DateTimeEnteredIsInvalid" xml:space="preserve">
+    <value>Date e/o time entered are invalid.</value>
+  </data>
 </root>

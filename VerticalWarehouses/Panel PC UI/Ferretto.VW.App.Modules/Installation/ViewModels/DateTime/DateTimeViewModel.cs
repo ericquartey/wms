@@ -5,6 +5,7 @@ using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
@@ -16,6 +17,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
+        private readonly IMachineUtcTimeWebService machineUtcTimeWebService;
+
         private bool canGoAutoSync;
 
         private ushort? day;
@@ -25,6 +28,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isAuto;
 
         private bool isBusy;
+
+        private bool isManualEnabled;
 
         private ushort? minute;
 
@@ -38,9 +43,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        public DateTimeViewModel()
+        public DateTimeViewModel(IMachineUtcTimeWebService machineUtcTimeWebService)
             : base(PresentationMode.Installer)
         {
+            this.machineUtcTimeWebService = machineUtcTimeWebService ?? throw new ArgumentNullException(nameof(machineUtcTimeWebService));
+            this.IsAuto = true;
         }
 
         #endregion
@@ -83,7 +90,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isAuto, value))
                 {
-                    ((DelegateCommand)this.saveCommand).RaiseCanExecuteChanged();
+                    ((DelegateCommand)this.saveCommand)?.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -95,8 +102,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isBusy, value))
                 {
-                    ((DelegateCommand)this.saveCommand).RaiseCanExecuteChanged();
+                    ((DelegateCommand)this.saveCommand)?.RaiseCanExecuteChanged();
                     this.IsBackNavigationAllowed = !this.isBusy;
+                }
+            }
+        }
+
+        public bool IsManualEnabled
+        {
+            get => this.isManualEnabled;
+            set
+            {
+                if (this.SetProperty(ref this.isManualEnabled, value))
+                {
+                    ((DelegateCommand)this.saveCommand)?.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -129,41 +148,82 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public override Task OnAppearedAsync()
+        public override async Task OnAppearedAsync()
         {
-            this.SetTime();
-            this.IsAuto = true;
-            this.CanGoAutoSync = true;
+            await this.GetTimeAsync();
 
-            this.RaisePropertyChanged();
-
-            return base.OnAppearedAsync();
+            await base.OnAppearedAsync();
         }
 
         private bool CanSave()
         {
-            return !this.IsBusy;
+            return !this.IsBusy
+                   &&
+                   (this.IsAuto
+                   ||
+                   (!this.IsAuto && this.IsManualEnabled));
         }
 
-        private bool IsDateTimeValid()
+        private DateTime? GetNewDateTime()
         {
             var dateToCheck = $"{this.day}/{this.Month}/{this.Year}";
             var formats = new[] { "dd/MM/yyyy" };
-            if (DateTime.TryParseExact(dateToCheck, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out var fromDateValue))
+            if (DateTime.TryParseExact(dateToCheck, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out var newDateValue))
             {
-                return true;
+                return newDateValue;
             }
 
-            return false;
+            return null;
+        }
+
+        private async Task GetTimeAsync()
+        {
+            DateTimeOffset? currentDateTime = null;
+            try
+            {
+                this.IsBusy = true;
+
+                this.CanGoAutoSync = await this.machineUtcTimeWebService.CanEnableWmsAutoSyncModeAsync();
+
+                if (this.canGoAutoSync)
+                {
+                    this.IsAuto = await this.machineUtcTimeWebService.IsWmsAutoSyncEnabledAsync();
+                }
+
+                currentDateTime = await this.machineUtcTimeWebService.GetAsync();
+            }
+            catch (Exception ex)
+            {
+                this.canGoAutoSync = false;
+                this.IsAuto = false;
+                this.IsManualEnabled = false;
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                if (!(currentDateTime is null))
+                {
+                    this.Minute = (ushort)currentDateTime.Value.Minute;
+                    this.Hour = (ushort)currentDateTime.Value.Hour;
+                    this.Day = (ushort)currentDateTime.Value.Day;
+                    this.Month = (ushort)currentDateTime.Value.Month;
+                    this.Year = (ushort)currentDateTime.Value.Year;
+                }
+
+                this.IsBusy = false;
+            }
         }
 
         private async Task SaveAsync()
         {
             try
             {
-                if (!this.IsDateTimeValid())
+                var newDateTime = this.GetNewDateTime();
+                if (newDateTime is null
+                    &&
+                    !this.isAuto)
                 {
-                    this.ShowNotification("Date/time is invalid", Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(InstallationApp.DateTimeEnteredIsInvalid, Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
@@ -173,11 +233,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsBackNavigationAllowed = false;
 
-                // TO DO set current system date time
+                await this.machineUtcTimeWebService.SetWmsAutoSyncAsync(this.IsAuto);
+
+                if (!this.isAuto)
+                {
+                    await this.machineUtcTimeWebService.SetAsync(newDateTime.Value);
+                }
 
                 this.ShowNotification(InstallationApp.SaveSuccessful);
-
-                this.IsBusy = false;
             }
             catch (Exception ex)
             {
@@ -188,17 +251,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsBusy = false;
                 this.IsBackNavigationAllowed = true;
             }
-        }
-
-        private void SetTime()
-        {
-            var currentDateTime = DateTime.Now;
-
-            this.Minute = (ushort)currentDateTime.Minute;
-            this.Hour = (ushort)currentDateTime.Hour;
-            this.Day = (ushort)currentDateTime.Day;
-            this.Month = (ushort)currentDateTime.Month;
-            this.Year = (ushort)currentDateTime.Year;
         }
 
         #endregion
