@@ -128,9 +128,9 @@
             <Grid Margin="20"
                   DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
                     <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
@@ -139,26 +139,46 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.ColumnSpan="2"
-                           VerticalAlignment="Top"
-                           FontSize="24"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="Misurazione 1 / 2"
-                           TextWrapping="Wrap" />
+                <StackPanel Grid.ColumnSpan="2">
+                    <TextBlock FontSize="24"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               Text="Eseguire la prima misurazione (1/2):"
+                               TextWrapping="Wrap" />
+
+                    <TextBlock FontSize="22"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               Text="Posizionare l'elevatore alla quota indicata"
+                               TextWrapping="Wrap" />
+                </StackPanel>
 
                 <ctrls:PpcSpinEdit Grid.Row="1"
                                    Grid.Column="0"
                                    Width="250"
                                    Height="90"
                                    Margin="0,0,15,0"
+                                   VerticalAlignment="Center"
                                    EditValue="{Binding DestinationPosition1, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                    IsEnabled="{Binding IsCanDestinationPosition1}"
                                    LabelText="Quota di destinazione"
                                    MaxValue="{Binding AxisUpperBound}"
                                    MinValue="{Binding AxisLowerBound}" />
 
-                <ctrls:PpcSpinEdit Grid.Row="1"
-                                   Grid.Column="1"
+                <controls:PpcButton Grid.Row="1"
+                                    Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding MoveToStartDestination1Command}"
+                                    Content="Vai a quota"
+                                    Style="{StaticResource WizardIntoButton}" />
+
+                <TextBlock Grid.Row="2"
+                           Grid.ColumnSpan="2"
+                           FontSize="22"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="Indicare la quota misurata con il metro e premere Avanti"
+                           TextWrapping="Wrap" />
+
+                <ctrls:PpcSpinEdit Grid.Row="3"
+                                   Grid.Column="0"
                                    Width="250"
                                    Height="90"
                                    Margin="0,0,15,0"
@@ -168,15 +188,10 @@
                                    MaxValue="{Binding AxisUpperBound}"
                                    MinValue="{Binding AxisLowerBound}" />
 
-                <controls:PpcButton Grid.Row="2"
-                                    Grid.ColumnSpan="2"
-                                    VerticalAlignment="Top"
-                                    Command="{Binding MoveToStartDestination1Command}"
-                                    Content="Vai a quota di destinazione"
-                                    Style="{StaticResource WizardIntoButton}" />
+
 
                 <controls:PpcButton Grid.Row="3"
-                                    Grid.ColumnSpan="2"
+                                    Grid.Column="1"
                                     Command="{Binding MoveToLastMeasuredCommand}"
                                     Content="Avanti"
                                     Style="{StaticResource WizardIntoButton}" />
