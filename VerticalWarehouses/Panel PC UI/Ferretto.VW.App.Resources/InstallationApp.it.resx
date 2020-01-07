@@ -1370,4 +1370,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="SetManualSystemDateTime" xml:space="preserve">
     <value>Imposta data e ora manualmente</value>
   </data>
+  <data name="DateTimeEnteredIsInvalid" xml:space="preserve">
+    <value>Data e/o ora inserite non valide.</value>
+  </data>
 </root>
