@@ -102,7 +102,7 @@
       "dateType": "System.DateTime",
       "jsonConverters": [ "Ferretto.VW.CommonUtils.Converters.IPAddressConverter" ],
       "anyType": "object",
-      "dateTimeType": "System.DateTime",
+      "dateTimeType": "System.DateTimeOffset",
       "timeType": "System.TimeSpan",
       "timeSpanType": "System.TimeSpan",
       "arrayType": "System.Collections.Generic.IEnumerable",

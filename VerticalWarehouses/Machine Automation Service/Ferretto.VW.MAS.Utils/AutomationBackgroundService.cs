@@ -165,7 +165,7 @@ namespace Ferretto.VW.MAS.Utils
                 }
                 catch (Exception ex)
                 {
-                    this.Logger.LogError(ex, "Error while processing a command.");
+                    this.Logger.LogError("Error while processing a command: '{details}'.", ex.Message);
                 }
             }
             while (!cancellationToken.IsCancellationRequested);
@@ -196,7 +196,7 @@ namespace Ferretto.VW.MAS.Utils
                 }
                 catch (Exception ex)
                 {
-                    this.Logger.LogError(ex, "Error while processing a notification.");
+                    this.Logger.LogError("Error while processing a notification: '{details}'.", ex.Message);
                 }
             }
             while (!cancellationToken.IsCancellationRequested);

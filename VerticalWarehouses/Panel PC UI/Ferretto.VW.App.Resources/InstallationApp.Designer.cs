@@ -772,6 +772,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Date.
+        /// </summary>
+        public static string Date {
+            get {
+                return ResourceManager.GetString("Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Day.
+        /// </summary>
+        public static string Day {
+            get {
+                return ResourceManager.GetString("Day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delay between cycles [s].
         /// </summary>
         public static string DelayBetweenCycles {
@@ -1519,6 +1537,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hour.
+        /// </summary>
+        public static string Hour {
+            get {
+                return ResourceManager.GetString("Hour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to in Bay.
         /// </summary>
         public static string InBay {
@@ -2217,6 +2244,24 @@ namespace Ferretto.VW.App.Resources {
         public static string Middle {
             get {
                 return ResourceManager.GetString("Middle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minutes.
+        /// </summary>
+        public static string Minutes {
+            get {
+                return ResourceManager.GetString("Minutes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Month.
+        /// </summary>
+        public static string Month {
+            get {
+                return ResourceManager.GetString("Month", resourceCulture);
             }
         }
         
@@ -2943,6 +2988,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Set manual system date time.
+        /// </summary>
+        public static string SetManualSystemDateTime {
+            get {
+                return ResourceManager.GetString("SetManualSystemDateTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vertical axis origin set correctly..
         /// </summary>
         public static string SetOriginVerticalAxisCompleted {
@@ -3254,6 +3308,15 @@ namespace Ferretto.VW.App.Resources {
         public static string SwitchEngineStarted {
             get {
                 return ResourceManager.GetString("SwitchEngineStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System date time.
+        /// </summary>
+        public static string SystemDateTime {
+            get {
+                return ResourceManager.GetString("SystemDateTime", resourceCulture);
             }
         }
         
@@ -3641,6 +3704,24 @@ namespace Ferretto.VW.App.Resources {
         public static string WeightControl {
             get {
                 return ResourceManager.GetString("WeightControl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WMS auto sync.
+        /// </summary>
+        public static string WMSAutoSync {
+            get {
+                return ResourceManager.GetString("WMSAutoSync", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Year.
+        /// </summary>
+        public static string Year {
+            get {
+                return ResourceManager.GetString("Year", resourceCulture);
             }
         }
         
