@@ -97,7 +97,8 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var entry = this.dataContext.Missions.Add(
+                var entry = this.dataContext.Missions
+                    .Add(
                     new Mission
                     {
                         FsmId = Guid.NewGuid(),
@@ -105,7 +106,8 @@ namespace Ferretto.VW.MAS.DataLayer
                         LoadingUnitId = loadingUnitId,
                         TargetBay = bayNumber,
                         MissionType = MissionType.OUT
-                    });
+                    })
+                    ;
 
                 this.dataContext.SaveChanges();
 
@@ -184,7 +186,6 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Missions
-                    .AsNoTracking()
                     .Where(m => m.Status != MissionStatus.Completed && m.Status != MissionStatus.Aborted)
                     .OrderBy(o => o.Priority)
                     .ThenBy(o => o.CreationDate)
@@ -197,7 +198,6 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Missions
-                    .AsNoTracking()
                     .Where(m => m.TargetBay == bayNumber)
                     .Where(m => m.Status != MissionStatus.Completed && m.Status != MissionStatus.Aborted)
                     .OrderBy(o => o.Priority)
@@ -211,7 +211,6 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Missions
-                    .AsNoTracking()
                     .Where(m => m.Status == MissionStatus.Executing || m.Status == MissionStatus.Waiting);
             }
         }
@@ -221,7 +220,6 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Missions
-                    .AsNoTracking()
                     .Where(m => m.WmsId != null)
                     .ToArray();
             }
@@ -232,7 +230,6 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 var mission = this.dataContext.Missions
-                    .AsNoTracking()
                     .SingleOrDefault(m => m.FsmId == fsmId);
                 if (mission is null)
                 {
@@ -247,7 +244,6 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 var mission = this.dataContext.Missions
-                    .AsNoTracking()
                     .SingleOrDefault(m => m.Id == id);
                 if (mission is null)
                 {
