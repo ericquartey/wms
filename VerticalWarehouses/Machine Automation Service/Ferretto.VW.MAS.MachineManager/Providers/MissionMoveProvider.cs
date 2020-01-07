@@ -4,6 +4,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.MachineManager.MissionMove;
 using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
@@ -168,10 +169,8 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             return true;
         }
 
-        public bool StartMission(int missionId, CommandMessage command, IServiceProvider serviceProvider)
+        public bool StartMission(Mission mission, CommandMessage command, IServiceProvider serviceProvider)
         {
-            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
-            var mission = missionsDataProvider.GetById(missionId);
             var newState = new MissionMoveNewState(mission, serviceProvider, this.eventAggregator);
 
             return newState.OnEnter(command);
@@ -236,14 +235,14 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             return true;
         }
 
-        public bool TryCreateMachineMission(CommandMessage command, IServiceProvider serviceProvider, out int? missionId)
+        public bool TryCreateMachineMission(CommandMessage command, IServiceProvider serviceProvider, out Mission mission)
         {
             if (command is null)
             {
                 throw new ArgumentNullException(nameof(command));
             }
 
-            missionId = null;
+            mission = null;
 
             if (command.Data is IMoveLoadingUnitMessageData messageData
                 && messageData.LoadingUnitId.HasValue
@@ -270,8 +269,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                         }
                     }
 
-                    var newMission = missionsDataProvider.CreateBayMission(messageData.LoadingUnitId.Value, command.RequestingBay);
-                    missionId = newMission.Id;
+                    mission = missionsDataProvider.CreateBayMission(messageData.LoadingUnitId.Value, command.RequestingBay);
                     return true;
                 }
             }

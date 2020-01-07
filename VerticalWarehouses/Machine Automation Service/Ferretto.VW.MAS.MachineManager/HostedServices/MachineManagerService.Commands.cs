@@ -128,25 +128,26 @@ namespace Ferretto.VW.MAS.MachineManager
                 switch (messageData.CommandAction)
                 {
                     case CommandAction.Start:
-
-                        if (this.missionMoveProvider.TryCreateMachineMission(command, serviceProvider, out var missionId)
-                            && missionId.HasValue
-                            )
                         {
-                            try
+                            if (this.missionMoveProvider.TryCreateMachineMission(command, serviceProvider, out var mission)
+                                && mission != null
+                                )
                             {
-                                this.missionMoveProvider.StartMission(missionId.Value, command, serviceProvider);
+                                try
+                                {
+                                    this.missionMoveProvider.StartMission(mission, command, serviceProvider);
+                                }
+                                catch (Exception ex)
+                                {
+                                    this.Logger.LogError($"Failed to start Move Loading Unit State machine mission: {ex.Message}");
+                                    this.NotifyCommandError(command);
+                                }
                             }
-                            catch (Exception ex)
+                            else
                             {
-                                this.Logger.LogError($"Failed to start Move Loading Unit State machine mission: {ex.Message}");
+                                this.Logger.LogError("Failed to create Move Loading Unit State machine mission");
                                 this.NotifyCommandError(command);
                             }
-                        }
-                        else
-                        {
-                            this.Logger.LogError("Failed to create Move Loading Unit State machine mission");
-                            this.NotifyCommandError(command);
                         }
 
                         break;
@@ -155,7 +156,7 @@ namespace Ferretto.VW.MAS.MachineManager
                         try
                         {
                             var mission = this.missionsDataProvider.GetByGuid(messageData.MissionId.Value);
-                            this.missionMoveProvider.StartMission(mission.Id, command, serviceProvider);
+                            this.missionMoveProvider.StartMission(mission, command, serviceProvider);
                         }
                         catch (Exception ex)
                         {
