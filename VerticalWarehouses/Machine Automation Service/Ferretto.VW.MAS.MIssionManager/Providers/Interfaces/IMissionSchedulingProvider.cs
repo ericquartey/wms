@@ -19,6 +19,8 @@ namespace Ferretto.VW.MAS.MissionManager
 
         void QueueLoadingUnitCompactingMission(IServiceProvider serviceProvider);
 
+        void QueueRecallMission(int loadingUnitId, BayNumber sourceBayNumber);
+
         #endregion
     }
 }

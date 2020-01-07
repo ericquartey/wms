@@ -20,6 +20,8 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
             builder.Property(u => u.PasswordHash).IsRequired();
 
             builder.Property(u => u.PasswordSalt).IsRequired();
+
+            builder.Ignore(u => u.Validity);
         }
 
         #endregion

@@ -16,12 +16,21 @@ namespace Ferretto.VW.App.Services
 
         private const string LogoutWhenUnhealthyKey = "AutomationService:HealthChecks:LogoutWhenUnhealthy";
 
+        private const string WmsServiceEnabledKey = "WMS:DataService:Enabled";
+
         #endregion
 
         #region Methods
 
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="System.Security.SecurityException"></exception>
         public static BayNumber GetBayNumber(this NameValueCollection appSettings)
         {
+            if (appSettings is null)
+            {
+                throw new ArgumentNullException(nameof(appSettings));
+            }
+
             var bayNumberStringEnv = Environment.GetEnvironmentVariable(BayNumberEnvKey);
             if (!string.IsNullOrWhiteSpace(bayNumberStringEnv))
             {
@@ -42,8 +51,31 @@ namespace Ferretto.VW.App.Services
             return appSettings.Get("Devices:LabelPrinter");
         }
 
+        public static bool GetWmsDataServiceEnabled(this NameValueCollection appSettings)
+        {
+            if (appSettings is null)
+            {
+                throw new ArgumentNullException(nameof(appSettings));
+            }
+
+            try
+            {
+                var enabledString = appSettings.Get(WmsServiceEnabledKey);
+                return bool.Parse(enabledString);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"The configuration key '{WmsServiceEnabledKey}' is not specified or invalid.", ex);
+            }
+        }
+
         public static bool LogoutWhenUnhealthy(this NameValueCollection appSettings)
         {
+            if (appSettings is null)
+            {
+                throw new ArgumentNullException(nameof(appSettings));
+            }
+
             var logoutWhenUnhealthyStringEnv = Environment.GetEnvironmentVariable(LogoutWhenUnhealthyEnvKey);
             if (!string.IsNullOrWhiteSpace(logoutWhenUnhealthyStringEnv))
             {

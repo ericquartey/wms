@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     {
         private static readonly System.Func<IUnityContainer, RetryHttpClient> DefaultResolveHttpClientFunction = (IUnityContainer c) => c.Resolve<RetryHttpClient>();
 
-        public static IContainerRegistry RegisterMachineAutomationWebServices(
+        public static IContainerRegistry RegisterMasWebServices(
             this IContainerRegistry container,
             System.Uri webServiceUrl,
             System.Func<IUnityContainer, RetryHttpClient> resolveHttpClientFunction = null)

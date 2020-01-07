@@ -90,7 +90,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.CanConfirmOperationCanceled));
 
         public ICommand ConfirmOperationCommand =>
-                    this.confirmOperationCommand
+            this.confirmOperationCommand
             ??
             (this.confirmOperationCommand = new DelegateCommand(
                 async () => await this.ConfirmOperationAsync(),
@@ -281,6 +281,27 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         protected abstract void ShowOperationDetails();
 
+        private static IEnumerable<TrayControlCompartment> MapCompartments(IEnumerable<CompartmentMissionInfo> compartmentsFromMission)
+        {
+            return compartmentsFromMission
+                .Where(c =>
+                    c.Width.HasValue
+                    ||
+                    c.Depth.HasValue
+                    ||
+                    c.XPosition.HasValue
+                    ||
+                    c.YPosition.HasValue)
+                .Select(c => new TrayControlCompartment
+                {
+                    Depth = c.Depth.Value,
+                    Id = c.Id,
+                    Width = c.Width.Value,
+                    XPosition = c.XPosition.Value,
+                    YPosition = c.YPosition.Value,
+                });
+        }
+
         private void GetLoadingUnitDetails()
         {
             if (this.Mission is null)
@@ -292,7 +313,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             try
             {
-                this.Compartments = this.MapCompartments(this.Mission.LoadingUnit.Compartments);
+                this.Compartments = MapCompartments(this.Mission.LoadingUnit.Compartments);
                 this.LoadingUnitWidth = this.Mission.LoadingUnit.Width;
                 this.LoadingUnitDepth = this.Mission.LoadingUnit.Depth;
                 this.SelectedCompartment = this.Compartments.SingleOrDefault(c =>
@@ -343,27 +364,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 default:
                     break;
             }
-        }
-
-        private IEnumerable<TrayControlCompartment> MapCompartments(IEnumerable<CompartmentMissionInfo> compartmentsFromMission)
-        {
-            return compartmentsFromMission
-                .Where(c =>
-                    c.Width.HasValue
-                    ||
-                    c.Depth.HasValue
-                    ||
-                    c.XPosition.HasValue
-                    ||
-                    c.YPosition.HasValue)
-                .Select(c => new TrayControlCompartment
-                {
-                    Depth = c.Depth.Value,
-                    Id = c.Id,
-                    Width = c.Width.Value,
-                    XPosition = c.XPosition.Value,
-                    YPosition = c.YPosition.Value,
-                });
         }
 
         private async Task OnAssignedMissionOperationChangedAsync(AssignedMissionOperationChangedEventArgs e)

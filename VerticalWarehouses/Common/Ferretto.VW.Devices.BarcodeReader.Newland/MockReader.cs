@@ -8,21 +8,26 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
 {
     public class MockReader : IBarcodeReader, IDisposable
     {
+        #region Fields
+
         private bool isDisposed;
 
         private Timer timer;
 
-        public event EventHandler<BarcodeEventArgs> BarcodeReceived;
+        #endregion
+
+        #region Events
+
+        public event EventHandler<ActionEventArgs> BarcodeReceived;
+
+        #endregion
+
+        #region Methods
 
         public void Connect(IBarcodeConfigurationOptions options)
         {
             this.Disconnect();
             this.timer = new Timer(this.OnTimerTick, null, 10000, 10000);
-        }
-
-        public void OnTimerTick(object state)
-        {
-            this.BarcodeReceived?.Invoke(this, new BarcodeEventArgs("L001F"));
         }
 
         public void Disconnect()
@@ -38,6 +43,11 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
             GC.SuppressFinalize(this);
         }
 
+        public void OnTimerTick(object state)
+        {
+            this.BarcodeReceived?.Invoke(this, new ActionEventArgs("L001F"));
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!this.isDisposed)
@@ -50,5 +60,7 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
                 this.isDisposed = true;
             }
         }
+
+        #endregion
     }
 }

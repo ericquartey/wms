@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.MAS.DataModels.Enumerations
 {
-    public enum LoadingUnitStatus : long
+    public enum LoadingUnitStatus
     {
         Undefined,
 

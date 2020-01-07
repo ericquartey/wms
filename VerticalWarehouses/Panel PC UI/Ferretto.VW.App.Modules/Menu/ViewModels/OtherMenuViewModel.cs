@@ -20,6 +20,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand menuComunicationWMSCommand;
 
+        private DelegateCommand menuDateTimeCommand;
+
         private DelegateCommand menuOldCommand;
 
         private DelegateCommand menuParameterInverterCommand;
@@ -41,7 +43,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Enums
 
-        private enum MenuOlther
+        private enum MenuOther
         {
             Users,
 
@@ -52,6 +54,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             Old,
 
             ComunicationWms,
+
+            DateTime,
         }
 
         #endregion
@@ -64,35 +68,35 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.menuComunicationWMSCommand
             ??
             (this.menuComunicationWMSCommand = new DelegateCommand(
-                () => this.MenuCommandOlther(MenuOlther.ComunicationWms),
+                () => this.MenuCommandOther(MenuOther.ComunicationWms),
                 this.CanExecuteCommand));
 
         public ICommand MenuOldCommand =>
-                    this.menuOldCommand
+            this.menuOldCommand
             ??
             (this.menuOldCommand = new DelegateCommand(
-                () => this.MenuCommandOlther(MenuOlther.Old),
+                () => this.MenuCommandOther(MenuOther.Old),
                 this.CanExecuteCommand));
 
         public ICommand MenuParameterInverterCommand =>
             this.menuParameterInverterCommand
             ??
             (this.menuParameterInverterCommand = new DelegateCommand(
-                () => this.MenuCommandOlther(MenuOlther.ParameterInverter),
+                () => this.MenuCommandOther(MenuOther.ParameterInverter),
                 this.CanExecuteCommand));
 
         public ICommand MenuParametersCommand =>
             this.menuParametersCommand
             ??
             (this.menuParametersCommand = new DelegateCommand(
-                () => this.MenuCommandOlther(MenuOlther.Parameters),
+                () => this.MenuCommandOther(MenuOther.Parameters),
                 this.CanExecuteCommand));
 
         public ICommand MenuUsersCommand =>
             this.menuUsersCommand
             ??
             (this.menuUsersCommand = new DelegateCommand(
-                () => this.MenuCommandOlther(MenuOlther.Users),
+                () => this.MenuCommandOther(MenuOther.Users),
                 this.CanExecuteCommand));
 
         #endregion
@@ -115,7 +119,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.menuParameterInverterCommand?.RaiseCanExecuteChanged();
         }
 
-        private void MenuCommandOlther(MenuOlther menu)
+        private void MenuCommandOther(MenuOther menu)
         {
             this.ClearNotifications();
 
@@ -127,7 +131,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             {
                 switch (menu)
                 {
-                    case MenuOlther.Parameters:
+                    case MenuOther.Parameters:
                         this.NavigationService.Appear(
                             nameof(Utils.Modules.Installation),
                             Utils.Modules.Installation.Parameters.PARAMETERS,
@@ -135,7 +139,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                             trackCurrentView: true);
                         break;
 
-                    case MenuOlther.Old:
+                    case MenuOther.Old:
                         this.NavigationService.Appear(
                             nameof(Utils.Modules.Installation),
                             Utils.Modules.Installation.INSTALLATORMENU,
@@ -143,7 +147,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                             trackCurrentView: true);
                         break;
 
-                    case MenuOlther.Users:
+                    case MenuOther.Users:
                         this.NavigationService.Appear(
                             nameof(Utils.Modules.Installation),
                             Utils.Modules.Installation.USERS,
@@ -151,7 +155,15 @@ namespace Ferretto.VW.App.Menu.ViewModels
                             trackCurrentView: true);
                         break;
 
-                    case MenuOlther.ComunicationWms:
+                    case MenuOther.DateTime:
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Installation),
+                            Utils.Modules.Installation.DATETIME,
+                            data: null,
+                            trackCurrentView: true);
+                        break;
+
+                    case MenuOther.ComunicationWms:
                         this.NavigationService.Appear(
                             nameof(Utils.Modules.Installation),
                             Utils.Modules.Installation.COMUNICATIONWMS,
@@ -159,7 +171,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                             trackCurrentView: true);
                         break;
 
-                    case MenuOlther.ParameterInverter:
+                    case MenuOther.ParameterInverter:
                         this.NavigationService.Appear(
                             nameof(Utils.Modules.Installation),
                             Utils.Modules.Installation.PARAMETERINVERTER,

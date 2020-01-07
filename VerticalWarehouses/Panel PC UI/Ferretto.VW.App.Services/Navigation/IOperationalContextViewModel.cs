@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.App.Accessories;
 
 namespace Ferretto.VW.App.Services
 {
@@ -11,6 +8,12 @@ namespace Ferretto.VW.App.Services
         #region Properties
 
         string ActiveContextName { get; }
+
+        #endregion
+
+        #region Methods
+
+        Task CommandUserActionAsync(UserActionEventArgs userAction);
 
         #endregion
     }

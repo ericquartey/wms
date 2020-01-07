@@ -92,6 +92,7 @@
                                         BorderBrush="{DynamicResource FerrettoOrange}"
                                         Command="{Binding TestBayCommand}"
                                         Content="Permette di effettuare una serie di test ripetitivi per la baia"
+                                        IsEnabled="False"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}"
                                         Visibility="{Binding IsTestBayVisible, Converter={StaticResource BTVC}}" />

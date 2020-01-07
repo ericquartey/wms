@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Ferretto.VW.Devices.BarcodeReader;
 
 namespace Ferretto.VW.App.Accessories
 {
-    public class BarcodeMatchEventArgs : BarcodeEventArgs
+    public class UserActionEventArgs : ActionEventArgs
     {
         #region Constructors
 
-        public BarcodeMatchEventArgs(string barcode, string userAction) : base(barcode)
+        public UserActionEventArgs(string code, string userAction) : base(code)
         {
             this.UserAction = userAction;
         }

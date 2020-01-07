@@ -2,8 +2,10 @@
 using System.Threading.Tasks;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -17,6 +19,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IBayManager bayManager;
+
         private readonly IEventAggregator eventAggregator;
 
         private readonly IMachineMissionOperationsWebService machineMissionOperationsWebService;
@@ -28,6 +32,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
         private bool isPerformingOperation;
 
         private int loadingUnitsMovements;
+
+        private SubscriptionToken loadingUnitToken;
 
         private SubscriptionToken missionToken;
 
@@ -41,13 +47,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
             IMissionOperationsService missionOperationsService,
             IMachineMissionOperationsWebService machineMissionOperationsWebService,
             IMachineModeService machineModeService,
+            IBayManager bayManager,
             IEventAggregator eventAggregator)
             : base(PresentationMode.Operator)
         {
             this.missionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
             this.machineMissionOperationsWebService = machineMissionOperationsWebService ?? throw new ArgumentNullException(nameof(machineMissionOperationsWebService));
             this.machineModeService = machineModeService ?? throw new ArgumentNullException(nameof(machineModeService));
-            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(missionOperationsService));
+            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
         }
 
         #endregion
@@ -86,8 +94,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             base.Disappear();
 
-            this.eventAggregator.GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>().Unsubscribe(this.missionToken);
-
             this.missionToken?.Dispose();
             this.missionToken = null;
         }
@@ -102,7 +108,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 ??
                 this.eventAggregator.GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>()
                 .Subscribe(
-                    this.OnAssignedMissionOperationChanged,
+                    async e => await this.OnAssignedMissionOperationChangedAsync(e),
+                    ThreadOption.UIThread,
+                    false);
+
+            this.loadingUnitToken = this.loadingUnitToken
+                ??
+                this.eventAggregator.GetEvent<NotificationEventUI<MoveLoadingUnitMessageData>>()
+                .Subscribe(
+                    this.OnLoadingUnitMoved,
                     ThreadOption.UIThread,
                     false);
 
@@ -115,7 +129,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 return;
             }
 
-            this.CheckForNewOperation();
+            await this.CheckForNewOperationAsync();
 
             await Task.Run(async () =>
             {
@@ -123,7 +137,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 {
                     await this.CheckForNewOperationCount();
                     await Task.Delay(5000);
-                } while (this.IsVisible);
+                }
+                while (this.IsVisible);
             });
         }
 
@@ -137,7 +152,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             base.OnNavigatedTo(navigationContext);
         }
 
-        private void CheckForNewOperation()
+        private async Task CheckForNewOperationAsync()
         {
             if (this.machineModeService.MachineMode != MachineMode.Automatic)
             {
@@ -147,49 +162,59 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.PendingMissionOperationsCount = this.missionOperationsService.PendingMissionOperationsCount;
 
             var missionOperation = this.missionOperationsService.CurrentMissionOperation;
-            if (missionOperation is null)
+            if (this.missionOperationsService.CurrentMissionOperation is null)
             {
-                // do nothing
-                return;
+                var bay = await this.bayManager.GetBayAsync();
+                if (bay.CurrentMission?.LoadingUnitId != null)
+                {
+                    this.NavigationService.Appear(
+                           nameof(Utils.Modules.Operator),
+                           Utils.Modules.Operator.ItemOperations.LOADING_UNIT,
+                           bay.CurrentMission.LoadingUnitId,
+                           trackCurrentView: true);
+                    this.isPerformingOperation = true;
+                }
             }
-
-            switch (missionOperation.Type)
+            else
             {
-                case MissionOperationType.Inventory:
-                    this.NavigationService.Appear(
-                        nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.ItemOperations.INVENTORY,
-                        null,
-                        trackCurrentView: true);
-                    this.isPerformingOperation = true;
-                    break;
+                switch (this.missionOperationsService.CurrentMissionOperation.Type)
+                {
+                    case MissionOperationType.Inventory:
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Operator),
+                            Utils.Modules.Operator.ItemOperations.INVENTORY,
+                            null,
+                            trackCurrentView: true);
+                        this.isPerformingOperation = true;
+                        break;
 
-                case MissionOperationType.Pick:
-                    this.NavigationService.Appear(
-                        nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.ItemOperations.PICK,
-                        null,
-                        trackCurrentView: true);
-                    this.isPerformingOperation = true;
-                    break;
+                    case MissionOperationType.Pick:
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Operator),
+                            Utils.Modules.Operator.ItemOperations.PICK,
+                            null,
+                            trackCurrentView: true);
+                        this.isPerformingOperation = true;
+                        break;
 
-                case MissionOperationType.Put:
-                    this.NavigationService.Appear(
-                        nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.ItemOperations.PUT,
-                        null,
-                        trackCurrentView: true);
-                    this.isPerformingOperation = true;
-                    break;
+                    case MissionOperationType.Put:
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Operator),
+                            Utils.Modules.Operator.ItemOperations.PUT,
+                            null,
+                            trackCurrentView: true);
+                        this.isPerformingOperation = true;
+                        break;
 
-                case MissionOperationType.LoadingUnitCheck:
-                    this.NavigationService.Appear(
-                        nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.ItemOperations.LOADINGUNITCHECKVIEW,
-                        null,
-                        trackCurrentView: true);
-                    this.isPerformingOperation = true;
-                    break;
+                    case MissionOperationType.LoadingUnitCheck:
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Operator),
+                            Utils.Modules.Operator.ItemOperations.LOADING_UNIT_CHECK,
+                            null,
+                            trackCurrentView: true);
+                        this.isPerformingOperation = true;
+                        break;
+                }
             }
         }
 
@@ -199,9 +224,24 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.RaisePropertyChanged(nameof(this.LoadingUnitsInfo));
         }
 
-        private void OnAssignedMissionOperationChanged(AssignedMissionOperationChangedEventArgs e)
+        private async Task OnAssignedMissionOperationChangedAsync(AssignedMissionOperationChangedEventArgs e)
         {
-            this.CheckForNewOperation();
+            await this.CheckForNewOperationAsync();
+        }
+
+        private void OnLoadingUnitMoved(NotificationMessageUI<MoveLoadingUnitMessageData> message)
+        {
+            if (message.Data.MissionType is CommonUtils.Messages.Enumerations.MissionType.OUT
+                &&
+                message.Status is CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd)
+            {
+                this.NavigationService.Appear(
+                       nameof(Utils.Modules.Operator),
+                       Utils.Modules.Operator.ItemOperations.LOADING_UNIT,
+                       message.Data.LoadingUnitId,
+                       trackCurrentView: true);
+                this.isPerformingOperation = true;
+            }
         }
 
         #endregion

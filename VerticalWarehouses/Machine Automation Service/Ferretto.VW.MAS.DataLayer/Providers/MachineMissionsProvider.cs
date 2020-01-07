@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly List<IMission> machineMissions;
+        private readonly List<IMission> machineMissions = new List<IMission>();
 
         private readonly IServiceScopeFactory serviceScopeFactory;
 
@@ -38,7 +38,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         {
             this.eventAggregator = eventAggregator;
             this.serviceScopeFactory = serviceScopeFactory;
-            this.machineMissions = new List<IMission>();
         }
 
         #endregion

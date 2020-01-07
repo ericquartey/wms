@@ -237,16 +237,6 @@ namespace Ferretto.VW.App.Services
             await this.InitializationLoadUnits();
         }
 
-        public void ServiceStart()
-        {
-            this.machineStatus = new MachineStatus();
-            this.loadingUnits = new List<LoadingUnit>();
-
-            this.OnUpdateServiceAsync().ConfigureAwait(false);
-
-            this.SubscribeToEvents();
-        }
-
         public void ShowNotification(Exception exception)
         {
             if (exception is null)
@@ -259,6 +249,16 @@ namespace Ferretto.VW.App.Services
             this.eventAggregator
                 .GetEvent<PresentationNotificationPubSubEvent>()
                 .Publish(new PresentationNotificationMessage(exception));
+        }
+
+        public void Start()
+        {
+            this.machineStatus = new MachineStatus();
+            this.loadingUnits = new List<LoadingUnit>();
+
+            this.OnUpdateServiceAsync().ConfigureAwait(false);
+
+            this.SubscribeToEvents();
         }
 
         public async Task StopMovingByAllAsync()
@@ -467,261 +467,268 @@ namespace Ferretto.VW.App.Services
         private void OnDataChanged<TData>(NotificationMessageUI<TData> message)
             where TData : class, IMessageData
         {
-            if (message?.Data is HomingMessageData dataHoming)
+            try
             {
-                this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status};");
-
-                Task.Run(async () =>
+                if (message?.Data is HomingMessageData dataHoming)
                 {
-                    var isHoming = await this.machinePowerWebService.GetIsHomingAsync();
-                    if (isHoming != this.IsHoming ||
-                        isHoming && message?.Status == MessageStatus.OperationEnd ||
-                        !isHoming && message?.Status == MessageStatus.OperationError)
-                    {
-                        this.eventAggregator
-                            .GetEvent<HomingChangedPubSubEvent>()
-                            .Publish(new HomingChangedMessage(isHoming));
-                    }
-                    this.IsHoming = isHoming;
-                }).Wait();
-            }
+                    this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status};");
 
-            switch (message.Status)
-            {
-                case MessageStatus.OperationStart:
-                case MessageStatus.OperationStepStart:
-                    {
-                        if (message?.Data is PositioningMessageData dataLog)
+                    Task.Run(async () =>
+                            {
+                                var isHoming = await this.machinePowerWebService.GetIsHomingAsync();
+                                if (isHoming != this.IsHoming ||
+                                isHoming && message?.Status == MessageStatus.OperationEnd ||
+                                !isHoming && message?.Status == MessageStatus.OperationError)
+                                {
+                                    this.eventAggregator
+                                    .GetEvent<HomingChangedPubSubEvent>()
+                                    .Publish(new HomingChangedMessage(isHoming));
+                                }
+                                this.IsHoming = isHoming;
+                            }).Wait();
+                }
+
+                switch (message.Status)
+                {
+                    case MessageStatus.OperationStart:
+                    case MessageStatus.OperationStepStart:
                         {
-                            this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status}; {dataLog?.AxisMovement};");
+                            if (message?.Data is PositioningMessageData dataLog)
+                            {
+                                this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status}; {dataLog?.AxisMovement};");
+                            }
+                            else
+                            {
+                                this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status};");
+                            }
+
+                            var ms = (MachineStatus)this.MachineStatus.Clone();
+
+                            ms.IsError = false;
+                            ms.IsMoving = true;
+
+                            if (message?.Data is MoveLoadingUnitMessageData messageData)
+                            {
+                                ms.IsMovingLoadingUnit = true;
+
+                                ms.CurrentMissionId = messageData.MissionId;
+
+                                this.Notification = "Movimento in corso...";
+                            }
+
+                            if (message?.Data is PositioningMessageData dataPositioning)
+                            {
+                                ms.IsMovingElevator = true;
+
+                                if (!this.MachineStatus.IsMovingLoadingUnit)
+                                {
+                                    this.WriteInfo(dataPositioning?.AxisMovement);
+                                }
+
+                                ms.VerticalSpeed = null;
+                                if (dataPositioning.AxisMovement == Axis.Vertical)
+                                {
+                                    ms.VerticalTargetPosition = dataPositioning.TargetPosition;
+                                    if (dataPositioning.TargetSpeed.Length > 0)
+                                    {
+                                        ms.VerticalSpeed = dataPositioning.TargetSpeed[0];
+                                    }
+                                }
+                                else if (dataPositioning.AxisMovement == Axis.Horizontal)
+                                {
+                                    ms.HorizontalTargetPosition = dataPositioning.TargetPosition;
+                                }
+                                else if (dataPositioning.AxisMovement == Axis.BayChain)
+                                {
+                                    ms.BayChainTargetPosition = dataPositioning.TargetPosition;
+                                }
+                            }
+
+                            if (message?.Data is ShutterPositioningMessageData)
+                            {
+                                ms.IsMovingShutter = true;
+                            }
+
+                            this.MachineStatus = ms;
+                            break;
                         }
-                        else
+
+                    case MessageStatus.OperationExecuting:
+                        {
+                            if (this.MachineStatus.IsMoving)
+                            {
+                                if (message?.Data is PositioningMessageData dataPositioningInfo
+                                    && !this.MachineStatus.IsMovingLoadingUnit)
+                                {
+                                    this.WriteInfo(dataPositioningInfo?.AxisMovement);
+                                }
+                            }
+
+                            if (this.MachineStatus.IsMovingLoadingUnit)
+                            {
+                                this.Notification = "Movimento in corso...";
+                            }
+
+                            break;
+                        }
+
+                    case MessageStatus.OperationUpdateData:
                         {
                             this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status};");
-                        }
 
-                        var ms = (MachineStatus)this.MachineStatus.Clone();
-
-                        ms.IsError = false;
-                        ms.IsMoving = true;
-
-                        if (message?.Data is MoveLoadingUnitMessageData messageData)
-                        {
-                            ms.IsMovingLoadingUnit = true;
-
-                            ms.CurrentMissionId = messageData.MissionId;
-
-                            this.Notification = "Movimento in corso...";
-                        }
-
-                        if (message?.Data is PositioningMessageData dataPositioning)
-                        {
-                            ms.IsMovingElevator = true;
-
-                            if (!this.MachineStatus.IsMovingLoadingUnit)
+                            Task.Run(async () =>
                             {
-                                this.WriteInfo(dataPositioning?.AxisMovement);
+                                this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
+                                this.Cells = await this.machineCellsWebService.GetAllAsync();
+                            }).Wait();
+
+                            var ms = (MachineStatus)this.MachineStatus.Clone();
+
+                            Task.Run(async () => ms = await this.GetElevatorAsync(ms)).Wait();
+
+                            this.MachineStatus = ms;
+
+                            break;
+                        }
+
+                    case MessageStatus.OperationEnd:
+                    case MessageStatus.OperationStop:
+                    case MessageStatus.OperationStepStop:
+                        {
+                            if (message?.Data is PositioningMessageData dataLog)
+                            {
+                                this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status}; {dataLog?.AxisMovement};");
+                            }
+                            else
+                            {
+                                this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status};");
+                            }
+
+                            Task.Run(async () =>
+                            {
+                                this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
+                                this.Cells = await this.machineCellsWebService.GetAllAsync();
+                                this.Bay = await this.bayManagerService.GetBayAsync();
+                            }).Wait();
+
+                            var ms = (MachineStatus)this.MachineStatus.Clone();
+
+                            if (message?.Data is PositioningMessageData dataPositioning)
+                            {
+                                Task.Run(async () => ms = await this.GetElevatorAsync(ms)).Wait();
+
+                                ms.IsMovingElevator = false;
+                            }
+
+                            ms.IsMoving = false;
+
+                            if (message?.Data is ShutterPositioningMessageData)
+                            {
+                                ms.IsMovingShutter = false;
+                            }
+
+                            if (message?.Data is MoveLoadingUnitMessageData)
+                            {
+                                ms.IsMovingLoadingUnit = false;
                             }
 
                             ms.VerticalSpeed = null;
-                            if (dataPositioning.AxisMovement == Axis.Vertical)
+                            ms.VerticalTargetPosition = null;
+                            ms.HorizontalTargetPosition = null;
+                            ms.BayChainTargetPosition = null;
+
+                            if (!this.MachineStatus.IsMovingLoadingUnit)
                             {
-                                ms.VerticalTargetPosition = dataPositioning.TargetPosition;
-                                if (dataPositioning.TargetSpeed.Length > 0)
+                                this.ClearNotifications();
+                            }
+
+                            if (this.Bay.Positions?.OrderBy(o => o.Height).LastOrDefault() is BayPosition bayPositionUp)
+                            {
+                                ms.LoadingUnitPositionUpInBay = bayPositionUp.LoadingUnit;
+                                if (bayPositionUp.LoadingUnit != null)
                                 {
-                                    ms.VerticalSpeed = dataPositioning.TargetSpeed[0];
+                                    ms.ElevatorPositionLoadingUnit = bayPositionUp.LoadingUnit;
                                 }
                             }
-                            else if (dataPositioning.AxisMovement == Axis.Horizontal)
+
+                            if (this.Bay.IsDouble &&
+                                this.Bay.Positions?.OrderBy(o => o.Height).FirstOrDefault() is BayPosition bayPositionDown)
                             {
-                                ms.HorizontalTargetPosition = dataPositioning.TargetPosition;
+                                ms.LoadingUnitPositionDownInBay = bayPositionDown.LoadingUnit;
+                                if (bayPositionDown.LoadingUnit != null)
+                                {
+                                    ms.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
+                                }
                             }
-                            else if (dataPositioning.AxisMovement == Axis.BayChain)
+
+                            this.MachineStatus = ms;
+
+                            Task.Run(async () =>
                             {
-                                ms.BayChainTargetPosition = dataPositioning.TargetPosition;
-                            }
+                                var pos = await this.machineElevatorWebService.GetPositionAsync();
+
+                                this.UpdateMachineStatus(
+                                    new ElevatorPositionChangedEventArgs(
+                                        pos.Vertical,
+                                        pos.Horizontal,
+                                        pos.CellId,
+                                        pos.BayPositionId,
+                                        pos.BayPositionUpper));
+                            }).Wait();
+
+                            break;
                         }
 
-                        if (message?.Data is ShutterPositioningMessageData)
+                    case MessageStatus.OperationError:
                         {
-                            ms.IsMovingShutter = true;
-                        }
-
-                        this.MachineStatus = ms;
-                        break;
-                    }
-
-                case MessageStatus.OperationExecuting:
-                    {
-                        if (this.MachineStatus.IsMoving)
-                        {
-                            if (message?.Data is PositioningMessageData dataPositioningInfo
-                                && !this.MachineStatus.IsMovingLoadingUnit)
+                            if (message?.Data is PositioningMessageData dataLog)
                             {
-                                this.WriteInfo(dataPositioningInfo?.AxisMovement);
+                                this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status}; {dataLog?.AxisMovement};");
                             }
-                        }
-
-                        if (this.MachineStatus.IsMovingLoadingUnit)
-                        {
-                            this.Notification = "Movimento in corso...";
-                        }
-
-                        break;
-                    }
-
-                case MessageStatus.OperationUpdateData:
-                    {
-                        this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status};");
-
-                        Task.Run(async () =>
-                        {
-                            this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
-                            this.Cells = await this.machineCellsWebService.GetAllAsync();
-                        }).Wait();
-
-                        var ms = (MachineStatus)this.MachineStatus.Clone();
-
-                        Task.Run(async () => ms = await this.GetElevatorAsync(ms)).Wait();
-
-                        this.MachineStatus = ms;
-
-                        break;
-                    }
-
-                case MessageStatus.OperationEnd:
-                case MessageStatus.OperationStop:
-                case MessageStatus.OperationStepStop:
-                    {
-                        if (message?.Data is PositioningMessageData dataLog)
-                        {
-                            this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status}; {dataLog?.AxisMovement};");
-                        }
-                        else
-                        {
-                            this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status};");
-                        }
-
-                        Task.Run(async () =>
-                        {
-                            this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
-                            this.Cells = await this.machineCellsWebService.GetAllAsync();
-                            this.Bay = await this.bayManagerService.GetBayAsync();
-                        }).Wait();
-
-                        var ms = (MachineStatus)this.MachineStatus.Clone();
-
-                        if (message?.Data is PositioningMessageData dataPositioning)
-                        {
-                            Task.Run(async () => ms = await this.GetElevatorAsync(ms)).Wait();
-
-                            ms.IsMovingElevator = false;
-                        }
-
-                        ms.IsMoving = false;
-
-                        if (message?.Data is ShutterPositioningMessageData)
-                        {
-                            ms.IsMovingShutter = false;
-                        }
-
-                        if (message?.Data is MoveLoadingUnitMessageData)
-                        {
-                            ms.IsMovingLoadingUnit = false;
-                        }
-
-                        ms.VerticalSpeed = null;
-                        ms.VerticalTargetPosition = null;
-                        ms.HorizontalTargetPosition = null;
-                        ms.BayChainTargetPosition = null;
-
-                        if (!this.MachineStatus.IsMovingLoadingUnit)
-                        {
-                            this.ClearNotifications();
-                        }
-
-                        if (this.Bay.Positions?.OrderBy(o => o.Height).LastOrDefault() is BayPosition bayPositionUp)
-                        {
-                            ms.LoadingUnitPositionUpInBay = bayPositionUp.LoadingUnit;
-                            if (bayPositionUp.LoadingUnit != null)
+                            else
                             {
-                                ms.ElevatorPositionLoadingUnit = bayPositionUp.LoadingUnit;
+                                this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status};");
                             }
-                        }
 
-                        if (this.Bay.IsDouble &&
-                            this.Bay.Positions?.OrderBy(o => o.Height).FirstOrDefault() is BayPosition bayPositionDown)
-                        {
-                            ms.LoadingUnitPositionDownInBay = bayPositionDown.LoadingUnit;
-                            if (bayPositionDown.LoadingUnit != null)
+                            var ms = (MachineStatus)this.MachineStatus.Clone();
+
+                            ms.IsMoving = false;
+                            ms.IsError = true;
+                            ms.ErrorDescription = message.Description;
+
+                            if (message?.Data is PositioningMessageData dataPositioning)
                             {
-                                ms.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
+                                ms.IsMovingElevator = false;
                             }
+
+                            if (message?.Data is ShutterPositioningMessageData)
+                            {
+                                ms.IsMovingShutter = false;
+                            }
+
+                            if (message?.Data is MoveLoadingUnitMessageData)
+                            {
+                                ms.IsMovingLoadingUnit = false;
+                            }
+
+                            ms.VerticalSpeed = null;
+                            ms.VerticalTargetPosition = null;
+                            ms.HorizontalTargetPosition = null;
+                            ms.BayChainTargetPosition = null;
+
+                            this.ShowNotification(message.Description, NotificationSeverity.Error);
+
+                            this.MachineStatus = ms;
+                            break;
                         }
+                }
 
-                        this.MachineStatus = ms;
-
-                        Task.Run(async () =>
-                        {
-                            var pos = await this.machineElevatorWebService.GetPositionAsync();
-
-                            this.UpdateMachineStatus(
-                                new ElevatorPositionChangedEventArgs(
-                                    pos.Vertical,
-                                    pos.Horizontal,
-                                    pos.CellId,
-                                    pos.BayPositionId,
-                                    pos.BayPositionUpper));
-                        }).Wait();
-
-                        break;
-                    }
-
-                case MessageStatus.OperationError:
-                    {
-                        if (message?.Data is PositioningMessageData dataLog)
-                        {
-                            this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status}; {dataLog?.AxisMovement};");
-                        }
-                        else
-                        {
-                            this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status};");
-                        }
-
-                        var ms = (MachineStatus)this.MachineStatus.Clone();
-
-                        ms.IsMoving = false;
-                        ms.IsError = true;
-                        ms.ErrorDescription = message.Description;
-
-                        if (message?.Data is PositioningMessageData dataPositioning)
-                        {
-                            ms.IsMovingElevator = false;
-                        }
-
-                        if (message?.Data is ShutterPositioningMessageData)
-                        {
-                            ms.IsMovingShutter = false;
-                        }
-
-                        if (message?.Data is MoveLoadingUnitMessageData)
-                        {
-                            ms.IsMovingLoadingUnit = false;
-                        }
-
-                        ms.VerticalSpeed = null;
-                        ms.VerticalTargetPosition = null;
-                        ms.HorizontalTargetPosition = null;
-                        ms.BayChainTargetPosition = null;
-
-                        this.ShowNotification(message.Description, NotificationSeverity.Error);
-
-                        this.MachineStatus = ms;
-                        break;
-                    }
+                this.WarningsManagement(this.GetActiveView());
             }
-
-            this.WarningsManagement(this.GetActiveView());
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
         }
 
         private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
@@ -953,12 +960,6 @@ namespace Ferretto.VW.App.Services
                         break;
 
                     case WarningsArea.Maintenance:
-                        if (!this.IsHoming)
-                        {
-                            this.ShowNotification("Homing non eseguito.", NotificationSeverity.Error);
-                        }
-                        break;
-
                     case WarningsArea.Picking:
                         if (this.machineModeService.MachineMode != MachineMode.Automatic)
                         {
@@ -967,6 +968,10 @@ namespace Ferretto.VW.App.Services
                         else if (this.machineModeService.MachinePower != MachinePowerState.Powered)
                         {
                             this.ShowNotification("Manca marcia.", NotificationSeverity.Warning);
+                        }
+                        else
+                        {
+                            this.ClearNotifications();
                         }
                         break;
 

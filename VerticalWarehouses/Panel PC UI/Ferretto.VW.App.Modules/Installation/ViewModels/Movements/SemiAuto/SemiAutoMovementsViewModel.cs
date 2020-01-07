@@ -160,12 +160,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override bool IsWaitingForResponse
         {
-            get => this.isWaitingForResponse;
+            get => base.IsWaitingForResponse;
             protected set
             {
-                if (this.SetProperty(ref this.isWaitingForResponse, value))
+                if (base.IsWaitingForResponse != value)
                 {
-                    if (this.isWaitingForResponse)
+                    base.IsWaitingForResponse = value;
+
+                    if (this.IsWaitingForResponse)
                     {
                         this.ClearNotifications();
                     }

@@ -128,7 +128,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                             if (result != MachineErrorCode.NoError)
                             {
                                 var error = this.errorsProvider.RecordNew(result);
-                                throw new StateMachineException(error.Definition.Description, commandMessage, MessageActor.MachineManager);
+                                throw new StateMachineException(error.Description, commandMessage, MessageActor.MachineManager);
                             }
                         }
                         break;

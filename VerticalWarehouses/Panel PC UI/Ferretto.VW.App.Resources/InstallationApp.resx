@@ -346,7 +346,7 @@
     <value>Measured lenght [mm]</value>
   </data>
   <data name="NewResolution" xml:space="preserve">
-    <value>New resolution [imp/mm]</value>
+    <value>New resolution (imp/mm)</value>
   </data>
   <data name="RepositionLenght" xml:space="preserve">
     <value>Reposition lenght [mm]</value>
@@ -356,7 +356,7 @@
     <comment>Label text</comment>
   </data>
   <data name="CurrentResolution" xml:space="preserve">
-    <value>Current resolution [imp/mm]</value>
+    <value>Current resolution (imp/mm)</value>
   </data>
   <data name="DesiredMovement" xml:space="preserve">
     <value>Desired movement [mm]</value>

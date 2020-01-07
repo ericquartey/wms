@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Transactions;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -64,21 +63,13 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 return this.dataContext.Errors
                         .Where(e => !e.ResolutionDate.HasValue)
-                        .OrderBy(e => e.Definition.Severity)
-                        .ThenBy(e => e.OccurrenceDate)
+                        .OrderBy(e => e.OccurrenceDate)
                         .Select(e => new MachineError
                         {
                             Id = e.Id,
                             Code = e.Code,
                             OccurrenceDate = e.OccurrenceDate,
-                            ResolutionDate = e.ResolutionDate,
-                            Definition = new ErrorDefinition
-                            {
-                                Code = e.Code,
-                                Description = e.Definition.Description,
-                                Reason = e.Definition.Reason,
-                                Severity = e.Definition.Severity,
-                            },
+                            ResolutionDate = e.ResolutionDate
                         })
                         .FirstOrDefault();
             }
@@ -97,7 +88,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             new ErrorStatisticsDetail
                             {
                                 Code = s.Code,
-                                Description = s.Error.Description,
+                                Description = s.Description,
                                 Total = s.TotalErrors,
                                 RatioTotal = s.TotalErrors * 100.0 / totalErrors,
                             }),
@@ -156,19 +147,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     this.logger.LogWarning($"Machine error {code} ({(int)code}) for {bayNumber} was not triggered because already present and still unresolved.");
                     return existingUnresolvedError;
-                }
+                };
 
-                // TODO: per il momento prendiamo il testo dell'errore dal database: si può utilizzare la risorsa ErrorDescriptions?
-                var errorDefinition = this.dataContext.ErrorDefinitions.FirstOrDefault(e => e.Code == newError.Code);
-                this.logger.LogError($"Machine error {errorDefinition?.Description ?? code.ToString()} ({(int)code}) for {bayNumber} was triggered.");
-                if (errorDefinition != null)
-                {
-                    newError.Definition = new ErrorDefinition
-                    {
-                        Code = errorDefinition.Code,
-                        Description = errorDefinition.Description
-                    };
-                }
                 this.dataContext.Errors.Add(newError);
 
                 var errorStatistics = this.dataContext.ErrorStatistics.SingleOrDefault(e => e.Code == newError.Code);

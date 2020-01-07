@@ -53,6 +53,7 @@
     <None Remove="Views\About\DiagnosticsView.xaml" />
     <None Remove="Views\About\GeneralView.xaml" />
     <None Remove="Views\About\StatisticsView.xaml" />
+    <None Remove="Views\ItemOperations\LoadingUnitView.xaml" />
   </ItemGroup>
   
   <ItemGroup>
@@ -76,6 +77,9 @@
       <DependentUpon>AlarmView.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\About\GeneralView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\ItemOperations\LoadingUnitView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
   </ItemGroup>

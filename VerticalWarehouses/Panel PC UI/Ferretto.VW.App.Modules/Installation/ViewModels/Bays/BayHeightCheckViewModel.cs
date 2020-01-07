@@ -350,7 +350,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.InputStepValue = this.procedureParameters.Step;
             }
-            catch (Exception ex)
+            catch (MasWebApiException ex)
             {
                 this.ShowNotification(ex);
             }
@@ -381,7 +381,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     VW.App.Resources.InstallationApp.ProcedureWasStopped,
                     Services.Models.NotificationSeverity.Warning);
             }
-            catch (Exception ex)
+            catch (MasWebApiException ex)
             {
                 this.ShowNotification(ex);
                 this.IsElevatorMovingToHeight = false;
@@ -411,7 +411,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated,
                     Services.Models.NotificationSeverity.Success);
             }
-            catch (Exception ex)
+            catch (MasWebApiException ex)
             {
                 this.ShowNotification(ex);
             }
@@ -527,7 +527,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.ToggleBayPositionDown();
             }
-            catch (Exception ex)
+            catch (MasWebApiException ex)
             {
                 this.ShowNotification(ex);
             }
@@ -547,7 +547,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.machineElevatorWebService.MoveVerticalOfDistanceAsync(-this.InputStepValue.Value);
                 this.Displacement = this.currentHeight - this.InitialPosition;
             }
-            catch (Exception ex)
+            catch (MasWebApiException ex)
             {
                 this.IsElevatorMovingDown = false;
                 this.ShowNotification(ex);

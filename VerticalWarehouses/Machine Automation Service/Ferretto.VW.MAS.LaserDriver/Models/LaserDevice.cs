@@ -262,7 +262,7 @@ namespace Ferretto.VW.MAS.LaserDriver
                     {
                         this.logger.LogError($"2:Exception: {ex.Message} while connecting to Laser {this.BayNumber} - ExceptionCode: {ex.ExceptionCode};\nInner exception: {ex.InnerException.Message}");
                     }
-                    catch (Exception ex)
+                    catch
                     {
                         this.logger.LogCritical($"Error while connecting to Laser {this.BayNumber}");
 

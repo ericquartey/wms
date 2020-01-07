@@ -376,7 +376,7 @@
     <value>Totale cassetti</value>
   </data>
   <data name="DrawerSpaceSaturazionDrawerMeasure" xml:space="preserve">
-    <value>Dimensione cassetti [mm.]</value>
+    <value>Dimensione cassetti [mm]</value>
   </data>
   <data name="DrawerSpaceSaturazionFillingMachine" xml:space="preserve">
     <value>Riempimento macchina</value>
@@ -601,7 +601,7 @@
     <value>Unità di misura</value>
   </data>
   <data name="ItemDetailWeight" xml:space="preserve">
-    <value>Peso medio [gr.]</value>
+    <value>Peso medio [gr]</value>
   </data>
   <data name="StatisticsNavigationMachine" xml:space="preserve">
     <value>Statistiche macchina</value>
@@ -715,16 +715,16 @@
     <value>Codice cassetto</value>
   </data>
   <data name="DrawerActivityLocalCallHeight" xml:space="preserve">
-    <value>Altezza attuale cassetto [mm.]</value>
+    <value>Altezza attuale cassetto [mm]</value>
   </data>
   <data name="DrawerActivityLocalCallGrossWeight" xml:space="preserve">
-    <value>Tara cassetto [Kg.]</value>
+    <value>Peso Lordo [kg]</value>
   </data>
   <data name="DrawerActivityLocalCallActualWeight" xml:space="preserve">
-    <value>Peso attuale [Kg.]</value>
+    <value>Peso attuale [kg]</value>
   </data>
   <data name="DrawerActivityLocalCallMaxCapacity" xml:space="preserve">
-    <value>Portata netta massima [Kg.]</value>
+    <value>Portata netta massima [kg]</value>
   </data>
   <data name="DrawerActivityLocalCallMissions" xml:space="preserve">
     <value>Numero missioni eseguite</value>

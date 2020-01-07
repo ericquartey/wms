@@ -20,10 +20,8 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
                 .IsRequired();
 
             builder
-                .HasOne(e => e.Definition)
-                .WithMany(d => d.Occurrences)
-                .HasForeignKey(e => e.Code)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .Ignore(l => l.Description)
+                .Ignore(l => l.Reason);
         }
 
         #endregion

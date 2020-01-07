@@ -22,7 +22,7 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
 
         #region Events
 
-        public event EventHandler<BarcodeEventArgs> BarcodeReceived;
+        public event EventHandler<ActionEventArgs> BarcodeReceived;
 
         #endregion
 
@@ -110,12 +110,17 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
 
                         System.Diagnostics.Debug.WriteLine($"Received barcode '{barcode}'.");
 
-                        this.BarcodeReceived?.Invoke(this, new BarcodeEventArgs(barcode));
+                        this.BarcodeReceived?.Invoke(this, new ActionEventArgs(barcode));
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Error while reading from serial port {this.serialPort.PortName}: {ex.Message}");
+
+                        this.serialPort.Open();
                     }
                     catch (Exception ex)
                     {
                         System.Diagnostics.Debug.WriteLine($"Error while reading from serial port {this.serialPort.PortName}: {ex.Message}");
-                        return;
                     }
                 }
                 while (this.serialPort.IsOpen);
