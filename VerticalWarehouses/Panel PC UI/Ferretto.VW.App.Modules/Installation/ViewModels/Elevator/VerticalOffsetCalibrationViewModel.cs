@@ -69,6 +69,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand reloadCommand;
 
+        private DelegateCommand returnToCellPositioningCommand;
+
         private Cell selectedCell;
 
         private double startPosition;
@@ -78,6 +80,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private double stepValue;
 
         private DelegateCommand stopCommand;
+        private DelegateCommand applyCorrectionCommand;
+        private double newDisplacement;
 
         #endregion
 
@@ -129,6 +133,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.currentVerticalOffset;
             set => this.SetProperty(ref this.currentVerticalOffset, value);
         }
+
+        public double NewDisplacement
+        {
+            get => this.newDisplacement;
+            set => this.SetProperty(ref this.newDisplacement, value);
+        }
+
 
         public decimal? Displacement
         {
@@ -185,15 +196,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 () => this.CurrentStep = VerticalOffsetCalibrationStep.CellPositioning,
                 this.CanToCellPositioning));
 
+        public ICommand ApplyCorrectionCommand =>
+            this.applyCorrectionCommand
+            ??
+            (this.applyCorrectionCommand = new DelegateCommand(
+                () => this.ApplyCorrectionAsync()));
+
         public ICommand MoveToConfirmCommand =>
             this.moveToConfirmCommand
             ??
             (this.moveToConfirmCommand = new DelegateCommand(
-                () =>
-                {
-                    this.CurrentStep = VerticalOffsetCalibrationStep.Confirm;
-                    this.ApplyCorrectionAsync();
-                },
+                () => this.CurrentStep = VerticalOffsetCalibrationStep.Confirm,
                 this.CanMoveToConfirm));
 
         public ICommand MoveToStartPositionCommand =>
@@ -207,7 +220,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.reloadCommand
             ??
             (this.reloadCommand = new DelegateCommand(
-                () => this.CurrentStep = VerticalOffsetCalibrationStep.Start));
+                () => this.CurrentStep = VerticalOffsetCalibrationStep.CellPositioning));
+
+        public ICommand ReturnToCellPositioningCommand =>
+            this.returnToCellPositioningCommand
+            ??
+            (this.returnToCellPositioningCommand = new DelegateCommand(
+                () => this.CurrentStep = VerticalOffsetCalibrationStep.CellPositioning,
+                () => this.CanBaseExecute() &&
+                      !this.SensorsService.IsLoadingUnitOnElevator));
 
         public Cell SelectedCell
         {
@@ -412,7 +433,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             base.RaiseCanExecuteChanged();
 
             this.SelectedCell = this.MachineService.Cells.SingleOrDefault(c => c.Id.Equals(this.CurrentCellId));
-            this.Displacement = Convert.ToDecimal(this.MachineStatus.ElevatorVerticalPosition.Value - this.StartPosition);
 
             this.RaisePropertyChanged(nameof(this.HasStepStart));
             this.RaisePropertyChanged(nameof(this.HasStepCellPositioning));
@@ -433,6 +453,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.moveToConfirmCommand?.RaiseCanExecuteChanged();
             this.displacementCommand?.RaiseCanExecuteChanged();
             this.reloadCommand?.RaiseCanExecuteChanged();
+            this.returnToCellPositioningCommand?.RaiseCanExecuteChanged();
+            this.applyCorrectionCommand?.RaiseCanExecuteChanged();
 
             this.UpdateStatusButtonFooter();
         }
@@ -443,8 +465,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                var newOffset = this.CurrentVerticalOffset.Value + (double)this.Displacement.Value;
-                await this.verticalOffsetWebService.CompleteAsync(newOffset);
+                await this.verticalOffsetWebService.CompleteAsync(this.NewDisplacement);
 
                 await this.RetrieveVerticalOffset();
 
@@ -453,6 +474,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.ShowNotification("Offset asse verticale aggiornato.", Services.Models.NotificationSeverity.Success);
 
                 this.CurrentStep = VerticalOffsetCalibrationStep.Confirm;
+
+                this.NavigationService.GoBack();
             }
             catch (Exception ex)
             {
@@ -532,6 +555,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
 
                 await this.machineElevatorWebService.MoveVerticalOfDistanceAsync(this.StepValue);
+
+                if (this.Displacement is null)
+                {
+                    this.Displacement = Convert.ToDecimal(this.StepValue);
+                }
+                else
+                {
+                    this.Displacement += Convert.ToDecimal(this.StepValue);
+                }
             }
             catch (Exception ex)
             {
@@ -609,6 +641,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     break;
 
                 case VerticalOffsetCalibrationStep.CellPositioning:
+                    this.Displacement = null;
+
                     this.ShowPrevStepSinglePage(true, !this.IsMoving);
                     this.ShowNextStepSinglePage(true, this.moveToCellMeasuredCommand?.CanExecute() ?? false);
                     break;
@@ -619,7 +653,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     break;
 
                 case VerticalOffsetCalibrationStep.Confirm:
-                    this.ShowPrevStepSinglePage(true, false);
+                    this.NewDisplacement = this.CurrentVerticalOffset.Value + (double)this.Displacement.Value;
+
+                    this.ShowPrevStepSinglePage(true, true);
                     this.ShowNextStepSinglePage(true, false);
                     break;
             }
