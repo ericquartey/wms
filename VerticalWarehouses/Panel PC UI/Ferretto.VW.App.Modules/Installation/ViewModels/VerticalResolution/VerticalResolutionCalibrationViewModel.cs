@@ -303,6 +303,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get
             {
+                this.currentError = null;
+
                 switch (columnName)
                 {
                     case nameof(this.DestinationPosition1):
@@ -326,7 +328,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                             if (this.DestinationPosition1.Value < this.axisLowerBound ||
                                 this.DestinationPosition1.Value > this.axisUpperBound)
                             {
-                                this.currentError = $"Destination position out of ranhe axis ({this.AxisLowerBound} - {this.AxisUpperBound}).";
+                                this.currentError = $"Destination position out of range axis ({this.AxisLowerBound} - {this.AxisUpperBound}).";
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
@@ -375,7 +377,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                 this.axisLowerBound > 0 &&
                                 this.axisUpperBound > 0)
                             {
-                                this.currentError = $"Start position out of ranhe axis ({this.AxisLowerBound} - {this.AxisUpperBound}).";
+                                this.currentError = $"Start position out of range axis ({this.AxisLowerBound} - {this.AxisUpperBound}).";
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
@@ -412,7 +414,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                 if (this.DestinationPosition2.Value < this.axisLowerBound ||
                                     this.DestinationPosition2.Value > this.axisUpperBound)
                                 {
-                                    this.currentError = $"Destination position out of ranhe axis ({this.AxisLowerBound} - {this.AxisUpperBound}).";
+                                    this.currentError = $"Destination position out of range axis ({this.AxisLowerBound} - {this.AxisUpperBound}).";
                                     this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                     return this.currentError;
                                 }
@@ -423,7 +425,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                  this.MeasuredPosition2.Value > this.axisUpperBound) &&
                                 Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) == Convert.ToInt32(this.DestinationPosition2.Value))
                             {
-                                this.currentError = $"Measured position out of ranhe axis ({this.AxisLowerBound} - {this.AxisUpperBound}).";
+                                this.currentError = $"Measured position out of range axis ({this.AxisLowerBound} - {this.AxisUpperBound}).";
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
@@ -476,7 +478,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             await base.OnAppearedAsync();
 
-            this.currentStep = CalibrationStep.PositionMeter;
+            this.CurrentStep = CalibrationStep.PositionMeter;
 
             var procedureParameters = await this.verticalOriginProcedureWebService.GetParametersAsync();
             this.AxisUpperBound = procedureParameters.UpperBound;
@@ -634,7 +636,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated,
                     Services.Models.NotificationSeverity.Success);
 
-                this.CurrentStep = CalibrationStep.PositionMeter;
+                this.NavigationService.GoBack();
             }
             catch (Exception ex)
             {

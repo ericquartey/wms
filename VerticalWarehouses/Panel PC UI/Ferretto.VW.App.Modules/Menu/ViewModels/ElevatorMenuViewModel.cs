@@ -18,6 +18,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
     {
         #region Fields
 
+        private readonly IMachineVerticalOffsetProcedureWebService verticalOffsetProcedureWebService;
+
         private readonly IMachineVerticalResolutionCalibrationProcedureWebService verticalResolutionCalibrationProcedureWebService;
 
         private DelegateCommand beltBurnishingCommand;
@@ -39,10 +41,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
         #region Constructors
 
         public ElevatorMenuViewModel(
-            IMachineVerticalResolutionCalibrationProcedureWebService verticalResolutionCalibrationProcedureWebService)
+            IMachineVerticalResolutionCalibrationProcedureWebService verticalResolutionCalibrationProcedureWebService,
+            IMachineVerticalOffsetProcedureWebService verticalOffsetProcedureWebService)
             : base()
         {
             this.verticalResolutionCalibrationProcedureWebService = verticalResolutionCalibrationProcedureWebService ?? throw new ArgumentNullException(nameof(verticalResolutionCalibrationProcedureWebService));
+            this.verticalOffsetProcedureWebService = verticalOffsetProcedureWebService ?? throw new ArgumentNullException(nameof(verticalOffsetProcedureWebService));
         }
 
         #endregion
@@ -75,7 +79,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.beltBurnishingCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.BeltBurnishing),
-                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
+                () => this.CanExecuteCommand() &&
+                      this.MachineService.IsHoming &&
+                      this.VerticalResolutionCalibrationProcedureParameters != null &&
+                      this.VerticalResolutionCalibrationProcedureParameters.IsCompleted &&
+                      this.VerticalOffsetProcedureParameters != null &&
+                      this.VerticalOffsetProcedureParameters.IsCompleted));
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -84,7 +93,9 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.testDepositAndPickUpCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.TestDepositAndPickUp),
-                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
+                () => this.CanExecuteCommand() &&
+                      this.MachineService.IsHoming &&
+                      false));
 
         public ICommand VerticalOffsetCalibrationCommand =>
             this.verticalOffsetCalibration
@@ -92,9 +103,11 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.verticalOffsetCalibration = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.VerticalOffsetCalibration),
                 () => this.CanExecuteCommand() &&
-                      this.MachineService.IsHoming &&
-                      this.VerticalResolutionCalibrationProcedureParameters != null &&
-                      this.VerticalResolutionCalibrationProcedureParameters.IsCompleted));
+                      this.MachineService.IsHoming
+                //&&
+                //this.VerticalResolutionCalibrationProcedureParameters != null &&
+                //this.VerticalResolutionCalibrationProcedureParameters.IsCompleted
+                ));
 
         public ICommand VerticalOriginCalibrationCommand =>
             this.verticalOriginCalibration
@@ -124,6 +137,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.WeightMeasurement),
                 () => this.CanExecuteCommand() && this.MachineService.IsHoming));
 
+        protected OffsetCalibrationProcedure VerticalOffsetProcedureParameters { get; private set; }
+
         protected VerticalResolutionCalibrationProcedure VerticalResolutionCalibrationProcedureParameters { get; private set; }
 
         #endregion
@@ -135,6 +150,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             await base.OnAppearedAsync();
 
             this.VerticalResolutionCalibrationProcedureParameters = await this.verticalResolutionCalibrationProcedureWebService.GetParametersAsync();
+            this.VerticalOffsetProcedureParameters = await this.verticalOffsetProcedureWebService.GetParametersAsync();
 
             this.RaiseCanExecuteChanged();
         }

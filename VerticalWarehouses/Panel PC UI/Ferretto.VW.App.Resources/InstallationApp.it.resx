@@ -124,7 +124,7 @@
     <value>Stop</value>
   </data>
   <data name="Resolution" xml:space="preserve">
-    <value>Risoluzione [imp/mm]</value>
+    <value>Risoluzione (imp/mm)</value>
   </data>
   <data name="ActualPosition" xml:space="preserve">
     <value>Posizione Corrente</value>
@@ -326,7 +326,7 @@
     <value>Spostamento misurato [mm]</value>
   </data>
   <data name="NewResolution" xml:space="preserve">
-    <value>Nuova risoluzione [imp/mm]</value>
+    <value>Nuova risoluzione (imp/mm)</value>
   </data>
   <data name="RepositionLenght" xml:space="preserve">
     <value>Lunghezza spostamento [mm]</value>
@@ -335,7 +335,7 @@
     <value>Risoluzione modificata correttamente.</value>
   </data>
   <data name="CurrentResolution" xml:space="preserve">
-    <value>Risoluzione attuale [imp/mm]</value>
+    <value>Risoluzione attuale (imp/mm)</value>
   </data>
   <data name="DesiredMovement" xml:space="preserve">
     <value>Spostamento desiderato [mm]</value>

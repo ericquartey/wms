@@ -94,7 +94,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<string>> GetSupportToken()
+        public ActionResult<string> GetSupportToken()
         {
             var token = this.usersProvider.GetSupportToken();
 
