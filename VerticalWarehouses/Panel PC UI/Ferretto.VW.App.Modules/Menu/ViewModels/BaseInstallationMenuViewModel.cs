@@ -196,9 +196,9 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            this.IsWaitingForResponse = true;
+            this.IsBackNavigationAllowed = true;
 
-            await base.OnAppearedAsync();
+            this.IsWaitingForResponse = true;
 
             if (this.IsVisible)
             {
@@ -242,9 +242,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 }
             }
 
-            this.IsBackNavigationAllowed = true;
-
             this.IsWaitingForResponse = false;
+
+            await base.OnAppearedAsync();
+
         }
 
         internal virtual bool CanExecuteCommand()
@@ -282,9 +283,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private bool CanExecuteMovementsCommand()
         {
-            return !this.IsWaitingForResponse
-                && this.MachineModeService.MachinePower == MachinePowerState.Powered
-                && this.HealthProbeService.HealthStatus == HealthStatus.Healthy;
+            return !this.IsWaitingForResponse &&
+                   this.MachineModeService.MachineMode == MachineMode.Manual &&
+                   this.MachineModeService.MachinePower == MachinePowerState.Powered &&
+                   this.HealthProbeService.HealthStatus == HealthStatus.Healthy;
         }
 
         private void MenuCommand(Menu menu)

@@ -121,8 +121,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             try
             {
-                await base.OnAppearedAsync();
-
                 this.IsBackNavigationAllowed = true;
 
                 await this.machineBaysWebService.ActivateAsync();
@@ -130,6 +128,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 await this.GetBayNumber();
 
                 this.CheckForNewOperations();
+
+                await base.OnAppearedAsync();
             }
             catch (Exception ex)
             {

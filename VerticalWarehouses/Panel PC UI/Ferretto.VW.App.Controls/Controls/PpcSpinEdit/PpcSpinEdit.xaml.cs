@@ -60,8 +60,20 @@ namespace Ferretto.VW.App.Controls
             typeof(PpcSpinEdit),
             new PropertyMetadata(null, new PropertyChangedCallback(OnMaskChanged)));
 
+        public static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
+           nameof(MaxValue),
+           typeof(decimal?),
+           typeof(PpcSpinEdit),
+           new PropertyMetadata(null));
+
+        public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
+           nameof(MinValue),
+           typeof(decimal?),
+           typeof(PpcSpinEdit),
+           new PropertyMetadata(null));
+
         public static readonly DependencyProperty SpinEditStyleProperty = DependencyProperty.Register(
-            nameof(SpinEditStyle),
+                            nameof(SpinEditStyle),
             typeof(Style),
             typeof(PpcSpinEdit),
             new PropertyMetadata(null, new PropertyChangedCallback(OnSpinEditStyleChanged)));
@@ -78,20 +90,10 @@ namespace Ferretto.VW.App.Controls
 
         private const string INTEGER_STYLE = "VWAPP_SpinEdit_IntegerStyle";
 
+        private const string SHORTINTEGER_STYLE = "VWAPP_SpinEdit_ShortIntegerStyle";
+
         private static readonly DependencyProperty EditValueProperty = DependencyProperty.Register(
             nameof(EditValue),
-            typeof(object),
-            typeof(PpcSpinEdit),
-            new FrameworkPropertyMetadata(null));
-
-        private static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
-            nameof(MaxValue),
-            typeof(object),
-            typeof(PpcSpinEdit),
-            new FrameworkPropertyMetadata(null));
-
-        private static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
-            nameof(MinValue),
             typeof(object),
             typeof(PpcSpinEdit),
             new FrameworkPropertyMetadata(null));
@@ -174,15 +176,15 @@ namespace Ferretto.VW.App.Controls
             set => this.SetValue(MaskProperty, value);
         }
 
-        public object MaxValue
+        public decimal? MaxValue
         {
-            get => this.GetValue(MaxValueProperty);
+            get => (decimal?)this.GetValue(MaxValueProperty);
             set => this.SetValue(MaxValueProperty, value);
         }
 
-        public object MinValue
+        public decimal? MinValue
         {
-            get => this.GetValue(MinValueProperty);
+            get => (decimal?)this.GetValue(MinValueProperty);
             set => this.SetValue(MinValueProperty, value);
         }
 
@@ -373,6 +375,12 @@ namespace Ferretto.VW.App.Controls
             if (Nullable.GetUnderlyingType(property.PropertyType) is Type nullType)
             {
                 type = nullType;
+            }
+
+            if (type == typeof(ushort))
+            {
+                this.SetStyle(SHORTINTEGER_STYLE);
+                return;
             }
 
             if (type == typeof(int))

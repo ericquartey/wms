@@ -31,6 +31,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #endregion
 
+        //public List<> Source
+        //{
+        //    get => this.axisLowerBound;
+        //    set => this.SetProperty(ref this.axisLowerBound, value, this.RaiseCanExecuteChanged);
+        //}
+
         #region Methods
 
         public async override Task OnAppearedAsync()
