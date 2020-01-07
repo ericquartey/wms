@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
@@ -66,21 +67,24 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.extractionLoadingUnitsCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.ExtractionLoadingUnits),
-                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
+                () => this.CanExecuteCommand() &&
+                      this.MachineModeService.MachineMode == MachineMode.Manual && this.MachineService.IsHoming));
 
         public ICommand InsertionLoadingUnitsCommand =>
             this.insertionLoadingUnitsCommand
             ??
             (this.insertionLoadingUnitsCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.InsertionLoadingUnits),
-                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
+                () => this.CanExecuteCommand() &&
+                      this.MachineModeService.MachineMode == MachineMode.Manual && this.MachineService.IsHoming));
 
         public ICommand LoadingUnitsBayToBayCommand =>
             this.loadingUnitsBayToBayCommand
             ??
             (this.loadingUnitsBayToBayCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.LoadingUnitsBayToBay),
-                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
+                () => this.CanExecuteCommand() &&
+                      this.MachineModeService.MachineMode == MachineMode.Manual && this.MachineService.IsHoming));
 
         public ICommand LoadingUnitsCommand =>
             this.loadingUnitsCommand
@@ -94,14 +98,17 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.moveLoadingUnitsCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.MoveLoadingUnits),
-                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
+                () => this.CanExecuteCommand() &&
+                      this.MachineModeService.MachineMode == MachineMode.Manual && this.MachineService.IsHoming));
 
         public ICommand TestCompleteCommand =>
             this.testCompleteCommand
             ??
             (this.testCompleteCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.TestComplete),
-                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
+                () => this.CanExecuteCommand() &&
+                      this.MachineService.IsHoming &&
+                      false));
 
         #endregion
 

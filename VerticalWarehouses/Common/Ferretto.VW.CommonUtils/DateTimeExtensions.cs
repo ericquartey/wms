@@ -7,10 +7,15 @@ namespace Ferretto.VW.CommonUtils
     {
         #region Methods
 
-        public static void SetAsSystemTime(this DateTime dateTime)
+        public static void SetAsUtcSystemTime(this DateTime dateTime)
         {
             var time = new SYSTEMTIME(dateTime);
-            SetSystemTime(ref time);
+            var success = SetSystemTime(ref time);
+
+            if (!success)
+            {
+                throw new InvalidOperationException("System time could not be set.");
+            }
         }
 
         [DllImport("kernel32.dll")]

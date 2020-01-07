@@ -1,16 +1,17 @@
 ﻿namespace Ferretto.VW.App.Controls
 {
-    [System.Flags]
     public enum EnableMask
     {
-        Any = MachinePoweredOff | MachinePoweredOn | MachineManualMode | MachineAutomaticMode,
+        Undefined = 0,
 
         MachinePoweredOff = 0x1,
 
         MachinePoweredOn = 0x2,
 
-        MachineManualMode = MachinePoweredOn | 0x4,
+        MachineManualMode = 0x4,
 
-        MachineAutomaticMode = MachinePoweredOn | 0x8,
+        MachineAutomaticMode = 0x8,
+
+        Any = MachinePoweredOff | MachinePoweredOn | MachineManualMode | MachineAutomaticMode,
     }
 }

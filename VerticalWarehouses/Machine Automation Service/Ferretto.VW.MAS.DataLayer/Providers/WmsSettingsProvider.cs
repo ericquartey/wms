@@ -43,6 +43,25 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             }
         }
 
+        public DateTimeOffset LastWmsSyncTime
+        {
+            get
+            {
+                lock (this.dataContext)
+                {
+                    return this.dataContext.WmsSettings.Single().LastWmsTimeSync;
+                }
+            }
+            set
+            {
+                lock (this.dataContext)
+                {
+                    this.dataContext.WmsSettings.Single().LastWmsTimeSync = value;
+                    this.dataContext.SaveChanges();
+                }
+            }
+        }
+
         public int TimeSyncIntervalMilliseconds
         {
             get

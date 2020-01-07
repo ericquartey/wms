@@ -124,9 +124,9 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             var configurationBuilder = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile(DefaultApplicationSettingsFile, optional: false, reloadOnChange: false)
-            .Build();
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile(DefaultApplicationSettingsFile, optional: false, reloadOnChange: false)
+                .Build();
 
             var connectionString = configurationBuilder.GetConnectionString(ConnectionStringName);
 
@@ -148,32 +148,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new ArgumentNullException(nameof(modelBuilder));
             }
 
-            // TODO: This can be discovered using reflection and looking for generic type(s) IEntityTypeConfiguration
-
-            modelBuilder
-                .ApplyConfiguration(new BaysConfiguration())
-                .ApplyConfiguration(new BayPositionsConfiguration())
-                .ApplyConfiguration(new PanelsConfiguration())
-                .ApplyConfiguration(new CellsConfiguration())
-                .ApplyConfiguration(new TorqueCurrentSampleConfiguration())
-                .ApplyConfiguration(new ElevatorAxisManualParametersConfiguration())
-                .ApplyConfiguration(new CarouselManualParametersConfiguration())
-                .ApplyConfiguration(new ErrorConfiguration())
-                .ApplyConfiguration(new ErrorStatisticConfiguration())
-                .ApplyConfiguration(new InvertersConfiguration())
-                .ApplyConfiguration(new IoDevicesConfiguration())
-                .ApplyConfiguration(new LasersConfiguration())
-                .ApplyConfiguration(new LoadingUnitsConfiguration())
-                .ApplyConfiguration(new MachineStatisticsConfiguration())
-                .ApplyConfiguration(new MissionsConfiguration())
-                .ApplyConfiguration(new MovementProfilesConfiguration())
-                .ApplyConfiguration(new ServicingInfoConfiguration())
-                .ApplyConfiguration(new SetupStatusConfiguration())
-                .ApplyConfiguration(new ShutterManualParametersConfiguration())
-                .ApplyConfiguration(new ShuttersConfiguration())
-                .ApplyConfiguration(new TorqueCurrentMeasurementSessionsConfiguration())
-                .ApplyConfiguration(new UsersConfiguration())
-                .ApplyConfiguration(new WmsSettingsConfiguration());
+            modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
         }
 
         #endregion

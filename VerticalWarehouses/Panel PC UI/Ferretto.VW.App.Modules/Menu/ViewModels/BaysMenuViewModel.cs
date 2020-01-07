@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
@@ -54,25 +55,30 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.bayControlCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.BayControl),
-                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
+                () => this.CanExecuteCommand() &&
+                      this.MachineModeService.MachineMode == MachineMode.Manual &&
+                      this.MachineService.IsHoming));
 
         public ICommand BayHeightCommand =>
             this.bayHeightCommand
             ??
             (this.bayHeightCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.BayHeight),
-                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
+                () => this.CanExecuteCommand() &&
+                      this.MachineModeService.MachineMode == MachineMode.Manual &&
+                      this.MachineService.IsHoming));
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public bool IsTestBayVisible => this.MachineService.HasBayExternal || this.MachineService.HasCarousel;
+        public bool IsTestBayVisible => (this.MachineService.HasBayExternal || this.MachineService.HasCarousel);
 
         public ICommand TestShutterCommand =>
             this.testShutterCommand
             ??
             (this.testShutterCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.TestShutter),
-                this.CanExecuteCommand));
+                ()=> this.CanExecuteCommand() &&
+                     this.MachineModeService.MachineMode == MachineMode.Manual));
 
         #endregion
 

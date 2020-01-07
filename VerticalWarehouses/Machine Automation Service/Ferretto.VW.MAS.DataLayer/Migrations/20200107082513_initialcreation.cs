@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initialcreation : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -330,6 +330,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     IsWmsTimeSyncEnabled = table.Column<bool>(nullable: false),
+                    LastWmsTimeSync = table.Column<DateTimeOffset>(nullable: false),
                     TimeSyncIntervalMilliseconds = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -1210,7 +1211,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 3, 4, 14, 3, 34, 137, DateTimeKind.Local).AddTicks(8705), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 3, 7, 9, 25, 12, 615, DateTimeKind.Local).AddTicks(8423), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -1219,8 +1220,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             migrationBuilder.InsertData(
                 table: "WmsSettings",
-                columns: new[] { "Id", "IsWmsTimeSyncEnabled", "TimeSyncIntervalMilliseconds" },
-                values: new object[] { -1, true, 10000 });
+                columns: new[] { "Id", "IsWmsTimeSyncEnabled", "LastWmsTimeSync", "TimeSyncIntervalMilliseconds" },
+                values: new object[] { -1, true, new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), 10000 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BayPositions_BayId",

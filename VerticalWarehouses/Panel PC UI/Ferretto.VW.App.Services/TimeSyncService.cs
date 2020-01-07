@@ -2,7 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.WMS.Data.WebAPI.Contracts;
+using NLog;
 
 namespace Ferretto.VW.App.Services
 {
@@ -16,7 +18,9 @@ namespace Ferretto.VW.App.Services
 
         private const int SyncToleranceMilliseconds = 10 * 1000;
 
-        private readonly IUtcTimeWmsWebService utcTimeWmsWebService;
+        private readonly Logger logger;
+
+        private readonly IMachineUtcTimeWebService utcTimeWebService;
 
         private bool isDisposed;
 
@@ -28,9 +32,10 @@ namespace Ferretto.VW.App.Services
 
         #region Constructors
 
-        public TimeSyncService(IUtcTimeWmsWebService utcTimeWmsWebService)
+        public TimeSyncService(IMachineUtcTimeWebService utcTimeWebService)
         {
-            this.utcTimeWmsWebService = utcTimeWmsWebService ?? throw new ArgumentNullException(nameof(utcTimeWmsWebService));
+            this.utcTimeWebService = utcTimeWebService ?? throw new ArgumentNullException(nameof(utcTimeWebService));
+            this.logger = NLog.LogManager.GetCurrentClassLogger();
         }
 
         #endregion
@@ -66,28 +71,31 @@ namespace Ferretto.VW.App.Services
             {
                 this.tokenSource?.Cancel();
                 this.tokenSource = new CancellationTokenSource();
+
                 try
                 {
                     do
                     {
                         try
                         {
-                            var machineUtcTimeBefore = DateTimeOffset.UtcNow;
-                            var remoteUtcTime = await this.utcTimeWmsWebService.GetAsync();
-                            var machineUtcTimeAfter = DateTimeOffset.UtcNow;
+                            this.logger.Trace("Attempting to sync PPC time with MAS time.");
 
-                            var callDuration = machineUtcTimeAfter - machineUtcTimeBefore;
-                            var callAdjustmentSeconds = TimeSpan.FromSeconds(callDuration.TotalSeconds / 2.0);
+                            var remoteUtcTime = await this.utcTimeWebService.GetAsync();
+                            var machineUtcTime = DateTimeOffset.UtcNow;
 
-                            var adjustedRemoteUtcTime = remoteUtcTime.Subtract(callAdjustmentSeconds);
-
-                            if ((machineUtcTimeBefore - adjustedRemoteUtcTime).TotalSeconds > SyncToleranceMilliseconds)
+                            if ((machineUtcTime - remoteUtcTime).TotalSeconds > SyncToleranceMilliseconds)
                             {
-                                adjustedRemoteUtcTime.SetAsSystemTime();
+                                remoteUtcTime.LocalDateTime.SetAsUtcSystemTime();
+                                this.logger.Trace("PPC time was synced with MAS time.");
+                            }
+                            else
+                            {
+                                this.logger.Trace("PPC is alredy synced with MAS time.");
                             }
                         }
-                        catch
+                        catch (Exception ex)
                         {
+                            this.logger.Error($"Cannot sync time with MAS: '{ex.Message}'.");
                         }
 
                         await Task.Delay(this.SyncIntervalMilliseconds, this.tokenSource.Token);

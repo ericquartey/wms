@@ -1080,18 +1080,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<bool> CanEnableWmsAutoSyncModeAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.DateTime> GetAsync();
+        System.Threading.Tasks.Task<System.DateTimeOffset> GetAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.DateTime> GetAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.DateTimeOffset> GetAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.DateTime> SetAsync(System.DateTime dateTime);
+        System.Threading.Tasks.Task<System.DateTimeOffset> SetAsync(System.DateTimeOffset dateTime);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.DateTime> SetAsync(System.DateTime dateTime, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.DateTimeOffset> SetAsync(System.DateTimeOffset dateTime, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<bool> IsWmsAutoSyncEnabledAsync();
@@ -1260,7 +1260,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     {
         [Newtonsoft.Json.JsonProperty("creationDate", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTime CreationDate { get; set; }
+        public System.DateTimeOffset CreationDate { get; set; }
     
         [Newtonsoft.Json.JsonProperty("destinationCellId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? DestinationCellId { get; set; }
@@ -2772,13 +2772,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("occurrenceDate", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTime OccurrenceDate { get; set; }
+        public System.DateTimeOffset OccurrenceDate { get; set; }
     
         [Newtonsoft.Json.JsonProperty("reason", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Reason { get; set; }
     
         [Newtonsoft.Json.JsonProperty("resolutionDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTime? ResolutionDate { get; set; }
+        public System.DateTimeOffset? ResolutionDate { get; set; }
     
         public string ToJson() 
         {
@@ -3012,13 +3012,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("installationDate", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTime InstallationDate { get; set; }
+        public System.DateTimeOffset InstallationDate { get; set; }
     
         [Newtonsoft.Json.JsonProperty("isOneTonMachine", Required = Newtonsoft.Json.Required.Always)]
         public bool IsOneTonMachine { get; set; }
     
         [Newtonsoft.Json.JsonProperty("lastServiceDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTime? LastServiceDate { get; set; }
+        public System.DateTimeOffset? LastServiceDate { get; set; }
     
         [Newtonsoft.Json.JsonProperty("maxGrossWeight", Required = Newtonsoft.Json.Required.Always)]
         public double MaxGrossWeight { get; set; }
@@ -3027,7 +3027,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public string ModelName { get; set; }
     
         [Newtonsoft.Json.JsonProperty("nextServiceDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTime? NextServiceDate { get; set; }
+        public System.DateTimeOffset? NextServiceDate { get; set; }
     
         [Newtonsoft.Json.JsonProperty("serialNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string SerialNumber { get; set; }
@@ -3220,7 +3220,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public SetupStepStatus CellsHeightCheck { get; set; }
     
         [Newtonsoft.Json.JsonProperty("completedDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTime? CompletedDate { get; set; }
+        public System.DateTimeOffset? CompletedDate { get; set; }
     
         [Newtonsoft.Json.JsonProperty("horizontalHoming", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupStepStatus HorizontalHoming { get; set; }
