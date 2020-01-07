@@ -41,6 +41,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineVerticalOriginProcedureWebService verticalOriginProcedureWebService;
 
+        private DelegateCommand applyCorrectionCommand;
+
         private double axisLowerBound;
 
         private double axisUpperBound;
@@ -67,6 +69,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand moveToStartPositionCommand;
 
+        private double newDisplacement;
+
         private DelegateCommand reloadCommand;
 
         private DelegateCommand returnToCellPositioningCommand;
@@ -80,8 +84,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private double stepValue;
 
         private DelegateCommand stopCommand;
-        private DelegateCommand applyCorrectionCommand;
-        private double newDisplacement;
 
         #endregion
 
@@ -103,6 +105,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Properties
+
+        public ICommand ApplyCorrectionCommand =>
+            this.applyCorrectionCommand
+            ??
+            (this.applyCorrectionCommand = new DelegateCommand(
+                () => this.ApplyCorrectionAsync()));
 
         public double AxisLowerBound
         {
@@ -134,13 +142,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.currentVerticalOffset, value);
         }
 
-        public double NewDisplacement
-        {
-            get => this.newDisplacement;
-            set => this.SetProperty(ref this.newDisplacement, value);
-        }
-
-
         public decimal? Displacement
         {
             get => this.displacement;
@@ -153,6 +154,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.displacementCommand = new DelegateCommand(
                 async () => await this.DisplacementCommandAsync(),
                 this.CanDisplacementCommand));
+
+        public override EnableMask EnableMask => EnableMask.MachineManualMode;
 
         public string Error => string.Join(
             this[nameof(this.StartPosition)],
@@ -196,12 +199,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 () => this.CurrentStep = VerticalOffsetCalibrationStep.CellPositioning,
                 this.CanToCellPositioning));
 
-        public ICommand ApplyCorrectionCommand =>
-            this.applyCorrectionCommand
-            ??
-            (this.applyCorrectionCommand = new DelegateCommand(
-                () => this.ApplyCorrectionAsync()));
-
         public ICommand MoveToConfirmCommand =>
             this.moveToConfirmCommand
             ??
@@ -215,6 +212,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.moveToStartPositionCommand = new DelegateCommand(
                 async () => await this.StartAsync(this.StartPosition),
                 this.CanMoveToStartPosition));
+
+        public double NewDisplacement
+        {
+            get => this.newDisplacement;
+            set => this.SetProperty(ref this.newDisplacement, value);
+        }
 
         public ICommand ReloadCommand =>
             this.reloadCommand

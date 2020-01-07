@@ -28,8 +28,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand menuInstalationCommand;
 
-        private DelegateCommand menuInstalationOldCommand;
-
         private DelegateCommand menuMaintenanceCommand;
 
         private DelegateCommand menuOperationCommand;
@@ -94,28 +92,22 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.menuInstalationCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Installation),
-                this.CanExecuteCommand));
-
-        public ICommand MenuInstalationOldCommand =>
-            this.menuInstalationOldCommand
-            ??
-            (this.menuInstalationOldCommand = new DelegateCommand(
-                () => this.MenuCommand(Menu.InstallationOld),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand()));
 
         public ICommand MenuMaintenanceCommand =>
             this.menuMaintenanceCommand
             ??
             (this.menuMaintenanceCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Maintenance),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand()));
 
         public ICommand MenuOperationCommand =>
             this.menuOperationCommand
             ??
             (this.menuOperationCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Operation),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() &&
+                      this.MachineModeService.MachineMode != MachineMode.Test));
 
         #endregion
 
@@ -157,7 +149,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.menuAboutCommand?.RaiseCanExecuteChanged();
             this.menuInstalationCommand?.RaiseCanExecuteChanged();
             this.menuMaintenanceCommand?.RaiseCanExecuteChanged();
-            this.menuMaintenanceCommand?.RaiseCanExecuteChanged();
+            this.menuOperationCommand?.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.MachineIdentity));
             this.RaisePropertyChanged(nameof(this.BayNumber));

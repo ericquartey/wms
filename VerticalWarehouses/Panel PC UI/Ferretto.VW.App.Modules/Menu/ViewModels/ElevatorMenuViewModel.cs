@@ -80,11 +80,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.beltBurnishingCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.BeltBurnishing),
                 () => this.CanExecuteCommand() &&
+                      this.MachineModeService.MachineMode == MachineMode.Manual &&
                       this.MachineService.IsHoming &&
-                      this.VerticalResolutionCalibrationProcedureParameters != null &&
-                      this.VerticalResolutionCalibrationProcedureParameters.IsCompleted &&
-                      this.VerticalOffsetProcedureParameters != null &&
-                      this.VerticalOffsetProcedureParameters.IsCompleted));
+                      ((this.VerticalResolutionCalibrationProcedureParameters != null &&
+                        this.VerticalResolutionCalibrationProcedureParameters.IsCompleted &&
+                        this.VerticalOffsetProcedureParameters != null &&
+                        this.VerticalOffsetProcedureParameters.IsCompleted) ||
+                       true)));
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -94,6 +96,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.testDepositAndPickUpCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.TestDepositAndPickUp),
                 () => this.CanExecuteCommand() &&
+                      this.MachineModeService.MachineMode == MachineMode.Manual &&
                       this.MachineService.IsHoming &&
                       false));
 
@@ -103,6 +106,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.verticalOffsetCalibration = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.VerticalOffsetCalibration),
                 () => this.CanExecuteCommand() &&
+                      this.MachineModeService.MachineMode == MachineMode.Manual &&
                       this.MachineService.IsHoming
                 //&&
                 //this.VerticalResolutionCalibrationProcedureParameters != null &&
@@ -114,14 +118,17 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.verticalOriginCalibration = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.VerticalOriginCalibration),
-                () => !this.IsWaitingForResponse));
+                () => this.CanExecuteCommand() &&
+                      this.MachineModeService.MachineMode == MachineMode.Manual));
 
         public ICommand VerticalResolutionCalibrationCommand =>
             this.verticalResolutionCalibration
             ??
             (this.verticalResolutionCalibration = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.VerticalResolutionCalibration),
-                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
+                () => this.CanExecuteCommand() &&
+                      this.MachineModeService.MachineMode == MachineMode.Manual &&
+                      this.MachineService.IsHoming));
 
         public ICommand WeightAnalysisCommand =>
             this.weightAnalysisCommand

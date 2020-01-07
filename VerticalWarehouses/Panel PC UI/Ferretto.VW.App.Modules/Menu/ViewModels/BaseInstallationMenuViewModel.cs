@@ -282,9 +282,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private bool CanExecuteMovementsCommand()
         {
-            return !this.IsWaitingForResponse
-                && this.MachineModeService.MachinePower == MachinePowerState.Powered
-                && this.HealthProbeService.HealthStatus == HealthStatus.Healthy;
+            return !this.IsWaitingForResponse &&
+                   this.MachineModeService.MachineMode == MachineMode.Manual &&
+                   this.MachineModeService.MachinePower == MachinePowerState.Powered &&
+                   this.HealthProbeService.HealthStatus == HealthStatus.Healthy;
         }
 
         private void MenuCommand(Menu menu)

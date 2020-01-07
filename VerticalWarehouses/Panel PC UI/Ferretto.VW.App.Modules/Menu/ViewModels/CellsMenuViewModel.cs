@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
@@ -62,21 +63,24 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.bayFirstLoadingUnitCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.BayFirstLoadingUnit),
-                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
+                () => this.CanExecuteCommand() &&
+                      this.MachineModeService.MachineMode == MachineMode.Manual && this.MachineService.IsHoming));
 
         public ICommand CellPanelsCheckCommand =>
             this.cellPanelsCheckCommand
             ??
             (this.cellPanelsCheckCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.CellPanelsCheck),
-                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
+                () => this.CanExecuteCommand() &&
+                      this.MachineModeService.MachineMode == MachineMode.Manual && this.MachineService.IsHoming));
 
         public ICommand CellsBlockTuningCommand =>
             this.cellsBlockTuningCommand
             ??
             (this.cellsBlockTuningCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.CellsBlockTuning),
-                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
+                () => this.CanExecuteCommand() &&
+                      this.MachineModeService.MachineMode == MachineMode.Manual && this.MachineService.IsHoming));
 
         public ICommand CellsCommand =>
             this.cellsCommand
@@ -90,7 +94,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.cellsHeightCheckCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.CellsHeightCheck),
-                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
+                () => this.CanExecuteCommand() &&
+                      this.MachineModeService.MachineMode == MachineMode.Manual && this.MachineService.IsHoming));
 
         #endregion
 
