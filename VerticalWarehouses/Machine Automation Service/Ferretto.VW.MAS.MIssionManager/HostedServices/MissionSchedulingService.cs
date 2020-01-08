@@ -196,28 +196,23 @@ namespace Ferretto.VW.MAS.MissionManager
                 {
                     mission.FsmRestoreStateName = mission.FsmStateName;
                 }
-
-                mission.FsmStateName = "MoveLoadingUnitErrorState";
-                if (mission.FsmRestoreStateName == "MoveLoadingUnitBayChainState")
+                mission.FsmStateName = "MissionMoveErrorState";
+                if (mission.FsmRestoreStateName == "MissionMoveBayChainState")
                 {
                     mission.NeedHomingAxis = Axis.BayChain;
                 }
-                else if (
-                    mission.FsmRestoreStateName == "MoveLoadingUnitLoadElevatorState"
-                    ||
-                    mission.FsmRestoreStateName == "MoveLoadingUnitDepositUnitState")
+                else if (mission.FsmRestoreStateName == "MissionMoveLoadElevatorState"
+                    || mission.FsmRestoreStateName == "MissionMoveDepositUnitState"
+                    )
                 {
                     mission.NeedMovingBackward = true;
                     mission.NeedHomingAxis = Axis.Horizontal;
                 }
-                else if (mission.FsmRestoreStateName == "MoveLoadingUnitMoveToTargetState")
+                else if (mission.FsmRestoreStateName == "MissionMoveToTargetState")
                 {
                     mission.NeedHomingAxis = Axis.Horizontal;
                 }
-
                 missionsDataProvider.Update(mission);
-
-                machineMissionsProvider.AddMission(mission, mission.FsmId);
             }
         }
 

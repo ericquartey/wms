@@ -80,7 +80,6 @@ namespace Ferretto.VW.MAS.MissionManager
                 targetBayNumber);
 
             var mission = this.missionsDataProvider.CreateBayMission(loadingUnitId, targetBayNumber);
-            this.machineMissionsProvider.AddMission(mission, mission.FsmId);
 
             this.NotifyNewMachineMissionAvailable(mission);
         }
@@ -94,7 +93,6 @@ namespace Ferretto.VW.MAS.MissionManager
                 targetBayNumber);
 
             var mission = this.missionsDataProvider.CreateBayMission(loadingUnitId, targetBayNumber, wmsMissionId, wmsMissionPriority);
-            this.machineMissionsProvider.AddMission(mission, mission.FsmId);
 
             this.NotifyNewMachineMissionAvailable(mission);
         }
@@ -133,6 +131,18 @@ namespace Ferretto.VW.MAS.MissionManager
                 machineModeDataProvider.Mode = MachineMode.Manual;
                 this.logger.LogInformation($"Compacting terminated. Machine status switched to {machineModeDataProvider.Mode}");
             }
+        }
+
+        public void QueueRecallMission(int loadingUnitId, BayNumber sourceBayNumber)
+        {
+            this.logger.LogDebug(
+              "Queuing local recall mission for loading unit {loadingUnitId} from bay {sourceBayNumber}.",
+              loadingUnitId,
+              sourceBayNumber);
+
+            var mission = this.missionsDataProvider.CreateRecallMission(loadingUnitId, sourceBayNumber);
+
+            this.NotifyNewMachineMissionAvailable(mission);
         }
 
         private bool CompactDownCell(IEnumerable<LoadingUnit> loadUnits, out LoadingUnit loadUnitOut, out int? cellId)
@@ -183,19 +193,6 @@ namespace Ferretto.VW.MAS.MissionManager
                 }
             }
             return false;
-        }
-
-        public void QueueRecallMission(int loadingUnitId, BayNumber sourceBayNumber)
-        {
-            this.logger.LogDebug(
-              "Queuing local recall mission for loading unit {loadingUnitId} from bay {sourceBayNumber}.",
-              loadingUnitId,
-              sourceBayNumber);
-
-            var mission = this.missionsDataProvider.CreateRecallMission(loadingUnitId, sourceBayNumber);
-            this.machineMissionsProvider.AddMission(mission, mission.FsmId);
-
-            this.NotifyNewMachineMissionAvailable(mission);
         }
 
         private void NotifyNewMachineMissionAvailable(Mission mission)
