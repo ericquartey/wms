@@ -77,7 +77,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.testShutterCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.TestShutter),
-                ()=> this.CanExecuteCommand() &&
+                () => this.CanExecuteCommand() &&
                      (this.MachineModeService.MachineMode == MachineMode.Manual ||
                       this.MachineModeService.MachineMode == MachineMode.Test)));
 
@@ -107,7 +107,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 case Menu.BayControl:
                     this.NavigationService.Appear(
                         nameof(Utils.Modules.Installation),
-                        Utils.Modules.Installation.Bays.BAYHEIGHTCHECK,
+                        Utils.Modules.Installation.Bays.BAYCHECK,
                         data: null,
                         trackCurrentView: true);
                     break;
