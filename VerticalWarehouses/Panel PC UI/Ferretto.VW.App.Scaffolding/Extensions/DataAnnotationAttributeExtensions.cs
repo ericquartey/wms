@@ -136,7 +136,10 @@ namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
                 {
                     if (attr is ValidationAttribute validationAttr)
                     {
-                        yield return new App.Scaffolding.ValidationRules.AttributeValidationRule(validationAttr, instance);
+                        yield return new App.Scaffolding.ValidationRules.AttributeValidationRule(
+                            validationAttr,
+                            instance,
+                            entity.Property.DisplayName(metadata));
                     }
                 }
             }
