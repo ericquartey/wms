@@ -118,7 +118,7 @@ namespace Ferretto.VW.MAS.MachineManager
 
             if (!this.isDataLayerReady)
             {
-                this.Logger.LogError($"Failed to start Move Loading Unit State machine mission: DataLayer is not ready!");
+                this.Logger.LogError($"Failed to start Move mission: DataLayer is not ready!");
                 this.NotifyCommandError(command);
                 return;
             }
@@ -145,7 +145,7 @@ namespace Ferretto.VW.MAS.MachineManager
                             }
                             else
                             {
-                                this.Logger.LogError("Failed to create Move Loading Unit State machine mission");
+                                this.Logger.LogError("Failed to create Move mission");
                                 this.NotifyCommandError(command);
                             }
                         }
@@ -160,7 +160,7 @@ namespace Ferretto.VW.MAS.MachineManager
                         }
                         catch (Exception ex)
                         {
-                            this.Logger.LogError($"Failed to start Move Loading Unit State machine mission: {ex.Message}");
+                            this.Logger.LogError($"Failed to start mission: {ex.Message}");
                         }
                         break;
 
@@ -184,22 +184,28 @@ namespace Ferretto.VW.MAS.MachineManager
                     //    break;
 
                     case CommandAction.Stop:
-                        if (messageData.MissionId != null)
+                        try
                         {
-                            if (!this.missionMoveProvider.StopMission(messageData.MissionId.Value, StopRequestReason.Stop, serviceProvider))
+                            if (messageData.MissionId != null)
                             {
-                                this.Logger.LogError("Supplied mission Id to be stopped is no longer valid");
-                                this.NotifyCommandError(command);
+                                if (!this.missionMoveProvider.StopMission(messageData.MissionId.Value, StopRequestReason.Stop, serviceProvider))
+                                {
+                                    this.Logger.LogError("Supplied mission Id to be stopped is no longer valid");
+                                    this.NotifyCommandError(command);
+                                }
+                            }
+                            else
+                            {
+                                foreach (var mission in this.missionsDataProvider.GetAllActiveMissions())
+                                {
+                                    this.missionMoveProvider.StopMission(mission.FsmId, StopRequestReason.Stop, serviceProvider);
+                                }
                             }
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            foreach (var mission in this.missionsDataProvider.GetAllActiveMissions())
-                            {
-                                this.missionMoveProvider.StopMission(mission.FsmId, StopRequestReason.Stop, serviceProvider);
-                            }
+                            this.Logger.LogError($"Failed to stop mission: {ex.Message}");
                         }
-
                         break;
 
                     //case CommandAction.Pause:

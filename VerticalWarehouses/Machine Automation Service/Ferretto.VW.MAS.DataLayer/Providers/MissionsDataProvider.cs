@@ -87,8 +87,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 mission.Status = MissionStatus.Completed;
 
-                // TODO: at the moment we delete mission
-                this.dataContext.Missions.Remove(mission);
+                if (mission.WmsId is null)
+                {
+                    this.dataContext.Missions.Remove(mission);
+                }
 
                 this.dataContext.SaveChanges();
 

@@ -21,8 +21,6 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly NotificationEvent notificationEvent;
-
         #endregion
 
         #region Constructors
@@ -37,7 +35,6 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
             this.eventAggregator = eventAggregator;
-            this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
             this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -180,62 +177,65 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
             var mission = missionsDataProvider.GetByGuid(missionId);
-            switch (mission.FsmStateName)
+            if (mission != null)
             {
-                case nameof(MissionMoveNewState):
-                    {
-                        var state = new MissionMoveNewState(mission, serviceProvider, this.eventAggregator);
-                        state.OnStop(stopRequest);
-                        break;
-                    }
-                case nameof(MissionMoveStartState):
-                    {
-                        var state = new MissionMoveStartState(mission, serviceProvider, this.eventAggregator);
-                        state.OnStop(stopRequest);
-                        break;
-                    }
-                case nameof(MissionMoveBayChainState):
-                    {
-                        var state = new MissionMoveBayChainState(mission, serviceProvider, this.eventAggregator);
-                        state.OnStop(stopRequest);
-                        break;
-                    }
-                case nameof(MissionMoveCloseShutterState):
-                    {
-                        var state = new MissionMoveCloseShutterState(mission, serviceProvider, this.eventAggregator);
-                        state.OnStop(stopRequest);
-                        break;
-                    }
-                case nameof(MissionMoveDepositUnitState):
-                    {
-                        var state = new MissionMoveDepositUnitState(mission, serviceProvider, this.eventAggregator);
-                        state.OnStop(stopRequest);
-                        break;
-                    }
-                case nameof(MissionMoveErrorState):
-                    {
-                        var state = new MissionMoveErrorState(mission, serviceProvider, this.eventAggregator);
-                        state.OnStop(stopRequest);
-                        break;
-                    }
-                case nameof(MissionMoveLoadElevatorState):
-                    {
-                        var state = new MissionMoveLoadElevatorState(mission, serviceProvider, this.eventAggregator);
-                        state.OnStop(stopRequest);
-                        break;
-                    }
-                case nameof(MissionMoveToTargetState):
-                    {
-                        var state = new MissionMoveToTargetState(mission, serviceProvider, this.eventAggregator);
-                        state.OnStop(stopRequest);
-                        break;
-                    }
-                case nameof(MissionMoveWaitPickState):
-                    {
-                        var state = new MissionMoveWaitPickState(mission, serviceProvider, this.eventAggregator);
-                        state.OnStop(stopRequest);
-                        break;
-                    }
+                switch (mission.FsmStateName)
+                {
+                    case nameof(MissionMoveNewState):
+                        {
+                            var state = new MissionMoveNewState(mission, serviceProvider, this.eventAggregator);
+                            state.OnStop(stopRequest);
+                            break;
+                        }
+                    case nameof(MissionMoveStartState):
+                        {
+                            var state = new MissionMoveStartState(mission, serviceProvider, this.eventAggregator);
+                            state.OnStop(stopRequest);
+                            break;
+                        }
+                    case nameof(MissionMoveBayChainState):
+                        {
+                            var state = new MissionMoveBayChainState(mission, serviceProvider, this.eventAggregator);
+                            state.OnStop(stopRequest);
+                            break;
+                        }
+                    case nameof(MissionMoveCloseShutterState):
+                        {
+                            var state = new MissionMoveCloseShutterState(mission, serviceProvider, this.eventAggregator);
+                            state.OnStop(stopRequest);
+                            break;
+                        }
+                    case nameof(MissionMoveDepositUnitState):
+                        {
+                            var state = new MissionMoveDepositUnitState(mission, serviceProvider, this.eventAggregator);
+                            state.OnStop(stopRequest);
+                            break;
+                        }
+                    case nameof(MissionMoveErrorState):
+                        {
+                            var state = new MissionMoveErrorState(mission, serviceProvider, this.eventAggregator);
+                            state.OnStop(stopRequest);
+                            break;
+                        }
+                    case nameof(MissionMoveLoadElevatorState):
+                        {
+                            var state = new MissionMoveLoadElevatorState(mission, serviceProvider, this.eventAggregator);
+                            state.OnStop(stopRequest);
+                            break;
+                        }
+                    case nameof(MissionMoveToTargetState):
+                        {
+                            var state = new MissionMoveToTargetState(mission, serviceProvider, this.eventAggregator);
+                            state.OnStop(stopRequest);
+                            break;
+                        }
+                    case nameof(MissionMoveWaitPickState):
+                        {
+                            var state = new MissionMoveWaitPickState(mission, serviceProvider, this.eventAggregator);
+                            state.OnStop(stopRequest);
+                            break;
+                        }
+                }
             }
 
             return true;

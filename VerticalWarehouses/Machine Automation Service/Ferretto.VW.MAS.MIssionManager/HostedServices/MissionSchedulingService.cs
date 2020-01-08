@@ -383,33 +383,40 @@ namespace Ferretto.VW.MAS.MissionManager
 
             if (message.Data is MoveLoadingUnitMessageData luData)
             {
-                var mission = missionsDataProvider.GetByGuid(luData.MissionId.Value);
-                if (!luData.DestinationCellId.HasValue)
-                // loading unit to bay mission
+                try
                 {
-                    var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-                    if (mission.WmsId.HasValue)
+                    var mission = missionsDataProvider.GetByGuid(luData.MissionId.Value);
+                    if (!luData.DestinationCellId.HasValue)
+                    // loading unit to bay mission
                     {
-                        var wmsMission = await this.missionsWmsWebService.GetByIdAsync(mission.WmsId.Value);
-                        var newOperations = wmsMission.Operations.Where(o => o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Completed && o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Error);
-                        if (newOperations.Any())
+                        var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                        if (mission.WmsId.HasValue)
                         {
-                            var newOperation = newOperations.OrderBy(o => o.Priority).First();
-                            this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", mission.TargetBay, mission.WmsId.Value, newOperation.Id);
+                            var wmsMission = await this.missionsWmsWebService.GetByIdAsync(mission.WmsId.Value);
+                            var newOperations = wmsMission.Operations.Where(o => o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Completed && o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Error);
+                            if (newOperations.Any())
+                            {
+                                var newOperation = newOperations.OrderBy(o => o.Priority).First();
+                                this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", mission.TargetBay, mission.WmsId.Value, newOperation.Id);
 
-                            baysDataProvider.AssignWmsMission(mission.TargetBay, mission, newOperation.Id);
-                            this.NotifyAssignedMissionOperationChanged(mission.TargetBay, wmsMission.Id, newOperation.Id);
+                                baysDataProvider.AssignWmsMission(mission.TargetBay, mission, newOperation.Id);
+                                this.NotifyAssignedMissionOperationChanged(mission.TargetBay, wmsMission.Id, newOperation.Id);
+                            }
+                        }
+                        else
+                        {
+                            missionsDataProvider.Complete(mission.Id);
                         }
                     }
                     else
+                    // any other mission type
                     {
                         missionsDataProvider.Complete(mission.Id);
                     }
                 }
-                else
-                // any other mission type
+                catch (Exception ex)
                 {
-                    missionsDataProvider.Complete(mission.Id);
+                    this.Logger.LogError($"Failed to process mission: {ex.Message}");
                 }
             }
 
