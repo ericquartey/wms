@@ -451,7 +451,7 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <TextBlock Margin="4,0"
+                        <TextBlock Margin="8,4"
                                    FontSize="{StaticResource FontSize_Normal}"
                                    FontWeight="Normal"
                                    Foreground="{DynamicResource FerrettoLightGray}"
