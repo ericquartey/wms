@@ -9,6 +9,8 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
+        bool CanCreateMission(int loadingUnitId, BayNumber targetBay);
+
         Mission Complete(int id);
 
         Mission CreateBayMission(int loadingUnitId, BayNumber bayNumber);
@@ -32,7 +34,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IEnumerable<Mission> GetAllWmsMissions();
 
-        Mission GetByGuid(Guid missionId);
+        Mission GetByGuid(Guid fsmId);
+
+        Mission GetById(int id);
 
         bool IsMissionInWaitState(BayNumber bayNumber, int loadingUnitId);
 

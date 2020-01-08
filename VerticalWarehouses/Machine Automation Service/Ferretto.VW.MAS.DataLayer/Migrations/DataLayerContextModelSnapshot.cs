@@ -924,9 +924,23 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("Action");
+
+                    b.Property<int>("BayNotifications");
+
+                    b.Property<int>("CloseShutterBayNumber");
+
                     b.Property<DateTime>("CreationDate");
 
                     b.Property<int?>("DestinationCellId");
+
+                    b.Property<int>("DeviceNotifications");
+
+                    b.Property<int>("Direction");
+
+                    b.Property<bool>("EjectLoadUnit");
+
+                    b.Property<int>("ErrorMovements");
 
                     b.Property<Guid>("FsmId");
 
@@ -952,6 +966,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("NeedMovingBackward");
 
+                    b.Property<int>("OpenShutterPosition");
+
                     b.Property<int>("Priority");
 
                     b.Property<bool>("RestoreConditions");
@@ -959,6 +975,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("StopReason");
 
                     b.Property<string>("TargetBay")
                         .IsRequired()
@@ -1036,7 +1054,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
+<<<<<<< HEAD
                             InstallationDate = new DateTime(2017, 3, 8, 12, 19, 16, 824, DateTimeKind.Local).AddTicks(5504),
+=======
+                            InstallationDate = new DateTime(2017, 3, 8, 11, 36, 11, 203, DateTimeKind.Local).AddTicks(3100),
+>>>>>>> develop
                             ServiceStatus = 86
                         });
                 });
@@ -1359,6 +1381,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", b =>
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.SetupProcedure");
+
+                    b.Property<bool>("InProgress");
 
                     b.Property<int>("PerformedCycles");
 

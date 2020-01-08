@@ -156,6 +156,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     IsCompleted = setup.BeltBurnishingTest.IsCompleted,
                     CanBePerformed = verticalOrigin.IsCompleted,
+                    InProgress = setup.BeltBurnishingTest.InProgress,
                 },
                 CellsHeightCheck = new SetupStepStatus
                 {
@@ -195,10 +196,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 },
             };
 
-            if (this.configuration.IsSetupStatusOverridden())
-            {
-                return SetupStatusCapabilities.Complete;
-            }
+            //if (this.configuration.IsSetupStatusOverridden())
+            //{
+            //    return SetupStatusCapabilities.Complete;
+            //}
 
             return statusCapabilities;
         }

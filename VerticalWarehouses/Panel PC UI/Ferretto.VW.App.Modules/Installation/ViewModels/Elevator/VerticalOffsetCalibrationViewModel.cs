@@ -21,8 +21,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         Start,
 
-        CellPositioning,
-
         CellMeasured,
 
         Confirm,
@@ -73,8 +71,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand reloadCommand;
 
-        private DelegateCommand returnToCellPositioningCommand;
-
         private Cell selectedCell;
 
         private double startPosition;
@@ -100,6 +96,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.verticalOriginProcedureWebService = verticalOriginProcedureWebService ?? throw new ArgumentNullException(nameof(verticalOriginProcedureWebService));
             this.verticalOffsetWebService = verticalOffsetWebService ?? throw new ArgumentNullException(nameof(verticalOffsetWebService));
             this.resolutionCalibrationWebService = resolutionCalibrationWebService ?? throw new ArgumentNullException(nameof(resolutionCalibrationWebService));
+
+            this.CurrentStep = VerticalOffsetCalibrationStep.Start;
         }
 
         #endregion
@@ -127,7 +125,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public int? CurrentCellId
         {
             get => this.currentCellId;
-            set => this.SetProperty(ref this.currentCellId, value, this.RaiseCanExecuteChanged);
+            set => this.SetProperty(ref this.currentCellId, value, () =>
+            {
+                this.Displacement = null;
+                this.StepValue = 0;
+                this.RaiseCanExecuteChanged();
+            });
         }
 
         public VerticalOffsetCalibrationStep CurrentStep
@@ -164,8 +167,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool HasStepCellMeasured => this.currentStep is VerticalOffsetCalibrationStep.CellMeasured;
 
-        public bool HasStepCellPositioning => this.currentStep is VerticalOffsetCalibrationStep.CellPositioning;
-
         public bool HasStepConfirm => this.currentStep is VerticalOffsetCalibrationStep.Confirm;
 
         public bool HasStepStart => this.currentStep is VerticalOffsetCalibrationStep.Start;
@@ -196,14 +197,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.moveToCellPositioningCommand
             ??
             (this.moveToCellPositioningCommand = new DelegateCommand(
-                () => this.CurrentStep = VerticalOffsetCalibrationStep.CellPositioning,
+                () => this.CurrentStep = VerticalOffsetCalibrationStep.CellMeasured,
                 this.CanToCellPositioning));
 
         public ICommand MoveToConfirmCommand =>
             this.moveToConfirmCommand
             ??
             (this.moveToConfirmCommand = new DelegateCommand(
-                () => this.CurrentStep = VerticalOffsetCalibrationStep.Confirm,
+                () =>
+                {
+                    this.CurrentStep = VerticalOffsetCalibrationStep.Confirm;
+                    this.NewDisplacement = this.CurrentVerticalOffset.Value + (double)this.Displacement.Value;
+                },
                 this.CanMoveToConfirm));
 
         public ICommand MoveToStartPositionCommand =>
@@ -223,15 +228,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.reloadCommand
             ??
             (this.reloadCommand = new DelegateCommand(
-                () => this.CurrentStep = VerticalOffsetCalibrationStep.CellPositioning));
-
-        public ICommand ReturnToCellPositioningCommand =>
-            this.returnToCellPositioningCommand
-            ??
-            (this.returnToCellPositioningCommand = new DelegateCommand(
-                () => this.CurrentStep = VerticalOffsetCalibrationStep.CellPositioning,
-                () => this.CanBaseExecute() &&
-                      !this.SensorsService.IsLoadingUnitOnElevator));
+                () => this.CurrentStep = VerticalOffsetCalibrationStep.CellMeasured));
 
         public Cell SelectedCell
         {
@@ -295,7 +292,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         break;
 
                     case nameof(this.CurrentCellId):
-                        if (this.CurrentStep == VerticalOffsetCalibrationStep.CellPositioning &&
+                        if (this.CurrentStep == VerticalOffsetCalibrationStep.CellMeasured &&
                             !this.IsMoving)
                         {
                             if (!this.CurrentCellId.HasValue)
@@ -338,11 +335,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override void Disappear()
         {
             base.Disappear();
-
-            if (this.CurrentStep == VerticalOffsetCalibrationStep.Confirm)
-            {
-                this.CurrentStep = VerticalOffsetCalibrationStep.Start;
-            }
         }
 
         public override void InitializeSteps()
@@ -353,8 +345,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
-
-            this.CurrentStep = VerticalOffsetCalibrationStep.Start;
 
             await this.RetrieveVerticalOffset();
 
@@ -381,19 +371,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case VerticalOffsetCalibrationStep.Start:
                     if (e.Next)
                     {
-                        this.CurrentStep = VerticalOffsetCalibrationStep.CellPositioning;
-                    }
-
-                    break;
-
-                case VerticalOffsetCalibrationStep.CellPositioning:
-                    if (e.Next)
-                    {
                         this.CurrentStep = VerticalOffsetCalibrationStep.CellMeasured;
-                    }
-                    else
-                    {
-                        this.CurrentStep = VerticalOffsetCalibrationStep.Start;
                     }
 
                     break;
@@ -406,7 +384,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     }
                     else
                     {
-                        this.CurrentStep = VerticalOffsetCalibrationStep.CellPositioning;
+                        this.CurrentStep = VerticalOffsetCalibrationStep.Start;
                     }
 
                     break;
@@ -435,10 +413,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             base.RaiseCanExecuteChanged();
 
-            this.SelectedCell = this.MachineService.Cells.SingleOrDefault(c => c.Id.Equals(this.CurrentCellId));
+            if (this.CurrentCellId is null)
+            {
+                this.SelectedCell = this.MachineService.Cells.FirstOrDefault();
+                this.CurrentCellId = this.SelectedCell?.Id;
+            }
+            else
+            {
+                this.SelectedCell = this.MachineService.Cells.SingleOrDefault(c => c.Id.Equals(this.CurrentCellId));
+            }
 
             this.RaisePropertyChanged(nameof(this.HasStepStart));
-            this.RaisePropertyChanged(nameof(this.HasStepCellPositioning));
             this.RaisePropertyChanged(nameof(this.HasStepCellMeasured));
             this.RaisePropertyChanged(nameof(this.HasStepConfirm));
 
@@ -456,7 +441,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.moveToConfirmCommand?.RaiseCanExecuteChanged();
             this.displacementCommand?.RaiseCanExecuteChanged();
             this.reloadCommand?.RaiseCanExecuteChanged();
-            this.returnToCellPositioningCommand?.RaiseCanExecuteChanged();
             this.applyCorrectionCommand?.RaiseCanExecuteChanged();
 
             this.UpdateStatusButtonFooter();
@@ -510,6 +494,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return this.CanBaseExecute() &&
                    !this.SensorsService.IsLoadingUnitOnElevator &&
+                   !(this.SelectedCell is null) &&
                    Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) != Convert.ToInt32(this.SelectedCell?.Position ?? 0);
         }
 
@@ -517,15 +502,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return this.CanBaseExecute() &&
                    !this.SensorsService.IsLoadingUnitOnElevator &&
+                   !(this.SelectedCell is null) &&
                    Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) == Convert.ToInt32(this.SelectedCell?.Position ?? 0);
         }
 
         private bool CanMoveToConfirm()
         {
             return this.CanBaseExecute() &&
-                   this.StepValue != 0 &&
-                   (((this.MachineStatus.ElevatorVerticalPosition.Value - (this.SelectedCell?.Position ?? 0.0)) > 0.4) ||
-                    ((this.MachineStatus.ElevatorVerticalPosition.Value - (this.SelectedCell?.Position ?? 0.0)) < -0.4));
+                   this.Displacement != null;
         }
 
         private bool CanMoveToStartPosition()
@@ -547,8 +531,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanToCellPositioning()
         {
             return this.CanBaseExecute() &&
-                   !this.SensorsService.IsLoadingUnitOnElevator &&
-                   Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) == Convert.ToInt32(this.StartPosition);
+                   !this.SensorsService.IsLoadingUnitOnElevator;
         }
 
         private async Task DisplacementCommandAsync()
@@ -643,23 +626,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.ShowNextStepSinglePage(true, this.moveToCellPositioningCommand?.CanExecute() ?? false);
                     break;
 
-                case VerticalOffsetCalibrationStep.CellPositioning:
-                    this.Displacement = null;
-
-                    this.ShowPrevStepSinglePage(true, !this.IsMoving);
-                    this.ShowNextStepSinglePage(true, this.CanBaseExecute() &&
-                                                      !this.SensorsService.IsLoadingUnitOnElevator &&
-                                                      Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) == Convert.ToInt32(this.SelectedCell?.Position ?? 0));
-                    break;
-
                 case VerticalOffsetCalibrationStep.CellMeasured:
                     this.ShowPrevStepSinglePage(true, !this.IsMoving);
                     this.ShowNextStepSinglePage(true, this.moveToConfirmCommand?.CanExecute() ?? false);
                     break;
 
                 case VerticalOffsetCalibrationStep.Confirm:
-                    this.NewDisplacement = this.CurrentVerticalOffset.Value + (double)this.Displacement.Value;
-
                     this.ShowPrevStepSinglePage(true, true);
                     this.ShowNextStepSinglePage(true, false);
                     break;
