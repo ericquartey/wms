@@ -198,7 +198,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void RunTest(int delayInSeconds, int testCycleCount, BayNumber bayNumber, MessageActor sender)
         {
-            if (delayInSeconds <= 0)
+            if (delayInSeconds < 0)
             {
                 throw new InvalidOperationException(Resources.Shutters.TheDelayBetweenTestCyclesMustBeStrictlyPositive);
             }
