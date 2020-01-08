@@ -11,7 +11,6 @@ using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.MissionMove;
 using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
 using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
-using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -23,7 +22,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
     {
         #region Fields
 
-        private static IDictionary<string, ConstructorInfo> cacheStates = new Dictionary<string, ConstructorInfo>();
+        private static readonly IDictionary<string, ConstructorInfo> cacheStates = new Dictionary<string, ConstructorInfo>();
 
         private readonly IEventAggregator eventAggregator;
 

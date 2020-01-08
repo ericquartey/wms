@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
     {
         #region Fields
 
-        private ICellsProvider cellsProvider;
+        private readonly ICellsProvider cellsProvider;
 
         #endregion
 
