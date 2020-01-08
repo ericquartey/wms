@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -20,9 +22,13 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private readonly IConfiguration configuration;
 
+        private readonly IDataLayerService dataLayerService;
+
         private readonly IMachinesWmsWebService machinesWmsWebService;
 
         private bool dataLayerIsReady;
+
+        private int machineId;
 
         #endregion
 
@@ -31,6 +37,7 @@ namespace Ferretto.VW.MAS.MissionManager
         public WmsMissionProxyService(
             IMachinesWmsWebService machinesWmsWebService,
             IConfiguration configuration,
+            IDataLayerService dataLayerService,
             IEventAggregator eventAggregator,
             ILogger<WmsMissionProxyService> logger,
             IServiceScopeFactory serviceScopeFactory)
@@ -38,11 +45,31 @@ namespace Ferretto.VW.MAS.MissionManager
         {
             this.machinesWmsWebService = machinesWmsWebService ?? throw new ArgumentNullException(nameof(machinesWmsWebService));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            this.dataLayerService = dataLayerService ?? throw new ArgumentNullException(nameof(dataLayerService));
         }
 
         #endregion
 
         #region Methods
+
+        public async override Task StartAsync(CancellationToken cancellationToken)
+        {
+            await base.StartAsync(cancellationToken);
+
+            if (this.dataLayerService.IsReady)
+            {
+                await this.OnDataLayerReadyAsync();
+            }
+        }
+
+        private void RetrieveMachineId()
+        {
+            using (var scope = this.ServiceScopeFactory.CreateScope())
+            {
+                var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
+                this.machineId = machineProvider.GetIdentity();
+            }
+        }
 
         private async Task RetrieveNewWmsMissionsAsync()
         {
@@ -55,14 +82,12 @@ namespace Ferretto.VW.MAS.MissionManager
 
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
-                var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
                 var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
                 var missionsDataProvider = scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
                 var missionSchedulingProvider = scope.ServiceProvider.GetRequiredService<IMissionSchedulingProvider>();
 
                 // 1. Get all missions from WMS
-                var machineId = machineProvider.GetIdentity();
-                var wmsMissions = await this.machinesWmsWebService.GetMissionsByIdAsync(machineId);
+                var wmsMissions = await this.machinesWmsWebService.GetMissionsByIdAsync(this.machineId);
 
                 // 2. Get all known WMS missions (already recorded in the local database)
                 var localMissions = missionsDataProvider.GetAllWmsMissions();
@@ -91,7 +116,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     }
                     catch (Exception ex)
                     {
-                        this.Logger.LogError("Unable to queue mission on bay: '{details}'.", ex.Message);
+                        this.Logger.LogError("Unable to queue mission on bay '{bayNumber}': '{details}'.", bayNumber, ex.Message);
                     }
                 }
 

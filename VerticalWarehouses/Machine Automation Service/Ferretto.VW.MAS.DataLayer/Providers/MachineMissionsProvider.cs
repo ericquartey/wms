@@ -13,6 +13,7 @@ using Ferretto.VW.MAS.Utils.FiniteStateMachines.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Missions;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
@@ -24,6 +25,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly ILogger<MachineMissionsProvider> logger;
+
         private readonly List<IMission> machineMissions = new List<IMission>();
 
         private readonly IServiceScopeFactory serviceScopeFactory;
@@ -34,10 +37,12 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public MachineMissionsProvider(
             IEventAggregator eventAggregator,
-            IServiceScopeFactory serviceScopeFactory)
+            IServiceScopeFactory serviceScopeFactory,
+            ILogger<MachineMissionsProvider> logger)
         {
             this.eventAggregator = eventAggregator;
             this.serviceScopeFactory = serviceScopeFactory;
+            this.logger = logger;
         }
 
         #endregion
@@ -58,13 +63,16 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public void AddMission(Mission mission, Guid fsmId)
         {
-            if (mission != null
-                && this.GetMissionById(fsmId) is null
-                )
+            if (mission is null)
+            {
+                throw new ArgumentNullException(nameof(mission));
+            }
+
+            if (this.GetMissionById(fsmId) is null)
             {
                 var newMission = new MachineMission<IMoveLoadingUnitStateMachine>(this.serviceScopeFactory, this.OnActiveStateMachineCompleted);
                 newMission.FsmId = fsmId;
-                if (newMission.MachineData is DataModels.Mission data)
+                if (newMission.MachineData is Mission data)
                 {
                     data.CreationDate = mission.CreationDate;
                     data.DestinationCellId = mission.DestinationCellId;
@@ -85,6 +93,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     data.TargetBay = mission.TargetBay;
                     data.WmsId = mission.WmsId;
                 }
+
                 this.machineMissions.Add(newMission);
             }
         }
@@ -101,9 +110,13 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public IEnumerable<IMission> GetMissionsByType(FsmType fsmType, MissionType type)
         {
-            return this.machineMissions.Where(m => (m.Type == fsmType)
-                    && (m.MachineData is IMoveLoadingUnitMachineData data)
-                    && data.MissionType == type);
+            return this.machineMissions.Where(
+                m =>
+                    m.Type == fsmType
+                    &&
+                    m.MachineData is IMoveLoadingUnitMachineData data
+                    &&
+                    data.MissionType == type);
         }
 
         public bool PauseMachineMission(Guid fsmId)
@@ -135,6 +148,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             var mission = this.machineMissions.FirstOrDefault(mm => mm.FsmId.Equals(fsmId));
             if (mission is null)
             {
+                this.logger.LogWarning("Could not start machine mission because no mission with id '{id}' exists.", fsmId);
                 return false;
             }
 

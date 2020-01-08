@@ -99,7 +99,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
             if (mission.WmsId.HasValue)
             {
-                if (this.configuration.IsWmsEnabled())
+                if (!this.configuration.IsWmsEnabled())
                 {
                     this.Logger.LogTrace("Cannot perform mission scheduling, because WMS is not enabled.");
                     return;
@@ -196,14 +196,16 @@ namespace Ferretto.VW.MAS.MissionManager
                 {
                     mission.FsmRestoreStateName = mission.FsmStateName;
                 }
+
                 mission.FsmStateName = "MoveLoadingUnitErrorState";
                 if (mission.FsmRestoreStateName == "MoveLoadingUnitBayChainState")
                 {
                     mission.NeedHomingAxis = Axis.BayChain;
                 }
-                else if (mission.FsmRestoreStateName == "MoveLoadingUnitLoadElevatorState"
-                    || mission.FsmRestoreStateName == "MoveLoadingUnitDepositUnitState"
-                    )
+                else if (
+                    mission.FsmRestoreStateName == "MoveLoadingUnitLoadElevatorState"
+                    ||
+                    mission.FsmRestoreStateName == "MoveLoadingUnitDepositUnitState")
                 {
                     mission.NeedMovingBackward = true;
                     mission.NeedHomingAxis = Axis.Horizontal;
@@ -212,6 +214,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 {
                     mission.NeedHomingAxis = Axis.Horizontal;
                 }
+
                 missionsDataProvider.Update(mission);
 
                 machineMissionsProvider.AddMission(mission, mission.FsmId);
