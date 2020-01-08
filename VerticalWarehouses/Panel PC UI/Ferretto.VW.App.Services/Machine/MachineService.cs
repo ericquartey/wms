@@ -353,7 +353,7 @@ namespace Ferretto.VW.App.Services
 
             var attribute = viewType?.GetCustomAttributes(typeof(WarningAttribute), true)?.FirstOrDefault() as WarningAttribute;
             if (attribute is null &&
-                viewType.BaseType != null)
+                viewType?.BaseType != null)
             {
                 attribute = viewType?.BaseType?.GetCustomAttributes(typeof(WarningAttribute), true)?.FirstOrDefault() as WarningAttribute;
             }
