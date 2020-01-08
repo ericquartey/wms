@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
