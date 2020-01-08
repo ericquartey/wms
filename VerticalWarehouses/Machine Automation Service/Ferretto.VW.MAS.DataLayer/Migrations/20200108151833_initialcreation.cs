@@ -169,8 +169,15 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    Action = table.Column<int>(nullable: false),
+                    BayNotifications = table.Column<int>(nullable: false),
+                    CloseShutterBayNumber = table.Column<int>(nullable: false),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     DestinationCellId = table.Column<int>(nullable: true),
+                    DeviceNotifications = table.Column<int>(nullable: false),
+                    Direction = table.Column<int>(nullable: false),
+                    EjectLoadUnit = table.Column<bool>(nullable: false),
+                    ErrorMovements = table.Column<int>(nullable: false),
                     FsmId = table.Column<Guid>(nullable: false),
                     FsmRestoreStateName = table.Column<string>(nullable: true),
                     FsmStateName = table.Column<string>(nullable: true),
@@ -181,9 +188,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     MissionType = table.Column<string>(type: "text", nullable: false),
                     NeedHomingAxis = table.Column<int>(nullable: false),
                     NeedMovingBackward = table.Column<bool>(nullable: false),
+                    OpenShutterPosition = table.Column<int>(nullable: false),
                     Priority = table.Column<int>(nullable: false),
                     RestoreConditions = table.Column<bool>(nullable: false),
                     Status = table.Column<string>(type: "text", nullable: false),
+                    StopReason = table.Column<int>(nullable: false),
                     TargetBay = table.Column<string>(type: "text", nullable: false),
                     WmsId = table.Column<int>(nullable: true)
                 },
@@ -219,6 +228,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Discriminator = table.Column<string>(nullable: false),
                     Step = table.Column<double>(nullable: true),
                     ReferenceCellId = table.Column<int>(nullable: true),
+                    InProgress = table.Column<bool>(nullable: true),
                     PerformedCycles = table.Column<int>(nullable: true),
                     RequiredCycles = table.Column<int>(nullable: true),
                     FinalPosition = table.Column<double>(nullable: true),
@@ -1213,7 +1223,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 3, 8, 12, 19, 16, 824, DateTimeKind.Local).AddTicks(5504), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 3, 8, 16, 18, 32, 685, DateTimeKind.Local).AddTicks(5534), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
