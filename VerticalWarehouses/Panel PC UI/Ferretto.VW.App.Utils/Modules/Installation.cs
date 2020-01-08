@@ -50,6 +50,8 @@
         {
             #region Fields
 
+            public const string BAYCHECK = "BayCheckViewModel";
+
             public const string BAYHEIGHTCHECK = "BayHeightCheckViewModel";
 
             public const string DEPOSITANDPICKUPTEST = "DepositAndPickUpTestViewModel";
