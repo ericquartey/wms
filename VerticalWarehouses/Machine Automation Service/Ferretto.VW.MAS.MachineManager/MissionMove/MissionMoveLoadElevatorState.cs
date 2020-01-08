@@ -65,6 +65,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             this.logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
             this.Mission.FsmStateName = nameof(MissionMoveLoadElevatorState);
+            this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.missionsDataProvider.Update(this.Mission);
 
             this.Mission.Direction = HorizontalMovementDirection.Backwards;
@@ -158,7 +159,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
-                        this.UpdateResponseList(notification.Type);
+                        if (this.UpdateResponseList(notification.Type))
+                        {
+                            this.missionsDataProvider.Update(this.Mission);
+                        }
 
                         if (notification.Type == MessageType.ShutterPositioning)
                         {

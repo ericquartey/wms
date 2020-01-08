@@ -182,6 +182,12 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             var mission = missionsDataProvider.GetByGuid(missionId);
             switch (mission.FsmStateName)
             {
+                case nameof(MissionMoveNewState):
+                    {
+                        var state = new MissionMoveNewState(mission, serviceProvider, this.eventAggregator);
+                        state.OnStop(stopRequest);
+                        break;
+                    }
                 case nameof(MissionMoveStartState):
                     {
                         var state = new MissionMoveStartState(mission, serviceProvider, this.eventAggregator);

@@ -50,26 +50,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             if (this.Mission != null)
             {
-                var msgData = new MoveLoadingUnitMessageData(
-                    this.Mission.MissionType,
-                    this.Mission.LoadingUnitSource,
-                    this.Mission.LoadingUnitDestination,
-                    null,
-                    null,
-                    this.Mission.LoadingUnitId,
-                    false,
-                    false,
-                    this.Mission.FsmId,
-                    this.Mission.Action,
-                    reason);    // this is the only necessary parameter
-
-                var msg = new CommandMessage(
-                    msgData,
-                    $"Loading Unit {this.Mission.LoadingUnitId} stop movement for bay {msgData.Destination}",
-                    MessageActor.AutomationService,
-                    MessageActor.MachineManager,
-                    MessageType.MoveLoadingUnit,
-                    this.Mission.TargetBay);
+                this.Mission.StopReason = reason;
 
                 if (this.GetType().Name != nameof(MissionMoveErrorState)
                     && this.Mission.IsRestoringType()
@@ -81,32 +62,37 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         this.Mission.NeedMovingBackward = true;
                     }
                     var newStep = new MissionMoveErrorState(this.Mission, this.ServiceProvider, this.EventAggregator);
-                    newStep.OnEnter(msg);
+                    newStep.OnEnter(null);
                 }
                 else
                 {
                     var newStep = new MissionMoveEndState(this.Mission, this.ServiceProvider, this.EventAggregator);
-                    newStep.OnEnter(msg);
+                    newStep.OnEnter(null);
                 }
             }
         }
 
-        public virtual void UpdateResponseList(MessageType type)
+        public virtual bool UpdateResponseList(MessageType type)
         {
+            bool update = false;
             switch (type)
             {
                 case MessageType.Positioning:
                     this.Mission.DeviceNotifications |= MissionDeviceNotifications.Positioning;
+                    update = true;
                     break;
 
                 case MessageType.ShutterPositioning:
                     this.Mission.DeviceNotifications |= MissionDeviceNotifications.Shutter;
+                    update = true;
                     break;
 
                 case MessageType.Homing:
                     this.Mission.DeviceNotifications |= MissionDeviceNotifications.Homing;
+                    update = true;
                     break;
             }
+            return update;
         }
 
         #endregion

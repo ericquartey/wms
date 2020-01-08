@@ -87,6 +87,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 mission.Status = MissionStatus.Completed;
 
+                // TODO: at the moment we delete mission
+                this.dataContext.Missions.Remove(mission);
+
                 this.dataContext.SaveChanges();
 
                 return mission;
@@ -178,6 +181,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.dataContext.Missions.Remove(mission);
 
                 this.dataContext.SaveChanges();
+
+                this.logger.LogInformation($"Deleted MAS mission {mission.Id}.");
             }
         }
 
@@ -290,14 +295,6 @@ namespace Ferretto.VW.MAS.DataLayer
                         MessageType.MoveLoadingUnit,
                         BayNumber.BayOne,
                         BayNumber.BayOne));
-
-            lock (this.dataContext)
-            {
-                foreach (var mission in this.dataContext.Missions.Where(m => m.Status == MissionStatus.Executing || m.Status == MissionStatus.Waiting))
-                {
-                    this.Delete(mission.Id);
-                }
-            }
         }
 
         public void Update(Mission mission)

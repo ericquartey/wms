@@ -198,7 +198,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.Mission.NeedMovingBackward = false;
                     {
                         var newStep = new MissionMoveEndState(this.Mission, this.ServiceProvider, this.EventAggregator);
-                        newStep.OnEnter(command);
+                        newStep.OnEnter(null);
                     }
                     break;
 
@@ -212,7 +212,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.Mission.NeedMovingBackward = false;
                     {
                         var newStep = new MissionMoveToTargetState(this.Mission, this.ServiceProvider, this.EventAggregator);
-                        newStep.OnEnter(command);
+                        newStep.OnEnter(null);
                     }
                     break;
 
@@ -222,7 +222,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.Mission.NeedMovingBackward = false;
                     {
                         var newStep = new MissionMoveStartState(this.Mission, this.ServiceProvider, this.EventAggregator);
-                        newStep.OnEnter(command);
+                        newStep.OnEnter(null);
                     }
                     break;
 
@@ -232,7 +232,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.Mission.NeedMovingBackward = false;
                     {
                         var newStep = new MissionMoveWaitPickState(this.Mission, this.ServiceProvider, this.EventAggregator);
-                        newStep.OnEnter(command);
+                        newStep.OnEnter(null);
                     }
                     break;
 

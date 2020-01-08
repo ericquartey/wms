@@ -153,8 +153,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-                    this.UpdateResponseList(notification.Type);
-                    this.missionsDataProvider.Update(this.Mission);
+                    if (this.UpdateResponseList(notification.Type))
+                    {
+                        this.missionsDataProvider.Update(this.Mission);
+                    }
 
                     if ((this.Mission.CloseShutterBayNumber != BayNumber.None && (this.Mission.DeviceNotifications == (MissionDeviceNotifications.Positioning | MissionDeviceNotifications.Shutter)))
                         || (this.Mission.CloseShutterBayNumber == BayNumber.None && (this.Mission.DeviceNotifications == MissionDeviceNotifications.Positioning))

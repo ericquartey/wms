@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces
 
         void OnStop(StopRequestReason reason, bool moveBackward = false);
 
-        void UpdateResponseList(MessageType type);
+        bool UpdateResponseList(MessageType type);
 
         #endregion
     }

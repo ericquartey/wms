@@ -1258,17 +1258,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Mission : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("closeShutterBayNumber", Required = Newtonsoft.Json.Required.Always)]
-        public BayNumber CloseShutterBayNumber { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("openShutterPosition", Required = Newtonsoft.Json.Required.Always)]
-        public ShutterPosition OpenShutterPosition { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("deviceNotifications", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public MissionDeviceNotifications DeviceNotifications { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("action", Required = Newtonsoft.Json.Required.Always)]
         public CommandAction Action { get; set; }
     
@@ -1277,16 +1266,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public MissionBayNotifications BayNotifications { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("errorMovements", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public MissionErrorMovements ErrorMovements { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("direction", Required = Newtonsoft.Json.Required.Always)]
-        public HorizontalMovementDirection Direction { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("ejectLoadUnit", Required = Newtonsoft.Json.Required.Always)]
-        public bool EjectLoadUnit { get; set; }
+        [Newtonsoft.Json.JsonProperty("closeShutterBayNumber", Required = Newtonsoft.Json.Required.Always)]
+        public BayNumber CloseShutterBayNumber { get; set; }
     
         [Newtonsoft.Json.JsonProperty("creationDate", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
@@ -1294,6 +1275,22 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("destinationCellId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? DestinationCellId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("deviceNotifications", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public MissionDeviceNotifications DeviceNotifications { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("direction", Required = Newtonsoft.Json.Required.Always)]
+        public HorizontalMovementDirection Direction { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ejectLoadUnit", Required = Newtonsoft.Json.Required.Always)]
+        public bool EjectLoadUnit { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("errorMovements", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public MissionErrorMovements ErrorMovements { get; set; }
     
         [Newtonsoft.Json.JsonProperty("fsmId", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
@@ -1326,6 +1323,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("needMovingBackward", Required = Newtonsoft.Json.Required.Always)]
         public bool NeedMovingBackward { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("openShutterPosition", Required = Newtonsoft.Json.Required.Always)]
+        public ShutterPosition OpenShutterPosition { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("priority", Required = Newtonsoft.Json.Required.Always)]
         public int Priority { get; set; }
     
@@ -1336,6 +1336,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public MissionStatus Status { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("stopReason", Required = Newtonsoft.Json.Required.Always)]
+        public StopRequestReason StopReason { get; set; }
     
         [Newtonsoft.Json.JsonProperty("targetBay", Required = Newtonsoft.Json.Required.Always)]
         public BayNumber TargetBay { get; set; }
@@ -1352,56 +1355,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Mission>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum BayNumber
-    {
-        None = 0,
-    
-        BayOne = 1,
-    
-        BayTwo = 2,
-    
-        BayThree = 3,
-    
-        ElevatorBay = 4,
-    
-        All = 10,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum ShutterPosition
-    {
-        NotSpecified = 0,
-    
-        Opened = 1,
-    
-        Half = 2,
-    
-        Closed = 3,
-    
-        Intermediate = 4,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
-    [System.Flags]
-    public enum MissionDeviceNotifications
-    {
-        [System.Runtime.Serialization.EnumMember(Value = @"None")]
-        None = 1,
-    
-        [System.Runtime.Serialization.EnumMember(Value = @"Positioning")]
-        Positioning = 2,
-    
-        [System.Runtime.Serialization.EnumMember(Value = @"Shutter")]
-        Shutter = 4,
-    
-        [System.Runtime.Serialization.EnumMember(Value = @"Homing")]
-        Homing = 8,
     
     }
     
@@ -1444,6 +1397,52 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum BayNumber
+    {
+        None = 0,
+    
+        BayOne = 1,
+    
+        BayTwo = 2,
+    
+        BayThree = 3,
+    
+        ElevatorBay = 4,
+    
+        All = 10,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    [System.Flags]
+    public enum MissionDeviceNotifications
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"None")]
+        None = 1,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Positioning")]
+        Positioning = 2,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Shutter")]
+        Shutter = 4,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Homing")]
+        Homing = 8,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum HorizontalMovementDirection
+    {
+        NotSpecified = 0,
+    
+        Forwards = 1,
+    
+        Backwards = 2,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     [System.Flags]
     public enum MissionErrorMovements
     {
@@ -1458,17 +1457,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [System.Runtime.Serialization.EnumMember(Value = @"MoveShutter")]
         MoveShutter = 8,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum HorizontalMovementDirection
-    {
-        NotSpecified = 0,
-    
-        Forwards = 1,
-    
-        Backwards = 2,
     
     }
     
@@ -1556,6 +1544,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum ShutterPosition
+    {
+        NotSpecified = 0,
+    
+        Opened = 1,
+    
+        Half = 2,
+    
+        Closed = 3,
+    
+        Intermediate = 4,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MissionStatus
     {
         [System.Runtime.Serialization.EnumMember(Value = @"New")]
@@ -1572,6 +1575,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [System.Runtime.Serialization.EnumMember(Value = @"Aborted")]
         Aborted = 4,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum StopRequestReason
+    {
+        NoReason = 0,
+    
+        Stop = 1,
+    
+        Error = 2,
+    
+        RunningStateChanged = 3,
+    
+        FaultStateChanged = 4,
     
     }
     

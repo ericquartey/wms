@@ -9,25 +9,23 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
-        public BayNumber CloseShutterBayNumber { get; set; }
-
-        public ShutterPosition OpenShutterPosition { get; set; }
-
-        public MissionDeviceNotifications DeviceNotifications { get; set; }
-
         public CommandAction Action { get; set; }
 
         public MissionBayNotifications BayNotifications { get; set; }
 
-        public MissionErrorMovements ErrorMovements { get; set; }
+        public BayNumber CloseShutterBayNumber { get; set; }
+
+        public DateTime CreationDate { get; set; }
+
+        public int? DestinationCellId { get; set; }
+
+        public MissionDeviceNotifications DeviceNotifications { get; set; }
 
         public HorizontalMovementDirection Direction { get; set; }
 
         public bool EjectLoadUnit { get; set; }
 
-        public DateTime CreationDate { get; set; }
-
-        public int? DestinationCellId { get; set; }
+        public MissionErrorMovements ErrorMovements { get; set; }
 
         public Guid FsmId { get; set; }
 
@@ -49,11 +47,15 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool NeedMovingBackward { get; set; }
 
+        public ShutterPosition OpenShutterPosition { get; set; }
+
         public int Priority { get; set; }
 
         public bool RestoreConditions { get; set; }
 
         public MissionStatus Status { get; set; }
+
+        public StopRequestReason StopReason { get; set; }
 
         public BayNumber TargetBay { get; set; }
 
@@ -86,6 +88,7 @@ namespace Ferretto.VW.MAS.DataModels
 
             returnString
                 .Append("Mission:")
+                .Append($"Id={this.Id}; ")
                 .Append($"LoadingUnitId={this.LoadingUnitId}; ")
                 .Append($"WmsId={this.WmsId}; ")
                 .Append($"TargetBay={this.TargetBay}; ")
@@ -99,6 +102,14 @@ namespace Ferretto.VW.MAS.DataModels
                 .Append($"NeedMovingBackward={this.NeedMovingBackward}; ")
                 .Append($"RestoreConditions={this.RestoreConditions}; ")
                 .Append($"Status={this.Status}; ")
+                .Append($"CloseShutterBayNumber={this.CloseShutterBayNumber}; ")
+                .Append($"OpenShutterPosition={this.OpenShutterPosition}; ")
+                .Append($"DeviceNotifications={this.DeviceNotifications}; ")
+                .Append($"Action={this.Action}; ")
+                .Append($"BayNotifications={this.BayNotifications}; ")
+                .Append($"ErrorMovements={this.ErrorMovements}; ")
+                .Append($"Direction={this.Direction}; ")
+                .Append($"EjectLoadUnit={this.EjectLoadUnit}; ")
                 .Append($"Priority={this.Priority}; ");
             return returnString.ToString();
         }

@@ -61,6 +61,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.EjectLoadUnit = false;
             this.logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
             this.Mission.FsmStateName = nameof(MissionMoveToTargetState);
+            this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.missionsDataProvider.Update(this.Mission);
 
             if (this.Mission.LoadingUnitSource != LoadingUnitLocation.Cell)
@@ -132,7 +133,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             || notification.Type == MessageType.ShutterPositioning
                             )
                         {
-                            this.UpdateResponseList(notification.Type);
+                            if (this.UpdateResponseList(notification.Type))
+                            {
+                                this.missionsDataProvider.Update(this.Mission);
+                            }
                         }
                     }
 
@@ -143,7 +147,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MessageStatus.OperationRunningStop:
                     if (this.Mission.EjectLoadUnit)
                     {
-                        this.UpdateResponseList(notification.Type);
+                        if (this.UpdateResponseList(notification.Type))
+                        {
+                            this.missionsDataProvider.Update(this.Mission);
+                        }
                     }
                     else
                     {
