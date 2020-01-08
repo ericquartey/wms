@@ -4,6 +4,10 @@
              xmlns:local="clr-namespace:Ferretto.VW.App.Scaffolding"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Dark/DarkSkin.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

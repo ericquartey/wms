@@ -36,6 +36,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private int? cumulativePerformedCyclesBeforeStart;
 
+        private double? cyclesPercent;
+
         private int? inputDelayBetweenCycles;
 
         private int? inputRequiredCycles;
@@ -44,7 +46,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isShutterThreeSensors;
 
-        private int? performedCyclesThisSession;
+        private int performedCyclesThisSession;
 
         private SubscriptionToken sensorsChangedToken;
 
@@ -86,7 +88,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.cumulativePerformedCycles, value))
                 {
-                    this.PerformedCyclesThisSession = this.CumulativePerformedCycles - this.CumulativePerformedCyclesBeforeStart;
+                    if (this.CumulativePerformedCycles != null && this.CumulativePerformedCyclesBeforeStart != null)
+                    {
+                        this.PerformedCyclesThisSession = this.CumulativePerformedCycles.Value - this.CumulativePerformedCyclesBeforeStart.Value;
+                    }
                 }
             }
         }
@@ -98,13 +103,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.cumulativePerformedCyclesBeforeStart, value))
                 {
-                    this.PerformedCyclesThisSession = this.CumulativePerformedCycles - this.CumulativePerformedCyclesBeforeStart;
+                    if (this.CumulativePerformedCycles != null && this.CumulativePerformedCyclesBeforeStart != null)
+                    {
+                        this.PerformedCyclesThisSession = this.CumulativePerformedCycles.Value - this.CumulativePerformedCyclesBeforeStart.Value;
+                    }
                 }
             }
         }
 
+        public double? CyclesPercent
+        {
+            get => this.cyclesPercent;
+            private set => this.SetProperty(ref this.cyclesPercent, value);
+        }
+
         public string Error => string.Join(
-            System.Environment.NewLine,
+                    System.Environment.NewLine,
             this[nameof(this.InputDelayBetweenCycles)],
             this[nameof(this.InputRequiredCycles)]);
 
@@ -150,24 +164,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.isShutterThreeSensors, value);
         }
 
-        public override bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            protected set
-            {
-                if (this.SetProperty(ref this.isWaitingForResponse, value))
-                {
-                    if (this.isWaitingForResponse)
-                    {
-                        this.ClearNotifications();
-                    }
-
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
-        public int? PerformedCyclesThisSession
+        public int PerformedCyclesThisSession
         {
             get => this.performedCyclesThisSession;
             private set => this.SetProperty(ref this.performedCyclesThisSession, value);
@@ -218,7 +215,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                             return $"InputDelayBetweenCycles is required.";
                         }
 
-                        if (this.InputDelayBetweenCycles.Value <= 0)
+                        if (this.InputDelayBetweenCycles.Value < 0)
                         {
                             return "InputDelayBetweenCycles must be strictly positive.";
                         }
@@ -351,6 +348,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             else if (message.Data != null)
             {
                 this.CumulativePerformedCycles = message.Data.PerformedCycles;
+
+                this.CyclesPercent = ((double)this.PerformedCyclesThisSession / (double)this.InputRequiredCycles) * 100.0;
             }
         }
 

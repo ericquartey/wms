@@ -12,27 +12,38 @@ namespace Ferretto.VW.App.Scaffolding.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            bool invert = false;
+            string strParam = System.Convert.ToString(parameter, culture);
+            if (bool.TryParse(strParam, out bool param))
+            {
+                invert = param;
+            }
+            else if ("Invert".Equals(strParam, StringComparison.OrdinalIgnoreCase))
+            {
+                invert = true;
+            }
+
             if (value is System.Collections.IEnumerable enumerable)
             {
-                return enumerable?.GetEnumerator().MoveNext() == true ? Visibility.Visible : Visibility.Collapsed;
+                return invert ^ enumerable?.GetEnumerator().MoveNext() == true ? Visibility.Visible : Visibility.Collapsed;
             }
 
             if (value is string text)
             {
-                return string.IsNullOrEmpty(text) ? Visibility.Collapsed : Visibility.Visible;
+                return invert ^ string.IsNullOrEmpty(text) ? Visibility.Collapsed : Visibility.Visible;
             }
 
             if (value is int count)
             {
-                return count == default ? Visibility.Collapsed : Visibility.Visible;
+                return invert ^ count == default ? Visibility.Collapsed : Visibility.Visible;
             }
 
             if (value is bool boolean)
             {
-                return boolean ? Visibility.Visible : Visibility.Collapsed;
+                return invert ^ boolean ? Visibility.Visible : Visibility.Collapsed;
             }
 
-            return value == null ? Visibility.Collapsed : Visibility.Visible;
+            return invert ^ value == null ? Visibility.Collapsed : Visibility.Visible;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

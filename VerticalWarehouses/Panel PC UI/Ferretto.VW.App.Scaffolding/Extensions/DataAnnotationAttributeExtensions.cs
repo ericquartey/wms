@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using Ferretto.VW.App.Scaffolding.Models;
 
 namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
@@ -14,7 +15,7 @@ namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
     {
         #region Localization
 
-        private static string Localize<T>(this T attribute) where T: Attribute, ILocalizableString
+        private static string Localize<T>(this T attribute) where T : Attribute, ILocalizableString
         {
             Type resx = attribute.ResourceType;
             string resxName = attribute.ResourceName;
@@ -116,6 +117,33 @@ namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
 
         public static object RangeMax(this ScaffoldedEntity entity)
             => (entity ?? throw new ArgumentNullException(nameof(entity))).Metadata?.RangeMax();
+
+        #endregion
+
+        #region Validation
+
+        public static IEnumerable<ValidationRule> ExtractValidationRules(this ScaffoldedEntity entity)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+            var metadata = entity.Metadata;
+            var instance = entity.Instance;
+            if (metadata != null)
+            {
+                foreach (var attr in metadata)
+                {
+                    if (attr is ValidationAttribute validationAttr)
+                    {
+                        yield return new App.Scaffolding.ValidationRules.AttributeValidationRule(
+                            validationAttr,
+                            instance,
+                            entity.Property.DisplayName(metadata));
+                    }
+                }
+            }
+        }
 
         #endregion
     }
