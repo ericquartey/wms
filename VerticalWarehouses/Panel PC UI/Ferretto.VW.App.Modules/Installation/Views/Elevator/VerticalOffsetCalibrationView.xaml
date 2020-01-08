@@ -32,6 +32,17 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <Style x:Key="WizardConfirmButton"
+               BasedOn="{StaticResource WizardIntoButton}"
+               TargetType="{x:Type controls:PpcButton}">
+            <Setter Property="Background" Value="{DynamicResource FerrettoBlue}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource FerrettoPureWhite}" />
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <Style x:Key="BorderTimeLine"
                TargetType="{x:Type Border}">
             <Setter Property="HorizontalAlignment" Value="Center" />
@@ -107,7 +118,6 @@
                                     Content="Vai a quota"
                                     Style="{StaticResource WizardIntoButton}" />
 
-
                 <ctrls:PpcSpinEdit Grid.Row="1"
                                    Width="250"
                                    Height="90"
@@ -130,188 +140,7 @@
                                     Grid.ColumnSpan="2"
                                     Command="{Binding MoveToCellPositioningCommand}"
                                     Content="Avanti"
-                                    Style="{StaticResource WizardIntoButton}" />
-
-            </Grid>
-        </DataTemplate>
-
-        <DataTemplate x:Key="DataTemplateCellPositioning">
-            <Grid Margin="20"
-                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-
-                <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Eseguire il posizionamento sulla cella:"
-                               TextWrapping="Wrap" />
-
-                    <TextBlock FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Posizionare l'elevatore alla cella indicata"
-                               TextWrapping="Wrap" />
-                </StackPanel>
-
-                <Border Grid.Row="1"
-                        Grid.ColumnSpan="2"
-                        Background="{DynamicResource PpcBackground}">
-                    <Border BorderBrush="{DynamicResource PpcBorderBrush}"
-                            BorderThickness="{DynamicResource PpcBorderThickness}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-
-                            <Grid Grid.ColumnSpan="3">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-
-                                <Border Grid.RowSpan="2"
-                                        Grid.Column="1"
-                                        Margin="0,25"
-                                        VerticalAlignment="Stretch"
-                                        BorderBrush="{DynamicResource FerrettoMediumGray}"
-                                        BorderThickness="1" />
-
-                            </Grid>
-
-                            <Grid Grid.Column="3"
-                                  Grid.ColumnSpan="3">
-
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-
-
-                                <TextBlock Margin="0,20,0,0"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Normal}"
-                                           FontWeight="Normal"
-                                           Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="{x:Static res:InstallationApp.CellHeight}"
-                                           TextAlignment="Left" />
-
-                                <TextBlock Grid.Row="1"
-                                           Margin="0"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Top"
-                                           FontSize="{StaticResource FontSize_Very_High}"
-                                           Foreground="{DynamicResource PpcForeground}"
-                                           Text="{Binding SelectedCell.Position}"
-                                           TextWrapping="Wrap" />
-
-                                <Border Grid.RowSpan="2"
-                                        Grid.Column="1"
-                                        Margin="0,25"
-                                        VerticalAlignment="Stretch"
-                                        BorderBrush="{DynamicResource FerrettoMediumGray}"
-                                        BorderThickness="1" />
-
-                            </Grid>
-
-                            <Grid Grid.Column="6"
-                                  Grid.ColumnSpan="3">
-
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-
-
-                                <TextBlock Margin="0,20,0,0"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Normal}"
-                                           FontWeight="Normal"
-                                           Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="{x:Static res:InstallationApp.CellSide}" />
-
-                                <TextBlock Grid.Row="1"
-                                           Margin="0"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Top"
-                                           FontSize="{StaticResource FontSize_Very_High}"
-                                           Foreground="{DynamicResource PpcForeground}"
-                                           Text="{Binding SelectedCell.Side, Converter={StaticResource EWSC}}"
-                                           TextWrapping="Wrap" />
-
-                                <Border Grid.RowSpan="2"
-                                        Grid.Column="1"
-                                        Margin="0,25"
-                                        VerticalAlignment="Stretch"
-                                        BorderBrush="{DynamicResource FerrettoMediumGray}"
-                                        BorderThickness="1" />
-
-                            </Grid>
-
-                        </Grid>
-                    </Border>
-                </Border>
-
-                <ctrls:PpcSpinEdit Grid.Row="2"
-                                   Grid.Column="0"
-                                   Width="180"
-                                   Height="90"
-                                   Margin="0,0,15,0"
-                                   HorizontalAlignment="Right"
-                                   VerticalAlignment="Center"
-                                   EditValue="{Binding CurrentCellId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                   IsEnabled="{Binding IsCanStartPosition}"
-                                   LabelText="Cella selezionata"
-                                   MaxValue="999"
-                                   MinValue="1" />
-
-                <controls:PpcButton Grid.Row="2"
-                                    Grid.Column="1"
-                                    Margin="15,0,0,0"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Center"
-                                    Command="{Binding MoveToCellCommand}"
-                                    Content="Vai a quota"
-                                    Style="{StaticResource WizardIntoButton}" />
-
-                <controls:PpcButton Grid.Row="3"
-                                    Grid.ColumnSpan="2"
-                                    Command="{Binding MoveToCellMeasuredCommand}"
-                                    Content="Avanti"
-                                    Style="{StaticResource WizardIntoButton}" />
+                                    Style="{StaticResource WizardConfirmButton}" />
 
             </Grid>
         </DataTemplate>
@@ -322,20 +151,21 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-
 
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Eseguire la misurazione della cella:"
+                               Text="Eseguire la misurazione di una cella:"
                                TextWrapping="Wrap" />
 
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Indicare la quota misurata con il metro e premere Avanti"
+                               Text="Eseguire il posizionamento dell'elevatore di fronte ad una cella."
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -511,14 +341,53 @@
 
                 <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <ctrls:PpcSpinEdit Grid.Row="2"
+                                       Grid.Column="0"
+                                       Width="180"
+                                       Height="80"
+                                       Margin="0,15,0,0"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       EditValue="{Binding CurrentCellId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                       IsEnabled="{Binding IsCanStartPosition}"
+                                       LabelText="Cella selezionata"
+                                       MaxValue="999"
+                                       MinValue="1" />
+
+                    <controls:PpcButton Grid.Row="2"
+                                        Grid.Column="1"
+                                        Margin="15,15,0,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Command="{Binding MoveToCellCommand}"
+                                        Content="Vai a quota"
+                                        Style="{StaticResource WizardIntoButton}" />
+
+                </Grid>
+
+                <TextBlock Grid.Row="3"
+                           Margin="0,20,0,0"
+                           FontSize="18"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="Correggere la posizione dell'elevatore fino al perfetto allineamento e premere Avanti."
+                           TextWrapping="Wrap" />
+
+                <Grid Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
                     <ctrls:PpcSpinEdit Width="180"
-                                       Height="90"
-                                       Margin="0,0,15,0"
-                                       HorizontalAlignment="Right"
+                                       Height="80"
+                                       Margin="0,15,0,0"
+                                       HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        EditValue="{Binding StepValue, Mode=TwoWay}"
                                        Increment="0.5"
@@ -527,28 +396,23 @@
                                        Mask="#0.0" />
 
                     <controls:PpcButton Grid.Column="1"
-                                        Margin="15,0,0,0"
+                                        Margin="15,15,0,0"
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
                                         Command="{Binding DisplacementCommand}"
-                                        Content="Spostamento"
+                                        Content="Sposta elevatore"
                                         Style="{StaticResource WizardIntoButton}" />
+
+
+                    <controls:PpcButton Grid.Column="2"
+                                        Margin="15,15,0,0"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Command="{Binding MoveToConfirmCommand}"
+                                        Content="Avanti"
+                                        Style="{StaticResource WizardConfirmButton}" />
                 </Grid>
 
-                <StackPanel Grid.Row="3"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Orientation="Horizontal">
-                    <controls:PpcButton Margin="0,0,15,0"
-                                        Command="{Binding ReturnToCellPositioningCommand}"
-                                        Content="Prova un'altra cella"
-                                        Style="{StaticResource WizardIntoButton}" />
-
-                    <controls:PpcButton Margin="15,0,0,0"
-                                        Command="{Binding MoveToConfirmCommand}"
-                                        Content="Completa la procedura"
-                                        Style="{StaticResource WizardIntoButton}" />
-                </StackPanel>
             </Grid>
         </DataTemplate>
 
@@ -570,30 +434,50 @@
 
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Verificare il nuovo valore di offset calcolato e premere Salva per rendere la modifica effettiva"
+                               Text="Verificare il nuovo valore di offset calcolato e premere Salva per rendere la modifica effettiva. Tutti i posizionamenti successivi terranno conto della correzione."
                                TextWrapping="Wrap" />
                 </StackPanel>
 
 
-                <ctrls:PpcSpinEdit Grid.Row="1"
-                                   Width="250"
-                                   Height="90"
-                                   Margin="0,0,15,0"
-                                   EditValue="{Binding NewDisplacement, StringFormat={}{0:F1}}"
-                                   IsEnabled="False"
-                                   LabelText="Nuovo offset"
-                                   Mask="###0.0" />
+                <Border Grid.Row="1"
+                        Width="250"
+                        Height="90"
+                        Margin="0"
+                        BorderBrush="{DynamicResource PpcBorderBrush}"
+                        BorderThickness="{DynamicResource PpcBorderThickness}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Margin="4,0"
+                                   FontSize="{StaticResource FontSize_Normal}"
+                                   FontWeight="Normal"
+                                   Foreground="{DynamicResource FerrettoLightGray}"
+                                   Text="Nuovo offset (mm)" />
+
+                        <TextBlock Grid.Row="1"
+                                   Margin="8,4"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="28"
+                                   Foreground="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}">
+                            <Run Text="{Binding NewDisplacement, StringFormat={}{0:0.00}}" />
+                            <Run Text="{Binding Displacement, StringFormat={}({0:+0.0;-#.0})}" />
+                        </TextBlock>
+                    </Grid>
+                </Border>
 
                 <controls:PpcButton Grid.Row="3"
                                     Command="{Binding ApplyCorrectionCommand}"
                                     Content="Salva"
-                                    Style="{StaticResource WizardIntoButton}" />
+                                    Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
 
         <local:OffsetCalibrationStepTemplateSelector x:Key="selector"
                                                      EnumCellMeasured="{StaticResource DataTemplateCellMeasured}"
-                                                     EnumCellPositioning="{StaticResource DataTemplateCellPositioning}"
                                                      EnumConfirm="{StaticResource DataTemplateConfirm}"
                                                      EnumStart="{StaticResource DataTemplateStart}" />
         <!--#endregion-->
@@ -730,7 +614,6 @@
                 <RowDefinition Height="4*" />
                 <RowDefinition Height="4*" />
                 <RowDefinition Height="4*" />
-                <RowDefinition Height="4*" />
                 <RowDefinition Height="1" />
             </Grid.RowDefinitions>
             <!--#region Body-->
@@ -765,7 +648,7 @@
                   Visibility="{Binding HasStepStart, Converter={StaticResource BTVC}, Mode=OneWay}" />
 
             <Grid Grid.Row="2">
-                <Border Background="{Binding HasStepCellPositioning, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                <Border Background="{Binding HasStepCellMeasured, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                         Style="{DynamicResource BorderTimeLineCirle}" />
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                            Text="2" />
@@ -774,27 +657,15 @@
                   Grid.Column="1"
                   Grid.ColumnSpan="2"
                   Style="{DynamicResource BorderTimeLinePath}"
-                  Visibility="{Binding HasStepCellPositioning, Converter={StaticResource BTVC}, Mode=OneWay}" />
+                  Visibility="{Binding HasStepCellMeasured, Converter={StaticResource BTVC}, Mode=OneWay}" />
 
             <Grid Grid.Row="3">
-                <Border Background="{Binding HasStepCellMeasured, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                <Border Background="{Binding HasStepConfirm, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                         Style="{DynamicResource BorderTimeLineCirle}" />
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                            Text="3" />
             </Grid>
             <Path Grid.Row="3"
-                  Grid.Column="1"
-                  Grid.ColumnSpan="2"
-                  Style="{DynamicResource BorderTimeLinePath}"
-                  Visibility="{Binding HasStepCellMeasured, Converter={StaticResource BTVC}, Mode=OneWay}" />
-
-            <Grid Grid.Row="4">
-                <Border Background="{Binding HasStepConfirm, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
-                        Style="{DynamicResource BorderTimeLineCirle}" />
-                <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                           Text="4" />
-            </Grid>
-            <Path Grid.Row="4"
                   Grid.Column="1"
                   Grid.ColumnSpan="2"
                   Style="{DynamicResource BorderTimeLinePath}"

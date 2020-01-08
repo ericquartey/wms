@@ -191,6 +191,18 @@ namespace Ferretto.VW.App.Controls
 
             this.InitializeSteps();
 
+            this.SubscribeEvents();
+
+            this.UpdateIsEnabled(
+                this.machineModeService.MachinePower,
+                this.machineModeService.MachineMode,
+                this.healthProbeService.HealthStatus);
+
+            await base.OnAppearedAsync();
+        }
+
+        private void SubscribeEvents()
+        {
             this.healthStatusChangedToken = this.healthStatusChangedToken
                 ??
                 this.EventAggregator
@@ -265,13 +277,6 @@ namespace Ferretto.VW.App.Controls
                         false,
                         m => m.Data != null &&
                              this.IsVisible);
-
-            this.UpdateIsEnabled(
-                this.machineModeService.MachinePower,
-                this.machineModeService.MachineMode,
-                this.healthProbeService.HealthStatus);
-
-            await base.OnAppearedAsync();
         }
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)

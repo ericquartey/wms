@@ -8,6 +8,8 @@
 
         public bool CanBePerformed { get; set; }
 
+        public bool InProgress { get; set; }
+
         public bool IsCompleted { get; set; }
 
         #endregion

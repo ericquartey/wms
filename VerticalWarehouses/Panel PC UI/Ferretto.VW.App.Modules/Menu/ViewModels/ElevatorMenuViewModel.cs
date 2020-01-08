@@ -80,7 +80,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.beltBurnishingCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.BeltBurnishing),
                 () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual &&
+                      (this.MachineModeService.MachineMode == MachineMode.Manual ||
+                       this.MachineModeService.MachineMode == MachineMode.Test) &&
                       this.MachineService.IsHoming &&
                       ((this.VerticalResolutionCalibrationProcedureParameters != null &&
                         this.VerticalResolutionCalibrationProcedureParameters.IsCompleted &&

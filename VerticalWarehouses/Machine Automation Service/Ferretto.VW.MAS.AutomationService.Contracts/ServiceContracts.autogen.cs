@@ -2677,6 +2677,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class RepeatedTestProcedure : SetupProcedure
     {
+        [Newtonsoft.Json.JsonProperty("inProgress", Required = Newtonsoft.Json.Required.Always)]
+        public bool InProgress { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("performedCycles", Required = Newtonsoft.Json.Required.Always)]
         public int PerformedCycles { get; set; }
     
@@ -3401,6 +3404,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     {
         [Newtonsoft.Json.JsonProperty("canBePerformed", Required = Newtonsoft.Json.Required.Always)]
         public bool CanBePerformed { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("inProgress", Required = Newtonsoft.Json.Required.Always)]
+        public bool InProgress { get; set; }
     
         [Newtonsoft.Json.JsonProperty("isCompleted", Required = Newtonsoft.Json.Required.Always)]
         public bool IsCompleted { get; set; }
