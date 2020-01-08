@@ -16,6 +16,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         event EventHandler<MessageNotifiedEventArgs> MessageReceived;
 
+        event EventHandler<SystemTimeChangedEventArgs> SystemTimeChanged;
+
         #endregion
     }
 }
