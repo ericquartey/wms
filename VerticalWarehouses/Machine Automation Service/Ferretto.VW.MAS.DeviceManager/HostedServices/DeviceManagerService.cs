@@ -338,10 +338,6 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                 using (var scope = this.ServiceScopeFactory.CreateScope())
                 {
-                    scope.ServiceProvider
-                        .GetRequiredService<IErrorsProvider>()
-                        .RecordNew(MachineErrorCode.InverterFaultStateDetected);
-
                     var inverterProvider = scope.ServiceProvider.GetRequiredService<IInvertersProvider>();
                     foreach (var inverter in inverterProvider.GetAll())
                     {

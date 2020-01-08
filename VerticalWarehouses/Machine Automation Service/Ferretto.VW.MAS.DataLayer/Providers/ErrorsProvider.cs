@@ -166,6 +166,52 @@ namespace Ferretto.VW.MAS.DataLayer
             return newError;
         }
 
+        public MachineError RecordNew(int inverterIndex, ushort detailCode, BayNumber bayNumber = BayNumber.None)
+        {
+            var newError = new MachineError
+            {
+                Code = (int)MachineErrorCode.InverterFaultStateDetected,
+                OccurrenceDate = DateTime.Now,
+                InverterIndex = inverterIndex,
+                BayNumber = bayNumber,
+                DetailCode = detailCode
+            };
+
+            lock (this.dataContext)
+            {
+                var existingUnresolvedError = this.dataContext.Errors.FirstOrDefault(
+                    e =>
+                        e.Code == (int)MachineErrorCode.InverterFaultStateDetected
+                        &&
+                        e.ResolutionDate == null
+                        &&
+                        e.InverterIndex == inverterIndex
+                        &&
+                        e.DetailCode == detailCode);
+
+                if (existingUnresolvedError != null)
+                {
+                    this.logger.LogWarning($"Machine error {MachineErrorCode.InverterFaultStateDetected} (InverterIndex: {inverterIndex}; detail error code: {detailCode}) was not triggered because already present and still unresolved.");
+                    return existingUnresolvedError;
+                };
+
+                this.dataContext.Errors.Add(newError);
+
+                var errorStatistics = this.dataContext.ErrorStatistics.SingleOrDefault(e => e.Code == newError.Code);
+                if (errorStatistics != null)
+                {
+                    errorStatistics.TotalErrors++;
+                    this.dataContext.ErrorStatistics.Update(errorStatistics);
+                }
+
+                this.dataContext.SaveChanges();
+            }
+
+            this.NotifyErrorCreation(newError, bayNumber);
+
+            return newError;
+        }
+
         public MachineError Resolve(int id)
         {
             lock (this.dataContext)

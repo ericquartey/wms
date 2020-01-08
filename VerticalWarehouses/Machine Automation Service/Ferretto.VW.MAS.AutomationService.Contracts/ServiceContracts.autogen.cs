@@ -2770,6 +2770,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Description { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("detailCode", Required = Newtonsoft.Json.Required.Always)]
+        public int DetailCode { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("inverterIndex", Required = Newtonsoft.Json.Required.Always)]
+        public int InverterIndex { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("occurrenceDate", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTimeOffset OccurrenceDate { get; set; }
