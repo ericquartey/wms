@@ -4,9 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:Ferretto.VW.App.Scaffolding.Controls"
+             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:converters="clr-namespace:Ferretto.VW.App.Scaffolding.Converters"
              xmlns:filters="clr-namespace:Ferretto.VW.App.Scaffolding.Behaviors"
              xmlns:interactivity="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:g11n="clr-namespace:System.Globalization;assembly=mscorlib"
              xmlns:selectors="clr-namespace:Ferretto.VW.App.Scaffolding.Selectors"
              xmlns:validation="clr-namespace:Ferretto.VW.App.Scaffolding.ValidationRules"
              mc:Ignorable="d"
@@ -21,6 +23,7 @@
         <converters:TruthyToVisibilityConverter x:Key="TruthyToVisibilityConverter" />
         <converters:ValidationRuleConverter x:Key="ValidationRuleConverter" />
         <converters:DefaultValueConverter x:Key="DefaultValueConverter" />
+        <converters:TwoWayConverter x:Key="TwoWayConverter" />
 
         <selectors:PropertyInfoDataTemplateSelector x:Key="PropertyInfoDataTemplateSelector" />
 
@@ -69,29 +72,58 @@
                                    IPAddress="{Binding Path=Value, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Mode=TwoWay}" />
         </DataTemplate>
 
+        <!-- string (default*) -->
+        <DataTemplate x:Key="NewStringDataTemplate">
+            <DataTemplate.Resources>
+                <converters:TwoWayConverter x:Key="TwoWayConverter" />
+            </DataTemplate.Resources>
+
+                            
+            <ctrls:PpcTextBoxNew DataContext="{Binding}" IsEnabled="{Binding Path=.,Converter={StaticResource IsEditableConverter}}" x:Name="field">
+                <ctrls:PpcTextBoxNew.Resources>
+                    <validation:CompositeValidator x:Key="CompositeValidator"
+                                       Value="{Binding Path=InputText, ElementName=field}"
+                                       Rules="{Binding Path=DataContext, ElementName=field}" />
+                </ctrls:PpcTextBoxNew.Resources>
+                <ctrls:PpcTextBoxNew.InputText>
+                    <Binding Path="Value" UpdateSourceTrigger="PropertyChanged"
+                             Converter="{StaticResource TwoWayConverter}" ConverterCulture="{x:Static g11n:CultureInfo.CurrentCulture}"
+                             RelativeSource="{RelativeSource Mode=FindAncestor,AncestorType=UserControl}" Mode="TwoWay">
+                        <Binding.ValidationRules>
+                            <validation:CompositeValidationRule ValidatesOnTargetUpdated="True" Validated="CompositeValidationRule_Validated"
+                                                                CompositeValidator="{StaticResource CompositeValidator}">
+                            </validation:CompositeValidationRule>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </ctrls:PpcTextBoxNew.InputText>
+            </ctrls:PpcTextBoxNew>
+        </DataTemplate>
+
         <!-- string (default) -->
         <DataTemplate x:Key="StringDataTemplate">
             <DataTemplate.Resources>
                 <converters:TwoWayConverter x:Key="TwoWayConverter" />
             </DataTemplate.Resources>
 
-            <TextBox DataContext="{Binding}" IsEnabled="{Binding Path=.,Converter={StaticResource IsEditableConverter}}" Name="field">
+            <TextBox DataContext="{Binding}" IsEnabled="{Binding Path=.,Converter={StaticResource IsEditableConverter}}" x:Name="field">
                 <TextBox.Resources>
                     <validation:BindingProxy x:Key="valueBridge" Data="{Binding Path=Text, ElementName=field}" />
                     <validation:BindingProxy x:Key="entityBridge" Data="{Binding Path=DataContext, ElementName=field}" />
                 </TextBox.Resources>
                 <TextBox.Text>
-                    <Binding Path="Value" UpdateSourceTrigger="PropertyChanged" RelativeSource="{RelativeSource Mode=FindAncestor,AncestorType=UserControl}" Mode="TwoWay">
-                            <Binding.ValidationRules>
-                                <validation:CompositeValidationRule ValidatesOnTargetUpdated="True" Validated="CompositeValidationRule_Validated">
-                                    <validation:CompositeValidationRule.CompositeValidator>
-                                        <validation:CompositeValidator Value="{Binding Data, Source={StaticResource valueBridge}}"
+                    <Binding Path="Value" UpdateSourceTrigger="PropertyChanged"
+                             Converter="{StaticResource TwoWayConverter}" ConverterCulture="{x:Static g11n:CultureInfo.CurrentCulture}"
+                             RelativeSource="{RelativeSource Mode=FindAncestor,AncestorType=UserControl}" Mode="TwoWay">
+                        <Binding.ValidationRules>
+                            <validation:CompositeValidationRule ValidatesOnTargetUpdated="True" Validated="CompositeValidationRule_Validated">
+                                <validation:CompositeValidationRule.CompositeValidator>
+                                    <validation:CompositeValidator Value="{Binding Data, Source={StaticResource valueBridge}}"
                                                                    Rules="{Binding Data, Source={StaticResource entityBridge}, Converter={StaticResource ValidationRuleConverter}}" />
-                                    </validation:CompositeValidationRule.CompositeValidator>
-                                </validation:CompositeValidationRule>
-                            </Binding.ValidationRules>
-                            </Binding>
-                            </TextBox.Text>
+                                </validation:CompositeValidationRule.CompositeValidator>
+                            </validation:CompositeValidationRule>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
             </TextBox>
         </DataTemplate>
 
@@ -113,15 +145,16 @@
 
                 <!-- footer -->
                 <StackPanel Orientation="Horizontal" Grid.Row="2">
-                    <Button Content="Save" Click="Confirm_Click">
-                        <Button.IsEnabled>
+
+                    <ctrls:PpcButton Content="Save" Click="Confirm_Click">
+                        <ctrls:PpcButton.IsEnabled>
                             <MultiBinding Converter="{StaticResource MultiBooleanConverter}">
                                 <Binding Path="IsValid" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=UserControl}" />
                                 <Binding Path="IsDirty" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=UserControl}" />
                             </MultiBinding>
-                        </Button.IsEnabled>
-                    </Button>
-                    <Button Content="Cancel" Click="Cancel_Click"/>
+                        </ctrls:PpcButton.IsEnabled>
+                    </ctrls:PpcButton>
+                    <ctrls:PpcButton Content="Cancel" Click="Cancel_Click"/>
                 </StackPanel>
 
                 <!-- body -->

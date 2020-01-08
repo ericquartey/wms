@@ -84,6 +84,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Machine Automation Service\Ferretto.VW.MAS.AutomationService.Contracts\Ferretto.VW.MAS.AutomationService.Contracts.csproj" />
+    <ProjectReference Include="..\Ferretto.VW.App.Controls\Ferretto.VW.App.Controls.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Controls\PropertyEditor.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>

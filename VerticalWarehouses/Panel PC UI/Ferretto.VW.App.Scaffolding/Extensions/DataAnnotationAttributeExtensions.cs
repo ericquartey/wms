@@ -1,5 +1,4 @@
-﻿using Ferretto.VW.App.Scaffolding.DataAnnotations;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,8 +6,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.App.Scaffolding.Models;
 
-namespace Ferretto.VW.App.Scaffolding.DataAnnotations
+namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
 {
     public static class DataAnnotationAttributeExtensions
     {
@@ -37,7 +37,7 @@ namespace Ferretto.VW.App.Scaffolding.DataAnnotations
 
         #region Display name
 
-        public static string DisplayName(this Models.ScaffoldedEntity entity)
+        public static string DisplayName(this ScaffoldedEntity entity)
         {
             if (entity == null)
             {
@@ -61,7 +61,7 @@ namespace Ferretto.VW.App.Scaffolding.DataAnnotations
             }
             if (display != null)
             {
-                return display.Name ?? display.ShortName;
+                return display.GetName() ?? display.GetShortName();
             }
 
             return property.Name;
@@ -85,7 +85,7 @@ namespace Ferretto.VW.App.Scaffolding.DataAnnotations
             return null;
         }
 
-        public static object DefaultValue(this Models.ScaffoldedEntity entity)
+        public static object DefaultValue(this ScaffoldedEntity entity)
             => (entity ?? throw new ArgumentNullException(nameof(entity))).Metadata?.DefaultValue();
 
         public static string UnitOfMeasure(this IEnumerable<Attribute> metadata)
@@ -94,7 +94,7 @@ namespace Ferretto.VW.App.Scaffolding.DataAnnotations
             {
                 throw new ArgumentNullException(nameof(metadata));
             }
-            var defaultAttr = metadata.OfType<DefaultValueAttribute>().FirstOrDefault();
+            var defaultAttr = metadata.OfType<UnitAttribute>().FirstOrDefault();
             if (defaultAttr != null)
             {
                 return defaultAttr.Unit;
@@ -102,19 +102,19 @@ namespace Ferretto.VW.App.Scaffolding.DataAnnotations
             return default;
         }
 
-        public static string UnitOfMeasure(this Models.ScaffoldedEntity entity)
+        public static string UnitOfMeasure(this ScaffoldedEntity entity)
             => (entity ?? throw new ArgumentNullException(nameof(entity))).Metadata?.UnitOfMeasure();
 
         public static object RangeMin(this IEnumerable<Attribute> metadata)
             => (metadata ?? throw new ArgumentNullException(nameof(metadata))).OfType<RangeAttribute>().FirstOrDefault()?.Minimum;
 
-        public static object RangeMin(this Models.ScaffoldedEntity entity)
+        public static object RangeMin(this ScaffoldedEntity entity)
             => (entity ?? throw new ArgumentNullException(nameof(entity))).Metadata?.RangeMin();
 
         public static object RangeMax(this IEnumerable<Attribute> metadata)
             => (metadata ?? throw new ArgumentNullException(nameof(metadata))).OfType<RangeAttribute>().FirstOrDefault()?.Maximum;
 
-        public static object RangeMax(this Models.ScaffoldedEntity entity)
+        public static object RangeMax(this ScaffoldedEntity entity)
             => (entity ?? throw new ArgumentNullException(nameof(entity))).Metadata?.RangeMax();
 
         #endregion

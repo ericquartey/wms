@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ferretto.VW.App.Scaffolding.DataAnnotations
+namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
 {
     /// <summary>
     /// Placeholder attribute, that can be associated with a <see cref="CategoryAttribute"/>. When present, pulls the relevant property (or category) up to the root of the metadata tree.

@@ -3,8 +3,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using NLog;
+using Prism.Events;
 
 namespace Ferretto.VW.App.Services
 {
@@ -20,11 +22,15 @@ namespace Ferretto.VW.App.Services
 
         private readonly Logger logger;
 
+        private readonly PubSubEvent<SystemTimeChangedEventArgs> systemTimeChangedEvent;
+
         private readonly IMachineUtcTimeWebService utcTimeWebService;
 
         private bool isDisposed;
 
         private int syncIntervalMilliseconds = DefaultSyncInterval;
+
+        private SubscriptionToken systemTimeToken;
 
         private CancellationTokenSource tokenSource;
 
@@ -32,9 +38,17 @@ namespace Ferretto.VW.App.Services
 
         #region Constructors
 
-        public TimeSyncService(IMachineUtcTimeWebService utcTimeWebService)
+        public TimeSyncService(
+            IMachineUtcTimeWebService utcTimeWebService,
+            IEventAggregator eventAggregator)
         {
+            if (eventAggregator is null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
             this.utcTimeWebService = utcTimeWebService ?? throw new ArgumentNullException(nameof(utcTimeWebService));
+            this.systemTimeChangedEvent = eventAggregator.GetEvent<PubSubEvent<SystemTimeChangedEventArgs>>();
             this.logger = NLog.LogManager.GetCurrentClassLogger();
         }
 
@@ -59,48 +73,36 @@ namespace Ferretto.VW.App.Services
                 return;
             }
 
-            this.tokenSource?.Dispose();
-            this.tokenSource = null;
+            this.Stop();
 
             this.isDisposed = true;
         }
 
         public void Start()
         {
+            this.systemTimeToken = this.systemTimeToken
+                ??
+                this.systemTimeChangedEvent.Subscribe(
+                    async e => await this.OnSystemTimeChangedAsync(e),
+                    ThreadOption.UIThread,
+                    false);
+
+            this.tokenSource?.Cancel();
+            this.tokenSource = new CancellationTokenSource();
+
             Task.Run(async () =>
             {
-                this.tokenSource?.Cancel();
-                this.tokenSource = new CancellationTokenSource();
+                var cancellationToken = this.tokenSource.Token;
 
                 try
                 {
                     do
                     {
-                        try
-                        {
-                            this.logger.Trace("Attempting to sync PPC time with MAS time.");
+                        await this.SyncTimeWithAutomationServiceAsync();
 
-                            var remoteUtcTime = await this.utcTimeWebService.GetAsync();
-                            var machineUtcTime = DateTimeOffset.UtcNow;
-
-                            if ((machineUtcTime - remoteUtcTime).TotalSeconds > SyncToleranceMilliseconds)
-                            {
-                                remoteUtcTime.LocalDateTime.SetAsUtcSystemTime();
-                                this.logger.Trace("PPC time was synced with MAS time.");
-                            }
-                            else
-                            {
-                                this.logger.Trace("PPC is alredy synced with MAS time.");
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            this.logger.Error($"Cannot sync time with MAS: '{ex.Message}'.");
-                        }
-
-                        await Task.Delay(this.SyncIntervalMilliseconds, this.tokenSource.Token);
+                        await Task.Delay(this.SyncIntervalMilliseconds, cancellationToken);
                     }
-                    while (!this.tokenSource.IsCancellationRequested);
+                    while (!cancellationToken.IsCancellationRequested);
                 }
                 catch (OperationCanceledException)
                 {
@@ -112,6 +114,40 @@ namespace Ferretto.VW.App.Services
         public void Stop()
         {
             this.tokenSource?.Cancel();
+            this.tokenSource = null;
+
+            this.systemTimeToken?.Dispose();
+            this.systemTimeToken = null;
+        }
+
+        private async Task OnSystemTimeChangedAsync(SystemTimeChangedEventArgs e)
+        {
+            await this.SyncTimeWithAutomationServiceAsync();
+        }
+
+        private async Task SyncTimeWithAutomationServiceAsync()
+        {
+            try
+            {
+                this.logger.Trace("Attempting to sync PPC time with MAS time.");
+
+                var remoteUtcTime = await this.utcTimeWebService.GetAsync();
+                var machineUtcTime = DateTimeOffset.UtcNow;
+
+                if ((machineUtcTime - remoteUtcTime).TotalSeconds > SyncToleranceMilliseconds)
+                {
+                    remoteUtcTime.LocalDateTime.SetAsUtcSystemTime();
+                    this.logger.Trace("PPC time was synced with MAS time.");
+                }
+                else
+                {
+                    this.logger.Trace("PPC is alredy synced with MAS time.");
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error($"Cannot sync time with MAS: '{ex.Message}'.");
+            }
         }
 
         #endregion

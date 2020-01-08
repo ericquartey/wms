@@ -38,6 +38,7 @@ namespace Ferretto.VW.App.Services
             this.installationHubClient.MachinePowerChanged += this.OnEventReceived;
             this.installationHubClient.ElevatorPositionChanged += this.OnEventReceived;
             this.installationHubClient.BayChainPositionChanged += this.OnBayEventReceived;
+            this.installationHubClient.SystemTimeChanged += this.OnEventReceived;
 
             this.logger = LogManager.GetCurrentClassLogger();
 
@@ -60,7 +61,7 @@ namespace Ferretto.VW.App.Services
         }
 
         private void OnEventReceived<TEventArgs>(object sender, TEventArgs e)
-                    where TEventArgs : EventArgs
+            where TEventArgs : EventArgs
         {
             this.eventAggregator
                 .GetEvent<PubSubEvent<TEventArgs>>()
