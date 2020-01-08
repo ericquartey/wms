@@ -36,6 +36,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private int? cumulativePerformedCyclesBeforeStart;
 
+        private double? cyclesPercent;
+
         private int? inputDelayBetweenCycles;
 
         private int? inputRequiredCycles;
@@ -103,8 +105,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public double? CyclesPercent
+        {
+            get => this.cyclesPercent;
+            private set => this.SetProperty(ref this.cyclesPercent, value);
+        }
+
         public string Error => string.Join(
-            System.Environment.NewLine,
+                    System.Environment.NewLine,
             this[nameof(this.InputDelayBetweenCycles)],
             this[nameof(this.InputRequiredCycles)]);
 
@@ -148,23 +156,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.isShutterThreeSensors;
             set => this.SetProperty(ref this.isShutterThreeSensors, value);
-        }
-
-        public override bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            protected set
-            {
-                if (this.SetProperty(ref this.isWaitingForResponse, value))
-                {
-                    if (this.isWaitingForResponse)
-                    {
-                        this.ClearNotifications();
-                    }
-
-                    this.RaiseCanExecuteChanged();
-                }
-            }
         }
 
         public int? PerformedCyclesThisSession
@@ -218,7 +209,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                             return $"InputDelayBetweenCycles is required.";
                         }
 
-                        if (this.InputDelayBetweenCycles.Value <= 0)
+                        if (this.InputDelayBetweenCycles.Value < 0)
                         {
                             return "InputDelayBetweenCycles must be strictly positive.";
                         }
@@ -351,6 +342,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             else if (message.Data != null)
             {
                 this.CumulativePerformedCycles = message.Data.PerformedCycles;
+
+                this.CyclesPercent = ((double)this.PerformedCyclesThisSession / (double)this.InputRequiredCycles) * 100.0;
             }
         }
 

@@ -562,6 +562,12 @@ namespace Ferretto.VW.App.Services
                                 {
                                     this.WriteInfo(dataPositioningInfo?.AxisMovement);
                                 }
+
+                                if (message?.Data is ShutterPositioningMessageData dataShutterPositioningInfo
+                                    && !this.MachineStatus.IsMovingLoadingUnit)
+                                {
+                                    this.WriteInfo(null);
+                                }
                             }
 
                             if (this.MachineStatus.IsMovingLoadingUnit)
@@ -999,28 +1005,42 @@ namespace Ferretto.VW.App.Services
                 return;
             }
 
-            if (this.machineModeService.MachineMode == MachineMode.Manual)
+            if (this.MachineStatus.IsMovingShutter)
             {
-                if (axisMovement.HasValue && axisMovement == Axis.Vertical)
+                if (this.machineModeService.MachineMode == MachineMode.Test)
                 {
-                    this.Notification = "Movimento verticale in corso...";
+                    this.Notification = "Test in corso...";
                 }
-                else if (axisMovement.HasValue && axisMovement == Axis.Horizontal)
+                else
                 {
-                    this.Notification = "Movimento orizzontale in corso...";
+                    this.Notification = "Movimento serranda in corso...";
                 }
-                else if (axisMovement.HasValue && axisMovement == Axis.BayChain)
-                {
-                    this.Notification = "Movimento catena baia in corso...";
-                }
-            }
-            else if (this.machineModeService.MachineMode == MachineMode.Test)
-            {
-                this.Notification = "Test in corso...";
             }
             else
             {
-                this.Notification = "Movimento in corso...";
+                if (this.machineModeService.MachineMode == MachineMode.Manual)
+                {
+                    if (axisMovement.HasValue && axisMovement == Axis.Vertical)
+                    {
+                        this.Notification = "Movimento verticale in corso...";
+                    }
+                    else if (axisMovement.HasValue && axisMovement == Axis.Horizontal)
+                    {
+                        this.Notification = "Movimento orizzontale in corso...";
+                    }
+                    else if (axisMovement.HasValue && axisMovement == Axis.BayChain)
+                    {
+                        this.Notification = "Movimento catena baia in corso...";
+                    }
+                }
+                else if (this.machineModeService.MachineMode == MachineMode.Test)
+                {
+                    this.Notification = "Test in corso...";
+                }
+                else
+                {
+                    this.Notification = "Movimento in corso...";
+                }
             }
         }
 
