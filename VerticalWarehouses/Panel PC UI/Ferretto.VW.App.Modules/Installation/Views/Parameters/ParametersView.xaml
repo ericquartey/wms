@@ -82,7 +82,7 @@
                                 Content="{x:Static res:InstallationApp.Export}"
                                 IsBusy="{Binding IsBusy}" />
 
-            <controls:PpcButton Grid.Row="2"
+            <controls:PpcButton Grid.Row="2" Visibility="Collapsed"
                                 Margin="15,15,15,0"
                                 VerticalAlignment="Bottom"
                                 Command="{Binding SaveCommand}"
