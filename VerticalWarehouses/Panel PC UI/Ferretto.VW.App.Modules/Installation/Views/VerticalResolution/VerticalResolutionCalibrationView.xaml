@@ -32,6 +32,17 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <Style x:Key="WizardConfirmButton"
+               BasedOn="{StaticResource WizardIntoButton}"
+               TargetType="{x:Type controls:PpcButton}">
+            <Setter Property="Background" Value="{DynamicResource FerrettoBlue}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource FerrettoPureWhite}" />
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <Style x:Key="BorderTimeLine"
                TargetType="{x:Type Border}">
             <Setter Property="HorizontalAlignment" Value="Center" />
@@ -129,7 +140,7 @@
                                     Grid.ColumnSpan="2"
                                     Command="{Binding MoveToFirstMeasuredCommand}"
                                     Content="Avanti"
-                                    Style="{StaticResource WizardIntoButton}" />
+                                    Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
 
@@ -204,7 +215,7 @@
                                     VerticalAlignment="Center"
                                     Command="{Binding MoveToLastMeasuredCommand}"
                                     Content="Avanti"
-                                    Style="{StaticResource WizardIntoButton}" />
+                                    Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
 
@@ -245,17 +256,6 @@
                                    MaxValue="{Binding AxisUpperBound}"
                                    MinValue="{Binding AxisLowerBound}" />
 
-                <ctrls:PpcSpinEdit Grid.Row="3"
-                                   Grid.Column="0"
-                                   Width="250"
-                                   Height="90"
-                                   Margin="0,0,15,0"
-                                   EditValue="{Binding MeasuredPosition2, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                   IsEnabled="{Binding IsCanMeasuredPosition2}"
-                                   LabelText="Quota misurata"
-                                   MaxValue="{Binding AxisUpperBound}"
-                                   MinValue="{Binding AxisLowerBound}" />
-
                 <controls:PpcButton Grid.Row="1"
                                     Grid.Column="1"
                                     VerticalAlignment="Center"
@@ -270,11 +270,22 @@
                            Text="Indicare la quota misurata con il metro e premere Avanti"
                            TextWrapping="Wrap" />
 
+                <ctrls:PpcSpinEdit Grid.Row="3"
+                                   Grid.Column="0"
+                                   Width="250"
+                                   Height="90"
+                                   Margin="0,0,15,0"
+                                   EditValue="{Binding MeasuredPosition2, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                   IsEnabled="{Binding IsCanMeasuredPosition2}"
+                                   LabelText="Quota misurata"
+                                   MaxValue="{Binding AxisUpperBound}"
+                                   MinValue="{Binding AxisLowerBound}" />
+
                 <controls:PpcButton Grid.Row="3"
                                     Grid.Column="1"
                                     Command="{Binding MoveToConfirmCommand}"
                                     Content="Avanti"
-                                    Style="{StaticResource WizardIntoButton}" />
+                                    Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
 
@@ -313,7 +324,7 @@
                 <controls:PpcButton Grid.Row="3"
                                     Command="{Binding SaveCommand}"
                                     Content="Salva"
-                                    Style="{StaticResource WizardIntoButton}" />
+                                    Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
 

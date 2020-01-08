@@ -156,6 +156,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     IsCompleted = setup.BeltBurnishingTest.IsCompleted,
                     CanBePerformed = verticalOrigin.IsCompleted,
+                    InProgress = setup.BeltBurnishingTest.InProgress,
                 },
                 CellsHeightCheck = new SetupStepStatus
                 {

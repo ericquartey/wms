@@ -25,10 +25,6 @@ namespace Ferretto.VW.MAS.Utils.Missions
                     this.Type = FsmType.ChangeRunningType;
                     break;
 
-                case nameof(IMoveLoadingUnitStateMachine):
-                    this.Type = FsmType.MoveLoadingUnit;
-                    break;
-
                 default:
                     throw new ArgumentException(typeof(TMachine).Name);
             }

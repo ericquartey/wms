@@ -204,11 +204,6 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private async Task OnMoveLoadingUnit(NotificationMessage receivedMessage)
         {
-            if (receivedMessage.Status == MessageStatus.OperationEnd)
-            {
-                receivedMessage.Destination = MessageActor.MissionManager;
-                this.EventAggregator.GetEvent<NotificationEvent>().Publish(receivedMessage);
-            }
             var messageToUi = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
             await this.installationHub.Clients.All.MoveLoadingUnit(messageToUi);
         }

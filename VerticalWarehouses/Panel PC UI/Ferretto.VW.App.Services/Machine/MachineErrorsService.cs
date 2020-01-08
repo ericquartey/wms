@@ -239,6 +239,10 @@ namespace Ferretto.VW.App.Services
                 {
                     this.ViewErrorActive = Utils.Modules.Errors.ERRORLOADUNITMISSING;
                 }
+                if (this.ActiveError.Code == (int)MachineErrorCode.InverterFaultStateDetected)
+                {
+                    this.ViewErrorActive = Utils.Modules.Errors.ERRORINVERTERFAULT;
+                }
 
                 await Application.Current.Dispatcher.BeginInvoke(
                     System.Windows.Threading.DispatcherPriority.ApplicationIdle,

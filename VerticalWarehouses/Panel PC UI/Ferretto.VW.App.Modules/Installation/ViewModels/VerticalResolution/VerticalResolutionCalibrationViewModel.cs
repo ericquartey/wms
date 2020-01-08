@@ -113,6 +113,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.resolutionCalibrationWebService = resolutionCalibrationWebService ?? throw new ArgumentNullException(nameof(resolutionCalibrationWebService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.verticalOriginProcedureWebService = verticalOriginProcedureWebService ?? throw new ArgumentNullException(nameof(verticalOriginProcedureWebService));
+
+            this.CurrentStep = CalibrationStep.PositionMeter;
         }
 
         #endregion
@@ -146,13 +148,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public double? DestinationPosition1
         {
             get => this.destinationPosition1;
-            set => this.SetProperty(ref this.destinationPosition1, value, () => { this.currentError = string.Empty; this.RaiseCanExecuteChanged(); });
+            set => this.SetProperty(ref this.destinationPosition1, value,
+                () =>
+                {
+                    this.currentError = string.Empty;
+                    this.MeasuredPosition1 = null;
+                    this.RaiseCanExecuteChanged();
+                });
         }
 
         public double? DestinationPosition2
         {
             get => this.destinationPosition2;
-            set => this.SetProperty(ref this.destinationPosition2, value, () => { this.currentError = string.Empty; this.RaiseCanExecuteChanged(); });
+            set => this.SetProperty(ref this.destinationPosition2, value,
+                () =>
+                {
+                    this.currentError = string.Empty;
+                    this.MeasuredPosition2 = null;
+                    this.RaiseCanExecuteChanged();
+                });
         }
 
         public override EnableMask EnableMask => EnableMask.MachineManualMode | EnableMask.MachinePoweredOn;
@@ -480,8 +494,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             await base.OnAppearedAsync();
 
-            this.CurrentStep = CalibrationStep.PositionMeter;
-
             var procedureParameters = await this.verticalOriginProcedureWebService.GetParametersAsync();
             this.AxisUpperBound = procedureParameters.UpperBound;
             this.AxisLowerBound = procedureParameters.LowerBound;
@@ -633,6 +645,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CurrentResolution = this.NewResolution;
                 this.MeasuredPosition1 = null;
                 this.MeasuredPosition2 = null;
+                this.CurrentStep = CalibrationStep.PositionMeter;
 
                 this.ShowNotification(
                     VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated,
@@ -664,16 +677,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return this.CanBaseExecute() &&
                    !this.SensorsService.IsLoadingUnitOnElevator &&
-                   Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) != Convert.ToInt32(this.DestinationPosition1.GetValueOrDefault(0)) &&
-                   !this.MeasuredPosition1.HasValue;
+                   Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) != Convert.ToInt32(this.DestinationPosition1.GetValueOrDefault(0));
         }
 
         private bool CanMoveToStartDestination2()
         {
             return this.CanBaseExecute() &&
                    !this.SensorsService.IsLoadingUnitOnElevator &&
-                   Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) != Convert.ToInt32(this.DestinationPosition2.GetValueOrDefault(0)) &&
-                   !this.MeasuredPosition2.HasValue;
+                   Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) != Convert.ToInt32(this.DestinationPosition2.GetValueOrDefault(0));
         }
 
         private bool CanMoveToStartPosition()
@@ -696,22 +707,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return this.CanBaseExecute() &&
                    !this.SensorsService.IsLoadingUnitOnElevator &&
-                   Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) == Convert.ToInt32(this.DestinationPosition2.Value) &&
                    this.MeasuredPosition2.HasValue;
         }
 
         private bool CanToFirstMeasured()
         {
             return this.CanBaseExecute() &&
-                   !this.SensorsService.IsLoadingUnitOnElevator &&
-                   Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) == Convert.ToInt32(this.StartPosition);
+                   !this.SensorsService.IsLoadingUnitOnElevator;
         }
 
         private bool CanToLastMeasured()
         {
             return this.CanBaseExecute() &&
                    !this.SensorsService.IsLoadingUnitOnElevator &&
-                   Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) == Convert.ToInt32(this.DestinationPosition1.Value) &&
                    this.MeasuredPosition1.HasValue;
         }
 
