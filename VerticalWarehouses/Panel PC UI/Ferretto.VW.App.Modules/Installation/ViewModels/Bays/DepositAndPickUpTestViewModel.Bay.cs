@@ -1,0 +1,174 @@
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
+using Prism.Commands;
+
+namespace Ferretto.VW.App.Installation.ViewModels
+{
+    [Warning(WarningsArea.Installation)]
+    internal sealed partial class DepositAndPickUpTestViewModel
+    {
+        #region Fields
+
+        private readonly IBayManager bayManagerService;
+
+        private bool bayIsMultiPosition;
+
+        private bool isElevatorMovingToBay;
+
+        private bool isPositionDownSelected;
+
+        private bool isPositionUpSelected;
+
+        private LoadingUnit loadingUnitInBay;
+
+        private DelegateCommand selectBayPositionDownCommand;
+
+        private DelegateCommand selectBayPositionUpCommand;
+
+        private BayPosition selectedBayPosition;
+
+        #endregion
+
+        #region Properties
+
+        public bool BayIsMultiPosition
+        {
+            get => this.bayIsMultiPosition;
+            set => this.SetProperty(ref this.bayIsMultiPosition, value);
+        }
+
+        public bool IsElevatorMovingToBay
+        {
+            get => this.isElevatorMovingToBay;
+            set
+            {
+                if (this.SetProperty(ref this.isElevatorMovingToBay, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.IsElevatorMoving));
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool IsPositionDownSelected
+        {
+            get => this.isPositionDownSelected;
+            set
+            {
+                if (this.SetProperty(ref this.isPositionDownSelected, value))
+                {
+                    this.IsPositionUpSelected = !this.IsPositionDownSelected;
+                }
+            }
+        }
+
+        public bool IsPositionUpSelected
+        {
+            get => this.isPositionUpSelected;
+            set
+            {
+                if (this.SetProperty(ref this.isPositionUpSelected, value))
+                {
+                    this.IsPositionDownSelected = !this.IsPositionUpSelected;
+                }
+            }
+        }
+
+        public LoadingUnit LoadingUnitInBay
+        {
+            get => this.loadingUnitInBay;
+            set => this.SetProperty(ref this.loadingUnitInBay, value);
+        }
+
+        public ICommand SelectBayPosition1Command =>
+            this.selectBayPositionDownCommand
+            ??
+            (this.selectBayPositionDownCommand = new DelegateCommand(this.SelectBayPositionDown));
+
+        public ICommand SelectBayPosition2Command =>
+            this.selectBayPositionUpCommand
+            ??
+            (this.selectBayPositionUpCommand = new DelegateCommand(this.SelectBayPositionUp));
+
+        public BayPosition SelectedBayPosition
+        {
+            get => this.selectedBayPosition;
+            private set
+            {
+                if (this.SetProperty(ref this.selectedBayPosition, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        private async Task MoveToBayHeightAsync()
+        {
+            try
+            {
+                if (!(this.currentState == DepositAndPickUpState.None
+                    ||
+                    this.currentState == DepositAndPickUpState.PickUp
+                    ||
+                    this.currentState == DepositAndPickUpState.Deposit))
+                {
+                    this.ShowNotification($"Vai a baia non eseguito, lo stato corrente è {this.currentState.ToString()}");
+                    this.IsExecutingProcedure = false;
+                    return;
+                }
+
+                this.IsWaitingForResponse = true;
+
+                if (this.currentState == DepositAndPickUpState.None)
+                {
+                    this.currentState = DepositAndPickUpState.GotoBay;
+                }
+                else
+                {
+                    this.currentState = DepositAndPickUpState.GotoBayAdjusted;
+                }
+
+                await this.machineElevatorWebService.MoveToBayPositionAsync(
+                        this.SelectedBayPosition.Id,
+                        computeElongation: true,
+                        performWeighting: false);
+
+                this.IsElevatorMovingToBay = true;
+            }
+            catch (Exception ex)
+            {
+                this.IsElevatorMovingToBay = false;
+
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private void SelectBayPositionDown()
+        {
+            this.IsPositionDownSelected = true;
+            this.SelectedBayPosition = this.bay.Positions.Single(p => p.Height == this.bay.Positions.Min(pos => pos.Height));
+        }
+
+        private void SelectBayPositionUp()
+        {
+            this.IsPositionUpSelected = true;
+            this.SelectedBayPosition = this.bay.Positions.Single(p => p.Height == this.bay.Positions.Max(pos => pos.Height));
+        }
+
+        #endregion
+    }
+}
