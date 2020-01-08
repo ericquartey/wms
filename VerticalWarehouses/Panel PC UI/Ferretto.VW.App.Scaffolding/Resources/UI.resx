@@ -120,6 +120,9 @@
   <data name="Cancel" xml:space="preserve">
     <value>Annulla</value>
   </data>
+  <data name="Root" xml:space="preserve">
+    <value>Root</value>
+  </data>
   <data name="Save" xml:space="preserve">
     <value>Salva</value>
   </data>

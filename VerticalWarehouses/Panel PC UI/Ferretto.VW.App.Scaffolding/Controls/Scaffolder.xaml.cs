@@ -59,6 +59,8 @@ namespace Ferretto.VW.App.Scaffolding.Controls
 
         private readonly List<ScaffoldedEntityDataTableItem> _elasticDataTable = new List<ScaffoldedEntityDataTableItem>();
 
+        private Models.ScaffoldedStructure _root = null;
+
         #endregion
 
         #region private
@@ -104,8 +106,6 @@ namespace Ferretto.VW.App.Scaffolding.Controls
 
         public static readonly DependencyProperty ModelProperty
             = DependencyProperty.Register("Model", typeof(object), typeof(Scaffolder), new PropertyMetadata(OnModelPropertyChanged));
-
-        private Models.ScaffoldedStructure _root = null;
 
         private static void OnModelPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -270,6 +270,19 @@ namespace Ferretto.VW.App.Scaffolding.Controls
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
             this.EditingEntity = ((Button)sender).DataContext as Models.ScaffoldedEntity;
+        }
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            var breadcrumb = this.Breadcrumb;
+            if (breadcrumb?.Count >= 2)
+            {
+                this.FocusStructure = breadcrumb[breadcrumb.Count - 1];
+            }
+            else
+            {
+                this.FocusStructure = this._root;
+            }
         }
 
         private void Editor_Commit(object sender, CommitEventArgs e)

@@ -70,6 +70,15 @@ namespace Ferretto.VW.App.Scaffolding.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Root.
+        /// </summary>
+        public static string Root {
+            get {
+                return ResourceManager.GetString("Root", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Salva.
         /// </summary>
         public static string Save {

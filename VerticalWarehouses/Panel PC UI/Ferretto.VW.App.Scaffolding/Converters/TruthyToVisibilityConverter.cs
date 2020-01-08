@@ -23,6 +23,7 @@ namespace Ferretto.VW.App.Scaffolding.Converters
                 invert = true;
             }
 
+            // values.
             if (value is System.Collections.IEnumerable enumerable)
             {
                 return invert ^ enumerable?.GetEnumerator().MoveNext() == true ? Visibility.Visible : Visibility.Collapsed;
@@ -30,12 +31,12 @@ namespace Ferretto.VW.App.Scaffolding.Converters
 
             if (value is string text)
             {
-                return invert ^ string.IsNullOrEmpty(text) ? Visibility.Collapsed : Visibility.Visible;
+                return invert ^ !string.IsNullOrEmpty(text) ? Visibility.Visible : Visibility.Collapsed;
             }
 
             if (value is int count)
             {
-                return invert ^ count == default ? Visibility.Collapsed : Visibility.Visible;
+                return invert ^ count != default ? Visibility.Visible : Visibility.Collapsed;
             }
 
             if (value is bool boolean)
@@ -43,7 +44,7 @@ namespace Ferretto.VW.App.Scaffolding.Converters
                 return invert ^ boolean ? Visibility.Visible : Visibility.Collapsed;
             }
 
-            return invert ^ value == null ? Visibility.Collapsed : Visibility.Visible;
+            return invert ^ value != null ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
