@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.MissionMove;
+using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
 using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
-using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -19,14 +22,19 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
     {
         #region Fields
 
+        private static readonly IDictionary<string, ConstructorInfo> cacheStates = new Dictionary<string, ConstructorInfo>();
+
         private readonly IEventAggregator eventAggregator;
+
+        private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
 
         #endregion
 
         #region Constructors
 
         public MissionMoveProvider(
-            IEventAggregator eventAggregator,
+                    IEventAggregator eventAggregator,
+            ILoadingUnitMovementProvider loadingUnitMovementProvider,
             ILogger<MachineManagerService> logger
             )
         {
@@ -36,6 +44,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             }
             this.eventAggregator = eventAggregator;
             this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
         }
 
         #endregion
@@ -67,68 +76,21 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         public void OnNotification(NotificationMessage message, IServiceProvider serviceProvider)
         {
+            if (!this.loadingUnitMovementProvider.FilterNotifications(message, MessageActor.MachineManager))
+            {
+                return;
+            }
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
             var missions = missionsDataProvider.GetAllActiveMissions();
             if (missions.Any())
             {
                 foreach (var mission in missions)
                 {
-                    switch (mission.FsmStateName)
+                    var state = GetStateByClassName(serviceProvider, mission, this.eventAggregator);
+
+                    if (state != null)
                     {
-                        case nameof(MissionMoveStartState):
-                            {
-                                var state = new MissionMoveStartState(mission, serviceProvider, this.eventAggregator);
-                                state.OnNotification(message);
-                                break;
-                            }
-                        case nameof(MissionMoveBayChainState):
-                            {
-                                var state = new MissionMoveBayChainState(mission, serviceProvider, this.eventAggregator);
-                                state.OnNotification(message);
-                                break;
-                            }
-                        case nameof(MissionMoveCloseShutterState):
-                            {
-                                var state = new MissionMoveCloseShutterState(mission, serviceProvider, this.eventAggregator);
-                                state.OnNotification(message);
-                                break;
-                            }
-                        case nameof(MissionMoveDepositUnitState):
-                            {
-                                var state = new MissionMoveDepositUnitState(mission, serviceProvider, this.eventAggregator);
-                                state.OnNotification(message);
-                                break;
-                            }
-                        case nameof(MissionMoveEndState):
-                            {
-                                var state = new MissionMoveEndState(mission, serviceProvider, this.eventAggregator);
-                                state.OnNotification(message);
-                                break;
-                            }
-                        case nameof(MissionMoveErrorState):
-                            {
-                                var state = new MissionMoveErrorState(mission, serviceProvider, this.eventAggregator);
-                                state.OnNotification(message);
-                                break;
-                            }
-                        case nameof(MissionMoveLoadElevatorState):
-                            {
-                                var state = new MissionMoveLoadElevatorState(mission, serviceProvider, this.eventAggregator);
-                                state.OnNotification(message);
-                                break;
-                            }
-                        case nameof(MissionMoveToTargetState):
-                            {
-                                var state = new MissionMoveToTargetState(mission, serviceProvider, this.eventAggregator);
-                                state.OnNotification(message);
-                                break;
-                            }
-                        case nameof(MissionMoveWaitPickState):
-                            {
-                                var state = new MissionMoveWaitPickState(mission, serviceProvider, this.eventAggregator);
-                                state.OnNotification(message);
-                                break;
-                            }
+                        state.OnNotification(message);
                     }
                 }
             }
@@ -140,26 +102,10 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             var mission = missionsDataProvider.GetByGuid(missionId);
             if (mission != null)
             {
-                switch (mission.FsmStateName)
+                var state = GetStateByClassName(serviceProvider, mission, this.eventAggregator);
+                if (state != null)
                 {
-                    case nameof(MissionMoveBayChainState):
-                        {
-                            var state = new MissionMoveBayChainState(mission, serviceProvider, this.eventAggregator);
-                            state.OnResume(command);
-                            break;
-                        }
-                    case nameof(MissionMoveErrorState):
-                        {
-                            var state = new MissionMoveErrorState(mission, serviceProvider, this.eventAggregator);
-                            state.OnResume(command);
-                            break;
-                        }
-                    case nameof(MissionMoveWaitPickState):
-                        {
-                            var state = new MissionMoveWaitPickState(mission, serviceProvider, this.eventAggregator);
-                            state.OnResume(command);
-                            break;
-                        }
+                    state.OnResume(command);
                 }
             }
 
@@ -179,62 +125,10 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             var mission = missionsDataProvider.GetByGuid(missionId);
             if (mission != null)
             {
-                switch (mission.FsmStateName)
+                var state = GetStateByClassName(serviceProvider, mission, this.eventAggregator);
+                if (state != null)
                 {
-                    case nameof(MissionMoveNewState):
-                        {
-                            var state = new MissionMoveNewState(mission, serviceProvider, this.eventAggregator);
-                            state.OnStop(stopRequest);
-                            break;
-                        }
-                    case nameof(MissionMoveStartState):
-                        {
-                            var state = new MissionMoveStartState(mission, serviceProvider, this.eventAggregator);
-                            state.OnStop(stopRequest);
-                            break;
-                        }
-                    case nameof(MissionMoveBayChainState):
-                        {
-                            var state = new MissionMoveBayChainState(mission, serviceProvider, this.eventAggregator);
-                            state.OnStop(stopRequest);
-                            break;
-                        }
-                    case nameof(MissionMoveCloseShutterState):
-                        {
-                            var state = new MissionMoveCloseShutterState(mission, serviceProvider, this.eventAggregator);
-                            state.OnStop(stopRequest);
-                            break;
-                        }
-                    case nameof(MissionMoveDepositUnitState):
-                        {
-                            var state = new MissionMoveDepositUnitState(mission, serviceProvider, this.eventAggregator);
-                            state.OnStop(stopRequest);
-                            break;
-                        }
-                    case nameof(MissionMoveErrorState):
-                        {
-                            var state = new MissionMoveErrorState(mission, serviceProvider, this.eventAggregator);
-                            state.OnStop(stopRequest);
-                            break;
-                        }
-                    case nameof(MissionMoveLoadElevatorState):
-                        {
-                            var state = new MissionMoveLoadElevatorState(mission, serviceProvider, this.eventAggregator);
-                            state.OnStop(stopRequest);
-                            break;
-                        }
-                    case nameof(MissionMoveToTargetState):
-                        {
-                            var state = new MissionMoveToTargetState(mission, serviceProvider, this.eventAggregator);
-                            state.OnStop(stopRequest);
-                            break;
-                        }
-                    case nameof(MissionMoveWaitPickState):
-                        {
-                            var state = new MissionMoveWaitPickState(mission, serviceProvider, this.eventAggregator);
-                            state.OnStop(stopRequest);
-                            break;
-                        }
+                    state.OnStop(stopRequest);
                 }
             }
 
@@ -281,6 +175,27 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             }
 
             return false;
+        }
+
+        private static IMissionMoveBase GetStateByClassName(IServiceProvider serviceProvider, Mission mission, IEventAggregator eventAggregator)
+        {
+            ConstructorInfo ctor = null;
+            lock (cacheStates)
+            {
+                if (cacheStates.ContainsKey(mission.FsmStateName))
+                {
+                    ctor = cacheStates[mission.FsmStateName];
+                }
+                else
+                {
+                    var ns = typeof(MissionMoveBase).Namespace;
+                    var type = Type.GetType(string.Concat(ns, ".", mission.FsmStateName));
+
+                    ctor = type?.GetConstructor(new[] { typeof(Mission), typeof(IServiceProvider), typeof(IEventAggregator) });
+                    cacheStates[mission.FsmStateName] = ctor;
+                }
+            }
+            return (IMissionMoveBase)ctor?.Invoke(new object[] { mission, serviceProvider, eventAggregator });
         }
 
         #endregion

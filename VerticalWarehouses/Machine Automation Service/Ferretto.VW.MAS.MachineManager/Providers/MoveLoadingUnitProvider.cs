@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Prism.Events;
 
@@ -9,11 +10,20 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 {
     internal sealed class MoveLoadingUnitProvider : BaseProvider, IMoveLoadingUnitProvider
     {
+        #region Fields
+
+        private readonly ICellsProvider cellsProvider;
+
+        #endregion
+
         #region Constructors
 
-        public MoveLoadingUnitProvider(IEventAggregator eventAggregator)
+        public MoveLoadingUnitProvider(
+            ICellsProvider cellsProvider,
+            IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
+            this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
         }
 
         #endregion
@@ -79,7 +89,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                  requestingBay);
         }
 
-        // sourceBay can be also Elevator 
+        // sourceBay can be also Elevator
         public void InsertToCell(MissionType missionType, LoadingUnitLocation sourceBay, int? destinationCellId, int loadingUnitId, BayNumber requestingBay, MessageActor sender)
         {
             if (sourceBay is LoadingUnitLocation.Cell)
@@ -138,6 +148,11 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         public void MoveFromCellToBay(MissionType missionType, int? sourceCellId, LoadingUnitLocation destinationBay, BayNumber requestingBay, MessageActor sender)
         {
+            int? loadUnitId = null;
+            if (sourceCellId.HasValue)
+            {
+                loadUnitId = this.cellsProvider.GetById(sourceCellId.Value)?.LoadingUnit?.Id;
+            }
             this.SendCommandToMachineManager(
                 new MoveLoadingUnitMessageData(
                     missionType,
@@ -145,7 +160,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     destinationBay,
                     sourceCellId,
                     null,
-                    null),
+                    loadUnitId),
                 $"Bay {requestingBay} requested to move Loading unit in Cell {sourceCellId} to destination {destinationBay}",
                 sender,
                 MessageType.MoveLoadingUnit,
@@ -154,6 +169,11 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         public void MoveFromCellToCell(MissionType missionType, int? sourceCellId, int? destinationCellId, BayNumber requestingBay, MessageActor sender)
         {
+            int? loadUnitId = null;
+            if (sourceCellId.HasValue)
+            {
+                loadUnitId = this.cellsProvider.GetById(sourceCellId.Value)?.LoadingUnit?.Id;
+            }
             this.SendCommandToMachineManager(
                 new MoveLoadingUnitMessageData(
                     missionType,
@@ -161,7 +181,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     LoadingUnitLocation.Cell,
                     sourceCellId,
                     destinationCellId,
-                    null),
+                    loadUnitId),
                 $"Bay {requestingBay} requested to move Loading unit in Cell {sourceCellId} to Cell {destinationCellId}",
                 sender,
                 MessageType.MoveLoadingUnit,

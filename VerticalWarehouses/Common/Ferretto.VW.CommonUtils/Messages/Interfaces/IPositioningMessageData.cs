@@ -51,7 +51,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         double[] TargetDeceleration { get; }
 
-        double TargetPosition { get; }
+        double TargetPosition { get; set; }
 
         double[] TargetSpeed { get; }
 

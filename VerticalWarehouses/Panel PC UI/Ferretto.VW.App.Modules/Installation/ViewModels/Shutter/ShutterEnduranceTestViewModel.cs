@@ -46,7 +46,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isShutterThreeSensors;
 
-        private int? performedCyclesThisSession;
+        private int performedCyclesThisSession;
 
         private SubscriptionToken sensorsChangedToken;
 
@@ -88,7 +88,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.cumulativePerformedCycles, value))
                 {
-                    this.PerformedCyclesThisSession = this.CumulativePerformedCycles - this.CumulativePerformedCyclesBeforeStart;
+                    if (this.CumulativePerformedCycles != null && this.CumulativePerformedCyclesBeforeStart != null)
+                    {
+                        this.PerformedCyclesThisSession = this.CumulativePerformedCycles.Value - this.CumulativePerformedCyclesBeforeStart.Value;
+                    }
                 }
             }
         }
@@ -100,7 +103,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.cumulativePerformedCyclesBeforeStart, value))
                 {
-                    this.PerformedCyclesThisSession = this.CumulativePerformedCycles - this.CumulativePerformedCyclesBeforeStart;
+                    if (this.CumulativePerformedCycles != null && this.CumulativePerformedCyclesBeforeStart != null)
+                    {
+                        this.PerformedCyclesThisSession = this.CumulativePerformedCycles.Value - this.CumulativePerformedCyclesBeforeStart.Value;
+                    }
                 }
             }
         }
@@ -158,7 +164,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.isShutterThreeSensors, value);
         }
 
-        public int? PerformedCyclesThisSession
+        public int PerformedCyclesThisSession
         {
             get => this.performedCyclesThisSession;
             private set => this.SetProperty(ref this.performedCyclesThisSession, value);

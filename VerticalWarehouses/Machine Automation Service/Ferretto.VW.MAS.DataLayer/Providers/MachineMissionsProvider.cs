@@ -175,11 +175,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             {
                 returnValue = this.EvaluateMissionPolicies(requestedMission, command, serviceScope.ServiceProvider);
             }
-            else
-            {
-                var errorProvider = serviceScope.ServiceProvider.GetRequiredService<IErrorsProvider>();
-                errorProvider.RecordNew(MachineErrorCode.AnotherMissionOfThisTypeIsActive);
-            }
+            //else
+            //{
+            //    var errorProvider = serviceScope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+            //    errorProvider.RecordNew(MachineErrorCode.AnotherMissionOfThisTypeIsActive);
+            //}
 
             return returnValue;
         }

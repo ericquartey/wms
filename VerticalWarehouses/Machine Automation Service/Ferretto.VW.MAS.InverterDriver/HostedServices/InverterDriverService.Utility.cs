@@ -373,6 +373,17 @@ namespace Ferretto.VW.MAS.InverterDriver
                 if (error > 0)
                 {
                     this.Logger.LogError($"Inverter Fault: 0x{error:X4}; inverter={message.SystemIndex}; {InverterFaultCodes.GetErrorByCode(error)}");
+
+                    using (var scope = this.ServiceScopeFactory.CreateScope())
+                    {
+                        // Retrieve the bay number related to the inverter index
+                        var baysProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                        var bayNumber = baysProvider.GetByInverterIndex(message.SystemIndex);
+
+                        // Adds error related to the InverterFaultDetected
+                        var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+                        errorsProvider.RecordNew((int)message.SystemIndex, error, bayNumber);
+                    }
                 }
             }
             else if (message.ParameterId == InverterParameterId.BlockRead)
