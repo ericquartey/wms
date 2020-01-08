@@ -84,34 +84,32 @@ namespace Ferretto.VW.MAS.DataModels
 
         public override string ToString()
         {
-            var returnString = new StringBuilder();
-
-            returnString
-                .Append("Mission:")
-                .Append($"Id={this.Id}; ")
-                .Append($"LoadingUnitId={this.LoadingUnitId}; ")
-                .Append($"WmsId={this.WmsId}; ")
-                .Append($"TargetBay={this.TargetBay}; ")
-                .Append($"FsmStateName={this.FsmStateName}; ")
-                .Append($"Source={this.LoadingUnitSource}; ")
-                .Append($"Destination={this.LoadingUnitDestination}; ")
-                .Append($"CellSourceId={this.LoadingUnitCellSourceId}; ")
-                .Append($"FsmRestoreStateName={this.FsmRestoreStateName}; ")
-                .Append($"MissionType={this.MissionType}; ")
-                .Append($"NeedHomingAxis={this.NeedHomingAxis}; ")
-                .Append($"NeedMovingBackward={this.NeedMovingBackward}; ")
-                .Append($"RestoreConditions={this.RestoreConditions}; ")
-                .Append($"Status={this.Status}; ")
-                .Append($"CloseShutterBayNumber={this.CloseShutterBayNumber}; ")
-                .Append($"OpenShutterPosition={this.OpenShutterPosition}; ")
-                .Append($"DeviceNotifications={this.DeviceNotifications}; ")
-                .Append($"Action={this.Action}; ")
-                .Append($"BayNotifications={this.BayNotifications}; ")
-                .Append($"ErrorMovements={this.ErrorMovements}; ")
-                .Append($"Direction={this.Direction}; ")
-                .Append($"EjectLoadUnit={this.EjectLoadUnit}; ")
-                .Append($"Priority={this.Priority}; ");
-            return returnString.ToString();
+            var returnString = "Mission:" +
+                $"Id={this.Id}; " +
+                $"LoadingUnitId={this.LoadingUnitId}; " +
+                $"WmsId={this.WmsId}; " +
+                $"TargetBay={this.TargetBay}; " +
+                $"FsmStateName={this.FsmStateName}; " +
+                $"Source={this.LoadingUnitSource}; " +
+                $"Destination={this.LoadingUnitDestination}; " +
+                $"CellSourceId={this.LoadingUnitCellSourceId}; " +
+                $"FsmRestoreStateName={this.FsmRestoreStateName}; " +
+                $"MissionType={this.MissionType}; " +
+                $"NeedHomingAxis={this.NeedHomingAxis}; " +
+                $"NeedMovingBackward={this.NeedMovingBackward}; " +
+                $"RestoreConditions={this.RestoreConditions}; " +
+                $"Status={this.Status}; " +
+                $"CloseShutterBayNumber={this.CloseShutterBayNumber}; " +
+                $"OpenShutterPosition={this.OpenShutterPosition}; " +
+                $"DeviceNotifications={this.DeviceNotifications}; " +
+                $"Action={this.Action}; " +
+                $"BayNotifications={this.BayNotifications}; " +
+                $"ErrorMovements={this.ErrorMovements}; " +
+                $"Direction={this.Direction}; " +
+                $"EjectLoadUnit={this.EjectLoadUnit}; " +
+                $"Priority={this.Priority}; " +
+                $"StopReason={this.StopReason}; ";
+            return returnString;
         }
     }
 }
