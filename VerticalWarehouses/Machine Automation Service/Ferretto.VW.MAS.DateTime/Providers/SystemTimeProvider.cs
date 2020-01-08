@@ -78,7 +78,7 @@ namespace Ferretto.VW.MAS.TimeManagement
 
         public void SetUtcTime(DateTime dateTime)
         {
-            //  dateTime.SetAsUtcSystemTime();
+            dateTime.SetAsUtcSystemTime();
 
             this.timeChangedEvent.Publish(new SystemTimeChangedEventArgs(dateTime));
         }
