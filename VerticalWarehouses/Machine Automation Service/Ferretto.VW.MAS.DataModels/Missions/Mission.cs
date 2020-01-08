@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.MAS.DataModels
@@ -8,9 +9,23 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
+        public CommandAction Action { get; set; }
+
+        public MissionBayNotifications BayNotifications { get; set; }
+
+        public BayNumber CloseShutterBayNumber { get; set; }
+
         public DateTime CreationDate { get; set; }
 
         public int? DestinationCellId { get; set; }
+
+        public MissionDeviceNotifications DeviceNotifications { get; set; }
+
+        public HorizontalMovementDirection Direction { get; set; }
+
+        public bool EjectLoadUnit { get; set; }
+
+        public MissionErrorMovements ErrorMovements { get; set; }
 
         public Guid FsmId { get; set; }
 
@@ -32,11 +47,15 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool NeedMovingBackward { get; set; }
 
+        public ShutterPosition OpenShutterPosition { get; set; }
+
         public int Priority { get; set; }
 
         public bool RestoreConditions { get; set; }
 
         public MissionStatus Status { get; set; }
+
+        public StopRequestReason StopReason { get; set; }
 
         public BayNumber TargetBay { get; set; }
 
@@ -65,25 +84,32 @@ namespace Ferretto.VW.MAS.DataModels
 
         public override string ToString()
         {
-            var returnString = new StringBuilder();
-
-            returnString
-                .Append("Mission:")
-                .Append($"LoadingUnitId={this.LoadingUnitId}; ")
-                .Append($"WmsId={this.WmsId}; ")
-                .Append($"TargetBay={this.TargetBay}; ")
-                .Append($"FsmStateName={this.FsmStateName}; ")
-                .Append($"Source={this.LoadingUnitSource}; ")
-                .Append($"Destination={this.LoadingUnitDestination}; ")
-                .Append($"CellSourceId={this.LoadingUnitCellSourceId}; ")
-                .Append($"FsmRestoreStateName={this.FsmRestoreStateName}; ")
-                .Append($"MissionType={this.MissionType}; ")
-                .Append($"NeedHomingAxis={this.NeedHomingAxis}; ")
-                .Append($"NeedMovingBackward={this.NeedMovingBackward}; ")
-                .Append($"RestoreConditions={this.RestoreConditions}; ")
-                .Append($"Status={this.Status}; ")
-                .Append($"Priority={this.Priority}; ");
-            return returnString.ToString();
+            var returnString = "Mission:" +
+                $"Id={this.Id}; " +
+                $"LoadingUnitId={this.LoadingUnitId}; " +
+                $"WmsId={this.WmsId}; " +
+                $"TargetBay={this.TargetBay}; " +
+                $"FsmStateName={this.FsmStateName}; " +
+                $"Source={this.LoadingUnitSource}; " +
+                $"Destination={this.LoadingUnitDestination}; " +
+                $"CellSourceId={this.LoadingUnitCellSourceId}; " +
+                $"FsmRestoreStateName={this.FsmRestoreStateName}; " +
+                $"MissionType={this.MissionType}; " +
+                $"NeedHomingAxis={this.NeedHomingAxis}; " +
+                $"NeedMovingBackward={this.NeedMovingBackward}; " +
+                $"RestoreConditions={this.RestoreConditions}; " +
+                $"Status={this.Status}; " +
+                $"CloseShutterBayNumber={this.CloseShutterBayNumber}; " +
+                $"OpenShutterPosition={this.OpenShutterPosition}; " +
+                $"DeviceNotifications={this.DeviceNotifications}; " +
+                $"Action={this.Action}; " +
+                $"BayNotifications={this.BayNotifications}; " +
+                $"ErrorMovements={this.ErrorMovements}; " +
+                $"Direction={this.Direction}; " +
+                $"EjectLoadUnit={this.EjectLoadUnit}; " +
+                $"Priority={this.Priority}; " +
+                $"StopReason={this.StopReason}; ";
+            return returnString;
         }
     }
 }

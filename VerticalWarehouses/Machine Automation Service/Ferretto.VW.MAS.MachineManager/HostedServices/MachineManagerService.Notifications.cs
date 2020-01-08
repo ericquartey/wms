@@ -40,6 +40,7 @@ namespace Ferretto.VW.MAS.MachineManager
                 case MessageType.FaultStateChanged:
                 case MessageType.RunningStateChanged:
                     this.OnMachineRunningStatusChange(message);
+                    this.missionMoveProvider.OnNotification(message, serviceProvider);
                     break;
 
                 case MessageType.DataLayerReady:
@@ -48,6 +49,14 @@ namespace Ferretto.VW.MAS.MachineManager
                     this.serviceScope.ServiceProvider.GetRequiredService<IMachineProvider>().Get();
 
                     this.isDataLayerReady = true;
+                    break;
+
+                case MessageType.Positioning:
+                case MessageType.Stop:
+                case MessageType.InverterStop:
+                case MessageType.ShutterPositioning:
+                case MessageType.Homing:
+                    this.missionMoveProvider.OnNotification(message, serviceProvider);
                     break;
             }
 

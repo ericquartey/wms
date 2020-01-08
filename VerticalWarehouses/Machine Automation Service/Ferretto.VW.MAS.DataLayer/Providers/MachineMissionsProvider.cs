@@ -56,39 +56,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return true;
         }
 
-        public void AddMission(Mission mission, Guid fsmId)
-        {
-            if (mission != null
-                && this.GetMissionById(fsmId) is null
-                )
-            {
-                var newMission = new MachineMission<IMoveLoadingUnitStateMachine>(this.serviceScopeFactory, this.OnActiveStateMachineCompleted);
-                newMission.FsmId = fsmId;
-                if (newMission.MachineData is DataModels.Mission data)
-                {
-                    data.CreationDate = mission.CreationDate;
-                    data.DestinationCellId = mission.DestinationCellId;
-                    data.FsmId = mission.FsmId;
-                    data.FsmRestoreStateName = mission.FsmRestoreStateName;
-                    data.FsmStateName = mission.FsmStateName;
-                    data.Id = mission.Id;
-                    data.LoadingUnitCellSourceId = mission.LoadingUnitCellSourceId;
-                    data.LoadingUnitDestination = mission.LoadingUnitDestination;
-                    data.LoadingUnitId = mission.LoadingUnitId;
-                    data.LoadingUnitSource = mission.LoadingUnitSource;
-                    data.NeedHomingAxis = mission.NeedHomingAxis;
-                    data.NeedMovingBackward = mission.NeedMovingBackward;
-                    data.MissionType = mission.MissionType;
-                    data.Priority = mission.Priority;
-                    data.RestoreConditions = mission.RestoreConditions;
-                    data.Status = mission.Status;
-                    data.TargetBay = mission.TargetBay;
-                    data.WmsId = mission.WmsId;
-                }
-                this.machineMissions.Add(newMission);
-            }
-        }
-
         public IMission GetMissionById(Guid fsmId)
         {
             return this.machineMissions.FirstOrDefault(m => m.FsmId == fsmId);
@@ -155,64 +122,38 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return true;
         }
 
-        public bool TryCreateMachineMission(FsmType fsmType, CommandMessage command, out Guid fsmId)
+        public bool TryCreateMachineMission(FsmType fsmType, CommandMessage command, out Guid missionId)
         {
             if (command is null)
             {
                 throw new ArgumentNullException(nameof(command));
             }
 
-            fsmId = Guid.Empty;
+            missionId = Guid.Empty;
 
-            if (this.CanCreateStateMachine(fsmType, command))
+            switch (fsmType)
             {
-                IMission newMission = null;
-                switch (fsmType)
-                {
-                    case FsmType.ChangeRunningType:
-                        newMission = new MachineMission<IChangeRunningStateStateMachine>(this.serviceScopeFactory, this.OnActiveStateMachineCompleted);
-                        break;
-
-                    case FsmType.MoveLoadingUnit:
-                        if (command.Data is MoveLoadingUnitMessageData messageData)
-                        {
-                            // if there is a mission waiting we have to take her place
-                            var waitMission = this.machineMissions.FirstOrDefault(m =>
-                                m.Type == fsmType
-                                && ((DataModels.Mission)m.MachineData).MissionType == messageData.MissionType
-                                && ((DataModels.Mission)m.MachineData).LoadingUnitId == messageData.LoadingUnitId
-                                && ((DataModels.Mission)m.MachineData).Status == MissionStatus.Waiting
-                                );
-                            if (waitMission != null
-                                && waitMission.MachineData is DataModels.Mission waitData)
-                            {
-                                try
-                                {
-                                    this.StopMachineMission(waitData.FsmId, StopRequestReason.Stop);
-                                }
-                                catch (Exception)
-                                {
-                                    return false;
-                                }
-                            }
-                        }
-                        newMission = new MachineMission<IMoveLoadingUnitStateMachine>(this.serviceScopeFactory, this.OnActiveStateMachineCompleted);
-                        break;
-                }
-
-                if (newMission != null)
-                {
-                    if (newMission.MachineData is DataModels.Mission mission)
+                case FsmType.ChangeRunningType:
+                    if (this.CanCreateStateMachine(fsmType, command))
                     {
-                        mission.MissionType = MissionType.Manual;
-                        mission.TargetBay = command.RequestingBay;
-                        mission.CreationDate = DateTime.Now;
-                    }
-                    this.machineMissions.Add(newMission);
-                    fsmId = newMission.FsmId;
+                        IMission newMission = null;
+                        newMission = new MachineMission<IChangeRunningStateStateMachine>(this.serviceScopeFactory, this.OnActiveStateMachineCompleted);
 
-                    return true;
-                }
+                        if (newMission != null)
+                        {
+                            if (newMission.MachineData is DataModels.Mission mission)
+                            {
+                                mission.MissionType = MissionType.Manual;
+                                mission.TargetBay = command.RequestingBay;
+                                mission.CreationDate = DateTime.Now;
+                            }
+                            this.machineMissions.Add(newMission);
+                            missionId = newMission.FsmId;
+
+                            return true;
+                        }
+                    }
+                    break;
             }
 
             return false;
@@ -246,43 +187,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         private bool EvaluateMissionPolicies(FsmType moveRequestedMission, CommandMessage command, IServiceProvider serviceProvider)
         {
             var returnValue = true;
-            if (command.Type == MessageType.MoveLoadingUnit)
-            {
-                if (command.Data is MoveLoadingUnitMessageData messageData)
-                {
-                    switch (messageData.MissionType)
-                    {
-                        case MissionType.Manual:
-                            var errorProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
-                            // no duplicate of LU
-                            returnValue = !this.machineMissions.Any(m =>
-                                m.Type == moveRequestedMission
-                                && ((DataModels.Mission)m.MachineData).MissionType == messageData.MissionType
-                                && ((DataModels.Mission)m.MachineData).LoadingUnitId == messageData.LoadingUnitId
-                                && ((DataModels.Mission)m.MachineData).Status == MissionStatus.Executing
-                                );
-                            if (!returnValue)
-                            {
-                                errorProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisLoadUnit);
-                            }
-                            else
-                            {
-                                // no duplicate of targetBay
-                                returnValue = !this.machineMissions.Any(m =>
-                                    m.Type == moveRequestedMission
-                                    && ((DataModels.Mission)m.MachineData).MissionType == messageData.MissionType
-                                    && ((DataModels.Mission)m.MachineData).TargetBay == messageData.TargetBay
-                                    && ((DataModels.Mission)m.MachineData).Status == MissionStatus.Executing
-                                    );
-                                if (!returnValue)
-                                {
-                                    errorProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisBay);
-                                }
-                            }
-                            break;
-                    }
-                }
-            }
             return returnValue;
         }
 
