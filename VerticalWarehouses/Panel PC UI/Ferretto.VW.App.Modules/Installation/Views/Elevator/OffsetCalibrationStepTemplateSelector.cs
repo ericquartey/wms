@@ -14,9 +14,7 @@ namespace Ferretto.VW.App.Installation.Views
         #region Properties
 
         public DataTemplate EnumCellMeasured { get; set; }
-
-        public DataTemplate EnumCellPositioning { get; set; }
-
+        
         public DataTemplate EnumConfirm { get; set; }
 
         public DataTemplate EnumStart { get; set; }
@@ -32,9 +30,6 @@ namespace Ferretto.VW.App.Installation.Views
             {
                 case VerticalOffsetCalibrationStep.Start:
                     return this.EnumStart;
-
-                case VerticalOffsetCalibrationStep.CellPositioning:
-                    return this.EnumCellPositioning;
 
                 case VerticalOffsetCalibrationStep.CellMeasured:
                     return this.EnumCellMeasured;

@@ -226,6 +226,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Discriminator = table.Column<string>(nullable: false),
                     Step = table.Column<double>(nullable: true),
                     ReferenceCellId = table.Column<int>(nullable: true),
+                    InProgress = table.Column<bool>(nullable: true),
                     PerformedCycles = table.Column<int>(nullable: true),
                     RequiredCycles = table.Column<int>(nullable: true),
                     FinalPosition = table.Column<double>(nullable: true),
@@ -1220,7 +1221,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 3, 8, 9, 10, 2, 40, DateTimeKind.Local).AddTicks(4736), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 3, 8, 11, 36, 11, 203, DateTimeKind.Local).AddTicks(3100), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",

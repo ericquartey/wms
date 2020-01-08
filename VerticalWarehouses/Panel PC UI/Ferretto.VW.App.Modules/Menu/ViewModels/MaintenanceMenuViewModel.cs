@@ -112,6 +112,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
         {
             try
             {
+                this.IsBackNavigationAllowed = true;
+
                 this.IsWaitingForResponse = true;
 
                 await this.GetBayNumber();

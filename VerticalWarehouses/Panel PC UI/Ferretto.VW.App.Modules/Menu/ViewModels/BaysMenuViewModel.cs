@@ -78,7 +78,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.testShutterCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.TestShutter),
                 ()=> this.CanExecuteCommand() &&
-                     this.MachineModeService.MachineMode == MachineMode.Manual));
+                     (this.MachineModeService.MachineMode == MachineMode.Manual ||
+                      this.MachineModeService.MachineMode == MachineMode.Test)));
 
         #endregion
 

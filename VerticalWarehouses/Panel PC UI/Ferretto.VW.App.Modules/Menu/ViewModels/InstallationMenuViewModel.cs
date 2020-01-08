@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -30,6 +31,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private readonly IMachineSetupStatusWebService machineSetupStatusWebService;
 
+        private int proceduresCompleted;
+
+        private int proceduresCompletedPercent;
+
+        private int proceduresCount;
+
         private List<dynamic> source = new List<dynamic>();
 
         #endregion
@@ -46,6 +53,24 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Properties
 
+        public int ProceduresCompleted
+        {
+            get => this.proceduresCompleted;
+            set => this.SetProperty(ref this.proceduresCompleted, value, this.RaiseCanExecuteChanged);
+        }
+
+        public int ProceduresCompletedPercent
+        {
+            get => this.proceduresCompletedPercent;
+            set => this.SetProperty(ref this.proceduresCompletedPercent, value, this.RaiseCanExecuteChanged);
+        }
+
+        public int ProceduresCount
+        {
+            get => this.proceduresCount;
+            set => this.SetProperty(ref this.proceduresCount, value, this.RaiseCanExecuteChanged);
+        }
+
         public List<dynamic> Source
         {
             get
@@ -60,16 +85,29 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public async override Task OnAppearedAsync()
         {
-            this.source = new List<dynamic>();
-            this.source.Add(new { Text = InstallationApp.VerticalAxisHomedDone, Status = "CheckCircle" });
-            this.source.Add(new { Text = InstallationApp.VerticalResolutionDone, Status = "CheckCircle" });
-            this.source.Add(new { Text = InstallationApp.VerticalOffsetVerify, Status = "CheckCircle" });
-            this.source.Add(new { Text = InstallationApp.BeltBurnishingDone, Status = "ProgressCheck" });
-            this.source.Add(new { Text = InstallationApp.CellsControl, Status = "CloseCircleOutline" });
-            this.source.Add(new { Text = InstallationApp.BayHeightCheck, Status = "CloseCircleOutline" });
-            this.source.Add(new { Text = InstallationApp.LoadFirstDrawerPageHeader, Status = "CloseCircleOutline" });
-            this.source.Add(new { Text = "Conferma collaudo", Status = "CloseCircleOutline" });
+            var status = await this.machineSetupStatusWebService.GetAsync();
 
+            this.source = new List<dynamic>();
+            this.source.Add(new { Text = InstallationApp.VerticalAxisHomedDone, Status = status.VerticalOriginCalibration.IsCompleted ? "CheckCircle" : "CloseCircleOutline" });
+            this.source.Add(new { Text = InstallationApp.VerticalResolutionDone, Status = status.VerticalResolutionCalibration.IsCompleted ? "CheckCircle" : "CloseCircleOutline" });
+            this.source.Add(new { Text = InstallationApp.VerticalOffsetVerify, Status = status.VerticalOffsetCalibration.IsCompleted ? "CheckCircle" : "CloseCircleOutline" });
+            this.source.Add(new {
+                Text = InstallationApp.BeltBurnishingDone,
+                Status = status.BeltBurnishing.InProgress ? "ProgressCheck" : status.BeltBurnishing.IsCompleted ? "CheckCircle" : "CloseCircleOutline",
+            });
+            this.source.Add(new { Text = InstallationApp.CellsControl, Status = status.CellPanelsCheck.IsCompleted && status.CellsHeightCheck.IsCompleted ? "CheckCircle" : "CloseCircleOutline" });
+            this.source.Add(new { Text = InstallationApp.BayHeightCheck, Status = false ? "CheckCircle" : "CloseCircleOutline" });
+            this.source.Add(new
+            {
+                Text = InstallationApp.LoadFirstDrawerPageHeader,
+                Status = status.AllLoadingUnits.IsCompleted ? "CheckCircle" : "CloseCircleOutline",
+            });
+
+            this.source.Add(new { Text = "Conferma collaudo", Status = status.IsComplete ? "CheckCircle" : "CloseCircleOutline" });
+
+            this.ProceduresCount = this.source.Count;
+            this.ProceduresCompleted = this.source.Count(c => c.Status == "CheckCircle");
+            this.ProceduresCompletedPercent = (int)((double)this.ProceduresCompleted / (double)this.ProceduresCount * 100.0);
 
             this.RaiseCanExecuteChanged();
 

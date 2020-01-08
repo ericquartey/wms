@@ -99,7 +99,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
             if (mission.WmsId.HasValue)
             {
-                if (this.configuration.IsWmsEnabled())
+                if (!this.configuration.IsWmsEnabled())
                 {
                     this.Logger.LogTrace("Cannot perform mission scheduling, because WMS is not enabled.");
                     return;
