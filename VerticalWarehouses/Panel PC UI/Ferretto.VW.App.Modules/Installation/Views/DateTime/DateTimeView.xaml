@@ -47,7 +47,7 @@
                     </StackPanel>
                 </RadioButton.Content>
             </RadioButton>
-            <RadioButton IsEnabled="{Binding IsManualEnabled}" GroupName="test" >
+            <RadioButton   IsChecked="{Binding IsManual, Mode=TwoWay}" IsEnabled="{Binding IsManualEnabled}" GroupName="test" >
                 <RadioButton.Content>
                     <StackPanel Orientation="Vertical">
                         <TextBlock Grid.Row="2"
@@ -61,12 +61,14 @@
                             <ctrls:PpcSpinEdit EditValue="{Binding Hour, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                MinValue="0"
                                                MaxValue="23"
+                                               MinHeight="91"
                                                MinWidth="200"
                                                LabelText="{x:Static res:InstallationApp.Hour}" />
                             <ctrls:PpcSpinEdit Margin="10 0 0 0"
                                                EditValue="{Binding Minute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                MinValue="0"
                                                MaxValue="59"
+                                               MinHeight="91"
                                                MinWidth="200"
                                                LabelText="{x:Static res:InstallationApp.Minutes}" />
                         </StackPanel>
@@ -74,18 +76,21 @@
                             <ctrls:PpcSpinEdit EditValue="{Binding Day, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                MinValue="1"
                                                MaxValue="31"
+                                               MinHeight="91"
                                                MinWidth="200"
                                                LabelText="{x:Static res:InstallationApp.Day}" />
                             <ctrls:PpcSpinEdit Margin="10 0 0 0"
                                                EditValue="{Binding Month, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                MinValue="1"
                                                MaxValue="12"
+                                               MinHeight="91"
                                                MinWidth="200"
                                                LabelText="{x:Static res:InstallationApp.Month}" />
                             <ctrls:PpcSpinEdit Margin="10 0 0 0"
                                                EditValue="{Binding Year, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                MinValue="2020"
                                                MaxValue="3000"
+                                               MinHeight="91"
                                                MinWidth="200"
                                                LabelText="{x:Static res:InstallationApp.Year}" />
                         </StackPanel>

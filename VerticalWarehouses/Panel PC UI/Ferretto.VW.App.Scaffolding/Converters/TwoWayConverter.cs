@@ -6,7 +6,7 @@ using System.Windows.Data;
 
 namespace Ferretto.VW.App.Scaffolding.Converters
 {
-    public class TwoWayConverter : IMultiValueConverter
+    public class TwoWayConverter : IMultiValueConverter, IValueConverter
     {
         PropertyInfo _pinfo;
         object _entity;
@@ -34,6 +34,11 @@ namespace Ferretto.VW.App.Scaffolding.Converters
             return values;
         }
 
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return System.Convert.ChangeType(value, targetType, culture);
+        }
+
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             if (this._pinfo != null && this._entity != null)
@@ -41,6 +46,11 @@ namespace Ferretto.VW.App.Scaffolding.Converters
                 this._pinfo.SetValue(this._entity, System.Convert.ChangeType(value, this._pinfo.PropertyType, culture));
             }
             return new[] { this._pinfo, this._entity };
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return System.Convert.ChangeType(value, targetType, culture);
         }
     }
 }

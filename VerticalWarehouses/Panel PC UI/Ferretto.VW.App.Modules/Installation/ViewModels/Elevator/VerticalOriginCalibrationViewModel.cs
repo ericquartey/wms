@@ -80,7 +80,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.currentVerticalPosition, value);
         }
 
-        public override EnableMask EnableMask => EnableMask.MachineManualMode;
+        public override EnableMask EnableMask => EnableMask.MachineManualMode | EnableMask.MachinePoweredOn;
 
         public double LowerBound
         {

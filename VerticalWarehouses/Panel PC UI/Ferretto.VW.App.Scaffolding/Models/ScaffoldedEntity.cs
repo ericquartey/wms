@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.App.Scaffolding.DataAnnotations;
+﻿using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +14,8 @@ namespace Ferretto.VW.App.Scaffolding.Models
 
         internal ScaffoldedEntity(PropertyInfo property, object owner, IEnumerable<Attribute> metadata, int id, string caption)
         {
-            this.Property = property;
-            this.Instance = owner;
+            this.Property = property ?? throw new ArgumentNullException(nameof(property));
+            this.Instance = owner ?? throw new ArgumentNullException(nameof(owner));
             this.Id = id;
             this.Caption = caption;
             this.Metadata = metadata;

@@ -1,5 +1,6 @@
-﻿using Ferretto.VW.App.Scaffolding.DataAnnotations;
+﻿using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
 using Ferretto.VW.App.Scaffolding.Services;
+using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -77,12 +78,17 @@ namespace Ferretto.VW.App.Scaffolding.Controls
         {
             foreach (var entity in branch.Entities)
             {
+                object originalValue = null;
+                if (entity.Instance != null)
+                {
+                    originalValue = entity.Property.GetValue(entity.Instance);
+                }
                 this._elasticDataTable.Add(new ScaffoldedEntityDataTableItem
                 {
                     Entity = entity,
                     FullCategory = string.Concat(category, CATEGORY_SEPARATOR, entity.DisplayName()).Trim(),
                     Id = entity.Id,
-                    OriginalValue = entity.Property.GetValue(entity.Instance),
+                    OriginalValue = originalValue,
                     Tags = new[] { entity.DisplayName(), category }.Union(entity.Metadata.OfType<TagAttribute>().Select(t => t.Tag())).Where(t => !string.IsNullOrEmpty(t))
                 });
             }
@@ -239,7 +245,9 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             set => this.SetValue(EditingEntityProperty, value);
         }
 
-        #endregion 
+        #endregion
+
+        #region handlers + events
 
         public void SelectCategory(object sender, EventArgs e)
         {
@@ -275,12 +283,22 @@ namespace Ferretto.VW.App.Scaffolding.Controls
                     entity.Property.SetValue(entity.Instance, Convert.ChangeType(e.Value, entity.Property.PropertyType, System.Globalization.CultureInfo.CurrentCulture));
                     // trigger property change
                     CollectionViewSource.GetDefaultView(this.Entities).Refresh();
-                    // TODO: trigger save
+                    // broadcast commit
+                    this.OnCommit(EventArgs.Empty);
                 }
             }
 
             // reset the editing entity
             this.EditingEntity = null;
         }
+
+        public event EventHandler Commit;
+
+        private void OnCommit(EventArgs e)
+        {
+            this.Commit?.Invoke(this, e);
+        }
+
+        #endregion
     }
 }

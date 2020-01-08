@@ -12,6 +12,7 @@
             d:DesignHeight="450"
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
+            xmlns:scaffolding="clr-namespace:Ferretto.VW.App.Scaffolding.Controls;assembly=Ferretto.VW.App.Scaffolding"
             mc:Ignorable="d">
     <ctrls:View.Resources>
         <ctrls:PropertyGridCellTemplateSelector x:Key="PropertyGridCellTemplateSelector" />
@@ -37,6 +38,10 @@
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="Modifica configurazione" />
+
+
+        <scaffolding:Scaffolder Grid.Row="1" Visibility="Collapsed"
+                                 Model="{Binding Path=Configuration}"/>
 
         <dxprg:PropertyGridControl Grid.Row="1"
                                    AllowExpanding="Force"

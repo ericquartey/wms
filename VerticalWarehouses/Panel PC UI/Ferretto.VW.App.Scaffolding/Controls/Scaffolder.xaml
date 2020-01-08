@@ -9,6 +9,7 @@
              xmlns:validation="clr-namespace:Ferretto.VW.App.Scaffolding.ValidationRules"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:g11n="clr-namespace:System.Globalization;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -136,7 +137,7 @@
                                     </DataTemplate.Resources>
                                     <TextBlock>
                                         <TextBlock.Text>
-                                            <MultiBinding Converter="{StaticResource TwoWayConverter}">
+                                            <MultiBinding Converter="{StaticResource TwoWayConverter}" ConverterCulture="{x:Static g11n:CultureInfo.CurrentCulture}">
                                                 <Binding Path="Property" />
                                                 <Binding Path="Instance" />
                                             </MultiBinding>

@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.App.Scaffolding.DataAnnotations;
+﻿using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -13,7 +13,7 @@ namespace Ferretto.VW.App.Scaffolding.Models
         public string Key { get; set; }
 
         // IEnumerables get categorized by some specific property (their very read-only value).
-        [Category(CategoryResourceType =typeof(POC.Resources.Vertimag), CategoryResourceName =nameof(POC.Resources.Vertimag.BayCategory))]
+        [Category(ResourceType = typeof(POC.Resources.Vertimag), Category = nameof(POC.Resources.Vertimag.BayCategory))]
         [CategoryParameter(nameof(Bay.Number))]
         public IEnumerable<Bay> Bays { get; set; }
     }
@@ -21,7 +21,7 @@ namespace Ferretto.VW.App.Scaffolding.Models
     public class Bay
     {
         [PullToRoot]
-        [Category(CategoryResourceType = typeof(POC.Resources.Vertimag), CategoryResourceName = nameof(POC.Resources.Vertimag.BayInverterCategory))]
+        [Category(ResourceType = typeof(POC.Resources.Vertimag), Category = nameof(POC.Resources.Vertimag.BayInverterCategory))]
         [CategoryParameter(nameof(Bay.Number))]
         [Unfold]
         public Inverter Inverter { get; set; }
@@ -38,8 +38,8 @@ namespace Ferretto.VW.App.Scaffolding.Models
         [Editable(false)]
         public BayNumber Number { get; set; }
 
-        [Range(0,double.PositiveInfinity, ErrorMessageResourceType = typeof(POC.Resources.ErrorMessages), ErrorMessageResourceName = nameof(POC.Resources.ErrorMessages.RangeMin))]
-        [DefaultValue(10, "mm")]
+        [Range(0, double.PositiveInfinity, ErrorMessageResourceType = typeof(POC.Resources.ErrorMessages), ErrorMessageResourceName = nameof(POC.Resources.ErrorMessages.RangeMin))]
+        [DefaultValue(10), Unit("mm")]
         public double ChainOffset { get; set; }
     }
 
@@ -60,7 +60,7 @@ namespace Ferretto.VW.App.Scaffolding.Models
         #endregion
     }
 
-    [MetadataType(typeof(Inverter.Metadata))]
+    [MAS.Scaffolding.DataAnnotations.MetadataType(typeof(Inverter.Metadata))]
     public class Inverter
     {
         public System.Net.IPAddress IpAddress { get; set; }
