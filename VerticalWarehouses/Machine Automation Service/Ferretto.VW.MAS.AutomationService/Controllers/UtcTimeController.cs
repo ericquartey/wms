@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet]
         public ActionResult<DateTimeOffset> Get()
         {
-            return this.Ok(DateTimeOffset.UtcNow);
+            return this.Ok(DateTimeOffset.Now);
         }
 
         [HttpGet("wms-auto-sync/enabled")]
@@ -44,7 +44,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpPost]
-        public ActionResult<DateTimeOffset> Set(DateTime dateTime)
+        public IActionResult Set(DateTimeOffset dateTime)
         {
             this.systemTimeProvider.SetUtcSystemTime(dateTime);
             return this.Ok();

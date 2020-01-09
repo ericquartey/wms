@@ -51,11 +51,6 @@ namespace Ferretto.VW.MAS.DataLayer
             return new MemoryCacheEntryOptions().SetSlidingExpiration(timeSpan);
         }
 
-        public static bool IsSetupStatusOverridden(this IConfiguration configuration)
-        {
-            return configuration.GetValue<bool>(OverrideSetupStatusKey);
-        }
-
         public static bool IsWmsEnabled(this IConfiguration configuration)
         {
             return configuration.GetValue<bool>("WMS:IsEnabled");

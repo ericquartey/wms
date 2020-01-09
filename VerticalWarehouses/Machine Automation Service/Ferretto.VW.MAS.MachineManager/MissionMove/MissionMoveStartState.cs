@@ -49,9 +49,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command)
         {
+            this.Mission.FsmRestoreStateName = null;
             this.Mission.FsmStateName = nameof(MissionMoveStartState);
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.Mission.CloseShutterBayNumber = BayNumber.None;
+            this.Mission.StopReason = StopRequestReason.NoReason;
             this.missionsDataProvider.Update(this.Mission);
             this.logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
@@ -62,7 +64,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     var description = $"GetSourceHeight error: position not found ({this.Mission.LoadingUnitSource} {(this.Mission.LoadingUnitSource == LoadingUnitLocation.Cell ? this.Mission.LoadingUnitCellSourceId : this.Mission.LoadingUnitId)})";
 
-                    throw new StateMachineException(description);
+                    throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
                 if (targetCellId != null)
                 {
@@ -90,7 +92,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     var description = $"GetSourceHeight error: position not found ({this.Mission.LoadingUnitSource} {(this.Mission.LoadingUnitSource == LoadingUnitLocation.Cell ? this.Mission.LoadingUnitCellSourceId : this.Mission.LoadingUnitId)})";
 
-                    throw new StateMachineException(description);
+                    throw new StateMachineException(description,
+                        new CommandMessage(null, null, MessageActor.Any, MessageActor.MachineManager, MessageType.MoveLoadingUnit, this.Mission.TargetBay, this.Mission.TargetBay),
+                        MessageActor.MachineManager);
                 }
 
                 if (targetCellId != null)
@@ -111,6 +115,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     targetBayPositionId,
                     targetCellId);
             }
+            this.Mission.Status = MissionStatus.Executing;
+            this.Mission.RestoreConditions = false;
+            this.missionsDataProvider.Update(this.Mission);
+
             bool isEject = this.Mission.LoadingUnitDestination != LoadingUnitLocation.Cell
                 && this.Mission.LoadingUnitDestination != LoadingUnitLocation.Elevator
                 && this.Mission.LoadingUnitDestination != LoadingUnitLocation.LoadingUnit
@@ -138,10 +146,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Mission.TargetBay,
                 MessageStatus.OperationStart);
             this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
-
-            this.Mission.Status = MissionStatus.Executing;
-            this.Mission.RestoreConditions = false;
-            this.missionsDataProvider.Update(this.Mission);
 
             return true;
         }

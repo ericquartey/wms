@@ -12344,21 +12344,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.DateTimeOffset> SetAsync(System.DateTimeOffset dateTime)
+        public System.Threading.Tasks.Task<FileResponse> SetAsync(System.DateTimeOffset dateTime)
         {
             return SetAsync(dateTime, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.DateTimeOffset> SetAsync(System.DateTimeOffset dateTime, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<FileResponse> SetAsync(System.DateTimeOffset dateTime, System.Threading.CancellationToken cancellationToken)
         {
             if (dateTime == null)
                 throw new System.ArgumentNullException("dateTime");
     
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/utc-time?");
-            urlBuilder_.Append(System.Uri.EscapeDataString("dateTime") + "=").Append(System.Uri.EscapeDataString(dateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("dateTime") + "=").Append(System.Uri.EscapeDataString(dateTime.ToString("O", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
             var client_ = _httpClient;
@@ -12366,9 +12366,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
-                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/octet-stream");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
     
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
@@ -12388,10 +12388,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         ProcessResponse(client_, response_);
     
                         var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200") 
+                        if (status_ == "200" || status_ == "206") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.DateTimeOffset>(response_, headers_).ConfigureAwait(false);
-                            return objectResponse_.Object;
+                            var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                            var fileResponse_ = new FileResponse((int)response_.StatusCode, headers_, responseStream_, null, response_); 
+                            client_ = null; response_ = null; // response and client are disposed by FileResponse
+                            return fileResponse_;
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -12400,7 +12402,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(System.DateTimeOffset);
+                        return default(FileResponse);
                     }
                     finally
                     {

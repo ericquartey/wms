@@ -70,6 +70,6 @@
 
         BlockRead = 19,
 
-        HeartBeatTimer1 = 83,
+        HeartBeatTimer1 = 1390,
     }
 }

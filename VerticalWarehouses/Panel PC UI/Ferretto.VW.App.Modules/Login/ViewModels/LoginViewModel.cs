@@ -31,8 +31,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private readonly ISessionService sessionService;
 
-        private int bayNumber;
-
         private DelegateCommand loginCommand;
 
         private MachineIdentity machineIdentity;
@@ -69,6 +67,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             };
 
             this.UserLogin.PropertyChanged += this.UserLogin_PropertyChanged;
+            this.MachineService.PropertyChanged += this.MachineService_PropertyChanged;
         }
 
         #endregion
@@ -77,8 +76,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         public int BayNumber
         {
-            get => this.bayNumber;
-            set => this.SetProperty(ref this.bayNumber, value);
+            get => (int)this.MachineService?.BayNumber;
         }
 
         public override EnableMask EnableMask => EnableMask.Any;
@@ -118,6 +116,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         public UserLogin UserLogin { get; }
 
+        protected override bool IsDataRefreshSyncronous => true;
+
         #endregion
 
         #region Methods
@@ -139,34 +139,13 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            await base.OnAppearedAsync();
+            this.ClearNotifications();
 
-            try
-            {
-                this.ClearNotifications();
-
-                this.subscriptionToken = this.healthProbeService.HealthStatusChanged
-                    .Subscribe(
-                        this.OnHealthStatusChanged,
-                        ThreadOption.UIThread,
-                        false);
-
-                this.IsWaitingForResponse = true;
-                var bay = await this.bayManager.GetBayAsync();
-                if (!(bay is null))
-                {
-                    this.BayNumber = (int)bay.Number;
-                    await this.machineBaysWebService.DeactivateAsync();
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
+            this.subscriptionToken = this.healthProbeService.HealthStatusChanged
+                .Subscribe(
+                    this.OnHealthStatusChanged,
+                    ThreadOption.UIThread,
+                    false);
 
             this.machineErrorsService.AutoNavigateOnError = false;
 
@@ -179,6 +158,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             {
                 this.MachineIdentity = this.sessionService.MachineIdentity;
             }
+
+            await base.OnAppearedAsync();
         }
 
         public void OnHealthStatusChanged(HealthStatusChangedEventArgs e)
@@ -267,22 +248,21 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
         }
 
-        private void NavigateToInstallerMainView()
+        private void MachineService_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            this.NavigationService.Appear(
-                nameof(Utils.Modules.Installation),
-                Utils.Modules.Installation.INSTALLATORMENU,
-                data: null,
-                trackCurrentView: true);
-        }
-
-        private void NavigateToOperatorMainView()
-        {
-            this.NavigationService.Appear(
-                nameof(Utils.Modules.Operator),
-                Utils.Modules.Operator.OPERATOR_MENU,
-                data: null,
-                trackCurrentView: true);
+            Application.Current.Dispatcher.BeginInvoke(new Action(async () =>
+            {
+                if (e.PropertyName == nameof(this.MachineService.BayNumber))
+                {
+                    try
+                    {
+                        this.RaisePropertyChanged(nameof(this.BayNumber));
+                    }
+                    catch (HttpRequestException)
+                    {
+                    }
+                }
+            }));
         }
 
         private void UserLogin_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

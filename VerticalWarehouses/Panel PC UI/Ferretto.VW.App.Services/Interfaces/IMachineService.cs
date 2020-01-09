@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -7,6 +8,12 @@ namespace Ferretto.VW.App.Services
 {
     public interface IMachineService
     {
+        #region Events
+
+        event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
+
         #region Properties
 
         Bay Bay { get; }
@@ -31,13 +38,13 @@ namespace Ferretto.VW.App.Services
 
         MachinePowerState MachinePower { get; }
 
-        void ClearNotifications();
-
         MachineStatus MachineStatus { get; }
 
         #endregion
 
         #region Methods
+
+        void ClearNotifications();
 
         Task OnUpdateServiceAsync();
 

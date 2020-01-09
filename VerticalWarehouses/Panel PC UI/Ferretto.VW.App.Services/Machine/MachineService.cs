@@ -561,6 +561,34 @@ namespace Ferretto.VW.App.Services
                                     && !this.MachineStatus.IsMovingLoadingUnit)
                                 {
                                     this.WriteInfo(dataPositioningInfo?.AxisMovement);
+
+                                    if ((dataPositioningInfo.TargetSpeed.Length > 0 && dataPositioningInfo.TargetSpeed[0] != this.MachineStatus.VerticalSpeed) ||
+                                        (dataPositioningInfo.AxisMovement == Axis.Vertical && dataPositioningInfo.TargetPosition != this.MachineStatus.VerticalTargetPosition) ||
+                                        (dataPositioningInfo.AxisMovement == Axis.Horizontal && dataPositioningInfo.TargetPosition != this.MachineStatus.HorizontalTargetPosition) ||
+                                        (dataPositioningInfo.AxisMovement == Axis.BayChain && dataPositioningInfo.TargetPosition != this.MachineStatus.BayChainTargetPosition))
+                                    {
+                                        var ms = (MachineStatus)this.MachineStatus.Clone();
+
+                                        ms.VerticalSpeed = null;
+                                        if (dataPositioningInfo.AxisMovement == Axis.Vertical)
+                                        {
+                                            ms.VerticalTargetPosition = dataPositioningInfo.TargetPosition;
+                                            if (dataPositioningInfo.TargetSpeed.Length > 0)
+                                            {
+                                                ms.VerticalSpeed = dataPositioningInfo.TargetSpeed[0];
+                                            }
+                                        }
+                                        else if (dataPositioningInfo.AxisMovement == Axis.Horizontal)
+                                        {
+                                            ms.HorizontalTargetPosition = dataPositioningInfo.TargetPosition;
+                                        }
+                                        else if (dataPositioningInfo.AxisMovement == Axis.BayChain)
+                                        {
+                                            ms.BayChainTargetPosition = dataPositioningInfo.TargetPosition;
+                                        }
+
+                                        this.MachineStatus = ms;
+                                    }
                                 }
 
                                 if (message?.Data is ShutterPositioningMessageData dataShutterPositioningInfo

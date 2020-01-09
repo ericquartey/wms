@@ -277,9 +277,9 @@ namespace Ferretto.VW.App.Controls
 
         private void NavigateBackTo(NavigationHistoryRecord historyRecord)
         {
-            this.DisappearActiveView();
-
             this.logger.Debug($"Navigating back to '{historyRecord.ModuleName}.{historyRecord.ViewName}'.");
+
+            this.DisappearActiveView();
 
             this.regionManager.RequestNavigate(
                 this.MainContentRegionName,

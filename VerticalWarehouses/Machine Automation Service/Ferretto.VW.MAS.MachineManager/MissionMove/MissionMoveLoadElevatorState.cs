@@ -63,12 +63,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command)
         {
-            this.logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
+            this.Mission.FsmRestoreStateName = null;
             this.Mission.FsmStateName = nameof(MissionMoveLoadElevatorState);
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
-            this.missionsDataProvider.Update(this.Mission);
-
             this.Mission.Direction = HorizontalMovementDirection.Backwards;
+            this.Mission.StopReason = StopRequestReason.NoReason;
+            this.missionsDataProvider.Update(this.Mission);
+            this.logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
+
             var measure = (this.Mission.LoadingUnitSource != LoadingUnitLocation.Cell);
             switch (this.Mission.LoadingUnitSource)
             {
@@ -88,7 +90,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         var description = $"{this.GetType().Name}: source bay not found {this.Mission.LoadingUnitSource}";
 
-                        throw new StateMachineException(description);
+                        throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                     }
                     this.Mission.Direction = (bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards);
                     this.Mission.OpenShutterPosition = this.loadingUnitMovementProvider.GetShutterOpenPosition(bay, this.Mission.LoadingUnitSource);
@@ -102,7 +104,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         if (result != MachineErrorCode.NoError)
                         {
                             var error = this.errorsProvider.RecordNew(result);
-                            throw new StateMachineException(error.Description);
+                            throw new StateMachineException(error.Description, this.Mission.TargetBay, MessageActor.MachineManager);
                         }
                     }
                     break;

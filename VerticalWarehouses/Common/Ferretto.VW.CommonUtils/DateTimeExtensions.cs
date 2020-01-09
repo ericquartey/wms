@@ -7,7 +7,7 @@ namespace Ferretto.VW.CommonUtils
     {
         #region Methods
 
-        public static void SetAsUtcSystemTime(this DateTime dateTime)
+        public static void SetAsUtcSystemTime(this DateTimeOffset dateTime)
         {
             var time = new SYSTEMTIME(dateTime);
             var success = SetSystemTime(ref time);
@@ -44,8 +44,9 @@ namespace Ferretto.VW.CommonUtils
 
             public ushort Milliseconds;
 
-            public SYSTEMTIME(DateTime dateTime)
+            public SYSTEMTIME(DateTimeOffset dateTimeOffset)
             {
+                var dateTime = dateTimeOffset.ToUniversalTime();
                 this.Year = (ushort)dateTime.Year;
                 this.Month = (ushort)dateTime.Month;
                 this.DayOfWeek = (ushort)dateTime.DayOfWeek;
