@@ -199,84 +199,9 @@ namespace Ferretto.VW.App.Controls
                 this.healthProbeService.HealthStatus);
 
             await base.OnAppearedAsync();
-        }
 
-        private void SubscribeEvents()
-        {
-            this.healthStatusChangedToken = this.healthStatusChangedToken
-                ??
-                this.EventAggregator
-                    .GetEvent<PubSubEvent<HealthStatusChangedEventArgs>>()
-                    .Subscribe(
-                        async e => await this.OnHealthStatusChangedAsync(e),
-                        ThreadOption.UIThread,
-                        false);
+            this.RaiseCanExecuteChanged();
 
-            this.machineModeChangedToken = this.machineModeChangedToken
-                ??
-                this.EventAggregator
-                    .GetEvent<PubSubEvent<MachineModeChangedEventArgs>>()
-                    .Subscribe(
-                       async e => await this.OnMachineModeChangedAsync(e),
-                       ThreadOption.UIThread,
-                       false);
-
-            this.machinePowerChangedToken = this.machinePowerChangedToken
-                ??
-                this.EventAggregator
-                    .GetEvent<PubSubEvent<MachinePowerChangedEventArgs>>()
-                    .Subscribe(
-                       async e => await this.OnMachinePowerChangedAsync(e),
-                       ThreadOption.UIThread,
-                       false);
-
-            this.bayChainPositionChangedToken = this.bayChainPositionChangedToken
-                ??
-                this.EventAggregator
-                    .GetEvent<PubSubEvent<BayChainPositionChangedEventArgs>>()
-                    .Subscribe(
-                        this.OnBayChainPositionChanged,
-                        ThreadOption.UIThread,
-                        false);
-
-            this.homingChangesToken = this.homingChangesToken
-                ??
-                this.EventAggregator
-                    .GetEvent<HomingChangedPubSubEvent>()
-                    .Subscribe(
-                        (m) =>
-                        {
-                            this.UpdateIsEnabled(
-                                this.machineModeService.MachinePower,
-                                this.machineModeService.MachineMode,
-                                this.healthProbeService.HealthStatus);
-                        },
-                        ThreadOption.UIThread,
-                        false);
-
-            this.machineStatusChangesToken = this.machineStatusChangesToken
-                ?? this.EventAggregator
-                    .GetEvent<MachineStatusChangedPubSubEvent>()
-                    .Subscribe(
-                        async (m) => await this.OnMachineStatusChangedAsync(m),
-                        ThreadOption.UIThread,
-                        false);
-
-            this.machineErrorsService.ErrorStatusChanged += async (s, e) =>
-            {
-                await this.OnErrorStatusChangedAsync(e);
-            };
-
-            this.sensorsToken = this.sensorsToken
-                ??
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-                    .Subscribe(
-                        this.OnSensorsChanged,
-                        ThreadOption.UIThread,
-                        false,
-                        m => m.Data != null &&
-                             this.IsVisible);
         }
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)
@@ -449,6 +374,84 @@ namespace Ferretto.VW.App.Controls
         private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
         {
             this.RaiseCanExecuteChanged();
+        }
+
+        private void SubscribeEvents()
+        {
+            this.healthStatusChangedToken = this.healthStatusChangedToken
+                ??
+                this.EventAggregator
+                    .GetEvent<PubSubEvent<HealthStatusChangedEventArgs>>()
+                    .Subscribe(
+                        async e => await this.OnHealthStatusChangedAsync(e),
+                        ThreadOption.UIThread,
+                        false);
+
+            this.machineModeChangedToken = this.machineModeChangedToken
+                ??
+                this.EventAggregator
+                    .GetEvent<PubSubEvent<MachineModeChangedEventArgs>>()
+                    .Subscribe(
+                       async e => await this.OnMachineModeChangedAsync(e),
+                       ThreadOption.UIThread,
+                       false);
+
+            this.machinePowerChangedToken = this.machinePowerChangedToken
+                ??
+                this.EventAggregator
+                    .GetEvent<PubSubEvent<MachinePowerChangedEventArgs>>()
+                    .Subscribe(
+                       async e => await this.OnMachinePowerChangedAsync(e),
+                       ThreadOption.UIThread,
+                       false);
+
+            this.bayChainPositionChangedToken = this.bayChainPositionChangedToken
+                ??
+                this.EventAggregator
+                    .GetEvent<PubSubEvent<BayChainPositionChangedEventArgs>>()
+                    .Subscribe(
+                        this.OnBayChainPositionChanged,
+                        ThreadOption.UIThread,
+                        false);
+
+            this.homingChangesToken = this.homingChangesToken
+                ??
+                this.EventAggregator
+                    .GetEvent<HomingChangedPubSubEvent>()
+                    .Subscribe(
+                        (m) =>
+                        {
+                            this.UpdateIsEnabled(
+                                this.machineModeService.MachinePower,
+                                this.machineModeService.MachineMode,
+                                this.healthProbeService.HealthStatus);
+                        },
+                        ThreadOption.UIThread,
+                        false);
+
+            this.machineStatusChangesToken = this.machineStatusChangesToken
+                ?? this.EventAggregator
+                    .GetEvent<MachineStatusChangedPubSubEvent>()
+                    .Subscribe(
+                        async (m) => await this.OnMachineStatusChangedAsync(m),
+                        ThreadOption.UIThread,
+                        false);
+
+            this.machineErrorsService.ErrorStatusChanged += async (s, e) =>
+            {
+                await this.OnErrorStatusChangedAsync(e);
+            };
+
+            this.sensorsToken = this.sensorsToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Subscribe(
+                        this.OnSensorsChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data != null &&
+                             this.IsVisible);
         }
 
         private void UpdateIsEnabled(

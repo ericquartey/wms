@@ -344,8 +344,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            await base.OnAppearedAsync();
-
             await this.RetrieveVerticalOffset();
 
             var procedureParameters = await this.verticalOriginProcedureWebService.GetParametersAsync();
@@ -362,6 +360,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         (m) => this.OnStepChanged(m),
                         ThreadOption.UIThread,
                         false);
+
+            await base.OnAppearedAsync();
         }
 
         protected void OnStepChanged(StepChangedMessage e)
@@ -379,7 +379,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case VerticalOffsetCalibrationStep.CellMeasured:
                     if (e.Next)
                     {
-                        this.ApplyCorrectionAsync();
                         this.CurrentStep = VerticalOffsetCalibrationStep.Confirm;
                     }
                     else
