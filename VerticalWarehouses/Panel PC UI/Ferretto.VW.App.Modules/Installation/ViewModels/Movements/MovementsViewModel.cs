@@ -325,14 +325,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             if (this.MachineStatus.EmbarkedLoadingUnit != null)
             {
-                if (!string.IsNullOrEmpty(this.MachineStatus.LogicalPositionId))
-                {
-                    this.LabelMoveToLoadunit = "Vai a cella";
-                }
-                else
-                {
-                    this.LabelMoveToLoadunit = "Vai a cella libera";
-                }
+                this.LabelMoveToLoadunit = "Vai a cella libera";
             }
             else
             {
@@ -354,8 +347,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsKeyboardOpened
                 &&
                 !this.IsExecutingProcedure
-                &&
-                !this.IsWaitingForResponse
                 &&
                 !this.IsMoving;
         }

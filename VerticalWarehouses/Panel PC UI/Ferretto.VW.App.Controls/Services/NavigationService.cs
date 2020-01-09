@@ -174,7 +174,10 @@ namespace Ferretto.VW.App.Controls
                 this.navigationStack.Pop();
             }
 
-            this.NavigateBackTo(this.navigationStack.Peek());
+            if (this.navigationStack.Any())
+            {
+                this.NavigateBackTo(this.navigationStack.Peek());
+            }
         }
 
         public void GoBackTo(string modelName, string viewModelName)
@@ -207,7 +210,10 @@ namespace Ferretto.VW.App.Controls
 
             this.ClearNotifications();
 
-            this.NavigateBackTo(this.navigationStack.Peek());
+            if (this.navigationStack.Any())
+            {
+                this.NavigateBackTo(this.navigationStack.Peek());
+            }
         }
 
         public bool IsActiveView(string moduleName, string viewModelName)
