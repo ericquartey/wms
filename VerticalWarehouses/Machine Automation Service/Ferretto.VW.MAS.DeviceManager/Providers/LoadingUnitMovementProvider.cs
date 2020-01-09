@@ -475,16 +475,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                         }
                         catch (InvalidOperationException ex2)
                         {
-                            throw new StateMachineException(ex2.Message,
-                                new CommandMessage(null, null, MessageActor.Any, MessageActor.MachineManager, MessageType.MoveLoadingUnit, requestingBay, requestingBay),
-                                MessageActor.MachineManager);
+                            throw new StateMachineException(ex2.Message, requestingBay, MessageActor.MachineManager);
                         }
                     }
                     else
                     {
-                        throw new StateMachineException(ex.Message,
-                            new CommandMessage(null, null, MessageActor.Any, MessageActor.MachineManager, MessageType.MoveLoadingUnit, requestingBay, requestingBay),
-                            MessageActor.MachineManager);
+                        throw new StateMachineException(ex.Message, requestingBay, MessageActor.MachineManager);
                     }
                 }
             }
@@ -503,9 +499,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             catch (ArgumentOutOfRangeException ex)
             {
-                throw new StateMachineException(ex.Message,
-                    new CommandMessage(null, null, MessageActor.Any, MessageActor.MachineManager, MessageType.MoveLoadingUnit, requestingBay, requestingBay),
-                    MessageActor.MachineManager);
+                throw new StateMachineException(ex.Message, requestingBay, MessageActor.MachineManager);
             }
         }
 

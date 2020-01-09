@@ -153,9 +153,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         catch (Exception)
                         {
                             this.errorsProvider.RecordNew(MachineErrorCode.WarehouseIsFull);
-                            throw new StateMachineException(ErrorDescriptions.WarehouseIsFull,
-                                new CommandMessage(null, null, MessageActor.Any, MessageActor.MachineManager, MessageType.MoveLoadingUnit, this.Mission.TargetBay, this.Mission.TargetBay),
-                                MessageActor.MachineManager);
+                            throw new StateMachineException(ErrorDescriptions.WarehouseIsFull, this.Mission.TargetBay, MessageActor.MachineManager);
                         }
                         returnValue = true;
                         mission.LoadingUnitDestination = LoadingUnitLocation.Cell;
@@ -177,9 +175,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         var description = $"Attempting to start {this.GetType()} Finite state machine with Loading Unit as destination Type";
 
-                        throw new StateMachineException(description,
-                            new CommandMessage(null, null, MessageActor.Any, MessageActor.MachineManager, MessageType.MoveLoadingUnit, this.Mission.TargetBay, this.Mission.TargetBay),
-                            MessageActor.MachineManager);
+                        throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                     }
                 case LoadingUnitLocation.NoLocation:
                     // destination is bay, but first we must decide which position to use
@@ -194,9 +190,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         if (destination is LoadingUnitLocation.NoLocation)
                         {
                             var description = $"Upper position not defined for bay {requestingBay}";
-                            throw new StateMachineException(description,
-                                new CommandMessage(null, null, MessageActor.Any, MessageActor.MachineManager, MessageType.MoveLoadingUnit, this.Mission.TargetBay, this.Mission.TargetBay),
-                                MessageActor.MachineManager);
+                            throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                         }
                         returnValue = this.CheckBayDestination(messageData, requestingBay, destination, mission, false);
                         if (!returnValue)
@@ -206,9 +200,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             if (destination is LoadingUnitLocation.NoLocation)
                             {
                                 var description = $"Lower position not defined for bay {requestingBay}";
-                                throw new StateMachineException(description,
-                                    new CommandMessage(null, null, MessageActor.Any, MessageActor.MachineManager, MessageType.MoveLoadingUnit, this.Mission.TargetBay, this.Mission.TargetBay),
-                                    MessageActor.MachineManager);
+                                throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                             }
                             // the other mission must be in waiting state
                             var activeMission = this.missionsDataProvider.GetAllActiveMissionsByBay(requestingBay)
@@ -362,9 +354,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 default:
                     var description = $"Attempting to start {this.GetType()} Finite state machine with invalid MissionType {messageData.MissionType}";
 
-                    throw new StateMachineException(description,
-                        new CommandMessage(null, null, MessageActor.Any, MessageActor.MachineManager, MessageType.MoveLoadingUnit, this.Mission.TargetBay, this.Mission.TargetBay),
-                        MessageActor.MachineManager);
+                    throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
             }
             if (!returnValue)
             {

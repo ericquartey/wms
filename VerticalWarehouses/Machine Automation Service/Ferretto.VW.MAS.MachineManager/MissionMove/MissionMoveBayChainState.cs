@@ -70,9 +70,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 var description = $"{this.GetType().Name}: destination bay not found {this.Mission.LoadingUnitDestination}";
 
-                throw new StateMachineException(description,
-                    new CommandMessage(null, null, MessageActor.Any, MessageActor.MachineManager, MessageType.MoveLoadingUnit, this.Mission.TargetBay, this.Mission.TargetBay),
-                    MessageActor.MachineManager);
+                throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
             }
             if (this.loadingUnitMovementProvider.IsOnlyBottomPositionOccupied(bay.Number))
             {
@@ -109,9 +107,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
                             if (destination is null)
                             {
-                                throw new StateMachineException($"Upper position not defined for bay {bay.Number}",
-                                    new CommandMessage(null, null, MessageActor.Any, MessageActor.MachineManager, MessageType.MoveLoadingUnit, this.Mission.TargetBay, this.Mission.TargetBay),
-                                    MessageActor.MachineManager);
+                                var description = $"Upper position not defined for bay {bay.Number}";
+                                throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                             }
                             this.Mission.LoadingUnitDestination = destination.Location;
 
@@ -193,9 +190,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 if (!this.loadingUnitMovementProvider.MoveCarousel(this.Mission.LoadingUnitId, MessageActor.MachineManager, bay.Number, false))
                 {
                     var description = $"MoveLoadingUnitBayChainState: Move Bay chain not possible in bay {bay.Number}. Wait for another resume";
-                    throw new StateMachineException(description,
-                        new CommandMessage(null, null, MessageActor.Any, MessageActor.MachineManager, MessageType.MoveLoadingUnit, this.Mission.TargetBay, this.Mission.TargetBay),
-                        MessageActor.MachineManager);
+                    throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
             }
 #if CHECK_BAY_SENSOR

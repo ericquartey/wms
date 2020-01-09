@@ -1077,12 +1077,13 @@ namespace Ferretto.VW.MAS.InverterDriver
                     && this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.HeartBeatTimer1) < 2
                     )
                 {
-                    var value = (this.isHeartBeatOn ? HeartBeatOn : HeartBeatOff);
+                    var value = (short)(this.isHeartBeatOn ? 1 : 0);
 
                     var heartBeatMessage = new InverterMessage(
                         (byte)state,
                         (short)InverterParameterId.HeartBeatTimer1,
-                        value);
+                        value,
+                        InverterDataset.HeartBeat);
 
                     this.Logger.LogTrace($"1.RequestHeartBeat={heartBeatMessage}");
                     this.inverterCommandQueue.Enqueue(heartBeatMessage);
