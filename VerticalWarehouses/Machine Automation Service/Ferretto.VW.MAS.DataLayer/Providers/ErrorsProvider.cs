@@ -64,13 +64,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 return this.dataContext.Errors
                         .Where(e => !e.ResolutionDate.HasValue)
                         .OrderBy(e => e.OccurrenceDate)
-                        .Select(e => new MachineError
-                        {
-                            Id = e.Id,
-                            Code = e.Code,
-                            OccurrenceDate = e.OccurrenceDate,
-                            ResolutionDate = e.ResolutionDate
-                        })
                         .FirstOrDefault();
             }
         }
@@ -124,13 +117,21 @@ namespace Ferretto.VW.MAS.DataLayer
                 || error.Code == (int)MachineErrorCode.InverterFaultStateDetected);
         }
 
+        /// <summary>
+        /// Add a machine error to the db and notify the Automation Service about the error.
+        /// </summary>
+        /// <param name="code">The error code id.</param>
+        /// <param name="bayNumber">The bay number.</param>
+        /// <returns></returns>
         public MachineError RecordNew(MachineErrorCode code, BayNumber bayNumber = BayNumber.None)
         {
             var newError = new MachineError
             {
                 Code = (int)code,
                 OccurrenceDate = DateTime.Now,
-                BayNumber = bayNumber,
+                InverterIndex = 0,
+                DetailCode = 0,
+                BayNumber = bayNumber
             };
 
             lock (this.dataContext)
@@ -166,6 +167,14 @@ namespace Ferretto.VW.MAS.DataLayer
             return newError;
         }
 
+        /// <summary>
+        /// Add a machine error to the db and notify the Automation Service about the error.
+        /// Reserved for the MachineErrorCode.InverterFaultStateDetected.
+        /// </summary>
+        /// <param name="inverterIndex">The inverter index.</param>
+        /// <param name="detailCode">The detail code of the inverter error.</param>
+        /// <param name="bayNumber">The bay number.</param>
+        /// <returns></returns>
         public MachineError RecordNew(int inverterIndex, ushort detailCode, BayNumber bayNumber = BayNumber.None)
         {
             var newError = new MachineError

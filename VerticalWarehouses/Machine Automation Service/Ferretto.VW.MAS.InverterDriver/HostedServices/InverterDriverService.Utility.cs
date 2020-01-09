@@ -382,7 +382,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         // Adds error related to the InverterFaultDetected
                         var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
-                        errorsProvider.RecordNew((int)message.SystemIndex, error, bayNumber);
+                        var idx = (int)message.SystemIndex + 1; // it has the systemIndex on base 1
+                        errorsProvider.RecordNew(idx, error, bayNumber);
                     }
                 }
             }
