@@ -78,7 +78,7 @@
       "generateContractsOutput": true,
       "contractsNamespace": "Ferretto.VW.MAS.AutomationService.Contracts",
       "contractsOutputFilePath": "../Ferretto.VW.MAS.AutomationService.Contracts/ServiceContracts.autogen.cs",
-      "parameterDateTimeFormat": "s",
+      "parameterDateTimeFormat": "O",
       "generateUpdateJsonSerializerSettingsMethod": true,
       "serializeTypeInformation": false,
       "queryNullValue": "",

@@ -23,7 +23,7 @@
         /// </summary>
         /// <param name="dateTime">The new system time.</param>
         /// <exception cref="System.InvalidOperationException">Exception is thrown if it is not possible to set the system time.</exception>
-        void SetUtcSystemTime(System.DateTime dateTime);
+        void SetUtcSystemTime(System.DateTimeOffset dateTime);
 
         #endregion
     }

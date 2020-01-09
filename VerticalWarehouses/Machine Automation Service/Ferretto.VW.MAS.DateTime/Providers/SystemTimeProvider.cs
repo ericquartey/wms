@@ -66,7 +66,7 @@ namespace Ferretto.VW.MAS.TimeManagement
 
         #region Methods
 
-        public void SetUtcSystemTime(DateTime dateTime)
+        public void SetUtcSystemTime(DateTimeOffset dateTime)
         {
             if (this.IsWmsAutoSyncEnabled)
             {
@@ -76,7 +76,7 @@ namespace Ferretto.VW.MAS.TimeManagement
             this.SetUtcTime(dateTime);
         }
 
-        public void SetUtcTime(DateTime dateTime)
+        public void SetUtcTime(DateTimeOffset dateTime)
         {
             dateTime.SetAsUtcSystemTime();
 
