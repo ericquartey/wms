@@ -348,7 +348,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                if (this.CurrentVerticalOffset == 0 || this.AxisUpperBound == 0 || this.AxisLowerBound == 0 || this.StartPosition == 0)
+                if (!this.CurrentVerticalOffset.HasValue || this.AxisUpperBound == 0 || this.AxisLowerBound == 0 || this.StartPosition == 0)
                 {
                     await this.RetrieveVerticalOffset();
 
