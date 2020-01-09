@@ -562,10 +562,10 @@ namespace Ferretto.VW.App.Services
                                 {
                                     this.WriteInfo(dataPositioningInfo?.AxisMovement);
 
-                                    if ((dataPositioningInfo.TargetSpeed.Length > 0 && dataPositioningInfo.TargetSpeed[0] != this.MachineStatus.VerticalSpeed) ||
-                                        (dataPositioningInfo.AxisMovement == Axis.Vertical && dataPositioningInfo.TargetPosition != this.MachineStatus.VerticalTargetPosition) ||
-                                        (dataPositioningInfo.AxisMovement == Axis.Horizontal && dataPositioningInfo.TargetPosition != this.MachineStatus.HorizontalTargetPosition) ||
-                                        (dataPositioningInfo.AxisMovement == Axis.BayChain && dataPositioningInfo.TargetPosition != this.MachineStatus.BayChainTargetPosition))
+                                    if ((dataPositioningInfo.TargetSpeed?.Length > 0 && this.MachineStatus.VerticalSpeed.HasValue && dataPositioningInfo.TargetSpeed[0] != this.MachineStatus.VerticalSpeed.Value) ||
+                                        (dataPositioningInfo.AxisMovement == Axis.Vertical && this.MachineStatus.VerticalTargetPosition.HasValue && dataPositioningInfo.TargetPosition != this.MachineStatus.VerticalTargetPosition.Value) ||
+                                        (dataPositioningInfo.AxisMovement == Axis.Horizontal && this.MachineStatus.HorizontalTargetPosition.HasValue && dataPositioningInfo.TargetPosition != this.MachineStatus.HorizontalTargetPosition.Value) ||
+                                        (dataPositioningInfo.AxisMovement == Axis.BayChain && this.MachineStatus.BayChainTargetPosition.HasValue && dataPositioningInfo.TargetPosition != this.MachineStatus.BayChainTargetPosition.Value))
                                     {
                                         var ms = (MachineStatus)this.MachineStatus.Clone();
 
