@@ -1087,11 +1087,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<System.DateTimeOffset> GetAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.DateTimeOffset> SetAsync(System.DateTimeOffset dateTime);
+        System.Threading.Tasks.Task<FileResponse> SetAsync(System.DateTimeOffset dateTime);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.DateTimeOffset> SetAsync(System.DateTimeOffset dateTime, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<FileResponse> SetAsync(System.DateTimeOffset dateTime, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<bool> IsWmsAutoSyncEnabledAsync();

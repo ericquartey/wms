@@ -44,11 +44,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isCarouselOpening;
 
-        private bool isCompleted;
-
         private bool isElevatorMoving;
 
         private bool isLightActive;
+
+        private bool isManualMovementCompleted;
 
         private bool isMovingElevatorBackwards;
 
@@ -324,11 +324,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.StartVerticalMovementAsync(VerticalMovementDirection.Up);
         }
 
-        public void OnManualAppearedAsync()
-        {
-            this.isCompleted = false;
-        }
-
         public async Task OpenCarouselAsync()
         {
             await this.StartMovementAsync(VerticalMovementDirection.Up);
@@ -365,7 +360,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private void CloseOperation()
         {
             this.StopMoving();
-            this.isCompleted = true;
+            this.isManualMovementCompleted = true;
         }
 
         private async Task ManualShutterStartMovementAsync(ShutterMovementDirection direction)
@@ -469,7 +464,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             switch (message.Status)
             {
                 case MessageStatus.OperationStart:
-                    this.isCompleted = false;
+                    this.isManualMovementCompleted = false;
                     this.IsElevatorMoving = true;
                     break;
 
@@ -546,7 +541,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             switch (message.Status)
             {
                 case MessageStatus.OperationStart:
-                    this.isCompleted = false;
+                    this.isManualMovementCompleted = false;
                     this.IsShutterMoving = true;
                     break;
 

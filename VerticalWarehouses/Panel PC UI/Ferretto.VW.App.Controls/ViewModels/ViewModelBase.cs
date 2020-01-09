@@ -82,13 +82,13 @@ namespace Ferretto.VW.App.Controls
 
         public virtual void OnNavigatedFrom(NavigationContext navigationContext)
         {
-            this.IsVisible = false;
+            //this.IsVisible = false;
             // let the derived classes implement the behaviour of this method
         }
 
         public virtual void OnNavigatedTo(NavigationContext navigationContext)
         {
-            this.IsVisible = true;
+            //this.IsVisible = true;
             // let the derived classes implement the behaviour of this method
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -82,12 +83,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.CanExecuteCommand() &&
                       (this.MachineModeService.MachineMode == MachineMode.Manual ||
                        this.MachineModeService.MachineMode == MachineMode.Test) &&
-                      this.MachineService.IsHoming &&
+                      ((this.MachineService.IsHoming &&
                       ((this.VerticalResolutionCalibrationProcedureParameters != null &&
                         this.VerticalResolutionCalibrationProcedureParameters.IsCompleted &&
                         this.VerticalOffsetProcedureParameters != null &&
                         this.VerticalOffsetProcedureParameters.IsCompleted) ||
-                       true)));
+                       true)) || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
+                ));
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -108,7 +110,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.VerticalOffsetCalibration),
                 () => this.CanExecuteCommand() &&
                       this.MachineModeService.MachineMode == MachineMode.Manual &&
-                      this.MachineService.IsHoming
+                      (this.MachineService.IsHoming || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
                 //&&
                 //this.VerticalResolutionCalibrationProcedureParameters != null &&
                 //this.VerticalResolutionCalibrationProcedureParameters.IsCompleted
@@ -129,21 +131,26 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.VerticalResolutionCalibration),
                 () => this.CanExecuteCommand() &&
                       this.MachineModeService.MachineMode == MachineMode.Manual &&
-                      this.MachineService.IsHoming));
+                      (this.MachineService.IsHoming || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
+            ));
 
         public ICommand WeightAnalysisCommand =>
             this.weightAnalysisCommand
             ??
             (this.weightAnalysisCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.WeightAnalysis),
-                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
+                () => this.CanExecuteCommand() &&
+                (this.MachineService.IsHoming || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
+            ));
 
         public ICommand WeightMeasurementCommand =>
             this.weightMeasurement
             ??
             (this.weightMeasurement = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.WeightMeasurement),
-                () => this.CanExecuteCommand() && this.MachineService.IsHoming));
+                () => this.CanExecuteCommand() &&
+                (this.MachineService.IsHoming || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
+            ));
 
         protected OffsetCalibrationProcedure VerticalOffsetProcedureParameters { get; private set; }
 
@@ -156,11 +163,11 @@ namespace Ferretto.VW.App.Menu.ViewModels
         public async override Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
+        }
 
-            this.VerticalResolutionCalibrationProcedureParameters = await this.verticalResolutionCalibrationProcedureWebService.GetParametersAsync();
-            this.VerticalOffsetProcedureParameters = await this.verticalOffsetProcedureWebService.GetParametersAsync();
-
-            this.RaiseCanExecuteChanged();
+        protected override async Task OnDataRefreshAsync()
+        {
+            await this.UpdateSetupStatusAsync();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -236,6 +243,14 @@ namespace Ferretto.VW.App.Menu.ViewModels
                        trackCurrentView: true);
                     break;
             }
+        }
+
+        private async Task UpdateSetupStatusAsync()
+        {
+            this.VerticalResolutionCalibrationProcedureParameters = await this.verticalResolutionCalibrationProcedureWebService.GetParametersAsync();
+            this.VerticalOffsetProcedureParameters = await this.verticalOffsetProcedureWebService.GetParametersAsync();
+
+            this.RaiseCanExecuteChanged();
         }
 
         #endregion

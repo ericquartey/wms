@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -301,61 +302,49 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public async Task GetParameterValuesAsync()
         {
-            var procedureParameters = await this.beltBurnishingWebService.GetParametersAsync();
+            if (this.InputRequiredCycles == null || this.CumulativePerformedCycles == null)
+            {
+                var procedureParameters = await this.beltBurnishingWebService.GetParametersAsync();
+                this.InputRequiredCycles = procedureParameters.RequiredCycles;
+                this.CumulativePerformedCycles = procedureParameters.PerformedCycles;
+            }
 
-            var bounds = await this.machineElevatorWebService.GetVerticalBoundsAsync();
+            if (this.InputUpperBound == null || this.machineUpperBound == null || this.InputLowerBound == null || this.machineLowerBound == null)
+            {
+                var bounds = await this.machineElevatorWebService.GetVerticalBoundsAsync();
 
-            this.InputUpperBound = bounds.Upper;
-            this.machineUpperBound = bounds.Upper;
-            this.InputLowerBound = bounds.Lower;
-            this.machineLowerBound = bounds.Lower;
-
-            this.InputRequiredCycles = procedureParameters.RequiredCycles;
-            this.CumulativePerformedCycles = procedureParameters.PerformedCycles;
+                this.InputUpperBound = bounds.Upper;
+                this.machineUpperBound = bounds.Upper;
+                this.InputLowerBound = bounds.Lower;
+                this.machineLowerBound = bounds.Lower;
+            }
         }
 
         public override async Task OnAppearedAsync()
         {
+            this.SubscribeToEvents();
+
             await base.OnAppearedAsync();
+        }
 
-            this.IsBackNavigationAllowed = true;
-
+        protected async override Task OnDataRefreshAsync()
+        {
             try
             {
-                this.IsWaitingForResponse = true;
-
                 await this.GetParameterValuesAsync();
 
                 this.IsExecutingProcedure = this.MachineService.MachineStatus.IsMoving;
 
                 this.CurrentPosition = this.machineElevatorService.Position.Vertical;
             }
-            catch (Exception ex)
+            catch (HttpRequestException ex)
             {
                 this.ShowNotification(ex);
             }
-            finally
+            catch (Exception)
             {
-                this.IsWaitingForResponse = false;
+                throw;
             }
-
-            this.positioningMessageReceivedToken = this.positioningMessageReceivedToken
-                ??
-                this.eventAggregator
-                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                    .Subscribe(
-                        this.OnPositioningMessageReceived,
-                        ThreadOption.UIThread,
-                        false);
-
-            this.elevatorPositionChangedToken = this.elevatorPositionChangedToken
-                ??
-                this.EventAggregator
-                    .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
-                    .Subscribe(
-                        this.OnElevatorPositionChanged,
-                        ThreadOption.UIThread,
-                        false);
         }
 
         protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
@@ -495,6 +484,27 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        private void SubscribeToEvents()
+        {
+            this.positioningMessageReceivedToken = this.positioningMessageReceivedToken
+                ??
+                this.eventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        this.OnPositioningMessageReceived,
+                        ThreadOption.UIThread,
+                        false);
+
+            this.elevatorPositionChangedToken = this.elevatorPositionChangedToken
+                ??
+                this.EventAggregator
+                    .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
+                    .Subscribe(
+                        this.OnElevatorPositionChanged,
+                        ThreadOption.UIThread,
+                        false);
         }
 
         #endregion

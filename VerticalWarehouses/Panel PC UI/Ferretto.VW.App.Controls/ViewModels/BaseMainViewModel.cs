@@ -129,16 +129,24 @@ namespace Ferretto.VW.App.Controls
 
         protected bool IsConnectedByMAS => this.healthProbeService.HealthStatus == HealthStatus.Healthy;
 
+        protected virtual bool IsDataRefreshSyncronous => false;
+
         #endregion
 
         #region Methods
 
         public void ClearNotifications()
         {
-            if (this.IsVisible)
-            {
-                this.MachineService?.ClearNotifications();
-            }
+            this.MachineService?.ClearNotifications();
+        }
+
+        public void ClearSteps()
+        {
+            this.ShowPrevStepSinglePage(false, false);
+            this.ShowNextStepSinglePage(false, false);
+            this.ShowPrevStep(false, false);
+            this.ShowNextStep(false, false);
+            this.ShowAbortStep(false, false);
         }
 
         public override void Disappear()
@@ -149,6 +157,8 @@ namespace Ferretto.VW.App.Controls
 
             this.sensorsToken?.Dispose();
             this.sensorsToken = null;
+
+            //this.ClearSteps();
 
             /*
              * Avoid unsubscribing in case of navigation to error page.
@@ -162,24 +172,25 @@ namespace Ferretto.VW.App.Controls
             */
         }
 
-        public virtual void InitializeSteps()
-        {
-            this.ShowPrevStepSinglePage(false, false);
-            this.ShowNextStepSinglePage(false, false);
-            this.ShowPrevStep(false, false);
-            this.ShowNextStep(false, false);
-            this.ShowAbortStep(false, false);
-        }
-
         public override async Task OnAppearedAsync()
         {
-            this.IsWaitingForResponse = false;
+            this.IsWaitingForResponse = true;
 
-            this.UpdatePresentation();
-
+            Task task = null;
+            Task dataTask = null;
             try
             {
-                await this.machineService.OnUpdateServiceAsync();
+                if (!this.IsDataRefreshSyncronous)
+                {
+                    task = this.machineService.OnUpdateServiceAsync();
+                    dataTask = this.OnDataRefreshAsync();
+                }
+                else
+                {
+                    await this.machineService.OnUpdateServiceAsync();
+                    await this.OnDataRefreshAsync();
+                    this.IsWaitingForResponse = false;
+                }
             }
             catch (HttpRequestException)
             {
@@ -188,8 +199,10 @@ namespace Ferretto.VW.App.Controls
             {
                 throw;
             }
-
-            this.InitializeSteps();
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
 
             this.SubscribeEvents();
 
@@ -200,13 +213,30 @@ namespace Ferretto.VW.App.Controls
 
             await base.OnAppearedAsync();
 
-            this.RaiseCanExecuteChanged();
-
+            try
+            {
+                if (!this.IsDataRefreshSyncronous)
+                {
+                    await task;
+                    await dataTask;
+                }
+            }
+            catch (HttpRequestException)
+            {
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
-        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        public override void OnNavigatedTo(NavigationContext navigationContext)
         {
-            base.OnNavigatedFrom(navigationContext);
+            base.OnNavigatedTo(navigationContext);
             this.UpdatePresentation();
         }
 
@@ -227,12 +257,9 @@ namespace Ferretto.VW.App.Controls
 
         public void ShowNotification(string message, NotificationSeverity severity = NotificationSeverity.Info)
         {
-            if (this.IsVisible)
-            {
-                this.EventAggregator
-                 .GetEvent<PresentationNotificationPubSubEvent>()
-                 .Publish(new PresentationNotificationMessage(message, severity));
-            }
+            this.EventAggregator
+                .GetEvent<PresentationNotificationPubSubEvent>()
+                .Publish(new PresentationNotificationMessage(message, severity));
         }
 
         public void ShowNotification(Exception exception)
@@ -244,12 +271,9 @@ namespace Ferretto.VW.App.Controls
 
             this.Logger.Error(exception);
 
-            if (this.IsVisible)
-            {
-                this.EventAggregator
-                    .GetEvent<PresentationNotificationPubSubEvent>()
-                    .Publish(new PresentationNotificationMessage(exception));
-            }
+            this.EventAggregator
+                .GetEvent<PresentationNotificationPubSubEvent>()
+                .Publish(new PresentationNotificationMessage(exception));
         }
 
         public void ShowPrevStep(bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
@@ -264,28 +288,32 @@ namespace Ferretto.VW.App.Controls
 
         public void ShowStep(PresentationTypes presentationType, bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
         {
-            if (this.IsVisible)
+            this.IsBackNavigationAllowed = !isVisible;
+
+            var presentationStep = new PresentationStep()
             {
-                var presentationStep = new PresentationStep()
-                {
-                    Type = presentationType,
-                    IsEnabled = isEnabled,
-                    IsVisible = isVisible,
-                    ModuleName = moduleName,
-                    ViewName = viewName
-                };
+                Type = presentationType,
+                IsEnabled = isEnabled,
+                IsVisible = isVisible,
+                ModuleName = moduleName,
+                ViewName = viewName
+            };
 
-                var presentationMessage = new PresentationChangedMessage(presentationStep);
+            var presentationMessage = new PresentationChangedMessage(presentationStep);
 
-                this.EventAggregator
-                    .GetEvent<PresentationChangedPubSubEvent>()
-                    .Publish(presentationMessage);
-            }
+            this.EventAggregator
+                .GetEvent<PresentationChangedPubSubEvent>()
+                .Publish(presentationMessage);
         }
 
         public virtual void UpdateNotifications()
         {
             this.ClearNotifications();
+        }
+
+        protected virtual Task OnDataRefreshAsync()
+        {
+            return Task.CompletedTask;
         }
 
         protected virtual Task OnErrorStatusChangedAsync(MachineErrorEventArgs e)
@@ -459,11 +487,6 @@ namespace Ferretto.VW.App.Controls
             MachineMode machineMode,
             HealthStatus healthStatus)
         {
-            if (!this.IsVisible)
-            {
-                return;
-            }
-
             bool result = true;
             if (this.EnableMask != EnableMask.Any)
             {
