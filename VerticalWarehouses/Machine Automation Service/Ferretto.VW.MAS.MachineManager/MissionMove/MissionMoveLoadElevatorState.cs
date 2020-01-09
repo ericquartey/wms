@@ -63,12 +63,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command)
         {
-            this.logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
+            this.Mission.FsmRestoreStateName = null;
             this.Mission.FsmStateName = nameof(MissionMoveLoadElevatorState);
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
-            this.missionsDataProvider.Update(this.Mission);
-
             this.Mission.Direction = HorizontalMovementDirection.Backwards;
+            this.Mission.StopReason = StopRequestReason.NoReason;
+            this.missionsDataProvider.Update(this.Mission);
+            this.logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
+
             var measure = (this.Mission.LoadingUnitSource != LoadingUnitLocation.Cell);
             switch (this.Mission.LoadingUnitSource)
             {

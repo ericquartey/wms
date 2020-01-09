@@ -175,7 +175,7 @@ namespace Ferretto.VW.App.Services
                     {
                         // presenza elevatore
                         if (this.sensorsService.IsLoadingUnitOnElevator &&
-                            !this.sensorsService.IsZeroChain)
+                            this.sensorsService.IsZeroChain)
                         {
                             Task.Run(() => this.machineErrorsWebService.SetErrorPPCAsync(MachineErrorCode.MachineManagerErrorLoadingUnitMissingOnElevator)).Wait();
                         }

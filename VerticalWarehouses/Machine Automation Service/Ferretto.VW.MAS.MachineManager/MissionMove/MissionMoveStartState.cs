@@ -49,9 +49,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command)
         {
+            this.Mission.FsmRestoreStateName = null;
             this.Mission.FsmStateName = nameof(MissionMoveStartState);
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.Mission.CloseShutterBayNumber = BayNumber.None;
+            this.Mission.StopReason = StopRequestReason.NoReason;
             this.missionsDataProvider.Update(this.Mission);
             this.logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
