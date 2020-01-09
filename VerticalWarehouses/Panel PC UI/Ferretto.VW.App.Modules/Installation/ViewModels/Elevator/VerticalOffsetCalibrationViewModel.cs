@@ -468,8 +468,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return
                 !this.IsKeyboardOpened
                 &&
-                !this.IsWaitingForResponse
-                &&
                 !this.IsMoving;
         }
 
