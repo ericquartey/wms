@@ -993,7 +993,6 @@ namespace Ferretto.VW.App.Services
                         }
                         break;
 
-                    case WarningsArea.Maintenance:
                     case WarningsArea.Picking:
                         if (this.machineModeService.MachinePower != MachinePowerState.Powered)
                         {
@@ -1006,6 +1005,13 @@ namespace Ferretto.VW.App.Services
                         else
                         {
                             this.ClearNotifications();
+                        }
+                        break;
+
+                    case WarningsArea.Maintenance:
+                        if (this.machineModeService.MachinePower != MachinePowerState.Powered)
+                        {
+                            this.ShowNotification("Manca marcia.", NotificationSeverity.Warning);
                         }
                         break;
 
