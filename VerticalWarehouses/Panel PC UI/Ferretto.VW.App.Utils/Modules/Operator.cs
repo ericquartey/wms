@@ -18,7 +18,7 @@
         {
             #region Fields
 
-            public const string ALLARM = "AlarmViewModel";
+            public const string ALARM = "AlarmViewModel";
 
             public const string COUNTERS = "CountersViewModel";
 

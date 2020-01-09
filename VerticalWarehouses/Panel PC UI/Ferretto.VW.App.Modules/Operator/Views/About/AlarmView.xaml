@@ -9,7 +9,7 @@
             xmlns:prism="http://prismlibrary.com/"
             xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Operator.ViewModels"
             xmlns:views="clr-namespace:Ferretto.VW.App.Operator.Views"
-            d:DataContext="{d:DesignInstance Type=viewmodels:AllarmViewModel,
+            d:DataContext="{d:DesignInstance Type=viewmodels:AlarmViewModel,
                                              IsDesignTimeCreatable=False}"
             d:DesignHeight="700"
             d:DesignWidth="1024"

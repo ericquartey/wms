@@ -75,7 +75,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.menuCompactionCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Compaction),
                 () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual));
+                      this.MachineModeService.MachineMode == MachineMode.Manual &&
+                      this.MachineModeService.MachinePower == MachinePowerState.Powered));
 
         public ICommand MenuMaintenanceCommand =>
             this.menuMaintenanceCommand
@@ -89,7 +90,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.menuUpdateCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Update),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() &&
+                      this.MachineModeService.MachineMode == MachineMode.Manual));
 
         #endregion
 
@@ -120,7 +122,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private bool CanExecuteCommand()
         {
-            return !this.IsWaitingForResponse;
+            return true;
         }
 
         private void MenuCommand(Menu menu)

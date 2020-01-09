@@ -14,7 +14,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
     {
         #region Fields
 
-        private DelegateCommand allarmCommand;
+        private DelegateCommand alarm;
 
         private DelegateCommand diagnosticsCommand;
 
@@ -35,7 +35,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Constructors
 
         public BaseAboutMenuViewModel()
-            : base(PresentationMode.Operator)
+            : base(PresentationMode.Menu)
         {
         }
 
@@ -45,31 +45,31 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private enum Menu
         {
-            Allarm,
+            Alarm,
 
             General,
 
             Statistics,
 
-            Diagnostincs,
+            Diagnostics,
         }
 
         #endregion
 
         #region Properties
 
-        public ICommand AllarmCommand =>
-            this.allarmCommand
+        public ICommand AlarmCommand =>
+            this.alarm
             ??
-            (this.allarmCommand = new DelegateCommand(
-                () => this.ExecuteCommand(Menu.Allarm),
+            (this.alarm = new DelegateCommand(
+                () => this.ExecuteCommand(Menu.Alarm),
                 this.CanExecuteCommand));
 
         public ICommand DiagnosticsCommand =>
             this.diagnosticsCommand
             ??
             (this.diagnosticsCommand = new DelegateCommand(
-                () => this.ExecuteCommand(Menu.Diagnostincs),
+                () => this.ExecuteCommand(Menu.Diagnostics),
                 this.CanExecuteCommand));
 
         public override EnableMask EnableMask => EnableMask.Any;
@@ -123,47 +123,40 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            this.IsWaitingForResponse = true;
-
-            await base.OnAppearedAsync();
-
-            if (this.IsVisible)
-            {
-                this.IsAlarmActive = false;
-                this.IsDiagnosticsActive = false;
-                this.IsGeneralActive = false;
-                this.IsStatisticsActive = false;
-
-                switch ((Menu)(this.Data ?? Menu.General))
-                {
-                    case Menu.Allarm:
-                        this.IsAlarmActive = true;
-                        break;
-
-                    case Menu.General:
-                        this.IsGeneralActive = true;
-                        break;
-
-                    case Menu.Statistics:
-                        this.IsStatisticsActive = true;
-                        break;
-
-                    case Menu.Diagnostincs:
-                        this.IsDiagnosticsActive = true;
-                        break;
-                }
-            }
-
             this.IsBackNavigationAllowed = true;
 
-            this.IsWaitingForResponse = false;
+            this.IsAlarmActive = false;
+            this.IsDiagnosticsActive = false;
+            this.IsGeneralActive = false;
+            this.IsStatisticsActive = false;
+
+            switch ((Menu)(this.Data ?? Menu.General))
+            {
+                case Menu.Alarm:
+                    this.IsAlarmActive = true;
+                    break;
+
+                case Menu.General:
+                    this.IsGeneralActive = true;
+                    break;
+
+                case Menu.Statistics:
+                    this.IsStatisticsActive = true;
+                    break;
+
+                case Menu.Diagnostics:
+                    this.IsDiagnosticsActive = true;
+                    break;
+            }
+
+            await base.OnAppearedAsync();
         }
 
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
 
-            this.allarmCommand?.RaiseCanExecuteChanged();
+            this.alarm?.RaiseCanExecuteChanged();
             this.diagnosticsCommand?.RaiseCanExecuteChanged();
             this.generalCommand?.RaiseCanExecuteChanged();
             this.statisticsCommand?.RaiseCanExecuteChanged();
@@ -171,17 +164,17 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private bool CanExecuteCommand()
         {
-            return !this.IsWaitingForResponse;
+            return true;
         }
 
         private void ExecuteCommand(Menu menu)
         {
             switch (menu)
             {
-                case Menu.Allarm:
+                case Menu.Alarm:
                     this.NavigationService.Appear(
                         nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.About.ALLARM,
+                        Utils.Modules.Operator.About.ALARM,
                         data: menu,
                         trackCurrentView: false);
                     break;
@@ -202,7 +195,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                         trackCurrentView: false);
                     break;
 
-                case Menu.Diagnostincs:
+                case Menu.Diagnostics:
                     this.NavigationService.Appear(
                         nameof(Utils.Modules.Operator),
                         Utils.Modules.Operator.About.DIAGNOSTICS,

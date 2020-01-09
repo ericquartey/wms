@@ -27,6 +27,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            // TODO: Insert code here
+
             await base.OnAppearedAsync();
         }
 

@@ -44,6 +44,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             this.dataHubClient = dataHubClient ?? throw new ArgumentNullException(nameof(dataHubClient));
+            this.dataHubClient.ConnectionStatusChanged += this.OperatorHubClient_ConnectionStatusChanged;
 
             this.UpdateWmsServicesStatus();
         }
@@ -92,25 +93,25 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public override void Disappear()
         {
             base.Disappear();
-
-            this.dataHubClient.ConnectionStatusChanged -= this.OperatorHubClient_ConnectionStatusChanged;
         }
 
         public override async Task OnAppearedAsync()
         {
-            await base.OnAppearedAsync();
-
             this.IsBackNavigationAllowed = true;
 
-            this.Model = await this.identityService.GetAsync();
-            this.MachineServiceStatusBrush = this.GetBrushForServiceStatus(this.Model.ServiceStatus);
-
-            this.dataHubClient.ConnectionStatusChanged += this.OperatorHubClient_ConnectionStatusChanged;
+            await base.OnAppearedAsync();
         }
 
         internal bool CanExecuteCommand()
         {
-            return !this.IsWaitingForResponse;
+            return true;
+        }
+
+        protected override async Task OnDataRefreshAsync()
+        {
+            this.Model = await this.identityService.GetAsync();
+
+            this.MachineServiceStatusBrush = this.GetBrushForServiceStatus(this.Model.ServiceStatus);
         }
 
         protected override void RaiseCanExecuteChanged()

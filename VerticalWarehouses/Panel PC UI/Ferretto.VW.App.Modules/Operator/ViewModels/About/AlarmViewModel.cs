@@ -22,5 +22,16 @@ namespace Ferretto.VW.App.Operator.ViewModels
         }
 
         #endregion
+
+        #region Methods
+
+        public override async Task OnAppearedAsync()
+        {
+            // TODO: Insert code here
+
+            await base.OnAppearedAsync();
+        }
+
+        #endregion
     }
 }
