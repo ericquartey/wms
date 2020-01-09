@@ -247,8 +247,15 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private async Task UpdateSetupStatusAsync()
         {
-            this.VerticalResolutionCalibrationProcedureParameters = await this.verticalResolutionCalibrationProcedureWebService.GetParametersAsync();
-            this.VerticalOffsetProcedureParameters = await this.verticalOffsetProcedureWebService.GetParametersAsync();
+            if (this.VerticalResolutionCalibrationProcedureParameters == null)
+            {
+                this.VerticalResolutionCalibrationProcedureParameters = await this.verticalResolutionCalibrationProcedureWebService.GetParametersAsync();
+            }
+
+            if (this.VerticalOffsetProcedureParameters == null)
+            {
+                this.VerticalOffsetProcedureParameters = await this.verticalOffsetProcedureWebService.GetParametersAsync();
+            }
 
             this.RaiseCanExecuteChanged();
         }
