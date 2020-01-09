@@ -113,52 +113,40 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            await base.OnAppearedAsync();
-
             this.IsBackNavigationAllowed = true;
 
-            this.subscriptionToken = this.subscriptionToken
-                ??
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-                    .Subscribe(
-                        this.OnSensorsChanged,
-                        ThreadOption.UIThread,
-                        false,
-                        m => m.Data?.SensorsStates != null);
+            this.SubscribeToEvents();
 
-            try
-            {
-                var sensorsStates = await this.machineSensorsWebService.GetAsync();
+            await base.OnAppearedAsync();
+        }
 
-                var bays = await this.machineBaysWebService.GetAllAsync();
+        protected override async Task OnDataRefreshAsync()
+        {
+            var sensorsStates = await this.machineSensorsWebService.GetAsync();
 
-                this.IsBay2Present = bays.Any(b => b.Number == BayNumber.BayTwo);
-                this.IsBay3Present = bays.Any(b => b.Number == BayNumber.BayThree);
+            var bays = await this.machineBaysWebService.GetAllAsync();
 
-                this.Bay1HasShutter = bays
-                    .Where(b => b.Number == BayNumber.BayOne)
-                    .Select(b => b.Shutter != null)
-                    .SingleOrDefault();
+            this.IsBay2Present = bays.Any(b => b.Number == BayNumber.BayTwo);
+            this.IsBay3Present = bays.Any(b => b.Number == BayNumber.BayThree);
 
-                this.Bay2HasShutter = bays
-                    .Where(b => b.Number == BayNumber.BayTwo)
-                    .Select(b => b.Shutter != null)
-                    .SingleOrDefault();
+            this.Bay1HasShutter = bays
+                .Where(b => b.Number == BayNumber.BayOne)
+                .Select(b => b.Shutter != null)
+                .SingleOrDefault();
 
-                this.Bay3HasShutter = bays
-                    .Where(b => b.Number == BayNumber.BayThree)
-                    .Select(b => b.Shutter != null)
-                    .SingleOrDefault();
+            this.Bay2HasShutter = bays
+                .Where(b => b.Number == BayNumber.BayTwo)
+                .Select(b => b.Shutter != null)
+                .SingleOrDefault();
 
-                this.CheckZeroChainOnBays(bays);
+            this.Bay3HasShutter = bays
+                .Where(b => b.Number == BayNumber.BayThree)
+                .Select(b => b.Shutter != null)
+                .SingleOrDefault();
 
-                this.sensors.Update(sensorsStates.ToArray());
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
+            this.CheckZeroChainOnBays(bays);
+
+            this.sensors.Update(sensorsStates.ToArray());
         }
 
         private void CheckZeroChainOnBays(IEnumerable<Bay> bays)
@@ -206,6 +194,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
         {
             this.sensors.Update(message.Data.SensorsStates);
+        }
+
+        private void SubscribeToEvents()
+        {
+            this.subscriptionToken = this.subscriptionToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Subscribe(
+                        this.OnSensorsChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data?.SensorsStates != null);
         }
 
         #endregion

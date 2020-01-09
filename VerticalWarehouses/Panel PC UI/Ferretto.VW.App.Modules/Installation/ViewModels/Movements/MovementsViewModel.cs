@@ -392,9 +392,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return
                 !this.IsKeyboardOpened
                 &&
-                this.IsMoving
-                &&
-                !this.IsWaitingForResponse;
+                this.IsMoving;
         }
 
         private void ElevatorChanged()
