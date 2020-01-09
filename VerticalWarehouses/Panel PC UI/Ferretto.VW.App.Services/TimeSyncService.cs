@@ -134,14 +134,14 @@ namespace Ferretto.VW.App.Services
                 var remoteUtcTime = await this.utcTimeWebService.GetAsync();
                 var machineUtcTime = DateTimeOffset.UtcNow;
 
-                if ((machineUtcTime - remoteUtcTime).TotalSeconds > SyncToleranceMilliseconds)
+                if (Math.Abs((machineUtcTime - remoteUtcTime).TotalMilliseconds) > SyncToleranceMilliseconds)
                 {
-                    remoteUtcTime.LocalDateTime.SetAsUtcSystemTime();
-                    this.logger.Trace("PPC time was synced with MAS time.");
+                    remoteUtcTime.SetAsUtcSystemTime();
+                    this.logger.Trace($"PPC time was synced with MAS time. Machine {machineUtcTime} Remote {remoteUtcTime}");
                 }
                 else
                 {
-                    this.logger.Trace("PPC is alredy synced with MAS time.");
+                    this.logger.Trace($"PPC is alredy synced with MAS time. Machine {machineUtcTime} Remote {remoteUtcTime}");
                 }
             }
             catch (Exception ex)

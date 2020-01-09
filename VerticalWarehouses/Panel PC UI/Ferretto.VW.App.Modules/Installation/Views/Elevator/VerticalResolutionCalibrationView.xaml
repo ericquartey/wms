@@ -87,7 +87,7 @@
                   DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition />
+                    <RowDefinition Height="154" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
@@ -149,7 +149,7 @@
                   DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition />
+                    <RowDefinition Height="154" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
@@ -175,7 +175,7 @@
                                    Grid.Column="0"
                                    Width="250"
                                    Height="90"
-                                   Margin="0,0,15,0"
+                                   Margin="0,-15,15,0"
                                    VerticalAlignment="Center"
                                    EditValue="{Binding DestinationPosition1, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                    IsEnabled="{Binding IsCanDestinationPosition1}"
@@ -185,6 +185,7 @@
 
                 <controls:PpcButton Grid.Row="1"
                                     Grid.Column="1"
+                                    Margin="0,-15,15,0"
                                     VerticalAlignment="Center"
                                     Command="{Binding MoveToStartDestination1Command}"
                                     Content="Vai a quota"
@@ -224,7 +225,7 @@
                   DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition />
+                    <RowDefinition Height="154" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
@@ -249,7 +250,7 @@
                                    Grid.Column="0"
                                    Width="250"
                                    Height="90"
-                                   Margin="0,0,15,0"
+                                   Margin="0,-15,15,0"
                                    EditValue="{Binding DestinationPosition2, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                    IsEnabled="{Binding IsCanDestinationPosition2}"
                                    LabelText="Quota di destinazione"
@@ -258,6 +259,7 @@
 
                 <controls:PpcButton Grid.Row="1"
                                     Grid.Column="1"
+                                    Margin="0,-15,15,0"
                                     VerticalAlignment="Center"
                                     Command="{Binding MoveToStartDestination2Command}"
                                     Content="Vai a quota"

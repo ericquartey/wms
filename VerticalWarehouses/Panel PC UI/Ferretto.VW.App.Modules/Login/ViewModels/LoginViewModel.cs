@@ -67,6 +67,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             };
 
             this.UserLogin.PropertyChanged += this.UserLogin_PropertyChanged;
+            this.MachineService.PropertyChanged += this.MachineService_PropertyChanged;
         }
 
         #endregion
@@ -114,6 +115,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         }
 
         public UserLogin UserLogin { get; }
+
+        protected override bool IsDataRefreshSyncronous => true;
 
         #endregion
 
@@ -243,6 +246,23 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        private void MachineService_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            Application.Current.Dispatcher.BeginInvoke(new Action(async () =>
+            {
+                if (e.PropertyName == nameof(this.MachineService.BayNumber))
+                {
+                    try
+                    {
+                        this.RaisePropertyChanged(nameof(this.BayNumber));
+                    }
+                    catch (HttpRequestException)
+                    {
+                    }
+                }
+            }));
         }
 
         private void UserLogin_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

@@ -19,9 +19,9 @@ namespace Ferretto.VW.MAS.TimeManagement
     {
         #region Fields
 
-        private const int MinResyncPeriodMilliseconds = 10000;
+        private const int MinResyncPeriodMilliseconds = 60 * 1000;
 
-        private const int SyncToleranceMilliseconds = 5000;
+        private const int SyncToleranceMilliseconds = 10 * 1000;
 
         private readonly IConfiguration configuration;
 

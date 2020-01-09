@@ -6,7 +6,7 @@ namespace Ferretto.VW.MAS.TimeManagement.Models
     {
         #region Constructors
 
-        public SystemTimeChangedEventArgs(DateTime dateTime)
+        public SystemTimeChangedEventArgs(DateTimeOffset dateTime)
         {
             this.DateTime = dateTime;
         }
@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS.TimeManagement.Models
 
         #region Properties
 
-        public DateTime DateTime { get; }
+        public DateTimeOffset DateTime { get; }
 
         #endregion
     }
