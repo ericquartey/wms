@@ -146,7 +146,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private bool CanExecuteCommand()
         {
-            return !this.IsWaitingForResponse;
+            return true;
         }
 
         private void MenuCommand(Menu menu)

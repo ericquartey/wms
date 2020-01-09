@@ -386,19 +386,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsExecutingProcedure
                 &&
-                !this.IsWaitingForResponse
-                &&
                 string.IsNullOrWhiteSpace(this.Error);
         }
 
         private bool CanStopTest()
         {
             return
-                this.MachineService.MachineStatus.IsMoving
-                &&
-                this.IsExecutingProcedure
-                &&
-                !this.IsWaitingForResponse;
+                this.MachineService.MachineStatus.IsMoving;
         }
 
         private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)

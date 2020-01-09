@@ -180,17 +180,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return
                 !this.MachineService.MachineStatus.IsMoving
                 &&
-                !this.MachineService.MachineStatus.IsMovingLoadingUnit
-                &&
-                !this.IsWaitingForResponse;
+                !this.MachineService.MachineStatus.IsMovingLoadingUnit;
         }
 
         private bool CanExecuteStopCommand()
         {
             return
-                this.MachineService.MachineStatus.IsMoving
-                &&
-                !this.IsWaitingForResponse;
+                this.MachineService.MachineStatus.IsMoving;
         }
 
         private string GetStringByCalibrateAxisMessageData(Axis axisToCalibrate, MessageStatus status)
