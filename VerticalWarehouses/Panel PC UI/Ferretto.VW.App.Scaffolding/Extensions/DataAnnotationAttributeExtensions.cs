@@ -70,6 +70,37 @@ namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
 
         #endregion
 
+        #region Editable
+
+        public static bool IsEditable(this ScaffoldedEntity entity)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+            return entity.Property.IsEditable(entity.Metadata);
+        }
+
+        public static bool IsEditable(this PropertyInfo property, IEnumerable<Attribute> metadata)
+            => property.IsEditable(metadata.OfType<EditableAttribute>().FirstOrDefault());
+
+        public static bool IsEditable(this PropertyInfo property, EditableAttribute editable)
+        {
+            if (property == null)
+            {
+                throw new ArgumentNullException(nameof(property));
+            }
+            if (editable != null)
+            {
+                return editable.AllowEdit;
+            }
+
+            return true;
+        }
+
+
+        #endregion
+
         #region Default value/unit/Range min/max
 
         public static object DefaultValue(this IEnumerable<Attribute> metadata)

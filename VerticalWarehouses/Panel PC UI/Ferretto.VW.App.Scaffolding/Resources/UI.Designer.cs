@@ -61,6 +61,15 @@ namespace Ferretto.VW.App.Scaffolding.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tutti.
+        /// </summary>
+        public static string All {
+            get {
+                return ResourceManager.GetString("All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Annulla.
         /// </summary>
         public static string Cancel {
@@ -84,6 +93,15 @@ namespace Ferretto.VW.App.Scaffolding.Resources {
         public static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ricerca:.
+        /// </summary>
+        public static string Search {
+            get {
+                return ResourceManager.GetString("Search", resourceCulture);
             }
         }
     }

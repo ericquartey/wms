@@ -43,7 +43,7 @@
         <scaffolding:Scaffolder Grid.Row="1"
                                  Model="{Binding Path=Configuration}"/>
 
-        <dxprg:PropertyGridControl Grid.Row="1" Visibility="Collapsed"
+        <!--<dxprg:PropertyGridControl Grid.Row="1" Visibility="Collapsed"
                                    AllowExpanding="Force"
                                    ExpandCategoriesWhenSelectedObjectChanged="True"
                                    IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}"
@@ -56,11 +56,8 @@
                                       InsertDefinitionsFrom="{dxprg:RootPropertyDefinition}"
                                       Path="*" />
 
-            <!--<dxprg:PropertyDefinition Path="Id"
-                                      Visibility="Collapsed" />-->
 
-
-        </dxprg:PropertyGridControl>
+        </dxprg:PropertyGridControl>-->
 
         <Grid Grid.Row="1"
               Grid.Column="1">

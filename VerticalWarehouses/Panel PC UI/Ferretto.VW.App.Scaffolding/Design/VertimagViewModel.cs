@@ -12,10 +12,9 @@ using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
 
 namespace Ferretto.VW.App.Scaffolding.Design
 {
-    public class VertimagStructuresViewModel : ObservableCollection<ScaffoldedStructure>
+    internal static class VertimagViewModel
     {
-        private static readonly ReadOnlyCollection<ScaffoldedStructure> _items;
-        private static readonly Models.VertimagModel _vertimag = new Models.VertimagModel
+        public static readonly Models.VertimagModel Instance = new Models.VertimagModel
         {
             Bays = new[]
              {
@@ -52,14 +51,34 @@ namespace Ferretto.VW.App.Scaffolding.Design
              },
             Key = "abcdefghijkl"
         };
+    }
+
+    public class VertimagStructuresViewModel : ObservableCollection<ScaffoldedStructure>
+    {
+        private static readonly ReadOnlyCollection<ScaffoldedStructure> _items;
 
 
         static VertimagStructuresViewModel()
         {
-            _items = _vertimag.Scaffold().Children;
+            _items = VertimagViewModel.Instance.Scaffold().Children;
         }
 
         public VertimagStructuresViewModel() : base(_items)
+        {
+        }
+    }
+
+    public class VertimagEntitiesViewModel : ObservableCollection<ScaffoldedEntity>
+    {
+        private static readonly ReadOnlyCollection<ScaffoldedEntity> _items;
+
+
+        static VertimagEntitiesViewModel()
+        {
+            _items = VertimagViewModel.Instance.Scaffold().Entities;
+        }
+
+        public VertimagEntitiesViewModel() : base(_items)
         {
         }
     }

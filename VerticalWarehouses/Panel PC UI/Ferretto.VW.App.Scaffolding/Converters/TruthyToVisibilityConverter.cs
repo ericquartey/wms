@@ -5,8 +5,9 @@ using System.Windows;
 
 namespace Ferretto.VW.App.Scaffolding.Converters
 {
+
     /// <summary>
-    /// Assumes true or false based on javascript-like truthiness and translates it into <see cref="Visibility"/>. Should be convenient enough.
+    /// Assumes true or false based on javascript-like truthiness and translates it into <see cref="Visibility"/>, <see cref="GridLength"/>, etc. Should be convenient enough.
     /// </summary>
     public class TruthyToVisibilityConverter : IValueConverter
     {
@@ -23,28 +24,28 @@ namespace Ferretto.VW.App.Scaffolding.Converters
                 invert = true;
             }
 
-            // values.
-            if (value is System.Collections.IEnumerable enumerable)
+            bool finalValue = invert ^ TruthyAssertor.IsTruthy(value);
+
+            if (targetType == typeof(Visibility))
             {
-                return invert ^ enumerable?.GetEnumerator().MoveNext() == true ? Visibility.Visible : Visibility.Collapsed;
+                return finalValue ? Visibility.Visible : Visibility.Collapsed;
+            }
+            if (targetType == typeof(GridLength))
+            {
+                double starWeight = 1D;
+                if (parameter != null)
+                {
+                    var invariantCulture = System.Globalization.CultureInfo.InvariantCulture;
+                    string stars = System.Convert.ToString(parameter, invariantCulture);
+                    if (double.TryParse(stars, NumberStyles.AllowDecimalPoint, invariantCulture, out double actualStars))
+                    {
+                        starWeight = actualStars;
+                    }
+                }
+                return finalValue ? new GridLength(starWeight, GridUnitType.Star) : GridLength.Auto;
             }
 
-            if (value is string text)
-            {
-                return invert ^ !string.IsNullOrEmpty(text) ? Visibility.Visible : Visibility.Collapsed;
-            }
-
-            if (value is int count)
-            {
-                return invert ^ count != default ? Visibility.Visible : Visibility.Collapsed;
-            }
-
-            if (value is bool boolean)
-            {
-                return invert ^ boolean ? Visibility.Visible : Visibility.Collapsed;
-            }
-
-            return invert ^ value != null ? Visibility.Visible : Visibility.Collapsed;
+            throw new ArgumentOutOfRangeException($"Type {targetType} is not supported by the {typeof(TruthyToVisibilityConverter)}.");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
