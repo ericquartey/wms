@@ -44,6 +44,10 @@ namespace Ferretto.VW.App.Controls
                 this.SetBinding(
                     IsEnabledProperty,
                     new Binding(nameof(IActivationViewModel.IsEnabled)) { Source = activationViewModel });
+
+                this.SetBinding(
+                    VisibilityProperty,
+                    new Binding(nameof(IActivationViewModel.IsVisible)) { Source = activationViewModel, Converter = new BooleanToVisibilityConverter() });
             }
 
             if (this.DataContext is INavigableViewModel viewModel)

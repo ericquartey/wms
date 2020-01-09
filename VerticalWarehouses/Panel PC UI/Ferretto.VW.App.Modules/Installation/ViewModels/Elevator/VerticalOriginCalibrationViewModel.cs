@@ -132,13 +132,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            await base.OnAppearedAsync();
-
-            this.IsBackNavigationAllowed = true;
-
-            await this.RetrieveProcedureInformationAsync();
-
             this.SubscribeToEvents();
+
+            await base.OnAppearedAsync();
         }
 
         public async Task RetrieveProcedureInformationAsync()
@@ -159,6 +155,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.ShowNotification(ex);
             }
+        }
+
+        protected override async Task OnDataRefreshAsync()
+        {
+            await this.RetrieveProcedureInformationAsync();
         }
 
         protected override void RaiseCanExecuteChanged()

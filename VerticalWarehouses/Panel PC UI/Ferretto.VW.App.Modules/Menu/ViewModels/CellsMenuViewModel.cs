@@ -101,12 +101,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Methods
 
-        public async override Task OnAppearedAsync()
-        {
-            await base.OnAppearedAsync();
-            this.RaiseCanExecuteChanged();
-        }
-
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();

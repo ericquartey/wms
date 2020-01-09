@@ -23,8 +23,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private readonly ISessionService sessionService;
 
-        private int bayNumber;
-
         private MachineIdentity machineIdentity;
 
         private DelegateCommand menuCompactionCommand;
@@ -40,7 +38,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
         public MaintenanceMenuViewModel(
             IBayManager bayManager,
             ISessionService sessionService)
-            : base(PresentationMode.Menu)
+            : base(PresentationMode.Operator)
         {
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
@@ -62,12 +60,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
         #endregion
 
         #region Properties
-
-        public int BayNumber
-        {
-            get => this.bayNumber;
-            set => this.SetProperty(ref this.bayNumber, value, this.RaiseCanExecuteChanged);
-        }
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -103,35 +95,18 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Methods
 
-        public override void Disappear()
-        {
-            base.Disappear();
-        }
-
         public override async Task OnAppearedAsync()
         {
-            try
+            if (this.Data is MachineIdentity machineIdentity)
             {
-                this.IsBackNavigationAllowed = true;
-
-                this.IsWaitingForResponse = true;
-
-                await this.GetBayNumber();
-
-                this.RaiseCanExecuteChanged();
-
-                await base.OnAppearedAsync();
-
-                this.IsBackNavigationAllowed = true;
+                this.MachineIdentity = machineIdentity;
             }
-            catch (Exception ex)
+            else
             {
-                this.ShowNotification(ex);
+                this.MachineIdentity = this.sessionService.MachineIdentity;
             }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
+
+            await base.OnAppearedAsync();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -141,9 +116,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.menuCompactionCommand?.RaiseCanExecuteChanged();
             this.menuMaintenanceCommand?.RaiseCanExecuteChanged();
             this.menuUpdateCommand?.RaiseCanExecuteChanged();
-
-            this.RaisePropertyChanged(nameof(this.MachineIdentity));
-            this.RaisePropertyChanged(nameof(this.BayNumber));
         }
 
         private bool CanExecuteCommand()
@@ -151,38 +123,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             return !this.IsWaitingForResponse;
         }
 
-        private async Task GetBayNumber()
-        {
-            try
-            {
-                if (this.IsConnectedByMAS)
-                {
-                    var bay = await this.bayManager.GetBayAsync();
-                    if (!(bay is null))
-                    {
-                        this.bayNumber = (int)bay.Number;
-                    }
-
-                    if (this.Data is MachineIdentity machineIdentity)
-                    {
-                        this.MachineIdentity = machineIdentity;
-                    }
-                    else
-                    {
-                        this.MachineIdentity = this.sessionService.MachineIdentity;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-        }
-
         private void MenuCommand(Menu menu)
         {
-            this.ClearNotifications();
-
             this.Logger.Trace($"MenuCommand({menu})");
 
             this.IsWaitingForResponse = true;

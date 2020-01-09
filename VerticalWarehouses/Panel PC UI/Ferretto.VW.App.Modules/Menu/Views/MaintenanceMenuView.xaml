@@ -133,14 +133,6 @@
 
         </Grid>
 
-        <controls:PpcBadge Grid.RowSpan="2"
-                           Grid.ColumnSpan="2"
-                           Margin="15,15,30,-10"
-                           HorizontalAlignment="Right"
-                           VerticalAlignment="Bottom"
-                           TextBadge="{Binding BayNumber, StringFormat={x:Static res:VWApp.BayNumber}}"
-                           Visibility="Collapsed" />
-
     </Grid>
 
 </ctrls:View>

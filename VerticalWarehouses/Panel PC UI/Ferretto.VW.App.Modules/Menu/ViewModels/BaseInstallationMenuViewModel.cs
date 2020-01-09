@@ -194,58 +194,59 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Methods
 
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            this.IsAccessoriesActive = false;
+            this.IsBaysActive = false;
+            this.IsCellsActive = false;
+            this.IsElevatorActive = false;
+            this.IsLoadingUnitsActive = false;
+            this.IsOtherActive = false;
+            this.IsGeneralActive = false;
+        }
+
         public override async Task OnAppearedAsync()
         {
             this.IsBackNavigationAllowed = true;
 
             this.IsWaitingForResponse = true;
 
-            if (this.IsVisible)
+            switch ((Menu)(this.Data ?? Menu.General))
             {
-                this.IsAccessoriesActive = false;
-                this.IsBaysActive = false;
-                this.IsCellsActive = false;
-                this.IsElevatorActive = false;
-                this.IsLoadingUnitsActive = false;
-                this.IsOtherActive = false;
-                this.IsGeneralActive = false;
+                case Menu.Accessories:
+                    this.IsAccessoriesActive = true;
+                    break;
 
-                switch ((Menu)(this.Data ?? Menu.General))
-                {
-                    case Menu.Accessories:
-                        this.IsAccessoriesActive = true;
-                        break;
+                case Menu.Bays:
+                    this.IsBaysActive = true;
+                    break;
 
-                    case Menu.Bays:
-                        this.IsBaysActive = true;
-                        break;
+                case Menu.Cells:
+                    this.IsCellsActive = true;
+                    break;
 
-                    case Menu.Cells:
-                        this.IsCellsActive = true;
-                        break;
+                case Menu.Elevator:
+                    this.IsElevatorActive = true;
+                    break;
 
-                    case Menu.Elevator:
-                        this.IsElevatorActive = true;
-                        break;
+                case Menu.General:
+                    this.IsGeneralActive = true;
+                    break;
 
-                    case Menu.General:
-                        this.IsGeneralActive = true;
-                        break;
+                case Menu.LoadingUnits:
+                    this.IsLoadingUnitsActive = true;
+                    break;
 
-                    case Menu.LoadingUnits:
-                        this.IsLoadingUnitsActive = true;
-                        break;
-
-                    case Menu.Other:
-                        this.IsOtherActive = true;
-                        break;
-                }
+                case Menu.Other:
+                    this.IsOtherActive = true;
+                    break;
             }
 
             this.IsWaitingForResponse = false;
 
             await base.OnAppearedAsync();
-
         }
 
         internal virtual bool CanExecuteCommand()

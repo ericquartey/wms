@@ -6,6 +6,8 @@
 
         bool IsEnabled { get; }
 
+        bool IsVisible { get; }
+
         #endregion
     }
 }

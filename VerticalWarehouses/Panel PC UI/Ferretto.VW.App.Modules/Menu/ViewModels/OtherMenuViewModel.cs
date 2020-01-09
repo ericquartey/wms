@@ -50,8 +50,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
             ParameterInverter,
 
-            Old,
-
             ComunicationWms,
 
             DateTime,
@@ -104,12 +102,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Methods
 
-        public async override Task OnAppearedAsync()
-        {
-            await base.OnAppearedAsync();
-            this.RaiseCanExecuteChanged();
-        }
-
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
@@ -135,14 +127,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
                         this.NavigationService.Appear(
                             nameof(Utils.Modules.Installation),
                             Utils.Modules.Installation.Parameters.PARAMETERS,
-                            data: null,
-                            trackCurrentView: true);
-                        break;
-
-                    case MenuOther.Old:
-                        this.NavigationService.Appear(
-                            nameof(Utils.Modules.Installation),
-                            Utils.Modules.Installation.INSTALLATORMENU,
                             data: null,
                             trackCurrentView: true);
                         break;
