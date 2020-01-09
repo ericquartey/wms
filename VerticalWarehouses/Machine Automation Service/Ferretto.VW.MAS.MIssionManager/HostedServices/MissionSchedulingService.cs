@@ -9,6 +9,7 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager;
+using Ferretto.VW.MAS.MachineManager.MissionMove;
 using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
@@ -184,10 +185,9 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
-        private static void GetPersistedMissions(IServiceProvider serviceProvider)
+        private static void GetPersistedMissions(IServiceProvider serviceProvider, IEventAggregator eventAggregator)
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
-            var machineMissionsProvider = serviceProvider.GetRequiredService<IMachineMissionsProvider>();
 
             var missions = missionsDataProvider.GetAllExecutingMissions().ToList();
             foreach (var mission in missions)
@@ -196,23 +196,24 @@ namespace Ferretto.VW.MAS.MissionManager
                 {
                     mission.FsmRestoreStateName = mission.FsmStateName;
                 }
-                mission.FsmStateName = "MissionMoveErrorState";
-                if (mission.FsmRestoreStateName == "MissionMoveBayChainState")
+                mission.FsmStateName = nameof(MissionMoveErrorState);
+                if (mission.FsmRestoreStateName == nameof(MissionMoveBayChainState))
                 {
                     mission.NeedHomingAxis = Axis.BayChain;
                 }
-                else if (mission.FsmRestoreStateName == "MissionMoveLoadElevatorState"
-                    || mission.FsmRestoreStateName == "MissionMoveDepositUnitState"
+                else if (mission.FsmRestoreStateName == nameof(MissionMoveLoadElevatorState)
+                    || mission.FsmRestoreStateName == nameof(MissionMoveDepositUnitState)
                     )
                 {
                     mission.NeedMovingBackward = true;
                     mission.NeedHomingAxis = Axis.Horizontal;
                 }
-                else if (mission.FsmRestoreStateName == "MissionMoveToTargetState")
+                else if (mission.FsmRestoreStateName == nameof(MissionMoveToTargetState))
                 {
                     mission.NeedHomingAxis = Axis.Horizontal;
                 }
-                missionsDataProvider.Update(mission);
+                var state = new MissionMoveErrorState(mission, serviceProvider, eventAggregator);
+                state.OnEnter(null);
             }
         }
 
@@ -371,7 +372,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private async Task OnDataLayerReadyAsync(IServiceProvider serviceProvider)
         {
-            GetPersistedMissions(serviceProvider);
+            GetPersistedMissions(serviceProvider, this.EventAggregator);
             this.dataLayerIsReady = true;
             await this.InvokeSchedulerAsync();
         }

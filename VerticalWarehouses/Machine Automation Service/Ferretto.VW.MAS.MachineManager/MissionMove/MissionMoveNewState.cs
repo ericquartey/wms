@@ -87,6 +87,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override void OnNotification(NotificationMessage message)
         {
+            // do nothing
         }
 
         #endregion

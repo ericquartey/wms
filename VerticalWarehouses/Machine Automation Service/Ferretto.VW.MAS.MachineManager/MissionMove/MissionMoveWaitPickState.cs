@@ -88,7 +88,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if (!this.sensorsProvider.IsLoadingUnitInLocation(this.ejectBay))
 #endif
             {
-                if (command.Data is IMoveLoadingUnitMessageData messageData)
+                if (command != null
+                    && command.Data is IMoveLoadingUnitMessageData messageData
+                    )
                 {
                     var ejectBayLocation = this.Mission.LoadingUnitDestination;
                     var bayPosition = this.baysDataProvider.GetPositionByLocation(ejectBayLocation);
@@ -124,6 +126,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         var newStep = new MissionMoveStartState(this.Mission, this.ServiceProvider, this.EventAggregator);
                         newStep.OnEnter(null);
                     }
+                }
+                else
+                {
+                    throw new StateMachineException($"{this.GetType().Name}:OnResume: Invalid command");
                 }
             }
 #if CHECK_BAY_SENSOR

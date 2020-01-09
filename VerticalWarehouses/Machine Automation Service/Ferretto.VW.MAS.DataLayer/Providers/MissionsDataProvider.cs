@@ -110,7 +110,8 @@ namespace Ferretto.VW.MAS.DataLayer
                         CreationDate = DateTime.Now,
                         LoadingUnitId = loadingUnitId,
                         TargetBay = bayNumber,
-                        MissionType = MissionType.OUT
+                        MissionType = MissionType.OUT,
+                        Status = MissionStatus.New
                     })
                     ;
 
@@ -159,6 +160,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         CreationDate = DateTime.Now,
                         LoadingUnitId = loadingUnitId,
                         TargetBay = bayNumber,
+                        Status = MissionStatus.New,
                         MissionType = MissionType.IN
                     });
 

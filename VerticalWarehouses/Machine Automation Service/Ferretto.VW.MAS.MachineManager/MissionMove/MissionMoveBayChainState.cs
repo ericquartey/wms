@@ -194,14 +194,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if (!this.sensorsProvider.IsLoadingUnitInLocation(this.Mission.LoadingUnitDestination))
 #endif
             {
-                if (command.Data is IMoveLoadingUnitMessageData messageData)
+                var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadingUnitDestination);
+                if (!this.loadingUnitMovementProvider.MoveCarousel(this.Mission.LoadingUnitId, MessageActor.MachineManager, bay.Number, false))
                 {
-                    var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadingUnitDestination);
-                    if (!this.loadingUnitMovementProvider.MoveCarousel(this.Mission.LoadingUnitId, MessageActor.MachineManager, bay.Number, false))
-                    {
-                        var description = $"MoveLoadingUnitBayChainState: Move Bay chain not possible in bay {bay.Number}. Wait for another resume";
-                        throw new StateMachineException(description, command, MessageActor.MachineManager);
-                    }
+                    var description = $"MoveLoadingUnitBayChainState: Move Bay chain not possible in bay {bay.Number}. Wait for another resume";
+                    throw new StateMachineException(description);
                 }
             }
 #if CHECK_BAY_SENSOR

@@ -63,6 +63,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
         }
 
+        /// <summary>
+        /// Puts the mission to sleep: note the use of ErrorMovements.
+        /// All notifications will be ignored.
+        /// Only a call to OnResume can wake up the mission.
+        /// </summary>
+        /// <param name="command">not used</param>
         public override bool OnEnter(CommandMessage command)
         {
             this.logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
