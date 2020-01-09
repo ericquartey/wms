@@ -16,6 +16,8 @@ namespace Ferretto.VW.App.Services
 
         private const string LogoutWhenUnhealthyKey = "AutomationService:HealthChecks:LogoutWhenUnhealthy";
 
+        private const string OverrideSetupStatusKey = "OverrideSetupStatus";
+
         private const string WmsServiceEnabledKey = "WMS:DataService:Enabled";
 
         #endregion
@@ -49,6 +51,17 @@ namespace Ferretto.VW.App.Services
             }
 
             return appSettings.Get("Devices:LabelPrinter");
+        }
+
+        public static bool GetOverrideSetupStatus(this NameValueCollection appSettings)
+        {
+            if (appSettings is null)
+            {
+                throw new ArgumentNullException(nameof(appSettings));
+            }
+
+            var enableOverrideSetupStatusString = appSettings.Get(OverrideSetupStatusKey);
+            return bool.Parse(enableOverrideSetupStatusString);
         }
 
         public static bool GetWmsDataServiceEnabled(this NameValueCollection appSettings)

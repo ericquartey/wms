@@ -65,7 +65,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 var description = $"{this.GetType().Name}: destination bay not found {this.Mission.LoadingUnitDestination}";
 
-                throw new StateMachineException(description);
+                throw new StateMachineException(description,
+                    new CommandMessage(null, null, MessageActor.Any, MessageActor.MachineManager, MessageType.MoveLoadingUnit, this.Mission.TargetBay, this.Mission.TargetBay),
+                    MessageActor.MachineManager);
             }
             this.loadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions);
 

@@ -196,11 +196,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 },
             };
 
-            //if (this.configuration.IsSetupStatusOverridden())
-            //{
-            //    return SetupStatusCapabilities.Complete;
-            //}
-
             return statusCapabilities;
         }
 

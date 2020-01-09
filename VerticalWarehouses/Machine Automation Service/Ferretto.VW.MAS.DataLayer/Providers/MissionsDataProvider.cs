@@ -244,6 +244,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     {
                         missionCache.Add(mission.Id, mission);
                     }
+                    this.logger.LogTrace($"UpdateCache");
                 }
                 return missionCache
                     .Where(x => x.Value.Status == MissionStatus.Executing || x.Value.Status == MissionStatus.Waiting)
@@ -309,7 +310,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         false,
                         false,
                         null,
-                        CommandAction.Stop);
+                        CommandAction.Abort);
 
             this.eventAggregator
                 .GetEvent<CommandEvent>()
@@ -338,6 +339,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.dataContext.SaveChanges();
 
                 UpdateCache(mission);
+                this.logger.LogTrace($"UpdateCache");
             }
         }
 

@@ -8,6 +8,8 @@
 
         Error,
 
+        Abort,
+
         RunningStateChanged,
 
         FaultStateChanged,

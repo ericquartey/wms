@@ -98,7 +98,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         var description = $"{this.GetType().Name}: destination bay not found {this.Mission.LoadingUnitDestination}";
 
-                        throw new StateMachineException(description);
+                        throw new StateMachineException(description,
+                            new CommandMessage(null, null, MessageActor.Any, MessageActor.MachineManager, MessageType.MoveLoadingUnit, this.Mission.TargetBay, this.Mission.TargetBay),
+                            MessageActor.MachineManager);
                     }
                     this.Mission.Direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
                     bayNumber = bay.Number;
@@ -113,7 +115,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         if (result != MachineErrorCode.NoError)
                         {
                             var error = this.errorsProvider.RecordNew(result);
-                            throw new StateMachineException(error.Description);
+                            throw new StateMachineException(error.Description,
+                                new CommandMessage(null, null, MessageActor.Any, MessageActor.MachineManager, MessageType.MoveLoadingUnit, this.Mission.TargetBay, this.Mission.TargetBay),
+                                MessageActor.MachineManager);
                         }
                     }
                     break;

@@ -101,6 +101,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     && this.AllStopped(bays)
                     )
                 {
+                    this.Mission.BayNotifications = MissionBayNotifications.None;
+                    this.missionsDataProvider.Update(this.Mission);
                     this.SendNotification();
                 }
             }
@@ -156,7 +158,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             var msg = new NotificationMessage(
                 newMessageData,
-                $"Loading Unit {this.Mission.LoadingUnitId} start movement to bay {this.Mission.LoadingUnitDestination}",
+                $"Loading Unit {this.Mission.LoadingUnitId} end movement to bay {this.Mission.LoadingUnitDestination}",
                 MessageActor.AutomationService,
                 MessageActor.MachineManager,
                 MessageType.MoveLoadingUnit,
