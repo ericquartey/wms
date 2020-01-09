@@ -164,24 +164,30 @@ namespace Ferretto.VW.MAS.MachineManager
                         }
                         break;
 
-                    //case CommandAction.Abort:
-                    //    if (messageData.MissionId != null)
-                    //    {
-                    //        if (!this.machineMissionsProvider.AbortMachineMission(messageData.MissionId.Value))
-                    //        {
-                    //            this.Logger.LogError("Supplied mission Id to be aborted is no longer valid");
-                    //            this.NotifyCommandError(command);
-                    //        }
-                    //    }
-                    //    else
-                    //    {
-                    //        foreach (var mission in this.machineMissionsProvider.GetMissionsByFsmType(FsmType.MoveLoadingUnit))
-                    //        {
-                    //            mission.AbortMachineMission();
-                    //        }
-                    //    }
-
-                    //    break;
+                    case CommandAction.Abort:
+                        try
+                        {
+                            if (messageData.MissionId != null)
+                            {
+                                if (!this.missionMoveProvider.StopMission(messageData.MissionId.Value, StopRequestReason.Abort, serviceProvider))
+                                {
+                                    this.Logger.LogError("Supplied mission Id to be stopped is no longer valid");
+                                    this.NotifyCommandError(command);
+                                }
+                            }
+                            else
+                            {
+                                foreach (var mission in this.missionsDataProvider.GetAllActiveMissions())
+                                {
+                                    this.missionMoveProvider.StopMission(mission.FsmId, StopRequestReason.Abort, serviceProvider);
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            this.Logger.LogError($"Failed to abort mission: {ex.Message}");
+                        }
+                        break;
 
                     case CommandAction.Stop:
                         try

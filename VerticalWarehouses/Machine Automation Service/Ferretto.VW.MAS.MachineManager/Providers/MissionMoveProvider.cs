@@ -11,6 +11,8 @@ using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.MissionMove;
 using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
 using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -27,6 +29,8 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
         private readonly IEventAggregator eventAggregator;
 
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
+
+        private readonly object syncObject = new object();
 
         #endregion
 
@@ -80,17 +84,30 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             {
                 return;
             }
-            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
-            var missions = missionsDataProvider.GetAllActiveMissions();
-            if (missions.Any())
+            lock (this.syncObject)
             {
-                foreach (var mission in missions)
+                var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+                var missions = missionsDataProvider.GetAllActiveMissions().Where(x => x.Status != MissionStatus.New);
+                if (missions.Any())
                 {
-                    var state = GetStateByClassName(serviceProvider, mission, this.eventAggregator);
-
-                    if (state != null)
+                    foreach (var mission in missions)
                     {
-                        state.OnNotification(message);
+                        var state = GetStateByClassName(serviceProvider, mission, this.eventAggregator);
+
+                        if (state != null)
+                        {
+                            try
+                            {
+                                state.OnNotification(message);
+                            }
+                            catch (StateMachineException ex)
+                            {
+                                this.Logger.LogError(ex.NotificationMessage.Description, "Error while activating a State.");
+                                this.eventAggregator.GetEvent<NotificationEvent>().Publish(ex.NotificationMessage);
+
+                                state.OnStop(StopRequestReason.Error);
+                            }
+                        }
                     }
                 }
             }
@@ -98,41 +115,61 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         public bool ResumeMission(Guid missionId, CommandMessage command, IServiceProvider serviceProvider)
         {
-            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
-            var mission = missionsDataProvider.GetByGuid(missionId);
-            if (mission != null)
+            lock (this.syncObject)
             {
-                var state = GetStateByClassName(serviceProvider, mission, this.eventAggregator);
-                if (state != null)
+                var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+                var mission = missionsDataProvider.GetByGuid(missionId);
+                if (mission != null)
                 {
-                    state.OnResume(command);
+                    var state = GetStateByClassName(serviceProvider, mission, this.eventAggregator);
+                    if (state != null)
+                    {
+                        state.OnResume(command);
+                    }
                 }
-            }
 
-            return true;
+                return true;
+            }
         }
 
         public bool StartMission(Mission mission, CommandMessage command, IServiceProvider serviceProvider)
         {
-            var newState = new MissionMoveNewState(mission, serviceProvider, this.eventAggregator);
+            lock (this.syncObject)
+            {
+                var newState = new MissionMoveNewState(mission, serviceProvider, this.eventAggregator);
 
-            return newState.OnEnter(command);
+                try
+                {
+                    return newState.OnEnter(command);
+                }
+                catch (StateMachineException ex)
+                {
+                    this.Logger.LogError(ex.NotificationMessage.Description, "Error while activating a State.");
+                    this.eventAggregator.GetEvent<NotificationEvent>().Publish(ex.NotificationMessage);
+
+                    newState.OnStop(StopRequestReason.Error);
+                    return false;
+                }
+            }
         }
 
         public bool StopMission(Guid missionId, StopRequestReason stopRequest, IServiceProvider serviceProvider)
         {
-            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
-            var mission = missionsDataProvider.GetByGuid(missionId);
-            if (mission != null)
+            lock (this.syncObject)
             {
-                var state = GetStateByClassName(serviceProvider, mission, this.eventAggregator);
-                if (state != null)
+                var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+                var mission = missionsDataProvider.GetByGuid(missionId);
+                if (mission != null)
                 {
-                    state.OnStop(stopRequest);
+                    var state = GetStateByClassName(serviceProvider, mission, this.eventAggregator);
+                    if (state != null)
+                    {
+                        state.OnStop(stopRequest);
+                    }
                 }
-            }
 
-            return true;
+                return true;
+            }
         }
 
         public bool TryCreateMachineMission(CommandMessage command, IServiceProvider serviceProvider, out Mission mission)
@@ -142,38 +179,40 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 throw new ArgumentNullException(nameof(command));
             }
 
-            mission = null;
-
-            if (command.Data is IMoveLoadingUnitMessageData messageData
-                && messageData.LoadingUnitId.HasValue
-                )
+            lock (this.syncObject)
             {
-                var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
-                if (missionsDataProvider.CanCreateMission(messageData.LoadingUnitId.Value, command.RequestingBay))
-                {
-                    // if there is a mission waiting we have to take her place
-                    var waitMission = missionsDataProvider.GetAllExecutingMissions().FirstOrDefault(m =>
-                        m.LoadingUnitId == messageData.LoadingUnitId.Value
-                        && m.Status == MissionStatus.Waiting
-                        );
-                    if (waitMission != null)
-                    {
-                        try
-                        {
-                            missionsDataProvider.Delete(waitMission.Id);
-                            this.Logger.LogDebug($"{this.GetType().Name}: Delete {waitMission}");
-                        }
-                        catch (Exception)
-                        {
-                            return false;
-                        }
-                    }
+                mission = null;
 
-                    mission = missionsDataProvider.CreateBayMission(messageData.LoadingUnitId.Value, command.RequestingBay);
-                    return true;
+                if (command.Data is IMoveLoadingUnitMessageData messageData
+                    && messageData.LoadingUnitId.HasValue
+                    )
+                {
+                    var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+                    if (missionsDataProvider.CanCreateMission(messageData.LoadingUnitId.Value, command.RequestingBay))
+                    {
+                        // if there is a new or waiting mission we have to take her place
+                        var waitMission = missionsDataProvider.GetAllExecutingMissions().FirstOrDefault(m =>
+                            m.LoadingUnitId == messageData.LoadingUnitId.Value
+                            && (m.Status == MissionStatus.Waiting || m.Status == MissionStatus.New)
+                            );
+                        if (waitMission != null)
+                        {
+                            try
+                            {
+                                missionsDataProvider.Delete(waitMission.Id);
+                                this.Logger.LogDebug($"{this.GetType().Name}: Delete {waitMission}");
+                            }
+                            catch (Exception)
+                            {
+                                return false;
+                            }
+                        }
+
+                        mission = missionsDataProvider.CreateBayMission(messageData.LoadingUnitId.Value, command.RequestingBay);
+                        return true;
+                    }
                 }
             }
-
             return false;
         }
 

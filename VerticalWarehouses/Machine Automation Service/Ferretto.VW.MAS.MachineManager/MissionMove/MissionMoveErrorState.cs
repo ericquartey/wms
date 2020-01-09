@@ -193,7 +193,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         public override void OnResume(CommandMessage command)
         {
             this.logger.LogDebug($"{this.GetType().Name}: Resume mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, from {this.Mission.FsmRestoreStateName}, loadUnit {this.Mission.LoadingUnitId}");
-            this.Mission.StopReason = StopRequestReason.NoReason;
 
             switch (this.Mission.FsmRestoreStateName)
             {
@@ -227,6 +226,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.Mission.RestoreConditions = true;
                     this.Mission.FsmRestoreStateName = null;
                     this.Mission.NeedMovingBackward = false;
+                    this.Mission.StopReason = StopRequestReason.NoReason;
                     {
                         var newStep = new MissionMoveToTargetState(this.Mission, this.ServiceProvider, this.EventAggregator);
                         newStep.OnEnter(null);
@@ -237,6 +237,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.Mission.FsmRestoreStateName = null;
                     this.Mission.RestoreConditions = false;
                     this.Mission.NeedMovingBackward = false;
+                    this.Mission.StopReason = StopRequestReason.NoReason;
                     {
                         var newStep = new MissionMoveStartState(this.Mission, this.ServiceProvider, this.EventAggregator);
                         newStep.OnEnter(null);
@@ -247,6 +248,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.Mission.FsmRestoreStateName = null;
                     this.Mission.RestoreConditions = false;
                     this.Mission.NeedMovingBackward = false;
+                    this.Mission.StopReason = StopRequestReason.NoReason;
                     {
                         var newStep = new MissionMoveWaitPickState(this.Mission, this.ServiceProvider, this.EventAggregator);
                         newStep.OnEnter(null);
@@ -257,6 +259,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.logger.LogError($"{this.GetType().Name}: no valid FsmRestoreStateName {this.Mission.FsmRestoreStateName} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadingUnitId}");
 
                     {
+                        this.Mission.StopReason = StopRequestReason.NoReason;
                         var newStep = new MissionMoveEndState(this.Mission, this.ServiceProvider, this.EventAggregator);
                         newStep.OnEnter(null);
                     }
@@ -266,6 +269,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         private void RestoreBayChain()
         {
+            this.Mission.StopReason = StopRequestReason.NoReason;
             if (this.loadingUnitMovementProvider.IsOnlyTopPositionOccupied(this.Mission.TargetBay))
             {
                 // movement is finished
@@ -273,7 +277,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
                 if (destination is null)
                 {
-                    throw new StateMachineException($"Upper position not defined for bay {bay.Number}", null, MessageActor.MachineManager);
+                    var description = $"Upper position not defined for bay {bay.Number}";
+                    throw new StateMachineException(description,
+                        new CommandMessage(null, null, MessageActor.Any, MessageActor.MachineManager, MessageType.MoveLoadingUnit, this.Mission.TargetBay, this.Mission.TargetBay),
+                        MessageActor.MachineManager);
                 }
                 this.Mission.LoadingUnitDestination = destination.Location;
 
@@ -333,6 +340,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         private void RestoreCloseShutter()
         {
+            this.Mission.StopReason = StopRequestReason.NoReason;
             var shutterPosition = this.sensorsProvider.GetShutterPosition(this.Mission.TargetBay);
             if (shutterPosition != ShutterPosition.Opened)
             {
@@ -418,6 +426,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         /// <returns></returns>
         private void RestoreDepositStart()
         {
+            this.Mission.StopReason = StopRequestReason.NoReason;
             var destination = this.loadingUnitMovementProvider.GetDestinationHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
             var current = this.loadingUnitMovementProvider.GetCurrentVerticalPosition();
             if ((!destination.HasValue || Math.Abs((destination.Value - current)) > 2))
@@ -434,7 +443,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
-                    throw new StateMachineException($"Impossible to restore mission for LoadUnit {this.Mission.LoadingUnitId}");
+                    var description = $"Impossible to restore mission for LoadUnit {this.Mission.LoadingUnitId}";
+                    throw new StateMachineException(description,
+                        new CommandMessage(null, null, MessageActor.Any, MessageActor.MachineManager, MessageType.MoveLoadingUnit, this.Mission.TargetBay, this.Mission.TargetBay),
+                        MessageActor.MachineManager);
                 }
             }
 
@@ -598,6 +610,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         /// <returns></returns>
         private void RestoreLoadElevatorStart()
         {
+            this.Mission.StopReason = StopRequestReason.NoReason;
             var origin = this.loadingUnitMovementProvider.GetSourceHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
             var current = this.loadingUnitMovementProvider.GetCurrentVerticalPosition();
             if ((!origin.HasValue || Math.Abs((origin.Value - current)) > 2))
@@ -616,7 +629,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
-                    throw new StateMachineException($"Impossible to restore mission for LoadUnit {this.Mission.LoadingUnitId}");
+                    var description = $"Impossible to restore mission for LoadUnit {this.Mission.LoadingUnitId}";
+                    throw new StateMachineException(description,
+                        new CommandMessage(null, null, MessageActor.Any, MessageActor.MachineManager, MessageType.MoveLoadingUnit, this.Mission.TargetBay, this.Mission.TargetBay),
+                        MessageActor.MachineManager);
                 }
             }
 

@@ -1587,9 +1587,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         Error = 2,
     
-        RunningStateChanged = 3,
+        Abort = 3,
     
-        FaultStateChanged = 4,
+        RunningStateChanged = 4,
+    
+        FaultStateChanged = 5,
     
     }
     
