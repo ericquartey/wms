@@ -77,8 +77,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public int BayNumber
         {
-            get => this.bayNumber;
-            private set => this.SetProperty(ref this.bayNumber, value);
+            get => (int)this.MachineService?.BayNumber;
         }
 
         public int? CumulativePerformedCycles
@@ -249,57 +248,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            await base.OnAppearedAsync();
-
             this.IsBackNavigationAllowed = true;
 
-            this.shutterTestStatusChangedToken = this.shutterTestStatusChangedToken
-                ??
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
-                    .Subscribe(
-                        this.OnShutterTestStatusChanged,
-                        ThreadOption.UIThread,
-                        false,
-                        m => m.Type == CommonUtils.Messages.Enumerations.MessageType.ShutterPositioning);
+            this.SubscribeToEvents();
 
-            this.sensorsChangedToken = this.sensorsChangedToken
-                ??
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-                    .Subscribe(
-                        this.OnSensorsChanged,
-                        ThreadOption.UIThread,
-                        false,
-                        m => m.Data != null);
+            await base.OnAppearedAsync();
+        }
 
-            try
-            {
-                this.IsWaitingForResponse = true;
+        protected override async Task OnDataRefreshAsync()
+        {
+            var procedureParameters = await this.shuttersWebService.GetTestParametersAsync();
+            this.InputRequiredCycles = procedureParameters.RequiredCycles;
+            this.InputDelayBetweenCycles = 1;
+            this.CumulativePerformedCycles = procedureParameters.PerformedCycles;
 
-                var bay = await this.bayManager.GetBayAsync();
-                this.BayNumber = (int)bay.Number;
+            var sensorsStates = await this.machineSensorsWebService.GetAsync();
+            this.sensors.Update(sensorsStates.ToArray(), this.BayNumber);
 
-                var procedureParameters = await this.shuttersWebService.GetTestParametersAsync();
-                this.InputRequiredCycles = procedureParameters.RequiredCycles;
-                this.InputDelayBetweenCycles = 1;
-                this.CumulativePerformedCycles = procedureParameters.PerformedCycles;
+            this.IsShutterThreeSensors = this.MachineService.IsShutterThreeSensors;
 
-                var sensorsStates = await this.machineSensorsWebService.GetAsync();
-                this.sensors.Update(sensorsStates.ToArray(), this.BayNumber);
-
-                this.IsShutterThreeSensors = this.MachineService.IsShutterThreeSensors;
-
-                this.RaisePropertyChanged(nameof(this.Sensors));
-            }
-            catch (System.Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
+            this.RaisePropertyChanged(nameof(this.Sensors));
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -315,17 +283,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return
                 !this.IsExecutingProcedure
                 &&
-                !this.IsWaitingForResponse
-                &&
                 string.IsNullOrWhiteSpace(this.Error);
         }
 
         private bool CanExecuteStopCommand()
         {
             return
-                this.IsExecutingProcedure
-                &&
-                !this.IsWaitingForResponse;
+                this.IsExecutingProcedure;
         }
 
         private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
@@ -394,6 +358,29 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsExecutingProcedure = false;
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        private void SubscribeToEvents()
+        {
+            this.shutterTestStatusChangedToken = this.shutterTestStatusChangedToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
+                    .Subscribe(
+                        this.OnShutterTestStatusChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Type == CommonUtils.Messages.Enumerations.MessageType.ShutterPositioning);
+
+            this.sensorsChangedToken = this.sensorsChangedToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Subscribe(
+                        this.OnSensorsChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data != null);
         }
 
         #endregion
