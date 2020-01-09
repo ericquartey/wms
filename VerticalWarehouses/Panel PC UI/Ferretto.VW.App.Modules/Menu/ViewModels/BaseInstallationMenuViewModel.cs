@@ -131,43 +131,37 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.menuAccessoriesCommand
             ??
             (this.menuAccessoriesCommand = new DelegateCommand(
-                () => this.MenuCommand(Menu.Accessories),
-                this.CanExecuteCommand));
+                () => this.MenuCommand(Menu.Accessories)));
 
         public ICommand MenuBaysCommand =>
             this.menuBaysCommand
             ??
             (this.menuBaysCommand = new DelegateCommand(
-                () => this.MenuCommand(Menu.Bays),
-                this.CanExecuteCommand));
+                () => this.MenuCommand(Menu.Bays)));
 
         public ICommand MenuCellsCommand =>
             this.menuCellsCommand
             ??
             (this.menuCellsCommand = new DelegateCommand(
-                () => this.MenuCommand(Menu.Cells),
-                this.CanExecuteCommand));
+                () => this.MenuCommand(Menu.Cells)));
 
         public ICommand MenuElevatorCommand =>
             this.menuElevatorCommand
             ??
             (this.menuElevatorCommand = new DelegateCommand(
-                () => this.MenuCommand(Menu.Elevator),
-                this.CanExecuteCommand));
+                () => this.MenuCommand(Menu.Elevator)));
 
         public ICommand MenuInstallatorCommand =>
             this.menuInstallatorCommand
             ??
             (this.menuInstallatorCommand = new DelegateCommand(
-                () => this.MenuCommand(Menu.General),
-                this.CanExecuteCommand));
+                () => this.MenuCommand(Menu.General)));
 
         public ICommand MenuLoadingUnitsCommand =>
                     this.menuLoadingUnitsCommand
             ??
             (this.menuLoadingUnitsCommand = new DelegateCommand(
-                () => this.MenuCommand(Menu.LoadingUnits),
-                this.CanExecuteCommand));
+                () => this.MenuCommand(Menu.LoadingUnits)));
 
         public ICommand MenuMovementsCommand =>
             this.menuMovementsCommand
@@ -180,15 +174,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.menuOtherCommand
             ??
             (this.menuOtherCommand = new DelegateCommand(
-                () => this.MenuCommand(Menu.Other),
-                this.CanExecuteCommand));
+                () => this.MenuCommand(Menu.Other)));
 
         public ICommand ViewStatusSensorsCommand =>
             this.viewStatusSensorsCommand
             ??
             (this.viewStatusSensorsCommand = new DelegateCommand(
-                () => this.StatusSensorsCommand(),
-                this.CanExecuteCommand));
+                () => this.StatusSensorsCommand()));
 
         #endregion
 
