@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Ferretto.VW.App.Scaffolding.Controls"
+             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:converters="clr-namespace:Ferretto.VW.App.Scaffolding.Converters"
              xmlns:filters="clr-namespace:Ferretto.VW.App.Scaffolding.Behaviors"
              xmlns:interactivity="http://schemas.microsoft.com/xaml/behaviors"
@@ -11,41 +12,59 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <converters:IPAddressToStringConverter x:Key="IPAddressToStringConverter" />
+
+        <Style TargetType="{x:Type TextBlock}" x:Key="IPAddressDot">
+            <Setter Property="Foreground" Value="{DynamicResource FerrettoWhiteGray}" />
+            <Setter Property="Margin" Value="3,0,6,0" />
+            <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="Text" Value="." />
+        </Style>
     </UserControl.Resources>
-    <StackPanel Orientation="Horizontal">
-        <TextBox IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}" 
-                 IsReadOnly="{Binding Path=IsReadOnly, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}" 
-                 MaxLength="3"
-                 Text="{Binding Path=IPAddress, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}, Converter={StaticResource IPAddressToStringConverter}, ConverterParameter=0, Mode=TwoWay}">
-            <interactivity:Interaction.Behaviors>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <ctrls:PpcTextBox IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}" 
+                          IsReadOnly="{Binding Path=IsReadOnly, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
+                          Keyboard="Numpad" HorizontalAlignment="Stretch"
+                          InputText="{Binding Path=IPAddress, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}, Converter={StaticResource IPAddressToStringConverter}, ConverterParameter=0, Mode=TwoWay}">
+            <!--<interactivity:Interaction.Behaviors>
                 <filters:NumericTextBoxFilterBehavior Min="0" Max="255" />
-            </interactivity:Interaction.Behaviors>
-        </TextBox>
-        <TextBlock Text="."></TextBlock>
-        <TextBox IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}" 
-                 IsReadOnly="{Binding Path=IsReadOnly, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}" 
-                 MaxLength="3"
-                 Text="{Binding Path=IPAddress, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}, Converter={StaticResource IPAddressToStringConverter}, ConverterParameter=1, Mode=TwoWay}">
-            <interactivity:Interaction.Behaviors>
+            </interactivity:Interaction.Behaviors>-->
+        </ctrls:PpcTextBox>
+        <TextBlock Grid.Column="1" Style="{StaticResource IPAddressDot}"></TextBlock>
+        <ctrls:PpcTextBox IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
+                          IsReadOnly="{Binding Path=IsReadOnly, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
+                          Grid.Column="2" Keyboard="Numpad" HorizontalAlignment="Stretch"
+                          InputText="{Binding Path=IPAddress, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}, Converter={StaticResource IPAddressToStringConverter}, ConverterParameter=1, Mode=TwoWay}">
+            <!--<interactivity:Interaction.Behaviors>
                 <filters:NumericTextBoxFilterBehavior Min="0" Max="255" />
-            </interactivity:Interaction.Behaviors>
-        </TextBox>
-        <TextBlock Text="."></TextBlock>
-        <TextBox IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}" 
-                 IsReadOnly="{Binding Path=IsReadOnly, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}" 
-                 MaxLength="3"
-                 Text="{Binding Path=IPAddress, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}, Converter={StaticResource IPAddressToStringConverter}, ConverterParameter=2, Mode=TwoWay}">
-            <interactivity:Interaction.Behaviors>
+            </interactivity:Interaction.Behaviors>-->
+        </ctrls:PpcTextBox>
+        <TextBlock Grid.Column="3" Style="{StaticResource IPAddressDot}"></TextBlock>
+        <ctrls:PpcTextBox IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
+                          IsReadOnly="{Binding Path=IsReadOnly, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
+                          Grid.Column="4" Keyboard="Numpad" HorizontalAlignment="Stretch"
+                          InputText="{Binding Path=IPAddress, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}, Converter={StaticResource IPAddressToStringConverter}, ConverterParameter=2, Mode=TwoWay}">
+            <!--<interactivity:Interaction.Behaviors>
                 <filters:NumericTextBoxFilterBehavior Min="0" Max="255" />
-            </interactivity:Interaction.Behaviors>
-        </TextBox>
-        <TextBlock Text="."></TextBlock>
-        <TextBox IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}" 
-                 IsReadOnly="{Binding Path=IsReadOnly, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}" 
-                 MaxLength="3"
-                 Text="{Binding Path=IPAddress, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}, Converter={StaticResource IPAddressToStringConverter}, ConverterParameter=3, Mode=TwoWay}">
-            <interactivity:Interaction.Behaviors>
+            </interactivity:Interaction.Behaviors>-->
+        </ctrls:PpcTextBox>
+        <TextBlock Grid.Column="5" Style="{StaticResource IPAddressDot}"></TextBlock>
+        <ctrls:PpcTextBox IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
+                          IsReadOnly="{Binding Path=IsReadOnly, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
+                          Grid.Column="6" Keyboard="Numpad" HorizontalAlignment="Stretch"
+                          InputText="{Binding Path=IPAddress, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}, Converter={StaticResource IPAddressToStringConverter}, ConverterParameter=3, Mode=TwoWay}">
+            <!--<interactivity:Interaction.Behaviors>
                 <filters:NumericTextBoxFilterBehavior Min="0" Max="255" />
-            </interactivity:Interaction.Behaviors>
-        </TextBox></StackPanel>
+            </interactivity:Interaction.Behaviors>-->
+        </ctrls:PpcTextBox>
+    </Grid>
 </UserControl>

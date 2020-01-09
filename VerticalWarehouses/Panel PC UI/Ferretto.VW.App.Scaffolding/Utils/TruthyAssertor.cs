@@ -1,6 +1,10 @@
-﻿namespace Ferretto.VW.App.Scaffolding
+﻿using System;
+using System.Globalization;
+using System.Windows;
+
+namespace Ferretto.VW.App.Scaffolding
 {
-    public static class TruthyAssertor
+    internal static class TruthyAssertor
     {
         public static bool IsTruthy(object value)
         {
@@ -25,6 +29,47 @@
             }
 
             return value != null;
+        }
+
+        public static bool IsInverting(object parameter)
+        {
+            bool invert = false;
+            string strParam = System.Convert.ToString(parameter, CultureInfo.InvariantCulture);
+            if (bool.TryParse(strParam, out bool param))
+            {
+                invert = param;
+            }
+            else if ("Invert".Equals(strParam, StringComparison.OrdinalIgnoreCase))
+            {
+                invert = true;
+            }
+
+            return invert;
+        }
+
+        public static object Convert(bool value, Type targetType, object parameter)
+        {
+            if (targetType == typeof(Visibility))
+            {
+                return value ? Visibility.Visible : Visibility.Collapsed;
+            }
+            if (targetType == typeof(GridLength))
+            {
+                double starWeight = 1D;
+                if (parameter != null)
+                {
+                    var invariantCulture = System.Globalization.CultureInfo.InvariantCulture;
+                    string stars = System.Convert.ToString(parameter, invariantCulture);
+                    if (double.TryParse(stars, NumberStyles.AllowDecimalPoint, invariantCulture, out double actualStars))
+                    {
+                        starWeight = actualStars;
+                    }
+                }
+                return value ? new GridLength(starWeight, GridUnitType.Star) : GridLength.Auto;
+            }
+
+            // throw new ArgumentOutOfRangeException($"Type {targetType} is not supported for conversion.");
+            return value;
         }
     }
 }

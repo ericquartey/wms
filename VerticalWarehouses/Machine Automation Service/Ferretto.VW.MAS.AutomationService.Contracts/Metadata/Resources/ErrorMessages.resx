@@ -126,6 +126,9 @@
   <data name="RangeMin" xml:space="preserve">
     <value>Il valore del campo {0} non può essere inferiore a  {1}</value>
   </data>
+  <data name="Regex" xml:space="preserve">
+    <value>Il valore delcampo {0} non è valido.</value>
+  </data>
   <data name="Required" xml:space="preserve">
     <value>Il campo {0} è obbligatorio</value>
   </data>

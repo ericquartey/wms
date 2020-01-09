@@ -53,6 +53,10 @@ namespace Ferretto.VW.App.Scaffolding.Controls
                 return;
             }
 
+            // 1. validation rules
+            this._validationRules = entity.ExtractValidationRules();
+
+            // 2. other assignments
             object originalValue = null;
             if (entity.Instance != null)
             {
@@ -89,9 +93,6 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             {
                 throw new ArgumentException($"{type} is not a value type neither a serializable type.");
             }
-
-            // validation
-            this._validationRules = entity.ExtractValidationRules();
         }
 
         public Models.ScaffoldedEntity Entity
