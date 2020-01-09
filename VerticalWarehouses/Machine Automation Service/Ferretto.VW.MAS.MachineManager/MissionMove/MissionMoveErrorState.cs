@@ -278,9 +278,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 if (destination is null)
                 {
                     var description = $"Upper position not defined for bay {bay.Number}";
-                    throw new StateMachineException(description,
-                        new CommandMessage(null, null, MessageActor.Any, MessageActor.MachineManager, MessageType.MoveLoadingUnit, this.Mission.TargetBay, this.Mission.TargetBay),
-                        MessageActor.MachineManager);
+                    throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
                 this.Mission.LoadingUnitDestination = destination.Location;
 
@@ -444,9 +442,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 else
                 {
                     var description = $"Impossible to restore mission for LoadUnit {this.Mission.LoadingUnitId}";
-                    throw new StateMachineException(description,
-                        new CommandMessage(null, null, MessageActor.Any, MessageActor.MachineManager, MessageType.MoveLoadingUnit, this.Mission.TargetBay, this.Mission.TargetBay),
-                        MessageActor.MachineManager);
+                    throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
             }
 
@@ -630,9 +626,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 else
                 {
                     var description = $"Impossible to restore mission for LoadUnit {this.Mission.LoadingUnitId}";
-                    throw new StateMachineException(description,
-                        new CommandMessage(null, null, MessageActor.Any, MessageActor.MachineManager, MessageType.MoveLoadingUnit, this.Mission.TargetBay, this.Mission.TargetBay),
-                        MessageActor.MachineManager);
+                    throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
             }
 

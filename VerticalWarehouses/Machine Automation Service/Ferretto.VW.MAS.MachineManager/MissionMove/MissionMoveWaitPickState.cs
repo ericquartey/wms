@@ -132,9 +132,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 else
                 {
                     var description = $"{this.GetType().Name}:OnResume: Invalid command";
-                    throw new StateMachineException(description,
-                        new CommandMessage(null, null, MessageActor.Any, MessageActor.MachineManager, MessageType.MoveLoadingUnit, this.Mission.TargetBay, this.Mission.TargetBay),
-                        MessageActor.MachineManager);
+                    throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
             }
 #if CHECK_BAY_SENSOR
