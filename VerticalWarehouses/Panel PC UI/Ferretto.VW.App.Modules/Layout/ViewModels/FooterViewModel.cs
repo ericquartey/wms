@@ -187,18 +187,12 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
             switch (mode)
             {
                 case PresentationMode.Login:
-                    break;
-
                 case PresentationMode.Menu:
                     this.Show(PresentationTypes.Back, false);
                     break;
 
                 case PresentationMode.Installer:
-                    break;
-
                 case PresentationMode.Operator:
-                    break;
-
                 case PresentationMode.Help:
                     break;
             }
