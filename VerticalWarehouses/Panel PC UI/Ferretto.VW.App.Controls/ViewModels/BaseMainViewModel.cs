@@ -174,18 +174,33 @@ namespace Ferretto.VW.App.Controls
 
         public override async Task OnAppearedAsync()
         {
-            this.IsWaitingForResponse = false;
+            this.IsWaitingForResponse = true;
 
             var task = this.machineService.OnUpdateServiceAsync();
 
             Task dataTask = null;
-            if (!this.IsDataRefreshSyncronous)
+            try
             {
-                dataTask = this.OnDataRefreshAsync();
+                if (!this.IsDataRefreshSyncronous)
+                {
+                    dataTask = this.OnDataRefreshAsync();
+                }
+                else
+                {
+                    await this.OnDataRefreshAsync();
+                    this.IsWaitingForResponse = false;
+                }
             }
-            else
+            catch (HttpRequestException)
             {
-                await this.OnDataRefreshAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
 
             this.SubscribeEvents();
@@ -212,6 +227,10 @@ namespace Ferretto.VW.App.Controls
             catch (Exception)
             {
                 throw;
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
         }
 

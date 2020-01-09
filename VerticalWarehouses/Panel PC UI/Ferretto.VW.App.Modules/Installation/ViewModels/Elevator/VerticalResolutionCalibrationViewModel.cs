@@ -497,26 +497,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                var procedureParameters = await this.verticalOriginProcedureWebService.GetParametersAsync();
-                this.AxisUpperBound = procedureParameters.UpperBound;
-                this.AxisLowerBound = procedureParameters.LowerBound;
-
-                await this.RetrieveProcedureParametersAsync();
-
-                await this.GetParametersAsync();
-
-                if (this.StartPosition == 0)
+                if (this.AxisUpperBound == 0 || this.AxisLowerBound == 0 || this.StartPosition == 0 || !this.DestinationPosition1.HasValue || !this.DestinationPosition2.HasValue)
                 {
+                    var procedureParameters = await this.verticalOriginProcedureWebService.GetParametersAsync();
+                    this.AxisUpperBound = procedureParameters.UpperBound;
+                    this.AxisLowerBound = procedureParameters.LowerBound;
+
+                    this.ProcedureParameters = await this.resolutionCalibrationWebService.GetParametersAsync();
+
+                    await this.GetParametersAsync();
+
                     this.StartPosition = this.ProcedureParameters.StartPosition;
-                }
 
-                if (!this.DestinationPosition1.HasValue)
-                {
                     this.DestinationPosition1 = this.ProcedureParameters.InitialPosition;
-                }
 
-                if (!this.DestinationPosition2.HasValue)
-                {
                     this.DestinationPosition2 = this.ProcedureParameters.FinalPosition;
                 }
             }
@@ -586,12 +580,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.RaiseCanExecuteChanged();
 
-            this.RaisePropertyChanged(nameof(this.HasStepPositionMeter));
-            this.RaisePropertyChanged(nameof(this.HasStepFirstMeasured));
-            this.RaisePropertyChanged(nameof(this.HasStepLastMeasured));
-            this.RaisePropertyChanged(nameof(this.HasStepConfirm));
-
-            this.RaisePropertyChanged(nameof(this.IsMoving));
             this.RaisePropertyChanged(nameof(this.IsCanStartPosition));
             this.RaisePropertyChanged(nameof(this.IsCanDestinationPosition1));
             this.RaisePropertyChanged(nameof(this.IsCanDestinationPosition2));
@@ -612,8 +600,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task ApplyCorrectionAsync()
         {
-            this.IsWaitingForResponse = true;
-
             try
             {
                 this.IsWaitingForResponse = true;
@@ -667,10 +653,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanMoveToStartPosition()
         {
-            return this.CanBaseExecute() &&
+            var b = this.CanBaseExecute() &&
                    string.IsNullOrEmpty(this.Error) &&
                    Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) != Convert.ToInt32(this.StartPosition) &&
                    !this.SensorsService.IsLoadingUnitOnElevator;
+            return b;
         }
 
         private bool CanStop()
@@ -757,24 +744,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.ShowNotification(ex);
                 this.NewResolution = null;
-            }
-        }
-
-        private async Task RetrieveProcedureParametersAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                this.ProcedureParameters = await this.resolutionCalibrationWebService.GetParametersAsync();
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
             }
         }
 
@@ -874,6 +843,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
 
             this.ShowAbortStep(true, !this.IsMoving);
+
+            this.RaisePropertyChanged(nameof(this.HasStepPositionMeter));
+            this.RaisePropertyChanged(nameof(this.HasStepFirstMeasured));
+            this.RaisePropertyChanged(nameof(this.HasStepLastMeasured));
+            this.RaisePropertyChanged(nameof(this.HasStepConfirm));
         }
 
         #endregion
