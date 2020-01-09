@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -151,9 +152,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CurrentVerticalPosition = this.machineElevatorService.Position.Vertical;
                 this.CurrentHorizontalPosition = this.machineElevatorService.Position.Horizontal;
             }
-            catch (Exception ex)
+            catch (HttpRequestException ex)
             {
                 this.ShowNotification(ex);
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 

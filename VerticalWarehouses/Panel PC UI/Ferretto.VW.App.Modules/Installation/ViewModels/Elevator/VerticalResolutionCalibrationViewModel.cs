@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -140,7 +141,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public CalibrationStep CurrentStep
         {
             get => this.currentStep;
-            protected set => this.SetProperty(ref this.currentStep, value, this.RaiseCanExecuteChanged);
+            protected set => this.SetProperty(ref this.currentStep, value, this.UpdateStatusButtonFooter);
         }
 
         public double? DestinationPosition1
@@ -483,41 +484,49 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public override void InitializeSteps()
-        {
-            this.ShowSteps();
-        }
-
         public override async Task OnAppearedAsync()
         {
             this.SubscribeToEvents();
+
+            this.UpdateStatusButtonFooter();
 
             await base.OnAppearedAsync();
         }
 
         protected override async Task OnDataRefreshAsync()
         {
-            var procedureParameters = await this.verticalOriginProcedureWebService.GetParametersAsync();
-            this.AxisUpperBound = procedureParameters.UpperBound;
-            this.AxisLowerBound = procedureParameters.LowerBound;
-
-            await this.RetrieveProcedureParametersAsync();
-
-            await this.GetParametersAsync();
-
-            if (this.StartPosition == 0)
+            try
             {
-                this.StartPosition = this.ProcedureParameters.StartPosition;
+                var procedureParameters = await this.verticalOriginProcedureWebService.GetParametersAsync();
+                this.AxisUpperBound = procedureParameters.UpperBound;
+                this.AxisLowerBound = procedureParameters.LowerBound;
+
+                await this.RetrieveProcedureParametersAsync();
+
+                await this.GetParametersAsync();
+
+                if (this.StartPosition == 0)
+                {
+                    this.StartPosition = this.ProcedureParameters.StartPosition;
+                }
+
+                if (!this.DestinationPosition1.HasValue)
+                {
+                    this.DestinationPosition1 = this.ProcedureParameters.InitialPosition;
+                }
+
+                if (!this.DestinationPosition2.HasValue)
+                {
+                    this.DestinationPosition2 = this.ProcedureParameters.FinalPosition;
+                }
             }
-
-            if (!this.DestinationPosition1.HasValue)
+            catch (HttpRequestException ex)
             {
-                this.DestinationPosition1 = this.ProcedureParameters.InitialPosition;
+                this.ShowNotification(ex);
             }
-
-            if (!this.DestinationPosition2.HasValue)
+            catch (Exception)
             {
-                this.DestinationPosition2 = this.ProcedureParameters.FinalPosition;
+                throw;
             }
         }
 
@@ -575,11 +584,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected override void RaiseCanExecuteChanged()
         {
-            if (!this.IsVisible)
-            {
-                return;
-            }
-
             base.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.HasStepPositionMeter));
@@ -604,8 +608,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.moveToLastMeasuredCommand?.RaiseCanExecuteChanged();
             this.moveToConfirmCommand?.RaiseCanExecuteChanged();
             this.saveCommand?.RaiseCanExecuteChanged();
-
-            this.UpdateStatusButtonFooter();
         }
 
         private async Task ApplyCorrectionAsync()

@@ -206,11 +206,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             */
         }
 
-        public override void InitializeSteps()
-        {
-            this.ShowSteps();
-        }
-
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
             base.OnNavigatedTo(navigationContext);

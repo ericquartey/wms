@@ -337,11 +337,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             base.Disappear();
         }
 
-        public override void InitializeSteps()
-        {
-            this.ShowSteps();
-        }
-
         public override async Task OnAppearedAsync()
         {
             await this.RetrieveVerticalOffset();

@@ -142,11 +142,11 @@ namespace Ferretto.VW.App.Controls
 
         public void ClearSteps()
         {
-            this.ShowPrevStepSinglePage(false, false, forceRefresh: true);
-            this.ShowNextStepSinglePage(false, false, forceRefresh: true);
-            this.ShowPrevStep(false, false, forceRefresh: true);
-            this.ShowNextStep(false, false, forceRefresh: true);
-            this.ShowAbortStep(false, false, forceRefresh: true);
+            this.ShowPrevStepSinglePage(false, false);
+            this.ShowNextStepSinglePage(false, false);
+            this.ShowPrevStep(false, false);
+            this.ShowNextStep(false, false);
+            this.ShowAbortStep(false, false);
         }
 
         public override void Disappear()
@@ -158,7 +158,7 @@ namespace Ferretto.VW.App.Controls
             this.sensorsToken?.Dispose();
             this.sensorsToken = null;
 
-            this.ClearSteps();
+            //this.ClearSteps();
 
             /*
              * Avoid unsubscribing in case of navigation to error page.
@@ -172,16 +172,9 @@ namespace Ferretto.VW.App.Controls
             */
         }
 
-        public virtual void InitializeSteps()
-        {
-            this.ClearSteps();
-        }
-
         public override async Task OnAppearedAsync()
         {
             this.IsWaitingForResponse = false;
-
-            this.UpdatePresentation();
 
             var task = this.machineService.OnUpdateServiceAsync();
 
@@ -194,8 +187,6 @@ namespace Ferretto.VW.App.Controls
             {
                 await this.OnDataRefreshAsync();
             }
-
-            this.InitializeSteps();
 
             this.SubscribeEvents();
 
@@ -224,25 +215,25 @@ namespace Ferretto.VW.App.Controls
             }
         }
 
-        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        public override void OnNavigatedTo(NavigationContext navigationContext)
         {
-            base.OnNavigatedFrom(navigationContext);
+            base.OnNavigatedTo(navigationContext);
             this.UpdatePresentation();
         }
 
-        public void ShowAbortStep(bool isEnabled, bool isVisible, bool forceRefresh = false)
+        public void ShowAbortStep(bool isEnabled, bool isVisible)
         {
-            this.ShowStep(PresentationTypes.Abort, isEnabled, isVisible, forceRefresh: forceRefresh);
+            this.ShowStep(PresentationTypes.Abort, isEnabled, isVisible);
         }
 
-        public void ShowNextStep(bool isEnabled, bool isVisible, string moduleName = null, string viewName = null, bool forceRefresh = false)
+        public void ShowNextStep(bool isEnabled, bool isVisible, string moduleName = null, string viewName = null)
         {
-            this.ShowStep(PresentationTypes.Next, isEnabled, isVisible, moduleName, viewName, forceRefresh);
+            this.ShowStep(PresentationTypes.Next, isEnabled, isVisible, moduleName, viewName);
         }
 
-        public void ShowNextStepSinglePage(bool isVisible, bool isEnabled, string moduleName = null, string viewName = null, bool forceRefresh = false)
+        public void ShowNextStepSinglePage(bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
         {
-            this.ShowStep(PresentationTypes.NextStep, isVisible, isEnabled, moduleName, viewName, forceRefresh);
+            this.ShowStep(PresentationTypes.NextStep, isVisible, isEnabled, moduleName, viewName);
         }
 
         public void ShowNotification(string message, NotificationSeverity severity = NotificationSeverity.Info)
@@ -266,35 +257,34 @@ namespace Ferretto.VW.App.Controls
                 .Publish(new PresentationNotificationMessage(exception));
         }
 
-        public void ShowPrevStep(bool isVisible, bool isEnabled, string moduleName = null, string viewName = null, bool forceRefresh = false)
+        public void ShowPrevStep(bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
         {
-            this.ShowStep(PresentationTypes.Prev, isVisible, isEnabled, moduleName, viewName, forceRefresh);
+            this.ShowStep(PresentationTypes.Prev, isVisible, isEnabled, moduleName, viewName);
         }
 
-        public void ShowPrevStepSinglePage(bool isVisible, bool isEnabled, string moduleName = null, string viewName = null, bool forceRefresh = false)
+        public void ShowPrevStepSinglePage(bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
         {
-            this.ShowStep(PresentationTypes.PrevStep, isVisible, isEnabled, moduleName, viewName, forceRefresh);
+            this.ShowStep(PresentationTypes.PrevStep, isVisible, isEnabled, moduleName, viewName);
         }
 
-        public void ShowStep(PresentationTypes presentationType, bool isVisible, bool isEnabled, string moduleName = null, string viewName = null, bool forceRefresh = false)
+        public void ShowStep(PresentationTypes presentationType, bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
         {
-            if (this.IsVisible || forceRefresh)
+            this.IsBackNavigationAllowed = !isVisible;
+
+            var presentationStep = new PresentationStep()
             {
-                var presentationStep = new PresentationStep()
-                {
-                    Type = presentationType,
-                    IsEnabled = isEnabled,
-                    IsVisible = isVisible,
-                    ModuleName = moduleName,
-                    ViewName = viewName
-                };
+                Type = presentationType,
+                IsEnabled = isEnabled,
+                IsVisible = isVisible,
+                ModuleName = moduleName,
+                ViewName = viewName
+            };
 
-                var presentationMessage = new PresentationChangedMessage(presentationStep);
+            var presentationMessage = new PresentationChangedMessage(presentationStep);
 
-                this.EventAggregator
-                    .GetEvent<PresentationChangedPubSubEvent>()
-                    .Publish(presentationMessage);
-            }
+            this.EventAggregator
+                .GetEvent<PresentationChangedPubSubEvent>()
+                .Publish(presentationMessage);
         }
 
         public virtual void UpdateNotifications()
