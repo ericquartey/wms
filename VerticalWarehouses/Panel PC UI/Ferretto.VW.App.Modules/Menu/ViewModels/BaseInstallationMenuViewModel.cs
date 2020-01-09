@@ -239,7 +239,9 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         internal virtual bool CanExecuteCommand()
         {
-            return true; //!this.IsWaitingForResponse;
+            return (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Test) &&
+                   this.MachineModeService.MachinePower == MachinePowerState.Powered &&
+                   this.HealthProbeService.HealthStatus == HealthStatus.Healthy;
         }
 
         protected override async Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
