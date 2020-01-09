@@ -72,8 +72,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public int BayNumber
         {
-            get => this.bayNumber;
-            set => this.SetProperty(ref this.bayNumber, value, this.RaiseCanExecuteChanged);
+            get => (int)this.MachineService?.BayNumber;
         }
 
         public ICommand DrawerActivityButtonCommand => this.drawerActivityButtonCommand
@@ -119,26 +118,25 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            try
+            this.IsBackNavigationAllowed = true;
+
+            if (this.Data is MachineIdentity machineIdentity)
             {
-                this.IsBackNavigationAllowed = true;
-
-                await this.machineBaysWebService.ActivateAsync();
-
-                await this.GetBayNumber();
-
-                this.CheckForNewOperations();
-
-                await base.OnAppearedAsync();
+                this.MachineIdentity = machineIdentity;
             }
-            catch (Exception ex)
+            else
             {
-                this.ShowNotification(ex);
+                this.MachineIdentity = this.sessionService.MachineIdentity;
             }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
+
+            await base.OnAppearedAsync();
+        }
+
+        protected override async Task OnDataRefreshAsync()
+        {
+            await this.machineBaysWebService.ActivateAsync();
+
+            this.CheckForNewOperations();
         }
 
         protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
@@ -192,35 +190,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                    this.checkOnlyFirstAppeared)
             {
                 this.CheckForNewOperation();
-                await Task.Delay(3000);
-            }
-        }
-
-        private async Task GetBayNumber()
-        {
-            try
-            {
-                if (this.IsConnectedByMAS)
-                {
-                    var bay = await this.bayManager.GetBayAsync();
-                    if (!(bay is null))
-                    {
-                        this.bayNumber = (int)bay.Number;
-                    }
-
-                    if (this.Data is MachineIdentity machineIdentity)
-                    {
-                        this.MachineIdentity = machineIdentity;
-                    }
-                    else
-                    {
-                        this.MachineIdentity = this.sessionService.MachineIdentity;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
+                await Task.Delay(1000);
             }
         }
 
