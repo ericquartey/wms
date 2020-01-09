@@ -60,9 +60,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command)
         {
-            this.logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
+            this.Mission.FsmRestoreStateName = null;
             this.Mission.FsmStateName = nameof(MissionMoveWaitPickState);
+            this.Mission.StopReason = StopRequestReason.NoReason;
             this.missionsDataProvider.Update(this.Mission);
+            this.logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
             var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadingUnitDestination);
 
@@ -88,7 +90,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if (!this.sensorsProvider.IsLoadingUnitInLocation(this.ejectBay))
 #endif
             {
-                if (command.Data is IMoveLoadingUnitMessageData messageData)
+                if (command != null
+                    && command.Data is IMoveLoadingUnitMessageData messageData
+                    )
                 {
                     var ejectBayLocation = this.Mission.LoadingUnitDestination;
                     var bayPosition = this.baysDataProvider.GetPositionByLocation(ejectBayLocation);
@@ -124,6 +128,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         var newStep = new MissionMoveStartState(this.Mission, this.ServiceProvider, this.EventAggregator);
                         newStep.OnEnter(null);
                     }
+                }
+                else
+                {
+                    throw new StateMachineException($"{this.GetType().Name}:OnResume: Invalid command");
                 }
             }
 #if CHECK_BAY_SENSOR

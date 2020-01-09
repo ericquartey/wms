@@ -156,11 +156,11 @@ namespace Ferretto.VW.App.Menu.ViewModels
         public async override Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
+        }
 
-            this.VerticalResolutionCalibrationProcedureParameters = await this.verticalResolutionCalibrationProcedureWebService.GetParametersAsync();
-            this.VerticalOffsetProcedureParameters = await this.verticalOffsetProcedureWebService.GetParametersAsync();
-
-            this.RaiseCanExecuteChanged();
+        protected override async Task OnDataRefreshAsync()
+        {
+            await this.UpdateSetupStatusAsync();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -236,6 +236,14 @@ namespace Ferretto.VW.App.Menu.ViewModels
                        trackCurrentView: true);
                     break;
             }
+        }
+
+        private async Task UpdateSetupStatusAsync()
+        {
+            this.VerticalResolutionCalibrationProcedureParameters = await this.verticalResolutionCalibrationProcedureWebService.GetParametersAsync();
+            this.VerticalOffsetProcedureParameters = await this.verticalOffsetProcedureWebService.GetParametersAsync();
+
+            this.RaiseCanExecuteChanged();
         }
 
         #endregion

@@ -57,46 +57,37 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command)
         {
-            if (command != null
-                && command.Data is IMoveLoadingUnitMessageData messageData
-                )
+            this.Mission.FsmRestoreStateName = null;
+            this.Mission.FsmStateName = nameof(MissionMoveBayChainState);
+            this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
+            this.Mission.CloseShutterBayNumber = BayNumber.None;
+            this.Mission.StopReason = StopRequestReason.NoReason;
+            this.missionsDataProvider.Update(this.Mission);
+            this.logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
+
+            var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadingUnitDestination);
+            if (bay is null)
             {
-                this.Mission.FsmStateName = nameof(MissionMoveBayChainState);
-                this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
-                this.Mission.CloseShutterBayNumber = BayNumber.None;
-                this.missionsDataProvider.Update(this.Mission);
-                this.logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
+                var description = $"{this.GetType().Name}: destination bay not found {this.Mission.LoadingUnitDestination}";
 
-                var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadingUnitDestination);
-                if (bay is null)
-                {
-                    var description = $"{this.GetType().Name}: destination bay not found {this.Mission.LoadingUnitDestination}";
-
-                    throw new StateMachineException(description, command, MessageActor.MachineManager);
-                }
-                if (this.loadingUnitMovementProvider.IsOnlyBottomPositionOccupied(bay.Number))
-                {
-                    this.Mission.RestoreConditions = false;
-                }
-                if (!this.loadingUnitMovementProvider.MoveCarousel(this.Mission.LoadingUnitId, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions))
-                {
-                    var description = $"MoveLoadingUnitBayChainState: Move Bay chain not possible in bay {bay.Number}. Wait for resume";
-                    // we don't want an exception here because this is the normal procedure:
-                    // send a second LU in lower position while operator is working on upper position
-                    this.logger.LogDebug(description);
-                }
-
-                this.Mission.Status = MissionStatus.Waiting;
-
+                throw new StateMachineException(description);
+            }
+            if (this.loadingUnitMovementProvider.IsOnlyBottomPositionOccupied(bay.Number))
+            {
                 this.Mission.RestoreConditions = false;
-                this.missionsDataProvider.Update(this.Mission);
             }
-            else
+            if (!this.loadingUnitMovementProvider.MoveCarousel(this.Mission.LoadingUnitId, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions))
             {
-                var description = $"Move Load Unit Bay Chain State received wrong initialization data ({command.Data.GetType().Name})";
-
-                throw new StateMachineException(description, command, MessageActor.MachineManager);
+                var description = $"MoveLoadingUnitBayChainState: Move Bay chain not possible in bay {bay.Number}. Wait for resume";
+                // we don't want an exception here because this is the normal procedure:
+                // send a second LU in lower position while operator is working on upper position
+                this.logger.LogDebug(description);
             }
+
+            this.Mission.Status = MissionStatus.Waiting;
+
+            this.Mission.RestoreConditions = false;
+            this.missionsDataProvider.Update(this.Mission);
 
             return true;
         }
@@ -194,14 +185,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if (!this.sensorsProvider.IsLoadingUnitInLocation(this.Mission.LoadingUnitDestination))
 #endif
             {
-                if (command.Data is IMoveLoadingUnitMessageData messageData)
+                var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadingUnitDestination);
+                if (!this.loadingUnitMovementProvider.MoveCarousel(this.Mission.LoadingUnitId, MessageActor.MachineManager, bay.Number, false))
                 {
-                    var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadingUnitDestination);
-                    if (!this.loadingUnitMovementProvider.MoveCarousel(this.Mission.LoadingUnitId, MessageActor.MachineManager, bay.Number, false))
-                    {
-                        var description = $"MoveLoadingUnitBayChainState: Move Bay chain not possible in bay {bay.Number}. Wait for another resume";
-                        throw new StateMachineException(description, command, MessageActor.MachineManager);
-                    }
+                    var description = $"MoveLoadingUnitBayChainState: Move Bay chain not possible in bay {bay.Number}. Wait for another resume";
+                    throw new StateMachineException(description);
                 }
             }
 #if CHECK_BAY_SENSOR

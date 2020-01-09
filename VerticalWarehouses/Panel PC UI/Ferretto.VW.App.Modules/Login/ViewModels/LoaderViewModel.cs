@@ -78,10 +78,10 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         public override void Disappear()
         {
+            base.Disappear();
+
             this.subscriptionToken?.Dispose();
             this.subscriptionToken = null;
-
-            base.Disappear();
         }
 
         public override async Task OnAppearedAsync()
@@ -97,6 +97,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                         false);
 
             this.OnHealthStatusChangedAsync(null);
+
+            await base.OnAppearedAsync();
         }
 
         private async Task CheckFirewallStatusAsync()

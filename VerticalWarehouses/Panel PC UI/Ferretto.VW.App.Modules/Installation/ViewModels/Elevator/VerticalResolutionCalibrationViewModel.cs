@@ -85,8 +85,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private decimal? newResolution;
 
-        private int positionBayId;
-
         private DelegateCommand saveCommand;
 
         private SubscriptionToken sensorsToken;
@@ -365,7 +363,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                  this.MeasuredPosition1.Value > this.axisUpperBound) &&
                                 Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) == Convert.ToInt32(this.DestinationPosition1.Value))
                             {
-                                this.currentError = $"Measured position out of ranhe axis ({this.AxisLowerBound} - {this.AxisUpperBound}).";
+                                this.currentError = $"Measured position out of range axis ({this.AxisLowerBound} - {this.AxisUpperBound}).";
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
@@ -492,13 +490,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            await base.OnAppearedAsync();
+            this.SubscribeToEvents();
 
+            await base.OnAppearedAsync();
+        }
+
+        protected override async Task OnDataRefreshAsync()
+        {
             var procedureParameters = await this.verticalOriginProcedureWebService.GetParametersAsync();
             this.AxisUpperBound = procedureParameters.UpperBound;
             this.AxisLowerBound = procedureParameters.LowerBound;
-
-            this.positionBayId = this.MachineService.Bay.Positions.Single(p => p.Height == this.MachineService.Bay.Positions.Max(pos => pos.Height)).Id;
 
             await this.RetrieveProcedureParametersAsync();
 
@@ -518,31 +519,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.DestinationPosition2 = this.ProcedureParameters.FinalPosition;
             }
-
-            this.stepChangedToken = this.stepChangedToken
-                ?? this.EventAggregator
-                    .GetEvent<StepChangedPubSubEvent>()
-                    .Subscribe(
-                        (m) => this.OnStepChanged(m),
-                        ThreadOption.UIThread,
-                        false);
-
-            this.sensorsToken = this.sensorsToken ??
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-                    .Subscribe(
-                        async (m) => await this.OnSensorsChangedAsync(m),
-                        ThreadOption.UIThread,
-                        false,
-                        (m) =>
-                        {
-                            return !this.luPresentInOperatorSide.HasValue ||
-                                   !this.luPresentInMachineSide.HasValue ||
-                                   (m.Data.SensorsStates[(int)IOMachineSensors.LuPresentInOperatorSide] != this.luPresentInOperatorSide.Value) ||
-                                   (m.Data.SensorsStates[(int)IOMachineSensors.LuPresentInMachineSide] != this.luPresentInMachineSide.Value);
-                        });
-
-            this.IsBackNavigationAllowed = false;
         }
 
         protected void OnStepChanged(StepChangedMessage e)
@@ -842,6 +818,32 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        private void SubscribeToEvents()
+        {
+            this.stepChangedToken = this.stepChangedToken
+                ?? this.EventAggregator
+                    .GetEvent<StepChangedPubSubEvent>()
+                    .Subscribe(
+                        (m) => this.OnStepChanged(m),
+                        ThreadOption.UIThread,
+                        false);
+
+            this.sensorsToken = this.sensorsToken ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Subscribe(
+                        async (m) => await this.OnSensorsChangedAsync(m),
+                        ThreadOption.UIThread,
+                        false,
+                        (m) =>
+                        {
+                            return !this.luPresentInOperatorSide.HasValue ||
+                                   !this.luPresentInMachineSide.HasValue ||
+                                   (m.Data.SensorsStates[(int)IOMachineSensors.LuPresentInOperatorSide] != this.luPresentInOperatorSide.Value) ||
+                                   (m.Data.SensorsStates[(int)IOMachineSensors.LuPresentInMachineSide] != this.luPresentInMachineSide.Value);
+                        });
         }
 
         private void UpdateStatusButtonFooter()

@@ -85,33 +85,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public async override Task OnAppearedAsync()
         {
-            var status = await this.machineSetupStatusWebService.GetAsync();
-
-            this.source = new List<dynamic>();
-            this.source.Add(new { Text = InstallationApp.VerticalAxisHomedDone, Status = status.VerticalOriginCalibration.IsCompleted ? "CheckCircle" : "CloseCircleOutline" });
-            this.source.Add(new { Text = InstallationApp.VerticalResolutionDone, Status = status.VerticalResolutionCalibration.IsCompleted ? "CheckCircle" : "CloseCircleOutline" });
-            this.source.Add(new { Text = InstallationApp.VerticalOffsetVerify, Status = status.VerticalOffsetCalibration.IsCompleted ? "CheckCircle" : "CloseCircleOutline" });
-            this.source.Add(new {
-                Text = InstallationApp.BeltBurnishingDone,
-                Status = status.BeltBurnishing.InProgress ? "ProgressCheck" : status.BeltBurnishing.IsCompleted ? "CheckCircle" : "CloseCircleOutline",
-            });
-            this.source.Add(new { Text = InstallationApp.CellsControl, Status = status.CellPanelsCheck.IsCompleted && status.CellsHeightCheck.IsCompleted ? "CheckCircle" : "CloseCircleOutline" });
-            this.source.Add(new { Text = InstallationApp.BayHeightCheck, Status = false ? "CheckCircle" : "CloseCircleOutline" });
-            this.source.Add(new
-            {
-                Text = InstallationApp.LoadFirstDrawerPageHeader,
-                Status = status.AllLoadingUnits.IsCompleted ? "CheckCircle" : "CloseCircleOutline",
-            });
-
-            this.source.Add(new { Text = "Conferma collaudo", Status = status.IsComplete ? "CheckCircle" : "CloseCircleOutline" });
-
-            this.ProceduresCount = this.source.Count;
-            this.ProceduresCompleted = this.source.Count(c => c.Status == "CheckCircle");
-            this.ProceduresCompletedPercent = (int)((double)this.ProceduresCompleted / (double)this.ProceduresCount * 100.0);
-
-            this.RaiseCanExecuteChanged();
-
             await base.OnAppearedAsync();
+        }
+
+        protected override async Task OnDataRefreshAsync()
+        {
+            await this.UpdateSetupStatusAsync();
         }
 
         protected override async Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
@@ -128,9 +107,32 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
-        protected override void RaiseCanExecuteChanged()
+        private async Task UpdateSetupStatusAsync()
         {
-            base.RaiseCanExecuteChanged();
+            var status = await this.machineSetupStatusWebService.GetAsync();
+
+            this.source = new List<dynamic>();
+            this.source.Add(new { Text = InstallationApp.VerticalAxisHomedDone, Status = status.VerticalOriginCalibration.IsCompleted ? "CheckCircle" : "CloseCircleOutline" });
+            this.source.Add(new { Text = InstallationApp.VerticalResolutionDone, Status = status.VerticalResolutionCalibration.IsCompleted ? "CheckCircle" : "CloseCircleOutline" });
+            this.source.Add(new { Text = InstallationApp.VerticalOffsetVerify, Status = status.VerticalOffsetCalibration.IsCompleted ? "CheckCircle" : "CloseCircleOutline" });
+            this.source.Add(new
+            {
+                Text = InstallationApp.BeltBurnishingDone,
+                Status = status.BeltBurnishing.InProgress ? "ProgressCheck" : status.BeltBurnishing.IsCompleted ? "CheckCircle" : "CloseCircleOutline",
+            });
+            this.source.Add(new { Text = InstallationApp.CellsControl, Status = status.CellPanelsCheck.IsCompleted && status.CellsHeightCheck.IsCompleted ? "CheckCircle" : "CloseCircleOutline" });
+            this.source.Add(new { Text = InstallationApp.BayHeightCheck, Status = false ? "CheckCircle" : "CloseCircleOutline" });
+            this.source.Add(new
+            {
+                Text = InstallationApp.LoadFirstDrawerPageHeader,
+                Status = status.AllLoadingUnits.IsCompleted ? "CheckCircle" : "CloseCircleOutline",
+            });
+
+            this.source.Add(new { Text = "Conferma collaudo", Status = status.IsComplete ? "CheckCircle" : "CloseCircleOutline" });
+
+            this.ProceduresCount = this.source.Count;
+            this.ProceduresCompleted = this.source.Count(c => c.Status == "CheckCircle");
+            this.ProceduresCompletedPercent = (int)((double)this.ProceduresCompleted / (double)this.ProceduresCount * 100.0);
 
             this.RaisePropertyChanged(nameof(this.Source));
         }

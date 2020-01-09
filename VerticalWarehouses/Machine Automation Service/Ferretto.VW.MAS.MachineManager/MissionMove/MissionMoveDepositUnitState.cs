@@ -70,14 +70,16 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command)
         {
-            this.logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
+            this.Mission.FsmRestoreStateName = null;
             this.Mission.FsmStateName = nameof(MissionMoveDepositUnitState);
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
+            this.Mission.OpenShutterPosition = ShutterPosition.NotSpecified;
+            this.Mission.StopReason = StopRequestReason.NoReason;
             this.missionsDataProvider.Update(this.Mission);
+            this.logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
             this.Mission.Direction = HorizontalMovementDirection.Backwards;
             var bayNumber = this.Mission.TargetBay;
-            this.Mission.OpenShutterPosition = ShutterPosition.NotSpecified;
             switch (this.Mission.LoadingUnitDestination)
             {
                 case LoadingUnitLocation.Cell:

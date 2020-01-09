@@ -59,10 +59,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             var measure = (this.Mission.LoadingUnitSource != LoadingUnitLocation.Cell);
             this.Mission.EjectLoadUnit = false;
-            this.logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
+            this.Mission.FsmRestoreStateName = null;
             this.Mission.FsmStateName = nameof(MissionMoveToTargetState);
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
+            this.Mission.StopReason = StopRequestReason.NoReason;
             this.missionsDataProvider.Update(this.Mission);
+            this.logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
             if (this.Mission.LoadingUnitSource != LoadingUnitLocation.Cell)
             {

@@ -115,7 +115,7 @@
     <Compile Update="Views\CellsLoadingUnits\CellsLoadingUnitsMenuView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
-    <Compile Update="Views\VerticalResolution\VerticalResolutionCalibrationView.xaml.cs">
+    <Compile Update="Views\Elevator\VerticalResolutionCalibrationView.xaml.cs">
       <DependentUpon>VerticalResolutionCalibrationView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>

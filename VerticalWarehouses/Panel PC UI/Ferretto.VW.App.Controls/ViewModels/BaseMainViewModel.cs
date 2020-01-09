@@ -129,16 +129,24 @@ namespace Ferretto.VW.App.Controls
 
         protected bool IsConnectedByMAS => this.healthProbeService.HealthStatus == HealthStatus.Healthy;
 
+        protected virtual bool IsDataRefreshSyncronous => false;
+
         #endregion
 
         #region Methods
 
         public void ClearNotifications()
         {
-            if (this.IsVisible)
-            {
-                this.MachineService?.ClearNotifications();
-            }
+            this.MachineService?.ClearNotifications();
+        }
+
+        public void ClearSteps()
+        {
+            this.ShowPrevStepSinglePage(false, false, forceRefresh: true);
+            this.ShowNextStepSinglePage(false, false, forceRefresh: true);
+            this.ShowPrevStep(false, false, forceRefresh: true);
+            this.ShowNextStep(false, false, forceRefresh: true);
+            this.ShowAbortStep(false, false, forceRefresh: true);
         }
 
         public override void Disappear()
@@ -149,6 +157,8 @@ namespace Ferretto.VW.App.Controls
 
             this.sensorsToken?.Dispose();
             this.sensorsToken = null;
+
+            this.ClearSteps();
 
             /*
              * Avoid unsubscribing in case of navigation to error page.
@@ -164,11 +174,7 @@ namespace Ferretto.VW.App.Controls
 
         public virtual void InitializeSteps()
         {
-            this.ShowPrevStepSinglePage(false, false);
-            this.ShowNextStepSinglePage(false, false);
-            this.ShowPrevStep(false, false);
-            this.ShowNextStep(false, false);
-            this.ShowAbortStep(false, false);
+            this.ClearSteps();
         }
 
         public override async Task OnAppearedAsync()
@@ -177,16 +183,16 @@ namespace Ferretto.VW.App.Controls
 
             this.UpdatePresentation();
 
-            try
+            var task = this.machineService.OnUpdateServiceAsync();
+
+            Task dataTask = null;
+            if (!this.IsDataRefreshSyncronous)
             {
-                await this.machineService.OnUpdateServiceAsync();
+                dataTask = this.OnDataRefreshAsync();
             }
-            catch (HttpRequestException)
+            else
             {
-            }
-            catch (Exception)
-            {
-                throw;
+                await this.OnDataRefreshAsync();
             }
 
             this.InitializeSteps();
@@ -199,84 +205,23 @@ namespace Ferretto.VW.App.Controls
                 this.healthProbeService.HealthStatus);
 
             await base.OnAppearedAsync();
-        }
 
-        private void SubscribeEvents()
-        {
-            this.healthStatusChangedToken = this.healthStatusChangedToken
-                ??
-                this.EventAggregator
-                    .GetEvent<PubSubEvent<HealthStatusChangedEventArgs>>()
-                    .Subscribe(
-                        async e => await this.OnHealthStatusChangedAsync(e),
-                        ThreadOption.UIThread,
-                        false);
-
-            this.machineModeChangedToken = this.machineModeChangedToken
-                ??
-                this.EventAggregator
-                    .GetEvent<PubSubEvent<MachineModeChangedEventArgs>>()
-                    .Subscribe(
-                       async e => await this.OnMachineModeChangedAsync(e),
-                       ThreadOption.UIThread,
-                       false);
-
-            this.machinePowerChangedToken = this.machinePowerChangedToken
-                ??
-                this.EventAggregator
-                    .GetEvent<PubSubEvent<MachinePowerChangedEventArgs>>()
-                    .Subscribe(
-                       async e => await this.OnMachinePowerChangedAsync(e),
-                       ThreadOption.UIThread,
-                       false);
-
-            this.bayChainPositionChangedToken = this.bayChainPositionChangedToken
-                ??
-                this.EventAggregator
-                    .GetEvent<PubSubEvent<BayChainPositionChangedEventArgs>>()
-                    .Subscribe(
-                        this.OnBayChainPositionChanged,
-                        ThreadOption.UIThread,
-                        false);
-
-            this.homingChangesToken = this.homingChangesToken
-                ??
-                this.EventAggregator
-                    .GetEvent<HomingChangedPubSubEvent>()
-                    .Subscribe(
-                        (m) =>
-                        {
-                            this.UpdateIsEnabled(
-                                this.machineModeService.MachinePower,
-                                this.machineModeService.MachineMode,
-                                this.healthProbeService.HealthStatus);
-                        },
-                        ThreadOption.UIThread,
-                        false);
-
-            this.machineStatusChangesToken = this.machineStatusChangesToken
-                ?? this.EventAggregator
-                    .GetEvent<MachineStatusChangedPubSubEvent>()
-                    .Subscribe(
-                        async (m) => await this.OnMachineStatusChangedAsync(m),
-                        ThreadOption.UIThread,
-                        false);
-
-            this.machineErrorsService.ErrorStatusChanged += async (s, e) =>
+            try
             {
-                await this.OnErrorStatusChangedAsync(e);
-            };
+                await task;
 
-            this.sensorsToken = this.sensorsToken
-                ??
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-                    .Subscribe(
-                        this.OnSensorsChanged,
-                        ThreadOption.UIThread,
-                        false,
-                        m => m.Data != null &&
-                             this.IsVisible);
+                if (!this.IsDataRefreshSyncronous)
+                {
+                    await dataTask;
+                }
+            }
+            catch (HttpRequestException)
+            {
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)
@@ -285,29 +230,26 @@ namespace Ferretto.VW.App.Controls
             this.UpdatePresentation();
         }
 
-        public void ShowAbortStep(bool isEnabled, bool isVisible)
+        public void ShowAbortStep(bool isEnabled, bool isVisible, bool forceRefresh = false)
         {
-            this.ShowStep(PresentationTypes.Abort, isEnabled, isVisible);
+            this.ShowStep(PresentationTypes.Abort, isEnabled, isVisible, forceRefresh: forceRefresh);
         }
 
-        public void ShowNextStep(bool isEnabled, bool isVisible, string moduleName = null, string viewName = null)
+        public void ShowNextStep(bool isEnabled, bool isVisible, string moduleName = null, string viewName = null, bool forceRefresh = false)
         {
-            this.ShowStep(PresentationTypes.Next, isEnabled, isVisible, moduleName, viewName);
+            this.ShowStep(PresentationTypes.Next, isEnabled, isVisible, moduleName, viewName, forceRefresh);
         }
 
-        public void ShowNextStepSinglePage(bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
+        public void ShowNextStepSinglePage(bool isVisible, bool isEnabled, string moduleName = null, string viewName = null, bool forceRefresh = false)
         {
-            this.ShowStep(PresentationTypes.NextStep, isVisible, isEnabled, moduleName, viewName);
+            this.ShowStep(PresentationTypes.NextStep, isVisible, isEnabled, moduleName, viewName, forceRefresh);
         }
 
         public void ShowNotification(string message, NotificationSeverity severity = NotificationSeverity.Info)
         {
-            if (this.IsVisible)
-            {
-                this.EventAggregator
-                 .GetEvent<PresentationNotificationPubSubEvent>()
-                 .Publish(new PresentationNotificationMessage(message, severity));
-            }
+            this.EventAggregator
+                .GetEvent<PresentationNotificationPubSubEvent>()
+                .Publish(new PresentationNotificationMessage(message, severity));
         }
 
         public void ShowNotification(Exception exception)
@@ -319,27 +261,24 @@ namespace Ferretto.VW.App.Controls
 
             this.Logger.Error(exception);
 
-            if (this.IsVisible)
-            {
-                this.EventAggregator
-                    .GetEvent<PresentationNotificationPubSubEvent>()
-                    .Publish(new PresentationNotificationMessage(exception));
-            }
+            this.EventAggregator
+                .GetEvent<PresentationNotificationPubSubEvent>()
+                .Publish(new PresentationNotificationMessage(exception));
         }
 
-        public void ShowPrevStep(bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
+        public void ShowPrevStep(bool isVisible, bool isEnabled, string moduleName = null, string viewName = null, bool forceRefresh = false)
         {
-            this.ShowStep(PresentationTypes.Prev, isVisible, isEnabled, moduleName, viewName);
+            this.ShowStep(PresentationTypes.Prev, isVisible, isEnabled, moduleName, viewName, forceRefresh);
         }
 
-        public void ShowPrevStepSinglePage(bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
+        public void ShowPrevStepSinglePage(bool isVisible, bool isEnabled, string moduleName = null, string viewName = null, bool forceRefresh = false)
         {
-            this.ShowStep(PresentationTypes.PrevStep, isVisible, isEnabled, moduleName, viewName);
+            this.ShowStep(PresentationTypes.PrevStep, isVisible, isEnabled, moduleName, viewName, forceRefresh);
         }
 
-        public void ShowStep(PresentationTypes presentationType, bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
+        public void ShowStep(PresentationTypes presentationType, bool isVisible, bool isEnabled, string moduleName = null, string viewName = null, bool forceRefresh = false)
         {
-            if (this.IsVisible)
+            if (this.IsVisible || forceRefresh)
             {
                 var presentationStep = new PresentationStep()
                 {
@@ -361,6 +300,11 @@ namespace Ferretto.VW.App.Controls
         public virtual void UpdateNotifications()
         {
             this.ClearNotifications();
+        }
+
+        protected virtual Task OnDataRefreshAsync()
+        {
+            return Task.CompletedTask;
         }
 
         protected virtual Task OnErrorStatusChangedAsync(MachineErrorEventArgs e)
@@ -451,16 +395,89 @@ namespace Ferretto.VW.App.Controls
             this.RaiseCanExecuteChanged();
         }
 
+        private void SubscribeEvents()
+        {
+            this.healthStatusChangedToken = this.healthStatusChangedToken
+                ??
+                this.EventAggregator
+                    .GetEvent<PubSubEvent<HealthStatusChangedEventArgs>>()
+                    .Subscribe(
+                        async e => await this.OnHealthStatusChangedAsync(e),
+                        ThreadOption.UIThread,
+                        false);
+
+            this.machineModeChangedToken = this.machineModeChangedToken
+                ??
+                this.EventAggregator
+                    .GetEvent<PubSubEvent<MachineModeChangedEventArgs>>()
+                    .Subscribe(
+                       async e => await this.OnMachineModeChangedAsync(e),
+                       ThreadOption.UIThread,
+                       false);
+
+            this.machinePowerChangedToken = this.machinePowerChangedToken
+                ??
+                this.EventAggregator
+                    .GetEvent<PubSubEvent<MachinePowerChangedEventArgs>>()
+                    .Subscribe(
+                       async e => await this.OnMachinePowerChangedAsync(e),
+                       ThreadOption.UIThread,
+                       false);
+
+            this.bayChainPositionChangedToken = this.bayChainPositionChangedToken
+                ??
+                this.EventAggregator
+                    .GetEvent<PubSubEvent<BayChainPositionChangedEventArgs>>()
+                    .Subscribe(
+                        this.OnBayChainPositionChanged,
+                        ThreadOption.UIThread,
+                        false);
+
+            this.homingChangesToken = this.homingChangesToken
+                ??
+                this.EventAggregator
+                    .GetEvent<HomingChangedPubSubEvent>()
+                    .Subscribe(
+                        (m) =>
+                        {
+                            this.UpdateIsEnabled(
+                                this.machineModeService.MachinePower,
+                                this.machineModeService.MachineMode,
+                                this.healthProbeService.HealthStatus);
+                        },
+                        ThreadOption.UIThread,
+                        false);
+
+            this.machineStatusChangesToken = this.machineStatusChangesToken
+                ?? this.EventAggregator
+                    .GetEvent<MachineStatusChangedPubSubEvent>()
+                    .Subscribe(
+                        async (m) => await this.OnMachineStatusChangedAsync(m),
+                        ThreadOption.UIThread,
+                        false);
+
+            this.machineErrorsService.ErrorStatusChanged += async (s, e) =>
+            {
+                await this.OnErrorStatusChangedAsync(e);
+            };
+
+            this.sensorsToken = this.sensorsToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Subscribe(
+                        this.OnSensorsChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data != null &&
+                             this.IsVisible);
+        }
+
         private void UpdateIsEnabled(
             MachinePowerState machinePower,
             MachineMode machineMode,
             HealthStatus healthStatus)
         {
-            if (!this.IsVisible)
-            {
-                return;
-            }
-
             bool result = true;
             if (this.EnableMask != EnableMask.Any)
             {
