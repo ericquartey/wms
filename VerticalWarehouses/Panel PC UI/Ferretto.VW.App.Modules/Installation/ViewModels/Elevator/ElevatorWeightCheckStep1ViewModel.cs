@@ -105,11 +105,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public override void InitializeSteps()
-        {
-            this.ShowSteps();
-        }
-
         public override async Task OnAppearedAsync()
         {
             this.InputLoadingUnitId = null;

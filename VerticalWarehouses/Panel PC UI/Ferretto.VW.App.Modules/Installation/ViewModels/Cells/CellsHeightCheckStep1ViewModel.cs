@@ -92,11 +92,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public override void InitializeSteps()
-        {
-            this.ShowSteps();
-        }
-
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
