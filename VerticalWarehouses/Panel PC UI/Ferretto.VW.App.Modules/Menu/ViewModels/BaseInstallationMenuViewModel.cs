@@ -203,8 +203,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
         {
             this.IsBackNavigationAllowed = true;
 
-            this.IsWaitingForResponse = true;
-
             switch ((Menu)(this.Data ?? Menu.General))
             {
                 case Menu.Accessories:
@@ -236,14 +234,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     break;
             }
 
-            this.IsWaitingForResponse = false;
-
             await base.OnAppearedAsync();
         }
 
         internal virtual bool CanExecuteCommand()
         {
-            return !this.IsWaitingForResponse;
+            return true; //!this.IsWaitingForResponse;
         }
 
         protected override async Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
