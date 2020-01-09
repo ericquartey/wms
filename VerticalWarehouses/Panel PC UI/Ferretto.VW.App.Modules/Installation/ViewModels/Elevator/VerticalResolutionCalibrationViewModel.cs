@@ -320,6 +320,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.currentError = null;
 
+                if (this.IsWaitingForResponse)
+                {
+                    return null;
+                }
+
                 switch (columnName)
                 {
                     case nameof(this.DestinationPosition1):
@@ -347,10 +352,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
-                            if (string.IsNullOrEmpty(this.currentError))
-                            {
-                                this.ClearNotifications();
-                            }
                         }
 
                         break;
@@ -367,10 +368,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                 this.currentError = $"Measured position out of range axis ({this.AxisLowerBound} - {this.AxisUpperBound}).";
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
-                            }
-                            if (string.IsNullOrEmpty(this.currentError))
-                            {
-                                this.ClearNotifications();
                             }
                         }
 
@@ -395,11 +392,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                 this.currentError = $"Start position out of range axis ({this.AxisLowerBound} - {this.AxisUpperBound}).";
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
-                            }
-
-                            if (string.IsNullOrEmpty(this.currentError))
-                            {
-                                this.ClearNotifications();
                             }
                         }
 
@@ -444,14 +436,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
-
-                            if (string.IsNullOrEmpty(this.currentError))
-                            {
-                                this.ClearNotifications();
-                            }
                         }
 
                         break;
+                }
+
+                if (this.IsVisible && string.IsNullOrEmpty(this.currentError))
+                {
+                    this.ClearNotifications();
                 }
 
                 return null;
@@ -470,20 +462,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.sensorsToken = null;
         }
 
-        public async Task GetParametersAsync()
-        {
-            try
-            {
-                this.CurrentResolution = await this.machineElevatorWebService.GetVerticalResolutionAsync();
-
-                this.DestinationPosition1 = this.ProcedureParameters.InitialPosition;
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-        }
-
         public override async Task OnAppearedAsync()
         {
             this.SubscribeToEvents();
@@ -500,18 +478,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (this.AxisUpperBound == 0 || this.AxisLowerBound == 0 || this.StartPosition == 0 || !this.DestinationPosition1.HasValue || !this.DestinationPosition2.HasValue)
                 {
                     var procedureParameters = await this.verticalOriginProcedureWebService.GetParametersAsync();
-                    this.AxisUpperBound = procedureParameters.UpperBound;
-                    this.AxisLowerBound = procedureParameters.LowerBound;
-
                     this.ProcedureParameters = await this.resolutionCalibrationWebService.GetParametersAsync();
-
-                    await this.GetParametersAsync();
+                    this.CurrentResolution = await this.machineElevatorWebService.GetVerticalResolutionAsync();
 
                     this.StartPosition = this.ProcedureParameters.StartPosition;
-
                     this.DestinationPosition1 = this.ProcedureParameters.InitialPosition;
-
                     this.DestinationPosition2 = this.ProcedureParameters.FinalPosition;
+                    this.AxisUpperBound = procedureParameters.UpperBound;
+                    this.AxisLowerBound = procedureParameters.LowerBound;
                 }
             }
             catch (HttpRequestException ex)
