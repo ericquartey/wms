@@ -272,8 +272,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private bool CanExecuteMovementsCommand()
         {
-            return !this.IsWaitingForResponse &&
-                   this.MachineModeService.MachineMode == MachineMode.Manual &&
+            return this.MachineModeService.MachineMode == MachineMode.Manual &&
                    this.MachineModeService.MachinePower == MachinePowerState.Powered &&
                    this.HealthProbeService.HealthStatus == HealthStatus.Healthy;
         }
