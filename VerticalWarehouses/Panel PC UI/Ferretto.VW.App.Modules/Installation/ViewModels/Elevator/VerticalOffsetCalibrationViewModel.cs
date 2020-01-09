@@ -264,6 +264,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get
             {
+                this.currentError = null;
+
+                if (this.IsWaitingForResponse)
+                {
+                    return null;
+                }
+
                 switch (columnName)
                 {
                     case nameof(this.StartPosition):
@@ -286,8 +293,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
-
-                            this.ClearNotifications();
                         }
 
                         break;
@@ -310,8 +315,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
-
-                            this.ClearNotifications();
                         }
 
                         break;
@@ -323,6 +326,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         }
 
                         break;
+                }
+
+                if (this.IsVisible && string.IsNullOrEmpty(this.currentError))
+                {
+                    this.ClearNotifications();
                 }
 
                 return null;

@@ -205,6 +205,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get
             {
+                if (this.IsWaitingForResponse)
+                {
+                    return null;
+                }
+
                 switch (columnName)
                 {
                     case nameof(this.InputDelay):
@@ -277,6 +282,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         }
 
                         break;
+                }
+
+                if (this.IsVisible)
+                {
+                    this.ClearNotifications();
                 }
 
                 return null;
