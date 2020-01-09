@@ -249,10 +249,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.ShowNotification(ex);
             }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
         }
 
         protected override async Task OnDataRefreshAsync()

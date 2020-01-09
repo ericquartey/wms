@@ -199,10 +199,6 @@ namespace Ferretto.VW.App.Controls
             {
                 throw;
             }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
 
             this.SubscribeEvents();
 
