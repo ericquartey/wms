@@ -747,13 +747,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private void ShowSteps()
-        {
-            this.ShowPrevStepSinglePage(true, false);
-            this.ShowNextStepSinglePage(true, true);
-            this.ShowAbortStep(true, true);
-        }
-
         private async Task StartAsync(double position)
         {
             try

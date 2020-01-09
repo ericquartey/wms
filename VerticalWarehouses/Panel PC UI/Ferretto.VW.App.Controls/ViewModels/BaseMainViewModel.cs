@@ -176,17 +176,18 @@ namespace Ferretto.VW.App.Controls
         {
             this.IsWaitingForResponse = true;
 
-            var task = this.machineService.OnUpdateServiceAsync();
-
+            Task task = null;
             Task dataTask = null;
             try
             {
                 if (!this.IsDataRefreshSyncronous)
                 {
+                    task = this.machineService.OnUpdateServiceAsync();
                     dataTask = this.OnDataRefreshAsync();
                 }
                 else
                 {
+                    await this.machineService.OnUpdateServiceAsync();
                     await this.OnDataRefreshAsync();
                     this.IsWaitingForResponse = false;
                 }
@@ -214,10 +215,9 @@ namespace Ferretto.VW.App.Controls
 
             try
             {
-                await task;
-
                 if (!this.IsDataRefreshSyncronous)
                 {
+                    await task;
                     await dataTask;
                 }
             }
