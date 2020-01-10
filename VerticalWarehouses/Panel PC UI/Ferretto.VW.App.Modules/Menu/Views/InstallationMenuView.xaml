@@ -719,11 +719,17 @@
                       Margin="10,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <ItemsControl Margin="0,25,0,0"
+                    <ItemsControl Height="400"
+                                  Margin="0,25,0,0"
                                   ItemsSource="{Binding Source}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Vertical" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel VerticalAlignment="Center"
