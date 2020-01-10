@@ -41,7 +41,6 @@ namespace Ferretto.VW.App.Modules.Installation
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<BayCheckView>();
-            containerRegistry.RegisterForNavigation<BayHeightCheckView>();
             containerRegistry.RegisterForNavigation<DepositAndPickUpTestView>();
 
             containerRegistry.RegisterForNavigation<BaysSensorsView>();
