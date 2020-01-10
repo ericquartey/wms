@@ -165,12 +165,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
             if (this.missionOperationsService.CurrentMissionOperation is null)
             {
                 var bay = await this.bayManager.GetBayAsync();
-                if (bay.CurrentMission?.LoadingUnitId != null)
+                if (bay.CurrentMission?.LoadUnitId != null)
                 {
                     this.NavigationService.Appear(
                            nameof(Utils.Modules.Operator),
                            Utils.Modules.Operator.ItemOperations.LOADING_UNIT,
-                           bay.CurrentMission.LoadingUnitId,
+                           bay.CurrentMission.LoadUnitId,
                            trackCurrentView: true);
                     this.isPerformingOperation = true;
                 }
