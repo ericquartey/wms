@@ -103,7 +103,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
-                    var description = $"{this.GetType().Name}:OnResume: Invalid command";
+                    var description = string.Format(Resources.MissionMove.NotValidCommand, this.Mission.LoadUnitId);
                     throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
             }

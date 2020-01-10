@@ -61,6 +61,42 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Automatic restore of the movement is not allowed in Load Unit {0}.
+        /// </summary>
+        public static string AutomaticRestoreNotAllowed {
+            get {
+                return ResourceManager.GetString("AutomaticRestoreNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination bay not found by {0} in Load Unit {1}.
+        /// </summary>
+        public static string DestinationBayNotFound {
+            get {
+                return ResourceManager.GetString("DestinationBayNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination position not found by {0} in Load Unit {1}.
+        /// </summary>
+        public static string DestinationPositionNotFound {
+            get {
+                return ResourceManager.GetString("DestinationPositionNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move Bay chain not allowed in bay {0}, Load Unit {1}; Wait for another resume. Detail {2}..
+        /// </summary>
+        public static string MoveBayChainNotAllowed {
+            get {
+                return ResourceManager.GetString("MoveBayChainNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Missing destination cell in Load unit {0} deposit movement..
         /// </summary>
         public static string NoDestinationCellForDepositMovement {
@@ -79,7 +115,16 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The destination type is not valid (LoadUnit)..
+        ///   Looks up a localized string similar to Received a not valid command in WaitPick state, Load Unit {0}.
+        /// </summary>
+        public static string NotValidCommand {
+            get {
+                return ResourceManager.GetString("NotValidCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The destination type is not valid (LoadUnit),  Load Unit {0}.
         /// </summary>
         public static string NotValidDestinationType {
             get {
@@ -88,7 +133,7 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The destination type is not valid ({0})..
+        ///   Looks up a localized string similar to The destination type is not valid ({0}),  Load Unit {1}..
         /// </summary>
         public static string NotValidMissionType {
             get {
@@ -97,7 +142,25 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Undefined bottom position for bay {0}.
+        ///   Looks up a localized string similar to Source bay not found by {0} in Load Unit {1}.
+        /// </summary>
+        public static string SourceBayNotFound {
+            get {
+                return ResourceManager.GetString("SourceBayNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source position not found by {0} in Load Unit {1}.
+        /// </summary>
+        public static string SourcePositionNotFound {
+            get {
+                return ResourceManager.GetString("SourcePositionNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Undefined bottom position for bay {0}, Load Unit {1}.
         /// </summary>
         public static string UndefinedBottomPositionForBay {
             get {
@@ -106,7 +169,7 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Undefined upper position for bay {0}.
+        ///   Looks up a localized string similar to Undefined upper position for bay {0}, Load Unit {1}.
         /// </summary>
         public static string UndefinedUpperPositionForBay {
             get {

@@ -117,22 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AutomaticRestoreNotAllowed" xml:space="preserve">
+    <value>Ripristino automatico del movimento non permesso per la Load Unit {0}</value>
+  </data>
+  <data name="DestinationBayNotFound" xml:space="preserve">
+    <value>La baia di destinazione per {0} non esiste per la Load Unit {1}</value>
+  </data>
+  <data name="DestinationPositionNotFound" xml:space="preserve">
+    <value>La posizione di destinazione per {0} non esiste per la Load Unit {1}</value>
+  </data>
+  <data name="MoveBayChainNotAllowed" xml:space="preserve">
+    <value>Movimento della catena della baia {0} non permesso per la Load Unit {1}. In attesa di una nuova conferma. Dettaglio {2}</value>
+  </data>
   <data name="NoDestinationCellForDepositMovement" xml:space="preserve">
     <value>Manca la cella di destinazione nel movimento di deposito della Load Unit {0}</value>
   </data>
   <data name="NoSourceCellForLoadUnitMovement" xml:space="preserve">
     <value>Manca la cella di origine nel movimento di prelievo della Load Unit {0}</value>
   </data>
+  <data name="NotValidCommand" xml:space="preserve">
+    <value>Ricevuto un comando non valido nello stato WaitPick, Load Unit {0}</value>
+  </data>
   <data name="NotValidDestinationType" xml:space="preserve">
-    <value>Il tipo di destinazione non è valido (LoadUnit)</value>
+    <value>Il tipo di destinazione non è valido (LoadUnit), Load Unit {0}</value>
   </data>
   <data name="NotValidMissionType" xml:space="preserve">
-    <value>Il tipo di missionenon è valido ({0})</value>
+    <value>Il tipo di missione non è valido ({0}), Load Unit {1}</value>
+  </data>
+  <data name="SourceBayNotFound" xml:space="preserve">
+    <value>La baia di origine per {0} non esiste per la Load Unit {1}</value>
+  </data>
+  <data name="SourcePositionNotFound" xml:space="preserve">
+    <value>La posizione di origine per {0} non esiste per la Load Unit {1}</value>
   </data>
   <data name="UndefinedBottomPositionForBay" xml:space="preserve">
-    <value>La posizione inferiore non è definita per la baia {0}</value>
+    <value>La posizione inferiore non è definita per la baia {0}, Load Unit {1}</value>
   </data>
   <data name="UndefinedUpperPositionForBay" xml:space="preserve">
-    <value>La posizione superiore non è definita per la baia {0}</value>
+    <value>La posizione superiore non è definita per la baia {0}, Load Unit {1}</value>
   </data>
 </root>

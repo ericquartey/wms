@@ -117,22 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AutomaticRestoreNotAllowed" xml:space="preserve">
+    <value>Automatic restore of the movement is not allowed in Load Unit {0}</value>
+  </data>
+  <data name="DestinationBayNotFound" xml:space="preserve">
+    <value>Destination bay not found by {0} in Load Unit {1}</value>
+  </data>
+  <data name="DestinationPositionNotFound" xml:space="preserve">
+    <value>Destination position not found by {0} in Load Unit {1}</value>
+  </data>
+  <data name="MoveBayChainNotAllowed" xml:space="preserve">
+    <value>Move Bay chain not allowed in bay {0}, Load Unit {1}; Wait for another resume. Detail {2}.</value>
+  </data>
   <data name="NoDestinationCellForDepositMovement" xml:space="preserve">
     <value>Missing destination cell in Load unit {0} deposit movement.</value>
   </data>
   <data name="NoSourceCellForLoadUnitMovement" xml:space="preserve">
     <value>Missing source cell in Load unit {0} pickup movement.</value>
   </data>
+  <data name="NotValidCommand" xml:space="preserve">
+    <value>Received a not valid command in WaitPick state, Load Unit {0}</value>
+  </data>
   <data name="NotValidDestinationType" xml:space="preserve">
-    <value>The destination type is not valid (LoadUnit).</value>
+    <value>The destination type is not valid (LoadUnit),  Load Unit {0}</value>
   </data>
   <data name="NotValidMissionType" xml:space="preserve">
-    <value>The destination type is not valid ({0}).</value>
+    <value>The destination type is not valid ({0}),  Load Unit {1}.</value>
+  </data>
+  <data name="SourceBayNotFound" xml:space="preserve">
+    <value>Source bay not found by {0} in Load Unit {1}</value>
+  </data>
+  <data name="SourcePositionNotFound" xml:space="preserve">
+    <value>Source position not found by {0} in Load Unit {1}</value>
   </data>
   <data name="UndefinedBottomPositionForBay" xml:space="preserve">
-    <value>Undefined bottom position for bay {0}</value>
+    <value>Undefined bottom position for bay {0}, Load Unit {1}</value>
   </data>
   <data name="UndefinedUpperPositionForBay" xml:space="preserve">
-    <value>Undefined upper position for bay {0}</value>
+    <value>Undefined upper position for bay {0}, Load Unit {1}</value>
   </data>
 </root>

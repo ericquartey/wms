@@ -244,7 +244,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
                 if (destination is null)
                 {
-                    var description = $"Upper position not defined for bay {bay.Number}";
+                    var description = string.Format(Resources.MissionMove.UndefinedUpperPositionForBay, bay.Number, this.Mission.LoadUnitId);
                     throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
                 this.Mission.LoadUnitDestination = destination.Location;
@@ -334,7 +334,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
-                    var description = $"Impossible to restore mission for LoadUnit {this.Mission.LoadUnitId}";
+                    var description = string.Format(Resources.MissionMove.AutomaticRestoreNotAllowed, this.Mission.LoadUnitId);
                     throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
             }
@@ -448,7 +448,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
-                    var description = $"Impossible to restore mission for LoadUnit {this.Mission.LoadUnitId}";
+                    var description = string.Format(Resources.MissionMove.AutomaticRestoreNotAllowed, this.Mission.LoadUnitId);
                     throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
             }

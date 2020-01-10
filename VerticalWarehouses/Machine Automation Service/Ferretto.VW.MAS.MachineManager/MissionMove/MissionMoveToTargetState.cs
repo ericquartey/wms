@@ -45,8 +45,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
                 if (bay is null)
                 {
-                    var description = $"{this.GetType().Name}: source bay not found {this.Mission.LoadUnitSource}";
-
+                    var description = string.Format(Resources.MissionMove.SourceBayNotFound, this.Mission.LoadUnitSource, this.Mission.LoadUnitId);
                     throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
                 this.Mission.CloseShutterBayNumber = (bay.Shutter.Type != ShutterType.NotSpecified ? bay.Number : BayNumber.None);
@@ -56,8 +55,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var destinationHeight = this.LoadingUnitMovementProvider.GetDestinationHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
             if (destinationHeight is null)
             {
-                var description = $"GetSourceHeight error: position not found ({this.Mission.LoadUnitSource} {(this.Mission.LoadUnitSource == LoadingUnitLocation.Cell ? this.Mission.LoadUnitCellSourceId : this.Mission.LoadUnitId)})";
-
+                var description = string.Format(Resources.MissionMove.SourcePositionNotFound, this.Mission.LoadUnitSource, this.Mission.LoadUnitId);
                 throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
             }
             if (this.Mission.NeedHomingAxis == Axis.Horizontal)
