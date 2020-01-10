@@ -1,8 +1,10 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
+using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Prism.Events;
 
@@ -69,6 +71,47 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     newStep.OnEnter(null);
                 }
             }
+        }
+
+        public virtual void SendMoveNotification(BayNumber targetBay, string description, bool isEject, MessageStatus messageStatus)
+        {
+            var messageData = new MoveLoadingUnitMessageData(
+                this.Mission.MissionType,
+                this.Mission.LoadingUnitSource,
+                this.Mission.LoadingUnitDestination,
+                this.Mission.LoadingUnitCellSourceId,
+                this.Mission.DestinationCellId,
+                this.Mission.LoadingUnitId,
+                (this.Mission.LoadingUnitDestination == LoadingUnitLocation.Cell),
+                isEject,
+                this.Mission.FsmId,
+                this.Mission.Action,
+                this.Mission.StopReason);
+
+            var msg = new NotificationMessage(
+                messageData,
+                description,
+                MessageActor.AutomationService,
+                MessageActor.MachineManager,
+                MessageType.MoveLoadingUnit,
+                this.Mission.TargetBay,
+                targetBay,
+                messageStatus);
+            this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+        }
+
+        public virtual void SendPositionNotification(string description)
+        {
+            var msg = new NotificationMessage(
+                null,
+                description,
+                MessageActor.Any,
+                MessageActor.MachineManager,
+                MessageType.Positioning,
+                this.Mission.TargetBay,
+                this.Mission.TargetBay,
+                MessageStatus.OperationUpdateData);
+            this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
         }
 
         public virtual bool UpdateResponseList(MessageType type)

@@ -234,7 +234,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
-                        throw new InvalidOperationException("Loading unit movement to target cell has no target cell specified.");
+                        var description = $"Load unit {this.Mission.LoadingUnitId} movement to target cell has no target cell specified.";
+                        throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                     }
                 }
                 else
@@ -252,17 +253,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 transaction.Commit();
             }
 
-            var msg = new NotificationMessage(
-                            null,
-                            $"Load Unit position changed",
-                            MessageActor.Any,
-                            MessageActor.MachineManager,
-                            MessageType.Positioning,
-                            this.Mission.TargetBay,
-                            this.Mission.TargetBay,
-                            MessageStatus.OperationUpdateData);
-
-            this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+            this.SendPositionNotification($"Load Unit {this.Mission.LoadingUnitId} position changed");
 
             this.missionsDataProvider.Update(this.Mission);
             if (bayShutter)

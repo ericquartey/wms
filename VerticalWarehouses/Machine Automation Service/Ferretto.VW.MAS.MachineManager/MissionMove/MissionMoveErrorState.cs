@@ -290,27 +290,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     transaction.Commit();
                 }
 
-                var newMessageData = new MoveLoadingUnitMessageData(
-                    this.Mission.MissionType,
-                    this.Mission.LoadingUnitSource,
-                    this.Mission.LoadingUnitDestination,
-                    this.Mission.LoadingUnitCellSourceId,
-                    this.Mission.DestinationCellId,
-                    this.Mission.LoadingUnitId,
-                    (this.Mission.LoadingUnitDestination == LoadingUnitLocation.Cell),
-                    false,
-                    this.Mission.FsmId);
-
-                var msg = new NotificationMessage(
-                    newMessageData,
-                    $"Loading Unit {this.Mission.LoadingUnitId} placed on bay {bay.Number}",
-                    MessageActor.AutomationService,
-                    MessageActor.MachineManager,
-                    MessageType.MoveLoadingUnit,
-                    this.Mission.TargetBay,
-                    bay.Number,
-                    MessageStatus.OperationWaitResume);
-                this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+                var notificationText = $"Load Unit {this.Mission.LoadingUnitId} placed on bay {bay.Number}";
+                this.SendMoveNotification(bay.Number, notificationText, false, MessageStatus.OperationWaitResume);
 
                 this.Mission.FsmRestoreStateName = null;
                 this.Mission.RestoreConditions = false;
@@ -388,16 +369,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 transaction.Commit();
             }
 
-            var msg = new NotificationMessage(
-                            null,
-                            $"Load Unit position changed",
-                            MessageActor.Any,
-                            MessageActor.MachineManager,
-                            MessageType.Positioning,
-                            this.Mission.TargetBay,
-                            this.Mission.TargetBay,
-                            MessageStatus.OperationUpdateData);
-            this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+            this.SendPositionNotification($"Load Unit {this.Mission.LoadingUnitId} position changed");
 
             this.Mission.FsmRestoreStateName = null;
             this.Mission.NeedMovingBackward = false;
@@ -576,16 +548,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
             }
 
-            var msg = new NotificationMessage(
-                            null,
-                            $"Load Unit position changed",
-                            MessageActor.Any,
-                            MessageActor.MachineManager,
-                            MessageType.Positioning,
-                            this.Mission.TargetBay,
-                            this.Mission.TargetBay,
-                            MessageStatus.OperationUpdateData);
-            this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+            this.SendPositionNotification($"Load Unit {this.Mission.LoadingUnitId} position changed");
 
             this.Mission.FsmRestoreStateName = null;
             this.Mission.NeedMovingBackward = false;

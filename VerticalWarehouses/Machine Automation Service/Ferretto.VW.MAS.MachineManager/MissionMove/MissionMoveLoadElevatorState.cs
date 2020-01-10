@@ -4,7 +4,6 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
-using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
@@ -234,7 +233,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
-                        throw new InvalidOperationException("");
+                        var description = $"Load unit {this.Mission.LoadingUnitId} movement load elevator has no source cell specified.";
+                        throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                     }
                 }
                 else
@@ -245,16 +245,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 transaction.Commit();
             }
-            var msg = new NotificationMessage(
-                            null,
-                            $"Load Unit position changed",
-                            MessageActor.Any,
-                            MessageActor.MachineManager,
-                            MessageType.Positioning,
-                            this.Mission.TargetBay,
-                            this.Mission.TargetBay,
-                            MessageStatus.OperationUpdateData);
-            this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+
+            this.SendPositionNotification($"Load Unit {this.Mission.LoadingUnitId} position changed");
 
             // in bay-to-cell movements the profile may have changed so we have to find a new empty cell
             if (this.Mission.LoadingUnitSource != LoadingUnitLocation.Cell

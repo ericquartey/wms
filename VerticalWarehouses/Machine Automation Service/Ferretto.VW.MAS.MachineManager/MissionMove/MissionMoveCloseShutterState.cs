@@ -88,28 +88,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     if (isEject)
                     {
                         var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadingUnitDestination);
-                        var messageData = new MoveLoadingUnitMessageData(
-                            this.Mission.MissionType,
-                            this.Mission.LoadingUnitSource,
-                            this.Mission.LoadingUnitDestination,
-                            this.Mission.LoadingUnitCellSourceId,
-                            this.Mission.DestinationCellId,
-                            this.Mission.LoadingUnitId,
-                            (this.Mission.LoadingUnitDestination == LoadingUnitLocation.Cell),
-                            isEject,
-                            this.Mission.FsmId,
-                            this.Mission.Action);
-
-                        var msg = new NotificationMessage(
-                            messageData,
-                            $"Loading Unit {this.Mission.LoadingUnitId} placed on bay {bay.Number}",
-                            MessageActor.AutomationService,
-                            MessageActor.MachineManager,
-                            MessageType.MoveLoadingUnit,
-                            notification.RequestingBay,
-                            bay.Number,
-                            MessageStatus.OperationWaitResume);
-                        this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+                        var description = $"Load Unit {this.Mission.LoadingUnitId} placed on bay {bay.Number}";
+                        this.SendMoveNotification(bay.Number, description, isEject, MessageStatus.OperationWaitResume);
 
                         if (this.Mission.WmsId.HasValue)
                         {
