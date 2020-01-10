@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -117,8 +118,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         TargetBay = bayNumber,
                         MissionType = MissionType.OUT,
                         Status = MissionStatus.New
-                    })
-                    ;
+                    });
 
                 this.dataContext.SaveChanges();
 
@@ -134,6 +134,18 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
+                var transaction = this.dataContext.Database.BeginTransaction();
+
+                if (this.dataContext.Missions.Any(m =>
+                    m.Status != MissionStatus.Completed
+                    &&
+                    m.Status != MissionStatus.Aborted
+                    &&
+                    m.WmsId == wmsId))
+                {
+                    throw new InvalidOperationException($"An active mission for WMS mission {wmsId} already exists.");
+                }
+
                 var entry = this.dataContext.Missions.Add(
                     new Mission
                     {
@@ -149,6 +161,8 @@ namespace Ferretto.VW.MAS.DataLayer
                     });
 
                 this.dataContext.SaveChanges();
+
+                transaction.Commit();
 
                 UpdateCache(entry.Entity);
 
