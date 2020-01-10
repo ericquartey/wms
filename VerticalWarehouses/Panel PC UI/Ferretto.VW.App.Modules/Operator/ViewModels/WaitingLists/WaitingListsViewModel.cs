@@ -197,7 +197,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
             catch
             {
-                this.ShowNotification($"Cannot execute List.", Services.Models.NotificationSeverity.Warning);
+                this.ShowNotification("Cannot execute List.", Services.Models.NotificationSeverity.Warning);
             }
         }
 
