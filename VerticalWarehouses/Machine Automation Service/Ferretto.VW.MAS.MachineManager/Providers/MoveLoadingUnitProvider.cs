@@ -94,7 +94,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
         {
             if (sourceBay is LoadingUnitLocation.Cell)
             {
-                throw new ArgumentException();
+                throw new ArgumentException(sourceBay.ToString());
             }
 
             this.SendCommandToMachineManager(
@@ -192,7 +192,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
         {
             if (destination is LoadingUnitLocation.Cell)
             {
-                throw new ArgumentException();
+                throw new ArgumentException(destination.ToString());
             }
 
             this.SendCommandToMachineManager(

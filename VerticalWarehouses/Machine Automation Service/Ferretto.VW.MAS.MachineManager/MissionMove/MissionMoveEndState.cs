@@ -3,13 +3,9 @@ using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
-using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -17,18 +13,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 {
     public class MissionMoveEndState : MissionMoveBase
     {
-        #region Fields
-
-        private readonly IBaysDataProvider baysDataProvider;
-
-        private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
-
-        private readonly ILogger<MachineManagerService> logger;
-
-        private readonly IMissionsDataProvider missionsDataProvider;
-
-        #endregion
-
         #region Constructors
 
         public MissionMoveEndState(Mission mission,
@@ -36,11 +20,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             IEventAggregator eventAggregator)
             : base(mission, serviceProvider, eventAggregator)
         {
-            this.baysDataProvider = this.ServiceProvider.GetRequiredService<IBaysDataProvider>();
-            this.missionsDataProvider = this.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
-            this.loadingUnitMovementProvider = this.ServiceProvider.GetRequiredService<ILoadingUnitMovementProvider>();
-
-            this.logger = this.ServiceProvider.GetRequiredService<ILogger<MachineManagerService>>();
         }
 
         #endregion
@@ -58,8 +37,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.Mission.BayNotifications = MissionBayNotifications.None;
             this.Mission.CloseShutterBayNumber = BayNumber.None;
-            this.missionsDataProvider.Update(this.Mission);
-            this.logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
+            this.MissionsDataProvider.Update(this.Mission);
+            this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
             if (this.Mission.StopReason == StopRequestReason.NoReason)
             {
@@ -68,9 +47,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             else
             {
                 var stopMessageData = new StopMessageData(this.Mission.StopReason);
-                this.loadingUnitMovementProvider.StopOperation(stopMessageData, BayNumber.All, MessageActor.MachineManager, this.Mission.TargetBay);
+                this.LoadingUnitMovementProvider.StopOperation(stopMessageData, BayNumber.All, MessageActor.MachineManager, this.Mission.TargetBay);
                 this.Mission.RestoreConditions = false;
-                this.missionsDataProvider.Update(this.Mission);
+                this.MissionsDataProvider.Update(this.Mission);
             }
 
             return true;
@@ -78,7 +57,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override void OnNotification(NotificationMessage notification)
         {
-            var notificationStatus = this.loadingUnitMovementProvider.StopOperationStatus(notification);
+            var notificationStatus = this.LoadingUnitMovementProvider.StopOperationStatus(notification);
 
             if (notificationStatus != MessageStatus.NotSpecified)
             {
@@ -91,18 +70,18 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     case MessageStatus.OperationRunningStop:
                         if (this.UpdateStopList(notification.TargetBay))
                         {
-                            this.missionsDataProvider.Update(this.Mission);
+                            this.MissionsDataProvider.Update(this.Mission);
                         }
                         break;
                 }
 
-                var bays = this.baysDataProvider.GetAll();
+                var bays = this.BaysDataProvider.GetAll();
                 if (this.Mission != null
                     && this.AllStopped(bays)
                     )
                 {
                     this.Mission.BayNotifications = MissionBayNotifications.None;
-                    this.missionsDataProvider.Update(this.Mission);
+                    this.MissionsDataProvider.Update(this.Mission);
                     this.SendNotification();
                 }
             }

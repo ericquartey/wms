@@ -2,10 +2,15 @@
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.MachineManager.MissionMove
@@ -15,12 +20,24 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         #region Constructors
 
         protected MissionMoveBase(Mission mission,
-            IServiceProvider serviceProvider,
-            IEventAggregator eventAggregator)
+             IServiceProvider serviceProvider,
+             IEventAggregator eventAggregator)
         {
             this.Mission = mission;
             this.ServiceProvider = serviceProvider;
             this.EventAggregator = eventAggregator;
+
+            this.BaysDataProvider = this.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+            this.CellsProvider = this.ServiceProvider.GetRequiredService<ICellsProvider>();
+            this.ElevatorDataProvider = this.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
+            this.ErrorsProvider = this.ServiceProvider.GetRequiredService<IErrorsProvider>();
+            this.LoadingUnitMovementProvider = this.ServiceProvider.GetRequiredService<ILoadingUnitMovementProvider>();
+            this.LoadingUnitsDataProvider = this.ServiceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
+            this.MissionsDataProvider = this.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
+            this.SensorsProvider = this.ServiceProvider.GetRequiredService<ISensorsProvider>();
+            this.MachineModeDataProvider = this.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
+
+            this.Logger = this.ServiceProvider.GetRequiredService<ILogger<MachineManagerService>>();
         }
 
         #endregion
@@ -33,9 +50,162 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public IServiceProvider ServiceProvider { get; }
 
+        internal IBaysDataProvider BaysDataProvider { get; }
+
+        internal ICellsProvider CellsProvider { get; }
+
+        internal IElevatorDataProvider ElevatorDataProvider { get; }
+
+        internal IErrorsProvider ErrorsProvider { get; }
+
+        internal ILoadingUnitMovementProvider LoadingUnitMovementProvider { get; }
+
+        internal ILoadingUnitsDataProvider LoadingUnitsDataProvider { get; }
+
+        internal ILogger<MachineManagerService> Logger { get; }
+
+        internal IMachineModeVolatileDataProvider MachineModeDataProvider { get; }
+
+        internal IMissionsDataProvider MissionsDataProvider { get; }
+
+        internal ISensorsProvider SensorsProvider { get; }
+
         #endregion
 
         #region Methods
+
+        public void DepositUnitEnd(bool restore = false)
+        {
+            bool bayShutter = false;
+            using (var transaction = this.ElevatorDataProvider.GetContextTransaction())
+            {
+                this.ElevatorDataProvider.SetLoadingUnit(null);
+
+                if (this.Mission.LoadingUnitDestination is LoadingUnitLocation.Cell)
+                {
+                    var destinationCellId = this.Mission.DestinationCellId;
+                    if (destinationCellId.HasValue)
+                    {
+                        if (this.Mission.LoadingUnitId > 0)
+                        {
+                            this.CellsProvider.SetLoadingUnit(destinationCellId.Value, this.Mission.LoadingUnitId);
+                        }
+                    }
+                    else
+                    {
+                        var description = $"Load unit {this.Mission.LoadingUnitId} movement to target cell has no target cell specified.";
+                        throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
+                    }
+                }
+                else
+                {
+                    var bayPosition = this.BaysDataProvider.GetPositionByLocation(this.Mission.LoadingUnitDestination);
+                    if (this.Mission.LoadingUnitId > 0)
+                    {
+                        this.BaysDataProvider.SetLoadingUnit(bayPosition.Id, this.Mission.LoadingUnitId);
+                        this.LoadingUnitsDataProvider.SetHeight(this.Mission.LoadingUnitId, 0);
+                    }
+                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadingUnitDestination);
+                    bayShutter = (bay.Shutter.Type != ShutterType.NotSpecified);
+                }
+
+                transaction.Commit();
+            }
+
+            this.SendPositionNotification($"Load Unit {this.Mission.LoadingUnitId} position changed");
+            if (restore)
+            {
+                this.Mission.FsmRestoreStateName = null;
+                this.Mission.NeedMovingBackward = false;
+            }
+
+            this.MissionsDataProvider.Update(this.Mission);
+            if (bayShutter)
+            {
+                this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+                var newStep = new MissionMoveCloseShutterState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                newStep.OnEnter(null);
+            }
+            else
+            {
+                var newStep = new MissionMoveEndState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                newStep.OnEnter(null);
+            }
+        }
+
+        public void LoadUnitEnd(bool restore = false)
+        {
+            using (var transaction = this.ElevatorDataProvider.GetContextTransaction())
+            {
+                this.ElevatorDataProvider.SetLoadingUnit(this.Mission.LoadingUnitId);
+
+                if (this.Mission.LoadingUnitSource == LoadingUnitLocation.Cell)
+                {
+                    var sourceCellId = this.Mission.LoadingUnitCellSourceId;
+                    if (sourceCellId.HasValue)
+                    {
+                        this.CellsProvider.SetLoadingUnit(sourceCellId.Value, null);
+                    }
+                    else
+                    {
+                        var description = $"Load unit {this.Mission.LoadingUnitId} movement load elevator has no source cell specified.";
+                        throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
+                    }
+                }
+                else
+                {
+                    var bayPosition = this.BaysDataProvider.GetPositionByLocation(this.Mission.LoadingUnitSource);
+                    this.BaysDataProvider.SetLoadingUnit(bayPosition.Id, null);
+                }
+
+                transaction.Commit();
+            }
+
+            this.SendPositionNotification($"Load Unit {this.Mission.LoadingUnitId} position changed");
+
+            // in bay-to-cell movements the profile may have changed so we have to find a new empty cell
+            if (this.Mission.LoadingUnitSource != LoadingUnitLocation.Cell
+                && this.Mission.LoadingUnitDestination == LoadingUnitLocation.Cell
+                && this.Mission.LoadingUnitId > 0
+                )
+            {
+                try
+                {
+                    this.Mission.DestinationCellId = this.CellsProvider.FindEmptyCell(this.Mission.LoadingUnitId);
+                }
+                catch (InvalidOperationException)
+                {
+                    // cell not found: go back to bay
+                    this.ErrorsProvider.RecordNew(MachineErrorCode.WarehouseIsFull);
+                    this.Mission.LoadingUnitDestination = this.Mission.LoadingUnitSource;
+                    this.MissionsDataProvider.Update(this.Mission);
+                    var newStep = new MissionMoveDepositUnitState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    newStep.OnEnter(null);
+                    return;
+                }
+            }
+
+            this.SendPositionNotification($"Load Unit {this.Mission.LoadingUnitId} position changed");
+
+            if (restore)
+            {
+                this.Mission.FsmRestoreStateName = null;
+                this.Mission.NeedMovingBackward = false;
+            }
+
+            if (this.Mission.LoadingUnitSource == LoadingUnitLocation.Cell
+                && this.Mission.LoadingUnitDestination == LoadingUnitLocation.Elevator
+                )
+            {
+                var newStep = new MissionMoveEndState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                newStep.OnEnter(null);
+            }
+            else
+            {
+                var newStep = new MissionMoveToTargetState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                newStep.OnEnter(null);
+            }
+        }
 
         public abstract void OnCommand(CommandMessage command);
 
@@ -73,7 +243,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
         }
 
-        public virtual void SendMoveNotification(BayNumber targetBay, string description, bool isEject, MessageStatus messageStatus)
+        public void SendMoveNotification(BayNumber targetBay, string description, bool isEject, MessageStatus messageStatus)
         {
             var messageData = new MoveLoadingUnitMessageData(
                 this.Mission.MissionType,
@@ -100,7 +270,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
         }
 
-        public virtual void SendPositionNotification(string description)
+        public void SendPositionNotification(string description)
         {
             var msg = new NotificationMessage(
                 null,
@@ -114,7 +284,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
         }
 
-        public virtual bool UpdateResponseList(MessageType type)
+        public bool UpdateResponseList(MessageType type)
         {
             bool update = false;
             switch (type)
