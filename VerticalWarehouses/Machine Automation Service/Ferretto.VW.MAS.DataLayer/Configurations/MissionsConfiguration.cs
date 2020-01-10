@@ -18,7 +18,7 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
 
             builder.HasKey(m => m.Id);
 
-            builder.Property(m => m.LoadingUnitSource)
+            builder.Property(m => m.LoadUnitSource)
                 .HasColumnType("text")
                 .HasConversion(
                     enumValue => enumValue.ToString(),

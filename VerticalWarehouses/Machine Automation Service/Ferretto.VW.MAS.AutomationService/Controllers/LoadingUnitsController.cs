@@ -11,7 +11,6 @@ using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -63,7 +62,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("abort-moving")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult Abort(Guid? missionId, BayNumber targetBay)
+        public IActionResult Abort(int? missionId, BayNumber targetBay)
         {
             this.moveLoadingUnitProvider.AbortMove(missionId, this.BayNumber, targetBay, MessageActor.AutomationService);
             return this.Accepted();
@@ -192,7 +191,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("pause-moving")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult Pause(Guid? missionId, BayNumber targetBay)
+        public IActionResult Pause(int? missionId, BayNumber targetBay)
         {
             this.moveLoadingUnitProvider.PauseMove(missionId, this.BayNumber, targetBay, MessageActor.AutomationService);
             return this.Accepted();
@@ -212,7 +211,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("resume-moving")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult Resume(Guid? missionId, BayNumber targetBay)
+        public IActionResult Resume(int? missionId, BayNumber targetBay)
         {
             this.moveLoadingUnitProvider.RemoveLoadUnit(missionId, this.BayNumber, targetBay, MessageActor.AutomationService);
             return this.Accepted();
@@ -274,7 +273,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("stop-moving")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult Stop(Guid? missionId, BayNumber targetBay)
+        public IActionResult Stop(int? missionId, BayNumber targetBay)
         {
             this.moveLoadingUnitProvider.StopMove(missionId, this.BayNumber, targetBay, MessageActor.AutomationService);
             return this.Accepted();

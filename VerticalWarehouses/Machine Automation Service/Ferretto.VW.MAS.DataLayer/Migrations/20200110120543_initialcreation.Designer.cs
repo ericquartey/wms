@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20200108151833_initialcreation")]
+    [Migration("20200110120543_initialcreation")]
     partial class initialcreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -944,19 +944,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("ErrorMovements");
 
-                    b.Property<Guid>("FsmId");
+                    b.Property<int?>("LoadUnitCellSourceId");
 
-                    b.Property<string>("FsmRestoreStateName");
+                    b.Property<int>("LoadUnitDestination");
 
-                    b.Property<string>("FsmStateName");
+                    b.Property<int>("LoadUnitId");
 
-                    b.Property<int?>("LoadingUnitCellSourceId");
-
-                    b.Property<int>("LoadingUnitDestination");
-
-                    b.Property<int>("LoadingUnitId");
-
-                    b.Property<string>("LoadingUnitSource")
+                    b.Property<string>("LoadUnitSource")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -973,6 +967,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Priority");
 
                     b.Property<bool>("RestoreConditions");
+
+                    b.Property<string>("RestoreStateName");
+
+                    b.Property<string>("StateName");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -1056,7 +1054,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 3, 8, 16, 18, 32, 685, DateTimeKind.Local).AddTicks(5534),
+                            InstallationDate = new DateTime(2017, 3, 10, 13, 5, 42, 814, DateTimeKind.Local).AddTicks(899),
                             ServiceStatus = 86
                         });
                 });
