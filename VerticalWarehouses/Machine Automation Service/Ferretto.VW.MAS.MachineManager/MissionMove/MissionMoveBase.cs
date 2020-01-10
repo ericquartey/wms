@@ -93,7 +93,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
-                        var description = $"Load unit {this.Mission.LoadUnitId} movement to target cell has no target cell specified.";
+                        var description = string.Format(Resources.MissionMove.NoDestinationCellForDepositMovement, this.Mission.LoadUnitId);
                         throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                     }
                 }
@@ -148,7 +148,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
-                        var description = $"Load unit {this.Mission.LoadUnitId} movement load elevator has no source cell specified.";
+                        var description = string.Format(Resources.MissionMove.NoSourceCellForLoadUnitMovement, this.Mission.LoadUnitId);
                         throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                     }
                 }

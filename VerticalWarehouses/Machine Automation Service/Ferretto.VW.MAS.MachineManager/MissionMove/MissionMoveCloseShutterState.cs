@@ -60,7 +60,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MessageStatus.OperationEnd:
                     bool isEject = this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
                         && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator
-                        && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadingUnit
+                        && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadUnit
                         && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation;
                     if (isEject)
                     {

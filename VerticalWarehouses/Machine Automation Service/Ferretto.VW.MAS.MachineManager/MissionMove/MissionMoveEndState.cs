@@ -119,7 +119,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             bool isEject = this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
                 && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadingUnit
+                && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadUnit
                 && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation;
 
             var notificationText = $"Load Unit {this.Mission.LoadUnitId} end movement to bay {this.Mission.LoadUnitDestination}";

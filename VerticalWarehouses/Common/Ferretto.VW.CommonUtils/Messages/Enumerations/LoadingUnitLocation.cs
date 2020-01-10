@@ -42,7 +42,7 @@
 
         Cell,
 
-        LoadingUnit,
+        LoadUnit,
 
         Elevator
     }
