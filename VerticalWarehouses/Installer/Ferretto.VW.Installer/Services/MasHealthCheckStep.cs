@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ferretto.VW.Installer.Services
 {
-    public class MasHealthCheckStep : IStep
+    internal class MasHealthCheckStep : IStep
     {
         #region Properties
 

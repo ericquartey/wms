@@ -187,7 +187,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             switch (moveData.LoadUnitDestination)
             {
-                case LoadingUnitLocation.LoadingUnit:
+                case LoadingUnitLocation.LoadUnit:
                     // Retrieve loading unit position
                     if (moveData.LoadUnitId != 0)
                     {
@@ -263,7 +263,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             switch (moveData.LoadUnitSource)
             {
-                case LoadingUnitLocation.LoadingUnit:
+                case LoadingUnitLocation.LoadUnit:
                     // Retrieve loading unit position
                     if (moveData.LoadUnitId != 0)
                     {

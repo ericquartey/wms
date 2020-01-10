@@ -140,9 +140,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     returnValue = true;
                     break;
 
-                case LoadingUnitLocation.LoadingUnit:
+                case LoadingUnitLocation.LoadUnit:
                     {
-                        var description = $"Attempting to start {this.GetType()} Finite state machine with Loading Unit as destination Type";
+                        var description = string.Format(Resources.MissionMove.NotValidDestinationType, mission.LoadUnitId);
 
                         throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                     }
@@ -158,7 +158,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         var destination = bay.Positions.FirstOrDefault(p => p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
                         if (destination is LoadingUnitLocation.NoLocation)
                         {
-                            var description = $"Upper position not defined for bay {requestingBay}";
+                            var description = string.Format(Resources.MissionMove.UndefinedUpperPositionForBay, requestingBay, mission.LoadUnitId);
                             throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                         }
                         returnValue = this.CheckBayDestination(messageData, requestingBay, destination, mission, false);
@@ -168,7 +168,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             destination = bay.Positions.FirstOrDefault(p => !p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
                             if (destination is LoadingUnitLocation.NoLocation)
                             {
-                                var description = $"Lower position not defined for bay {requestingBay}";
+                                var description = string.Format(Resources.MissionMove.UndefinedBottomPositionForBay, requestingBay, mission.LoadUnitId);
                                 throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                             }
                             // the other mission must be in waiting state
@@ -321,7 +321,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
 
                 default:
-                    var description = $"Attempting to start {this.GetType()} Finite state machine with invalid MissionType {messageData.MissionType}";
+                    var description = string.Format(Resources.MissionMove.NotValidMissionType, messageData.MissionType, this.Mission.LoadUnitId);
 
                     throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
             }
@@ -371,7 +371,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                     break;
 
-                case LoadingUnitLocation.LoadingUnit:
+                case LoadingUnitLocation.LoadUnit:
                     if (messageData.LoadingUnitId != null)
                     {
                         unitToMove = this.LoadingUnitsDataProvider.GetById(messageData.LoadingUnitId.Value);

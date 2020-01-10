@@ -150,7 +150,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     {
                         CreationDate = DateTime.Now,
                         LoadUnitId = loadingUnitId,
-                        LoadUnitSource = LoadingUnitLocation.LoadingUnit,
+                        LoadUnitSource = LoadingUnitLocation.LoadUnit,
                         MissionType = MissionType.WMS,
                         Priority = wmsPriority,
                         Status = MissionStatus.New,

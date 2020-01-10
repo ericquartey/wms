@@ -42,8 +42,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
             if (bay is null)
             {
-                var description = $"{this.GetType().Name}: destination bay not found {this.Mission.LoadUnitDestination}";
-
+                var description = string.Format(Resources.MissionMove.DestinationBayNotFound, this.Mission.LoadUnitDestination, this.Mission.LoadUnitId);
                 throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
             }
             if (this.LoadingUnitMovementProvider.IsOnlyBottomPositionOccupied(bay.Number))
@@ -84,7 +83,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
                             if (destination is null)
                             {
-                                var description = $"Upper position not defined for bay {bay.Number}";
+                                var description = string.Format(Resources.MissionMove.UndefinedUpperPositionForBay, bay.Number, this.Mission.LoadUnitId);
                                 throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                             }
                             this.Mission.LoadUnitDestination = destination.Location;
@@ -150,7 +149,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 catch (StateMachineException ex)
                 {
-                    var description = $"Move Bay chain not possible in bay {bay.Number}; reason {ex.Message}. Wait for another resume";
+                    var description = string.Format(Resources.MissionMove.MoveBayChainNotAllowed, bay.Number, this.Mission.LoadUnitId, ex.Message);
                     throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
             }
@@ -158,7 +157,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             else
             {
                 var error = this.errorsProvider.RecordNew(result);
-                var description = $"Move Bay chain not possible in bay {bay.Number}; reason {error.Description}. Wait for another resume";
+                var description = string.Format(Resources.MissionMove.MoveBayChainNotAllowed, bay.Number, this.Mission.LoadUnitId, ex.Message);
                 throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
             }
 #endif

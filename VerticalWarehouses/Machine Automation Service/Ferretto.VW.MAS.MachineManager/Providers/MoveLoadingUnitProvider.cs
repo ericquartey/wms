@@ -56,7 +56,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             this.SendCommandToMachineManager(
                 new MoveLoadingUnitMessageData(
                     missionType,
-                    LoadingUnitLocation.LoadingUnit,
+                    LoadingUnitLocation.LoadUnit,
                     LoadingUnitLocation.NoLocation,
                     null,
                     null,
@@ -76,7 +76,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             this.SendCommandToMachineManager(
                  new MoveLoadingUnitMessageData(
                     missionType,
-                    LoadingUnitLocation.LoadingUnit,
+                    LoadingUnitLocation.LoadUnit,
                     destinationBay,
                     null,
                     null,
@@ -198,7 +198,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             this.SendCommandToMachineManager(
                 new MoveLoadingUnitMessageData(
                     missionType,
-                    LoadingUnitLocation.LoadingUnit,
+                    LoadingUnitLocation.LoadUnit,
                     destination,
                     null,
                     null,
@@ -214,7 +214,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             this.SendCommandToMachineManager(
                 new MoveLoadingUnitMessageData(
                     missionType,
-                    LoadingUnitLocation.LoadingUnit,
+                    LoadingUnitLocation.LoadUnit,
                     LoadingUnitLocation.Cell,
                     null,
                     destinationCellId,

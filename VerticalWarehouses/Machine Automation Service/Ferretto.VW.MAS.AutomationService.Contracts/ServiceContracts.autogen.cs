@@ -1499,7 +1499,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         Cell = 19,
     
-        LoadingUnit = 20,
+        LoadUnit = 20,
     
         Elevator = 21,
     

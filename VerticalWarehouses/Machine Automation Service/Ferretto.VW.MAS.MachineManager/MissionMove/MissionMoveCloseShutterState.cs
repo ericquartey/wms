@@ -40,8 +40,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
             if (bay is null)
             {
-                var description = $"{this.GetType().Name}: destination bay not found {this.Mission.LoadUnitDestination}";
-
+                var description = string.Format(Resources.MissionMove.DestinationBayNotFound, this.Mission.LoadUnitDestination, this.Mission.LoadUnitId);
                 throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
             }
             this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions);
@@ -60,7 +59,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MessageStatus.OperationEnd:
                     bool isEject = this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
                         && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator
-                        && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadingUnit
+                        && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadUnit
                         && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation;
                     if (isEject)
                     {

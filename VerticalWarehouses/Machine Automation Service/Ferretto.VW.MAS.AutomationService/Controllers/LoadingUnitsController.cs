@@ -74,7 +74,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult EjectLoadingUnit(LoadingUnitLocation destination, int loadingUnitId)
         {
-            if (destination == LoadingUnitLocation.Cell || destination == LoadingUnitLocation.LoadingUnit)
+            if (destination == LoadingUnitLocation.Cell || destination == LoadingUnitLocation.LoadUnit)
             {
                 return this.BadRequest();
             }
