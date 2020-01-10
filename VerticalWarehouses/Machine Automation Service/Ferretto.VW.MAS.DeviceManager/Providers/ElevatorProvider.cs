@@ -14,6 +14,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 {
     internal sealed class ElevatorProvider : BaseProvider, IElevatorProvider
     {
+
         #region Fields
 
         private readonly IBaysDataProvider baysDataProvider;
@@ -565,9 +566,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 ? IOMachineSensors.ZeroPawlSensorOneK
                 : IOMachineSensors.ZeroPawlSensor;
 
-            if ((!isLoadingUnitOnBoard && !sensors[(int)zeroSensor]) || (isLoadingUnitOnBoard && sensors[(int)zeroSensor]))
+            if (!isLoadingUnitOnBoard && !sensors[(int)zeroSensor])
             {
-                throw new InvalidOperationException("Invalid Zero Chain position");
+                throw new InvalidOperationException(Resources.Elevator.TheElevatorIsNotFullButThePawlIsNotInZeroPosition);
+            }
+            if (isLoadingUnitOnBoard && sensors[(int)zeroSensor])
+            {
+                throw new InvalidOperationException(Resources.Elevator.TheElevatorIsNotEmptyButThePawlIsInZeroPosition);
             }
 
             if (measure && isLoadingUnitOnBoard)
@@ -1226,21 +1231,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
 
-            if (!(verticalAxis.LowerBound <= verticalAxis.Offset
-                && verticalAxis.Offset <= verticalAxis.UpperBound)
-            )
-            {
-                throw new ArgumentOutOfRangeException($"Vertical Axis bounds or offset are not valid: lower bound ({verticalAxis.LowerBound}); offset {verticalAxis.Offset}; upper bound {verticalAxis.UpperBound}");
-            }
-
             var lowerBound = verticalAxis.LowerBound;
             var upperBound = verticalAxis.UpperBound;
+            if (verticalAxis.Offset < lowerBound || verticalAxis.Offset > upperBound)
+            {
+                throw new InvalidOperationException(string.Format(Resources.Elevator.OffsetOutOfBounds, verticalAxis.Offset, lowerBound, upperBound));
+            }
 
             if (targetPosition < lowerBound || targetPosition > upperBound)
             {
-                throw new ArgumentOutOfRangeException(
-                    nameof(targetPosition),
-                    string.Format(Resources.Elevator.TargetPositionMustBeInRange, targetPosition, lowerBound, upperBound));
+                throw new InvalidOperationException(string.Format(Resources.Elevator.TargetPositionOutOfBounds, targetPosition, lowerBound, upperBound));
             }
 
             var homingDone = this.machineProvider.IsHomingExecuted;
@@ -1310,5 +1310,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         }
 
         #endregion
+
     }
 }

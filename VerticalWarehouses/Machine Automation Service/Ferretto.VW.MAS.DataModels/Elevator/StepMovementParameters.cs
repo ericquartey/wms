@@ -24,11 +24,11 @@ namespace Ferretto.VW.MAS.DataModels
             }
             if (axis.EmptyLoadMovement.Speed < axis.FullLoadMovement.Speed)
             {
-                throw new InvalidOperationException($"Invalid {axis.Orientation} Axis movement Speed configuration");
+                throw new InvalidOperationException(string.Format(Resources.ErrorReasons.InvalidAxisSpeedConfiguration, axis.Orientation));
             }
             if (axis.EmptyLoadMovement.Acceleration < axis.FullLoadMovement.Acceleration)
             {
-                throw new InvalidOperationException($"Invalid {axis.Orientation} Axis movement Acceleration configuration");
+                throw new InvalidOperationException(string.Format(Resources.ErrorReasons.InvalidAxisAccelerationConfiguration, axis.Orientation));
             }
 
             if (this.AdjustByWeight)

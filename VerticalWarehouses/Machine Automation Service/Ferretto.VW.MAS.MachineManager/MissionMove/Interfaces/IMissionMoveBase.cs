@@ -31,6 +31,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces
 
         void OnStop(StopRequestReason reason, bool moveBackward = false);
 
+        void SendMoveNotification(BayNumber targetBay, string description, bool isEject, MessageStatus messageStatus);
+
+        void SendPositionNotification(string description);
+
         bool UpdateResponseList(MessageType type);
 
         #endregion
