@@ -212,8 +212,9 @@
 
                 <!-- entities -->
                 <ListView ItemsSource="{Binding}"
-                          HorizontalContentAlignment="Stretch"
-                          SelectionChanged="ListView_Selected">
+                          PreviewTouchUp="ListView_Selected"
+                          PreviewMouseUp="ListView_Selected"
+                          HorizontalContentAlignment="Stretch">
                     <ListView.View>
                         <controls:AutoResizedGridView>
                             <GridViewColumn Header="Nome" Width="Auto" DisplayMemberBinding="{Binding Path=Caption}" />

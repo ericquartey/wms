@@ -11,6 +11,7 @@ using Ferretto.VW.App.Scaffolding.Models;
 
 namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
 {
+
     public static class DataAnnotationAttributeExtensions
     {
         #region Localization
