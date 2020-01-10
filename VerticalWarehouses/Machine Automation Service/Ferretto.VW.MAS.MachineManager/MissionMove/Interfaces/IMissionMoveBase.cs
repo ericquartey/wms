@@ -21,6 +21,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces
 
         #region Methods
 
+        void DepositUnitEnd(bool restore = false);
+
+        void LoadUnitEnd(bool restore = false);
+
         void OnCommand(CommandMessage command);
 
         bool OnEnter(CommandMessage command);

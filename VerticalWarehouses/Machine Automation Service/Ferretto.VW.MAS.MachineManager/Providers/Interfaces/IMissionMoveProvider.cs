@@ -14,11 +14,11 @@ namespace Ferretto.VW.MAS.MachineManager.Providers.Interfaces
 
         void OnNotification(NotificationMessage message, IServiceProvider serviceProvider);
 
-        bool ResumeMission(Guid missionId, CommandMessage command, IServiceProvider serviceProvider);
+        bool ResumeMission(int missionId, CommandMessage command, IServiceProvider serviceProvider);
 
         bool StartMission(Mission mission, CommandMessage command, IServiceProvider serviceProvider);
 
-        bool StopMission(Guid missionId, StopRequestReason stopRequest, IServiceProvider serviceProvider);
+        bool StopMission(int missionId, StopRequestReason stopRequest, IServiceProvider serviceProvider);
 
         bool TryCreateMachineMission(CommandMessage command, IServiceProvider serviceProvider, out Mission mission);
 

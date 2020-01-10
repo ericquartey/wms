@@ -581,11 +581,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineLoadingUnitsWebService
     {
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task AbortAsync(System.Guid? missionId, BayNumber targetBay);
+        System.Threading.Tasks.Task AbortAsync(int? missionId, BayNumber targetBay);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task AbortAsync(System.Guid? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task AbortAsync(int? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task EjectLoadingUnitAsync(LoadingUnitLocation destination, int loadingUnitId);
@@ -637,11 +637,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task MoveToBayAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task PauseAsync(System.Guid? missionId, BayNumber targetBay);
+        System.Threading.Tasks.Task PauseAsync(int? missionId, BayNumber targetBay);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task PauseAsync(System.Guid? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task PauseAsync(int? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task RecallAsync(int id);
@@ -651,11 +651,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task RecallAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ResumeAsync(System.Guid? missionId, BayNumber targetBay);
+        System.Threading.Tasks.Task ResumeAsync(int? missionId, BayNumber targetBay);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ResumeAsync(System.Guid? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task ResumeAsync(int? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StartMovingLoadingUnitToBayAsync(int loadingUnitId, LoadingUnitLocation destination);
@@ -679,11 +679,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task StartMovingSourceDestinationAsync(LoadingUnitLocation source, LoadingUnitLocation destination, int? sourceCellId, int? destinationCellId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task StopAsync(System.Guid? missionId, BayNumber targetBay);
+        System.Threading.Tasks.Task StopAsync(int? missionId, BayNumber targetBay);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task StopAsync(System.Guid? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task StopAsync(int? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -1292,27 +1292,23 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public MissionErrorMovements ErrorMovements { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("fsmId", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.Guid FsmId { get; set; }
+        [Newtonsoft.Json.JsonProperty("restoreStateName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string RestoreStateName { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("fsmRestoreStateName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string FsmRestoreStateName { get; set; }
+        [Newtonsoft.Json.JsonProperty("stateName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string StateName { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("fsmStateName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string FsmStateName { get; set; }
+        [Newtonsoft.Json.JsonProperty("loadUnitCellSourceId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LoadUnitCellSourceId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("loadingUnitCellSourceId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? LoadingUnitCellSourceId { get; set; }
+        [Newtonsoft.Json.JsonProperty("loadUnitDestination", Required = Newtonsoft.Json.Required.Always)]
+        public LoadingUnitLocation LoadUnitDestination { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("loadingUnitDestination", Required = Newtonsoft.Json.Required.Always)]
-        public LoadingUnitLocation LoadingUnitDestination { get; set; }
+        [Newtonsoft.Json.JsonProperty("loadUnitId", Required = Newtonsoft.Json.Required.Always)]
+        public int LoadUnitId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("loadingUnitId", Required = Newtonsoft.Json.Required.Always)]
-        public int LoadingUnitId { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("loadingUnitSource", Required = Newtonsoft.Json.Required.Always)]
-        public LoadingUnitLocation LoadingUnitSource { get; set; }
+        [Newtonsoft.Json.JsonProperty("loadUnitSource", Required = Newtonsoft.Json.Required.Always)]
+        public LoadingUnitLocation LoadUnitSource { get; set; }
     
         [Newtonsoft.Json.JsonProperty("missionType", Required = Newtonsoft.Json.Required.Always)]
         public MissionType MissionType { get; set; }

@@ -74,11 +74,11 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 if (restore)
                 {
-                    moveLoadingUnitProvider.ResumeMoveLoadUnit(missionToRestore.FsmId, LoadingUnitLocation.NoLocation, LoadingUnitLocation.NoLocation, bayNumber, null, MessageActor.MissionManager);
+                    moveLoadingUnitProvider.ResumeMoveLoadUnit(missionToRestore.Id, LoadingUnitLocation.NoLocation, LoadingUnitLocation.NoLocation, bayNumber, null, MessageActor.MissionManager);
                 }
                 else
                 {
-                    this.Logger.LogTrace($"ScheduleMissionsAsync: waiting for mission to restore {missionToRestore.WmsId}, LoadUnit {missionToRestore.LoadingUnitId}; bay {bayNumber}");
+                    this.Logger.LogTrace($"ScheduleMissionsAsync: waiting for mission to restore {missionToRestore.WmsId}, LoadUnit {missionToRestore.LoadUnitId}; bay {bayNumber}");
                 }
 
                 return;
@@ -115,23 +115,23 @@ namespace Ferretto.VW.MAS.MissionManager
                     {
                         // activate new mission
                         var cellsProvider = serviceProvider.GetRequiredService<ICellsProvider>();
-                        var sourceCell = cellsProvider.GetByLoadingUnitId(mission.LoadingUnitId);
+                        var sourceCell = cellsProvider.GetByLoadingUnitId(mission.LoadUnitId);
                         if (sourceCell is null)
                         {
-                            this.Logger.LogDebug($"Bay {bayNumber}: WMS mission {mission.WmsId} can not start because LoadUnit {mission.LoadingUnitId} is not in a cell.");
+                            this.Logger.LogDebug($"Bay {bayNumber}: WMS mission {mission.WmsId} can not start because LoadUnit {mission.LoadUnitId} is not in a cell.");
                         }
                         else
                         {
-                            moveLoadingUnitProvider.ActivateMove(mission.FsmId, mission.MissionType, mission.LoadingUnitId, bayNumber, MessageActor.MissionManager);
+                            moveLoadingUnitProvider.ActivateMove(mission.Id, mission.MissionType, mission.LoadUnitId, bayNumber, MessageActor.MissionManager);
                         }
                     }
                     else if (mission.Status == MissionStatus.Waiting)
                     {
-                        var position = baysDataProvider.GetPositionByLocation(mission.LoadingUnitDestination);
+                        var position = baysDataProvider.GetPositionByLocation(mission.LoadUnitDestination);
                         if (!position.IsUpper)
                         {
-                            var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(mission.LoadingUnitId);
-                            moveLoadingUnitProvider.ResumeMoveLoadUnit(mission.FsmId, loadingUnitSource, loadingUnitSource, bayNumber, null, MessageActor.MissionManager);
+                            var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(mission.LoadUnitId);
+                            moveLoadingUnitProvider.ResumeMoveLoadUnit(mission.Id, loadingUnitSource, loadingUnitSource, bayNumber, null, MessageActor.MissionManager);
                             return;
                         }
                     }
@@ -147,40 +147,40 @@ namespace Ferretto.VW.MAS.MissionManager
 
                     // check if there are other missions for this LU in this bay
                     var nextMission = activeMissions.FirstOrDefault(m =>
-                        m.LoadingUnitId == mission.LoadingUnitId
+                        m.LoadUnitId == mission.LoadUnitId
                         &&
                         m.WmsId.HasValue
                         &&
                         m.WmsId != mission.WmsId);
 
-                    var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(mission.LoadingUnitId);
+                    var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(mission.LoadUnitId);
 
                     if (nextMission is null)
                     {
                         // send back the loading unit to the cell
-                        moveLoadingUnitProvider.ResumeMoveLoadUnit(mission.FsmId, loadingUnitSource, LoadingUnitLocation.Cell, bayNumber, null, MessageActor.MissionManager);
+                        moveLoadingUnitProvider.ResumeMoveLoadUnit(mission.Id, loadingUnitSource, LoadingUnitLocation.Cell, bayNumber, null, MessageActor.MissionManager);
                     }
                     else
                     {
                         // close current mission
-                        moveLoadingUnitProvider.StopMove(mission.FsmId, bayNumber, bayNumber, MessageActor.MissionManager);
+                        moveLoadingUnitProvider.StopMove(mission.Id, bayNumber, bayNumber, MessageActor.MissionManager);
 
                         // activate new mission
-                        moveLoadingUnitProvider.ActivateMove(nextMission.FsmId, nextMission.MissionType, nextMission.LoadingUnitId, bayNumber, MessageActor.MissionManager);
+                        moveLoadingUnitProvider.ActivateMove(nextMission.Id, nextMission.MissionType, nextMission.LoadUnitId, bayNumber, MessageActor.MissionManager);
                     }
                 }
             }
             else if (mission.Status is MissionStatus.New)
             {
                 var cellsProvider = serviceProvider.GetRequiredService<ICellsProvider>();
-                var sourceCell = cellsProvider.GetByLoadingUnitId(mission.LoadingUnitId);
+                var sourceCell = cellsProvider.GetByLoadingUnitId(mission.LoadUnitId);
                 if (sourceCell is null)
                 {
-                    this.Logger.LogDebug($"Bay {bayNumber}: WMS mission {mission.WmsId} can not start because LoadUnit {mission.LoadingUnitId} is not in a cell.");
+                    this.Logger.LogDebug($"Bay {bayNumber}: WMS mission {mission.WmsId} can not start because LoadUnit {mission.LoadUnitId} is not in a cell.");
                 }
                 else
                 {
-                    moveLoadingUnitProvider.ActivateMove(mission.FsmId, mission.MissionType, mission.LoadingUnitId, bayNumber, MessageActor.MissionManager);
+                    moveLoadingUnitProvider.ActivateMove(mission.Id, mission.MissionType, mission.LoadUnitId, bayNumber, MessageActor.MissionManager);
                 }
             }
         }
@@ -192,23 +192,23 @@ namespace Ferretto.VW.MAS.MissionManager
             var missions = missionsDataProvider.GetAllExecutingMissions(true).ToList();
             foreach (var mission in missions)
             {
-                if (string.IsNullOrEmpty(mission.FsmRestoreStateName))
+                if (string.IsNullOrEmpty(mission.RestoreStateName))
                 {
-                    mission.FsmRestoreStateName = mission.FsmStateName;
+                    mission.RestoreStateName = mission.StateName;
                 }
-                mission.FsmStateName = nameof(MissionMoveErrorState);
-                if (mission.FsmRestoreStateName == nameof(MissionMoveBayChainState))
+                mission.StateName = nameof(MissionMoveErrorState);
+                if (mission.RestoreStateName == nameof(MissionMoveBayChainState))
                 {
                     mission.NeedHomingAxis = Axis.BayChain;
                 }
-                else if (mission.FsmRestoreStateName == nameof(MissionMoveLoadElevatorState)
-                    || mission.FsmRestoreStateName == nameof(MissionMoveDepositUnitState)
+                else if (mission.RestoreStateName == nameof(MissionMoveLoadElevatorState)
+                    || mission.RestoreStateName == nameof(MissionMoveDepositUnitState)
                     )
                 {
                     mission.NeedMovingBackward = true;
                     mission.NeedHomingAxis = Axis.Horizontal;
                 }
-                else if (mission.FsmRestoreStateName == nameof(MissionMoveToTargetState))
+                else if (mission.RestoreStateName == nameof(MissionMoveToTargetState))
                 {
                     mission.NeedHomingAxis = Axis.Horizontal;
                 }
@@ -386,7 +386,7 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 try
                 {
-                    var mission = missionsDataProvider.GetByGuid(luData.MissionId.Value);
+                    var mission = missionsDataProvider.GetById(luData.MissionId.Value);
                     if (!luData.DestinationCellId.HasValue)
                     // loading unit to bay mission
                     {

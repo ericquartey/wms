@@ -34,8 +34,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IEnumerable<Mission> GetAllWmsMissions();
 
-        Mission GetByGuid(Guid fsmId);
-
         Mission GetById(int id);
 
         bool IsMissionInWaitState(BayNumber bayNumber, int loadingUnitId);
