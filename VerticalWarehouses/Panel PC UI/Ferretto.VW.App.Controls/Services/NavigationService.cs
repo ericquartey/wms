@@ -106,11 +106,11 @@ namespace Ferretto.VW.App.Controls
 
                 this.regionManager.RequestNavigate(this.MainContentRegionName, viewName, parameters);
 
-                if (trackCurrentView)
+                if (this.navigationStack.Count > 0)
                 {
                     var currentViewRecord = this.navigationStack.Peek();
                     this.logger.Trace($"Marking view '{currentViewRecord.ModuleName}.{currentViewRecord.ViewModelName}' as trackable.");
-                    currentViewRecord.IsTrackable = true;
+                    currentViewRecord.IsTrackable = trackCurrentView;
                 }
 
                 this.navigationStack.Push(new NavigationHistoryRecord(moduleName, viewName, viewModelName));
