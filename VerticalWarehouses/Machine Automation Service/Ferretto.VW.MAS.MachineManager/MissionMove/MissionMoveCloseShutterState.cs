@@ -3,6 +3,7 @@ using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -40,8 +41,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
             if (bay is null)
             {
-                var description = string.Format(Resources.MissionMove.DestinationBayNotFound, this.Mission.LoadUnitDestination, this.Mission.LoadUnitId);
-                throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
+                this.ErrorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitDestinationBay, this.Mission.TargetBay);
+                throw new StateMachineException(ErrorDescriptions.MachineManagerErrorLoadingUnitDestinationBay, this.Mission.TargetBay, MessageActor.MachineManager);
             }
             this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions);
 

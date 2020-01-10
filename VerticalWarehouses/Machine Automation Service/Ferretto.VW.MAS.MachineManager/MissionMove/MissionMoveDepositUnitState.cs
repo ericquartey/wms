@@ -57,8 +57,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
                     if (bay is null)
                     {
-                        var description = string.Format(Resources.MissionMove.DestinationBayNotFound, this.Mission.LoadUnitDestination, this.Mission.LoadUnitId);
-                        throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
+                        this.ErrorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitDestinationBay, this.Mission.TargetBay);
+                        throw new StateMachineException(ErrorDescriptions.MachineManagerErrorLoadingUnitDestinationBay, this.Mission.TargetBay, MessageActor.MachineManager);
                     }
                     this.Mission.Direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
                     bayNumber = bay.Number;
@@ -72,7 +72,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         var result = this.LoadingUnitMovementProvider.CheckBaySensors(bay, this.Mission.LoadUnitDestination, deposit: true);
                         if (result != MachineErrorCode.NoError)
                         {
-                            var error = this.ErrorsProvider.RecordNew(result);
+                            var error = this.ErrorsProvider.RecordNew(result, bayNumber);
                             throw new StateMachineException(error.Description, this.Mission.TargetBay, MessageActor.MachineManager);
                         }
                     }
@@ -140,7 +140,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             else
                             {
                                 this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitShutterClosed);
-                                this.ErrorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitShutterClosed);
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitShutterClosed, notification.RequestingBay);
 
                                 this.OnStop(StopRequestReason.Error, !this.ErrorsProvider.IsErrorSmall());
                                 break;

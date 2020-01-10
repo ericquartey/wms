@@ -4,6 +4,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -244,8 +245,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
                 if (destination is null)
                 {
-                    var description = string.Format(Resources.MissionMove.UndefinedUpperPositionForBay, bay.Number, this.Mission.LoadUnitId);
-                    throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
+                    this.ErrorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitUndefinedUpper, this.Mission.TargetBay);
+                    throw new StateMachineException(ErrorDescriptions.MachineManagerErrorLoadingUnitUndefinedUpper, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
                 this.Mission.LoadUnitDestination = destination.Location;
 
@@ -334,8 +335,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
-                    var description = string.Format(Resources.MissionMove.AutomaticRestoreNotAllowed, this.Mission.LoadUnitId);
-                    throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
+                    this.ErrorsProvider.RecordNew(MachineErrorCode.AutomaticRestoreNotAllowed, this.Mission.TargetBay);
+                    throw new StateMachineException(ErrorDescriptions.AutomaticRestoreNotAllowed, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
             }
 
@@ -448,8 +449,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
-                    var description = string.Format(Resources.MissionMove.AutomaticRestoreNotAllowed, this.Mission.LoadUnitId);
-                    throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
+                    this.ErrorsProvider.RecordNew(MachineErrorCode.AutomaticRestoreNotAllowed, this.Mission.TargetBay);
+                    throw new StateMachineException(ErrorDescriptions.AutomaticRestoreNotAllowed, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
             }
 

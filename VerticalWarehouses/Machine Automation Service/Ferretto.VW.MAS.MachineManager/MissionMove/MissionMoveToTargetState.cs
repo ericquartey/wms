@@ -3,6 +3,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -45,8 +46,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
                 if (bay is null)
                 {
-                    var description = string.Format(Resources.MissionMove.SourceBayNotFound, this.Mission.LoadUnitSource, this.Mission.LoadUnitId);
-                    throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
+                    this.ErrorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitSourceBay, this.Mission.TargetBay);
+                    throw new StateMachineException(ErrorDescriptions.MachineManagerErrorLoadingUnitSourceBay, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
                 this.Mission.CloseShutterBayNumber = (bay.Shutter.Type != ShutterType.NotSpecified ? bay.Number : BayNumber.None);
                 measure = true;
@@ -55,8 +56,16 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var destinationHeight = this.LoadingUnitMovementProvider.GetDestinationHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
             if (destinationHeight is null)
             {
-                var description = string.Format(Resources.MissionMove.SourcePositionNotFound, this.Mission.LoadUnitSource, this.Mission.LoadUnitId);
-                throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
+                if (this.Mission.LoadUnitDestination == LoadingUnitLocation.Cell)
+                {
+                    this.ErrorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitDestinationCell, this.Mission.TargetBay);
+                    throw new StateMachineException(ErrorDescriptions.MachineManagerErrorLoadingUnitDestinationCell, this.Mission.TargetBay, MessageActor.MachineManager);
+                }
+                else
+                {
+                    this.ErrorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitDestinationBay, this.Mission.TargetBay);
+                    throw new StateMachineException(ErrorDescriptions.MachineManagerErrorLoadingUnitDestinationBay, this.Mission.TargetBay, MessageActor.MachineManager);
+                }
             }
             if (this.Mission.NeedHomingAxis == Axis.Horizontal)
             {
@@ -148,7 +157,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         else
                         {
                             // stop movement and  go back to bay
-                            this.ErrorsProvider.RecordNew(check);
+                            this.ErrorsProvider.RecordNew(check, this.Mission.TargetBay);
                             this.Mission.EjectLoadUnit = true;
                             this.Mission.LoadUnitDestination = this.Mission.LoadUnitSource;
                             this.MissionsDataProvider.Update(this.Mission);

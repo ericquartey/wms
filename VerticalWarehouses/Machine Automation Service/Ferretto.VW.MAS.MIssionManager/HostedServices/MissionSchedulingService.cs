@@ -415,6 +415,10 @@ namespace Ferretto.VW.MAS.MissionManager
                         missionsDataProvider.Complete(mission.Id);
                     }
                 }
+                catch (EntityNotFoundException ex)
+                {
+                    this.Logger.LogWarning($"mission not found: {luData.MissionId.Value}");
+                }
                 catch (Exception ex)
                 {
                     this.Logger.LogError($"Failed to process mission: {ex.Message}");

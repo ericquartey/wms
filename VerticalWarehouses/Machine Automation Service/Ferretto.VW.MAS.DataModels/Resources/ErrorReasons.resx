@@ -336,4 +336,25 @@
   <data name="InvalidAxisSpeedConfiguration" xml:space="preserve">
     <value>The {0} Axis movement Speed configuration is invalid: Empty load speed lower than full load speed</value>
   </data>
+  <data name="AutomaticRestoreNotAllowed" xml:space="preserve">
+    <value>Automatic restore of the movement is not allowed</value>
+  </data>
+  <data name="DestinationTypeNotValid" xml:space="preserve">
+    <value>The destination type is not valid</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitUndefinedBottom" xml:space="preserve">
+    <value>Bottom bay position undefined</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitUndefinedUpper" xml:space="preserve">
+    <value>Upper bay position undefined</value>
+  </data>
+  <data name="MissionTypeNotValid" xml:space="preserve">
+    <value>The mission type is not valid</value>
+  </data>
+  <data name="MoveBayChainNotAllowed" xml:space="preserve">
+    <value>Move Bay chain not allowed. Wait for another resume.</value>
+  </data>
+  <data name="ResumeCommandNotValid" xml:space="preserve">
+    <value>The picking confirmation command is not valid</value>
+  </data>
 </root>

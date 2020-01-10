@@ -60,7 +60,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 );
             if (!returnValue)
             {
-                this.errorProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisLoadUnit);
+                this.errorProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisLoadUnit, targetBay);
             }
             else
             {
@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     );
                 if (!returnValue)
                 {
-                    this.errorProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisBay);
+                    this.errorProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisBay, targetBay);
                 }
             }
 

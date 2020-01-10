@@ -30,11 +30,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>General.resx</DependentUpon>
     </Compile>
-    <Compile Update="MissionMove.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>MissionMove.resx</DependentUpon>
-    </Compile>
     <Compile Update="ResolutionCalibrationProcedure.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -67,10 +62,6 @@
     <EmbeddedResource Update="General.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>General.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="MissionMove.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>MissionMove.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="ResolutionCalibrationProcedure.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

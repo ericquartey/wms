@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -43,8 +44,16 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 var destinationHeight = this.LoadingUnitMovementProvider.GetDestinationHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
                 if (destinationHeight is null)
                 {
-                    var description = string.Format(Resources.MissionMove.DestinationPositionNotFound, this.Mission.LoadUnitDestination, this.Mission.LoadUnitId);
-                    throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
+                    if (this.Mission.LoadUnitDestination == LoadingUnitLocation.Cell)
+                    {
+                        this.ErrorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitDestinationCell, this.Mission.TargetBay);
+                        throw new StateMachineException(ErrorDescriptions.MachineManagerErrorLoadingUnitDestinationCell, this.Mission.TargetBay, MessageActor.MachineManager);
+                    }
+                    else
+                    {
+                        this.ErrorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitDestinationBay, this.Mission.TargetBay);
+                        throw new StateMachineException(ErrorDescriptions.MachineManagerErrorLoadingUnitDestinationBay, this.Mission.TargetBay, MessageActor.MachineManager);
+                    }
                 }
                 if (targetCellId != null)
                 {
@@ -70,8 +79,16 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 if (sourceHeight is null)
                 {
-                    var description = string.Format(Resources.MissionMove.SourcePositionNotFound, this.Mission.LoadUnitSource, this.Mission.LoadUnitId);
-                    throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
+                    if (this.Mission.LoadUnitSource == LoadingUnitLocation.Cell || this.Mission.LoadUnitSource == LoadingUnitLocation.LoadUnit)
+                    {
+                        this.ErrorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitSourceCell, this.Mission.TargetBay);
+                        throw new StateMachineException(ErrorDescriptions.MachineManagerErrorLoadingUnitSourceCell, this.Mission.TargetBay, MessageActor.MachineManager);
+                    }
+                    else
+                    {
+                        this.ErrorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitSourceBay, this.Mission.TargetBay);
+                        throw new StateMachineException(ErrorDescriptions.MachineManagerErrorLoadingUnitSourceBay, this.Mission.TargetBay, MessageActor.MachineManager);
+                    }
                 }
 
                 if (targetCellId != null)

@@ -3,6 +3,7 @@ using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -42,8 +43,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
             if (bay is null)
             {
-                var description = string.Format(Resources.MissionMove.DestinationBayNotFound, this.Mission.LoadUnitDestination, this.Mission.LoadUnitId);
-                throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
+                this.ErrorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitDestinationBay, this.Mission.TargetBay);
+                throw new StateMachineException(ErrorDescriptions.MachineManagerErrorLoadingUnitDestinationBay, this.Mission.TargetBay, MessageActor.MachineManager);
             }
             if (this.LoadingUnitMovementProvider.IsOnlyBottomPositionOccupied(bay.Number))
             {
@@ -83,8 +84,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
                             if (destination is null)
                             {
-                                var description = string.Format(Resources.MissionMove.UndefinedUpperPositionForBay, bay.Number, this.Mission.LoadUnitId);
-                                throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitUndefinedBottom, this.Mission.TargetBay);
+                                throw new StateMachineException(ErrorDescriptions.MachineManagerErrorLoadingUnitUndefinedBottom, this.Mission.TargetBay, MessageActor.MachineManager);
                             }
                             this.Mission.LoadUnitDestination = destination.Location;
 
@@ -149,8 +150,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 catch (StateMachineException ex)
                 {
-                    var description = string.Format(Resources.MissionMove.MoveBayChainNotAllowed, bay.Number, this.Mission.LoadUnitId, ex.Message);
-                    throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
+                    this.ErrorsProvider.RecordNew(MachineErrorCode.MoveBayChainNotAllowed, this.Mission.TargetBay);
+                    throw new StateMachineException(ErrorDescriptions.MoveBayChainNotAllowed, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
             }
 #if CHECK_BAY_SENSOR

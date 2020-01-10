@@ -103,7 +103,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                             catch (StateMachineException ex)
                             {
                                 this.Logger.LogError(ex.NotificationMessage.Description, "Error while activating a State.");
-                                this.eventAggregator.GetEvent<NotificationEvent>().Publish(ex.NotificationMessage);
+                                //this.eventAggregator.GetEvent<NotificationEvent>().Publish(ex.NotificationMessage);
 
                                 state.OnStop(StopRequestReason.Error);
                             }
@@ -145,7 +145,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 catch (StateMachineException ex)
                 {
                     this.Logger.LogError(ex.NotificationMessage.Description, "Error while activating a State.");
-                    this.eventAggregator.GetEvent<NotificationEvent>().Publish(ex.NotificationMessage);
+                    //this.eventAggregator.GetEvent<NotificationEvent>().Publish(ex.NotificationMessage);
 
                     newState.OnStop(StopRequestReason.Error);
                     return false;

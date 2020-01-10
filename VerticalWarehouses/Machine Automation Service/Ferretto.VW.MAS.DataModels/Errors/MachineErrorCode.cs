@@ -118,6 +118,21 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(WarehouseIsFull), 1)]
         WarehouseIsFull,
 
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MoveBayChainNotAllowed), 1)]
+        MoveBayChainNotAllowed,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(AutomaticRestoreNotAllowed), 1)]
+        AutomaticRestoreNotAllowed,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(DestinationTypeNotValid), 1)]
+        DestinationTypeNotValid,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MissionTypeNotValid), 1)]
+        MissionTypeNotValid,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ResumeCommandNotValid), 1)]
+        ResumeCommandNotValid,
+
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorBaseCode), 1)]
         InverterErrorBaseCode = 200000,
 
@@ -214,13 +229,13 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitMissingOnElevator), 1)]
         MachineManagerErrorLoadingUnitMissingOnElevator = MachineManagerErrorBaseCode + 16,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitMissingOnBay1), 1)]
-        MachineManagerErrorLoadingUnitMissingOnBay1 = MachineManagerErrorBaseCode + 17,
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitMissingOnBay), 1)]
+        MachineManagerErrorLoadingUnitMissingOnBay = MachineManagerErrorBaseCode + 17,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitMissingOnBay2), 1)]
-        MachineManagerErrorLoadingUnitMissingOnBay2 = MachineManagerErrorBaseCode + 18,
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitUndefinedUpper), 1)]
+        MachineManagerErrorLoadingUnitUndefinedUpper = MachineManagerErrorBaseCode + 18,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitMissingOnBay3), 1)]
-        MachineManagerErrorLoadingUnitMissingOnBay3 = MachineManagerErrorBaseCode + 19,
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitUndefinedBottom), 1)]
+        MachineManagerErrorLoadingUnitUndefinedBottom = MachineManagerErrorBaseCode + 19,
     }
 }

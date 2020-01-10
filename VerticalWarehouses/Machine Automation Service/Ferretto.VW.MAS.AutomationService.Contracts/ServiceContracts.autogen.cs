@@ -3075,6 +3075,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         WarehouseIsFull = 36,
     
+        MoveBayChainNotAllowed = 37,
+    
+        AutomaticRestoreNotAllowed = 38,
+    
+        DestinationTypeNotValid = 39,
+    
+        MissionTypeNotValid = 40,
+    
+        ResumeCommandNotValid = 41,
+    
         InverterErrorBaseCode = 200000,
     
         InverterErrorInvalidParameter = 200001,
@@ -3139,11 +3149,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         MachineManagerErrorLoadingUnitMissingOnElevator = 300016,
     
-        MachineManagerErrorLoadingUnitMissingOnBay1 = 300017,
+        MachineManagerErrorLoadingUnitMissingOnBay = 300017,
     
-        MachineManagerErrorLoadingUnitMissingOnBay2 = 300018,
+        MachineManagerErrorLoadingUnitUndefinedUpper = 300018,
     
-        MachineManagerErrorLoadingUnitMissingOnBay3 = 300019,
+        MachineManagerErrorLoadingUnitUndefinedBottom = 300019,
     
         NoError = -1,
     

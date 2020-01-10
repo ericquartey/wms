@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -55,9 +56,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
                     if (bay is null)
                     {
-                        var description = $"{this.GetType().Name}: source bay not found {this.Mission.LoadUnitSource}";
-
-                        throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
+                        this.ErrorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitSourceBay, this.Mission.TargetBay);
+                        throw new StateMachineException(ErrorDescriptions.MachineManagerErrorLoadingUnitSourceBay, this.Mission.TargetBay, MessageActor.MachineManager);
                     }
                     this.Mission.Direction = (bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards);
                     this.Mission.OpenShutterPosition = this.LoadingUnitMovementProvider.GetShutterOpenPosition(bay, this.Mission.LoadUnitSource);
@@ -70,8 +70,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         var result = this.LoadingUnitMovementProvider.CheckBaySensors(bay, this.Mission.LoadUnitSource, deposit: false);
                         if (result != MachineErrorCode.NoError)
                         {
-                            var error = this.ErrorsProvider.RecordNew(result);
-                            throw new StateMachineException(error.Description, this.Mission.TargetBay, MessageActor.MachineManager);
+                            var error = this.ErrorsProvider.RecordNew(result, bay.Number);
+                            throw new StateMachineException(error.Description, bay.Number, MessageActor.MachineManager);
                         }
                     }
                     break;
@@ -151,7 +151,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                             else
                             {
-                                this.ErrorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitShutterClosed);
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitShutterClosed, notification.RequestingBay);
 
                                 this.OnStop(StopRequestReason.Error, !this.ErrorsProvider.IsErrorSmall());
                                 break;

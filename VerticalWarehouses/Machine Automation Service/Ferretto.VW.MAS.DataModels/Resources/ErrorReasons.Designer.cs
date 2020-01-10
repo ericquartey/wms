@@ -88,6 +88,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Automatic restore of the movement is not allowed.
+        /// </summary>
+        public static string AutomaticRestoreNotAllowed {
+            get {
+                return ResourceManager.GetString("AutomaticRestoreNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to La baia ha già un comando in esecuzione e non può accettarne un altro..
         /// </summary>
         public static string BayInvertersBusy {
@@ -174,6 +183,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         public static string DestinationOverUpperBound {
             get {
                 return ResourceManager.GetString("DestinationOverUpperBound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The destination type is not valid.
+        /// </summary>
+        public static string DestinationTypeNotValid {
+            get {
+                return ResourceManager.GetString("DestinationTypeNotValid", resourceCulture);
             }
         }
         
@@ -574,6 +592,24 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bottom bay position undefined.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitUndefinedBottom {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitUndefinedBottom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upper bay position undefined.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitUndefinedUpper {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitUndefinedUpper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Make sure that a loading unit is present in the bay and that the presence sensors work correctly.
         /// </summary>
         public static string MachineManagerErrorNoLoadingUnitInSource {
@@ -610,11 +646,38 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The mission type is not valid.
+        /// </summary>
+        public static string MissionTypeNotValid {
+            get {
+                return ResourceManager.GetString("MissionTypeNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move Bay chain not allowed. Wait for another resume..
+        /// </summary>
+        public static string MoveBayChainNotAllowed {
+            get {
+                return ResourceManager.GetString("MoveBayChainNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nessun errore rilevato..
         /// </summary>
         public static string NoError {
             get {
                 return ResourceManager.GetString("NoError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The picking confirmation command is not valid.
+        /// </summary>
+        public static string ResumeCommandNotValid {
+            get {
+                return ResourceManager.GetString("ResumeCommandNotValid", resourceCulture);
             }
         }
         

@@ -4,6 +4,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -103,8 +104,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
-                    var description = string.Format(Resources.MissionMove.NotValidCommand, this.Mission.LoadUnitId);
-                    throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
+                    this.ErrorsProvider.RecordNew(MachineErrorCode.ResumeCommandNotValid, this.Mission.TargetBay);
+                    throw new StateMachineException(ErrorDescriptions.ResumeCommandNotValid, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
             }
 #if CHECK_BAY_SENSOR

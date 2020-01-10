@@ -4,6 +4,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
@@ -93,8 +94,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
-                        var description = string.Format(Resources.MissionMove.NoDestinationCellForDepositMovement, this.Mission.LoadUnitId);
-                        throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
+                        this.ErrorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitDestinationCell, this.Mission.TargetBay);
+                        throw new StateMachineException(ErrorDescriptions.MachineManagerErrorLoadingUnitDestinationCell, this.Mission.TargetBay, MessageActor.MachineManager);
                     }
                 }
                 else
@@ -148,8 +149,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
-                        var description = string.Format(Resources.MissionMove.NoSourceCellForLoadUnitMovement, this.Mission.LoadUnitId);
-                        throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
+                        this.ErrorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitSourceCell, this.Mission.TargetBay);
+                        throw new StateMachineException(ErrorDescriptions.MachineManagerErrorLoadingUnitSourceCell, this.Mission.TargetBay, MessageActor.MachineManager);
                     }
                 }
                 else
@@ -176,7 +177,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 catch (InvalidOperationException)
                 {
                     // cell not found: go back to bay
-                    this.ErrorsProvider.RecordNew(MachineErrorCode.WarehouseIsFull);
+                    this.ErrorsProvider.RecordNew(MachineErrorCode.WarehouseIsFull, this.Mission.TargetBay);
                     this.Mission.LoadUnitDestination = this.Mission.LoadUnitSource;
                     this.MissionsDataProvider.Update(this.Mission);
                     var newStep = new MissionMoveDepositUnitState(this.Mission, this.ServiceProvider, this.EventAggregator);
