@@ -125,16 +125,16 @@ namespace Ferretto.VW.MAS.MissionManager
                             moveLoadingUnitProvider.ActivateMove(mission.Id, mission.MissionType, mission.LoadUnitId, bayNumber, MessageActor.MissionManager);
                         }
                     }
-                    else if (mission.Status == MissionStatus.Waiting)
-                    {
-                        var position = baysDataProvider.GetPositionByLocation(mission.LoadUnitDestination);
-                        if (!position.IsUpper)
-                        {
-                            var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(mission.LoadUnitId);
-                            moveLoadingUnitProvider.ResumeMoveLoadUnit(mission.Id, loadingUnitSource, loadingUnitSource, bayNumber, null, MessageActor.MissionManager);
-                            return;
-                        }
-                    }
+                    //else if (mission.Status == MissionStatus.Waiting)
+                    //{
+                    //    var position = baysDataProvider.GetPositionByLocation(mission.LoadUnitDestination);
+                    //    if (!position.IsUpper)
+                    //    {
+                    //        var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(mission.LoadUnitId);
+                    //        moveLoadingUnitProvider.ResumeMoveLoadUnit(mission.Id, loadingUnitSource, loadingUnitSource, bayNumber, null, MessageActor.MissionManager);
+                    //        return;
+                    //    }
+                    //}
                 }
                 else
                 {
