@@ -21,6 +21,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces
 
         #region Methods
 
+        void DepositUnitEnd(bool restore = false);
+
+        void LoadUnitEnd(bool restore = false);
+
         void OnCommand(CommandMessage command);
 
         bool OnEnter(CommandMessage command);
@@ -30,6 +34,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces
         void OnResume(CommandMessage command);
 
         void OnStop(StopRequestReason reason, bool moveBackward = false);
+
+        void SendMoveNotification(BayNumber targetBay, string description, bool isEject, MessageStatus messageStatus);
+
+        void SendPositionNotification(string description);
 
         bool UpdateResponseList(MessageType type);
 

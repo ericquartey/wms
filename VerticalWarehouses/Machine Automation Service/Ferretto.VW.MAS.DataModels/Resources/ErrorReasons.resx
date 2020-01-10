@@ -330,4 +330,10 @@
   <data name="LaserConnectionError" xml:space="preserve">
     <value>Errore di connessione con il laser. Controllare lo stato delle connessioni ethernet.</value>
   </data>
+  <data name="InvalidAxisAccelerationConfiguration" xml:space="preserve">
+    <value>The {0} Axis movement Acceleration configuration is invalid: Empty load acceleration lower than full load acceleration</value>
+  </data>
+  <data name="InvalidAxisSpeedConfiguration" xml:space="preserve">
+    <value>The {0} Axis movement Speed configuration is invalid: Empty load speed lower than full load speed</value>
+  </data>
 </root>

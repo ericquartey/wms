@@ -135,7 +135,10 @@
   <data name="NoLoadingUnitIsPresentInTheSpecifiedCell" xml:space="preserve">
     <value>Nessun cassetto è presente nella cella specificata.</value>
   </data>
-  <data name="TargetPositionMustBeInRange" xml:space="preserve">
+  <data name="OffsetOutOfBounds" xml:space="preserve">
+    <value>L' offset ({0}mm) dell'asse verticale non è valido: deve essere compreso nell'intervallo [{1}mm; {2}mm].</value>
+  </data>
+  <data name="TargetPositionOutOfBounds" xml:space="preserve">
     <value>La posizione di destinazione ({0}mm) deve essere compresa nell'intervallo [{1}mm; {2}mm].</value>
   </data>
   <data name="TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedBayPosition" xml:space="preserve">

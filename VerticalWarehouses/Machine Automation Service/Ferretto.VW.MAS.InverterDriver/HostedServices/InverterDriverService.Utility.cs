@@ -39,10 +39,6 @@ namespace Ferretto.VW.MAS.InverterDriver
     {
         #region Fields
 
-        private const short HeartBeatOff = 7;
-
-        private const short HeartBeatOn = 6;
-
         private readonly object syncAxisTimer = new object();
 
         private readonly object syncSensorTimer = new object();
