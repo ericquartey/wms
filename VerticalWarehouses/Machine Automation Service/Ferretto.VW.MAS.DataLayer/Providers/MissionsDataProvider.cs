@@ -136,12 +136,12 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 var transaction = this.dataContext.Database.BeginTransaction();
 
-                if (this.dataContext.Missions.Any(m =>
-                    m.Status != MissionStatus.Completed
+                if (missionCache.Any(m =>
+                    m.Value.Status != MissionStatus.Completed
                     &&
-                    m.Status != MissionStatus.Aborted
+                    m.Value.Status != MissionStatus.Aborted
                     &&
-                    m.WmsId == wmsId))
+                    m.Value.WmsId == wmsId))
                 {
                     throw new InvalidOperationException($"An active mission for WMS mission {wmsId} already exists.");
                 }
