@@ -62,6 +62,7 @@
                                         Abbrevation="4.5.1"
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding LoadingUnitsCommand}"
+                                        IsEnabled="False"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
@@ -71,24 +72,27 @@
                                         Abbrevation="4.5.2"
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding InsertionLoadingUnitsCommand}"
+                                        Content="Procedura di inserimento nuovo cassetto"
+                                        Kind="Account"
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}" />
+
+                    <controls:PpcButton Title="Rimozione"
+                                        Margin="0,0,30,30"
+                                        Padding="-2,1,0,0"
+                                        Abbrevation="4.5.3"
+                                        BorderBrush="{DynamicResource FerrettoRed}"
+                                        Command="{Binding ExtractionLoadingUnitsCommand}"
+                                        Content="Procedura di rimozione cassetto"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
                     <controls:PpcButton Title="Spostamento"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
-                                        Abbrevation="4.5.3"
-                                        BorderBrush="{DynamicResource FerrettoRed}"
-                                        Command="{Binding MoveLoadingUnitsCommand}"
-                                        Kind="Account"
-                                        Style="{DynamicResource PpcButtonMenuCardStyle}" />
-
-                    <controls:PpcButton Title="Estrazione"
-                                        Margin="0,0,30,30"
-                                        Padding="-2,1,0,0"
                                         Abbrevation="4.5.4"
                                         BorderBrush="{DynamicResource FerrettoRed}"
-                                        Command="{Binding ExtractionLoadingUnitsCommand}"
+                                        Command="{Binding MoveLoadingUnitsCommand}"
+                                        Content="Procedura di spostamento cassetto da cella a cella"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
@@ -98,6 +102,7 @@
                                         Abbrevation="4.5.5"
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding LoadingUnitsBayToBayCommand}"
+                                        Content="Procedura di spostamento cassetto da baia a baia"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 

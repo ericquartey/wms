@@ -91,7 +91,7 @@
                                         Abbrevation="4.4.4"
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding CellsBlockTuningCommand}"
-                                        Content="Applica una correzione ad un set di celle"
+                                        Content="Applica una correzione ad un gruppo di celle"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
