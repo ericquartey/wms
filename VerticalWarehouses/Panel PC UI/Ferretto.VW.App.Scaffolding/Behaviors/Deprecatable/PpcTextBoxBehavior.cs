@@ -44,7 +44,7 @@ namespace Ferretto.VW.App.Scaffolding.Behaviors
         protected TextBox TextBox { get; private set; }
 
         public static readonly DependencyProperty IsEnabledProperty
-                    = DependencyProperty.RegisterAttached("IsEnabled", typeof(bool), typeof(TextBoxFilterBehavior), new PropertyMetadata(true));
+                    = DependencyProperty.RegisterAttached("IsEnabled", typeof(bool), typeof(PpcTextBoxFilterBehavior), new PropertyMetadata(true));
 
         /// <summary>
         /// Gets or sets whether this behavior is enabled or not.

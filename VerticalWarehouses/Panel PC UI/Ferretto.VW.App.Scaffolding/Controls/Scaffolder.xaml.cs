@@ -299,6 +299,16 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             this.TryEdit(((ListView)sender).SelectedItem as Models.ScaffoldedEntity);
         }
 
+        private void ListViewItem_Click(object sender, RoutedEventArgs e)
+        {
+            // e.Handled = true;
+            var listViewItem = sender as ListViewItem;
+            if (listViewItem?.IsSelected == true)
+            {
+                this.TryEdit(listViewItem.DataContext as Models.ScaffoldedEntity);
+            }
+        }
+
         private void Back_Click(object sender, RoutedEventArgs e)
         {
             var breadcrumb = this.Breadcrumb;

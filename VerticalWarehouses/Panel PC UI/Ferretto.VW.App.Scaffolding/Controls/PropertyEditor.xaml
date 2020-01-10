@@ -6,7 +6,7 @@
              xmlns:controls="clr-namespace:Ferretto.VW.App.Scaffolding.Controls"
              xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:converters="clr-namespace:Ferretto.VW.App.Scaffolding.Converters"
-             xmlns:filters="clr-namespace:Ferretto.VW.App.Scaffolding.Behaviors"
+             xmlns:behaviors="clr-namespace:Ferretto.VW.App.Scaffolding.Behaviors"
              xmlns:interactivity="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:selectors="clr-namespace:Ferretto.VW.App.Scaffolding.Selectors"
              xmlns:validation="clr-namespace:Ferretto.VW.App.Scaffolding.ValidationRules"
@@ -31,25 +31,35 @@
 
         <selectors:PropertyInfoDataTemplateSelector x:Key="PropertyInfoDataTemplateSelector" />
 
-        <!-- styles -->
-        <Style TargetType="ListViewItem">
-            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        </Style>
-        <Style TargetType="{x:Type TextBox}">
+        <!-- styles -->        
+        <Style x:Key="TextBoxStyle" TargetType="{x:Type TextBox}"
+               BasedOn="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}">
             <Setter Property="Validation.ErrorTemplate">
                 <Setter.Value>
                     <ControlTemplate>
-                        <DockPanel LastChildFill="True">
+                        <DockPanel LastChildFill="False">
 
-                            <TextBlock DockPanel.Dock="Right"
-                                Foreground="Red"
+                            <TextBlock DockPanel.Dock="Right" Visibility="Collapsed"
+                                Foreground="{DynamicResource FerrettoRed}"
                                 Margin="5" 
-                                FontSize="12pt"
+                                FontSize="{DynamicResource FontSize_Normal}"
                                 Text="{Binding ElementName=MyAdorner, 
                            Path=AdornedElement.(Validation.Errors)/ErrorContent}">
                             </TextBlock>
 
-                            <Border BorderBrush="Red" BorderThickness="1">
+                            <Border DockPanel.Dock="Right"
+                                    Padding="5"
+                                    CornerRadius="0,2,2,0"
+                                    Background="{DynamicResource FerrettoRed}">
+
+                                <iconPacks:PackIconModern
+                                          Foreground="{DynamicResource FerrettoPureWhite}"
+                                          Kind="WarningCircle" />
+                                
+                            </Border>
+
+                            <Border BorderBrush="{DynamicResource FerrettoRed}"
+                                    BorderThickness="{DynamicResource PpcBorderThickness}">
                                 <AdornedElementPlaceholder Name="MyAdorner" />
                             </Border>
 
@@ -77,7 +87,7 @@
         </DataTemplate>
 
         <!-- string (default*) -->
-        <DataTemplate x:Key="StringDataTemplate">
+        <DataTemplate x:Key="NewStringDataTemplate">
             <DataTemplate.Resources>
                 <converters:TwoWayConverter x:Key="TwoWayConverter" />
             </DataTemplate.Resources>
@@ -99,12 +109,14 @@
         </DataTemplate>
 
         <!-- string (old) -->
-        <DataTemplate x:Key="OldStringDataTemplate">
+        <DataTemplate x:Key="StringDataTemplate">
             <DataTemplate.Resources>
                 <converters:TwoWayConverter x:Key="TwoWayConverter" />
             </DataTemplate.Resources>
 
-            <TextBox DataContext="{Binding}" IsEnabled="{Binding Path=.,Converter={StaticResource IsEditableConverter}}" x:Name="field">
+            <TextBox DataContext="{Binding}"
+                     Style="{StaticResource TextBoxStyle}"
+                     IsEnabled="{Binding Path=.,Converter={StaticResource IsEditableConverter}}" x:Name="field">
                 <TextBox.Resources>
                     <validation:BindingProxy x:Key="valueBridge" Data="{Binding Path=Text, ElementName=field}" />
                     <validation:BindingProxy x:Key="entityBridge" Data="{Binding Path=DataContext, ElementName=field}" />
@@ -123,6 +135,12 @@
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox.Text>
+
+                <!-- keyboard interactivity -->
+                <interactivity:Interaction.Behaviors>
+                    <behaviors:TextBoxKeyboardBehavior Keyboard="{Binding Converter={StaticResource KeyboardTypeConverter}}"
+                        KeyboardCaption="{Binding Converter={StaticResource DisplayNameConverter}}" />
+                </interactivity:Interaction.Behaviors>
             </TextBox>
         </DataTemplate>
 
@@ -169,7 +187,7 @@
                     <Border.Visibility>
                         <MultiBinding Converter="{StaticResource MultiBooleanToVisibilityConverter}">
                             <Binding Path="IsValid" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=controls:PropertyEditor}" Converter="{StaticResource TruthyToVisibilityConverter}" ConverterParameter="Invert" />
-                            <Binding Path="IsDirty" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=controls:PropertyEditor}" />
+                            <!--<Binding Path="IsDirty" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=controls:PropertyEditor}" />-->
                         </MultiBinding>
                     </Border.Visibility>
                     <Grid>
@@ -182,7 +200,7 @@
                                           Margin="0,0,15,0"
                                           HorizontalAlignment="Center"
                                           VerticalAlignment="Center"
-                                          Foreground="#fff"
+                                          Foreground="{DynamicResource FerrettoPureWhite}"
                                           Kind="WarningCircle" />
                         <TextBlock TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"
                             VerticalAlignment="Center" Grid.Column="1"

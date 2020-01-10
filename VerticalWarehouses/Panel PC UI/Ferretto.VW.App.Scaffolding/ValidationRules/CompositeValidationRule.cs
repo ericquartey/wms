@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Scaffolding.ValidationRules
                     var result = validator.Validate(value, cultureInfo);
                     if (!result.IsValid)
                     {
-                        this.OnValidated(new ValidationEventArgs(false));
+                        this.OnValidated(new ValidationEventArgs(false, result.ErrorContent));
                         return result;
                     }
                 }

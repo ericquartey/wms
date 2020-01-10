@@ -186,6 +186,7 @@ namespace Ferretto.VW.App.Scaffolding.Controls
         private void CompositeValidationRule_Validated(object sender, ValidationRules.ValidationEventArgs e)
         {
             this.IsValid = e.IsValid;
+            this.ValidationMessage = e.ErrorContent;
         }
 
         #endregion

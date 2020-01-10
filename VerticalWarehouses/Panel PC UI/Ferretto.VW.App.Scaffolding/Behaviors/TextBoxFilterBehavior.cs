@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
 
 namespace Ferretto.VW.App.Scaffolding.Behaviors
 {
-    public abstract class TextBoxFilterBehavior : Behavior<TextBox>
+
+    public abstract class TextBoxFilterBehavior : TextBoxValidationBehavior
     {
         protected override void OnDetaching()
         {
@@ -23,8 +23,6 @@ namespace Ferretto.VW.App.Scaffolding.Behaviors
             base.OnAttached();
             this.AssociatedObject.PreviewTextInput += this.TextBox_PreviewTextInput;
         }
-
-        public abstract bool Validate(string text);
 
         private void TextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
@@ -44,15 +42,6 @@ namespace Ferretto.VW.App.Scaffolding.Behaviors
                 accept = this.Validate(previewText);
             }
             e.Handled = !accept;
-        }
-
-        public static readonly DependencyProperty IsEnabledProperty
-                    = DependencyProperty.RegisterAttached("IsEnabled", typeof(bool), typeof(TextBoxFilterBehavior), new PropertyMetadata(true));
-
-        public bool IsEnabled
-        {
-            get => (bool)this.GetValue(IsEnabledProperty);
-            set => this.SetValue(IsEnabledProperty, value);
         }
 
     }
