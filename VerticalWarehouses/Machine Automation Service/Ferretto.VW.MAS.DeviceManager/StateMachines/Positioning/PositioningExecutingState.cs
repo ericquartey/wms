@@ -374,6 +374,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 : BeltBurnishingPosition.LowerBound;
 
             this.machineData.MessageData.BeltBurnishingPosition = beltBurnishingPosition;
+            this.machineData.MessageData.TargetPosition = this.beltBurnishingMovingUpwards
+                ? this.positioningUpFieldMessageData.TargetPosition
+                : this.positioningDownFieldMessageData.TargetPosition;
 
             this.Logger.LogTrace(
                 $"InverterStatusUpdate inverter={this.machineData.CurrentInverterIndex}; Movement={this.machineData.MessageData.AxisMovement};");

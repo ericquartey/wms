@@ -54,16 +54,18 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command)
         {
-            this.logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
+            this.Mission.FsmRestoreStateName = null;
             this.Mission.FsmStateName = nameof(MissionMoveCloseShutterState);
+            this.Mission.StopReason = StopRequestReason.NoReason;
             this.missionsDataProvider.Update(this.Mission);
+            this.logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
             var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadingUnitDestination);
             if (bay is null)
             {
                 var description = $"{this.GetType().Name}: destination bay not found {this.Mission.LoadingUnitDestination}";
 
-                throw new StateMachineException(description);
+                throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
             }
             this.loadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions);
 
@@ -86,28 +88,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     if (isEject)
                     {
                         var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadingUnitDestination);
-                        var messageData = new MoveLoadingUnitMessageData(
-                            this.Mission.MissionType,
-                            this.Mission.LoadingUnitSource,
-                            this.Mission.LoadingUnitDestination,
-                            this.Mission.LoadingUnitCellSourceId,
-                            this.Mission.DestinationCellId,
-                            this.Mission.LoadingUnitId,
-                            (this.Mission.LoadingUnitDestination == LoadingUnitLocation.Cell),
-                            isEject,
-                            this.Mission.FsmId,
-                            this.Mission.Action);
-
-                        var msg = new NotificationMessage(
-                            messageData,
-                            $"Loading Unit {this.Mission.LoadingUnitId} placed on bay {bay.Number}",
-                            MessageActor.AutomationService,
-                            MessageActor.MachineManager,
-                            MessageType.MoveLoadingUnit,
-                            notification.RequestingBay,
-                            bay.Number,
-                            MessageStatus.OperationWaitResume);
-                        this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+                        var description = $"Load Unit {this.Mission.LoadingUnitId} placed on bay {bay.Number}";
+                        this.SendMoveNotification(bay.Number, description, isEject, MessageStatus.OperationWaitResume);
 
                         if (this.Mission.WmsId.HasValue)
                         {

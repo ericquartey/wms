@@ -135,6 +135,12 @@
   <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
     <value>Il cassetto non sembra essere completamente fuori dall'elevatore dopo la fase di scarico.</value>
   </data>
+  <data name="InvalidAxisAccelerationConfiguration" xml:space="preserve">
+    <value>La configurazione della accelerazione del movimento dell'asse  {0} non è valida: accelerazione a vuoto minore del pieno carico</value>
+  </data>
+  <data name="InvalidAxisSpeedConfiguration" xml:space="preserve">
+    <value>La configurazione della velocità del movimento dell'asse  {0} non è valida: velocità a vuoto minore del pieno carico</value>
+  </data>
   <data name="InvalidPresenceSensors" xml:space="preserve">
     <value>Sensori di presenza invalidi</value>
   </data>

@@ -1733,7 +1733,7 @@
     "VerticalResolutionCalibration": {
       "StartPosition": 500,
       "InitialPosition": 1000,
-      "FinalPosition": 5500,
+      "FinalPosition": 4500,
       "FeedRate": 0.2
     }
   }

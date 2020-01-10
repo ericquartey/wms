@@ -39,10 +39,6 @@ namespace Ferretto.VW.MAS.InverterDriver
     {
         #region Fields
 
-        private const short HeartBeatOff = 7;
-
-        private const short HeartBeatOn = 6;
-
         private readonly object syncAxisTimer = new object();
 
         private readonly object syncSensorTimer = new object();
@@ -373,6 +369,18 @@ namespace Ferretto.VW.MAS.InverterDriver
                 if (error > 0)
                 {
                     this.Logger.LogError($"Inverter Fault: 0x{error:X4}; inverter={message.SystemIndex}; {InverterFaultCodes.GetErrorByCode(error)}");
+
+                    using (var scope = this.ServiceScopeFactory.CreateScope())
+                    {
+                        // Retrieve the bay number related to the inverter index
+                        var baysProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                        var bayNumber = baysProvider.GetByInverterIndex(message.SystemIndex);
+
+                        // Adds error related to the InverterFaultDetected
+                        var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+                        var idx = (int)message.SystemIndex + 1; // it has the systemIndex on base 1
+                        errorsProvider.RecordNew(idx, error, bayNumber);
+                    }
                 }
             }
             else if (message.ParameterId == InverterParameterId.BlockRead)
@@ -1065,12 +1073,13 @@ namespace Ferretto.VW.MAS.InverterDriver
                     && this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.HeartBeatTimer1) < 2
                     )
                 {
-                    var value = (this.isHeartBeatOn ? HeartBeatOn : HeartBeatOff);
+                    var value = (short)(this.isHeartBeatOn ? 1 : 0);
 
                     var heartBeatMessage = new InverterMessage(
                         (byte)state,
                         (short)InverterParameterId.HeartBeatTimer1,
-                        value);
+                        value,
+                        InverterDataset.HeartBeat);
 
                     this.Logger.LogTrace($"1.RequestHeartBeat={heartBeatMessage}");
                     this.inverterCommandQueue.Enqueue(heartBeatMessage);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -132,13 +133,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            await base.OnAppearedAsync();
-
-            this.IsBackNavigationAllowed = true;
-
-            await this.RetrieveProcedureInformationAsync();
-
             this.SubscribeToEvents();
+
+            await base.OnAppearedAsync();
         }
 
         public async Task RetrieveProcedureInformationAsync()
@@ -155,10 +152,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CurrentVerticalPosition = this.machineElevatorService.Position.Vertical;
                 this.CurrentHorizontalPosition = this.machineElevatorService.Position.Horizontal;
             }
-            catch (Exception ex)
+            catch (HttpRequestException ex)
             {
                 this.ShowNotification(ex);
             }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        protected override async Task OnDataRefreshAsync()
+        {
+            await this.RetrieveProcedureInformationAsync();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -174,17 +180,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return
                 !this.MachineService.MachineStatus.IsMoving
                 &&
-                !this.MachineService.MachineStatus.IsMovingLoadingUnit
-                &&
-                !this.IsWaitingForResponse;
+                !this.MachineService.MachineStatus.IsMovingLoadingUnit;
         }
 
         private bool CanExecuteStopCommand()
         {
             return
-                this.MachineService.MachineStatus.IsMoving
-                &&
-                !this.IsWaitingForResponse;
+                this.MachineService.MachineStatus.IsMoving;
         }
 
         private string GetStringByCalibrateAxisMessageData(Axis axisToCalibrate, MessageStatus status)

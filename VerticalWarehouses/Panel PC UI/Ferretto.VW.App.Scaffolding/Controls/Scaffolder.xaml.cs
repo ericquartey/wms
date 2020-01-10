@@ -59,6 +59,9 @@ namespace Ferretto.VW.App.Scaffolding.Controls
 
         private readonly List<ScaffoldedEntityDataTableItem> _elasticDataTable = new List<ScaffoldedEntityDataTableItem>();
 
+        private Models.ScaffoldedStructure _model = null;
+        private Models.ScaffoldedStructure _navigationRoot = null;
+
         #endregion
 
         #region private
@@ -66,13 +69,13 @@ namespace Ferretto.VW.App.Scaffolding.Controls
         void RebuildElasticDataTable()
         {
             this._elasticDataTable.Clear();
-            if (this._root != null)
+            if (this._model != null)
             {
-                this.BuildUpElasticDataTable(this._root);
+                this.BuildUpElasticDataTable(this._model);
             }
         }
 
-        const string CATEGORY_SEPARATOR = " / ";
+        const string CATEGORY_SEPARATOR = "/";
 
         void BuildUpElasticDataTable(Models.ScaffoldedStructure branch, string category = default)
         {
@@ -86,7 +89,7 @@ namespace Ferretto.VW.App.Scaffolding.Controls
                 this._elasticDataTable.Add(new ScaffoldedEntityDataTableItem
                 {
                     Entity = entity,
-                    FullCategory = string.Concat(category, CATEGORY_SEPARATOR, entity.DisplayName()).Trim(),
+                    FullCategory = string.Concat(category, string.IsNullOrEmpty(category) ? default : CATEGORY_SEPARATOR, entity.DisplayName()).Trim(),
                     Id = entity.Id,
                     OriginalValue = originalValue,
                     Tags = new[] { entity.DisplayName(), category }.Union(entity.Metadata.OfType<TagAttribute>().Select(t => t.Tag())).Where(t => !string.IsNullOrEmpty(t))
@@ -105,23 +108,34 @@ namespace Ferretto.VW.App.Scaffolding.Controls
         public static readonly DependencyProperty ModelProperty
             = DependencyProperty.Register("Model", typeof(object), typeof(Scaffolder), new PropertyMetadata(OnModelPropertyChanged));
 
-        private Models.ScaffoldedStructure _root = null;
-
         private static void OnModelPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+            => ((Scaffolder)d).OnModelChanged(e);
+
+        private void OnModelChanged(DependencyPropertyChangedEventArgs e)
         {
-            Scaffolder ctrl = d as Scaffolder;
             object model = e.NewValue;
-            if (model != null)
+            this._model = model?.Scaffold();
+
+            this.Breadcrumb.Clear();
+            this.RebuildElasticDataTable();
+
+            if (model == null)
             {
-                ctrl._root = ctrl.FocusStructure = model.Scaffold();
+                this.FocusStructure = this._navigationRoot = null;
             }
             else
             {
-                ctrl.FocusStructure = null;
-            }
+                var structureUnion = new[]{
+                    new Models.ScaffoldedStructure(Ferretto.VW.App.Scaffolding.Resources.UI.All,
+                    this._elasticDataTable.OrderBy(i => i.Entity.Id).Select(i => i.Entity),
+                    Array.Empty<Models.ScaffoldedStructure>())
+                }.Union(this._model.Children);
 
-            ctrl.Breadcrumb.Clear();
-            ctrl.RebuildElasticDataTable();
+                this.FocusStructure = this._navigationRoot = new Models.ScaffoldedStructure(
+                    Ferretto.VW.App.Scaffolding.Resources.UI.Root,
+                    Array.Empty<Models.ScaffoldedEntity>(),
+                    structureUnion);
+            }
         }
 
         public object Model
@@ -159,7 +173,7 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             }
             else
             {
-                this.FocusStructure = this._root;
+                this.FocusStructure = this._navigationRoot;
             }
         }
 
@@ -182,7 +196,7 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             this.Structures = new ObservableCollection<Models.ScaffoldedStructure>(current?.Children.AsEnumerable() ?? Array.Empty<Models.ScaffoldedStructure>());
 
             // breadcrumb
-            if (current == this._root)
+            if (current == this._navigationRoot)
             {
                 this.Breadcrumb.Clear();
             }
@@ -263,13 +277,39 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             }
             else
             {
-                this.FocusStructure = this._root;
+                this.FocusStructure = this._navigationRoot;
+            }
+        }
+
+        private void TryEdit(Models.ScaffoldedEntity entity)
+        {
+            if (entity?.IsEditable() == true)
+            {
+                this.EditingEntity = entity;
             }
         }
 
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
-            this.EditingEntity = ((Button)sender).DataContext as Models.ScaffoldedEntity;
+            this.TryEdit(((Button)sender).DataContext as Models.ScaffoldedEntity);
+        }
+
+        private void ListView_Selected(object sender, RoutedEventArgs e)
+        {
+            this.TryEdit(((ListView)sender).SelectedItem as Models.ScaffoldedEntity);
+        }
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            var breadcrumb = this.Breadcrumb;
+            if (breadcrumb?.Count >= 2)
+            {
+                this.FocusStructure = breadcrumb[breadcrumb.Count - 1];
+            }
+            else
+            {
+                this.FocusStructure = this._navigationRoot;
+            }
         }
 
         private void Editor_Commit(object sender, CommitEventArgs e)

@@ -88,6 +88,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Il valore delcampo {0} non è valido..
+        /// </summary>
+        public static string Regex {
+            get {
+                return ResourceManager.GetString("Regex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Il campo {0} è obbligatorio.
         /// </summary>
         public static string Required {

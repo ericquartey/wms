@@ -9,6 +9,7 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager;
+using Ferretto.VW.MAS.MachineManager.MissionMove;
 using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
@@ -184,35 +185,35 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
-        private static void GetPersistedMissions(IServiceProvider serviceProvider)
+        private static void GetPersistedMissions(IServiceProvider serviceProvider, IEventAggregator eventAggregator)
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
-            var machineMissionsProvider = serviceProvider.GetRequiredService<IMachineMissionsProvider>();
 
-            var missions = missionsDataProvider.GetAllExecutingMissions().ToList();
+            var missions = missionsDataProvider.GetAllExecutingMissions(true).ToList();
             foreach (var mission in missions)
             {
                 if (string.IsNullOrEmpty(mission.FsmRestoreStateName))
                 {
                     mission.FsmRestoreStateName = mission.FsmStateName;
                 }
-                mission.FsmStateName = "MissionMoveErrorState";
-                if (mission.FsmRestoreStateName == "MissionMoveBayChainState")
+                mission.FsmStateName = nameof(MissionMoveErrorState);
+                if (mission.FsmRestoreStateName == nameof(MissionMoveBayChainState))
                 {
                     mission.NeedHomingAxis = Axis.BayChain;
                 }
-                else if (mission.FsmRestoreStateName == "MissionMoveLoadElevatorState"
-                    || mission.FsmRestoreStateName == "MissionMoveDepositUnitState"
+                else if (mission.FsmRestoreStateName == nameof(MissionMoveLoadElevatorState)
+                    || mission.FsmRestoreStateName == nameof(MissionMoveDepositUnitState)
                     )
                 {
                     mission.NeedMovingBackward = true;
                     mission.NeedHomingAxis = Axis.Horizontal;
                 }
-                else if (mission.FsmRestoreStateName == "MissionMoveToTargetState")
+                else if (mission.FsmRestoreStateName == nameof(MissionMoveToTargetState))
                 {
                     mission.NeedHomingAxis = Axis.Horizontal;
                 }
-                missionsDataProvider.Update(mission);
+                var state = new MissionMoveErrorState(mission, serviceProvider, eventAggregator);
+                state.OnEnter(null);
             }
         }
 
@@ -371,7 +372,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private async Task OnDataLayerReadyAsync(IServiceProvider serviceProvider)
         {
-            GetPersistedMissions(serviceProvider);
+            GetPersistedMissions(serviceProvider, this.EventAggregator);
             this.dataLayerIsReady = true;
             await this.InvokeSchedulerAsync();
         }
@@ -383,33 +384,40 @@ namespace Ferretto.VW.MAS.MissionManager
 
             if (message.Data is MoveLoadingUnitMessageData luData)
             {
-                var mission = missionsDataProvider.GetByGuid(luData.MissionId.Value);
-                if (!luData.DestinationCellId.HasValue)
-                // loading unit to bay mission
+                try
                 {
-                    var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-                    if (mission.WmsId.HasValue)
+                    var mission = missionsDataProvider.GetByGuid(luData.MissionId.Value);
+                    if (!luData.DestinationCellId.HasValue)
+                    // loading unit to bay mission
                     {
-                        var wmsMission = await this.missionsWmsWebService.GetByIdAsync(mission.WmsId.Value);
-                        var newOperations = wmsMission.Operations.Where(o => o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Completed && o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Error);
-                        if (newOperations.Any())
+                        var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                        if (mission.WmsId.HasValue)
                         {
-                            var newOperation = newOperations.OrderBy(o => o.Priority).First();
-                            this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", mission.TargetBay, mission.WmsId.Value, newOperation.Id);
+                            var wmsMission = await this.missionsWmsWebService.GetByIdAsync(mission.WmsId.Value);
+                            var newOperations = wmsMission.Operations.Where(o => o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Completed && o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Error);
+                            if (newOperations.Any())
+                            {
+                                var newOperation = newOperations.OrderBy(o => o.Priority).First();
+                                this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", mission.TargetBay, mission.WmsId.Value, newOperation.Id);
 
-                            baysDataProvider.AssignWmsMission(mission.TargetBay, mission, newOperation.Id);
-                            this.NotifyAssignedMissionOperationChanged(mission.TargetBay, wmsMission.Id, newOperation.Id);
+                                baysDataProvider.AssignWmsMission(mission.TargetBay, mission, newOperation.Id);
+                                this.NotifyAssignedMissionOperationChanged(mission.TargetBay, wmsMission.Id, newOperation.Id);
+                            }
+                        }
+                        else
+                        {
+                            missionsDataProvider.Complete(mission.Id);
                         }
                     }
                     else
+                    // any other mission type
                     {
                         missionsDataProvider.Complete(mission.Id);
                     }
                 }
-                else
-                // any other mission type
+                catch (Exception ex)
                 {
-                    missionsDataProvider.Complete(mission.Id);
+                    this.Logger.LogError($"Failed to process mission: {ex.Message}");
                 }
             }
 

@@ -7,6 +7,8 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
+using Ferretto.VW.MAS.Utils.Exceptions;
+using Ferretto.VW.MAS.Utils.Messages;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.DeviceManager.Providers
@@ -82,6 +84,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 return message.Status;
             }
+            if (message.Type == MessageType.RunningStateChanged)
+            {
+                if (message.Data is StateChangedMessageData data
+                    && !data.CurrentState)
+                {
+                    return MessageStatus.OperationError;
+                }
+            }
 
             return MessageStatus.NotSpecified;
         }
@@ -99,6 +109,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
         }
 
+        /// <summary>
+        ///     First we try high speed movement.
+        ///     If the starting position do not allow this, we can try slow movement (only during restore operation)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="requestingBay"></param>
+        /// <param name="restore"></param>
         public void CloseShutter(MessageActor sender, BayNumber requestingBay, bool restore)
         {
             try
@@ -113,7 +130,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 }
                 else
                 {
-                    throw;
+                    throw new StateMachineException(ex.Message, requestingBay, sender);
                 }
             }
         }
@@ -125,12 +142,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool FilterNotifications(NotificationMessage notification, MessageActor destination)
         {
+            if (notification.Status == MessageStatus.OperationStart)
+            {
+                return false;
+            }
             return (notification.Destination == MessageActor.Any || notification.Destination == destination) &&
                 (notification.Type == MessageType.Positioning ||
                  notification.Type == MessageType.Stop ||
                  notification.Type == MessageType.InverterStop ||
                  notification.Type == MessageType.ShutterPositioning ||
                  notification.Type == MessageType.Homing ||
+                 notification.Type == MessageType.RunningStateChanged ||
                  notification.Status == MessageStatus.OperationStop ||
                  notification.Status == MessageStatus.OperationError ||
                  notification.Status == MessageStatus.OperationFaultStop ||
@@ -297,7 +319,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return this.carouselProvider.IsOnlyTopPositionOccupied(bayNumber);
         }
 
-        public bool MoveCarousel(int? loadUnitId, MessageActor sender, BayNumber requestingBay, bool restore)
+        public void MoveCarousel(int? loadUnitId, MessageActor sender, BayNumber requestingBay, bool restore)
         {
             if (restore)
             {
@@ -306,11 +328,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 try
                 {
                     this.carouselProvider.MoveManual(VerticalMovementDirection.Up, distance, requestingBay, sender);
-                    return true;
                 }
-                catch (InvalidOperationException)
+                catch (InvalidOperationException ex)
                 {
-                    return false;
+                    throw new StateMachineException(ex.Message, requestingBay, sender);
                 }
             }
             else
@@ -318,23 +339,28 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 try
                 {
                     this.carouselProvider.Move(VerticalMovementDirection.Up, loadUnitId, requestingBay, sender);
-                    return true;
                 }
-                catch (InvalidOperationException)
+                catch (InvalidOperationException ex)
                 {
-                    return false;
+                    throw new StateMachineException(ex.Message, requestingBay, sender);
                 }
             }
         }
 
         public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, ShutterPosition moveShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId)
         {
-            //TODO***********REFACTOR THIS
-            this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, loadUnitId, null, (moveShutter != ShutterPosition.NotSpecified), measure, requestingBay, sender);
-
-            if (moveShutter != ShutterPosition.NotSpecified)
+            try
             {
-                this.shutterProvider.MoveTo(moveShutter, requestingBay, sender);
+                this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, loadUnitId, null, (moveShutter != ShutterPosition.NotSpecified), measure, requestingBay, sender);
+
+                if (moveShutter != ShutterPosition.NotSpecified)
+                {
+                    this.shutterProvider.MoveTo(moveShutter, requestingBay, sender);
+                }
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new StateMachineException(ex.Message, requestingBay, sender);
             }
         }
 
@@ -346,6 +372,22 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 )
             {
                 return message.Status;
+            }
+            if (message.Status == MessageStatus.OperationError
+                || message.Status == MessageStatus.OperationStop
+                || message.Status == MessageStatus.OperationRunningStop
+                || message.Type == MessageType.Stop
+                )
+            {
+                return MessageStatus.OperationError;
+            }
+            if (message.Type == MessageType.RunningStateChanged)
+            {
+                if (message.Data is StateChangedMessageData data
+                    && !data.CurrentState)
+                {
+                    return MessageStatus.OperationError;
+                }
             }
 
             return MessageStatus.NotSpecified;
@@ -414,7 +456,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             else
             {
-                this.shutterProvider.MoveTo(openShutter, requestingBay, sender);
+                try
+                {
+                    this.shutterProvider.MoveTo(openShutter, requestingBay, sender);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    throw new StateMachineException(ex.Message, requestingBay, sender);
+                }
             }
         }
 
@@ -430,32 +479,25 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             if (shutterBay != BayNumber.None)
             {
-                try
-                {
-                    this.shutterProvider.MoveTo(ShutterPosition.Closed, shutterBay, sender);
-                }
-                catch (InvalidOperationException ex)
-                {
-                    if (restore)
-                    {
-                        this.shutterProvider.Move(ShutterMovementDirection.Down, shutterBay, sender);
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                this.CloseShutter(MessageActor.MachineManager, shutterBay, restore);
             }
 
-            this.elevatorProvider.MoveToAbsoluteVerticalPosition(
-                false,
-                targetHeight,
-                true,
-                measure,
-                targetBayPositionId,
-                targetCellId,
-                requestingBay,
-                MessageActor.MachineManager);
+            try
+            {
+                this.elevatorProvider.MoveToAbsoluteVerticalPosition(
+                    false,
+                    targetHeight,
+                    true,
+                    measure,
+                    targetBayPositionId,
+                    targetCellId,
+                    requestingBay,
+                    MessageActor.MachineManager);
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new StateMachineException(ex.Message, requestingBay, sender);
+            }
         }
 
         public MessageStatus PositionElevatorToPositionStatus(NotificationMessage message)
@@ -467,6 +509,21 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 return message.Status;
             }
+            if (message.Status == MessageStatus.OperationError
+                || message.Status == MessageStatus.OperationStop
+                || message.Status == MessageStatus.OperationRunningStop
+                )
+            {
+                return message.Status;
+            }
+            if (message.Type == MessageType.RunningStateChanged)
+            {
+                if (message.Data is StateChangedMessageData data
+                    && !data.CurrentState)
+                {
+                    return MessageStatus.OperationError;
+                }
+            }
 
             return MessageStatus.NotSpecified;
         }
@@ -476,6 +533,21 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if (message.Type == MessageType.ShutterPositioning)
             {
                 return message.Status;
+            }
+            if (message.Status == MessageStatus.OperationError
+                || message.Status == MessageStatus.OperationStop
+                || message.Status == MessageStatus.OperationRunningStop
+                )
+            {
+                return message.Status;
+            }
+            if (message.Type == MessageType.RunningStateChanged)
+            {
+                if (message.Data is StateChangedMessageData data
+                    && !data.CurrentState)
+                {
+                    return MessageStatus.OperationError;
+                }
             }
             return MessageStatus.NotSpecified;
         }

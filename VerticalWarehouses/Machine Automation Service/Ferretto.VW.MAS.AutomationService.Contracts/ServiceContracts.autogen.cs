@@ -1087,11 +1087,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<System.DateTimeOffset> GetAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.DateTimeOffset> SetAsync(System.DateTimeOffset dateTime);
+        System.Threading.Tasks.Task<FileResponse> SetAsync(System.DateTimeOffset dateTime);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.DateTimeOffset> SetAsync(System.DateTimeOffset dateTime, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<FileResponse> SetAsync(System.DateTimeOffset dateTime, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<bool> IsWmsAutoSyncEnabledAsync();
@@ -1587,9 +1587,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         Error = 2,
     
-        RunningStateChanged = 3,
+        Abort = 3,
     
-        FaultStateChanged = 4,
+        RunningStateChanged = 4,
+    
+        FaultStateChanged = 5,
     
     }
     
@@ -2677,6 +2679,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class RepeatedTestProcedure : SetupProcedure
     {
+        [Newtonsoft.Json.JsonProperty("inProgress", Required = Newtonsoft.Json.Required.Always)]
+        public bool InProgress { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("performedCycles", Required = Newtonsoft.Json.Required.Always)]
         public int PerformedCycles { get; set; }
     
@@ -2913,6 +2918,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Description { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("detailCode", Required = Newtonsoft.Json.Required.Always)]
+        public int DetailCode { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("inverterIndex", Required = Newtonsoft.Json.Required.Always)]
+        public int InverterIndex { get; set; }
     
         [Newtonsoft.Json.JsonProperty("occurrenceDate", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
@@ -3401,6 +3412,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     {
         [Newtonsoft.Json.JsonProperty("canBePerformed", Required = Newtonsoft.Json.Required.Always)]
         public bool CanBePerformed { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("inProgress", Required = Newtonsoft.Json.Required.Always)]
+        public bool InProgress { get; set; }
     
         [Newtonsoft.Json.JsonProperty("isCompleted", Required = Newtonsoft.Json.Required.Always)]
         public bool IsCompleted { get; set; }

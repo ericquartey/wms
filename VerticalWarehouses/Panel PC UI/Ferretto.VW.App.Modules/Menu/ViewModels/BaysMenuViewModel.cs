@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,7 +58,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.BayControl),
                 () => this.CanExecuteCommand() &&
                       this.MachineModeService.MachineMode == MachineMode.Manual &&
-                      this.MachineService.IsHoming));
+                      (this.MachineService.IsHoming || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
+                ));
 
         public ICommand BayHeightCommand =>
             this.bayHeightCommand
@@ -66,7 +68,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.BayHeight),
                 () => this.CanExecuteCommand() &&
                       this.MachineModeService.MachineMode == MachineMode.Manual &&
-                      this.MachineService.IsHoming));
+                      (this.MachineService.IsHoming || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
+                ));
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -77,18 +80,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.testShutterCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.TestShutter),
-                ()=> this.CanExecuteCommand() &&
-                     this.MachineModeService.MachineMode == MachineMode.Manual));
+                () => this.CanExecuteCommand() &&
+                     (this.MachineModeService.MachineMode == MachineMode.Manual ||
+                      this.MachineModeService.MachineMode == MachineMode.Test)));
 
         #endregion
 
         #region Methods
-
-        public async override Task OnAppearedAsync()
-        {
-            await base.OnAppearedAsync();
-            this.RaiseCanExecuteChanged();
-        }
 
         protected override void RaiseCanExecuteChanged()
         {
@@ -106,7 +104,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 case Menu.BayControl:
                     this.NavigationService.Appear(
                         nameof(Utils.Modules.Installation),
-                        Utils.Modules.Installation.Bays.BAYHEIGHTCHECK,
+                        Utils.Modules.Installation.Bays.BAYCHECK,
                         data: null,
                         trackCurrentView: true);
                     break;

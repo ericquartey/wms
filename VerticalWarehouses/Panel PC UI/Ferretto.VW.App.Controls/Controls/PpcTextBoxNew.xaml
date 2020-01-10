@@ -31,7 +31,8 @@
                            Margin="0,1,0,1"
                            Background="{x:Null}"
                            Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
-                           Text="{Binding LabelText}" />
+                           Text="{Binding LabelText}"
+                           />
                 <TextBox Name="InputTextBox"
                          Margin="0,3,0,5"
                          Background="{Binding Background}"

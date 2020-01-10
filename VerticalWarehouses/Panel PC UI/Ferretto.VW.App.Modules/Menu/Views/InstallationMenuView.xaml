@@ -56,8 +56,11 @@
                                HorizontalAlignment="Left"
                                VerticalAlignment="Top"
                                FontFamily="{DynamicResource VWAPP_TitleFont}"
-                               Style="{StaticResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                               Text="Stato installazione incompleto. Eseguite 4/10 procedure" />
+                               Style="{StaticResource VWAPP_ViewTitleSmallTextBlockStyle}">
+                        <Run Text="Stato installazione incompleto. Eseguite" />
+                        <Run Text="{Binding ProceduresCompleted}" /><Run Text="/" /><Run Text="{Binding ProceduresCount}" />
+                        <Run Text="procedure" />
+                    </TextBlock>
 
                     <Grid Margin="0,5,0,0"
                           HorizontalAlignment="Stretch"
@@ -75,7 +78,7 @@
                                                  Color2="Green"
                                                  Maximum="100"
                                                  Minimum="0"
-                                                 Value="{Binding Completion, FallbackValue=60}" />
+                                                 Value="{Binding ProceduresCompletedPercent}" />
 
                         <TextBlock Grid.Column="1"
                                    Margin="15,5,0,0"
@@ -83,7 +86,7 @@
                                    VerticalAlignment="Center"
                                    FontFamily="{DynamicResource VWAPP_TitleFont}"
                                    Style="{StaticResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                                   Text="40%" />
+                                   Text="{Binding ProceduresCompletedPercent, StringFormat={}{0}%}" />
                     </Grid>
 
                 </StackPanel>

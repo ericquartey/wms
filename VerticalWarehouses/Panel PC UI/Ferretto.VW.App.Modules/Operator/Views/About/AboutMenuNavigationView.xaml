@@ -50,7 +50,7 @@
                             Padding="-1,1,0,0"
                             Abbrevation="3.3"
                             BorderBrush="{DynamicResource FerrettoGreen}"
-                            Command="{Binding AllarmCommand}"
+                            Command="{Binding AlarmCommand}"
                             Content="Allarmi"
                             IsActive="{Binding IsAlarmActive}"
                             Kind="Account"

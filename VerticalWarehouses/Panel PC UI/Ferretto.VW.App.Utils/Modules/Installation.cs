@@ -14,8 +14,6 @@
 
         public const string DATETIME = "DateTimeViewModel";
 
-        public const string INSTALLATORMENU = "InstallatorMenuViewModel";
-
         public const string LOADFIRSTDRAWER = "LoadFirstDrawerViewModel";
 
         public const string MOVEMENTS = "MovementsViewModel";
@@ -49,6 +47,8 @@
         public static class Bays
         {
             #region Fields
+
+            public const string BAYCHECK = "BayCheckViewModel";
 
             public const string BAYHEIGHTCHECK = "BayHeightCheckViewModel";
 

@@ -14,6 +14,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.IoDevice_IpAddress))]
             [Required(ErrorMessageResourceType = typeof(ErrorMessages), ErrorMessageResourceName = nameof(ErrorMessages.Required))]
+            [RegularExpression(Constants.IPAddressPattern, ErrorMessageResourceType = typeof(ErrorMessages), ErrorMessageResourceName = nameof(ErrorMessages.Regex))]
             public System.Net.IPAddress IpAddress { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.IoDevice_TcpPort))]

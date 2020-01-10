@@ -182,7 +182,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    (!this.IsAuto && this.IsManualEnabled));
         }
 
-        private DateTime? GetNewDateTime()
+        private DateTimeOffset? GetNewDateTime()
         {
             if (this.year >= 2020 && this.year <= 3000
                 && this.month >= 1 && this.month <= 12
@@ -190,7 +190,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 && this.hour >= 0 && this.hour <= 23
                 && this.minute >= 0 && this.minute <= 59)
             {
-                return new DateTime(this.year.Value, this.month.Value, this.day.Value, this.hour.Value, this.minute.Value, 0);
+                var daTe = new DateTime(this.year.Value, this.month.Value, this.day.Value, this.hour.Value, this.minute.Value, 0, DateTimeKind.Local);
+                daTe.ToUniversalTime();
+                return new DateTimeOffset(daTe.ToUniversalTime());
             }
 
             return null;
@@ -212,7 +214,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.IsAuto = await this.machineUtcTimeWebService.IsWmsAutoSyncEnabledAsync();
                 }
 
-                currentDateTime = await this.machineUtcTimeWebService.GetAsync();
+                var newcurrentDateTime = await this.machineUtcTimeWebService.GetAsync();
+                currentDateTime = newcurrentDateTime.ToLocalTime();
             }
             catch (Exception ex)
             {

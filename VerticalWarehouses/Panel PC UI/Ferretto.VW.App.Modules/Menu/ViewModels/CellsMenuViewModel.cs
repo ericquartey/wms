@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -64,7 +65,9 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.bayFirstLoadingUnitCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.BayFirstLoadingUnit),
                 () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual && this.MachineService.IsHoming));
+                      this.MachineModeService.MachineMode == MachineMode.Manual &&
+                      (this.MachineService.IsHoming || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
+                ));
 
         public ICommand CellPanelsCheckCommand =>
             this.cellPanelsCheckCommand
@@ -72,7 +75,9 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.cellPanelsCheckCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.CellPanelsCheck),
                 () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual && this.MachineService.IsHoming));
+                      this.MachineModeService.MachineMode == MachineMode.Manual &&
+                      (this.MachineService.IsHoming || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
+                ));
 
         public ICommand CellsBlockTuningCommand =>
             this.cellsBlockTuningCommand
@@ -80,7 +85,9 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.cellsBlockTuningCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.CellsBlockTuning),
                 () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual && this.MachineService.IsHoming));
+                      this.MachineModeService.MachineMode == MachineMode.Manual &&
+                      (this.MachineService.IsHoming || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
+                ));
 
         public ICommand CellsCommand =>
             this.cellsCommand
@@ -95,17 +102,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.cellsHeightCheckCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.CellsHeightCheck),
                 () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual && this.MachineService.IsHoming));
+                      this.MachineModeService.MachineMode == MachineMode.Manual &&
+                      (this.MachineService.IsHoming || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
+               ));
 
         #endregion
 
         #region Methods
-
-        public async override Task OnAppearedAsync()
-        {
-            await base.OnAppearedAsync();
-            this.RaiseCanExecuteChanged();
-        }
 
         protected override void RaiseCanExecuteChanged()
         {

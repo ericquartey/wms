@@ -353,7 +353,7 @@ namespace Ferretto.VW.App.Services
 
             var attribute = viewType?.GetCustomAttributes(typeof(WarningAttribute), true)?.FirstOrDefault() as WarningAttribute;
             if (attribute is null &&
-                viewType.BaseType != null)
+                viewType?.BaseType != null)
             {
                 attribute = viewType?.BaseType?.GetCustomAttributes(typeof(WarningAttribute), true)?.FirstOrDefault() as WarningAttribute;
             }
@@ -561,6 +561,40 @@ namespace Ferretto.VW.App.Services
                                     && !this.MachineStatus.IsMovingLoadingUnit)
                                 {
                                     this.WriteInfo(dataPositioningInfo?.AxisMovement);
+
+                                    if ((dataPositioningInfo.TargetSpeed?.Length > 0 && this.MachineStatus.VerticalSpeed.HasValue && dataPositioningInfo.TargetSpeed[0] != this.MachineStatus.VerticalSpeed.Value) ||
+                                        (dataPositioningInfo.AxisMovement == Axis.Vertical && this.MachineStatus.VerticalTargetPosition.HasValue && dataPositioningInfo.TargetPosition != this.MachineStatus.VerticalTargetPosition.Value) ||
+                                        (dataPositioningInfo.AxisMovement == Axis.Horizontal && this.MachineStatus.HorizontalTargetPosition.HasValue && dataPositioningInfo.TargetPosition != this.MachineStatus.HorizontalTargetPosition.Value) ||
+                                        (dataPositioningInfo.AxisMovement == Axis.BayChain && this.MachineStatus.BayChainTargetPosition.HasValue && dataPositioningInfo.TargetPosition != this.MachineStatus.BayChainTargetPosition.Value))
+                                    {
+                                        var ms = (MachineStatus)this.MachineStatus.Clone();
+
+                                        ms.VerticalSpeed = null;
+                                        if (dataPositioningInfo.AxisMovement == Axis.Vertical)
+                                        {
+                                            ms.VerticalTargetPosition = dataPositioningInfo.TargetPosition;
+                                            if (dataPositioningInfo.TargetSpeed.Length > 0)
+                                            {
+                                                ms.VerticalSpeed = dataPositioningInfo.TargetSpeed[0];
+                                            }
+                                        }
+                                        else if (dataPositioningInfo.AxisMovement == Axis.Horizontal)
+                                        {
+                                            ms.HorizontalTargetPosition = dataPositioningInfo.TargetPosition;
+                                        }
+                                        else if (dataPositioningInfo.AxisMovement == Axis.BayChain)
+                                        {
+                                            ms.BayChainTargetPosition = dataPositioningInfo.TargetPosition;
+                                        }
+
+                                        this.MachineStatus = ms;
+                                    }
+                                }
+
+                                if (message?.Data is ShutterPositioningMessageData dataShutterPositioningInfo
+                                    && !this.MachineStatus.IsMovingLoadingUnit)
+                                {
+                                    this.WriteInfo(null);
                                 }
                             }
 
@@ -959,7 +993,6 @@ namespace Ferretto.VW.App.Services
                         }
                         break;
 
-                    case WarningsArea.Maintenance:
                     case WarningsArea.Picking:
                         if (this.machineModeService.MachinePower != MachinePowerState.Powered)
                         {
@@ -972,6 +1005,13 @@ namespace Ferretto.VW.App.Services
                         else
                         {
                             this.ClearNotifications();
+                        }
+                        break;
+
+                    case WarningsArea.Maintenance:
+                        if (this.machineModeService.MachinePower != MachinePowerState.Powered)
+                        {
+                            this.ShowNotification("Manca marcia.", NotificationSeverity.Warning);
                         }
                         break;
 
@@ -999,28 +1039,42 @@ namespace Ferretto.VW.App.Services
                 return;
             }
 
-            if (this.machineModeService.MachineMode == MachineMode.Manual)
+            if (this.MachineStatus.IsMovingShutter)
             {
-                if (axisMovement.HasValue && axisMovement == Axis.Vertical)
+                if (this.machineModeService.MachineMode == MachineMode.Test)
                 {
-                    this.Notification = "Movimento verticale in corso...";
+                    this.Notification = "Test in corso...";
                 }
-                else if (axisMovement.HasValue && axisMovement == Axis.Horizontal)
+                else
                 {
-                    this.Notification = "Movimento orizzontale in corso...";
+                    this.Notification = "Movimento serranda in corso...";
                 }
-                else if (axisMovement.HasValue && axisMovement == Axis.BayChain)
-                {
-                    this.Notification = "Movimento catena baia in corso...";
-                }
-            }
-            else if (this.machineModeService.MachineMode == MachineMode.Test)
-            {
-                this.Notification = "Test in corso...";
             }
             else
             {
-                this.Notification = "Movimento in corso...";
+                if (this.machineModeService.MachineMode == MachineMode.Manual)
+                {
+                    if (axisMovement.HasValue && axisMovement == Axis.Vertical)
+                    {
+                        this.Notification = "Movimento verticale in corso...";
+                    }
+                    else if (axisMovement.HasValue && axisMovement == Axis.Horizontal)
+                    {
+                        this.Notification = "Movimento orizzontale in corso...";
+                    }
+                    else if (axisMovement.HasValue && axisMovement == Axis.BayChain)
+                    {
+                        this.Notification = "Movimento catena baia in corso...";
+                    }
+                }
+                else if (this.machineModeService.MachineMode == MachineMode.Test)
+                {
+                    this.Notification = "Test in corso...";
+                }
+                else
+                {
+                    this.Notification = "Movimento in corso...";
+                }
             }
         }
 

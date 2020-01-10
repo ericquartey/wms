@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
 
 namespace Ferretto.VW.App.Scaffolding.Controls
 {
@@ -27,6 +28,12 @@ namespace Ferretto.VW.App.Scaffolding.Controls
         {
             this.InitializeComponent();
         }
+
+        #region Plain fields
+
+        private IEnumerable<ValidationRule> _validationRules = Array.Empty<ValidationRule>();
+
+        #endregion
 
         #region Dependency Properties
 
@@ -46,6 +53,10 @@ namespace Ferretto.VW.App.Scaffolding.Controls
                 return;
             }
 
+            // 1. validation rules
+            this._validationRules = entity.ExtractValidationRules();
+
+            // 2. other assignments
             object originalValue = null;
             if (entity.Instance != null)
             {
@@ -53,6 +64,8 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             }
             this.OriginalValue = originalValue;
             var type = entity.Property.PropertyType;
+
+            // assign value
             if (type.IsValueType)
             {
                 // just copy
@@ -99,6 +112,12 @@ namespace Ferretto.VW.App.Scaffolding.Controls
         private void OnValueChanged(DependencyPropertyChangedEventArgs e)
         {
             this.IsDirty = e.NewValue != this.OriginalValue;
+
+            // validation
+            var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
+            var results = this._validationRules.Select(r => r.Validate(e.NewValue, currentCulture)).Where(r => r.IsValid == false);
+            this.IsValid = !results.Any();
+            this.ValidationMessage = results.Select(r => r.ErrorContent).FirstOrDefault();
         }
 
         public object Value
@@ -132,6 +151,15 @@ namespace Ferretto.VW.App.Scaffolding.Controls
         {
             get => (bool)this.GetValue(IsValidProperty);
             set => this.SetValue(IsValidProperty, value);
+        }
+
+        public static readonly DependencyProperty ValidationMessageProperty
+            = DependencyProperty.Register("ValidationMessage", typeof(object), typeof(PropertyEditor));
+        
+        public object ValidationMessage
+        {
+            get => this.GetValue(ValidationMessageProperty);
+            set => this.SetValue(ValidationMessageProperty, value);
         }
 
         #endregion

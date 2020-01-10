@@ -47,8 +47,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool bayIsMultiPosition;
 
-        private IEnumerable<Bay> bays;
-
         private IEnumerable<Cell> cells;
 
         private SubscriptionToken cellsToken;
@@ -204,8 +202,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override void Disappear()
         {
-            this.IsWaitingForResponse = false;
-
             base.Disappear();
 
             this.loadunitsToken?.Dispose();
@@ -233,53 +229,44 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                this.IsWaitingForResponse = true;
-
-                await base.OnAppearedAsync();
-
                 this.SubscribeToEvents();
 
                 this.GoToMovementsExecuteCommand(this.isMovementsGuided);
 
                 await this.RefreshMachineInfoAsync();
 
-                await this.SensorsService.RefreshAsync(true);
-
-                this.bays = await this.machineBaysWebService.GetAllAsync();
-
                 this.LightIcon = !this.IsLightActive ? "LightbulbOnOutline" : "LightbulbOutline";
 
                 this.SelectBayPositionUp();
-                this.InputLoadingUnitIdPropertyChanged();
-                this.InputCellIdPropertyChanged();
-
-                var elevatorPosition = await this.machineElevatorWebService.GetPositionAsync();
-
-                this.IsElevatorInCell = elevatorPosition.CellId != null;
-                this.IsElevatorInBay = elevatorPosition.BayPositionId != null;
-
-                if (this.IsElevatorInCell)
-                {
-                    this.InputCellId = elevatorPosition.CellId;
-                }
-                else if (this.IsElevatorInBay)
-                {
-                    this.SelectedBayPosition = this.bay.Positions.SingleOrDefault(p => p.Id == elevatorPosition.BayPositionId);
-                }
 
                 this.BayIsMultiPosition = this.bay.IsDouble;
 
-                this.OnManualAppearedAsync();
+                this.isManualMovementCompleted = false;
 
-                this.RaiseCanExecuteChanged();
+                await base.OnAppearedAsync();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
-            finally
+        }
+
+        protected override async Task OnDataRefreshAsync()
+        {
+            await this.SensorsService.RefreshAsync(true);
+
+            var elevatorPosition = await this.machineElevatorWebService.GetPositionAsync();
+
+            this.IsElevatorInCell = elevatorPosition.CellId != null;
+            this.IsElevatorInBay = elevatorPosition.BayPositionId != null;
+
+            if (this.IsElevatorInCell)
             {
-                this.IsWaitingForResponse = false;
+                this.InputCellId = elevatorPosition.CellId;
+            }
+            else if (this.IsElevatorInBay)
+            {
+                this.SelectedBayPosition = this.bay.Positions.SingleOrDefault(p => p.Id == elevatorPosition.BayPositionId);
             }
         }
 
@@ -326,11 +313,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected override void RaiseCanExecuteChanged()
         {
-            if (!this.IsVisible)
-            {
-                return;
-            }
-
             base.RaiseCanExecuteChanged();
 
             this.OnManualRaiseCanExecuteChanged();
@@ -343,14 +325,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             if (this.MachineStatus.EmbarkedLoadingUnit != null)
             {
-                if (!string.IsNullOrEmpty(this.MachineStatus.LogicalPositionId))
-                {
-                    this.LabelMoveToLoadunit = "Vai a cella";
-                }
-                else
-                {
-                    this.LabelMoveToLoadunit = "Vai a cella libera";
-                }
+                this.LabelMoveToLoadunit = "Vai a cella libera";
             }
             else
             {
@@ -372,8 +347,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsKeyboardOpened
                 &&
                 !this.IsExecutingProcedure
-                &&
-                !this.IsWaitingForResponse
                 &&
                 !this.IsMoving;
         }
@@ -410,9 +383,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return
                 !this.IsKeyboardOpened
                 &&
-                this.IsMoving
-                &&
-                !this.IsWaitingForResponse;
+                this.IsMoving;
         }
 
         private void ElevatorChanged()
@@ -422,15 +393,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void GoToMovementsExecuteCommand(bool isGuided)
         {
-            // if (!isGuided && this.isMovementsGuided)
-            // {
-            //    var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
-            //    var messageBoxResult = dialogService.ShowMessage(InstallationApp.ConfirmationOperation, InstallationApp.MovementsManual, DialogType.Question, DialogButtons.YesNo);
-            //    if (messageBoxResult is DialogResult.No)
-            //    {
-            //        return;
-            //    }
-            // }
             if (isGuided)
             {
                 this.Title = InstallationApp.MovementsGuided;
@@ -686,7 +648,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private async Task StopMovingAsync()
         {
             // In caso di fine operazione
-            if (this.IsMovementsManual && this.isCompleted)
+            if (this.IsMovementsManual && this.isManualMovementCompleted)
             {
                 return;
             }

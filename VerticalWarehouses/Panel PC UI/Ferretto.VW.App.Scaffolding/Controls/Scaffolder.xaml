@@ -4,13 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:Ferretto.VW.App.Scaffolding.Controls"
+             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:converters="clr-namespace:Ferretto.VW.App.Scaffolding.Converters"
              xmlns:selectors="clr-namespace:Ferretto.VW.App.Scaffolding.Selectors"
              xmlns:validation="clr-namespace:Ferretto.VW.App.Scaffolding.ValidationRules"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:g11n="clr-namespace:System.Globalization;assembly=mscorlib"
+             xmlns:resx="clr-namespace:Ferretto.VW.App.Scaffolding.Resources"
              mc:Ignorable="d" 
+             xmlns:design="clr-namespace:Ferretto.VW.App.Scaffolding.Design"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <converters:DisplayNameConverter x:Key="DisplayNameConverter" />
@@ -21,40 +24,97 @@
         <converters:ValidationRuleConverter x:Key="ValidationRuleConverter" />
         <converters:DefaultValueConverter x:Key="DefaultValueConverter" />
 
+        <Style TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="Background" Value="{x:Null}"/>
+            <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
+            <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
+            <Setter Property="BorderBrush" Value="{x:Null}" />
+        </Style>
+
+        <Style TargetType="{x:Type ListView}">
+            <Setter Property="Background" Value="{x:Null}"/>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="{x:Type ListViewItem}">
+
+                        <Setter Property="Margin" Value="0,1,0,0"/>
+                        <Setter Property="Height" Value="21"/>
+                        <Setter Property="Foreground" Value="{DynamicResource FerrettoLightGray}" />
+                        <Setter Property="Background" Value="{x:Null}" />
+                        <Setter Property="FontSize" Value="{DynamicResource FontSize_Normal}" />
+                        <Setter Property="Height" Value="32" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                    <Border SnapsToDevicePixels="true"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            Background="{TemplateBinding Background}"
+                                            CornerRadius="0">
+                                        <GridViewRowPresenter />
+                                    </Border>
+                                </ControlTemplate>
+
+                            </Setter.Value>
+                        </Setter>
+
+                        <Style.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="true" />
+                                    <!--<Condition Property="Selector.IsSelectionActive" Value="true" />-->
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
+                                <Setter Property="Background" Value="{DynamicResource FerrettoMediumGray}" />
+                            </MultiTrigger>
+                        </Style.Triggers>
+
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition />
+            <RowDefinition Height="{Binding Path=Structures.Count, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}, Converter={StaticResource TruthyToVisibilityConverter}}" />
+            <RowDefinition Height="{Binding Path=Entities.Count, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}, Converter={StaticResource TruthyToVisibilityConverter}}" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
 
         <StackPanel DataContext="{Binding Path=Breadcrumb, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" 
                     Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal"
                     Visibility="{Binding Path=Count, Converter={StaticResource TruthyToVisibilityConverter}}">
 
-            <Button Margin="0,0,0,8" Click="Reset_Click">
+            <Button Margin="0,0,0,8" Click="Back_Click"
+                    Visibility="{Binding Path=Count, Converter={StaticResource TruthyToVisibilityConverter}}"
+                    BorderBrush="{DynamicResource FerrettoBlack}"
+                    FontSize="{DynamicResource FontSize_Very_High}"
+                    Padding="10"
+                    Foreground="{DynamicResource FerrettoLightGray}"
+                    Background="{x:Null}">
                 <Button.Content>
-                    <Border Padding="5" BorderThickness="1">
-                        <TextBlock Text="Root" />
-                    </Border>
+                    <icons:FontAwesome Kind="ReplySolid" />
                 </Button.Content>
             </Button>
 
 
+            <TextBlock Text="{x:Static resx:UI.Root}" VerticalAlignment="Center"
+                       Margin="10,0,5,0"
+                       Foreground="{DynamicResource FerrettoMediumGray}"
+                       FontSize="{DynamicResource FontSize_High}"
+                       Visibility="{Binding Path=Count, Converter={StaticResource TruthyToVisibilityConverter}}" />
             <!-- breadcrumb -->
-            <ItemsControl ItemsSource="{Binding}">
+            <ItemsControl ItemsSource="{Binding}"
+                          Visibility="{Binding Path=Count, Converter={StaticResource TruthyToVisibilityConverter}}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" />
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Button Margin="0,0,0,8">
+                        <!--<Button Margin="0,0,0,8">
                             <Button.Content>
                                 <Border Padding="5" BorderThickness="1">
                                     <TextBlock Text="{Binding Category}" />
@@ -65,34 +125,40 @@
                                     <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" MethodName="SelectCategory" />
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
-                        </Button>
+                        </Button>-->
+                        <TextBlock  Foreground="{DynamicResource FerrettoMediumGray}"
+                                    FontSize="{DynamicResource FontSize_High}">
+                            <Run>/</Run>
+                            <Run Text="{Binding Category, Mode=OneWay}"></Run>
+                        </TextBlock>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </StackPanel>
 
-        <StackPanel Grid.Column="0" Grid.Row="1"
-                     DataContext="{Binding Path=Structures, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Column="0" Grid.Row="1"
+                      Visibility="{Binding Path=Count, Converter={StaticResource TruthyToVisibilityConverter}}"
+                    d:DataContext="{d:DesignInstance Type=design:VertimagStructuresViewModel, IsDesignTimeCreatable=True}"
+                    DataContext="{Binding Path=Structures, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}}">
 
-            <Button Click="Reset_Click"
-                DataContext="{Binding Path=FocusStructure, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
-                Visibility="{Binding Converter={StaticResource TruthyToVisibilityConverter}}">
-                <Button.Content>
-                    <TextBlock Text="{Binding Category, StringFormat=annulla \{0\}}"></TextBlock>
-                </Button.Content>
-            </Button>
+            <!--<ctrls:PpcButton Click="Reset_Click"
+                             DataContext="{Binding Path=FocusStructure, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+                             Visibility="{Binding Converter={StaticResource TruthyToVisibilityConverter}}"
+                             Content="{Binding Category, StringFormat=annulla \{0\}}">
+            </ctrls:PpcButton>-->
 
             <!-- categories -->
 
+
             <ItemsControl ItemsSource="{Binding}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel />
+                        <WrapPanel />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Button Margin="0,0,0,8">
+                        <!--<Button Margin="0,0,0,8">
                             <Button.Content>
                                 <Border Padding="5" BorderThickness="1">
                                     <TextBlock Text="{Binding Category}" />
@@ -103,94 +169,119 @@
                                     <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" MethodName="SelectCategory" />
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
-                        </Button>
+                        </Button>-->
+                        <ctrls:PpcButton Margin="0,0,10,10"
+                                             Height="100"
+                                             Content="{Binding Category}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" MethodName="SelectCategory" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ctrls:PpcButton>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
+        </ScrollViewer>
 
-        </StackPanel>
-
-        <StackPanel HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="1"
-                    DataContext="{Binding Path=Entities, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}">
-
+        <Grid Grid.Row="2"
+                    d:DataContext="{d:DesignInstance Type=design:VertimagEntitiesViewModel, IsDesignTimeCreatable=True}"
+              DataContext="{Binding Path=Entities, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}}"
+              Visibility="{Binding Path=Count, Converter={StaticResource TruthyToVisibilityConverter}}"
+                    >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
             <!-- search box -->
-            <Grid>
+            <Grid Margin="0,0,0,15">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="cerca:" />
+
+                <TextBlock Text="{x:Static resx:UI.Search}" VerticalAlignment="Center"
+                       Foreground="{DynamicResource FerrettoWhiteGray}"
+                       FontSize="{DynamicResource FontSize_High}" Margin="0,0,10,0" />
+
                 <TextBox Grid.Column="1" Text="{Binding Path=SearchText, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, UpdateSourceTrigger=PropertyChanged, Delay=500}"></TextBox>
             </Grid>
-
-            <!-- entities -->
-            <ListView ItemsSource="{Binding}">
-                <ListView.View>
-                    <controls:AutoResizedGridView>
-                        <GridViewColumn Header="Nome" Width="Auto" DisplayMemberBinding="{Binding Path=Caption}" />
-                        <GridViewColumn Header="Id" Width="Auto" DisplayMemberBinding="{Binding Path=Id}" />
-                        <GridViewColumn Header="Value">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <DataTemplate.Resources>
-                                        <converters:TwoWayConverter x:Key="TwoWayConverter" />
-                                    </DataTemplate.Resources>
-                                    <TextBlock>
-                                        <TextBlock.Text>
-                                            <MultiBinding Converter="{StaticResource TwoWayConverter}" ConverterCulture="{x:Static g11n:CultureInfo.CurrentCulture}">
-                                                <Binding Path="Property" />
-                                                <Binding Path="Instance" />
-                                            </MultiBinding>
-                                        </TextBlock.Text></TextBlock>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Header="Default" Width="Auto">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Converter={StaticResource DefaultValueConverter}}" />
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Header="Min" Width="Auto">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Converter={StaticResource DefaultValueConverter}, ConverterParameter=Min}" />
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Header="Max" Width="Auto">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Converter={StaticResource DefaultValueConverter}, ConverterParameter=Max}" />
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Header="U.m." Width="Auto">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Converter={StaticResource DefaultValueConverter}, ConverterParameter=Unit}" />
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Width="Auto">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button Content="{icons:FontAwesome Kind=EditRegular}" Click="Edit_Click" />
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                    </controls:AutoResizedGridView>
-                </ListView.View>
-            </ListView>
-
-        </StackPanel>
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                      HorizontalAlignment="Stretch" Grid.Row="1">
 
 
-        <controls:PropertyEditor x:Name="editor" Grid.ColumnSpan="2" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                <!-- entities -->
+                <ListView ItemsSource="{Binding}"
+                          PreviewTouchUp="ListView_Selected"
+                          PreviewMouseUp="ListView_Selected"
+                          HorizontalContentAlignment="Stretch">
+                    <ListView.View>
+                        <controls:AutoResizedGridView>
+                            <GridViewColumn Header="Nome" Width="Auto" DisplayMemberBinding="{Binding Path=Caption}" />
+                            <GridViewColumn Header="Id" Width="Auto" DisplayMemberBinding="{Binding Path=Id}" />
+                            <GridViewColumn Header="Value">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <DataTemplate.Resources>
+                                            <converters:TwoWayConverter x:Key="TwoWayConverter" />
+                                        </DataTemplate.Resources>
+                                        <TextBlock>
+                                            <TextBlock.Text>
+                                                <MultiBinding Converter="{StaticResource TwoWayConverter}" ConverterCulture="{x:Static g11n:CultureInfo.CurrentCulture}">
+                                                    <Binding Path="Property" />
+                                                    <Binding Path="Instance" />
+                                                </MultiBinding>
+                                            </TextBlock.Text></TextBlock>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Default" Width="Auto">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Converter={StaticResource DefaultValueConverter}}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Min" Width="Auto">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Converter={StaticResource DefaultValueConverter}, ConverterParameter=Min}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Max" Width="Auto">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Converter={StaticResource DefaultValueConverter}, ConverterParameter=Max}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="U.m." Width="Auto">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Converter={StaticResource DefaultValueConverter}, ConverterParameter=Unit}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <!--<GridViewColumn Width="Auto">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="{icons:FontAwesome Kind=EditRegular}" Click="Edit_Click" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>-->
+                        </controls:AutoResizedGridView>
+                    </ListView.View>
+                </ListView>
+
+            </ScrollViewer>
+        </Grid>
+
+
+        <controls:PropertyEditor x:Name="editor" Grid.RowSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                  Entity="{Binding Path=EditingEntity, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
                                  Visibility="{Binding Path=Entity, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource TruthyToVisibilityConverter}}"
-                                 Commit="Editor_Commit">            
+                                 Commit="Editor_Commit">
         </controls:PropertyEditor>
 
     </Grid>

@@ -276,8 +276,12 @@ namespace Ferretto.VW.App.Scaffolding.Services
         private static Models.ScaffoldedStructure Publish(this ScaffoldedStructureInternal tree)
         {
             return new Models.ScaffoldedStructure(tree.Category,
-                tree.Entities.Where(e => e.Property != null && e.Instance != null).Select(e => e.Publish()),
-                tree.Children.Select(c => c.Publish()).Where(c => c.Entities.Any())
+                tree.Entities
+                .Where(e => e.Property != null && e.Instance != null)
+                .Select(e => e.Publish()),
+                tree.Children
+                .Select(c => c.Publish())
+                .Where(c => c.Entities.Any() || c.Children.Any())
                 );
         }
 

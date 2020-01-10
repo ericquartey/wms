@@ -917,7 +917,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void SetLoadingUnit(int bayPositionId, int? loadingUnitId)
         {
-            var position = this.dataContext.BayPositions.SingleOrDefault(p => p.Id == bayPositionId);
+            var position = this.dataContext.BayPositions.Include(i => i.LoadingUnit).SingleOrDefault(p => p.Id == bayPositionId);
             if (position is null)
             {
                 throw new EntityNotFoundException($"BayPosition ID={bayPositionId}");

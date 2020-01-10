@@ -4,7 +4,6 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
-using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
@@ -63,12 +62,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command)
         {
-            this.logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
+            this.Mission.FsmRestoreStateName = null;
             this.Mission.FsmStateName = nameof(MissionMoveLoadElevatorState);
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
-            this.missionsDataProvider.Update(this.Mission);
-
             this.Mission.Direction = HorizontalMovementDirection.Backwards;
+            this.Mission.StopReason = StopRequestReason.NoReason;
+            this.missionsDataProvider.Update(this.Mission);
+            this.logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
+
             var measure = (this.Mission.LoadingUnitSource != LoadingUnitLocation.Cell);
             switch (this.Mission.LoadingUnitSource)
             {
@@ -88,7 +89,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         var description = $"{this.GetType().Name}: source bay not found {this.Mission.LoadingUnitSource}";
 
-                        throw new StateMachineException(description);
+                        throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                     }
                     this.Mission.Direction = (bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards);
                     this.Mission.OpenShutterPosition = this.loadingUnitMovementProvider.GetShutterOpenPosition(bay, this.Mission.LoadingUnitSource);
@@ -102,7 +103,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         if (result != MachineErrorCode.NoError)
                         {
                             var error = this.errorsProvider.RecordNew(result);
-                            throw new StateMachineException(error.Description);
+                            throw new StateMachineException(error.Description, this.Mission.TargetBay, MessageActor.MachineManager);
                         }
                     }
                     break;
@@ -232,7 +233,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
-                        throw new InvalidOperationException("");
+                        var description = $"Load unit {this.Mission.LoadingUnitId} movement load elevator has no source cell specified.";
+                        throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                     }
                 }
                 else
@@ -243,16 +245,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 transaction.Commit();
             }
-            var msg = new NotificationMessage(
-                            null,
-                            $"Load Unit position changed",
-                            MessageActor.Any,
-                            MessageActor.MachineManager,
-                            MessageType.Positioning,
-                            this.Mission.TargetBay,
-                            this.Mission.TargetBay,
-                            MessageStatus.OperationUpdateData);
-            this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+
+            this.SendPositionNotification($"Load Unit {this.Mission.LoadingUnitId} position changed");
 
             // in bay-to-cell movements the profile may have changed so we have to find a new empty cell
             if (this.Mission.LoadingUnitSource != LoadingUnitLocation.Cell

@@ -58,10 +58,10 @@
             <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
 
             <Style.Triggers>
-                <DataTrigger Binding="{Binding IsActive}"
+                <!--<DataTrigger Binding="{Binding IsActive}"
                              Value="True">
                     <Setter Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
-                </DataTrigger>
+                </DataTrigger>-->
                 <Trigger Property="IsPressed" Value="True">
                     <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
                     <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushPressed}" />
@@ -117,10 +117,10 @@
             <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
 
             <Style.Triggers>
-                <DataTrigger Binding="{Binding IsActive}"
+                <!--<DataTrigger Binding="{Binding IsActive}"
                              Value="True">
                     <Setter Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
-                </DataTrigger>
+                </DataTrigger>-->
                 <Trigger Property="IsPressed" Value="True">
                     <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
                     <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushPressed}" />
@@ -176,10 +176,10 @@
             <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
 
             <Style.Triggers>
-                <DataTrigger Binding="{Binding IsActive}"
+                <!--<DataTrigger Binding="{Binding IsActive}"
                              Value="True">
                     <Setter Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
-                </DataTrigger>
+                </DataTrigger>-->
                 <Trigger Property="IsPressed" Value="True">
                     <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
                     <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushPressed}" />

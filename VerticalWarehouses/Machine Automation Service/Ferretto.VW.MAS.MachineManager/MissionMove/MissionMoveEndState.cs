@@ -53,6 +53,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command)
         {
+            this.Mission.FsmRestoreStateName = null;
             this.Mission.FsmStateName = nameof(MissionMoveEndState);
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.Mission.BayNotifications = MissionBayNotifications.None;
@@ -100,6 +101,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     && this.AllStopped(bays)
                     )
                 {
+                    this.Mission.BayNotifications = MissionBayNotifications.None;
+                    this.missionsDataProvider.Update(this.Mission);
                     this.SendNotification();
                 }
             }
@@ -140,29 +143,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 && this.Mission.LoadingUnitDestination != LoadingUnitLocation.LoadingUnit
                 && this.Mission.LoadingUnitDestination != LoadingUnitLocation.NoLocation;
 
-            var newMessageData = new MoveLoadingUnitMessageData(
-                this.Mission.MissionType,
-                this.Mission.LoadingUnitSource,
-                this.Mission.LoadingUnitDestination,
-                this.Mission.LoadingUnitCellSourceId,
-                this.Mission.DestinationCellId,
-                this.Mission.LoadingUnitId,
-                (this.Mission.LoadingUnitDestination == LoadingUnitLocation.Cell),
-                isEject,
-                this.Mission.FsmId,
-                this.Mission.Action,
-                this.Mission.StopReason);
-
-            var msg = new NotificationMessage(
-                newMessageData,
-                $"Loading Unit {this.Mission.LoadingUnitId} start movement to bay {this.Mission.LoadingUnitDestination}",
-                MessageActor.AutomationService,
-                MessageActor.MachineManager,
-                MessageType.MoveLoadingUnit,
-                this.Mission.TargetBay,
-                this.Mission.TargetBay,
-                StopRequestReasonConverter.GetMessageStatusFromReason(this.Mission.StopReason));
-            this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+            var notificationText = $"Load Unit {this.Mission.LoadingUnitId} end movement to bay {this.Mission.LoadingUnitDestination}";
+            this.SendMoveNotification(this.Mission.TargetBay, notificationText, isEject, StopRequestReasonConverter.GetMessageStatusFromReason(this.Mission.StopReason));
         }
 
         private bool UpdateStopList(BayNumber bay)

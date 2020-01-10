@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -85,8 +86,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private decimal? newResolution;
 
-        private int positionBayId;
-
         private DelegateCommand saveCommand;
 
         private SubscriptionToken sensorsToken;
@@ -113,6 +112,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.resolutionCalibrationWebService = resolutionCalibrationWebService ?? throw new ArgumentNullException(nameof(resolutionCalibrationWebService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.verticalOriginProcedureWebService = verticalOriginProcedureWebService ?? throw new ArgumentNullException(nameof(verticalOriginProcedureWebService));
+
+            this.CurrentStep = CalibrationStep.PositionMeter;
         }
 
         #endregion
@@ -140,19 +141,31 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public CalibrationStep CurrentStep
         {
             get => this.currentStep;
-            protected set => this.SetProperty(ref this.currentStep, value, this.RaiseCanExecuteChanged);
+            protected set => this.SetProperty(ref this.currentStep, value, this.UpdateStatusButtonFooter);
         }
 
         public double? DestinationPosition1
         {
             get => this.destinationPosition1;
-            set => this.SetProperty(ref this.destinationPosition1, value, () => { this.currentError = string.Empty; this.RaiseCanExecuteChanged(); });
+            set => this.SetProperty(ref this.destinationPosition1, value,
+                () =>
+                {
+                    this.currentError = string.Empty;
+                    this.MeasuredPosition1 = null;
+                    this.RaiseCanExecuteChanged();
+                });
         }
 
         public double? DestinationPosition2
         {
             get => this.destinationPosition2;
-            set => this.SetProperty(ref this.destinationPosition2, value, () => { this.currentError = string.Empty; this.RaiseCanExecuteChanged(); });
+            set => this.SetProperty(ref this.destinationPosition2, value,
+                () =>
+                {
+                    this.currentError = string.Empty;
+                    this.MeasuredPosition2 = null;
+                    this.RaiseCanExecuteChanged();
+                });
         }
 
         public override EnableMask EnableMask => EnableMask.MachineManualMode | EnableMask.MachinePoweredOn;
@@ -307,6 +320,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.currentError = null;
 
+                if (this.IsWaitingForResponse)
+                {
+                    return null;
+                }
+
                 switch (columnName)
                 {
                     case nameof(this.DestinationPosition1):
@@ -334,10 +352,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
-                            if (string.IsNullOrEmpty(this.currentError))
-                            {
-                                this.ClearNotifications();
-                            }
                         }
 
                         break;
@@ -351,13 +365,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                  this.MeasuredPosition1.Value > this.axisUpperBound) &&
                                 Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) == Convert.ToInt32(this.DestinationPosition1.Value))
                             {
-                                this.currentError = $"Measured position out of ranhe axis ({this.AxisLowerBound} - {this.AxisUpperBound}).";
+                                this.currentError = $"Measured position out of range axis ({this.AxisLowerBound} - {this.AxisUpperBound}).";
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
-                            }
-                            if (string.IsNullOrEmpty(this.currentError))
-                            {
-                                this.ClearNotifications();
                             }
                         }
 
@@ -382,11 +392,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                 this.currentError = $"Start position out of range axis ({this.AxisLowerBound} - {this.AxisUpperBound}).";
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
-                            }
-
-                            if (string.IsNullOrEmpty(this.currentError))
-                            {
-                                this.ClearNotifications();
                             }
                         }
 
@@ -431,14 +436,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
-
-                            if (string.IsNullOrEmpty(this.currentError))
-                            {
-                                this.ClearNotifications();
-                            }
                         }
 
                         break;
+                }
+
+                if (this.IsVisible && string.IsNullOrEmpty(this.currentError))
+                {
+                    this.ClearNotifications();
                 }
 
                 return null;
@@ -457,80 +462,40 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.sensorsToken = null;
         }
 
-        public async Task GetParametersAsync()
+        public override async Task OnAppearedAsync()
+        {
+            this.SubscribeToEvents();
+
+            this.UpdateStatusButtonFooter();
+
+            await base.OnAppearedAsync();
+        }
+
+        protected override async Task OnDataRefreshAsync()
         {
             try
             {
-                this.CurrentResolution = await this.machineElevatorWebService.GetVerticalResolutionAsync();
+                if (this.AxisUpperBound == 0 || this.AxisLowerBound == 0 || this.StartPosition == 0 || !this.DestinationPosition1.HasValue || !this.DestinationPosition2.HasValue)
+                {
+                    var procedureParameters = await this.verticalOriginProcedureWebService.GetParametersAsync();
+                    this.ProcedureParameters = await this.resolutionCalibrationWebService.GetParametersAsync();
+                    this.CurrentResolution = await this.machineElevatorWebService.GetVerticalResolutionAsync();
 
-                this.DestinationPosition1 = this.ProcedureParameters.InitialPosition;
+                    this.StartPosition = this.ProcedureParameters.StartPosition;
+                    this.DestinationPosition1 = this.ProcedureParameters.InitialPosition;
+                    this.DestinationPosition2 = this.ProcedureParameters.FinalPosition;
+                    this.AxisUpperBound = procedureParameters.UpperBound;
+                    this.AxisLowerBound = procedureParameters.LowerBound;
+                }
             }
-            catch (Exception ex)
+            catch (HttpRequestException ex)
             {
                 this.ShowNotification(ex);
             }
-        }
-
-        public override void InitializeSteps()
-        {
-            this.ShowSteps();
-        }
-
-        public override async Task OnAppearedAsync()
-        {
-            await base.OnAppearedAsync();
-
-            this.CurrentStep = CalibrationStep.PositionMeter;
-
-            var procedureParameters = await this.verticalOriginProcedureWebService.GetParametersAsync();
-            this.AxisUpperBound = procedureParameters.UpperBound;
-            this.AxisLowerBound = procedureParameters.LowerBound;
-
-            this.positionBayId = this.MachineService.Bay.Positions.Single(p => p.Height == this.MachineService.Bay.Positions.Max(pos => pos.Height)).Id;
-
-            await this.RetrieveProcedureParametersAsync();
-
-            await this.GetParametersAsync();
-
-            if (this.StartPosition == 0)
+            catch (Exception)
             {
-                this.StartPosition = this.ProcedureParameters.StartPosition;
+                throw;
             }
-
-            if (!this.DestinationPosition1.HasValue)
-            {
-                this.DestinationPosition1 = this.ProcedureParameters.InitialPosition;
-            }
-
-            if (!this.DestinationPosition2.HasValue)
-            {
-                this.DestinationPosition2 = this.ProcedureParameters.FinalPosition;
-            }
-
-            this.stepChangedToken = this.stepChangedToken
-                ?? this.EventAggregator
-                    .GetEvent<StepChangedPubSubEvent>()
-                    .Subscribe(
-                        (m) => this.OnStepChanged(m),
-                        ThreadOption.UIThread,
-                        false);
-
-            this.sensorsToken = this.sensorsToken ??
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-                    .Subscribe(
-                        async (m) => await this.OnSensorsChangedAsync(m),
-                        ThreadOption.UIThread,
-                        false,
-                        (m) =>
-                        {
-                            return !this.luPresentInOperatorSide.HasValue ||
-                                   !this.luPresentInMachineSide.HasValue ||
-                                   (m.Data.SensorsStates[(int)IOMachineSensors.LuPresentInOperatorSide] != this.luPresentInOperatorSide.Value) ||
-                                   (m.Data.SensorsStates[(int)IOMachineSensors.LuPresentInMachineSide] != this.luPresentInMachineSide.Value);
-                        });
-
-            this.IsBackNavigationAllowed = false;
         }
 
         protected void OnStepChanged(StepChangedMessage e)
@@ -587,19 +552,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected override void RaiseCanExecuteChanged()
         {
-            if (!this.IsVisible)
-            {
-                return;
-            }
-
             base.RaiseCanExecuteChanged();
 
-            this.RaisePropertyChanged(nameof(this.HasStepPositionMeter));
-            this.RaisePropertyChanged(nameof(this.HasStepFirstMeasured));
-            this.RaisePropertyChanged(nameof(this.HasStepLastMeasured));
-            this.RaisePropertyChanged(nameof(this.HasStepConfirm));
-
-            this.RaisePropertyChanged(nameof(this.IsMoving));
             this.RaisePropertyChanged(nameof(this.IsCanStartPosition));
             this.RaisePropertyChanged(nameof(this.IsCanDestinationPosition1));
             this.RaisePropertyChanged(nameof(this.IsCanDestinationPosition2));
@@ -616,14 +570,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.moveToLastMeasuredCommand?.RaiseCanExecuteChanged();
             this.moveToConfirmCommand?.RaiseCanExecuteChanged();
             this.saveCommand?.RaiseCanExecuteChanged();
-
-            this.UpdateStatusButtonFooter();
         }
 
         private async Task ApplyCorrectionAsync()
         {
-            this.IsWaitingForResponse = true;
-
             try
             {
                 this.IsWaitingForResponse = true;
@@ -633,6 +583,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CurrentResolution = this.NewResolution;
                 this.MeasuredPosition1 = null;
                 this.MeasuredPosition2 = null;
+                this.CurrentStep = CalibrationStep.PositionMeter;
 
                 this.ShowNotification(
                     VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated,
@@ -655,8 +606,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return
                 !this.IsKeyboardOpened
                 &&
-                !this.IsWaitingForResponse
-                &&
                 !this.IsMoving;
         }
 
@@ -664,24 +613,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return this.CanBaseExecute() &&
                    !this.SensorsService.IsLoadingUnitOnElevator &&
-                   Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) != Convert.ToInt32(this.DestinationPosition1.GetValueOrDefault(0)) &&
-                   !this.MeasuredPosition1.HasValue;
+                   Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) != Convert.ToInt32(this.DestinationPosition1.GetValueOrDefault(0));
         }
 
         private bool CanMoveToStartDestination2()
         {
             return this.CanBaseExecute() &&
                    !this.SensorsService.IsLoadingUnitOnElevator &&
-                   Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) != Convert.ToInt32(this.DestinationPosition2.GetValueOrDefault(0)) &&
-                   !this.MeasuredPosition2.HasValue;
+                   Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) != Convert.ToInt32(this.DestinationPosition2.GetValueOrDefault(0));
         }
 
         private bool CanMoveToStartPosition()
         {
-            return this.CanBaseExecute() &&
+            var b = this.CanBaseExecute() &&
                    string.IsNullOrEmpty(this.Error) &&
                    Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) != Convert.ToInt32(this.StartPosition) &&
                    !this.SensorsService.IsLoadingUnitOnElevator;
+            return b;
         }
 
         private bool CanStop()
@@ -696,22 +644,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return this.CanBaseExecute() &&
                    !this.SensorsService.IsLoadingUnitOnElevator &&
-                   Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) == Convert.ToInt32(this.DestinationPosition2.Value) &&
                    this.MeasuredPosition2.HasValue;
         }
 
         private bool CanToFirstMeasured()
         {
             return this.CanBaseExecute() &&
-                   !this.SensorsService.IsLoadingUnitOnElevator &&
-                   Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) == Convert.ToInt32(this.StartPosition);
+                   !this.SensorsService.IsLoadingUnitOnElevator;
         }
 
         private bool CanToLastMeasured()
         {
             return this.CanBaseExecute() &&
                    !this.SensorsService.IsLoadingUnitOnElevator &&
-                   Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) == Convert.ToInt32(this.DestinationPosition1.Value) &&
                    this.MeasuredPosition1.HasValue;
         }
 
@@ -774,31 +719,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task RetrieveProcedureParametersAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                this.ProcedureParameters = await this.resolutionCalibrationWebService.GetParametersAsync();
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-        }
-
-        private void ShowSteps()
-        {
-            this.ShowPrevStepSinglePage(true, false);
-            this.ShowNextStepSinglePage(true, true);
-            this.ShowAbortStep(true, true);
-        }
-
         private async Task StartAsync(double position)
         {
             try
@@ -836,6 +756,32 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private void SubscribeToEvents()
+        {
+            this.stepChangedToken = this.stepChangedToken
+                ?? this.EventAggregator
+                    .GetEvent<StepChangedPubSubEvent>()
+                    .Subscribe(
+                        (m) => this.OnStepChanged(m),
+                        ThreadOption.UIThread,
+                        false);
+
+            this.sensorsToken = this.sensorsToken ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Subscribe(
+                        async (m) => await this.OnSensorsChangedAsync(m),
+                        ThreadOption.UIThread,
+                        false,
+                        (m) =>
+                        {
+                            return !this.luPresentInOperatorSide.HasValue ||
+                                   !this.luPresentInMachineSide.HasValue ||
+                                   (m.Data.SensorsStates[(int)IOMachineSensors.LuPresentInOperatorSide] != this.luPresentInOperatorSide.Value) ||
+                                   (m.Data.SensorsStates[(int)IOMachineSensors.LuPresentInMachineSide] != this.luPresentInMachineSide.Value);
+                        });
+        }
+
         private void UpdateStatusButtonFooter()
         {
             switch (this.CurrentStep)
@@ -862,6 +808,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
 
             this.ShowAbortStep(true, !this.IsMoving);
+
+            this.RaisePropertyChanged(nameof(this.HasStepPositionMeter));
+            this.RaisePropertyChanged(nameof(this.HasStepFirstMeasured));
+            this.RaisePropertyChanged(nameof(this.HasStepLastMeasured));
+            this.RaisePropertyChanged(nameof(this.HasStepConfirm));
         }
 
         #endregion

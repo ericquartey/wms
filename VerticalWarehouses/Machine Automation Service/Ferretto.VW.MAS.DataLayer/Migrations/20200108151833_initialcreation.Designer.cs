@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20200108081002_initialcreation")]
+    [Migration("20200108151833_initialcreation")]
     partial class initialcreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -853,6 +853,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("Code");
 
+                    b.Property<int>("DetailCode");
+
+                    b.Property<int>("InverterIndex");
+
                     b.Property<DateTime>("OccurrenceDate");
 
                     b.Property<DateTime?>("ResolutionDate");
@@ -1052,7 +1056,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 3, 8, 9, 10, 2, 40, DateTimeKind.Local).AddTicks(4736),
+                            InstallationDate = new DateTime(2017, 3, 8, 16, 18, 32, 685, DateTimeKind.Local).AddTicks(5534),
                             ServiceStatus = 86
                         });
                 });
@@ -1375,6 +1379,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", b =>
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.SetupProcedure");
+
+                    b.Property<bool>("InProgress");
 
                     b.Property<int>("PerformedCycles");
 

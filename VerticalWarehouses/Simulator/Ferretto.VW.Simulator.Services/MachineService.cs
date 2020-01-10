@@ -695,7 +695,6 @@ namespace Ferretto.VW.Simulator.Services
             else if ((inverter.ControlWord & 0x0080) > 0)   // Reset Fault
             {
                 inverter.IsFault = false;
-                this.remoteIOs[0].Inputs[(int)IoPorts.InverterInFault].Value = false;
             }
 
             if (!inverter.IsFault)
@@ -755,14 +754,8 @@ namespace Ferretto.VW.Simulator.Services
                     this.Inverters.ToList().ForEach(x => x.DigitalIO[(int)InverterSensors.ANG_HardwareSensorSTO].Value = true);
                 }
             }
-            foreach (var inverter in this.Inverters)
-            {
-                if (inverter.IsFault)
-                {
-                    this.remoteIOs[0].Inputs[(int)IoPorts.InverterInFault].Value = true;
-                    break;
-                }
-            }
+
+            this.remoteIOs[0].Inputs[(int)IoPorts.InverterInFault].Value = this.Inverters.Any(x => x.IsFault);
         }
 
         #endregion

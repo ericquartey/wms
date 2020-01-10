@@ -47,15 +47,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            this.IsWaitingForResponse = true;
-
-            this.Model = await this.machineIdentityWebService.GetStatisticsAsync();
-
-            await base.OnAppearedAsync();
-
             this.IsBackNavigationAllowed = true;
 
-            this.IsWaitingForResponse = false;
+            await base.OnAppearedAsync();
+        }
+
+        protected override async Task OnDataRefreshAsync()
+        {
+            this.Model = await this.machineIdentityWebService.GetStatisticsAsync();
         }
 
         #endregion

@@ -16,51 +16,35 @@ namespace Ferretto.VW.App.Scaffolding.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             this._entity = null;
-            this._ipV4 = null;
-
-            if (value is Models.ScaffoldedEntity entity)
-            {
-                this._entity = entity;
-                value = entity.Property.GetValue(entity.Instance);
-            }
+            this._ipV4 = new byte[4];
 
             if (value is System.Net.IPAddress ipAddress)
             {
                 byte[] bytes = this._ipV4 = ipAddress.GetAddressBytes();
-                if (parameter == null || !int.TryParse(System.Convert.ToString(parameter), out int index) || index < 0 || index > 3)
+                if (parameter != null
+                    && int.TryParse(System.Convert.ToString(parameter, CultureInfo.InvariantCulture), out int index)
+                    && index >= 0
+                    && index <= 3)
                 {
-                    return string.Format($"{bytes[0]}.{bytes[1]}.{bytes[2]}.{bytes[3]}");
+                    return System.Convert.ChangeType(bytes[index], targetType, culture);
                 }
 
-                return bytes[index].ToString();
             }
             return value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (this._ipV4 != null)
+            if (parameter != null && int.TryParse(System.Convert.ToString(parameter, CultureInfo.InvariantCulture), out int index) && index >= 0 && index <= 3)
             {
-                System.Net.IPAddress ipAddress;
-                if (parameter != null && int.TryParse(System.Convert.ToString(parameter), out int index) && index >= 0 && index <= 3)
+                if (byte.TryParse(System.Convert.ToString(value, culture), NumberStyles.Integer, culture, out byte b))
                 {
-                    this._ipV4[index] = System.Convert.ToByte(value);
-                    ipAddress = new System.Net.IPAddress(this._ipV4);
+                    this._ipV4[index] = b;
+                    return new System.Net.IPAddress(this._ipV4);
                 }
-                else
-                {
-                    ipAddress = System.Net.IPAddress.Parse(System.Convert.ToString(value));
-                }
-
-                if (this._entity != null)
-                {
-                    this._entity.Property.SetValue(this._entity.Instance, ipAddress);
-                    return this._entity;
-                }
-                return ipAddress;
             }
 
-            return value;
+            return null;
         }
     }
 }
