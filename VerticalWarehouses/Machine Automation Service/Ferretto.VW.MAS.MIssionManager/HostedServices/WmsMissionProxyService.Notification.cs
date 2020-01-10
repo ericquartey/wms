@@ -50,9 +50,13 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private async Task OnDataLayerReadyAsync()
         {
-            this.RetrieveMachineId();
-
+            if (this.dataLayerIsReady)
+            {
+                return;
+            }
             this.dataLayerIsReady = true;
+
+            this.RetrieveMachineId();
 
             await this.RetrieveNewWmsMissionsAsync();
         }

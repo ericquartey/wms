@@ -190,7 +190,7 @@
     <value>Errore Machine Manager</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitDestinationCell" xml:space="preserve">
-    <value>Inconsistency database target loading unit cell</value>
+    <value>Not valid destination cell</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitElevator" xml:space="preserve">
     <value>Elevator cradle occupied</value>
@@ -217,7 +217,7 @@
     <value>Source bay of the empty loading unit</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitSourceCell" xml:space="preserve">
-    <value>Inconsistency loading unit source cell database</value>
+    <value>Not valid source cell</value>
   </data>
   <data name="BottomLevelBayOccupied" xml:space="preserve">
     <value>Errore esecuzione comando di deposito</value>
@@ -329,5 +329,26 @@
   </data>
   <data name="LaserConnectionError" xml:space="preserve">
     <value>Errore di connessione</value>
+  </data>
+  <data name="AutomaticRestoreNotAllowed" xml:space="preserve">
+    <value>Automatic restore of the movement is not allowed</value>
+  </data>
+  <data name="DestinationTypeNotValid" xml:space="preserve">
+    <value>The destination type is not valid</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitUndefinedBottom" xml:space="preserve">
+    <value>Undefined bay bottom position</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitUndefinedUpper" xml:space="preserve">
+    <value>Undefined bay upper position</value>
+  </data>
+  <data name="MissionTypeNotValid" xml:space="preserve">
+    <value>The mission type is not valid</value>
+  </data>
+  <data name="MoveBayChainNotAllowed" xml:space="preserve">
+    <value>Move Bay chain not allowed. Wait for another resume.</value>
+  </data>
+  <data name="ResumeCommandNotValid" xml:space="preserve">
+    <value>The picking confirmation command is not valid</value>
   </data>
 </root>

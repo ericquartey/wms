@@ -178,13 +178,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Direction = table.Column<int>(nullable: false),
                     EjectLoadUnit = table.Column<bool>(nullable: false),
                     ErrorMovements = table.Column<int>(nullable: false),
-                    FsmId = table.Column<Guid>(nullable: false),
-                    FsmRestoreStateName = table.Column<string>(nullable: true),
-                    FsmStateName = table.Column<string>(nullable: true),
-                    LoadingUnitCellSourceId = table.Column<int>(nullable: true),
-                    LoadingUnitDestination = table.Column<int>(nullable: false),
-                    LoadingUnitId = table.Column<int>(nullable: false),
-                    LoadingUnitSource = table.Column<string>(type: "text", nullable: false),
+                    RestoreStateName = table.Column<string>(nullable: true),
+                    StateName = table.Column<string>(nullable: true),
+                    LoadUnitCellSourceId = table.Column<int>(nullable: true),
+                    LoadUnitDestination = table.Column<int>(nullable: false),
+                    LoadUnitId = table.Column<int>(nullable: false),
+                    LoadUnitSource = table.Column<string>(type: "text", nullable: false),
                     MissionType = table.Column<string>(type: "text", nullable: false),
                     NeedHomingAxis = table.Column<int>(nullable: false),
                     NeedMovingBackward = table.Column<bool>(nullable: false),
@@ -1223,7 +1222,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 3, 8, 16, 18, 32, 685, DateTimeKind.Local).AddTicks(5534), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 3, 10, 13, 5, 42, 814, DateTimeKind.Local).AddTicks(899), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",

@@ -16,7 +16,7 @@ namespace Ferretto.VW.App.Services.Models
 
         private double? bayChainTargetPosition;
 
-        private Guid? currentMissionId;
+        private int? currentMissionId;
 
         private double? elevatorHorizontalPosition;
 
@@ -72,7 +72,7 @@ namespace Ferretto.VW.App.Services.Models
             set => this.SetProperty(ref this.bayChainTargetPosition, value);
         }
 
-        public Guid? CurrentMissionId
+        public int? CurrentMissionId
         {
             get => this.currentMissionId;
             set => this.SetProperty(ref this.currentMissionId, value);

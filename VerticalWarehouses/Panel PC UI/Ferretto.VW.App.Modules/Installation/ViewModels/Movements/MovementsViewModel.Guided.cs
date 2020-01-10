@@ -1097,11 +1097,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     if (!string.IsNullOrEmpty(this.MachineStatus.LogicalPositionId))
                     {
                         int cell = int.Parse(this.MachineStatus.LogicalPositionId);
-                        await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(LoadingUnitLocation.LoadingUnit, cell, this.MachineStatus.EmbarkedLoadingUnit.Id);
+                        await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(LoadingUnitLocation.LoadUnit, cell, this.MachineStatus.EmbarkedLoadingUnit.Id);
                     }
                     else
                     {
-                        await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(LoadingUnitLocation.LoadingUnit, null, this.MachineStatus.EmbarkedLoadingUnit.Id);
+                        await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(LoadingUnitLocation.LoadUnit, null, this.MachineStatus.EmbarkedLoadingUnit.Id);
                     }
                 }
 

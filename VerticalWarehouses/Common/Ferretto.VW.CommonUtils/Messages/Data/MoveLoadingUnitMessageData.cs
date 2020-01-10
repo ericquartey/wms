@@ -18,7 +18,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             int? loadingUnitId,
             bool insertLoadingUnit = false,
             bool ejectLoadingUnit = false,
-            Guid? missionId = null,
+            int? missionId = null,
             CommandAction commandAction = CommandAction.Start,
             StopRequestReason stopReason = StopRequestReason.NoReason,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
@@ -53,7 +53,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public int? LoadingUnitId { get; }
 
-        public Guid? MissionId { get; }
+        public int? MissionId { get; }
 
         public MissionType MissionType { get; set; }
 

@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The MinSpeed is not valid.
+        ///   Looks up a localized string similar to The shutter MinSpeed is not valid.
         /// </summary>
         public static string TheMinSpeedIsNotValid {
             get {
@@ -88,7 +88,7 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The starting position is not valid.
+        ///   Looks up a localized string similar to The shutter starting position is not valid.
         /// </summary>
         public static string ThePositionIsNotValid {
             get {
@@ -124,7 +124,7 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The SpeedRate is not valid.
+        ///   Looks up a localized string similar to The shutter SpeedRate is not valid.
         /// </summary>
         public static string TheSpeedRateIsNotValid {
             get {

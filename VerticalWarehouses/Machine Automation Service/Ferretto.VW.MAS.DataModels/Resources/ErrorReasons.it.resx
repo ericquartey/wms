@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AutomaticRestoreNotAllowed" xml:space="preserve">
+    <value>Ripristino automatico del movimento non permesso</value>
+  </data>
   <data name="BottomLevelBayOccupied" xml:space="preserve">
     <value>Livello basso baia occupato.</value>
   </data>
@@ -134,6 +137,15 @@
   </data>
   <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
     <value>Il cassetto non sembra essere completamente fuori dall'elevatore dopo la fase di scarico.</value>
+  </data>
+  <data name="DestinationTypeNotValid" xml:space="preserve">
+    <value>Il tipo di destinazione non è valido</value>
+  </data>
+  <data name="InvalidAxisAccelerationConfiguration" xml:space="preserve">
+    <value>La configurazione della accelerazione del movimento dell'asse  {0} non è valida: accelerazione a vuoto minore del pieno carico</value>
+  </data>
+  <data name="InvalidAxisSpeedConfiguration" xml:space="preserve">
+    <value>La configurazione della velocità del movimento dell'asse  {0} non è valida: velocità a vuoto minore del pieno carico</value>
   </data>
   <data name="InvalidPresenceSensors" xml:space="preserve">
     <value>Sensori di presenza invalidi</value>
@@ -231,8 +243,23 @@
   <data name="MachineManagerErrorLoadingUnitSourceDb" xml:space="preserve">
     <value>Verificare che la posizione sorgente del cassetto all'interno del database sia correttamente configurata</value>
   </data>
+  <data name="MachineManagerErrorLoadingUnitUndefinedBottom" xml:space="preserve">
+    <value>Posizione inferiore di baia non definita</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitUndefinedUpper" xml:space="preserve">
+    <value>Posizione superiore di baia non definita</value>
+  </data>
   <data name="MachineManagerErrorNoLoadingUnitInSource" xml:space="preserve">
     <value>Assicurarsi che un cassetto sia presente in baia e che i sensori di presenza funzionino correttamente</value>
+  </data>
+  <data name="MissionTypeNotValid" xml:space="preserve">
+    <value>Il tipo di missione non è valido</value>
+  </data>
+  <data name="MoveBayChainNotAllowed" xml:space="preserve">
+    <value>Movimento della catena della baia non permesso. In attesa di una nuova conferma.</value>
+  </data>
+  <data name="ResumeCommandNotValid" xml:space="preserve">
+    <value>Il comando di rientro da picking non è valido</value>
   </data>
   <data name="SecurityWasTriggered" xml:space="preserve">
     <value>Controllare che i funghi di emergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.</value>

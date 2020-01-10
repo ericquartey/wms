@@ -74,7 +74,7 @@
            TargetType="{x:Type dxe:SpinEdit}">
         <Setter Property="EditValueType" Value="{x:Type sys:UInt16}" />
         <Setter Property="MaskType" Value="Simple" />
-        <Setter Property="Mask" Value="#####" />
+        <Setter Property="Mask" Value="#####0" />
         <Setter Property="MaskUseAsDisplayFormat" Value="True" />
         <Setter Property="NullValue" Value="0" />
         <Setter Property="Increment" Value="1" />

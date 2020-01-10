@@ -63,6 +63,7 @@
                                                MaxValue="23"
                                                MinHeight="91"
                                                MinWidth="200"
+                                               Mask="##00"
                                                LabelText="{x:Static res:InstallationApp.Hour}" />
                             <ctrls:PpcSpinEdit Margin="10 0 0 0"
                                                EditValue="{Binding Minute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -70,6 +71,7 @@
                                                MaxValue="59"
                                                MinHeight="91"
                                                MinWidth="200"
+                                               Mask="##00"
                                                LabelText="{x:Static res:InstallationApp.Minutes}" />
                         </StackPanel>
                         <StackPanel Margin="0 10 0 0" Orientation="Horizontal" IsEnabled="{Binding IsAuto, Converter={StaticResource BNC}}">
@@ -78,6 +80,7 @@
                                                MaxValue="31"
                                                MinHeight="91"
                                                MinWidth="200"
+                                               Mask="##"
                                                LabelText="{x:Static res:InstallationApp.Day}" />
                             <ctrls:PpcSpinEdit Margin="10 0 0 0"
                                                EditValue="{Binding Month, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -85,6 +88,7 @@
                                                MaxValue="12"
                                                MinHeight="91"
                                                MinWidth="200"
+                                               Mask="##"
                                                LabelText="{x:Static res:InstallationApp.Month}" />
                             <ctrls:PpcSpinEdit Margin="10 0 0 0"
                                                EditValue="{Binding Year, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -92,6 +96,7 @@
                                                MaxValue="3000"
                                                MinHeight="91"
                                                MinWidth="200"
+                                               Mask="####"
                                                LabelText="{x:Static res:InstallationApp.Year}" />
                         </StackPanel>
                     </StackPanel>

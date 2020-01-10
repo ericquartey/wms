@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AutomaticRestoreNotAllowed" xml:space="preserve">
+    <value>Ripristino automatico del movimento non permesso</value>
+  </data>
   <data name="ConditionsNotMetForPositioning" xml:space="preserve">
     <value>Condizioni per il posizionamento non soddisfatte.</value>
   </data>
@@ -125,6 +128,9 @@
   </data>
   <data name="CradleNotCompletelyLoaded" xml:space="preserve">
     <value>Cassetto non caricato completamente.</value>
+  </data>
+  <data name="DestinationTypeNotValid" xml:space="preserve">
+    <value>Il tipo di destinazione non è valido</value>
   </data>
   <data name="InverterErrorBaseCode" xml:space="preserve">
     <value>Errore inverter.</value>
@@ -178,7 +184,7 @@
     <value>Baia di destinazione del cassetto occupata</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitDestinationCell" xml:space="preserve">
-    <value>Inconsistenza database cella destinazione cassetto</value>
+    <value>Cella di destinazione non valida</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitElevator" xml:space="preserve">
     <value>Culla elevatore occupata</value>
@@ -208,7 +214,7 @@
     <value>Baia sorgente del cassetto vuota</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitSourceCell" xml:space="preserve">
-    <value>Inconsistenza database cella sorgente cassetto</value>
+    <value>cella origine non valida</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitSourceDb" xml:space="preserve">
     <value>Inconsistenza database posizione sorgente cassetto</value>
@@ -216,8 +222,23 @@
   <data name="MachineManagerErrorLoadingUnitSourceElevator" xml:space="preserve">
     <value>Cassetto non presente sull'Elevatore</value>
   </data>
+  <data name="MachineManagerErrorLoadingUnitUndefinedBottom" xml:space="preserve">
+    <value>Posizione inferiore di baia non definita</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitUndefinedUpper" xml:space="preserve">
+    <value>Posizione superiore di baia non definita</value>
+  </data>
   <data name="MachineManagerErrorNoLoadingUnitInSource" xml:space="preserve">
     <value>Nessun cassetto presente nella baia indicata</value>
+  </data>
+  <data name="MissionTypeNotValid" xml:space="preserve">
+    <value>Il tipo di missione non è valido</value>
+  </data>
+  <data name="MoveBayChainNotAllowed" xml:space="preserve">
+    <value>Movimento della catena della baia non permesso. In attesa di una nuova conferma.</value>
+  </data>
+  <data name="ResumeCommandNotValid" xml:space="preserve">
+    <value>Il comando di rientro da picking non è valido</value>
   </data>
   <data name="SecurityWasTriggered" xml:space="preserve">
     <value>È scattata la funzione di sicurezza.</value>

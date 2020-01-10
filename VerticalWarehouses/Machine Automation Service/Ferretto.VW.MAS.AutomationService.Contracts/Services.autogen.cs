@@ -6321,14 +6321,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task AbortAsync(System.Guid? missionId, BayNumber targetBay)
+        public System.Threading.Tasks.Task AbortAsync(int? missionId, BayNumber targetBay)
         {
             return AbortAsync(missionId, targetBay, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task AbortAsync(System.Guid? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task AbortAsync(int? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken)
         {
             if (targetBay == null)
                 throw new System.ArgumentNullException("targetBay");
@@ -6872,14 +6872,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task PauseAsync(System.Guid? missionId, BayNumber targetBay)
+        public System.Threading.Tasks.Task PauseAsync(int? missionId, BayNumber targetBay)
         {
             return PauseAsync(missionId, targetBay, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task PauseAsync(System.Guid? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task PauseAsync(int? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken)
         {
             if (targetBay == null)
                 throw new System.ArgumentNullException("targetBay");
@@ -7009,14 +7009,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task ResumeAsync(System.Guid? missionId, BayNumber targetBay)
+        public System.Threading.Tasks.Task ResumeAsync(int? missionId, BayNumber targetBay)
         {
             return ResumeAsync(missionId, targetBay, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task ResumeAsync(System.Guid? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task ResumeAsync(int? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken)
         {
             if (targetBay == null)
                 throw new System.ArgumentNullException("targetBay");
@@ -7299,14 +7299,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task StopAsync(System.Guid? missionId, BayNumber targetBay)
+        public System.Threading.Tasks.Task StopAsync(int? missionId, BayNumber targetBay)
         {
             return StopAsync(missionId, targetBay, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task StopAsync(System.Guid? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task StopAsync(int? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken)
         {
             if (targetBay == null)
                 throw new System.ArgumentNullException("targetBay");

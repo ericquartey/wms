@@ -88,6 +88,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Automatic restore of the movement is not allowed.
+        /// </summary>
+        public static string AutomaticRestoreNotAllowed {
+            get {
+                return ResourceManager.GetString("AutomaticRestoreNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to La baia ha già un comando in esecuzione e non può accettarne un altro..
         /// </summary>
         public static string BayInvertersBusy {
@@ -106,7 +115,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Livello baia bassa occupato..
+        ///   Looks up a localized string similar to Lower bay position is already occupied by a drawer..
         /// </summary>
         public static string BottomLevelBayOccupied {
             get {
@@ -178,7 +187,34 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inconsistenza sensori di presenza a bordo elevatore..
+        ///   Looks up a localized string similar to The destination type is not valid.
+        /// </summary>
+        public static string DestinationTypeNotValid {
+            get {
+                return ResourceManager.GetString("DestinationTypeNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The {0} Axis movement Acceleration configuration is invalid: Empty load acceleration lower than full load acceleration.
+        /// </summary>
+        public static string InvalidAxisAccelerationConfiguration {
+            get {
+                return ResourceManager.GetString("InvalidAxisAccelerationConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The {0} Axis movement Speed configuration is invalid: Empty load speed lower than full load speed.
+        /// </summary>
+        public static string InvalidAxisSpeedConfiguration {
+            get {
+                return ResourceManager.GetString("InvalidAxisSpeedConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid elevator presence sensors..
         /// </summary>
         public static string InvalidPresenceSensors {
             get {
@@ -194,7 +230,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
                 return ResourceManager.GetString("InverterConnectionError", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Switch the machine off and on again. If the problem persists, contact support..
         /// </summary>
@@ -338,7 +374,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
                 return ResourceManager.GetString("IoDeviceConnectionError", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Errore nella gestione del dispositivo I/O o nell&apos;esecuzione di un comando..
         /// </summary>
@@ -356,9 +392,9 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
                 return ResourceManager.GetString("LaserConnectionError", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized string similar to Il peso del cassetto supera il valore massimo accettato. Scaricare il cassetto in baia e rimuovere il peso in eccesso..
+        ///   Looks up a localized string similar to Unload the loading unit in the bay and remove the excess weight..
         /// </summary>
         public static string LoadingUnitWeightExceeded {
             get {
@@ -403,7 +439,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Verify that the target cell of the loading unit inside the database is correctly configured..
+        ///   Looks up a localized string similar to Verify that the target cell of the loading unit inside the database is correctly configured.
         /// </summary>
         public static string MachineManagerErrorLoadingUnitDestinationCell {
             get {
@@ -529,7 +565,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check that the source cell of the loading unit inside the database is correctly configured..
+        ///   Looks up a localized string similar to Check that the source cell of the loading unit inside the database is correctly configured.
         /// </summary>
         public static string MachineManagerErrorLoadingUnitSourceCell {
             get {
@@ -538,7 +574,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check that the source position of the loading unit in the database is correctly configured..
+        ///   Looks up a localized string similar to Check that the source position of the loading unit in the database is correctly configured.
         /// </summary>
         public static string MachineManagerErrorLoadingUnitSourceDb {
             get {
@@ -556,7 +592,25 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Make sure that a loading unit is present in the bay and that the presence sensors work correctly..
+        ///   Looks up a localized string similar to Bottom bay position undefined.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitUndefinedBottom {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitUndefinedBottom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upper bay position undefined.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitUndefinedUpper {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitUndefinedUpper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Make sure that a loading unit is present in the bay and that the presence sensors work correctly.
         /// </summary>
         public static string MachineManagerErrorNoLoadingUnitInSource {
             get {
@@ -592,11 +646,38 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The mission type is not valid.
+        /// </summary>
+        public static string MissionTypeNotValid {
+            get {
+                return ResourceManager.GetString("MissionTypeNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move Bay chain not allowed. Wait for another resume..
+        /// </summary>
+        public static string MoveBayChainNotAllowed {
+            get {
+                return ResourceManager.GetString("MoveBayChainNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nessun errore rilevato..
         /// </summary>
         public static string NoError {
             get {
                 return ResourceManager.GetString("NoError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The picking confirmation command is not valid.
+        /// </summary>
+        public static string ResumeCommandNotValid {
+            get {
+                return ResourceManager.GetString("ResumeCommandNotValid", resourceCulture);
             }
         }
         
@@ -655,7 +736,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Busy high bay level..
+        ///   Looks up a localized string similar to Upper bay position is already occupied by a drawer..
         /// </summary>
         public static string TopLevelBayOccupied {
             get {

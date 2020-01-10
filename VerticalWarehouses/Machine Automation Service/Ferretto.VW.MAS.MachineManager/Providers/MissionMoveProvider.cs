@@ -103,7 +103,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                             catch (StateMachineException ex)
                             {
                                 this.Logger.LogError(ex.NotificationMessage.Description, "Error while activating a State.");
-                                this.eventAggregator.GetEvent<NotificationEvent>().Publish(ex.NotificationMessage);
+                                //this.eventAggregator.GetEvent<NotificationEvent>().Publish(ex.NotificationMessage);
 
                                 state.OnStop(StopRequestReason.Error);
                             }
@@ -113,12 +113,12 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             }
         }
 
-        public bool ResumeMission(Guid missionId, CommandMessage command, IServiceProvider serviceProvider)
+        public bool ResumeMission(int missionId, CommandMessage command, IServiceProvider serviceProvider)
         {
             lock (this.syncObject)
             {
                 var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
-                var mission = missionsDataProvider.GetByGuid(missionId);
+                var mission = missionsDataProvider.GetById(missionId);
                 if (mission != null)
                 {
                     var state = GetStateByClassName(serviceProvider, mission, this.eventAggregator);
@@ -145,7 +145,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 catch (StateMachineException ex)
                 {
                     this.Logger.LogError(ex.NotificationMessage.Description, "Error while activating a State.");
-                    this.eventAggregator.GetEvent<NotificationEvent>().Publish(ex.NotificationMessage);
+                    //this.eventAggregator.GetEvent<NotificationEvent>().Publish(ex.NotificationMessage);
 
                     newState.OnStop(StopRequestReason.Error);
                     return false;
@@ -153,12 +153,12 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             }
         }
 
-        public bool StopMission(Guid missionId, StopRequestReason stopRequest, IServiceProvider serviceProvider)
+        public bool StopMission(int missionId, StopRequestReason stopRequest, IServiceProvider serviceProvider)
         {
             lock (this.syncObject)
             {
                 var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
-                var mission = missionsDataProvider.GetByGuid(missionId);
+                var mission = missionsDataProvider.GetById(missionId);
                 if (mission != null)
                 {
                     var state = GetStateByClassName(serviceProvider, mission, this.eventAggregator);
@@ -192,7 +192,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     {
                         // if there is a new or waiting mission we have to take her place
                         var waitMission = missionsDataProvider.GetAllExecutingMissions().FirstOrDefault(m =>
-                            m.LoadingUnitId == messageData.LoadingUnitId.Value
+                            m.LoadUnitId == messageData.LoadingUnitId.Value
                             && (m.Status == MissionStatus.Waiting || m.Status == MissionStatus.New)
                             );
                         if (waitMission != null)
@@ -221,17 +221,17 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             ConstructorInfo ctor = null;
             lock (cacheStates)
             {
-                if (cacheStates.ContainsKey(mission.FsmStateName))
+                if (cacheStates.ContainsKey(mission.StateName))
                 {
-                    ctor = cacheStates[mission.FsmStateName];
+                    ctor = cacheStates[mission.StateName];
                 }
                 else
                 {
                     var ns = typeof(MissionMoveBase).Namespace;
-                    var type = Type.GetType(string.Concat(ns, ".", mission.FsmStateName));
+                    var type = Type.GetType(string.Concat(ns, ".", mission.StateName));
 
                     ctor = type?.GetConstructor(new[] { typeof(Mission), typeof(IServiceProvider), typeof(IEventAggregator) });
-                    cacheStates[mission.FsmStateName] = ctor;
+                    cacheStates[mission.StateName] = ctor;
                 }
             }
             return (IMissionMoveBase)ctor?.Invoke(new object[] { mission, serviceProvider, eventAggregator });

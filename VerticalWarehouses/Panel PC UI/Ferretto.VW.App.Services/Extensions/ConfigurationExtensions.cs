@@ -18,6 +18,10 @@ namespace Ferretto.VW.App.Services
 
         private const string OverrideSetupStatusKey = "OverrideSetupStatus";
 
+        private const string WmsServiceEnabledDefaultValue = "False";
+
+        private const string WmsServiceEnabledEnvKey = "WMS_ENABLED";
+
         private const string WmsServiceEnabledKey = "WMS:DataService:Enabled";
 
         #endregion
@@ -71,9 +75,15 @@ namespace Ferretto.VW.App.Services
                 throw new ArgumentNullException(nameof(appSettings));
             }
 
+            var bayNumberStringEnv = Environment.GetEnvironmentVariable(WmsServiceEnabledEnvKey);
+            if (!string.IsNullOrWhiteSpace(bayNumberStringEnv))
+            {
+                return bool.Parse(bayNumberStringEnv);
+            }
+
+            var enabledString = appSettings.Get(WmsServiceEnabledKey) ?? WmsServiceEnabledDefaultValue;
             try
             {
-                var enabledString = appSettings.Get(WmsServiceEnabledKey);
                 return bool.Parse(enabledString);
             }
             catch (Exception ex)
