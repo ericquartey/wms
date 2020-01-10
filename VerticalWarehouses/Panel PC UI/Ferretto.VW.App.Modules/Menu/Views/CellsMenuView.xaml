@@ -61,6 +61,7 @@
                                         Abbrevation="4.4.1"
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding CellsCommand}"
+                                        IsEnabled="False"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 

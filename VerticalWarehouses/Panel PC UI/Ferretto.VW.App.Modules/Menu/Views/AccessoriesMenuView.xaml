@@ -62,6 +62,7 @@
                                         BorderBrush="{DynamicResource FerrettoBlue}"
                                         Command="{Binding LaserCommand}"
                                         Content="Gestione della configurazione e test funzionalità del Laser"
+                                        IsEnabled="False"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
