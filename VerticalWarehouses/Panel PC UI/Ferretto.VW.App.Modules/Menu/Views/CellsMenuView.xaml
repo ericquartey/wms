@@ -71,6 +71,7 @@
                                         Abbrevation="4.4.2"
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding CellPanelsCheckCommand}"
+                                        Content="Verifica la quota delle celle, suddivise per pannello, tenendo traccia dei posizionamenti di verifica effettuati"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
@@ -80,6 +81,7 @@
                                         Abbrevation="4.4.3"
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding CellsHeightCheckCommand}"
+                                        Content="Verifica la quota di una o più celle"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
@@ -89,6 +91,7 @@
                                         Abbrevation="4.4.4"
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding CellsBlockTuningCommand}"
+                                        Content="Applica una correzione ad un set di celle"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
@@ -98,6 +101,7 @@
                                         Abbrevation="4.4.5"
                                         BorderBrush="{DynamicResource FerrettoOrange}"
                                         Command="{Binding BayFirstLoadingUnitCommand}"
+                                        Content="Carico primo cassetto e test celle"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
