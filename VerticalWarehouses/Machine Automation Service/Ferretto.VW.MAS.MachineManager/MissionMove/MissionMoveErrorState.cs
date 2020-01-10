@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         public override bool OnEnter(CommandMessage command)
         {
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
-            this.Mission.FsmStateName = nameof(MissionMoveErrorState);
+            this.Mission.StateName = nameof(MissionMoveErrorState);
             this.MissionsDataProvider.Update(this.Mission);
 
             var newMessageData = new StopMessageData(StopRequestReason.Error);
@@ -66,11 +66,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             if (shutterPosition == this.Mission.OpenShutterPosition)
                             {
                                 this.Mission.ErrorMovements = MissionErrorMovements.None;
-                                if (this.Mission.FsmRestoreStateName != nameof(MissionMoveCloseShutterState))
+                                if (this.Mission.RestoreStateName != nameof(MissionMoveCloseShutterState))
                                 {
                                     if (this.Mission.NeedMovingBackward)
                                     {
-                                        if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitBack(this.Mission.Direction, this.Mission.LoadingUnitId, MessageActor.MachineManager, this.Mission.TargetBay))
+                                        if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitBack(this.Mission.Direction, this.Mission.LoadUnitId, MessageActor.MachineManager, this.Mission.TargetBay))
                                         {
                                             this.Logger.LogDebug($"{this.GetType().Name}: Manual Horizontal back positioning start");
                                             this.Mission.ErrorMovements |= MissionErrorMovements.MoveBackward;
@@ -78,9 +78,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     }
                                     else
                                     {
-                                        var isLoaded = (this.Mission.FsmRestoreStateName == nameof(MissionMoveDepositUnitState));
-                                        var measure = (this.Mission.LoadingUnitSource != LoadingUnitLocation.Cell);
-                                        if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, isLoaded, measure, this.Mission.LoadingUnitId, MessageActor.MachineManager, this.Mission.TargetBay))
+                                        var isLoaded = (this.Mission.RestoreStateName == nameof(MissionMoveDepositUnitState));
+                                        var measure = (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell);
+                                        if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, isLoaded, measure, this.Mission.LoadUnitId, MessageActor.MachineManager, this.Mission.TargetBay))
                                         {
                                             this.Logger.LogDebug($"{this.GetType().Name}: Manual Horizontal forward positioning start");
                                             this.Mission.ErrorMovements |= MissionErrorMovements.MoveForward;
@@ -114,10 +114,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             {
                                 this.Mission.NeedMovingBackward = false;
                                 if (this.Mission.NeedHomingAxis == Axis.Horizontal
-                                    && this.Mission.FsmRestoreStateName == nameof(MissionMoveDepositUnitState)
+                                    && this.Mission.RestoreStateName == nameof(MissionMoveDepositUnitState)
                                     )
                                 {
-                                    this.Mission.FsmRestoreStateName = null;
+                                    this.Mission.RestoreStateName = null;
                                     var newStep = new MissionMoveToTargetState(this.Mission, this.ServiceProvider, this.EventAggregator);
                                     newStep.OnEnter(null);
                                 }
@@ -130,7 +130,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             {
                                 this.Mission.ErrorMovements &= ~MissionErrorMovements.MoveForward;
                                 this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, true);
-                                if (this.Mission.FsmRestoreStateName == nameof(MissionMoveLoadElevatorState))
+                                if (this.Mission.RestoreStateName == nameof(MissionMoveLoadElevatorState))
                                 {
                                     this.LoadUnitEnd(restore: true);
                                 }
@@ -159,9 +159,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override void OnResume(CommandMessage command)
         {
-            this.Logger.LogDebug($"{this.GetType().Name}: Resume mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, from {this.Mission.FsmRestoreStateName}, loadUnit {this.Mission.LoadingUnitId}");
+            this.Logger.LogDebug($"{this.GetType().Name}: Resume mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, from {this.Mission.RestoreStateName}, loadUnit {this.Mission.LoadUnitId}");
 
-            switch (this.Mission.FsmRestoreStateName)
+            switch (this.Mission.RestoreStateName)
             {
                 case nameof(MissionMoveBayChainState):
                     this.RestoreBayChain();
@@ -176,7 +176,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
 
                 case nameof(MissionMoveEndState):
-                    this.Mission.FsmRestoreStateName = null;
+                    this.Mission.RestoreStateName = null;
                     this.Mission.RestoreConditions = false;
                     this.Mission.NeedMovingBackward = false;
                     {
@@ -191,7 +191,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 case nameof(MissionMoveToTargetState):
                     this.Mission.RestoreConditions = true;
-                    this.Mission.FsmRestoreStateName = null;
+                    this.Mission.RestoreStateName = null;
                     this.Mission.NeedMovingBackward = false;
                     this.Mission.StopReason = StopRequestReason.NoReason;
                     {
@@ -201,7 +201,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
 
                 case nameof(MissionMoveStartState):
-                    this.Mission.FsmRestoreStateName = null;
+                    this.Mission.RestoreStateName = null;
                     this.Mission.RestoreConditions = false;
                     this.Mission.NeedMovingBackward = false;
                     this.Mission.StopReason = StopRequestReason.NoReason;
@@ -212,7 +212,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
 
                 case nameof(MissionMoveWaitPickState):
-                    this.Mission.FsmRestoreStateName = null;
+                    this.Mission.RestoreStateName = null;
                     this.Mission.RestoreConditions = false;
                     this.Mission.NeedMovingBackward = false;
                     this.Mission.StopReason = StopRequestReason.NoReason;
@@ -223,7 +223,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
 
                 default:
-                    this.Logger.LogError($"{this.GetType().Name}: no valid FsmRestoreStateName {this.Mission.FsmRestoreStateName} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadingUnitId}");
+                    this.Logger.LogError($"{this.GetType().Name}: no valid FsmRestoreStateName {this.Mission.RestoreStateName} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
 
                     {
                         this.Mission.StopReason = StopRequestReason.NoReason;
@@ -240,27 +240,27 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if (this.LoadingUnitMovementProvider.IsOnlyTopPositionOccupied(this.Mission.TargetBay))
             {
                 // movement is finished
-                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadingUnitDestination);
+                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
                 var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
                 if (destination is null)
                 {
                     var description = $"Upper position not defined for bay {bay.Number}";
                     throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
-                this.Mission.LoadingUnitDestination = destination.Location;
+                this.Mission.LoadUnitDestination = destination.Location;
 
                 var origin = bay.Positions.FirstOrDefault(p => !p.IsUpper);
                 using (var transaction = this.ElevatorDataProvider.GetContextTransaction())
                 {
-                    this.BaysDataProvider.SetLoadingUnit(destination.Id, this.Mission.LoadingUnitId);
+                    this.BaysDataProvider.SetLoadingUnit(destination.Id, this.Mission.LoadUnitId);
                     this.BaysDataProvider.SetLoadingUnit(origin.Id, null);
                     transaction.Commit();
                 }
 
-                var notificationText = $"Load Unit {this.Mission.LoadingUnitId} placed on bay {bay.Number}";
+                var notificationText = $"Load Unit {this.Mission.LoadUnitId} placed on bay {bay.Number}";
                 this.SendMoveNotification(bay.Number, notificationText, false, MessageStatus.OperationWaitResume);
 
-                this.Mission.FsmRestoreStateName = null;
+                this.Mission.RestoreStateName = null;
                 this.Mission.RestoreConditions = false;
                 this.Mission.NeedMovingBackward = false;
                 if (this.Mission.WmsId.HasValue)
@@ -277,7 +277,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             else
             {
                 this.Mission.RestoreConditions = true;
-                this.Mission.FsmRestoreStateName = null;
+                this.Mission.RestoreStateName = null;
                 this.Mission.NeedMovingBackward = false;
                 var newStep = new MissionMoveBayChainState(this.Mission, this.ServiceProvider, this.EventAggregator);
                 newStep.OnEnter(null);
@@ -299,7 +299,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             else
             {
                 this.Mission.RestoreConditions = true;
-                this.Mission.FsmRestoreStateName = null;
+                this.Mission.RestoreStateName = null;
                 this.Mission.NeedMovingBackward = false;
                 var newStep = new MissionMoveCloseShutterState(this.Mission, this.ServiceProvider, this.EventAggregator);
                 newStep.OnEnter(null);
@@ -324,17 +324,17 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 if (this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
                 {
-                    this.Logger.LogDebug($"{this.GetType().Name}: Vertical position has changed {this.Mission.FsmRestoreStateName} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadingUnitId}");
+                    this.Logger.LogDebug($"{this.GetType().Name}: Vertical position has changed {this.Mission.RestoreStateName} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
 
                     this.Mission.RestoreConditions = true;
-                    this.Mission.FsmRestoreStateName = null;
+                    this.Mission.RestoreStateName = null;
                     this.Mission.NeedMovingBackward = false;
                     var newStep = new MissionMoveToTargetState(this.Mission, this.ServiceProvider, this.EventAggregator);
                     newStep.OnEnter(null);
                 }
                 else
                 {
-                    var description = $"Impossible to restore mission for LoadUnit {this.Mission.LoadingUnitId}";
+                    var description = $"Impossible to restore mission for LoadUnit {this.Mission.LoadUnitId}";
                     throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
             }
@@ -342,7 +342,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.Direction = HorizontalMovementDirection.Backwards;
             this.Mission.OpenShutterPosition = ShutterPosition.NotSpecified;
             this.Mission.ErrorMovements = MissionErrorMovements.None;
-            switch (this.Mission.LoadingUnitDestination)
+            switch (this.Mission.LoadUnitDestination)
             {
                 case LoadingUnitLocation.Cell:
                     if (this.Mission.DestinationCellId != null)
@@ -362,7 +362,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
 
                 default:
-                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadingUnitDestination);
+                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
                     // invert direction?
                     if (this.Mission.NeedMovingBackward)
                     {
@@ -372,7 +372,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         this.Mission.Direction = (bay.Side == WarehouseSide.Front) ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
                     }
-                    this.Mission.OpenShutterPosition = this.LoadingUnitMovementProvider.GetShutterOpenPosition(bay, this.Mission.LoadingUnitDestination);
+                    this.Mission.OpenShutterPosition = this.LoadingUnitMovementProvider.GetShutterOpenPosition(bay, this.Mission.LoadUnitDestination);
                     var shutterPosition = this.SensorsProvider.GetShutterPosition(this.Mission.TargetBay);
                     if (this.Mission.OpenShutterPosition == ShutterPosition.Half && shutterPosition == ShutterPosition.Opened)
                     {
@@ -394,7 +394,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 this.Mission.NeedMovingBackward = true;
                 this.Logger.LogDebug($"{this.GetType().Name}: Manual Horizontal back positioning start");
-                if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitBack(this.Mission.Direction, this.Mission.LoadingUnitId, MessageActor.MachineManager, this.Mission.TargetBay))
+                if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitBack(this.Mission.Direction, this.Mission.LoadUnitId, MessageActor.MachineManager, this.Mission.TargetBay))
                 {
                     this.Mission.ErrorMovements |= MissionErrorMovements.MoveBackward;
                 }
@@ -402,7 +402,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             else
             {
                 this.Logger.LogDebug($"{this.GetType().Name}: Manual Horizontal forward positioning start");
-                if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, true, false, this.Mission.LoadingUnitId, MessageActor.MachineManager, this.Mission.TargetBay))
+                if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, true, false, this.Mission.LoadUnitId, MessageActor.MachineManager, this.Mission.TargetBay))
                 {
                     this.Mission.ErrorMovements |= MissionErrorMovements.MoveForward;
                 }
@@ -436,10 +436,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 if (!this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
                 {
-                    this.Logger.LogDebug($"{this.GetType().Name}: Vertical position has changed {this.Mission.FsmRestoreStateName} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadingUnitId}");
+                    this.Logger.LogDebug($"{this.GetType().Name}: Vertical position has changed {this.Mission.RestoreStateName} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
 
                     this.Mission.RestoreConditions = true;
-                    this.Mission.FsmRestoreStateName = null;
+                    this.Mission.RestoreStateName = null;
                     this.Mission.NeedMovingBackward = false;
                     var newStep = new MissionMoveStartState(this.Mission, this.ServiceProvider, this.EventAggregator);
                     newStep.OnEnter(null);
@@ -448,21 +448,21 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
-                    var description = $"Impossible to restore mission for LoadUnit {this.Mission.LoadingUnitId}";
+                    var description = $"Impossible to restore mission for LoadUnit {this.Mission.LoadUnitId}";
                     throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
             }
 
             this.Mission.Direction = HorizontalMovementDirection.Backwards;
-            var measure = (this.Mission.LoadingUnitSource != LoadingUnitLocation.Cell);
+            var measure = (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell);
             this.Mission.OpenShutterPosition = ShutterPosition.NotSpecified;
             this.Mission.ErrorMovements = MissionErrorMovements.None;
-            switch (this.Mission.LoadingUnitSource)
+            switch (this.Mission.LoadUnitSource)
             {
                 case LoadingUnitLocation.Cell:
-                    if (this.Mission.LoadingUnitCellSourceId != null)
+                    if (this.Mission.LoadUnitCellSourceId != null)
                     {
-                        var cell = this.CellsProvider.GetById(this.Mission.LoadingUnitCellSourceId.Value);
+                        var cell = this.CellsProvider.GetById(this.Mission.LoadUnitCellSourceId.Value);
 
                         // invert direction?
                         if (this.Mission.NeedMovingBackward)
@@ -478,7 +478,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
 
                 default:
-                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadingUnitSource);
+                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
                     // invert direction?
                     if (this.Mission.NeedMovingBackward)
                     {
@@ -488,7 +488,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         this.Mission.Direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
                     }
-                    this.Mission.OpenShutterPosition = this.LoadingUnitMovementProvider.GetShutterOpenPosition(bay, this.Mission.LoadingUnitSource);
+                    this.Mission.OpenShutterPosition = this.LoadingUnitMovementProvider.GetShutterOpenPosition(bay, this.Mission.LoadUnitSource);
                     var shutterPosition = this.SensorsProvider.GetShutterPosition(this.Mission.TargetBay);
                     if (this.Mission.OpenShutterPosition == ShutterPosition.Half && shutterPosition == ShutterPosition.Opened)
                     {
@@ -507,7 +507,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if (this.Mission.NeedMovingBackward)
             {
                 this.Logger.LogDebug($"{this.GetType().Name}: Manual Horizontal back positioning start");
-                if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitBack(this.Mission.Direction, this.Mission.LoadingUnitId, MessageActor.MachineManager, this.Mission.TargetBay))
+                if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitBack(this.Mission.Direction, this.Mission.LoadUnitId, MessageActor.MachineManager, this.Mission.TargetBay))
                 {
                     this.Mission.ErrorMovements |= MissionErrorMovements.MoveBackward;
                 }
@@ -515,7 +515,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             else
             {
                 this.Logger.LogDebug($"{this.GetType().Name}: Manual Horizontal forward positioning start");
-                if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, false, measure, this.Mission.LoadingUnitId, MessageActor.MachineManager, this.Mission.TargetBay))
+                if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, false, measure, this.Mission.LoadUnitId, MessageActor.MachineManager, this.Mission.TargetBay))
                 {
                     this.Mission.ErrorMovements |= MissionErrorMovements.MoveForward;
                 }
@@ -536,12 +536,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.ErrorMovements = MissionErrorMovements.None;
             this.Mission.NeedMovingBackward = false;
             this.Mission.RestoreConditions = true;
-            if (this.Mission.FsmRestoreStateName == nameof(MissionMoveLoadElevatorState))
+            if (this.Mission.RestoreStateName == nameof(MissionMoveLoadElevatorState))
             {
                 var newStep = new MissionMoveLoadElevatorState(this.Mission, this.ServiceProvider, this.EventAggregator);
                 newStep.OnEnter(null);
             }
-            else if (this.Mission.FsmRestoreStateName == nameof(MissionMoveCloseShutterState))
+            else if (this.Mission.RestoreStateName == nameof(MissionMoveCloseShutterState))
             {
                 var newStep = new MissionMoveCloseShutterState(this.Mission, this.ServiceProvider, this.EventAggregator);
                 newStep.OnEnter(null);

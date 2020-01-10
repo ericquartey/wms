@@ -32,8 +32,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command)
         {
-            this.Mission.FsmRestoreStateName = null;
-            this.Mission.FsmStateName = nameof(MissionMoveEndState);
+            this.Mission.RestoreStateName = null;
+            this.Mission.StateName = nameof(MissionMoveEndState);
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.Mission.BayNotifications = MissionBayNotifications.None;
             this.Mission.CloseShutterBayNumber = BayNumber.None;
@@ -117,12 +117,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         private void SendNotification()
         {
-            bool isEject = this.Mission.LoadingUnitDestination != LoadingUnitLocation.Cell
-                && this.Mission.LoadingUnitDestination != LoadingUnitLocation.Elevator
-                && this.Mission.LoadingUnitDestination != LoadingUnitLocation.LoadingUnit
-                && this.Mission.LoadingUnitDestination != LoadingUnitLocation.NoLocation;
+            bool isEject = this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
+                && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator
+                && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadingUnit
+                && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation;
 
-            var notificationText = $"Load Unit {this.Mission.LoadingUnitId} end movement to bay {this.Mission.LoadingUnitDestination}";
+            var notificationText = $"Load Unit {this.Mission.LoadUnitId} end movement to bay {this.Mission.LoadUnitDestination}";
             this.SendMoveNotification(this.Mission.TargetBay, notificationText, isEject, StopRequestReasonConverter.GetMessageStatusFromReason(this.Mission.StopReason));
         }
 

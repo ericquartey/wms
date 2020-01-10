@@ -55,7 +55,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             var returnValue = true;
             // no duplicate of LU
-            returnValue = !missionCache.Any(m => m.Value.LoadingUnitId == loadingUnitId
+            returnValue = !missionCache.Any(m => m.Value.LoadUnitId == loadingUnitId
                 && m.Value.Status == MissionStatus.Executing
                 );
             if (!returnValue)
@@ -112,9 +112,8 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Add(
                     new Mission
                     {
-                        FsmId = Guid.NewGuid(),
                         CreationDate = DateTime.Now,
-                        LoadingUnitId = loadingUnitId,
+                        LoadUnitId = loadingUnitId,
                         TargetBay = bayNumber,
                         MissionType = MissionType.OUT,
                         Status = MissionStatus.New
@@ -149,10 +148,9 @@ namespace Ferretto.VW.MAS.DataLayer
                 var entry = this.dataContext.Missions.Add(
                     new Mission
                     {
-                        FsmId = Guid.NewGuid(),
                         CreationDate = DateTime.Now,
-                        LoadingUnitId = loadingUnitId,
-                        LoadingUnitSource = LoadingUnitLocation.LoadingUnit,
+                        LoadUnitId = loadingUnitId,
+                        LoadUnitSource = LoadingUnitLocation.LoadingUnit,
                         MissionType = MissionType.WMS,
                         Priority = wmsPriority,
                         Status = MissionStatus.New,
@@ -179,9 +177,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 var entry = this.dataContext.Missions.Add(
                     new Mission
                     {
-                        FsmId = Guid.NewGuid(),
                         CreationDate = DateTime.Now,
-                        LoadingUnitId = loadingUnitId,
+                        LoadUnitId = loadingUnitId,
                         TargetBay = bayNumber,
                         Status = MissionStatus.New,
                         MissionType = MissionType.IN
@@ -253,7 +250,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     // reload cache from database
                     var missions = this.dataContext.Missions;
-                    missionCache = new Dictionary<int, Mission>();
+                    ResetMissionCache();
                     foreach (var mission in missions)
                     {
                         missionCache.Add(mission.Id, mission);
@@ -276,19 +273,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public Mission GetByGuid(Guid fsmId)
-        {
-            lock (this.dataContext)
-            {
-                var mission = missionCache.SingleOrDefault(m => m.Value.FsmId == fsmId).Value;
-                if (mission is null)
-                {
-                    throw new EntityNotFoundException(nameof(mission));
-                }
-                return mission;
-            }
-        }
-
         public Mission GetById(int id)
         {
             lock (this.dataContext)
@@ -308,7 +292,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 return missionCache.Any(m => m.Value.TargetBay == bayNumber
                         && m.Value.Status == MissionStatus.Waiting
-                        && m.Value.LoadingUnitId == loadingUnitId);
+                        && m.Value.LoadUnitId == loadingUnitId);
             }
         }
 
@@ -375,7 +359,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     {
                         mission.NeedHomingAxis = Axis.None;
                         this.Update(mission);
-                        this.logger.LogDebug($"Elevator Homing executed for Load Unit {mission.LoadingUnitId}");
+                        this.logger.LogDebug($"Elevator Homing executed for Load Unit {mission.LoadUnitId}");
                     }
                 }
                 else
@@ -383,6 +367,11 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.logger.LogDebug($"No Homing missions waiting for Bay {bayNumber}, axis {axis}");
                 }
             }
+        }
+
+        private static void ResetMissionCache()
+        {
+            missionCache = new Dictionary<int, Mission>();
         }
 
         private static void UpdateCache(Mission mission)

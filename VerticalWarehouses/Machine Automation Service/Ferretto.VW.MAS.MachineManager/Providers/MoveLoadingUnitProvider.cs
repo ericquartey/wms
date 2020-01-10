@@ -30,7 +30,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         #region Methods
 
-        public void AbortMove(Guid? missionId, BayNumber requestingBay, BayNumber targetBay, MessageActor sender)
+        public void AbortMove(int? missionId, BayNumber requestingBay, BayNumber targetBay, MessageActor sender)
         {
             this.SendCommandToMachineManager(
                 new MoveLoadingUnitMessageData(
@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 targetBay);
         }
 
-        public void ActivateMove(Guid? missionId, MissionType missionType, int loadingUnitId, BayNumber requestingBay, MessageActor sender)
+        public void ActivateMove(int? missionId, MissionType missionType, int loadingUnitId, BayNumber requestingBay, MessageActor sender)
         {
             this.SendCommandToMachineManager(
                 new MoveLoadingUnitMessageData(
@@ -225,7 +225,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 requestingBay);
         }
 
-        public void PauseMove(Guid? missionId, BayNumber requestingBay, BayNumber targetBay, MessageActor sender)
+        public void PauseMove(int? missionId, BayNumber requestingBay, BayNumber targetBay, MessageActor sender)
         {
             this.SendCommandToMachineManager(
                 new MoveLoadingUnitMessageData(
@@ -246,7 +246,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 targetBay);
         }
 
-        public void RemoveLoadUnit(Guid? missionId, BayNumber requestingBay, BayNumber targetBay, MessageActor sender)
+        public void RemoveLoadUnit(int? missionId, BayNumber requestingBay, BayNumber targetBay, MessageActor sender)
         {
             this.SendCommandToMachineManager(
                 new MoveLoadingUnitMessageData(
@@ -267,7 +267,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 targetBay);
         }
 
-        public void ResumeMoveLoadUnit(Guid? missionId, LoadingUnitLocation sourceBay, LoadingUnitLocation destination, BayNumber targetBay, int? wmsId, MessageActor sender)
+        public void ResumeMoveLoadUnit(int? missionId, LoadingUnitLocation sourceBay, LoadingUnitLocation destination, BayNumber targetBay, int? wmsId, MessageActor sender)
         {
             var data = new MoveLoadingUnitMessageData(
                     (wmsId.HasValue ? MissionType.WMS : MissionType.Manual),
@@ -289,7 +289,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 targetBay);
         }
 
-        public void StopMove(Guid? missionId, BayNumber requestingBay, BayNumber targetBay, MessageActor sender)
+        public void StopMove(int? missionId, BayNumber requestingBay, BayNumber targetBay, MessageActor sender)
         {
             this.SendCommandToMachineManager(
                 new MoveLoadingUnitMessageData(

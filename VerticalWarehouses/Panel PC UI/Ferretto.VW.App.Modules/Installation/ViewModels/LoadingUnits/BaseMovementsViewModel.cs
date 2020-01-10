@@ -78,7 +78,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             set => this.SetProperty(ref this.bayIsMultiPosition, value);
         }
 
-        public Guid? CurrentMissionId { get; private set; }
+        public int? CurrentMissionId { get; private set; }
 
         public bool IsExecutingProcedure
         {

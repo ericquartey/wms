@@ -31,8 +31,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command)
         {
-            this.Mission.FsmRestoreStateName = null;
-            this.Mission.FsmStateName = nameof(MissionMoveDepositUnitState);
+            this.Mission.RestoreStateName = null;
+            this.Mission.StateName = nameof(MissionMoveDepositUnitState);
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.Mission.OpenShutterPosition = ShutterPosition.NotSpecified;
             this.Mission.StopReason = StopRequestReason.NoReason;
@@ -41,7 +41,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             this.Mission.Direction = HorizontalMovementDirection.Backwards;
             var bayNumber = this.Mission.TargetBay;
-            switch (this.Mission.LoadingUnitDestination)
+            switch (this.Mission.LoadUnitDestination)
             {
                 case LoadingUnitLocation.Cell:
                     if (this.Mission.DestinationCellId != null)
@@ -54,23 +54,23 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
 
                 default:
-                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadingUnitDestination);
+                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
                     if (bay is null)
                     {
-                        var description = $"{this.GetType().Name}: destination bay not found {this.Mission.LoadingUnitDestination}";
+                        var description = $"{this.GetType().Name}: destination bay not found {this.Mission.LoadUnitDestination}";
 
                         throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                     }
                     this.Mission.Direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
                     bayNumber = bay.Number;
-                    this.Mission.OpenShutterPosition = this.LoadingUnitMovementProvider.GetShutterOpenPosition(bay, this.Mission.LoadingUnitDestination);
+                    this.Mission.OpenShutterPosition = this.LoadingUnitMovementProvider.GetShutterOpenPosition(bay, this.Mission.LoadUnitDestination);
                     if (this.Mission.OpenShutterPosition == this.SensorsProvider.GetShutterPosition(bay.Number))
                     {
                         this.Mission.OpenShutterPosition = ShutterPosition.NotSpecified;
                     }
                     if (bay.Carousel != null)
                     {
-                        var result = this.LoadingUnitMovementProvider.CheckBaySensors(bay, this.Mission.LoadingUnitDestination, deposit: true);
+                        var result = this.LoadingUnitMovementProvider.CheckBaySensors(bay, this.Mission.LoadUnitDestination, deposit: true);
                         if (result != MachineErrorCode.NoError)
                         {
                             var error = this.ErrorsProvider.RecordNew(result);
@@ -90,7 +90,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 else
                 {
                     this.Logger.LogDebug($"Manual Horizontal forward positioning start");
-                    this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, true, false, this.Mission.LoadingUnitId, MessageActor.MachineManager, this.Mission.TargetBay);
+                    this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, true, false, this.Mission.LoadUnitId, MessageActor.MachineManager, this.Mission.TargetBay);
                 }
             }
             else
@@ -130,7 +130,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 if (this.Mission.NeedHomingAxis == Axis.Horizontal)
                                 {
                                     this.Logger.LogDebug($"Manual Horizontal forward positioning start");
-                                    this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, true, false, this.Mission.LoadingUnitId, MessageActor.MachineManager, this.Mission.TargetBay);
+                                    this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, true, false, this.Mission.LoadUnitId, MessageActor.MachineManager, this.Mission.TargetBay);
                                 }
                                 else
                                 {
@@ -155,7 +155,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             if (this.Mission.NeedHomingAxis == Axis.Horizontal)
                             {
                                 this.Logger.LogDebug($"Homing elevator free start");
-                                this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadingUnitId, notification.RequestingBay, MessageActor.MachineManager);
+                                this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, notification.RequestingBay, MessageActor.MachineManager);
                             }
                             else
                             {

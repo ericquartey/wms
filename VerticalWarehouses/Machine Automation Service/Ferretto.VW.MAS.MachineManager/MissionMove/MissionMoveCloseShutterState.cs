@@ -31,16 +31,16 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command)
         {
-            this.Mission.FsmRestoreStateName = null;
-            this.Mission.FsmStateName = nameof(MissionMoveCloseShutterState);
+            this.Mission.RestoreStateName = null;
+            this.Mission.StateName = nameof(MissionMoveCloseShutterState);
             this.Mission.StopReason = StopRequestReason.NoReason;
             this.MissionsDataProvider.Update(this.Mission);
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
-            var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadingUnitDestination);
+            var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
             if (bay is null)
             {
-                var description = $"{this.GetType().Name}: destination bay not found {this.Mission.LoadingUnitDestination}";
+                var description = $"{this.GetType().Name}: destination bay not found {this.Mission.LoadUnitDestination}";
 
                 throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
             }
@@ -58,20 +58,20 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-                    bool isEject = this.Mission.LoadingUnitDestination != LoadingUnitLocation.Cell
-                        && this.Mission.LoadingUnitDestination != LoadingUnitLocation.Elevator
-                        && this.Mission.LoadingUnitDestination != LoadingUnitLocation.LoadingUnit
-                        && this.Mission.LoadingUnitDestination != LoadingUnitLocation.NoLocation;
+                    bool isEject = this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
+                        && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator
+                        && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadingUnit
+                        && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation;
                     if (isEject)
                     {
-                        var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadingUnitDestination);
-                        var description = $"Load Unit {this.Mission.LoadingUnitId} placed on bay {bay.Number}";
+                        var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+                        var description = $"Load Unit {this.Mission.LoadUnitId} placed on bay {bay.Number}";
                         this.SendMoveNotification(bay.Number, description, isEject, MessageStatus.OperationWaitResume);
 
                         if (this.Mission.WmsId.HasValue)
                         {
                             if (bay.Positions.Count() == 1
-                                || bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadingUnitDestination).IsUpper
+                                || bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitDestination).IsUpper
                                 || bay.Carousel is null)
                             {
                                 var newStep = new MissionMoveWaitPickState(this.Mission, this.ServiceProvider, this.EventAggregator);

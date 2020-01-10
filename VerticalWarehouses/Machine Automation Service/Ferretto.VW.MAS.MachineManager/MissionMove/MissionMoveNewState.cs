@@ -111,7 +111,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         var destinationCell = this.CellsProvider.GetById(messageData.DestinationCellId.Value);
                         returnValue = (destinationCell.LoadingUnit == null && destinationCell.IsFree);
                         mission.DestinationCellId = messageData.DestinationCellId;
-                        mission.LoadingUnitDestination = LoadingUnitLocation.Cell;
+                        mission.LoadUnitDestination = LoadingUnitLocation.Cell;
                     }
                     else if (messageData.LoadingUnitId.HasValue)
                     {
@@ -125,7 +125,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             throw new StateMachineException(ErrorDescriptions.WarehouseIsFull, this.Mission.TargetBay, MessageActor.MachineManager);
                         }
                         returnValue = true;
-                        mission.LoadingUnitDestination = LoadingUnitLocation.Cell;
+                        mission.LoadUnitDestination = LoadingUnitLocation.Cell;
                     }
 
                     if (!returnValue)
@@ -136,7 +136,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
 
                 case LoadingUnitLocation.Elevator:
-                    mission.LoadingUnitDestination = LoadingUnitLocation.Elevator;
+                    mission.LoadUnitDestination = LoadingUnitLocation.Elevator;
                     returnValue = true;
                     break;
 
@@ -180,7 +180,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 && activeMission.Status != MissionStatus.Waiting
                                 )
                             {
-                                this.Logger.LogTrace($"IsDestinationOk: waiting for mission in upper position {activeMission.Id}, LoadUnit {activeMission.LoadingUnitId}; bay {requestingBay}");
+                                this.Logger.LogTrace($"IsDestinationOk: waiting for mission in upper position {activeMission.Id}, LoadUnit {activeMission.LoadUnitId}; bay {requestingBay}");
                             }
                             else
                             {
@@ -251,7 +251,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             if (returnValue)
             {
-                mission.LoadingUnitDestination = destination;
+                mission.LoadUnitDestination = destination;
             }
 
             return returnValue;
@@ -261,7 +261,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             var returnValue = false;
 
-            if (mission.LoadingUnitSource == LoadingUnitLocation.Elevator)
+            if (mission.LoadUnitSource == LoadingUnitLocation.Elevator)
             {
                 returnValue = this.ElevatorDataProvider.GetLoadingUnitOnBoard() != null;
                 if (!returnValue)
@@ -359,8 +359,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         var sourceCell = this.CellsProvider.GetById(messageData.SourceCellId.Value);
                         unitToMove = sourceCell.LoadingUnit;
 
-                        mission.LoadingUnitSource = LoadingUnitLocation.Cell;
-                        mission.LoadingUnitCellSourceId = sourceCell.Id;
+                        mission.LoadUnitSource = LoadingUnitLocation.Cell;
+                        mission.LoadUnitCellSourceId = sourceCell.Id;
                     }
 
                     if (unitToMove == null)
@@ -383,8 +383,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                         if (sourceCell != null)
                         {
-                            mission.LoadingUnitSource = LoadingUnitLocation.Cell;
-                            mission.LoadingUnitCellSourceId = sourceCell.Id;
+                            mission.LoadUnitSource = LoadingUnitLocation.Cell;
+                            mission.LoadUnitCellSourceId = sourceCell.Id;
                         }
                         else
                         {
@@ -392,7 +392,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                             if (sourceBay != LoadingUnitLocation.NoLocation)
                             {
-                                mission.LoadingUnitSource = sourceBay;
+                                mission.LoadUnitSource = sourceBay;
                             }
                             else
                             {
@@ -406,12 +406,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 }
                                 else
                                 {
-                                    mission.LoadingUnitSource = LoadingUnitLocation.Elevator;
+                                    mission.LoadUnitSource = LoadingUnitLocation.Elevator;
                                 }
                             }
                         }
 
-                        if (mission.LoadingUnitSource == LoadingUnitLocation.NoLocation)
+                        if (mission.LoadUnitSource == LoadingUnitLocation.NoLocation)
                         {
                             unitToMove = null;
                             this.ErrorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitNotLoaded);
@@ -480,13 +480,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         return false;
                     }
 
-                    mission.LoadingUnitSource = messageData.Source;
+                    mission.LoadUnitSource = messageData.Source;
                     break;
             }
 
             if (unitToMove != null)
             {
-                mission.LoadingUnitId = unitToMove.Id;
+                mission.LoadUnitId = unitToMove.Id;
             }
             else
             {

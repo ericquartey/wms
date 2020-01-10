@@ -155,7 +155,7 @@ namespace Ferretto.VW.MAS.MachineManager
                     case CommandAction.Activate:
                         try
                         {
-                            var mission = this.missionsDataProvider.GetByGuid(messageData.MissionId.Value);
+                            var mission = this.missionsDataProvider.GetById(messageData.MissionId.Value);
                             this.missionMoveProvider.StartMission(mission, command, serviceProvider);
                         }
                         catch (Exception ex)
@@ -179,7 +179,7 @@ namespace Ferretto.VW.MAS.MachineManager
                             {
                                 foreach (var mission in this.missionsDataProvider.GetAllActiveMissions())
                                 {
-                                    this.missionMoveProvider.StopMission(mission.FsmId, StopRequestReason.Abort, serviceProvider);
+                                    this.missionMoveProvider.StopMission(mission.Id, StopRequestReason.Abort, serviceProvider);
                                 }
                             }
                         }
@@ -204,7 +204,7 @@ namespace Ferretto.VW.MAS.MachineManager
                             {
                                 foreach (var mission in this.missionsDataProvider.GetAllActiveMissions())
                                 {
-                                    this.missionMoveProvider.StopMission(mission.FsmId, StopRequestReason.Stop, serviceProvider);
+                                    this.missionMoveProvider.StopMission(mission.Id, StopRequestReason.Stop, serviceProvider);
                                 }
                             }
                         }
@@ -246,7 +246,7 @@ namespace Ferretto.VW.MAS.MachineManager
                         {
                             foreach (var mission in this.missionsDataProvider.GetAllActiveMissions())
                             {
-                                this.missionMoveProvider.ResumeMission(mission.FsmId, command, serviceProvider);
+                                this.missionMoveProvider.ResumeMission(mission.Id, command, serviceProvider);
                             }
                         }
 

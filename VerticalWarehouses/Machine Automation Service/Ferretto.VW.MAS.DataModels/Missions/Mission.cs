@@ -26,19 +26,17 @@ namespace Ferretto.VW.MAS.DataModels
 
         public MissionErrorMovements ErrorMovements { get; set; }
 
-        public Guid FsmId { get; set; }
+        public string RestoreStateName { get; set; }
 
-        public string FsmRestoreStateName { get; set; }
+        public string StateName { get; set; }
 
-        public string FsmStateName { get; set; }
+        public int? LoadUnitCellSourceId { get; set; }
 
-        public int? LoadingUnitCellSourceId { get; set; }
+        public LoadingUnitLocation LoadUnitDestination { get; set; }
 
-        public LoadingUnitLocation LoadingUnitDestination { get; set; }
+        public int LoadUnitId { get; set; }
 
-        public int LoadingUnitId { get; set; }
-
-        public LoadingUnitLocation LoadingUnitSource { get; set; }
+        public LoadingUnitLocation LoadUnitSource { get; set; }
 
         public MissionType MissionType { get; set; }
 
@@ -66,7 +64,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsMissionToRestore()
         {
-            return !string.IsNullOrEmpty(this.FsmRestoreStateName);
+            return !string.IsNullOrEmpty(this.RestoreStateName);
         }
 
         public bool IsRestoringType()
@@ -85,14 +83,14 @@ namespace Ferretto.VW.MAS.DataModels
         {
             var returnString = "Mission:" +
                 $"Id={this.Id}; " +
-                $"LoadingUnitId={this.LoadingUnitId}; " +
+                $"LoadUnitId={this.LoadUnitId}; " +
                 $"WmsId={this.WmsId}; " +
                 $"TargetBay={this.TargetBay}; " +
-                $"FsmStateName={this.FsmStateName}; " +
-                $"Source={this.LoadingUnitSource}; " +
-                $"Destination={this.LoadingUnitDestination}; " +
-                $"CellSourceId={this.LoadingUnitCellSourceId}; " +
-                $"FsmRestoreStateName={this.FsmRestoreStateName}; " +
+                $"StateName={this.StateName}; " +
+                $"Source={this.LoadUnitSource}; " +
+                $"Destination={this.LoadUnitDestination}; " +
+                $"CellSourceId={this.LoadUnitCellSourceId}; " +
+                $"RestoreStateName={this.RestoreStateName}; " +
                 $"MissionType={this.MissionType}; " +
                 $"NeedHomingAxis={this.NeedHomingAxis}; " +
                 $"NeedMovingBackward={this.NeedMovingBackward}; " +

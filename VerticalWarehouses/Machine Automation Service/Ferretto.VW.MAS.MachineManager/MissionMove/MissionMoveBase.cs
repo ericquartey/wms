@@ -81,41 +81,41 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 this.ElevatorDataProvider.SetLoadingUnit(null);
 
-                if (this.Mission.LoadingUnitDestination is LoadingUnitLocation.Cell)
+                if (this.Mission.LoadUnitDestination is LoadingUnitLocation.Cell)
                 {
                     var destinationCellId = this.Mission.DestinationCellId;
                     if (destinationCellId.HasValue)
                     {
-                        if (this.Mission.LoadingUnitId > 0)
+                        if (this.Mission.LoadUnitId > 0)
                         {
-                            this.CellsProvider.SetLoadingUnit(destinationCellId.Value, this.Mission.LoadingUnitId);
+                            this.CellsProvider.SetLoadingUnit(destinationCellId.Value, this.Mission.LoadUnitId);
                         }
                     }
                     else
                     {
-                        var description = $"Load unit {this.Mission.LoadingUnitId} movement to target cell has no target cell specified.";
+                        var description = $"Load unit {this.Mission.LoadUnitId} movement to target cell has no target cell specified.";
                         throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                     }
                 }
                 else
                 {
-                    var bayPosition = this.BaysDataProvider.GetPositionByLocation(this.Mission.LoadingUnitDestination);
-                    if (this.Mission.LoadingUnitId > 0)
+                    var bayPosition = this.BaysDataProvider.GetPositionByLocation(this.Mission.LoadUnitDestination);
+                    if (this.Mission.LoadUnitId > 0)
                     {
-                        this.BaysDataProvider.SetLoadingUnit(bayPosition.Id, this.Mission.LoadingUnitId);
-                        this.LoadingUnitsDataProvider.SetHeight(this.Mission.LoadingUnitId, 0);
+                        this.BaysDataProvider.SetLoadingUnit(bayPosition.Id, this.Mission.LoadUnitId);
+                        this.LoadingUnitsDataProvider.SetHeight(this.Mission.LoadUnitId, 0);
                     }
-                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadingUnitDestination);
+                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
                     bayShutter = (bay.Shutter.Type != ShutterType.NotSpecified);
                 }
 
                 transaction.Commit();
             }
 
-            this.SendPositionNotification($"Load Unit {this.Mission.LoadingUnitId} position changed");
+            this.SendPositionNotification($"Load Unit {this.Mission.LoadUnitId} position changed");
             if (restore)
             {
-                this.Mission.FsmRestoreStateName = null;
+                this.Mission.RestoreStateName = null;
                 this.Mission.NeedMovingBackward = false;
             }
 
@@ -137,47 +137,47 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             using (var transaction = this.ElevatorDataProvider.GetContextTransaction())
             {
-                this.ElevatorDataProvider.SetLoadingUnit(this.Mission.LoadingUnitId);
+                this.ElevatorDataProvider.SetLoadingUnit(this.Mission.LoadUnitId);
 
-                if (this.Mission.LoadingUnitSource == LoadingUnitLocation.Cell)
+                if (this.Mission.LoadUnitSource == LoadingUnitLocation.Cell)
                 {
-                    var sourceCellId = this.Mission.LoadingUnitCellSourceId;
+                    var sourceCellId = this.Mission.LoadUnitCellSourceId;
                     if (sourceCellId.HasValue)
                     {
                         this.CellsProvider.SetLoadingUnit(sourceCellId.Value, null);
                     }
                     else
                     {
-                        var description = $"Load unit {this.Mission.LoadingUnitId} movement load elevator has no source cell specified.";
+                        var description = $"Load unit {this.Mission.LoadUnitId} movement load elevator has no source cell specified.";
                         throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                     }
                 }
                 else
                 {
-                    var bayPosition = this.BaysDataProvider.GetPositionByLocation(this.Mission.LoadingUnitSource);
+                    var bayPosition = this.BaysDataProvider.GetPositionByLocation(this.Mission.LoadUnitSource);
                     this.BaysDataProvider.SetLoadingUnit(bayPosition.Id, null);
                 }
 
                 transaction.Commit();
             }
 
-            this.SendPositionNotification($"Load Unit {this.Mission.LoadingUnitId} position changed");
+            this.SendPositionNotification($"Load Unit {this.Mission.LoadUnitId} position changed");
 
             // in bay-to-cell movements the profile may have changed so we have to find a new empty cell
-            if (this.Mission.LoadingUnitSource != LoadingUnitLocation.Cell
-                && this.Mission.LoadingUnitDestination == LoadingUnitLocation.Cell
-                && this.Mission.LoadingUnitId > 0
+            if (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell
+                && this.Mission.LoadUnitDestination == LoadingUnitLocation.Cell
+                && this.Mission.LoadUnitId > 0
                 )
             {
                 try
                 {
-                    this.Mission.DestinationCellId = this.CellsProvider.FindEmptyCell(this.Mission.LoadingUnitId);
+                    this.Mission.DestinationCellId = this.CellsProvider.FindEmptyCell(this.Mission.LoadUnitId);
                 }
                 catch (InvalidOperationException)
                 {
                     // cell not found: go back to bay
                     this.ErrorsProvider.RecordNew(MachineErrorCode.WarehouseIsFull);
-                    this.Mission.LoadingUnitDestination = this.Mission.LoadingUnitSource;
+                    this.Mission.LoadUnitDestination = this.Mission.LoadUnitSource;
                     this.MissionsDataProvider.Update(this.Mission);
                     var newStep = new MissionMoveDepositUnitState(this.Mission, this.ServiceProvider, this.EventAggregator);
                     newStep.OnEnter(null);
@@ -185,16 +185,16 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
             }
 
-            this.SendPositionNotification($"Load Unit {this.Mission.LoadingUnitId} position changed");
+            this.SendPositionNotification($"Load Unit {this.Mission.LoadUnitId} position changed");
 
             if (restore)
             {
-                this.Mission.FsmRestoreStateName = null;
+                this.Mission.RestoreStateName = null;
                 this.Mission.NeedMovingBackward = false;
             }
 
-            if (this.Mission.LoadingUnitSource == LoadingUnitLocation.Cell
-                && this.Mission.LoadingUnitDestination == LoadingUnitLocation.Elevator
+            if (this.Mission.LoadUnitSource == LoadingUnitLocation.Cell
+                && this.Mission.LoadUnitDestination == LoadingUnitLocation.Elevator
                 )
             {
                 var newStep = new MissionMoveEndState(this.Mission, this.ServiceProvider, this.EventAggregator);
@@ -227,7 +227,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     && this.Mission.IsRestoringType()
                     )
                 {
-                    this.Mission.FsmRestoreStateName = this.Mission.FsmStateName;
+                    this.Mission.RestoreStateName = this.Mission.StateName;
                     if (moveBackward)
                     {
                         this.Mission.NeedMovingBackward = true;
@@ -247,14 +247,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             var messageData = new MoveLoadingUnitMessageData(
                 this.Mission.MissionType,
-                this.Mission.LoadingUnitSource,
-                this.Mission.LoadingUnitDestination,
-                this.Mission.LoadingUnitCellSourceId,
+                this.Mission.LoadUnitSource,
+                this.Mission.LoadUnitDestination,
+                this.Mission.LoadUnitCellSourceId,
                 this.Mission.DestinationCellId,
-                this.Mission.LoadingUnitId,
-                (this.Mission.LoadingUnitDestination == LoadingUnitLocation.Cell),
+                this.Mission.LoadUnitId,
+                (this.Mission.LoadUnitDestination == LoadingUnitLocation.Cell),
                 isEject,
-                this.Mission.FsmId,
+                this.Mission.Id,
                 this.Mission.Action,
                 this.Mission.StopReason);
 
