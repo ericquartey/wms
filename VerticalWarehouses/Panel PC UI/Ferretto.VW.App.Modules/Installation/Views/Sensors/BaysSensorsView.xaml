@@ -33,10 +33,10 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.ColumnSpan="2"
+            <!--<TextBlock Grid.ColumnSpan="2"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:InstallationApp.Bays}" />
+                       Text="{x:Static res:InstallationApp.Bays}" />-->
 
             <StackPanel Grid.Row="1"
                         Orientation="Vertical">

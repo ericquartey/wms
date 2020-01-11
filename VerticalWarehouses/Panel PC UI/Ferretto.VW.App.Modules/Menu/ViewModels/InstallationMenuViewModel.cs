@@ -125,7 +125,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.source.Add(new { Text = InstallationApp.BarrierCalibration, Status = false ? "CheckCircle" : "CloseCircleOutline" });
             this.source.Add(new { Text = "Test giostra", Status = false ? "CheckCircle" : "CloseCircleOutline" });
             this.source.Add(new { Text = "Test baia esterna", Status = false ? "CheckCircle" : "CloseCircleOutline" });
-            this.source.Add(new { Text = "Test Serranda", Status = false ? "CheckCircle" : "CloseCircleOutline" });
+            this.source.Add(new { Text = "Test serranda", Status = false ? "CheckCircle" : "CloseCircleOutline" });
             this.source.Add(new { Text = "Completare i test sulle altre baie", Status = false ? "CheckCircle" : "CloseCircleOutline" });
 
             this.source.Add(new
