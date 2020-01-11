@@ -207,7 +207,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             DateTimeOffset? currentDateTime = null;
             try
             {
-                this.IsBusy = true;
                 this.CanGoAutoSync = await this.machineUtcTimeWebService.CanEnableWmsAutoSyncModeAsync();
                 this.IsManualEnabled = true;
 
@@ -238,8 +237,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.Month = (ushort)currentDateTime.Value.Month;
                     this.Year = (ushort)currentDateTime.Value.Year;
                 }
-
-                this.IsBusy = false;
             }
         }
 
