@@ -111,6 +111,25 @@ namespace Ferretto.VW.App.Menu.ViewModels
         {
             var status = await this.machineSetupStatusWebService.GetAsync();
 
+            BaySetupStatus bayStatus;
+            switch (this.MachineService.BayNumber)
+            {
+                case BayNumber.BayOne:
+                    bayStatus = status.Bay1;
+                    break;
+
+                case BayNumber.BayTwo:
+                    bayStatus = status.Bay2;
+                    break;
+
+                case BayNumber.BayThree:
+                    bayStatus = status.Bay3;
+                    break;
+
+                default:
+                    throw new ArgumentException($"Bay {this.MachineService.BayNumber} not allowed", nameof(this.MachineService.BayNumber));
+            }
+
             this.source = new List<dynamic>();
             this.source.Add(new { Text = InstallationApp.VerticalAxisHomedDone, Status = status.VerticalOriginCalibration.IsCompleted ? "CheckCircle" : "CloseCircleOutline" });
             this.source.Add(new { Text = InstallationApp.VerticalResolutionDone, Status = status.VerticalResolutionCalibration.IsCompleted ? "CheckCircle" : "CloseCircleOutline" });
@@ -121,8 +140,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 Status = status.BeltBurnishing.InProgress ? "ProgressCheck" : status.BeltBurnishing.IsCompleted ? "CheckCircle" : "CloseCircleOutline",
             });
             this.source.Add(new { Text = InstallationApp.CellsControl, Status = status.CellPanelsCheck.IsCompleted && status.CellsHeightCheck.IsCompleted ? "CheckCircle" : "CloseCircleOutline" });
-            this.source.Add(new { Text = InstallationApp.BayHeightCheck, Status = false ? "CheckCircle" : "CloseCircleOutline" });
-            this.source.Add(new { Text = InstallationApp.BarrierCalibration, Status = false ? "CheckCircle" : "CloseCircleOutline" });
+            this.source.Add(new { Text = InstallationApp.BayHeightCheck, Status = bayStatus.Check.IsCompleted ? "CheckCircle" : "CloseCircleOutline" });
+            this.source.Add(new { Text = InstallationApp.BarrierCalibration, Status = bayStatus.Shape.IsCompleted ? "CheckCircle" : "CloseCircleOutline" });
 
             if (this.MachineService.HasCarousel)
             {
@@ -136,7 +155,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
             if (this.MachineService.HasShutter)
             {
-                this.source.Add(new { Text = "Test serranda", Status = false ? "CheckCircle" : "CloseCircleOutline" });
+                this.source.Add(new { Text = "Test serranda", Status = bayStatus.Shutter.IsCompleted ? "CheckCircle" : "CloseCircleOutline" });
             }
 
             this.source.Add(new { Text = "Completare i test sulle altre baie", Status = false ? "CheckCircle" : "CloseCircleOutline" });
