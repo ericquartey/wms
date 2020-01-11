@@ -106,9 +106,6 @@
     <Compile Update="Views\LoadingUnits\LoadingUnitFromBayToBayView.xaml.cs">
       <DependentUpon>LoadingUnitFromBayToBayView.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Movements\Manual\ElevatorManualMovementsView.xaml.cs">
-      <DependentUpon>ElevatorManualMovementsView.xaml</DependentUpon>
-    </Compile>
     <Compile Update="Views\Movements\MovementsView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
