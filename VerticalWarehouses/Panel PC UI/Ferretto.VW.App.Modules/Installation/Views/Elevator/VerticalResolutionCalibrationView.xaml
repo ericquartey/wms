@@ -37,6 +37,7 @@
                TargetType="{x:Type controls:PpcButton}">
             <Setter Property="Background" Value="{DynamicResource FerrettoBlue}" />
             <Setter Property="BorderBrush" Value="{DynamicResource FerrettoPureWhite}" />
+            <Setter Property="BorderThickness" Value="1" />
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
