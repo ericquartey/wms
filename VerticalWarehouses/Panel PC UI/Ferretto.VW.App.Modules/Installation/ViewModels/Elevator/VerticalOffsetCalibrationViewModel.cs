@@ -330,7 +330,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 if (this.IsVisible && string.IsNullOrEmpty(this.currentError))
                 {
-                    this.ClearNotifications();
+                    //this.ClearNotifications();
                 }
 
                 return null;
