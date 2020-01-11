@@ -1674,7 +1674,7 @@
     },
     "ShutterTest": {
       "FeedRate": 1.0,
-      "RequiredCycles": 10000
+      "RequiredCycles": 20
     },
     "VerticalOffsetCalibration": {
       "ReferenceCellId": 50, //TEMP Temporary value for software test
