@@ -19,15 +19,15 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <controls:PpcButton Margin="15,15,0,0"
-                            Grid.Column="1"
+        <controls:PpcButton Grid.Column="1"
+                            Margin="15,15,0,0"
                             Command="{Binding MenuMovementsCommand}"
                             Content="{x:Static res:Menu.Movements}" />
 
-        <controls:PpcButton Width="60"
-                            Grid.Column="2"
+        <controls:PpcButton Grid.Column="2"
+                            Width="60"
                             Margin="15,15,0,0"
-                            HorizontalAlignment="Right"
+                            HorizontalContentAlignment="Center"
                             Command="{Binding ViewStatusSensorsCommand}"
                             Foreground="{StaticResource FerrettoPureWhite}"
                             Kind="LightbulbOn" />

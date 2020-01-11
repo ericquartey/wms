@@ -514,6 +514,7 @@
                                 Margin="0,0,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
+                                HorizontalContentAlignment="Center"
                                 Command="{Binding ViewStatusSensorsCommand}"
                                 Foreground="{StaticResource FerrettoPureWhite}"
                                 Kind="LightbulbOn" />
