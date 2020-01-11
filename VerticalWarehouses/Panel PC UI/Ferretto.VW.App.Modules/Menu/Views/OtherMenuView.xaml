@@ -102,16 +102,6 @@
                                     Kind="Account"
                                     Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                <controls:PpcButton Title="Menu OLD"
-                                    Margin="0,0,30,30"
-                                    Padding="-2,1,0,0"
-                                    Abbrevation="4.7.6"
-                                    BorderBrush="{DynamicResource FerrettoMediumGray}"
-                                    Command="{Binding MenuOldCommand}"
-                                    Content="Collegamento al menu versione prototipo"
-                                    Kind="Account"
-                                    Style="{DynamicResource PpcButtonMenuCardStyle}"
-                                    Visibility="Collapsed" />
             </WrapPanel>
 
             <views:InstallationNavigationFooterView Grid.Row="2"

@@ -1362,7 +1362,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Minuti</value>
   </data>
   <data name="SystemDateTime" xml:space="preserve">
-    <value>Data e ora di sistema</value>
+    <value>4.7.5 Data e ora di sistema</value>
   </data>
   <data name="WMSAutoSync" xml:space="preserve">
     <value>Sincronizzazione automatica WMS</value>
