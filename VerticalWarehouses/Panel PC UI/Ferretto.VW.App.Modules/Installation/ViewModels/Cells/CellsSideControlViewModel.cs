@@ -232,7 +232,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.sideBackCommand?.RaiseCanExecuteChanged();
             this.sideFrontCommand?.RaiseCanExecuteChanged();
             this.correctCommand?.RaiseCanExecuteChanged();
-            this.ClearNotifications();
         }
 
         private bool CanCorrectCommand()
