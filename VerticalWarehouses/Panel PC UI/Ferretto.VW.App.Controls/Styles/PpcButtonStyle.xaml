@@ -191,7 +191,9 @@
             <!--<DataTrigger Binding="{Binding IsActive}"
                          Value="True">
                 <Setter Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
-                --><!--<Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />--><!--
+            -->
+            <!--<Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />-->
+            <!--
             </DataTrigger>-->
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
@@ -405,7 +407,7 @@
                             <Grid x:Name="PpcButton_Grid">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition x:Name="Column"
-                                                      Width="53" />
+                                                      Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
@@ -422,8 +424,22 @@
                                         VerticalAlignment="Center"
                                         Background="Transparent">
                                     <Grid Grid.Column="0"
-                                          Margin="0,0,0,0"
-                                          Visibility="Visible">
+                                          Margin="15,0,0,0">
+                                        <Grid.Style>
+                                            <Style TargetType="{x:Type Grid}">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}"
+                                                                 Value="">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}"
+                                                                 Value="{x:Null}">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Grid.Style>
                                         <Ellipse Width="38"
                                                  Height="38"
                                                  HorizontalAlignment="Center"
@@ -445,7 +461,7 @@
                                 </Border>
 
                                 <TextBlock Grid.Column="1"
-                                           Margin="8,0"
+                                           Margin="10,0"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center"
                                            FontFamily="{TemplateBinding FontFamily}"
@@ -463,7 +479,7 @@
                             <Setter TargetName="PpcButtonMenu_Border" Property="Visibility" Value="Visible" />
                             <Setter TargetName="PpcButtonMenu_MainBorder" Property="BorderThickness" Value="0,2,2,2" />
                             <Setter TargetName="PpcButtonMenu_Badge" Property="Margin" Value="0,0,0,0" />
-                            <Setter TargetName="Column" Property="Width" Value="55" />
+                            <!--<Setter TargetName="Column" Property="Width" Value="55" />-->
                         </Trigger>
                     </ControlTemplate.Triggers>
 

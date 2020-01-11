@@ -226,7 +226,7 @@
     <value>Stato sensori</value>
   </data>
   <data name="Bays" xml:space="preserve">
-    <value>Baie e controllo altezza</value>
+    <value>Baie</value>
   </data>
   <data name="Cradle" xml:space="preserve">
     <value>Culla</value>
@@ -608,7 +608,7 @@
     <value>Altezza raggiunta</value>
   </data>
   <data name="VerticalAxisButton" xml:space="preserve">
-    <value>Elevatore e culla</value>
+    <value>Elevatore</value>
   </data>
   <data name="CellsSideControlButton" xml:space="preserve">
     <value>Modifica blocco celle</value>

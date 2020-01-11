@@ -34,13 +34,14 @@ namespace Ferretto.VW.App.Controls
 
         #region Constructors
 
-        public NavigationMenuItem(string viewModelName, string moduleName, string description, bool trackCurrentView)
+        public NavigationMenuItem(string viewModelName, string moduleName, string description, bool isActive = false, bool trackCurrentView = true)
         {
             this.ViewModelName = viewModelName;
             this.ModuleName = moduleName;
             this.Description = description;
             this.TrackCurrentView = trackCurrentView;
             this.IsEnabled = true;
+            this.IsActive = isActive;
 
             this.subscriptionToken = this.navigationService.SubscribeToNavigationCompleted(
                 e => this.IsActive =
