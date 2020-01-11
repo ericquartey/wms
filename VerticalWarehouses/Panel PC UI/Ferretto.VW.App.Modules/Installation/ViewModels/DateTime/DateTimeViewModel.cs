@@ -49,6 +49,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             : base(PresentationMode.Installer)
         {
             this.machineUtcTimeWebService = machineUtcTimeWebService ?? throw new ArgumentNullException(nameof(machineUtcTimeWebService));
+
             this.IsAuto = true;
         }
 
@@ -169,7 +170,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
+        }
 
+        protected override async Task OnDataRefreshAsync()
+        {
             await this.GetTimeAsync();
         }
 
@@ -204,15 +208,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsBusy = true;
-
-                this.IsManualEnabled = true;
-
                 this.CanGoAutoSync = await this.machineUtcTimeWebService.CanEnableWmsAutoSyncModeAsync();
+                this.IsManualEnabled = true;
 
                 if (this.canGoAutoSync)
                 {
                     this.IsAuto = await this.machineUtcTimeWebService.IsWmsAutoSyncEnabledAsync();
                 }
+
+                this.IsManual = !this.IsAuto;
 
                 var newcurrentDateTime = await this.machineUtcTimeWebService.GetAsync();
                 currentDateTime = newcurrentDateTime.ToLocalTime();
@@ -256,8 +260,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.ClearNotifications();
 
-                this.IsBackNavigationAllowed = false;
-
                 await this.machineUtcTimeWebService.SetWmsAutoSyncAsync(this.IsAuto);
 
                 if (!this.isAuto)
@@ -274,7 +276,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             finally
             {
                 this.IsBusy = false;
-                this.IsBackNavigationAllowed = true;
             }
         }
 
