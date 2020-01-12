@@ -64,6 +64,7 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<DrawerLoadingUnloadingTestView>();
             containerRegistry.RegisterForNavigation<CellsSideControlView>();
 
+            containerRegistry.RegisterForNavigation<ProfileHeightCheckView>();
             containerRegistry.RegisterForNavigation<ProfileHeightCheckStep1View>();
             containerRegistry.RegisterForNavigation<ProfileHeightCheckStep2View>();
             containerRegistry.RegisterForNavigation<ProfileHeightCheckStep3View>();

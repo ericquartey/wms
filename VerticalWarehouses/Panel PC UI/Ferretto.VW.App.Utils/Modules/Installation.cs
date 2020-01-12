@@ -20,6 +20,8 @@
 
         public const string PARAMETERINVERTER = "ParameterInverterViewModel";
 
+        public const string PROFILEHEIGHTCHECKVIEW = "ProfileHeightCheckViewModel";
+
         public const string SAVERESTORECONFIG = "SaveRestoreConfigViewModel";
 
         public const string SEMIAUTOMOVEMENTS = "SemiAutoMovementsViewModel";
