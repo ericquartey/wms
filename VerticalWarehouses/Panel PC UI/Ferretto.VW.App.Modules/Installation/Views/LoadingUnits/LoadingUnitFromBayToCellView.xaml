@@ -12,77 +12,172 @@
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
-    <Grid Margin="80,15">
+    <Grid Margin="15,0,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto"
-                              MinWidth="280" />
-            <ColumnDefinition Width="Auto"
-                              MinWidth="280" />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.ColumnSpan="3"
+        <StackPanel Grid.ColumnSpan="4"
+                    Orientation="Horizontal">
+            <TextBlock Margin="0,10,15,10"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="4.5.2" />
+            <TextBlock Margin="0,10,15,10"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{x:Static res:InstallationApp.InsertLoadingUnitFromBayToCell}" />
+        </StackPanel>
+
+        <TextBlock Grid.Row="1"
+                   Grid.ColumnSpan="4"
+                   Height="Auto"
+                   Margin="0,0,15,0"
                    VerticalAlignment="Top"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.InsertLoadingUnitFromBayToCell}" />
+                   FontSize="{DynamicResource FontSize_Small}"
+                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                   Text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                   TextWrapping="Wrap" />
 
-        <ctrls:SensorsPanel Grid.Row="1"
-                            Grid.RowSpan="3"
-                            Margin="0,5,5,5" />
+        <controls:CardSensorAxisVertical Grid.Row="2"
+                                         Grid.Column="0"
+                                         Height="90"
+                                         Margin="0,30,15,0" />
+        <controls:CardSensorAxisHorizontal Grid.Row="2"
+                                           Grid.Column="1"
+                                           Height="90"
+                                           Margin="0,30,15,0" />
+        <controls:CardSensorPosition Grid.Row="2"
+                                     Grid.Column="2"
+                                     Height="90"
+                                     Margin="0,30,15,0" />
+        <controls:CardSensorDrawer Grid.Row="2"
+                                   Grid.Column="3"
+                                   Height="90"
+                                   Margin="0,30,15,0" />
 
-        <StackPanel Grid.Row="1"
-                    Grid.Column="1"
+        <controls:CardSensorBay Grid.Row="3"
+                                Grid.Column="0"
+                                Height="90"
+                                Margin="0,30,15,0" />
+
+        <controls:CardSensorShutter Grid.Row="3"
+                                    Grid.Column="1"
+                                    Height="90"
+                                    Margin="0,30,15,0" />
+
+        <Border Grid.Row="3"
+                Grid.Column="2"
+                Margin="0,30,15,0"
+                Background="{DynamicResource PpcBackground}">
+            <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                    BorderThickness="{DynamicResource PpcBorderThickness}">
+
+                <Grid Grid.Column="8"
+                      Grid.ColumnSpan="4">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Margin="8,4"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               FontSize="{StaticResource FontSize_Normal}"
+                               FontWeight="Normal"
+                               Foreground="{DynamicResource FerrettoLightGray}"
+                               Text="" />
+
+                    <TextBlock Grid.Row="1"
+                               Margin="4,0,4,4"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="{StaticResource FontSize_Very_High}"
+                               Foreground="{DynamicResource PpcForeground}"
+                               Text=""
+                               TextWrapping="Wrap" />
+
+                </Grid>
+
+            </Border>
+        </Border>
+
+        <ctrls:PpcSpinEdit Grid.Row="3"
+                           Grid.Column="4"
+                           Margin="0,30,15,0"
+                           EditValue="{Binding LoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
+                           LabelText="{x:Static res:InstallationApp.InsertDesiredLoadingUnitId}" />
+
+        <TextBlock Grid.Row="4"
+                   Grid.Column="1"
+                   Grid.ColumnSpan="3"
+                   Margin="0,10,30,10"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"
+                   FontSize="{DynamicResource FontSize_Small}"
+                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                   Text="Selezionare la posizione di prelievo del cassetto"
+                   TextWrapping="Wrap" />
+
+        <StackPanel Grid.Row="4"
+                    Grid.Column="2"
                     Grid.ColumnSpan="2"
-                    HorizontalAlignment="Center"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
                     Orientation="Horizontal">
 
-            <controls:PpcButton Margin="5"
+            <controls:PpcButton Margin="0,0,15,15"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Command="{Binding SelectBayPositionDownCommand}"
                                 Content="{x:Static res:InstallationApp.BayPositionDown}"
                                 IsActive="{Binding IsPositionDownSelected}" />
 
-            <controls:PpcButton Margin="15"
+            <controls:PpcButton Margin="0,0,15,15"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Command="{Binding SelectBayPositionUpCommand}"
                                 Content="{x:Static res:InstallationApp.BayPositionUp}"
                                 IsActive="{Binding IsPositionUpSelected}"
                                 Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
-
         </StackPanel>
 
-        <ctrls:PpcSpinEdit Grid.Row="2"
-                           Grid.Column="1"
-                           Grid.ColumnSpan="2"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           EditValue="{Binding LoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                           LabelText="{x:Static res:InstallationApp.InsertDesiredLoadingUnitId}" />
+        <StackPanel Grid.Row="5"
+                    Grid.Column="2"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Orientation="Horizontal">
+            <controls:PpcButton Margin="0,0,15,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Command="{Binding StartCommand}"
+                                Content="{x:Static res:InstallationApp.Start}" />
 
-
-        <controls:PpcButton Grid.Row="3"
-                            Grid.Column="2"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Command="{Binding StartCommand}"
-                            Content="{x:Static res:InstallationApp.Start}" />
-
-        <controls:PpcButton Grid.Row="3"
-                            Grid.Column="1"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Command="{Binding StopCommand}"
-                            Content="{x:Static res:InstallationApp.Stop}" />
+            <controls:PpcButton Margin="0,0,15,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Command="{Binding StopCommand}"
+                                Content="{x:Static res:InstallationApp.Stop}" />
+        </StackPanel>
 
     </Grid>
 </ctrls:View>
