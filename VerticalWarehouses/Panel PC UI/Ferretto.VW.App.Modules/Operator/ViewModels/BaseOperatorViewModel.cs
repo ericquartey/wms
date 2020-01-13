@@ -1,8 +1,5 @@
-﻿using System.Threading.Tasks;
-using Ferretto.VW.App.Accessories;
-using Ferretto.VW.App.Controls;
+﻿using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
-using Prism.Events;
 using Prism.Regions;
 
 namespace Ferretto.VW.App.Operator.ViewModels

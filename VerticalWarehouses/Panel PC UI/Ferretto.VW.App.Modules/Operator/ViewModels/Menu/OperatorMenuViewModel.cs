@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -34,6 +35,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
         private DelegateCommand drawerActivityButtonCommand;
 
         private DelegateCommand immediateLoadingUnitCallMenuCommand;
+
+        private bool isWmsEnabled;
 
         private MachineIdentity machineIdentity;
 
@@ -90,6 +93,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.ImmediateLoadingUnitCallMenu,
                 this.CanShowOtherMenu));
 
+        public bool IsWmsEnabled
+        {
+            get => this.isWmsEnabled;
+            private set => this.SetProperty(ref this.isWmsEnabled, value, this.RaiseCanExecuteChanged);
+        }
+
         public override bool KeepAlive => true;
 
         public MachineIdentity MachineIdentity
@@ -129,6 +138,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.MachineIdentity = this.sessionService.MachineIdentity;
             }
 
+            this.IsWmsEnabled = ConfigurationManager.AppSettings.GetWmsDataServiceEnabled();
+
             await base.OnAppearedAsync();
         }
 
@@ -136,7 +147,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             await this.machineBaysWebService.ActivateAsync();
 
-            this.CheckForNewOperations();
+            this.CheckForNewOperationsAsync();
         }
 
         protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
@@ -150,23 +161,37 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             base.RaiseCanExecuteChanged();
 
+            this.drawerActivityButtonCommand?.RaiseCanExecuteChanged();
+            this.immediateLoadingUnitCallMenuCommand?.RaiseCanExecuteChanged();
+            this.showItemListsCommand?.RaiseCanExecuteChanged();
+            this.showItemSearchCommand?.RaiseCanExecuteChanged();
+
             this.RaisePropertyChanged(nameof(this.MachineIdentity));
             this.RaisePropertyChanged(nameof(this.BayNumber));
         }
 
         private bool CanShowItemLists()
         {
-            return !this.IsWaitingForResponse;
+            return
+                !this.IsWaitingForResponse
+                &&
+                this.IsWmsEnabled;
         }
 
         private bool CanShowItemOperations()
         {
-            return !this.IsWaitingForResponse;
+            return
+                !this.IsWaitingForResponse
+                &&
+                this.IsWmsEnabled;
         }
 
         private bool CanShowItemSearch()
         {
-            return !this.IsWaitingForResponse;
+            return
+                !this.IsWaitingForResponse
+                &&
+                this.IsWmsEnabled;
         }
 
         private bool CanShowOtherMenu()
@@ -184,7 +209,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.ShowItemOperations(false);
         }
 
-        private async Task CheckForNewOperations()
+        private async Task CheckForNewOperationsAsync()
         {
             while (this.IsVisible &&
                    this.checkOnlyFirstAppeared)

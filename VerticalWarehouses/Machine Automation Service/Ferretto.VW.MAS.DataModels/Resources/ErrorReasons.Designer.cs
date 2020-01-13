@@ -124,6 +124,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Update database failed. One or more destination cells are logically occupied.
+        /// </summary>
+        public static string CellLogicallyOccupied {
+            get {
+                return ResourceManager.GetString("CellLogicallyOccupied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check that the pawl is at zero or that the loading unit is fully loaded on the elevator..
         /// </summary>
         public static string ConditionsNotMetForPositioning {
