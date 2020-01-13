@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Mvvm;
 
@@ -23,6 +24,8 @@ namespace Ferretto.VW.App.Services.Models
         private string elevatorLogicalPosition;
 
         private LoadingUnit elevatorPositionLoadingUnit;
+
+        private ElevatorPositionType elevatorPositionType;
 
         private double? elevatorVerticalPosition;
 
@@ -94,6 +97,12 @@ namespace Ferretto.VW.App.Services.Models
         {
             get => this.elevatorPositionLoadingUnit;
             set => this.SetProperty(ref this.elevatorPositionLoadingUnit, value);
+        }
+
+        public ElevatorPositionType ElevatorPositionType
+        {
+            get => this.elevatorPositionType;
+            set => this.SetProperty(ref this.elevatorPositionType, value);
         }
 
         public double? ElevatorVerticalPosition

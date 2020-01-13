@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+
+namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {
     public class ElevatorPositionChangedEventArgs : System.EventArgs
     {
@@ -11,6 +13,7 @@
             this.CellId = cellId;
             this.BayPositionId = bayPositionId;
             this.BayPositionUpper = bayPositionUpper;
+            this.ElevatorPositionType = cellId.HasValue ? ElevatorPositionType.Cell : bayPositionId.HasValue ? ElevatorPositionType.Bay : ElevatorPositionType.Unknown;
         }
 
         #endregion
@@ -22,6 +25,8 @@
         public bool? BayPositionUpper { get; }
 
         public int? CellId { get; }
+
+        public ElevatorPositionType ElevatorPositionType { get; }
 
         public double HorizontalPosition { get; }
 

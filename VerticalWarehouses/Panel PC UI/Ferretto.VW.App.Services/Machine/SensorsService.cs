@@ -44,6 +44,8 @@ namespace Ferretto.VW.App.Services
 
         private bool bayZeroChainIsVisible;
 
+        private SubscriptionToken healthProbeToken;
+
         private SubscriptionToken sensorsToken;
 
         #endregion
@@ -304,6 +306,14 @@ namespace Ferretto.VW.App.Services
             this.RaisePropertyChanged();
         }
 
+        private async void OnHealthStatusChanged(HealthStatusChangedEventArgs status)
+        {
+            if (status.HealthStatus == HealthStatus.Healthy || status.HealthStatus == HealthStatus.Degraded)
+            {
+                await this.RefreshAsync(true);
+            }
+        }
+
         private async Task OnSensorsChangedAsync(NotificationMessageUI<SensorsChangedMessageData> message)
         {
             if (message?.Data?.SensorsStates != null)
@@ -358,6 +368,8 @@ namespace Ferretto.VW.App.Services
 
         private void SubscribeToEvents()
         {
+            this.healthProbeToken = this.healthProbeService.HealthStatusChanged.Subscribe(this.OnHealthStatusChanged, ThreadOption.UIThread, false);
+
             this.sensorsToken = this.sensorsToken
                 ??
                 this.eventAggregator
