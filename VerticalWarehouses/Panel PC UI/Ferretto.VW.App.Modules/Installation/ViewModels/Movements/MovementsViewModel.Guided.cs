@@ -699,23 +699,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
 
             // HACK: 2
-            this.SelectedCell = this.inputCellId is null
+            this.selectedCell = this.inputCellId is null
                 ? null
                 : this.cells.SingleOrDefault(c => c.Id == this.inputCellId);
 
-            if (this.SelectedCell != null)
+            if (this.selectedCell != null)
             {
-                this.InputHeight = this.SelectedCell.Position;
+                this.inputHeight = this.SelectedCell.Position;
                 this.InputLoadingUnitId = this.loadingUnits.SingleOrDefault(l => l.CellId == this.selectedCell.Id)?.Id;
             }
 
             if (this.SelectedLoadingUnit?.CellId is null)
             {
-                this.LoadingUnitInCell = null;
+                this.loadingUnitInCell = null;
             }
             else
             {
-                this.LoadingUnitInCell = this.SelectedLoadingUnit;
+                this.loadingUnitInCell = this.SelectedLoadingUnit;
             }
 
             this.RaiseCanExecuteChanged();
@@ -729,15 +729,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
 
             // HACK: 1
-            this.SelectedLoadingUnit = this.inputLoadingUnitId == null
+            this.selectedLoadingUnit = this.inputLoadingUnitId == null
                 ? null
                 : this.loadingUnits.SingleOrDefault(c => c.Id == this.inputLoadingUnitId);
 
-            if (this.SelectedLoadingUnit != null)
+            if (this.selectedLoadingUnit != null)
             {
                 // Hack: 3
-                this.inputCellId = this.SelectedLoadingUnit.CellId;
+                this.inputCellId = this.selectedLoadingUnit.CellId;
             }
+
+            this.RaiseCanExecuteChanged();
         }
 
         private async Task IntermediateShutterAsync()
