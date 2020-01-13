@@ -167,21 +167,21 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             this.Logger.LogDebug($"{this.GetType().Name}: Resume mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, from {this.Mission.RestoreStateName}, loadUnit {this.Mission.LoadUnitId}");
 
-            switch (this.Mission.RestoreStateName)
+            switch (this.Mission.RestoreState)
             {
-                case nameof(MissionMoveBayChainState):
+                case MissionState.BayChain:
                     this.RestoreBayChain();
                     break;
 
-                case nameof(MissionMoveCloseShutterState):
+                case MissionState.CloseShutter:
                     this.RestoreCloseShutter();
                     break;
 
-                case nameof(MissionMoveDepositUnitState):
+                case MissionState.DepositUnit:
                     this.RestoreDepositStart();
                     break;
 
-                case nameof(MissionMoveEndState):
+                case MissionState.End:
                     this.Mission.RestoreState = MissionState.NotDefined;
                     this.Mission.RestoreConditions = false;
                     this.Mission.NeedMovingBackward = false;
@@ -191,11 +191,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     break;
 
-                case nameof(MissionMoveLoadElevatorState):
+                case MissionState.LoadElevator:
                     this.RestoreLoadElevatorStart();
                     break;
 
-                case nameof(MissionMoveToTargetState):
+                case MissionState.ToTarget:
                     this.Mission.RestoreConditions = true;
                     this.Mission.RestoreState = MissionState.NotDefined;
                     this.Mission.NeedMovingBackward = false;
@@ -206,7 +206,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     break;
 
-                case nameof(MissionMoveStartState):
+                case MissionState.Start:
                     this.Mission.RestoreState = MissionState.NotDefined;
                     this.Mission.RestoreConditions = false;
                     this.Mission.NeedMovingBackward = false;
@@ -217,7 +217,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     break;
 
-                case nameof(MissionMoveWaitPickState):
+                case MissionState.WaitPick:
                     this.Mission.RestoreState = MissionState.NotDefined;
                     this.Mission.RestoreConditions = false;
                     this.Mission.NeedMovingBackward = false;
@@ -229,7 +229,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
 
                 default:
-                    this.Logger.LogError($"{this.GetType().Name}: no valid FsmRestoreStateName {this.Mission.RestoreStateName} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
+                    this.Logger.LogError($"{this.GetType().Name}: no valid RestoreState {this.Mission.RestoreState} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
 
                     {
                         this.Mission.StopReason = StopRequestReason.NoReason;
