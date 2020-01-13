@@ -177,7 +177,7 @@ namespace Ferretto.VW.App.Services
                         if (this.sensorsService.IsLoadingUnitOnElevator &&
                             this.sensorsService.IsZeroChain)
                         {
-                            Task.Run(() => this.machineErrorsWebService.SetErrorPPCAsync(MachineErrorCode.LoadUnitMissingOnElevator)).Wait();
+                            Task.Run(() => this.machineErrorsWebService.SetErrorPPCAsync(MachineErrorCode.LoadUnitMissingOnElevator)).GetAwaiter().GetResult(); 
                         }
 
                         // presenza baia 1

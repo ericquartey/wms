@@ -455,7 +455,7 @@ namespace Ferretto.VW.App.Services
                                     .Publish(new HomingChangedMessage(isHoming));
                                 }
                                 this.IsHoming = isHoming;
-                            }).Wait();
+                            }).GetAwaiter().GetResult();
                 }
 
                 switch (message.Status)
@@ -584,11 +584,11 @@ namespace Ferretto.VW.App.Services
                             {
                                 this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
                                 this.Cells = await this.machineCellsWebService.GetAllAsync();
-                            }).Wait();
+                            }).GetAwaiter().GetResult();
 
                             var ms = (MachineStatus)this.MachineStatus.Clone();
 
-                            Task.Run(async () => ms = await this.GetElevatorAsync(ms)).Wait();
+                            Task.Run(async () => ms = await this.GetElevatorAsync(ms)).GetAwaiter().GetResult();
 
                             this.MachineStatus = ms;
 
@@ -613,13 +613,13 @@ namespace Ferretto.VW.App.Services
                                 this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
                                 this.Cells = await this.machineCellsWebService.GetAllAsync();
                                 this.Bay = await this.bayManagerService.GetBayAsync();
-                            }).Wait();
+                            }).GetAwaiter().GetResult();
 
                             var ms = (MachineStatus)this.MachineStatus.Clone();
 
                             if (message?.Data is PositioningMessageData dataPositioning)
                             {
-                                Task.Run(async () => ms = await this.GetElevatorAsync(ms)).Wait();
+                                Task.Run(async () => ms = await this.GetElevatorAsync(ms)).GetAwaiter().GetResult();
 
                                 ms.IsMovingElevator = false;
                                 if (dataPositioning.AxisMovement == Axis.Vertical)
@@ -685,7 +685,7 @@ namespace Ferretto.VW.App.Services
                                         pos.BayPositionId,
                                         pos.BayPositionUpper),
                                     ms);
-                            }).Wait();
+                            }).GetAwaiter().GetResult();
 
                             this.MachineStatus = ms;
 
