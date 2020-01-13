@@ -157,7 +157,8 @@
                                            KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                                            KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
                                            LabelText=""
-                                           Mask="#0" />
+                                           Mask="#0"
+                                           MinValue="1" />
 
                         <controls:PpcCheckBox Grid.Column="3"
                                               Margin="5"
@@ -500,7 +501,8 @@
                                            IsEnabled="{Binding CanInputCellId}"
                                            KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                                            KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
-                                           LabelText="" />
+                                           LabelText=""
+                                           MinValue="1" />
 
                         <controls:PpcButton Grid.Row="1"
                                             Grid.Column="0"
@@ -522,7 +524,8 @@
                                            IsEnabled="{Binding CanInputHeight}"
                                            KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                                            KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
-                                           LabelText="" />
+                                           LabelText=""
+                                           MinValue="1" />
 
                     </Grid>
 

@@ -364,7 +364,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.moveToBayPositionCommand = new DelegateCommand(
                 async () => await this.MoveToBayPositionAsync(),
-                this.CanMoveToBayPosition));
+                () => { bool result = this.CanMoveToBayPosition(); return result; }));
 
         public ICommand MoveToLoadingUnitHeightCommand =>
            this.moveToLoadingUnitHeightCommand
@@ -475,7 +475,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 this.cells != null;
 
-            this.RefreshActionPoliciesAsync().ConfigureAwait(false);
+            Task.Run(async () => await this.RefreshActionPoliciesAsync()).GetAwaiter().GetResult();
 
             this.moveToLoadingUnitHeightCommand?.RaiseCanExecuteChanged();
 

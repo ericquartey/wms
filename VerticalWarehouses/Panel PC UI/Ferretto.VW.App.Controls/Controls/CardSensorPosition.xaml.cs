@@ -65,7 +65,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
         protected void Disappear()
         {
-            this.eventAggregator
+            this.eventAggregator?
                 .GetEvent<NavigationCompleted>()
                 .Unsubscribe(this.machineStatusChangesToken);
 
