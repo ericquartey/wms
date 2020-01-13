@@ -348,4 +348,7 @@
   <data name="ResumeCommandNotValid" xml:space="preserve">
     <value>The picking confirmation command is not valid</value>
   </data>
+  <data name="CellLogicallyOccupied" xml:space="preserve">
+    <value>Update database failed. One or more destination cells are logically occupied</value>
+  </data>
 </root>
