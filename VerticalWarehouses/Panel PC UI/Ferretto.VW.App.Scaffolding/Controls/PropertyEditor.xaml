@@ -108,7 +108,7 @@
             </ctrls:PpcTextBox>
         </DataTemplate>
 
-        <!-- string (old) -->
+        <!-- string -->
         <DataTemplate x:Key="StringDataTemplate">
             <DataTemplate.Resources>
                 <converters:TwoWayConverter x:Key="TwoWayConverter" />
