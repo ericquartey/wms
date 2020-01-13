@@ -204,14 +204,14 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new EntityNotFoundException(nameof(mission));
                 }
 
-                this.dataContext.Missions.Remove(mission);
-
-                this.dataContext.SaveChanges();
-
                 if (missionCache.ContainsKey(mission.Id))
                 {
                     missionCache.Remove(mission.Id);
                 }
+
+                this.dataContext.Missions.Remove(mission);
+
+                this.dataContext.SaveChanges();
 
                 this.logger.LogInformation($"Deleted MAS mission {mission.Id}.");
             }
@@ -332,12 +332,12 @@ namespace Ferretto.VW.MAS.DataLayer
 
             lock (this.dataContext)
             {
+                UpdateCache(mission);
+                this.logger.LogTrace($"UpdateCache");
+
                 this.dataContext.Missions.Update(mission);
 
                 this.dataContext.SaveChanges();
-
-                UpdateCache(mission);
-                this.logger.LogTrace($"UpdateCache");
             }
         }
 
