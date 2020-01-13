@@ -144,6 +144,8 @@ namespace Ferretto.VW.MAS.MissionManager
                         var newOperation = newOperations.OrderBy(o => o.Priority).First();
                         this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", mission.TargetBay, mission.WmsId.Value, newOperation.Id);
 
+                        await this.missionOperationsWmsWebService.ExecuteAsync(newOperation.Id);
+
                         baysDataProvider.AssignWmsMission(mission.TargetBay, mission, newOperation.Id);
                         this.NotifyAssignedMissionOperationChanged(mission.TargetBay, wmsMission.Id, newOperation.Id);
                     }
