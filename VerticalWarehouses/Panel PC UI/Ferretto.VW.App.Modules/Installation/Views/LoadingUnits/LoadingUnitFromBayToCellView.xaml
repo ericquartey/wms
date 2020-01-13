@@ -71,16 +71,16 @@
         <controls:CardSensorBay Grid.Row="3"
                                 Grid.Column="0"
                                 Height="90"
-                                Margin="0,30,15,0" />
+                                Margin="0,15,15,0" />
 
         <controls:CardSensorShutter Grid.Row="3"
                                     Grid.Column="1"
                                     Height="90"
-                                    Margin="0,30,15,0" />
+                                    Margin="0,15,15,0" />
 
         <Border Grid.Row="3"
                 Grid.Column="2"
-                Margin="0,30,15,0"
+                Margin="0,15,15,0"
                 Background="{DynamicResource PpcBackground}">
             <Border BorderBrush="{DynamicResource PpcBorderBrush}"
                     BorderThickness="{DynamicResource PpcBorderThickness}">
@@ -121,7 +121,7 @@
 
         <ctrls:PpcSpinEdit Grid.Row="3"
                            Grid.Column="4"
-                           Margin="0,30,15,0"
+                           Margin="0,15,15,0"
                            EditValue="{Binding LoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                            LabelText="{x:Static res:InstallationApp.InsertDesiredLoadingUnitId}" />
