@@ -45,8 +45,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private Bay bay;
 
-        private bool bayIsMultiPosition;
-
         private IEnumerable<Cell> cells;
 
         private SubscriptionToken cellsToken;
@@ -116,11 +114,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public bool BayIsMultiPosition
-        {
-            get => this.bayIsMultiPosition;
-            set => this.SetProperty(ref this.bayIsMultiPosition, value);
-        }
+        public bool BayIsMultiPosition => this.MachineService.Bay.IsDouble;
 
         public override EnableMask EnableMask => EnableMask.MachinePoweredOn;
 
@@ -231,17 +225,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.SubscribeToEvents();
 
-                this.GoToMovementsExecuteCommand(this.isMovementsGuided);
-
-                await this.RefreshMachineInfoAsync();
-
                 this.LightIcon = !this.IsLightActive ? "LightbulbOnOutline" : "LightbulbOutline";
 
-                this.SelectBayPositionUp();
-
-                this.BayIsMultiPosition = this.bay.IsDouble;
-
                 this.isManualMovementCompleted = false;
+
+                this.GoToMovementsExecuteCommand(this.isMovementsGuided);
+
+                this.RefreshMachineInfo();
+
+                if (this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Cell)
+                {
+                    this.InputCellId = this.MachineStatus.LogicalPositionId;
+                }
+                else if (this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay)
+                {
+                    this.IsPositionUpSelected = this.selectedBayPosition is null || (this.MachineStatus.BayPositionUpper ?? true);
+                    this.SelectedBayPosition = this.bay.Positions.SingleOrDefault(p => p.Id == this.MachineStatus.BayPositionId);
+                }
 
                 await base.OnAppearedAsync();
             }
@@ -254,20 +254,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         protected override async Task OnDataRefreshAsync()
         {
             await this.SensorsService.RefreshAsync(true);
-
-            var elevatorPosition = await this.machineElevatorWebService.GetPositionAsync();
-
-            this.IsElevatorInCell = elevatorPosition.CellId != null;
-            this.IsElevatorInBay = elevatorPosition.BayPositionId != null;
-
-            if (this.IsElevatorInCell)
-            {
-                this.InputCellId = elevatorPosition.CellId;
-            }
-            else if (this.IsElevatorInBay)
-            {
-                this.SelectedBayPosition = this.bay.Positions.SingleOrDefault(p => p.Id == elevatorPosition.BayPositionId);
-            }
         }
 
         protected override async Task OnErrorStatusChangedAsync(MachineErrorEventArgs e)
@@ -422,7 +408,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     {
                         this.StopMoving();
 
-                        await this.RefreshMachineInfoAsync();
+                        this.RefreshMachineInfo();
                         break;
                     }
 
@@ -431,7 +417,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     {
                         this.StopMoving();
 
-                        await this.RefreshMachineInfoAsync();
+                        this.RefreshMachineInfo();
                         this.OperationWarningOrError(message.Status, message.Description);
                         break;
                     }
@@ -446,7 +432,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     {
                         this.StopMoving();
 
-                        await this.RefreshMachineInfoAsync();
+                        this.RefreshMachineInfo();
                         break;
                     }
 
@@ -455,7 +441,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     {
                         this.StopMoving();
 
-                        await this.RefreshMachineInfoAsync();
+                        this.RefreshMachineInfo();
                         break;
                     }
             }
@@ -580,7 +566,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task RefreshMachineInfoAsync()
+        private void RefreshMachineInfo()
         {
             try
             {
@@ -589,7 +575,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.InputCellIdPropertyChanged();
                 this.InputLoadingUnitIdPropertyChanged();
 
-                this.RaiseCanExecuteChanged();
+                //this.RaiseCanExecuteChanged();
             }
             catch (Exception ex)
             {
