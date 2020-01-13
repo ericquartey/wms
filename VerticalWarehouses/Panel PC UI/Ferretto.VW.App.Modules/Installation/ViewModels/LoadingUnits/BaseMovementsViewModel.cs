@@ -124,7 +124,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isPositionUpSelected, value) && value)
                 {
-                    this.IsPositionDownSelected = !this.isPositionDownSelected;
+                    this.IsPositionDownSelected = !this.isPositionUpSelected;
                 }
             }
         }
@@ -186,14 +186,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             ??
             (this.selectBayPositionDownCommand = new DelegateCommand(
                 this.SelectBayPositionDown,
-                () => !this.IsExecutingProcedure && !this.IsWaitingForResponse && this.IsPositionUpSelected));
+                () => !this.IsExecutingProcedure && this.IsPositionUpSelected));
 
         public ICommand SelectBayPositionUpCommand =>
             this.selectBayPositionUpCommand
             ??
             (this.selectBayPositionUpCommand = new DelegateCommand(
                 this.SelectBayPositionUp,
-                () => !this.IsExecutingProcedure && !this.IsWaitingForResponse && !this.IsPositionUpSelected));
+                () => !this.IsExecutingProcedure && !this.IsPositionUpSelected));
 
         public ICommand StartCommand =>
                this.startCommand
