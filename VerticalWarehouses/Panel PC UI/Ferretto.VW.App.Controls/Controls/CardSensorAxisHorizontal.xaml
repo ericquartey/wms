@@ -6,11 +6,12 @@
              xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+             xmlns:system="clr-namespace:System;assembly=System.ServiceModel"
              d:DesignHeight="150"
              d:DesignWidth="300"
              mc:Ignorable="d">
 
-    <local:CardSensor CardDescription="{Binding HorizontalTargetPosition, StringFormat={}{0:F2}}"
+    <local:CardSensor CardDescription="{Binding HorizontalTargetPosition, TargetNullValue={x:Null}, StringFormat={}Target: {0:F2}}"
                       CardSensorLabel1="Zero"
                       CardSensorLabel2="Front"
                       CardSensorLabel3="Back"
