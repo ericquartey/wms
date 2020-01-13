@@ -3117,53 +3117,55 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         WarehouseIsFull = 36,
     
-        MoveBayChainNotAllowed = 37,
+        CellLogicallyOccupied = 37,
     
-        AutomaticRestoreNotAllowed = 38,
+        MoveBayChainNotAllowed = 38,
     
-        DestinationTypeNotValid = 39,
+        AutomaticRestoreNotAllowed = 39,
     
-        MissionTypeNotValid = 40,
+        DestinationTypeNotValid = 40,
     
-        ResumeCommandNotValid = 41,
+        MissionTypeNotValid = 41,
     
-        NoLoadUnitInSource = 42,
+        ResumeCommandNotValid = 42,
     
-        LoadUnitSourceDb = 43,
+        NoLoadUnitInSource = 43,
     
-        LoadUnitDestinationCell = 44,
+        LoadUnitSourceDb = 44,
     
-        LoadUnitElevator = 45,
+        LoadUnitDestinationCell = 45,
     
-        LoadUnitNotRemoved = 46,
+        LoadUnitElevator = 46,
     
-        LoadUnitDestinationBay = 47,
+        LoadUnitNotRemoved = 47,
     
-        LoadUnitSourceCell = 48,
+        LoadUnitDestinationBay = 48,
     
-        LoadUnitNotFound = 49,
+        LoadUnitSourceCell = 49,
     
-        LoadUnitNotLoaded = 50,
+        LoadUnitNotFound = 50,
     
-        LoadUnitSourceBay = 51,
+        LoadUnitNotLoaded = 51,
     
-        LoadUnitShutterOpen = 52,
+        LoadUnitSourceBay = 52,
     
-        LoadUnitShutterClosed = 53,
+        LoadUnitShutterOpen = 53,
     
-        LoadUnitPresentInCell = 54,
+        LoadUnitShutterClosed = 54,
     
-        LoadUnitOtherBay = 55,
+        LoadUnitPresentInCell = 55,
     
-        LoadUnitSourceElevator = 56,
+        LoadUnitOtherBay = 56,
     
-        LoadUnitMissingOnElevator = 57,
+        LoadUnitSourceElevator = 57,
     
-        LoadUnitMissingOnBay = 58,
+        LoadUnitMissingOnElevator = 58,
     
-        LoadUnitUndefinedUpper = 59,
+        LoadUnitMissingOnBay = 59,
     
-        LoadUnitUndefinedBottom = 60,
+        LoadUnitUndefinedUpper = 60,
+    
+        LoadUnitUndefinedBottom = 61,
     
         InverterErrorBaseCode = 1000,
     

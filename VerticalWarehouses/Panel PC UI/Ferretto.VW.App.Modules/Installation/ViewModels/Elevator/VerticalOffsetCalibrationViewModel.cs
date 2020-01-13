@@ -358,6 +358,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
+                await this.SensorsService.RefreshAsync(true);
+
                 if (!this.CurrentVerticalOffset.HasValue || this.AxisUpperBound == 0 || this.AxisLowerBound == 0 || this.StartPosition == 0)
                 {
                     await this.RetrieveVerticalOffset();

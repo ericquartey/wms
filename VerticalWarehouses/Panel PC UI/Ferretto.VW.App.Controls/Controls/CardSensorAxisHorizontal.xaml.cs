@@ -59,8 +59,6 @@ namespace Ferretto.VW.App.Controls.Controls
             {
                 this.Disappear();
             };
-
-            this.Dispatcher.ShutdownStarted += this.Dispatcher_ShutdownStarted;
         }
 
         #endregion
@@ -126,11 +124,6 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             this.OnDataRefresh();
             return Task.CompletedTask;
-        }
-
-        private void Dispatcher_ShutdownStarted(object sender, EventArgs e)
-        {
-            this.Disappear();
         }
 
         private void SubscribeToEvents()
