@@ -920,7 +920,8 @@ namespace Ferretto.VW.App.Services
 
                     ms.LogicalPositionId = ((int)bay.Number).ToString();
 
-                    ms.ElevatorPositionLoadingUnit = null;
+                    var position = this.bay.Positions.SingleOrDefault(p => p.Id == dataElevatorPosition.BayPositionId);
+                    ms.ElevatorPositionLoadingUnit = position?.LoadingUnit;
                 }
                 else
                 {
