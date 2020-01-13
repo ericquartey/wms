@@ -242,6 +242,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.IsPositionUpSelected = this.selectedBayPosition is null || (this.MachineStatus.BayPositionUpper ?? true);
                     this.SelectedBayPosition = this.bay.Positions.SingleOrDefault(p => p.Id == this.MachineStatus.BayPositionId);
                 }
+                else if (!this.IsPositionUpSelected && !this.IsPositionDownSelected)
+                {
+                    this.IsPositionUpSelected = true;
+                    this.SelectedBayPosition = this.bay.Positions.Single(b => b.Height == this.bay.Positions.Max(p => p.Height));
+                }
 
                 await base.OnAppearedAsync();
             }
