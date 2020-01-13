@@ -919,6 +919,8 @@ namespace Ferretto.VW.App.Services
                     }
 
                     ms.LogicalPositionId = ((int)bay.Number).ToString();
+
+                    ms.ElevatorPositionLoadingUnit = null;
                 }
                 else
                 {
