@@ -1074,7 +1074,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 3, 13, 14, 21, 45, 67, DateTimeKind.Local).AddTicks(7111),
+                            InstallationDate = new DateTime(2017, 3, 13, 14, 58, 50, 590, DateTimeKind.Local).AddTicks(6716),
                             ServiceStatus = 86
                         });
                 });

@@ -61,9 +61,9 @@ namespace Ferretto.VW.App.Services
             return userClaims;
         }
 
-        public Task LogOutAsync()
+        public async Task LogOutAsync()
         {
-            return Task.Run(() => this.UserName = null);
+            await Task.Run(() => this.UserName = null);
         }
 
         #endregion

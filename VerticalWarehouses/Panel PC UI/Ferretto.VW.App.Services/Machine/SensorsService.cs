@@ -206,7 +206,7 @@ namespace Ferretto.VW.App.Services
 
         public ShutterSensors ShutterSensors => this.shutterSensors;
 
-        private bool IsHealthy => this.healthProbeService?.HealthStatus == HealthStatus.Healthy;
+        private bool IsHealthy => this.healthProbeService?.HealthStatus == HealthStatus.Healthy || this.healthProbeService?.HealthStatus == HealthStatus.Degraded;
 
         #endregion
 

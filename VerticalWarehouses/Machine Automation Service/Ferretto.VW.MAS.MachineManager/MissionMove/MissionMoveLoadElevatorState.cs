@@ -106,7 +106,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator
                 && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadUnit
                 && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation;
-            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.StateName, isEject, MessageStatus.OperationExecuting);
+            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.State.ToString(), isEject, MessageStatus.OperationExecuting);
             return true;
         }
 
