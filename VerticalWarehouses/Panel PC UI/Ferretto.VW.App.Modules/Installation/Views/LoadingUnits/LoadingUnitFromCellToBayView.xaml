@@ -158,7 +158,7 @@
                                 Command="{Binding SelectBayPositionUpCommand}"
                                 Content="{x:Static res:InstallationApp.BayPositionUp}"
                                 IsActive="{Binding IsPositionUpSelected}"
-                                Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
+                                Visibility="{Binding SensorsService.BayIsMultiPosition, Converter={StaticResource BTVC}}" />
 
         </StackPanel>
 

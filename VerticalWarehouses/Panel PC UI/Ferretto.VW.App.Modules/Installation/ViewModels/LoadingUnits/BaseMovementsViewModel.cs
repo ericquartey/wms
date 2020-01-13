@@ -27,7 +27,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
-        private bool bayIsMultiPosition;
+        //private bool bayIsMultiPosition;
 
         private SubscriptionToken fsmExceptionToken;
 
@@ -68,15 +68,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #endregion
 
+        //public Bay Bay { get; private set; }
+
+        //public bool BayIsMultiPosition
+        //{
+        //    get => this.bayIsMultiPosition;
+        //    set => this.SetProperty(ref this.bayIsMultiPosition, value);
+        //}
+
         #region Properties
-
-        public Bay Bay { get; private set; }
-
-        public bool BayIsMultiPosition
-        {
-            get => this.bayIsMultiPosition;
-            set => this.SetProperty(ref this.bayIsMultiPosition, value);
-        }
 
         public int? CurrentMissionId { get; private set; }
 
@@ -216,9 +216,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public virtual bool CanStart()
         {
             return
-                !this.IsExecutingProcedure
-                &&
-                !this.IsWaitingForResponse;
+                !this.IsExecutingProcedure;
         }
 
         public override void Disappear()
@@ -239,7 +237,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public MAS.AutomationService.Contracts.LoadingUnitLocation GetLoadingUnitSource(bool isPositionDownSelected)
         {
-            return this.GetLoadingUnitSourceByDestination(this.Bay.Number, isPositionDownSelected);
+            return this.GetLoadingUnitSourceByDestination(this.MachineService.BayNumber, isPositionDownSelected);
         }
 
         public MAS.AutomationService.Contracts.LoadingUnitLocation GetLoadingUnitSourceByDestination(MAS.AutomationService.Contracts.BayNumber bayNumber, bool isPositionDownSelected)
@@ -285,24 +283,17 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            await base.OnAppearedAsync();
-
             this.IsBackNavigationAllowed = true;
 
             this.SubscribeToEvents();
 
-            await this.RetrieveLoadingUnitsAsync();
-
-            await this.UpdateBayAsync();
-
-            this.RaiseCanExecuteChanged();
+            await base.OnAppearedAsync();
         }
 
         public async Task RetrieveLoadingUnitsAsync()
         {
             try
             {
-                this.IsWaitingForResponse = true;
                 this.loadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
             }
             catch (Exception ex)
@@ -311,7 +302,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
             finally
             {
-                this.IsWaitingForResponse = false;
             }
         }
 
@@ -341,7 +331,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 this.IsBackNavigationAllowed = true;
                 this.IsWaitingForResponse = true;
 
-                await this.machineLoadingUnitsWebService.StopAsync(null, this.Bay.Number);
+                await this.machineLoadingUnitsWebService.StopAsync(null, this.MachineService.BayNumber);
 
                 this.IsStopping = true;
             }
@@ -380,6 +370,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.ShowNotification(ex);
             }
+        }
+
+        protected override async Task OnDataRefreshAsync()
+        {
+            await this.RetrieveLoadingUnitsAsync();
+
+            this.RaiseCanExecuteChanged();
         }
 
         protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
@@ -509,20 +506,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                         this.OnFsmException,
                         ThreadOption.UIThread,
                         false);
-        }
-
-        private async Task UpdateBayAsync()
-        {
-            try
-            {
-                this.Bay = await this.bayManagerService.GetBayAsync();
-
-                this.BayIsMultiPosition = this.Bay.IsDouble;
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
         }
 
         #endregion
