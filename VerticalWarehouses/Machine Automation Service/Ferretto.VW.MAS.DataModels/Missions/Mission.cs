@@ -69,7 +69,9 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsMissionToRestore()
         {
-            return !string.IsNullOrEmpty(this.RestoreStateName);
+            return !string.IsNullOrEmpty(this.RestoreStateName)
+                   &&
+                   this.RestoreStateName != "NotDefined";
         }
 
         public bool IsRestoringType()

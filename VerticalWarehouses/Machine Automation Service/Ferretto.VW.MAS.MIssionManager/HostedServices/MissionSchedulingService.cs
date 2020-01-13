@@ -135,6 +135,14 @@ namespace Ferretto.VW.MAS.MissionManager
                             moveLoadingUnitProvider.ActivateMove(mission.Id, mission.MissionType, mission.LoadUnitId, bayNumber, MessageActor.MissionManager);
                         }
                     }
+                    else if (mission.Status is MissionStatus.Waiting)
+                    {
+                        var newOperation = newOperations.OrderBy(o => o.Priority).First();
+                        this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", mission.TargetBay, mission.WmsId.Value, newOperation.Id);
+
+                        baysDataProvider.AssignWmsMission(mission.TargetBay, mission, newOperation.Id);
+                        this.NotifyAssignedMissionOperationChanged(mission.TargetBay, wmsMission.Id, newOperation.Id);
+                    }
                     //else if (mission.Status == MissionStatus.Waiting)
                     //{
                     //    var position = baysDataProvider.GetPositionByLocation(mission.LoadUnitDestination);
