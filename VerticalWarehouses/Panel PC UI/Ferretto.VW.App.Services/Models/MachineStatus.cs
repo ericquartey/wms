@@ -28,7 +28,7 @@ namespace Ferretto.VW.App.Services.Models
 
         private LoadingUnit embarkedLoadingUnit;
 
-        private string embarkedLoadingUnitId;
+        private int? embarkedLoadingUnitId;
 
         private string errorDescription;
 
@@ -108,7 +108,7 @@ namespace Ferretto.VW.App.Services.Models
             set => this.SetProperty(ref this.embarkedLoadingUnit, value);
         }
 
-        public string EmbarkedLoadingUnitId
+        public int? EmbarkedLoadingUnitId
         {
             get => this.embarkedLoadingUnitId;
             set => this.SetProperty(ref this.embarkedLoadingUnitId, value);

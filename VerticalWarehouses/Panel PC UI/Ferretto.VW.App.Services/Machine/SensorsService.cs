@@ -68,6 +68,12 @@ namespace Ferretto.VW.App.Services
 
         #endregion
 
+        #region Events
+
+        public event EventHandler<EventArgs> OnUpdateSensors;
+
+        #endregion
+
         #region Properties
 
         public Bay Bay { get; private set; }
@@ -130,6 +136,10 @@ namespace Ferretto.VW.App.Services
 
         public bool IsExtraVertical => this.sensors.ExtraRunElevator;
 
+        public bool IsHorizontalInconsistentBothHigh => (this.IsZeroChain && this.IsLoadingUnitOnElevator);
+
+        public bool IsHorizontalInconsistentBothLow => (!this.IsZeroChain && !this.IsLoadingUnitOnElevator);
+
         public bool IsLoadingUnitInBay
         {
             get
@@ -186,7 +196,7 @@ namespace Ferretto.VW.App.Services
 
         public bool IsOneTonMachine => this.bayManagerService.Identity.IsOneTonMachine;
 
-        public bool IsZeroChain => this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
+        public bool IsZeroChain => this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneTon : this.sensors.ZeroPawlSensor;
 
         public bool IsZeroVertical => this.sensors.ZeroVerticalSensor;
 
@@ -313,6 +323,8 @@ namespace Ferretto.VW.App.Services
                 {
                     this.shutterSensors.Update(message.Data.SensorsStates, (int)this.Bay.Number);
                 }
+
+                this.OnUpdateSensors?.Invoke(this, EventArgs.Empty);
             }
 
             this.RaisePropertyChanged();

@@ -174,11 +174,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsCanStartPosition =>
             this.CanBaseExecute() &&
-            !this.SensorsService.IsLoadingUnitOnElevator;
+            !this.SensorsService.IsHorizontalInconsistentBothLow &&
+            !this.SensorsService.IsHorizontalInconsistentBothHigh;
 
         public bool IsCanStepValue =>
             this.CanBaseExecute() &&
-            !this.SensorsService.IsLoadingUnitOnElevator;
+            !this.SensorsService.IsHorizontalInconsistentBothLow &&
+            !this.SensorsService.IsHorizontalInconsistentBothHigh;
 
         public ICommand MoveToCellCommand =>
             this.moveToCellCommand
@@ -465,10 +467,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanBaseExecute()
         {
-            return
-                !this.IsKeyboardOpened
-                &&
-                !this.IsMoving;
+            return !this.IsKeyboardOpened &&
+                   !this.IsMoving;
         }
 
         private bool CanDisplacementCommand()
@@ -480,7 +480,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanMoveToCellCommand()
         {
             return this.CanBaseExecute() &&
-                   !this.SensorsService.IsLoadingUnitOnElevator &&
+                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh &&
                    !(this.SelectedCell is null) &&
                    Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) != Convert.ToInt32(this.SelectedCell?.Position ?? 0);
         }
@@ -488,7 +489,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanMoveToCellMeasuredCommand()
         {
             return this.CanBaseExecute() &&
-                   !this.SensorsService.IsLoadingUnitOnElevator &&
+                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh &&
                    !(this.SelectedCell is null) &&
                    Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) == Convert.ToInt32(this.SelectedCell?.Position ?? 0);
         }
@@ -504,7 +506,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return this.CanBaseExecute() &&
                    string.IsNullOrEmpty(this.Error) &&
                    Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) != Convert.ToInt32(this.StartPosition) &&
-                   !this.SensorsService.IsLoadingUnitOnElevator;
+                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh;
         }
 
         private bool CanStop()
@@ -518,7 +521,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanToCellPositioning()
         {
             return this.CanBaseExecute() &&
-                   !this.SensorsService.IsLoadingUnitOnElevator;
+                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh;
         }
 
         private async Task DisplacementCommandAsync()

@@ -128,7 +128,7 @@
 
         ANGChainS2IND = 57,
 
-        ZeroPawlSensorOneK = 58,
+        ZeroPawlSensorOneTon = 58,
 
         ANGChainS4IND = 59,
 

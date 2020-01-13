@@ -14,7 +14,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 {
     internal sealed class ElevatorProvider : BaseProvider, IElevatorProvider
     {
-
         #region Fields
 
         private readonly IBaysDataProvider baysDataProvider;
@@ -467,7 +466,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var sensors = this.sensorsProvider.GetAll();
 
             var zeroSensor = this.machineProvider.IsOneTonMachine()
-                ? IOMachineSensors.ZeroPawlSensorOneK
+                ? IOMachineSensors.ZeroPawlSensorOneTon
                 : IOMachineSensors.ZeroPawlSensor;
 
             return sensors[(int)zeroSensor];
@@ -563,7 +562,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var sensors = this.sensorsProvider.GetAll();
 
             var zeroSensor = this.machineProvider.IsOneTonMachine()
-                ? IOMachineSensors.ZeroPawlSensorOneK
+                ? IOMachineSensors.ZeroPawlSensorOneTon
                 : IOMachineSensors.ZeroPawlSensor;
 
             if (!isLoadingUnitOnBoard && !sensors[(int)zeroSensor])
@@ -1310,6 +1309,5 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         }
 
         #endregion
-
     }
 }

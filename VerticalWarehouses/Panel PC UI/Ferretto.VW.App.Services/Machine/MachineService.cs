@@ -338,7 +338,7 @@ namespace Ferretto.VW.App.Services
             try
             {
                 ms.EmbarkedLoadingUnit = await this.machineElevatorWebService.GetLoadingUnitOnBoardAsync();
-                ms.EmbarkedLoadingUnitId = ms.EmbarkedLoadingUnit?.Id.ToString();
+                ms.EmbarkedLoadingUnitId = ms.EmbarkedLoadingUnit?.Id;
             }
             catch (Exception ex)
             {
@@ -874,6 +874,8 @@ namespace Ferretto.VW.App.Services
                         this.OnDataChanged,
                         ThreadOption.UIThread,
                         false);
+
+            this.sensorsService.OnUpdateSensors += (s, e) => this.OnChangedEventArgs(e);
         }
 
         private void UpdateMachineStatus(EventArgs e)
@@ -951,38 +953,31 @@ namespace Ferretto.VW.App.Services
                 switch (this.GetWarningAreaAttribute())
                 {
                     case WarningsArea.MovementsView:
-                        if (this.machineModeService.MachinePower != MachinePowerState.Powered)
-                        {
-                            this.ShowNotification("Manca marcia.", NotificationSeverity.Warning);
-                        }
-                        else if (!this.IsHoming)
-                        {
-                            this.ShowNotification("Homing non eseguito.", NotificationSeverity.Error);
-                        }
-                        else if (this.MachineStatus.BayChainPosition is null)
-                        {
-                            this.ShowNotification("Posizione catena sconosciuta.", NotificationSeverity.Error);
-                        }
-                        else if (string.IsNullOrEmpty(this.MachineStatus.ElevatorLogicalPosition))
-                        {
-                            this.ShowNotification("Posizione elevatore sconosciuta.", NotificationSeverity.Low);
-                        }
-                        else
-                        {
-                            this.ClearNotifications();
-                        }
-                        break;
-
                     case WarningsArea.Installation:
                         if (this.machineModeService.MachinePower != MachinePowerState.Powered)
                         {
                             this.ShowNotification("Manca marcia.", NotificationSeverity.Warning);
                         }
+                        else if (this.sensorsService.IsHorizontalInconsistentBothLow)
+                        {
+                            this.ShowNotification("Manca sensore nottolino a zero o presenza cassetto.", NotificationSeverity.Error);
+                        }
+                        else if (this.sensorsService.IsHorizontalInconsistentBothHigh)
+                        {
+                            this.ShowNotification("Inconsistenza sensore nottolino a zero e presenza cassetto.", NotificationSeverity.Error);
+                        }
+                        else if ((this.MachineStatus.EmbarkedLoadingUnitId.GetValueOrDefault() > 0 && (this.sensorsService.IsZeroChain || !this.sensorsService.IsLoadingUnitOnElevator)) ||
+                                 (this.MachineStatus.EmbarkedLoadingUnitId.GetValueOrDefault() == 0 && (!this.sensorsService.IsZeroChain || this.sensorsService.IsLoadingUnitOnElevator)))
+                        {
+                            this.ShowNotification("Inconsistenza stato di carico e sensori.", NotificationSeverity.Error);
+                        }
                         else if (!this.IsHoming)
                         {
                             this.ShowNotification("Homing non eseguito.", NotificationSeverity.Error);
                         }
-                        else if (view.Equals("VerticalResolutionCalibrationView", StringComparison.InvariantCultureIgnoreCase) &&
+                        else if ((view.Equals("VerticalResolutionCalibrationView", StringComparison.InvariantCultureIgnoreCase) ||
+                                  view.Equals("VerticalOffsetCalibrationView", StringComparison.InvariantCultureIgnoreCase) ||
+                                  view.Equals("BayCheckView", StringComparison.InvariantCultureIgnoreCase)) &&
                                  this.sensorsService.IsLoadingUnitOnElevator)
                         {
                             this.ShowNotification("Presenza cassetto sull'elevatore.", NotificationSeverity.Warning);

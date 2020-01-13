@@ -58,7 +58,7 @@
                                            Text="{x:Static res:InstallationApp.ZeroPawlSensor}"
                                            Visibility="{Binding IsOneTonMachine, Converter={StaticResource BTVIC}}" />
 
-                <controls:PpcSensorControl SensorState="{Binding Sensors.ZeroPawlSensorOneK}"
+                <controls:PpcSensorControl SensorState="{Binding Sensors.ZeroPawlSensorOneTon}"
                                            Text="{x:Static res:InstallationApp.ZeroPawlSensor}"
                                            Visibility="{Binding IsOneTonMachine, Converter={StaticResource BTVC}}" />
 
