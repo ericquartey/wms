@@ -28,6 +28,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override void OnCommand(CommandMessage command)
         {
+            // do nothing
         }
 
         public override bool OnEnter(CommandMessage command)
@@ -42,6 +43,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             if (this.Mission.StopReason == StopRequestReason.NoReason)
             {
+                this.Mission.Status = MissionStatus.Completed;
+                this.MissionsDataProvider.Update(this.Mission);
+
                 this.SendNotification();
             }
             else
@@ -57,6 +61,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override void OnNotification(NotificationMessage notification)
         {
+            if (notification is null)
+            {
+                throw new ArgumentNullException(nameof(notification));
+            }
+
             var notificationStatus = this.LoadingUnitMovementProvider.StopOperationStatus(notification);
 
             if (notificationStatus != MessageStatus.NotSpecified)
@@ -117,7 +126,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         private void SendNotification()
         {
-            bool isEject = this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
+            var isEject = this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
                 && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator
                 && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadUnit
                 && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation;
@@ -128,7 +137,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         private bool UpdateStopList(BayNumber bay)
         {
-            bool update = false;
+            var update = false;
             switch (bay)
             {
                 case BayNumber.BayOne:

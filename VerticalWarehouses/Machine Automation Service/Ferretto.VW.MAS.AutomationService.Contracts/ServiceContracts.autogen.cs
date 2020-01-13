@@ -1572,6 +1572,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"Aborted")]
         Aborted = 4,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Completing")]
+        Completing = 5,
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]

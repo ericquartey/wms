@@ -84,6 +84,12 @@ namespace Ferretto.VW.MAS.MissionManager
                 return;
             }
 
+            if (activeMissions.Any(m => m.Status == MissionStatus.Completing))
+            {
+                // there is a mission being completed: do not process any other missions until this is completed
+                return;
+            }
+
             var mission = activeMissions.FirstOrDefault(x => x.Status == MissionStatus.Executing || x.Status == MissionStatus.Waiting);
             if (mission is null)
             {
@@ -111,7 +117,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 var newOperations = wmsMission.Operations.Where(o => o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Completed && o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Error);
                 if (newOperations.Any())
                 {
-                    if (mission.Status == MissionStatus.New)
+                    if (mission.Status is MissionStatus.New)
                     {
                         // activate new mission
                         var cellsProvider = serviceProvider.GetRequiredService<ICellsProvider>();
@@ -122,6 +128,9 @@ namespace Ferretto.VW.MAS.MissionManager
                         }
                         else
                         {
+                            mission.Status = MissionStatus.Executing;
+                            missionsDataProvider.Update(mission);
+
                             moveLoadingUnitProvider.ActivateMove(mission.Id, mission.MissionType, mission.LoadUnitId, bayNumber, MessageActor.MissionManager);
                         }
                     }
@@ -136,12 +145,14 @@ namespace Ferretto.VW.MAS.MissionManager
                     //    }
                     //}
                 }
-                else
+                else if (mission.Status is MissionStatus.Executing || mission.Status is MissionStatus.Waiting)
                 {
-                    // wms mission is finished
+                    // wms mission is finished => schedule loading unit movement back to cell
+                    mission.Status = MissionStatus.Completing;
+                    missionsDataProvider.Update(mission);
+
                     this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} completed.", bayNumber, mission.WmsId.Value);
 
-                    missionsDataProvider.Complete(mission.Id);
                     baysDataProvider.ClearMission(bayNumber);
                     this.NotifyAssignedMissionOperationChanged(bayNumber, null, null);
 
@@ -176,7 +187,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 var sourceCell = cellsProvider.GetByLoadingUnitId(mission.LoadUnitId);
                 if (sourceCell is null)
                 {
-                    this.Logger.LogDebug($"Bay {bayNumber}: WMS mission {mission.WmsId} can not start because LoadUnit {mission.LoadUnitId} is not in a cell.");
+                    this.Logger.LogDebug($"Bay {bayNumber}: loading unit  {mission.LoadUnitId} cannot be moved to bay because it is not located in a cell.");
                 }
                 else
                 {
