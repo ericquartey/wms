@@ -376,20 +376,110 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The maximum weight loaded on the loading unit is excessive..
+        ///   Looks up a localized string similar to Tray destination bay occupied.
         /// </summary>
-        public static string LoadingUnitWeightExceeded {
+        public static string LoadUnitDestinationBay {
             get {
-                return ResourceManager.GetString("LoadingUnitWeightExceeded", resourceCulture);
+                return ResourceManager.GetString("LoadUnitDestinationBay", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore peso.
+        ///   Looks up a localized string similar to Not valid destination cell.
         /// </summary>
-        public static string LoadingUnitWeightTooLow {
+        public static string LoadUnitDestinationCell {
             get {
-                return ResourceManager.GetString("LoadingUnitWeightTooLow", resourceCulture);
+                return ResourceManager.GetString("LoadUnitDestinationCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elevator cradle occupied.
+        /// </summary>
+        public static string LoadUnitElevator {
+            get {
+                return ResourceManager.GetString("LoadUnitElevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay 1 occupied with unknown loading unit.
+        /// </summary>
+        public static string LoadUnitMissingOnBay1 {
+            get {
+                return ResourceManager.GetString("LoadUnitMissingOnBay1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay 2 occupied with unknown loading unit.
+        /// </summary>
+        public static string LoadUnitMissingOnBay2 {
+            get {
+                return ResourceManager.GetString("LoadUnitMissingOnBay2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay 3 busy with unknown loading unit.
+        /// </summary>
+        public static string LoadUnitMissingOnBay3 {
+            get {
+                return ResourceManager.GetString("LoadUnitMissingOnBay3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elevator occupied with unknown loading unit.
+        /// </summary>
+        public static string LoadUnitMissingOnElevator {
+            get {
+                return ResourceManager.GetString("LoadUnitMissingOnElevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading unit database inconsistency.
+        /// </summary>
+        public static string LoadUnitNotFound {
+            get {
+                return ResourceManager.GetString("LoadUnitNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The selected loading unit is not loaded in the warehouse.
+        /// </summary>
+        public static string LoadUnitNotLoaded {
+            get {
+                return ResourceManager.GetString("LoadUnitNotLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading unit detected in the extraction bay.
+        /// </summary>
+        public static string LoadUnitNotRemoved {
+            get {
+                return ResourceManager.GetString("LoadUnitNotRemoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errore cassetto in posizione inattesa.
+        /// </summary>
+        public static string LoadUnitOtherBay {
+            get {
+                return ResourceManager.GetString("LoadUnitOtherBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errore cassetto in posizione inattesa.
+        /// </summary>
+        public static string LoadUnitPresentInCell {
+            get {
+                return ResourceManager.GetString("LoadUnitPresentInCell", resourceCulture);
             }
         }
         
@@ -403,200 +493,92 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore Machine Manager.
+        ///   Looks up a localized string similar to Errore stato serranda.
         /// </summary>
-        public static string MachineManagerErrorBaseCode {
+        public static string LoadUnitShutterClosed {
             get {
-                return ResourceManager.GetString("MachineManagerErrorBaseCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Tray destination bay occupied.
-        /// </summary>
-        public static string MachineManagerErrorLoadingUnitDestinationBay {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitDestinationBay", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Not valid destination cell.
-        /// </summary>
-        public static string MachineManagerErrorLoadingUnitDestinationCell {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitDestinationCell", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Elevator cradle occupied.
-        /// </summary>
-        public static string MachineManagerErrorLoadingUnitElevator {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitElevator", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Bay 1 occupied with unknown loading unit.
-        /// </summary>
-        public static string MachineManagerErrorLoadingUnitMissingOnBay1 {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitMissingOnBay1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Bay 2 occupied with unknown loading unit.
-        /// </summary>
-        public static string MachineManagerErrorLoadingUnitMissingOnBay2 {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitMissingOnBay2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Bay 3 busy with unknown loading unit.
-        /// </summary>
-        public static string MachineManagerErrorLoadingUnitMissingOnBay3 {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitMissingOnBay3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Elevator occupied with unknown loading unit.
-        /// </summary>
-        public static string MachineManagerErrorLoadingUnitMissingOnElevator {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitMissingOnElevator", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loading unit database inconsistency.
-        /// </summary>
-        public static string MachineManagerErrorLoadingUnitNotFound {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The selected loading unit is not loaded in the warehouse.
-        /// </summary>
-        public static string MachineManagerErrorLoadingUnitNotLoaded {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitNotLoaded", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loading unit detected in the extraction bay.
-        /// </summary>
-        public static string MachineManagerErrorLoadingUnitNotRemoved {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitNotRemoved", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Errore cassetto in posizione inattesa.
-        /// </summary>
-        public static string MachineManagerErrorLoadingUnitOtherBay {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitOtherBay", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Errore cassetto in posizione inattesa.
-        /// </summary>
-        public static string MachineManagerErrorLoadingUnitPresentInCell {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitPresentInCell", resourceCulture);
+                return ResourceManager.GetString("LoadUnitShutterClosed", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Errore stato serranda.
         /// </summary>
-        public static string MachineManagerErrorLoadingUnitShutterClosed {
+        public static string LoadUnitShutterOpen {
             get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitShutterClosed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Errore stato serranda.
-        /// </summary>
-        public static string MachineManagerErrorLoadingUnitShutterOpen {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitShutterOpen", resourceCulture);
+                return ResourceManager.GetString("LoadUnitShutterOpen", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Source bay of the empty loading unit.
         /// </summary>
-        public static string MachineManagerErrorLoadingUnitSourceBay {
+        public static string LoadUnitSourceBay {
             get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitSourceBay", resourceCulture);
+                return ResourceManager.GetString("LoadUnitSourceBay", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Not valid source cell.
         /// </summary>
-        public static string MachineManagerErrorLoadingUnitSourceCell {
+        public static string LoadUnitSourceCell {
             get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitSourceCell", resourceCulture);
+                return ResourceManager.GetString("LoadUnitSourceCell", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Database source position inconsistency.
         /// </summary>
-        public static string MachineManagerErrorLoadingUnitSourceDb {
+        public static string LoadUnitSourceDb {
             get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitSourceDb", resourceCulture);
+                return ResourceManager.GetString("LoadUnitSourceDb", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Drawer not present on the elevator.
         /// </summary>
-        public static string MachineManagerErrorLoadingUnitSourceElevator {
+        public static string LoadUnitSourceElevator {
             get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitSourceElevator", resourceCulture);
+                return ResourceManager.GetString("LoadUnitSourceElevator", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Undefined bay bottom position.
         /// </summary>
-        public static string MachineManagerErrorLoadingUnitUndefinedBottom {
+        public static string LoadUnitUndefinedBottom {
             get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitUndefinedBottom", resourceCulture);
+                return ResourceManager.GetString("LoadUnitUndefinedBottom", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Undefined bay upper position.
         /// </summary>
-        public static string MachineManagerErrorLoadingUnitUndefinedUpper {
+        public static string LoadUnitUndefinedUpper {
             get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitUndefinedUpper", resourceCulture);
+                return ResourceManager.GetString("LoadUnitUndefinedUpper", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No loading unit present in the bay indicated.
+        ///   Looks up a localized string similar to The maximum weight loaded on the loading unit is excessive..
         /// </summary>
-        public static string MachineManagerErrorNoLoadingUnitInSource {
+        public static string LoadUnitWeightExceeded {
             get {
-                return ResourceManager.GetString("MachineManagerErrorNoLoadingUnitInSource", resourceCulture);
+                return ResourceManager.GetString("LoadUnitWeightExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errore peso.
+        /// </summary>
+        public static string LoadUnitWeightTooLow {
+            get {
+                return ResourceManager.GetString("LoadUnitWeightTooLow", resourceCulture);
             }
         }
         
@@ -651,6 +633,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         public static string NoError {
             get {
                 return ResourceManager.GetString("NoError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No loading unit present in the bay indicated.
+        /// </summary>
+        public static string NoLoadUnitInSource {
+            get {
+                return ResourceManager.GetString("NoLoadUnitInSource", resourceCulture);
             }
         }
         

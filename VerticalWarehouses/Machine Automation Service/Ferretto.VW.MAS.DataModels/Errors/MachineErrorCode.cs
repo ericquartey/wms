@@ -82,11 +82,11 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LaserConnectionError), 0)]
         LaserConnectionError,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadingUnitWeightExceeded), 1)]
-        LoadingUnitWeightExceeded,
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitWeightExceeded), 1)]
+        LoadUnitWeightExceeded,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadingUnitWeightTooLow), 1)]
-        LoadingUnitWeightTooLow,
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitWeightTooLow), 1)]
+        LoadUnitWeightTooLow,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineWeightExceeded), 1)]
         MachineWeightExceeded,
@@ -133,8 +133,65 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ResumeCommandNotValid), 1)]
         ResumeCommandNotValid,
 
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(NoLoadUnitInSource), 1)]
+        NoLoadUnitInSource,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitSourceDb), 1)]
+        LoadUnitSourceDb,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitDestinationCell), 1)]
+        LoadUnitDestinationCell,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitElevator), 1)]
+        LoadUnitElevator,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitNotRemoved), 1)]
+        LoadUnitNotRemoved,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitDestinationBay), 1)]
+        LoadUnitDestinationBay,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitSourceCell), 1)]
+        LoadUnitSourceCell,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitNotFound), 1)]
+        LoadUnitNotFound,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitNotLoaded), 1)]
+        LoadUnitNotLoaded,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitSourceBay), 1)]
+        LoadUnitSourceBay,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitShutterOpen), 1)]
+        LoadUnitShutterOpen,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitShutterClosed), 1)]
+        LoadUnitShutterClosed,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitPresentInCell), 1)]
+        LoadUnitPresentInCell,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitOtherBay), 1)]
+        LoadUnitOtherBay,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitSourceElevator), 1)]
+        LoadUnitSourceElevator,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitMissingOnElevator), 1)]
+        LoadUnitMissingOnElevator,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitMissingOnBay), 1)]
+        LoadUnitMissingOnBay,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitUndefinedUpper), 1)]
+        LoadUnitUndefinedUpper,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitUndefinedBottom), 1)]
+        LoadUnitUndefinedBottom,
+
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorBaseCode), 1)]
-        InverterErrorBaseCode = 200000,
+        InverterErrorBaseCode = 1000,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorInvalidParameter), 1)]
         InverterErrorInvalidParameter = InverterErrorBaseCode + 1,
@@ -177,65 +234,5 @@ namespace Ferretto.VW.MAS.DataModels
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorSyntaxError), 1)]
         InverterErrorSyntaxError2 = InverterErrorBaseCode + 30,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorBaseCode), 1)]
-        MachineManagerErrorBaseCode = 300000,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorNoLoadingUnitInSource), 1)]
-        MachineManagerErrorNoLoadingUnitInSource = MachineManagerErrorBaseCode + 1,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitSourceDb), 1)]
-        MachineManagerErrorLoadingUnitSourceDb = MachineManagerErrorBaseCode + 2,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitDestinationCell), 1)]
-        MachineManagerErrorLoadingUnitDestinationCell = MachineManagerErrorBaseCode + 3,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitElevator), 1)]
-        MachineManagerErrorLoadingUnitElevator = MachineManagerErrorBaseCode + 4,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitNotRemoved), 1)]
-        MachineManagerErrorLoadingUnitNotRemoved = MachineManagerErrorBaseCode + 5,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitDestinationBay), 1)]
-        MachineManagerErrorLoadingUnitDestinationBay = MachineManagerErrorBaseCode + 6,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitSourceCell), 1)]
-        MachineManagerErrorLoadingUnitSourceCell = MachineManagerErrorBaseCode + 7,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitNotFound), 1)]
-        MachineManagerErrorLoadingUnitNotFound = MachineManagerErrorBaseCode + 8,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitNotLoaded), 1)]
-        MachineManagerErrorLoadingUnitNotLoaded = MachineManagerErrorBaseCode + 9,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitSourceBay), 1)]
-        MachineManagerErrorLoadingUnitSourceBay = MachineManagerErrorBaseCode + 10,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitShutterOpen), 1)]
-        MachineManagerErrorLoadingUnitShutterOpen = MachineManagerErrorBaseCode + 11,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitShutterClosed), 1)]
-        MachineManagerErrorLoadingUnitShutterClosed = MachineManagerErrorBaseCode + 12,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitPresentInCell), 1)]
-        MachineManagerErrorLoadingUnitPresentInCell = MachineManagerErrorBaseCode + 13,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitOtherBay), 1)]
-        MachineManagerErrorLoadingUnitOtherBay = MachineManagerErrorBaseCode + 14,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitSourceElevator), 1)]
-        MachineManagerErrorLoadingUnitSourceElevator = MachineManagerErrorBaseCode + 15,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitMissingOnElevator), 1)]
-        MachineManagerErrorLoadingUnitMissingOnElevator = MachineManagerErrorBaseCode + 16,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitMissingOnBay), 1)]
-        MachineManagerErrorLoadingUnitMissingOnBay = MachineManagerErrorBaseCode + 17,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitUndefinedUpper), 1)]
-        MachineManagerErrorLoadingUnitUndefinedUpper = MachineManagerErrorBaseCode + 18,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitUndefinedBottom), 1)]
-        MachineManagerErrorLoadingUnitUndefinedBottom = MachineManagerErrorBaseCode + 19,
     }
 }

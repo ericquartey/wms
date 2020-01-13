@@ -394,20 +394,110 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unload the loading unit in the bay and remove the excess weight..
+        ///   Looks up a localized string similar to Verify that the destination bay of the drawer is actually empty. Check that the bay loading unit sensors are working correctly..
         /// </summary>
-        public static string LoadingUnitWeightExceeded {
+        public static string LoadUnitDestinationBay {
             get {
-                return ResourceManager.GetString("LoadingUnitWeightExceeded", resourceCulture);
+                return ResourceManager.GetString("LoadUnitDestinationBay", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Peso cassetto inferiore al peso atteso..
+        ///   Looks up a localized string similar to Verify that the target cell of the loading unit inside the database is correctly configured.
         /// </summary>
-        public static string LoadingUnitWeightTooLow {
+        public static string LoadUnitDestinationCell {
             get {
-                return ResourceManager.GetString("LoadingUnitWeightTooLow", resourceCulture);
+                return ResourceManager.GetString("LoadUnitDestinationCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check that the lift cradle is empty. Check the correct operation of the loading unit presence sensors on the cradle..
+        /// </summary>
+        public static string LoadUnitElevator {
+            get {
+                return ResourceManager.GetString("LoadUnitElevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check the loading unit id on the bay 1. Check that the loading unit presence sensors are working properly. Put the machine in Automatic..
+        /// </summary>
+        public static string LoadUnitMissingOnBay1 {
+            get {
+                return ResourceManager.GetString("LoadUnitMissingOnBay1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check the loading unit id on the bay 2. Check that the loading unit presence sensors are working correctly. Put the machine in Automatic..
+        /// </summary>
+        public static string LoadUnitMissingOnBay2 {
+            get {
+                return ResourceManager.GetString("LoadUnitMissingOnBay2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check the loading unit id on the bay 3. Check that the loading unit presence sensors are working correctly. Put the machine in Automatic..
+        /// </summary>
+        public static string LoadUnitMissingOnBay3 {
+            get {
+                return ResourceManager.GetString("LoadUnitMissingOnBay3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check the id of the loading unit on the elevator. Check that the loading unit presence sensors on the elevator are working properly. Put the machine in Automatic..
+        /// </summary>
+        public static string LoadUnitMissingOnElevator {
+            get {
+                return ResourceManager.GetString("LoadUnitMissingOnElevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The selected loading unit is not present in the database. Check the loading unit number entered and the correct configuration of the database..
+        /// </summary>
+        public static string LoadUnitNotFound {
+            get {
+                return ResourceManager.GetString("LoadUnitNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The selected loading unit is present in the database but is not loaded in the warehouse. Check the database configuration..
+        /// </summary>
+        public static string LoadUnitNotLoaded {
+            get {
+                return ResourceManager.GetString("LoadUnitNotLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If the loading unit has been removed, check the loading unit presence sensors in the bay, otherwise remove the loading unit from the bay..
+        /// </summary>
+        public static string LoadUnitNotRemoved {
+            get {
+                return ResourceManager.GetString("LoadUnitNotRemoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cassetto già presente in un&apos;altra baia..
+        /// </summary>
+        public static string LoadUnitOtherBay {
+            get {
+                return ResourceManager.GetString("LoadUnitOtherBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cassetto già presente in cella..
+        /// </summary>
+        public static string LoadUnitPresentInCell {
+            get {
+                return ResourceManager.GetString("LoadUnitPresentInCell", resourceCulture);
             }
         }
         
@@ -421,200 +511,92 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Switch the machine off and on again. If the problem persists, contact support..
-        /// </summary>
-        public static string MachineManagerErrorBaseCode {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorBaseCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Verify that the destination bay of the drawer is actually empty. Check that the bay loading unit sensors are working correctly..
-        /// </summary>
-        public static string MachineManagerErrorLoadingUnitDestinationBay {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitDestinationBay", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Verify that the target cell of the loading unit inside the database is correctly configured.
-        /// </summary>
-        public static string MachineManagerErrorLoadingUnitDestinationCell {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitDestinationCell", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Check that the lift cradle is empty. Check the correct operation of the loading unit presence sensors on the cradle..
-        /// </summary>
-        public static string MachineManagerErrorLoadingUnitElevator {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitElevator", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Check the loading unit id on the bay 1. Check that the loading unit presence sensors are working properly. Put the machine in Automatic..
-        /// </summary>
-        public static string MachineManagerErrorLoadingUnitMissingOnBay1 {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitMissingOnBay1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Check the loading unit id on the bay 2. Check that the loading unit presence sensors are working correctly. Put the machine in Automatic..
-        /// </summary>
-        public static string MachineManagerErrorLoadingUnitMissingOnBay2 {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitMissingOnBay2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Check the loading unit id on the bay 3. Check that the loading unit presence sensors are working correctly. Put the machine in Automatic..
-        /// </summary>
-        public static string MachineManagerErrorLoadingUnitMissingOnBay3 {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitMissingOnBay3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Check the id of the loading unit on the elevator. Check that the loading unit presence sensors on the elevator are working properly. Put the machine in Automatic..
-        /// </summary>
-        public static string MachineManagerErrorLoadingUnitMissingOnElevator {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitMissingOnElevator", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The selected loading unit is not present in the database. Check the loading unit number entered and the correct configuration of the database..
-        /// </summary>
-        public static string MachineManagerErrorLoadingUnitNotFound {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The selected loading unit is present in the database but is not loaded in the warehouse. Check the database configuration..
-        /// </summary>
-        public static string MachineManagerErrorLoadingUnitNotLoaded {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitNotLoaded", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to If the loading unit has been removed, check the loading unit presence sensors in the bay, otherwise remove the loading unit from the bay..
-        /// </summary>
-        public static string MachineManagerErrorLoadingUnitNotRemoved {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitNotRemoved", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cassetto già presente in un&apos;altra baia..
-        /// </summary>
-        public static string MachineManagerErrorLoadingUnitOtherBay {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitOtherBay", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cassetto già presente in cella..
-        /// </summary>
-        public static string MachineManagerErrorLoadingUnitPresentInCell {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitPresentInCell", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Serranda non in posizione aperta. Verificare lo stato dei sensori..
         /// </summary>
-        public static string MachineManagerErrorLoadingUnitShutterClosed {
+        public static string LoadUnitShutterClosed {
             get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitShutterClosed", resourceCulture);
+                return ResourceManager.GetString("LoadUnitShutterClosed", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Serranda non in posizione chiusa nè aperta. Verificare lo stato dei sensori..
         /// </summary>
-        public static string MachineManagerErrorLoadingUnitShutterOpen {
+        public static string LoadUnitShutterOpen {
             get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitShutterOpen", resourceCulture);
+                return ResourceManager.GetString("LoadUnitShutterOpen", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Check that the loading unit is actually present in the source bay. Check that the bay loading unit sensors are working correctly..
         /// </summary>
-        public static string MachineManagerErrorLoadingUnitSourceBay {
+        public static string LoadUnitSourceBay {
             get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitSourceBay", resourceCulture);
+                return ResourceManager.GetString("LoadUnitSourceBay", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Check that the source cell of the loading unit inside the database is correctly configured.
         /// </summary>
-        public static string MachineManagerErrorLoadingUnitSourceCell {
+        public static string LoadUnitSourceCell {
             get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitSourceCell", resourceCulture);
+                return ResourceManager.GetString("LoadUnitSourceCell", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Check that the source position of the loading unit in the database is correctly configured.
         /// </summary>
-        public static string MachineManagerErrorLoadingUnitSourceDb {
+        public static string LoadUnitSourceDb {
             get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitSourceDb", resourceCulture);
+                return ResourceManager.GetString("LoadUnitSourceDb", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Impossibile determinare il cassetto a bordo elevatore..
         /// </summary>
-        public static string MachineManagerErrorLoadingUnitSourceElevator {
+        public static string LoadUnitSourceElevator {
             get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitSourceElevator", resourceCulture);
+                return ResourceManager.GetString("LoadUnitSourceElevator", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Bottom bay position undefined.
         /// </summary>
-        public static string MachineManagerErrorLoadingUnitUndefinedBottom {
+        public static string LoadUnitUndefinedBottom {
             get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitUndefinedBottom", resourceCulture);
+                return ResourceManager.GetString("LoadUnitUndefinedBottom", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Upper bay position undefined.
         /// </summary>
-        public static string MachineManagerErrorLoadingUnitUndefinedUpper {
+        public static string LoadUnitUndefinedUpper {
             get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitUndefinedUpper", resourceCulture);
+                return ResourceManager.GetString("LoadUnitUndefinedUpper", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Make sure that a loading unit is present in the bay and that the presence sensors work correctly.
+        ///   Looks up a localized string similar to Unload the loading unit in the bay and remove the excess weight..
         /// </summary>
-        public static string MachineManagerErrorNoLoadingUnitInSource {
+        public static string LoadUnitWeightExceeded {
             get {
-                return ResourceManager.GetString("MachineManagerErrorNoLoadingUnitInSource", resourceCulture);
+                return ResourceManager.GetString("LoadUnitWeightExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Peso cassetto inferiore al peso atteso..
+        /// </summary>
+        public static string LoadUnitWeightTooLow {
+            get {
+                return ResourceManager.GetString("LoadUnitWeightTooLow", resourceCulture);
             }
         }
         
@@ -669,6 +651,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         public static string NoError {
             get {
                 return ResourceManager.GetString("NoError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Make sure that a loading unit is present in the bay and that the presence sensors work correctly.
+        /// </summary>
+        public static string NoLoadUnitInSource {
+            get {
+                return ResourceManager.GetString("NoLoadUnitInSource", resourceCulture);
             }
         }
         

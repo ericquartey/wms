@@ -111,7 +111,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 #if CHECK_BAY_SENSOR
             else
             {
-                this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitNotRemoved, this.requestingBay);
+                this.errorsProvider.RecordNew(MachineErrorCode.LoadUnitNotRemoved, this.requestingBay);
             }
 #endif
         }

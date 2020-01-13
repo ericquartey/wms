@@ -186,37 +186,34 @@
   <data name="SecurityWasTriggered" xml:space="preserve">
     <value>Security function has triggered.</value>
   </data>
-  <data name="MachineManagerErrorBaseCode" xml:space="preserve">
-    <value>Errore Machine Manager</value>
-  </data>
-  <data name="MachineManagerErrorLoadingUnitDestinationCell" xml:space="preserve">
+  <data name="LoadUnitDestinationCell" xml:space="preserve">
     <value>Not valid destination cell</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitElevator" xml:space="preserve">
+  <data name="LoadUnitElevator" xml:space="preserve">
     <value>Elevator cradle occupied</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitSourceDb" xml:space="preserve">
+  <data name="LoadUnitSourceDb" xml:space="preserve">
     <value>Database source position inconsistency</value>
   </data>
-  <data name="MachineManagerErrorNoLoadingUnitInSource" xml:space="preserve">
+  <data name="NoLoadUnitInSource" xml:space="preserve">
     <value>No loading unit present in the bay indicated</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitNotRemoved" xml:space="preserve">
+  <data name="LoadUnitNotRemoved" xml:space="preserve">
     <value>Loading unit detected in the extraction bay</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitDestinationBay" xml:space="preserve">
+  <data name="LoadUnitDestinationBay" xml:space="preserve">
     <value>Tray destination bay occupied</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitNotFound" xml:space="preserve">
+  <data name="LoadUnitNotFound" xml:space="preserve">
     <value>Loading unit database inconsistency</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitNotLoaded" xml:space="preserve">
+  <data name="LoadUnitNotLoaded" xml:space="preserve">
     <value>The selected loading unit is not loaded in the warehouse</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitSourceBay" xml:space="preserve">
+  <data name="LoadUnitSourceBay" xml:space="preserve">
     <value>Source bay of the empty loading unit</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitSourceCell" xml:space="preserve">
+  <data name="LoadUnitSourceCell" xml:space="preserve">
     <value>Not valid source cell</value>
   </data>
   <data name="BottomLevelBayOccupied" xml:space="preserve">
@@ -240,13 +237,13 @@
   <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
     <value>Inconsistenza stato sensori elevatore</value>
   </data>
-  <data name="LoadingUnitWeightExceeded" xml:space="preserve">
+  <data name="LoadUnitWeightExceeded" xml:space="preserve">
     <value>The maximum weight loaded on the loading unit is excessive.</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitShutterClosed" xml:space="preserve">
+  <data name="LoadUnitShutterClosed" xml:space="preserve">
     <value>Errore stato serranda</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitShutterOpen" xml:space="preserve">
+  <data name="LoadUnitShutterOpen" xml:space="preserve">
     <value>Errore stato serranda</value>
   </data>
   <data name="DestinationBelowLowerBound" xml:space="preserve">
@@ -261,7 +258,7 @@
   <data name="IoDeviceError" xml:space="preserve">
     <value>Errore esecuzione comando</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitPresentInCell" xml:space="preserve">
+  <data name="LoadUnitPresentInCell" xml:space="preserve">
     <value>Errore cassetto in posizione inattesa</value>
   </data>
   <data name="MachineModeNotValid" xml:space="preserve">
@@ -276,10 +273,10 @@
   <data name="SecuritySensorWasTriggered" xml:space="preserve">
     <value>Uno o più sensori dei pannelli laterali è stato interrotto</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitOtherBay" xml:space="preserve">
+  <data name="LoadUnitOtherBay" xml:space="preserve">
     <value>Errore cassetto in posizione inattesa</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitSourceElevator" xml:space="preserve">
+  <data name="LoadUnitSourceElevator" xml:space="preserve">
     <value>Drawer not present on the elevator</value>
   </data>
   <data name="BottomLevelBayEmpty" xml:space="preserve">
@@ -300,7 +297,7 @@
   <data name="NoError" xml:space="preserve">
     <value>NoError</value>
   </data>
-  <data name="LoadingUnitWeightTooLow" xml:space="preserve">
+  <data name="LoadUnitWeightTooLow" xml:space="preserve">
     <value>Errore peso</value>
   </data>
   <data name="MachineWeightExceeded" xml:space="preserve">
@@ -309,16 +306,16 @@
   <data name="WarehouseIsFull" xml:space="preserve">
     <value>Magazzino pieno</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitMissingOnBay1" xml:space="preserve">
+  <data name="LoadUnitMissingOnBay1" xml:space="preserve">
     <value>Bay 1 occupied with unknown loading unit</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitMissingOnBay2" xml:space="preserve">
+  <data name="LoadUnitMissingOnBay2" xml:space="preserve">
     <value>Bay 2 occupied with unknown loading unit</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitMissingOnBay3" xml:space="preserve">
+  <data name="LoadUnitMissingOnBay3" xml:space="preserve">
     <value>Bay 3 busy with unknown loading unit</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitMissingOnElevator" xml:space="preserve">
+  <data name="LoadUnitMissingOnElevator" xml:space="preserve">
     <value>Elevator occupied with unknown loading unit</value>
   </data>
   <data name="InverterConnectionError" xml:space="preserve">
@@ -336,10 +333,10 @@
   <data name="DestinationTypeNotValid" xml:space="preserve">
     <value>The destination type is not valid</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitUndefinedBottom" xml:space="preserve">
+  <data name="LoadUnitUndefinedBottom" xml:space="preserve">
     <value>Undefined bay bottom position</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitUndefinedUpper" xml:space="preserve">
+  <data name="LoadUnitUndefinedUpper" xml:space="preserve">
     <value>Undefined bay upper position</value>
   </data>
   <data name="MissionTypeNotValid" xml:space="preserve">

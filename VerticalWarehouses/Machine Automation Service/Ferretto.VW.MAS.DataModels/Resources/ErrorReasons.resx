@@ -186,37 +186,34 @@
   <data name="SecurityWasTriggered" xml:space="preserve">
     <value>Check that the emergency mushrooms are deactivated and that all the safety sensors are deactivated.</value>
   </data>
-  <data name="MachineManagerErrorBaseCode" xml:space="preserve">
-    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
-  </data>
-  <data name="MachineManagerErrorLoadingUnitDestinationCell" xml:space="preserve">
+  <data name="LoadUnitDestinationCell" xml:space="preserve">
     <value>Verify that the target cell of the loading unit inside the database is correctly configured</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitElevator" xml:space="preserve">
+  <data name="LoadUnitElevator" xml:space="preserve">
     <value>Check that the lift cradle is empty. Check the correct operation of the loading unit presence sensors on the cradle.</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitSourceDb" xml:space="preserve">
+  <data name="LoadUnitSourceDb" xml:space="preserve">
     <value>Check that the source position of the loading unit in the database is correctly configured</value>
   </data>
-  <data name="MachineManagerErrorNoLoadingUnitInSource" xml:space="preserve">
+  <data name="NoLoadUnitInSource" xml:space="preserve">
     <value>Make sure that a loading unit is present in the bay and that the presence sensors work correctly</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitNotRemoved" xml:space="preserve">
+  <data name="LoadUnitNotRemoved" xml:space="preserve">
     <value>If the loading unit has been removed, check the loading unit presence sensors in the bay, otherwise remove the loading unit from the bay.</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitDestinationBay" xml:space="preserve">
+  <data name="LoadUnitDestinationBay" xml:space="preserve">
     <value>Verify that the destination bay of the drawer is actually empty. Check that the bay loading unit sensors are working correctly.</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitNotFound" xml:space="preserve">
+  <data name="LoadUnitNotFound" xml:space="preserve">
     <value>The selected loading unit is not present in the database. Check the loading unit number entered and the correct configuration of the database.</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitNotLoaded" xml:space="preserve">
+  <data name="LoadUnitNotLoaded" xml:space="preserve">
     <value>The selected loading unit is present in the database but is not loaded in the warehouse. Check the database configuration.</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitSourceBay" xml:space="preserve">
+  <data name="LoadUnitSourceBay" xml:space="preserve">
     <value>Check that the loading unit is actually present in the source bay. Check that the bay loading unit sensors are working correctly.</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitSourceCell" xml:space="preserve">
+  <data name="LoadUnitSourceCell" xml:space="preserve">
     <value>Check that the source cell of the loading unit inside the database is correctly configured</value>
   </data>
   <data name="BottomLevelBayOccupied" xml:space="preserve">
@@ -240,13 +237,13 @@
   <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
     <value>Inconsistenza stato sensori. Il sensore di nottolino a zero risulta attivo in concomitanza con i sensori di presenza a bordo elevatore.</value>
   </data>
-  <data name="LoadingUnitWeightExceeded" xml:space="preserve">
+  <data name="LoadUnitWeightExceeded" xml:space="preserve">
     <value>Unload the loading unit in the bay and remove the excess weight.</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitShutterClosed" xml:space="preserve">
+  <data name="LoadUnitShutterClosed" xml:space="preserve">
     <value>Serranda non in posizione aperta. Verificare lo stato dei sensori.</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitShutterOpen" xml:space="preserve">
+  <data name="LoadUnitShutterOpen" xml:space="preserve">
     <value>Serranda non in posizione chiusa nè aperta. Verificare lo stato dei sensori.</value>
   </data>
   <data name="DestinationBelowLowerBound" xml:space="preserve">
@@ -261,7 +258,7 @@
   <data name="IoDeviceError" xml:space="preserve">
     <value>Errore nella gestione del dispositivo I/O o nell'esecuzione di un comando.</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitPresentInCell" xml:space="preserve">
+  <data name="LoadUnitPresentInCell" xml:space="preserve">
     <value>Cassetto già presente in cella.</value>
   </data>
   <data name="MachineModeNotValid" xml:space="preserve">
@@ -276,10 +273,10 @@
   <data name="SecuritySensorWasTriggered" xml:space="preserve">
     <value>Uno o più sensori dei pannelli laterali è stato interrotto (aperto). Verificare che i pannelli della macchina siano correttamente posizionati e chiusi.</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitOtherBay" xml:space="preserve">
+  <data name="LoadUnitOtherBay" xml:space="preserve">
     <value>Cassetto già presente in un'altra baia.</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitSourceElevator" xml:space="preserve">
+  <data name="LoadUnitSourceElevator" xml:space="preserve">
     <value>Impossibile determinare il cassetto a bordo elevatore.</value>
   </data>
   <data name="BottomLevelBayEmpty" xml:space="preserve">
@@ -300,7 +297,7 @@
   <data name="NoError" xml:space="preserve">
     <value>Nessun errore rilevato.</value>
   </data>
-  <data name="LoadingUnitWeightTooLow" xml:space="preserve">
+  <data name="LoadUnitWeightTooLow" xml:space="preserve">
     <value>Peso cassetto inferiore al peso atteso.</value>
   </data>
   <data name="MachineWeightExceeded" xml:space="preserve">
@@ -309,16 +306,16 @@
   <data name="WarehouseIsFull" xml:space="preserve">
     <value>Il magazzino risulta pieno e non è possibile determinare una cella libera per il cassetto selezionato.</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitMissingOnBay1" xml:space="preserve">
+  <data name="LoadUnitMissingOnBay1" xml:space="preserve">
     <value>Check the loading unit id on the bay 1. Check that the loading unit presence sensors are working properly. Put the machine in Automatic.</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitMissingOnBay2" xml:space="preserve">
+  <data name="LoadUnitMissingOnBay2" xml:space="preserve">
     <value>Check the loading unit id on the bay 2. Check that the loading unit presence sensors are working correctly. Put the machine in Automatic.</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitMissingOnBay3" xml:space="preserve">
+  <data name="LoadUnitMissingOnBay3" xml:space="preserve">
     <value>Check the loading unit id on the bay 3. Check that the loading unit presence sensors are working correctly. Put the machine in Automatic.</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitMissingOnElevator" xml:space="preserve">
+  <data name="LoadUnitMissingOnElevator" xml:space="preserve">
     <value>Check the id of the loading unit on the elevator. Check that the loading unit presence sensors on the elevator are working properly. Put the machine in Automatic.</value>
   </data>
   <data name="InverterConnectionError" xml:space="preserve">
@@ -342,10 +339,10 @@
   <data name="DestinationTypeNotValid" xml:space="preserve">
     <value>The destination type is not valid</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitUndefinedBottom" xml:space="preserve">
+  <data name="LoadUnitUndefinedBottom" xml:space="preserve">
     <value>Bottom bay position undefined</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitUndefinedUpper" xml:space="preserve">
+  <data name="LoadUnitUndefinedUpper" xml:space="preserve">
     <value>Upper bay position undefined</value>
   </data>
   <data name="MissionTypeNotValid" xml:space="preserve">

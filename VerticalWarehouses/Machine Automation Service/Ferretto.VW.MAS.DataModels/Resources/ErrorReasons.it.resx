@@ -195,61 +195,58 @@
   <data name="InverterFaultStateDetected" xml:space="preserve">
     <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
   </data>
-  <data name="LoadingUnitWeightExceeded" xml:space="preserve">
+  <data name="LoadUnitWeightExceeded" xml:space="preserve">
     <value>Scaricare il cassetto in baia e rimuovere il peso in eccesso.</value>
   </data>
   <data name="LoadUnitPresentOnEmptyElevator" xml:space="preserve">
     <value>Presenza a bordo elevatore con elevatore logicamente scarico.</value>
   </data>
-  <data name="MachineManagerErrorBaseCode" xml:space="preserve">
-    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
-  </data>
-  <data name="MachineManagerErrorLoadingUnitDestinationBay" xml:space="preserve">
+  <data name="LoadUnitDestinationBay" xml:space="preserve">
     <value>Verificare che la baia di destinazione del cassetto sia effettivamente vuota. Verificare che i sensori di presenza cassetto in baia funzionino correttamente.</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitDestinationCell" xml:space="preserve">
+  <data name="LoadUnitDestinationCell" xml:space="preserve">
     <value>Verificare che la cella destinazione del cassetto all'interno del database sia correttamente configurata</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitElevator" xml:space="preserve">
+  <data name="LoadUnitElevator" xml:space="preserve">
     <value>Verificare che la culla elevatore sia vuota. Verificare il corretto funzionamento dei sensori di presenza cassetto sulla culla.</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitMissingOnBay1" xml:space="preserve">
+  <data name="LoadUnitMissingOnBay1" xml:space="preserve">
     <value>Verificare l'id del cassetto sulla baia 1. Verificare che i sensori di presenza cassetto funzionino correttamente. Mettere la macchina in Automatico.</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitMissingOnBay2" xml:space="preserve">
+  <data name="LoadUnitMissingOnBay2" xml:space="preserve">
     <value>Verificare l'id del cassetto sulla baia 2. Verificare che i sensori di presenza cassetto funzionino correttamente. Mettere la macchina in Automatico.</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitMissingOnBay3" xml:space="preserve">
+  <data name="LoadUnitMissingOnBay3" xml:space="preserve">
     <value>Verificare l'id del cassetto sulla baia 3. Verificare che i sensori di presenza cassetto funzionino correttamente. Mettere la macchina in Automatico.</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitMissingOnElevator" xml:space="preserve">
+  <data name="LoadUnitMissingOnElevator" xml:space="preserve">
     <value>Verificare l'id del cassetto sull'elevatore. Verificare che i sensori di presenza cassetto sull'elevatore funzionino correttamente. Mettere la macchina in Automatico.</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitNotFound" xml:space="preserve">
+  <data name="LoadUnitNotFound" xml:space="preserve">
     <value>Il cassetto selezionato non è presente nel database. Verificare il numero cassetto inserito e la corretta configurazione del database.</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitNotLoaded" xml:space="preserve">
+  <data name="LoadUnitNotLoaded" xml:space="preserve">
     <value>Il cassetto selezionato risulta presente nel database ma non risulta caricato nel magazzino. Verificare la configurazione del database.</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitNotRemoved" xml:space="preserve">
+  <data name="LoadUnitNotRemoved" xml:space="preserve">
     <value>Se il cassetto è stato rimosso controllare i sensori di presenza cassetto in baia, altrimenti rimuovere il cassetto dalla baia.</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitSourceBay" xml:space="preserve">
+  <data name="LoadUnitSourceBay" xml:space="preserve">
     <value>Verificare che il cassetto sia effettivamente presente nella baia sorgente. Verificare che i sensori di presenza cassetto in baia funzionino correttamente.</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitSourceCell" xml:space="preserve">
+  <data name="LoadUnitSourceCell" xml:space="preserve">
     <value>Verificare che la cella sorgent del cassetto all'interno del database sia correttamente configurata</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitSourceDb" xml:space="preserve">
+  <data name="LoadUnitSourceDb" xml:space="preserve">
     <value>Verificare che la posizione sorgente del cassetto all'interno del database sia correttamente configurata</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitUndefinedBottom" xml:space="preserve">
+  <data name="LoadUnitUndefinedBottom" xml:space="preserve">
     <value>Posizione inferiore di baia non definita</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitUndefinedUpper" xml:space="preserve">
+  <data name="LoadUnitUndefinedUpper" xml:space="preserve">
     <value>Posizione superiore di baia non definita</value>
   </data>
-  <data name="MachineManagerErrorNoLoadingUnitInSource" xml:space="preserve">
+  <data name="NoLoadUnitInSource" xml:space="preserve">
     <value>Assicurarsi che un cassetto sia presente in baia e che i sensori di presenza funzionino correttamente</value>
   </data>
   <data name="MissionTypeNotValid" xml:space="preserve">

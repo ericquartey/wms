@@ -204,8 +204,8 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         {
             return
                 this.Error != null &&
-                (this.Error.Code == (int)MachineErrorCode.MachineManagerErrorLoadingUnitMissingOnElevator ||
-                 (this.Error.Code == (int)MachineErrorCode.MachineManagerErrorLoadingUnitMissingOnBay && this.Error.BayNumber == this.MachineService.BayNumber)) &&
+                (this.Error.Code == (int)MachineErrorCode.LoadUnitMissingOnElevator ||
+                 (this.Error.Code == (int)MachineErrorCode.LoadUnitMissingOnBay && this.Error.BayNumber == this.MachineService.BayNumber)) &&
                 !this.IsWaitingForResponse;
         }
 

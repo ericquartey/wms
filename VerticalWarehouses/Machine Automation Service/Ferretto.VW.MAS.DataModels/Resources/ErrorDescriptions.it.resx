@@ -177,58 +177,58 @@
   <data name="InverterFaultStateDetected" xml:space="preserve">
     <value>È stato rilevato un errore in uno degli inverter.</value>
   </data>
-  <data name="LoadingUnitWeightExceeded" xml:space="preserve">
+  <data name="LoadUnitWeightExceeded" xml:space="preserve">
     <value>Il peso massimo caricato sul cassetto è eccessivo.</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitDestinationBay" xml:space="preserve">
+  <data name="LoadUnitDestinationBay" xml:space="preserve">
     <value>Baia di destinazione del cassetto occupata</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitDestinationCell" xml:space="preserve">
+  <data name="LoadUnitDestinationCell" xml:space="preserve">
     <value>Cella di destinazione non valida</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitElevator" xml:space="preserve">
+  <data name="LoadUnitElevator" xml:space="preserve">
     <value>Culla elevatore occupata</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitMissingOnBay1" xml:space="preserve">
+  <data name="LoadUnitMissingOnBay1" xml:space="preserve">
     <value>Baia 1 occupato con cassetto sconosciuto</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitMissingOnBay2" xml:space="preserve">
+  <data name="LoadUnitMissingOnBay2" xml:space="preserve">
     <value>Baia 2 occupato con cassetto sconosciuto</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitMissingOnBay3" xml:space="preserve">
+  <data name="LoadUnitMissingOnBay3" xml:space="preserve">
     <value>Baia 3 occupato con cassetto sconosciuto</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitMissingOnElevator" xml:space="preserve">
+  <data name="LoadUnitMissingOnElevator" xml:space="preserve">
     <value>Elevatore occupato con cassetto sconosciuto</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitNotFound" xml:space="preserve">
+  <data name="LoadUnitNotFound" xml:space="preserve">
     <value>Inconsistenza database cassetto</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitNotLoaded" xml:space="preserve">
+  <data name="LoadUnitNotLoaded" xml:space="preserve">
     <value>Il cassetto selezionato non risulta caricato in magazzino</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitNotRemoved" xml:space="preserve">
+  <data name="LoadUnitNotRemoved" xml:space="preserve">
     <value>Cassetto rilevato nella baia di estrazione</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitSourceBay" xml:space="preserve">
+  <data name="LoadUnitSourceBay" xml:space="preserve">
     <value>Baia sorgente del cassetto vuota</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitSourceCell" xml:space="preserve">
+  <data name="LoadUnitSourceCell" xml:space="preserve">
     <value>cella origine non valida</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitSourceDb" xml:space="preserve">
+  <data name="LoadUnitSourceDb" xml:space="preserve">
     <value>Inconsistenza database posizione sorgente cassetto</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitSourceElevator" xml:space="preserve">
+  <data name="LoadUnitSourceElevator" xml:space="preserve">
     <value>Cassetto non presente sull'Elevatore</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitUndefinedBottom" xml:space="preserve">
+  <data name="LoadUnitUndefinedBottom" xml:space="preserve">
     <value>Posizione inferiore di baia non definita</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitUndefinedUpper" xml:space="preserve">
+  <data name="LoadUnitUndefinedUpper" xml:space="preserve">
     <value>Posizione superiore di baia non definita</value>
   </data>
-  <data name="MachineManagerErrorNoLoadingUnitInSource" xml:space="preserve">
+  <data name="NoLoadUnitInSource" xml:space="preserve">
     <value>Nessun cassetto presente nella baia indicata</value>
   </data>
   <data name="MissionTypeNotValid" xml:space="preserve">

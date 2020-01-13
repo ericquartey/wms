@@ -99,7 +99,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                             else
                             {
-                                this.ErrorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitShutterClosed);
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterClosed);
 
                                 this.Mission.ErrorMovements &= ~MissionErrorMovements.MoveShutter;
                                 this.MissionsDataProvider.Update(this.Mission);
@@ -245,8 +245,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
                 if (destination is null)
                 {
-                    this.ErrorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitUndefinedUpper, this.Mission.TargetBay);
-                    throw new StateMachineException(ErrorDescriptions.MachineManagerErrorLoadingUnitUndefinedUpper, this.Mission.TargetBay, MessageActor.MachineManager);
+                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedUpper, this.Mission.TargetBay);
+                    throw new StateMachineException(ErrorDescriptions.LoadUnitUndefinedUpper, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
                 this.Mission.LoadUnitDestination = destination.Location;
 

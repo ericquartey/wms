@@ -120,7 +120,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                     }
                     catch
                     {
-                        this.errorProvider.RecordNew(MachineErrorCode.LoadingUnitWeightExceeded);
+                        this.errorProvider.RecordNew(MachineErrorCode.LoadUnitWeightExceeded);
                     }
                 }
 

@@ -3051,9 +3051,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         LaserConnectionError = 24,
     
-        LoadingUnitWeightExceeded = 25,
+        LoadUnitWeightExceeded = 25,
     
-        LoadingUnitWeightTooLow = 26,
+        LoadUnitWeightTooLow = 26,
     
         MachineWeightExceeded = 27,
     
@@ -3085,6 +3085,44 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         ResumeCommandNotValid = 41,
     
+        NoLoadUnitInSource = 42,
+    
+        LoadUnitSourceDb = 43,
+    
+        LoadUnitDestinationCell = 44,
+    
+        LoadUnitElevator = 45,
+    
+        LoadUnitNotRemoved = 46,
+    
+        LoadUnitDestinationBay = 47,
+    
+        LoadUnitSourceCell = 48,
+    
+        LoadUnitNotFound = 49,
+    
+        LoadUnitNotLoaded = 50,
+    
+        LoadUnitSourceBay = 51,
+    
+        LoadUnitShutterOpen = 52,
+    
+        LoadUnitShutterClosed = 53,
+    
+        LoadUnitPresentInCell = 54,
+    
+        LoadUnitOtherBay = 55,
+    
+        LoadUnitSourceElevator = 56,
+    
+        LoadUnitMissingOnElevator = 57,
+    
+        LoadUnitMissingOnBay = 58,
+    
+        LoadUnitUndefinedUpper = 59,
+    
+        LoadUnitUndefinedBottom = 60,
+    
         InverterErrorBaseCode = 200000,
     
         InverterErrorInvalidParameter = 200001,
@@ -3114,46 +3152,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         InverterErrorNodeNotAvailable = 200020,
     
         InverterErrorSyntaxError2 = 200030,
-    
-        MachineManagerErrorBaseCode = 300000,
-    
-        MachineManagerErrorNoLoadingUnitInSource = 300001,
-    
-        MachineManagerErrorLoadingUnitSourceDb = 300002,
-    
-        MachineManagerErrorLoadingUnitDestinationCell = 300003,
-    
-        MachineManagerErrorLoadingUnitElevator = 300004,
-    
-        MachineManagerErrorLoadingUnitNotRemoved = 300005,
-    
-        MachineManagerErrorLoadingUnitDestinationBay = 300006,
-    
-        MachineManagerErrorLoadingUnitSourceCell = 300007,
-    
-        MachineManagerErrorLoadingUnitNotFound = 300008,
-    
-        MachineManagerErrorLoadingUnitNotLoaded = 300009,
-    
-        MachineManagerErrorLoadingUnitSourceBay = 300010,
-    
-        MachineManagerErrorLoadingUnitShutterOpen = 300011,
-    
-        MachineManagerErrorLoadingUnitShutterClosed = 300012,
-    
-        MachineManagerErrorLoadingUnitPresentInCell = 300013,
-    
-        MachineManagerErrorLoadingUnitOtherBay = 300014,
-    
-        MachineManagerErrorLoadingUnitSourceElevator = 300015,
-    
-        MachineManagerErrorLoadingUnitMissingOnElevator = 300016,
-    
-        MachineManagerErrorLoadingUnitMissingOnBay = 300017,
-    
-        MachineManagerErrorLoadingUnitUndefinedUpper = 300018,
-    
-        MachineManagerErrorLoadingUnitUndefinedBottom = 300019,
     
         NoError = -1,
     
