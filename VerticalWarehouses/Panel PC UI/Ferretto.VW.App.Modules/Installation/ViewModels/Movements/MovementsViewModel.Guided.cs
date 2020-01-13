@@ -294,7 +294,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsShutterMoving
         {
             get => this.isShutterMoving;
-            private set => this.SetProperty(ref this.isShutterMoving, value, this.RaiseCanExecuteChanged);
+            private set => this.SetProperty(ref this.isShutterMoving, value);
         }
 
         public bool IsTuningBay
