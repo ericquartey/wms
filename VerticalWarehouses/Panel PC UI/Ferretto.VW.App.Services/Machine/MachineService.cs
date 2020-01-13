@@ -573,7 +573,7 @@ namespace Ferretto.VW.App.Services
                                         if (dataPositioningInfo.AxisMovement == Axis.Vertical)
                                         {
                                             ms.VerticalTargetPosition = dataPositioningInfo.TargetPosition;
-                                            if (dataPositioningInfo.TargetSpeed.Length > 0)
+                                            if (dataPositioningInfo.TargetSpeed?.Length > 0)
                                             {
                                                 ms.VerticalSpeed = dataPositioningInfo.TargetSpeed[0];
                                             }
@@ -893,6 +893,7 @@ namespace Ferretto.VW.App.Services
 
                 ms.ElevatorVerticalPosition = dataElevatorPosition.VerticalPosition;
                 ms.ElevatorHorizontalPosition = dataElevatorPosition.HorizontalPosition;
+                ms.ElevatorPositionType = dataElevatorPosition.ElevatorPositionType;
 
                 if (dataElevatorPosition.CellId != null)
                 {
@@ -977,6 +978,13 @@ namespace Ferretto.VW.App.Services
                         else if (!this.IsHoming)
                         {
                             this.ShowNotification("Homing non eseguito.", NotificationSeverity.Error);
+                        }
+                        else if ((((this.MachineStatus.LoadingUnitPositionDownInBay != null && !this.sensorsService.IsLoadingUnitInMiddleBottomBay) ||
+                                   (this.MachineStatus.LoadingUnitPositionUpInBay != null && !this.sensorsService.IsLoadingUnitInBay)) ||
+                                  ((this.MachineStatus.LoadingUnitPositionDownInBay == null && this.sensorsService.IsLoadingUnitInMiddleBottomBay) ||
+                                   (this.MachineStatus.LoadingUnitPositionUpInBay == null && this.sensorsService.IsLoadingUnitInBay))))
+                        {
+                            this.ShowNotification("Inconsistenza sensori di presenza cassetto in baia.", NotificationSeverity.Error);
                         }
                         else if ((view.Equals("VerticalResolutionCalibrationView", StringComparison.InvariantCultureIgnoreCase) ||
                                   view.Equals("VerticalOffsetCalibrationView", StringComparison.InvariantCultureIgnoreCase) ||

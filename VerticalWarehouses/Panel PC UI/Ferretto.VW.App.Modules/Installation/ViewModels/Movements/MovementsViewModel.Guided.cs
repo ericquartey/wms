@@ -655,7 +655,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 (this.SelectedCell != null ||
                     (this.MachineStatus.ElevatorLogicalPosition != null &&
-                     this.MachineStatus.ElevatorLogicalPosition.Contains("Cella"))) // TODO: X Mirco, DA CAMBIARE!!!!!
+                     this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Cell))
                 &&
                 (this.SelectedCell == null || this.unloadToCellPolicy?.IsAllowed == true);
         }
