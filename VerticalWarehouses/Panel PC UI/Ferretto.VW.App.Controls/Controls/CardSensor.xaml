@@ -452,11 +452,7 @@
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding ElementName=Card, Path=CardLuUp}"
                                                  Value="{x:Null}">
-                                        <Setter Property="StackPanel.Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardLuDown}"
-                                                 Value="{x:Null}">
-                                        <Setter Property="Grid.RowSpan" Value="2" />
+                                        <Setter Property="StackPanel.Visibility" Value="Hidden" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -479,7 +475,19 @@
                                           Content="{Binding ElementName=Card, Path=CardLuUp.Id}"
                                           FontSize="{StaticResource FontSize_High}"
                                           Foreground="{DynamicResource PpcForeground}"
-                                          Template="{DynamicResource ButtonBaseControlTemplate1}" />
+                                          Template="{DynamicResource ButtonBaseControlTemplate1}">
+                                <ToggleButton.Style>
+                                    <Style>
+                                        <Setter Property="ToggleButton.Visibility" Value="Visible" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=Card, Path=CardLuUp}"
+                                                         Value="{x:Null}">
+                                                <Setter Property="ToggleButton.Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ToggleButton.Style>
+                            </ToggleButton>
                         </Border>
 
                         <Popup Width="380"
@@ -576,7 +584,7 @@
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding ElementName=Card, Path=CardLuDown}"
                                                  Value="{x:Null}">
-                                        <Setter Property="StackPanel.Visibility" Value="Collapsed" />
+                                        <Setter Property="StackPanel.Visibility" Value="Hidden" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -599,7 +607,19 @@
                                           Content="{Binding ElementName=Card, Path=CardLuDown.Id}"
                                           FontSize="{StaticResource FontSize_High}"
                                           Foreground="{DynamicResource PpcForeground}"
-                                          Template="{DynamicResource ButtonBaseControlTemplate1}" />
+                                          Template="{DynamicResource ButtonBaseControlTemplate1}">
+                                <ToggleButton.Style>
+                                    <Style>
+                                        <Setter Property="ToggleButton.Visibility" Value="Visible" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=Card, Path=CardLuDown}"
+                                                         Value="{x:Null}">
+                                                <Setter Property="ToggleButton.Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ToggleButton.Style>
+                            </ToggleButton>
                         </Border>
 
                         <Popup Width="380"
