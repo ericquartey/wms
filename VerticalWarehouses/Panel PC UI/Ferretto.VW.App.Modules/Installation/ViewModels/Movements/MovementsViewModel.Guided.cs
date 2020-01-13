@@ -141,7 +141,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public int? InputCellId
         {
             get => this.inputCellId;
-            set => this.SetProperty(ref this.inputCellId, value, this.InputCellIdPropertyChanged);
+            set => this.SetProperty(ref this.inputCellId, value, this.InputCellIdPropertyChanged); // HACK: 2
         }
 
         public double? InputHeight
@@ -718,6 +718,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.loadingUnitInCell = this.SelectedLoadingUnit;
             }
 
+            this.RaisePropertyChanged(nameof(this.InputHeight));
+            this.RaisePropertyChanged(nameof(this.LoadingUnitInCell));
             this.RaiseCanExecuteChanged();
         }
 
@@ -737,6 +739,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 // Hack: 3
                 this.inputCellId = this.selectedLoadingUnit.CellId;
+                this.RaisePropertyChanged(nameof(this.InputCellId));
             }
 
             this.RaiseCanExecuteChanged();

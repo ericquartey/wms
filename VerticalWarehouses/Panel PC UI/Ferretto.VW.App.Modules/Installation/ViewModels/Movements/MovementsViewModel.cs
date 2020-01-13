@@ -188,7 +188,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public string Title
         {
             get => this.title;
-            set => this.SetProperty(ref this.title, value, this.RaiseCanExecuteChanged);
+            set => this.SetProperty(ref this.title, value);
         }
 
         #endregion
@@ -226,29 +226,35 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.SubscribeToEvents();
 
+                this.bay = this.MachineService.Bay;
+
                 this.LightIcon = !this.IsLightActive ? "LightbulbOnOutline" : "LightbulbOutline";
 
                 this.isManualMovementCompleted = false;
 
                 this.GoToMovementsExecuteCommand(this.isMovementsGuided);
 
-                this.RefreshMachineInfo();
+                this.InputCellIdPropertyChanged();
+
+                this.InputLoadingUnitIdPropertyChanged();
 
                 if (this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Cell)
                 {
-                    this.InputCellId = this.MachineStatus.LogicalPositionId;
+                    this.inputCellId = this.MachineStatus.LogicalPositionId;
+                    RaisePropertyChanged(nameof(this.InputCellId));
                 }
                 else if (this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay)
                 {
-                    this.SelectedBayPosition = this.bay.Positions.SingleOrDefault(p => p.Id == this.MachineStatus.BayPositionId);
+                    this.selectedBayPosition = this.bay.Positions.SingleOrDefault(p => p.Id == this.MachineStatus.BayPositionId);
                     this.IsPositionUpSelected = this.selectedBayPosition is null || (this.MachineStatus.BayPositionUpper ?? true);
                 }
 
                 if (!this.IsPositionUpSelected && !this.IsPositionDownSelected)
                 {
-                    this.SelectedBayPosition = this.bay.Positions.Single(b => b.Height == this.bay.Positions.Max(p => p.Height));
+                    this.selectedBayPosition = this.bay.Positions.Single(b => b.Height == this.bay.Positions.Max(p => p.Height));
                     this.IsPositionUpSelected = true;
                 }
+                RaisePropertyChanged(nameof(this.SelectedBayPosition));
 
                 await base.OnAppearedAsync();
             }
@@ -325,7 +331,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.LabelMoveToLoadunit = InstallationApp.GoToDrawer;
             }
 
-            this.RaisePropertyChanged(nameof(this.IsMoving));
             this.RaisePropertyChanged(nameof(this.SensorsService));
             this.RaisePropertyChanged(nameof(this.MachineService));
             this.RaisePropertyChanged(nameof(this.MachineStatus));
@@ -572,10 +577,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                this.bay = this.MachineService.Bay;
-
-                this.InputCellIdPropertyChanged();
-                this.InputLoadingUnitIdPropertyChanged();
+                //this.InputCellIdPropertyChanged();
+                //this.InputLoadingUnitIdPropertyChanged();
 
                 //this.RaiseCanExecuteChanged();
             }
