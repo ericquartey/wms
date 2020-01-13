@@ -29,9 +29,9 @@ namespace Ferretto.VW.App.Controls.Controls
         public static readonly DependencyProperty PositionProperty =
             DependencyProperty.Register(nameof(Position), typeof(string), typeof(CardSensorDrawer));
 
-        private readonly IEventAggregator eventAggregator;
+        private IEventAggregator eventAggregator;
 
-        private readonly IMachineService machineService;
+        private IMachineService machineService;
 
         private SubscriptionToken machineStatusChangesToken;
 
@@ -48,42 +48,18 @@ namespace Ferretto.VW.App.Controls.Controls
                 return;
             }
 
+            this.DataContext = this;
+
             this.Loaded += (s, e) =>
             {
-                LoadingUnit lu = this.machineService.MachineStatus.EmbarkedLoadingUnit;
-                this.Position = "Elevatore";
-                if (lu is null)
-                {
-                    this.Position = "Posizione";
-                    lu = this.machineService.MachineStatus.ElevatorPositionLoadingUnit;
-                }
-                if (lu is null)
-                {
-                    this.GrossWeight = null;
-                    this.Position = null;
-                    this.Height = null;
-                }
-                else
-                {
-                    this.GrossWeight = lu.GrossWeight;
-                    this.Height = lu.Height;
-                }
+                this.OnAppeared();
+            };
+            this.Unloaded += (s, e) =>
+            {
+                this.Disappear();
             };
 
             this.Dispatcher.ShutdownStarted += this.Dispatcher_ShutdownStarted;
-
-            this.eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
-            this.machineService = ServiceLocator.Current.GetInstance<IMachineService>();
-
-            this.machineStatusChangesToken = this.machineStatusChangesToken
-                ?? this.eventAggregator
-                    .GetEvent<MachineStatusChangedPubSubEvent>()
-                    .Subscribe(
-                        async (m) => await this.OnMachineStatusChangedAsync(m),
-                        ThreadOption.UIThread,
-                        false);
-
-            this.DataContext = this;
         }
 
         #endregion
@@ -112,14 +88,37 @@ namespace Ferretto.VW.App.Controls.Controls
 
         #region Methods
 
-        protected Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
+        protected void Disappear()
         {
-            LoadingUnit lu = e.MachineStatus.EmbarkedLoadingUnit;
+            this.eventAggregator
+                .GetEvent<NavigationCompleted>()
+                .Unsubscribe(this.machineStatusChangesToken);
+
+            if (this.machineStatusChangesToken != null)
+            {
+                this.machineStatusChangesToken.Dispose();
+                this.machineStatusChangesToken = null;
+            }
+
+            this.eventAggregator = null;
+            this.machineService = null;
+        }
+
+        protected void OnAppeared()
+        {
+            this.SubscribeToEvents();
+
+            this.OnDataRefresh();
+        }
+
+        protected void OnDataRefresh()
+        {
+            LoadingUnit lu = this.machineService.MachineStatus.EmbarkedLoadingUnit;
             this.Position = "Elevatore";
             if (lu is null)
             {
                 this.Position = "Posizione";
-                lu = e.MachineStatus.ElevatorPositionLoadingUnit;
+                lu = this.machineService.MachineStatus.ElevatorPositionLoadingUnit;
             }
             if (lu is null)
             {
@@ -132,17 +131,31 @@ namespace Ferretto.VW.App.Controls.Controls
                 this.GrossWeight = lu.GrossWeight;
                 this.Height = lu.Height;
             }
+        }
 
+        protected Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
+        {
+            this.OnDataRefresh();
             return Task.CompletedTask;
         }
 
         private void Dispatcher_ShutdownStarted(object sender, EventArgs e)
         {
-            if (this.machineStatusChangesToken != null)
-            {
-                this.machineStatusChangesToken.Dispose();
-                this.machineStatusChangesToken = null;
-            }
+            this.Disappear();
+        }
+
+        private void SubscribeToEvents()
+        {
+            this.eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
+            this.machineService = ServiceLocator.Current.GetInstance<IMachineService>();
+
+            this.machineStatusChangesToken = this.machineStatusChangesToken
+                ?? this.eventAggregator
+                    .GetEvent<MachineStatusChangedPubSubEvent>()
+                    .Subscribe(
+                        async (m) => await this.OnMachineStatusChangedAsync(m),
+                        ThreadOption.UIThread,
+                        false);
         }
 
         #endregion

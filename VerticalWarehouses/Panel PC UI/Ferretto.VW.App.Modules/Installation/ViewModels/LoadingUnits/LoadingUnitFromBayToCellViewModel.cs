@@ -38,7 +38,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     var lst = await this.MachineLoadingUnitsWebService.GetAllAsync();
                     if (lst.Any())
                     {
-                        this.LoadingUnitId = lst.Max(o => o.Id) + 1;
+                        this.LoadingUnitId = lst.Where(x => x.Status == LoadingUnitStatus.Undefined).FirstOrDefault()?.Id ?? (lst.Max(o => o.Id) + 1);
                     }
                     else
                     {

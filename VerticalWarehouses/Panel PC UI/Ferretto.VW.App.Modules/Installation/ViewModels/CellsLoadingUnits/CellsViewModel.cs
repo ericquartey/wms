@@ -118,7 +118,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                if (this.healthProbeService.HealthStatus == HealthStatus.Healthy)
+                if (this.healthProbeService.HealthStatus == HealthStatus.Healthy || this.healthProbeService.HealthStatus == HealthStatus.Degraded)
                 {
                     this.Cells = await this.machineCellsWebService.GetAllAsync();
                     this.SelectedCell = this.Cells?.ToList()[this.currentIndex];
