@@ -1292,6 +1292,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public MissionErrorMovements ErrorMovements { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("restoreState", Required = Newtonsoft.Json.Required.Always)]
+        public MissionState RestoreState { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("state", Required = Newtonsoft.Json.Required.Always)]
+        public MissionState State { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("restoreStateName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string RestoreStateName { get; set; }
     
@@ -1453,6 +1459,33 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [System.Runtime.Serialization.EnumMember(Value = @"MoveShutter")]
         MoveShutter = 8,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum MissionState
+    {
+        NotDefined = 0,
+    
+        New = 1,
+    
+        Start = 2,
+    
+        LoadElevator = 3,
+    
+        ToTarget = 4,
+    
+        DepositUnit = 5,
+    
+        WaitPick = 6,
+    
+        BayChain = 7,
+    
+        CloseShutter = 8,
+    
+        End = 9,
+    
+        Error = 10,
     
     }
     

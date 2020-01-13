@@ -75,7 +75,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         #region Methods
 
-        public void DepositUnitEnd(bool restore = false)
+        public bool DepositUnitChangePosition()
         {
             bool bayShutter = false;
             using (var transaction = this.ElevatorDataProvider.GetContextTransaction())
@@ -106,17 +106,27 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         this.BaysDataProvider.SetLoadingUnit(bayPosition.Id, this.Mission.LoadUnitId);
                         this.LoadingUnitsDataProvider.SetHeight(this.Mission.LoadUnitId, 0);
                     }
-                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
-                    bayShutter = (bay.Shutter.Type != ShutterType.NotSpecified);
                 }
 
                 transaction.Commit();
             }
 
             this.SendPositionNotification($"Load Unit {this.Mission.LoadUnitId} position changed");
+            return bayShutter;
+        }
+
+        public void DepositUnitEnd(bool restore = false)
+        {
+            var bayShutter = false;
+            if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell)
+            {
+                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+                bayShutter = (bay.Shutter.Type != ShutterType.NotSpecified);
+            }
             if (restore)
             {
-                this.Mission.RestoreStateName = null;
+                this.DepositUnitChangePosition();
+                this.Mission.RestoreState = MissionState.NotDefined;
                 this.Mission.NeedMovingBackward = false;
             }
 
@@ -134,7 +144,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
         }
 
-        public void LoadUnitEnd(bool restore = false)
+        public void LoadUnitChangePosition()
         {
             using (var transaction = this.ElevatorDataProvider.GetContextTransaction())
             {
@@ -163,6 +173,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
 
             this.SendPositionNotification($"Load Unit {this.Mission.LoadUnitId} position changed");
+        }
+
+        public void LoadUnitEnd(bool restore = false)
+        {
+            if (restore)
+            {
+                this.LoadUnitChangePosition();
+            }
 
             // in bay-to-cell movements the profile may have changed so we have to find a new empty cell
             if (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell
@@ -190,7 +208,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             if (restore)
             {
-                this.Mission.RestoreStateName = null;
+                this.Mission.RestoreState = MissionState.NotDefined;
                 this.Mission.NeedMovingBackward = false;
             }
 
@@ -228,7 +246,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     && this.Mission.IsRestoringType()
                     )
                 {
-                    this.Mission.RestoreStateName = this.Mission.StateName;
+                    this.Mission.RestoreState = this.Mission.State;
                     if (moveBackward)
                     {
                         this.Mission.NeedMovingBackward = true;
@@ -257,7 +275,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 isEject,
                 this.Mission.Id,
                 this.Mission.Action,
-                this.Mission.StopReason);
+                this.Mission.StopReason,
+                this.Mission.State);
 
             var msg = new NotificationMessage(
                 messageData,

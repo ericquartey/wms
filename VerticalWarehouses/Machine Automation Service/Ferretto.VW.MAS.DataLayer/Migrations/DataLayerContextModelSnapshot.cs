@@ -509,177 +509,197 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
-                            Code = 200000,
+                            Code = 37,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 200001,
+                            Code = 38,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 200002,
+                            Code = 39,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 200003,
+                            Code = 40,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 200004,
+                            Code = 41,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 200005,
+                            Code = 42,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 200006,
+                            Code = 43,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 200007,
+                            Code = 44,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 200008,
+                            Code = 45,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 200009,
+                            Code = 46,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 200011,
+                            Code = 47,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 200013,
+                            Code = 48,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 200014,
+                            Code = 49,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 200020,
+                            Code = 50,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 200030,
+                            Code = 51,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300000,
+                            Code = 52,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300001,
+                            Code = 53,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300002,
+                            Code = 54,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300003,
+                            Code = 55,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300004,
+                            Code = 56,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300005,
+                            Code = 57,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300006,
+                            Code = 58,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300007,
+                            Code = 59,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300008,
+                            Code = 60,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300009,
+                            Code = 1000,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300010,
+                            Code = 1001,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300011,
+                            Code = 1002,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300012,
+                            Code = 1003,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300013,
+                            Code = 1004,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300014,
+                            Code = 1005,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300015,
+                            Code = 1006,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300016,
+                            Code = 1007,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300017,
+                            Code = 1008,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300018,
+                            Code = 1009,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300019,
+                            Code = 1011,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 1013,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 1014,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 1020,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 1030,
                             TotalErrors = 0
                         },
                         new
@@ -966,9 +986,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("RestoreConditions");
 
-                    b.Property<string>("RestoreStateName");
+                    b.Property<int>("RestoreState");
 
-                    b.Property<string>("StateName");
+                    b.Property<int>("State");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -1052,7 +1072,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 3, 10, 13, 5, 42, 814, DateTimeKind.Local).AddTicks(899),
+                            InstallationDate = new DateTime(2017, 3, 13, 10, 43, 54, 169, DateTimeKind.Local).AddTicks(4722),
                             ServiceStatus = 86
                         });
                 });

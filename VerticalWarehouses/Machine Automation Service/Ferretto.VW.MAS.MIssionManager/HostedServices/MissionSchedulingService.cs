@@ -8,6 +8,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.MachineManager;
 using Ferretto.VW.MAS.MachineManager.MissionMove;
 using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
@@ -194,21 +195,21 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 if (string.IsNullOrEmpty(mission.RestoreStateName))
                 {
-                    mission.RestoreStateName = mission.StateName;
+                    mission.RestoreState = mission.State;
                 }
-                mission.StateName = nameof(MissionMoveErrorState);
-                if (mission.RestoreStateName == nameof(MissionMoveBayChainState))
+                mission.State = MissionState.Error;
+                if (mission.RestoreState == MissionState.BayChain)
                 {
                     mission.NeedHomingAxis = Axis.BayChain;
                 }
-                else if (mission.RestoreStateName == nameof(MissionMoveLoadElevatorState)
-                    || mission.RestoreStateName == nameof(MissionMoveDepositUnitState)
+                else if (mission.RestoreState == MissionState.LoadElevator
+                    || mission.RestoreState == MissionState.DepositUnit
                     )
                 {
                     mission.NeedMovingBackward = true;
                     mission.NeedHomingAxis = Axis.Horizontal;
                 }
-                else if (mission.RestoreStateName == nameof(MissionMoveToTargetState))
+                else if (mission.RestoreState == MissionState.ToTarget)
                 {
                     mission.NeedHomingAxis = Axis.Horizontal;
                 }
