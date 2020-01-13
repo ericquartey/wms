@@ -17,6 +17,10 @@ namespace Ferretto.VW.App.Services.Models
 
         private double? bayChainTargetPosition;
 
+        private int? bayPositionId;
+
+        private bool? bayPositionUpper;
+
         private int? currentMissionId;
 
         private double? elevatorHorizontalPosition;
@@ -53,7 +57,7 @@ namespace Ferretto.VW.App.Services.Models
 
         private string logicalPosition;
 
-        private string logicalPositionId;
+        private int? logicalPositionId;
 
         private double? verticalSpeed;
 
@@ -73,6 +77,18 @@ namespace Ferretto.VW.App.Services.Models
         {
             get => this.bayChainTargetPosition;
             set => this.SetProperty(ref this.bayChainTargetPosition, value);
+        }
+
+        public int? BayPositionId
+        {
+            get => this.bayPositionId;
+            set => this.SetProperty(ref this.bayPositionId, value);
+        }
+
+        public bool? BayPositionUpper
+        {
+            get => this.bayPositionUpper;
+            set => this.SetProperty(ref this.bayPositionUpper, value);
         }
 
         public int? CurrentMissionId
@@ -183,7 +199,7 @@ namespace Ferretto.VW.App.Services.Models
             set => this.SetProperty(ref this.logicalPosition, value);
         }
 
-        public string LogicalPositionId
+        public int? LogicalPositionId
         {
             get => this.logicalPositionId;
             set => this.SetProperty(ref this.logicalPositionId, value);

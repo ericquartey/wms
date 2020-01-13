@@ -945,15 +945,19 @@ namespace Ferretto.VW.App.Services
                     {
                         ms.LogicalPosition = null;
                     }
-                    ms.LogicalPositionId = dataElevatorPosition.CellId.ToString();
+                    ms.LogicalPositionId = dataElevatorPosition.CellId;
 
                     ms.ElevatorPositionLoadingUnit = this.loadingUnits.FirstOrDefault(l => l.CellId.Equals(dataElevatorPosition.CellId));
+
+                    ms.BayPositionUpper = null;
+                    ms.BayPositionId = null;
                 }
                 else if (dataElevatorPosition.BayPositionId != null)
                 {
                     var bay = this.bays.SingleOrDefault(b => b.Positions.Any(p => p.Id == dataElevatorPosition.BayPositionId));
 
                     ms.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.InBayWithNumber, (int)bay.Number);
+
                     if (dataElevatorPosition?.BayPositionUpper ?? false)
                     {
                         ms.LogicalPosition = "Posizione " + Resources.InstallationApp.PositionOnTop;
@@ -963,7 +967,9 @@ namespace Ferretto.VW.App.Services
                         ms.LogicalPosition = "Posizione " + Resources.InstallationApp.PositionOnBotton;
                     }
 
-                    ms.LogicalPositionId = ((int)bay.Number).ToString();
+                    ms.LogicalPositionId = (int)bay.Number;
+                    ms.BayPositionUpper = (dataElevatorPosition?.BayPositionUpper ?? false);
+                    ms.BayPositionId = dataElevatorPosition.BayPositionId;
 
                     var position = this.bay.Positions.SingleOrDefault(p => p.Id == dataElevatorPosition.BayPositionId);
                     ms.ElevatorPositionLoadingUnit = position?.LoadingUnit;
@@ -974,6 +980,8 @@ namespace Ferretto.VW.App.Services
                     ms.ElevatorLogicalPosition = null;
                     ms.LogicalPosition = null;
                     ms.LogicalPositionId = null;
+                    ms.BayPositionUpper = null;
+                    ms.BayPositionId = null;
                 }
 
                 update = true;

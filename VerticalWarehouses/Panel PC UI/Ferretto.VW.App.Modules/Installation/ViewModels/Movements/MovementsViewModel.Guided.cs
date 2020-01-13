@@ -364,7 +364,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.moveToBayPositionCommand = new DelegateCommand(
                 async () => await this.MoveToBayPositionAsync(),
-                () => { bool result = this.CanMoveToBayPosition(); return result; }));
+                () => this.CanMoveToBayPosition()));
 
         public ICommand MoveToLoadingUnitHeightCommand =>
            this.moveToLoadingUnitHeightCommand
@@ -401,7 +401,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.selectedBayPosition, value))
                 {
-                    this.RaiseCanExecuteChanged();
+                    this.moveToBayPositionCommand?.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -559,6 +559,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanMoveToBayPosition()
         {
+            if (this.selectedBayPosition != null)
+            {
+                Task.Run(async () => this.moveToBayPositionPolicy = await this.machineElevatorWebService.CanMoveToBayPositionAsync(this.selectedBayPosition.Id)).GetAwaiter().GetResult();
+            }
+
             return
                 this.CanBaseExecute()
                 &&
@@ -923,7 +928,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                             this.IsCarouselMoving = false;
                         }
 
-                        await this.RefreshMachineInfoAsync();
+                        this.RefreshMachineInfo();
 
                         break;
                     }
@@ -931,7 +936,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
                     {
-                        await this.RefreshMachineInfoAsync();
+                        this.RefreshMachineInfo();
 
                         this.OperationWarningOrError(message.Status, message.Description);
                         break;
@@ -1092,10 +1097,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
                 else
                 {
-                    if (!string.IsNullOrEmpty(this.MachineStatus.LogicalPositionId))
+                    if (this.MachineStatus.LogicalPositionId.HasValue)
                     {
-                        int cell = int.Parse(this.MachineStatus.LogicalPositionId);
-                        await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(LoadingUnitLocation.LoadUnit, cell, this.MachineStatus.EmbarkedLoadingUnit.Id);
+                        await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(LoadingUnitLocation.LoadUnit, this.MachineStatus.LogicalPositionId, this.MachineStatus.EmbarkedLoadingUnit.Id);
                     }
                     else
                     {
