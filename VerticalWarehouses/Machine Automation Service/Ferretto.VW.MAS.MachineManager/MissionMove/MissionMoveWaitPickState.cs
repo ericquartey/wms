@@ -33,8 +33,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command)
         {
-            this.Mission.RestoreStateName = null;
-            this.Mission.StateName = nameof(MissionMoveWaitPickState);
+            this.Mission.RestoreState = MissionState.NotDefined;
+            this.Mission.State = MissionState.WaitPick;
             this.Mission.StopReason = StopRequestReason.NoReason;
             this.MissionsDataProvider.Update(this.Mission);
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
@@ -50,6 +50,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.Status = MissionStatus.Waiting;
             this.Mission.RestoreConditions = false;
             this.MissionsDataProvider.Update(this.Mission);
+
+            bool isEject = this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
+                && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator
+                && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadUnit
+                && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation;
+            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.StateName, isEject, MessageStatus.OperationExecuting);
             return true;
         }
 

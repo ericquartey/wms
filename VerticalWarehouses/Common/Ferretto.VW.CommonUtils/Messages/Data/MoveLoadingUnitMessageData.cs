@@ -21,6 +21,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             int? missionId = null,
             CommandAction commandAction = CommandAction.Start,
             StopRequestReason stopReason = StopRequestReason.NoReason,
+            MissionState state = MissionState.NotDefined,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.MissionType = missionType;
@@ -34,6 +35,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.MissionId = missionId;
             this.CommandAction = commandAction;
             this.StopReason = stopReason;
+            this.State = state;
             this.Verbosity = verbosity;
         }
 
@@ -60,6 +62,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public LoadingUnitLocation Source { get; }
 
         public int? SourceCellId { get; }
+
+        public MissionState State { get; }
 
         public StopRequestReason StopReason { get; }
 

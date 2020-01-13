@@ -1,6 +1,7 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataModels.Enumerations;
 
 namespace Ferretto.VW.MAS.DataModels
 {
@@ -26,9 +27,13 @@ namespace Ferretto.VW.MAS.DataModels
 
         public MissionErrorMovements ErrorMovements { get; set; }
 
-        public string RestoreStateName { get; set; }
+        public MissionState RestoreState { get; set; }
 
-        public string StateName { get; set; }
+        public MissionState State { get; set; }
+
+        public string RestoreStateName => this.RestoreState.ToString();
+
+        public string StateName => this.State.ToString();
 
         public int? LoadUnitCellSourceId { get; set; }
 

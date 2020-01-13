@@ -31,8 +31,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command)
         {
-            this.Mission.RestoreStateName = null;
-            this.Mission.StateName = nameof(MissionMoveLoadElevatorState);
+            this.Mission.RestoreState = MissionState.NotDefined;
+            this.Mission.State = MissionState.LoadElevator;
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.Mission.Direction = HorizontalMovementDirection.Backwards;
             this.Mission.StopReason = StopRequestReason.NoReason;
@@ -101,6 +101,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             this.Mission.RestoreConditions = false;
             this.MissionsDataProvider.Update(this.Mission);
+
+            bool isEject = this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
+                && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator
+                && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadUnit
+                && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation;
+            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.StateName, isEject, MessageStatus.OperationExecuting);
             return true;
         }
 
@@ -131,6 +137,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         if (this.UpdateResponseList(notification.Type))
                         {
                             this.MissionsDataProvider.Update(this.Mission);
+                            if (notification.Type == MessageType.Positioning)
+                            {
+                                this.LoadUnitChangePosition();
+                            }
                         }
 
                         if (notification.Type == MessageType.ShutterPositioning)
