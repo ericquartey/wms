@@ -15,5 +15,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Enumerations
         Completed,
 
         Aborted,
+
+        Completing,
     }
 }

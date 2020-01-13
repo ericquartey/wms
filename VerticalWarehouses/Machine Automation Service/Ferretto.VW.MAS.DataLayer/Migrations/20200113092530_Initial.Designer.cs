@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20200113094354_initialcreation")]
-    partial class initialcreation
+    [Migration("20200113092530_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -150,7 +150,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("BlockLevel");
 
-                    b.Property<bool>("IsFree");
+                    b.Property<bool>("IsFree")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("1");
 
                     b.Property<int>("PanelId");
 
@@ -988,9 +990,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("RestoreConditions");
 
-                    b.Property<int>("RestoreState");
+                    b.Property<string>("RestoreStateName");
 
-                    b.Property<int>("State");
+                    b.Property<string>("StateName");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -1074,7 +1076,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 3, 13, 10, 43, 54, 169, DateTimeKind.Local).AddTicks(4722),
+                            InstallationDate = new DateTime(2017, 3, 13, 10, 25, 30, 302, DateTimeKind.Local).AddTicks(3145),
                             ServiceStatus = 86
                         });
                 });

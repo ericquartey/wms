@@ -596,11 +596,11 @@ namespace Ferretto.VW.App.Services
                                 {
                                     this.WriteInfo(null);
                                 }
-                            }
 
-                            if (this.MachineStatus.IsMovingLoadingUnit)
-                            {
-                                this.Notification = "Movimento in corso...";
+                                if (message?.Data is MoveLoadingUnitMessageData moveLoadingUnitMessageData)
+                                {
+                                    this.Notification = $"({moveLoadingUnitMessageData.State}) Movimento in corso...";
+                                }
                             }
 
                             break;
@@ -652,6 +652,19 @@ namespace Ferretto.VW.App.Services
                                 Task.Run(async () => ms = await this.GetElevatorAsync(ms)).Wait();
 
                                 ms.IsMovingElevator = false;
+                                if (dataPositioning.AxisMovement == Axis.Vertical)
+                                {
+                                    ms.VerticalTargetPosition = null;
+                                    ms.VerticalSpeed = null;
+                                }
+                                else if (dataPositioning.AxisMovement == Axis.Horizontal)
+                                {
+                                    ms.HorizontalTargetPosition = null;
+                                }
+                                else if (dataPositioning.AxisMovement == Axis.BayChain)
+                                {
+                                    ms.BayChainTargetPosition = null;
+                                }
                             }
 
                             ms.IsMoving = false;
@@ -665,11 +678,6 @@ namespace Ferretto.VW.App.Services
                             {
                                 ms.IsMovingLoadingUnit = false;
                             }
-
-                            ms.VerticalSpeed = null;
-                            ms.VerticalTargetPosition = null;
-                            ms.HorizontalTargetPosition = null;
-                            ms.BayChainTargetPosition = null;
 
                             if (!this.MachineStatus.IsMovingLoadingUnit)
                             {
@@ -733,6 +741,19 @@ namespace Ferretto.VW.App.Services
                             if (message?.Data is PositioningMessageData dataPositioning)
                             {
                                 ms.IsMovingElevator = false;
+                                if (dataPositioning.AxisMovement == Axis.Vertical)
+                                {
+                                    ms.VerticalTargetPosition = null;
+                                    ms.VerticalSpeed = null;
+                                }
+                                else if (dataPositioning.AxisMovement == Axis.Horizontal)
+                                {
+                                    ms.HorizontalTargetPosition = null;
+                                }
+                                else if (dataPositioning.AxisMovement == Axis.BayChain)
+                                {
+                                    ms.BayChainTargetPosition = null;
+                                }
                             }
 
                             if (message?.Data is ShutterPositioningMessageData)
@@ -744,11 +765,6 @@ namespace Ferretto.VW.App.Services
                             {
                                 ms.IsMovingLoadingUnit = false;
                             }
-
-                            ms.VerticalSpeed = null;
-                            ms.VerticalTargetPosition = null;
-                            ms.HorizontalTargetPosition = null;
-                            ms.BayChainTargetPosition = null;
 
                             this.ShowNotification(message.Description, NotificationSeverity.Error);
 
@@ -900,7 +916,18 @@ namespace Ferretto.VW.App.Services
                     ms.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.CellWithNumber, dataElevatorPosition.CellId);
 
                     var cell = this.cells?.FirstOrDefault(l => l.Id.Equals(dataElevatorPosition.CellId));
-                    ms.LogicalPosition = cell?.IsFree.ToString() + " / " + cell?.Side.ToString();
+                    if (cell != null)
+                    {
+                        ms.LogicalPosition = string.Concat(
+                            cell?.Side.ToString(),
+                            " / ",
+                            cell.IsFree ? "Libera" : "Occupata",
+                            cell.BlockLevel != BlockLevel.Undefined && cell.BlockLevel != BlockLevel.None ? $" / {cell.BlockLevel}" : string.Empty);
+                    }
+                    else
+                    {
+                        ms.LogicalPosition = null;
+                    }
                     ms.LogicalPositionId = dataElevatorPosition.CellId.ToString();
 
                     ms.ElevatorPositionLoadingUnit = this.loadingUnits.FirstOrDefault(l => l.CellId.Equals(dataElevatorPosition.CellId));

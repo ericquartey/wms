@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
 
             builder.HasKey(c => c.Id);
 
+            builder.Property(c => c.IsFree).HasDefaultValueSql("1");
+
             builder
                 .HasOne(c => c.LoadingUnit)
                 .WithOne(l => l.Cell)
