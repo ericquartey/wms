@@ -576,6 +576,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 this.SelectedLoadingUnit.CellId != null
                 &&
+                this.moveToCellPolicy?.IsAllowed == true
+                &&
                 !this.SensorsService.Sensors.LuPresentInMachineSide
                 &&
                 !this.SensorsService.Sensors.LuPresentInOperatorSide;
