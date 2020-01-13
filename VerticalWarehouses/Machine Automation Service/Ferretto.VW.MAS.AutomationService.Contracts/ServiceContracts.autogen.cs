@@ -3123,35 +3123,35 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         LoadUnitUndefinedBottom = 60,
     
-        InverterErrorBaseCode = 200000,
+        InverterErrorBaseCode = 1000,
     
-        InverterErrorInvalidParameter = 200001,
+        InverterErrorInvalidParameter = 1001,
     
-        InverterErrorInvalidDataset = 200002,
+        InverterErrorInvalidDataset = 1002,
     
-        InverterErrorParameterIsWriteOnly = 200003,
+        InverterErrorParameterIsWriteOnly = 1003,
     
-        InverterErrorParameterIsReadOnly = 200004,
+        InverterErrorParameterIsReadOnly = 1004,
     
-        InverterErrorEepromReadError = 200005,
+        InverterErrorEepromReadError = 1005,
     
-        InverterErrorEepromWriteError = 200006,
+        InverterErrorEepromWriteError = 1006,
     
-        InverterErrorEepromChecksumError = 200007,
+        InverterErrorEepromChecksumError = 1007,
     
-        InverterErrorCannotWriteParameterWhileRunning = 200008,
+        InverterErrorCannotWriteParameterWhileRunning = 1008,
     
-        InverterErrorDatasetValuesAreDifferent = 200009,
+        InverterErrorDatasetValuesAreDifferent = 1009,
     
-        InverterErrorUnknownParameter = 200011,
+        InverterErrorUnknownParameter = 1011,
     
-        InverterErrorSyntaxError = 200013,
+        InverterErrorSyntaxError = 1013,
     
-        InverterErrorWrongPayloadLength = 200014,
+        InverterErrorWrongPayloadLength = 1014,
     
-        InverterErrorNodeNotAvailable = 200020,
+        InverterErrorNodeNotAvailable = 1020,
     
-        InverterErrorSyntaxError2 = 200030,
+        InverterErrorSyntaxError2 = 1030,
     
         NoError = -1,
     
