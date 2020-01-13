@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -379,7 +380,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void ElevatorChanged()
         {
-            this.RefreshActionPoliciesAsync().ConfigureAwait(false);
+            Debug.WriteLine("ElevatorChanged:RefreshActionPoliciesAsync");
+            //this.RefreshActionPoliciesAsync().GetAwaiter().GetResult();
         }
 
         private void GoToMovementsExecuteCommand(bool isGuided)
@@ -401,8 +403,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
         {
-            this.IsElevatorInBay = e.BayPositionId != null;
-            this.IsElevatorInCell = e.CellId != null;
+            this.IsElevatorInBay = e.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay;
+            this.IsElevatorInCell = e.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Cell;
         }
 
         private async Task OnHomingChangedAsync(NotificationMessageUI<HomingMessageData> message)

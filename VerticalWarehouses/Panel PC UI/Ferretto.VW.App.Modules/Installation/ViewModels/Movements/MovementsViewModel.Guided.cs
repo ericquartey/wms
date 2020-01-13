@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -475,28 +476,32 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 this.cells != null;
 
-            Task.Run(async () => await this.RefreshActionPoliciesAsync()).GetAwaiter().GetResult();
+            if (!this.IsMoving)
+            {
+                Debug.WriteLine("OnGuidedRaiseCanExecuteChanged:RefreshActionPoliciesAsync");
+                Task.Run(async () => await this.RefreshActionPoliciesAsync()).GetAwaiter().GetResult();
 
-            this.moveToLoadingUnitHeightCommand?.RaiseCanExecuteChanged();
+                this.moveToLoadingUnitHeightCommand?.RaiseCanExecuteChanged();
 
-            this.tuningBayCommand?.RaiseCanExecuteChanged();
-            this.tuningChainCommand?.RaiseCanExecuteChanged();
+                this.tuningBayCommand?.RaiseCanExecuteChanged();
+                this.tuningChainCommand?.RaiseCanExecuteChanged();
 
-            this.openShutterCommand?.RaiseCanExecuteChanged();
-            this.intermediateShutterCommand?.RaiseCanExecuteChanged();
-            this.closedShutterCommand?.RaiseCanExecuteChanged();
+                this.openShutterCommand?.RaiseCanExecuteChanged();
+                this.intermediateShutterCommand?.RaiseCanExecuteChanged();
+                this.closedShutterCommand?.RaiseCanExecuteChanged();
 
-            this.moveCarouselDownCommand?.RaiseCanExecuteChanged();
-            this.moveCarouselUpCommand?.RaiseCanExecuteChanged();
+                this.moveCarouselDownCommand?.RaiseCanExecuteChanged();
+                this.moveCarouselUpCommand?.RaiseCanExecuteChanged();
 
-            this.loadFromBayCommand?.RaiseCanExecuteChanged();
-            this.loadFromCellCommand?.RaiseCanExecuteChanged();
-            this.unloadToBayCommand?.RaiseCanExecuteChanged();
-            this.unloadToCellCommand?.RaiseCanExecuteChanged();
+                this.loadFromBayCommand?.RaiseCanExecuteChanged();
+                this.loadFromCellCommand?.RaiseCanExecuteChanged();
+                this.unloadToBayCommand?.RaiseCanExecuteChanged();
+                this.unloadToCellCommand?.RaiseCanExecuteChanged();
 
-            this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
-            this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
-            this.moveToBayPositionCommand?.RaiseCanExecuteChanged();
+                this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
+                this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
+                this.moveToBayPositionCommand?.RaiseCanExecuteChanged();
+            }
         }
 
         private bool CanCloseShutter()
