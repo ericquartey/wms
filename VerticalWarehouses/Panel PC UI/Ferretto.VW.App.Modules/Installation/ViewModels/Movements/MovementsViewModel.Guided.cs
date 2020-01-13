@@ -170,8 +170,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isBusyLoadingFromBay, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsMoving));
-                    this.RaiseCanExecuteChanged();
+                    //this.RaisePropertyChanged(nameof(this.IsMoving));
+                    //this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -183,8 +183,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isBusyLoadingFromCell, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsMoving));
-                    this.RaiseCanExecuteChanged();
+                    //this.RaisePropertyChanged(nameof(this.IsMoving));
+                    //this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -196,8 +196,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isBusyUnloadingToBay, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsMoving));
-                    this.RaiseCanExecuteChanged();
+                    //this.RaisePropertyChanged(nameof(this.IsMoving));
+                    //this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -209,8 +209,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isBusyUnloadingToCell, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsMoving));
-                    this.RaiseCanExecuteChanged();
+                    //this.RaisePropertyChanged(nameof(this.IsMoving));
+                    //this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -222,8 +222,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isElevatorMovingToBay, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsMoving));
-                    this.RaiseCanExecuteChanged();
+                    //this.RaisePropertyChanged(nameof(this.IsMoving));
+                    //this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -235,8 +235,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isElevatorMovingToCell, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsMoving));
-                    this.RaiseCanExecuteChanged();
+                    //this.RaisePropertyChanged(nameof(this.IsMoving));
+                    //this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -248,8 +248,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isElevatorMovingToHeight, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsMoving));
-                    this.RaiseCanExecuteChanged();
+                    //this.RaisePropertyChanged(nameof(this.IsMoving));
+                    //this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -261,8 +261,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isElevatorMovingToLoadingUnit, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsMoving));
-                    this.RaiseCanExecuteChanged();
+                    //this.RaisePropertyChanged(nameof(this.IsMoving));
+                    //this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -304,8 +304,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isTuningBay, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsMoving));
-                    this.RaiseCanExecuteChanged();
+                    //this.RaisePropertyChanged(nameof(this.IsMoving));
+                    //this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -317,8 +317,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isTuningChain, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsMoving));
-                    this.RaiseCanExecuteChanged();
+                    //this.RaisePropertyChanged(nameof(this.IsMoving));
+                    //this.RaiseCanExecuteChanged();
                 }
             }
         }
