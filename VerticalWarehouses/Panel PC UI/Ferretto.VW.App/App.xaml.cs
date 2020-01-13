@@ -124,19 +124,16 @@ namespace Ferretto.VW.App
         private static void RegisterWmsProviders(IContainerRegistry container)
         {
             var wmsServiceEnabled = ConfigurationManager.AppSettings.GetWmsDataServiceEnabled();
-            if (wmsServiceEnabled)
+            var wmsServiceUrl = ConfigurationManager.AppSettings.GetWMSDataServiceUrl();
+
+            container.RegisterWmsWebServices(wmsServiceUrl, c =>
             {
-                var wmsServiceUrl = ConfigurationManager.AppSettings.GetWMSDataServiceUrl();
+                var client = c.Resolve<RetryHttpClient>();
 
-                container.RegisterWmsWebServices(wmsServiceUrl, c =>
-                {
-                    var client = c.Resolve<RetryHttpClient>();
+                client.DefaultRequestHeaders.Add("Accept-Language", System.Globalization.CultureInfo.CurrentUICulture.Name);
 
-                    client.DefaultRequestHeaders.Add("Accept-Language", System.Globalization.CultureInfo.CurrentUICulture.Name);
-
-                    return client;
-                });
-            }
+                return client;
+            });
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)

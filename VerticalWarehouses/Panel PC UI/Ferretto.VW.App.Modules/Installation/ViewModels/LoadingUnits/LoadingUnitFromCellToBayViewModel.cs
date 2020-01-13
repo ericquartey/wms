@@ -47,10 +47,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            await base.OnAppearedAsync();
-            await this.RetrieveLoadingUnitsAsync();
             this.LoadingUnitId = null;
-            this.SelectBayPositionDown();
+
+            await base.OnAppearedAsync();
         }
 
         public override async Task StartAsync()
@@ -92,6 +91,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.isEjectLoadingUnitConfirmationEnabled = false;
 
             this.confirmEjectLoadingUnitCommand.RaiseCanExecuteChanged();
+        }
+
+        protected override async Task OnDataRefreshAsync()
+        {
+            await this.RetrieveLoadingUnitsAsync();
+
+            this.SelectBayPositionDown();
         }
 
         protected override void OnWaitResume()
