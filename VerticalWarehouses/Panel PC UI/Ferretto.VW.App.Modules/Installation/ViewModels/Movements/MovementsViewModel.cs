@@ -152,13 +152,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsElevatorInBay
         {
             get => this.isElevatorInBay;
-            private set => this.SetProperty(ref this.isElevatorInBay, value, this.ElevatorChanged);
+            private set => this.SetProperty(ref this.isElevatorInBay, value);
         }
 
         public bool IsElevatorInCell
         {
             get => this.isElevatorInCell;
-            private set => this.SetProperty(ref this.isElevatorInCell, value, this.ElevatorChanged);
+            private set => this.SetProperty(ref this.isElevatorInCell, value);
         }
 
         public bool IsExecutingProcedure
@@ -240,13 +240,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
                 else if (this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay)
                 {
-                    this.IsPositionUpSelected = this.selectedBayPosition is null || (this.MachineStatus.BayPositionUpper ?? true);
                     this.SelectedBayPosition = this.bay.Positions.SingleOrDefault(p => p.Id == this.MachineStatus.BayPositionId);
+                    this.IsPositionUpSelected = this.selectedBayPosition is null || (this.MachineStatus.BayPositionUpper ?? true);
                 }
-                else if (!this.IsPositionUpSelected && !this.IsPositionDownSelected)
+
+                if (!this.IsPositionUpSelected && !this.IsPositionDownSelected)
                 {
-                    this.IsPositionUpSelected = true;
                     this.SelectedBayPosition = this.bay.Positions.Single(b => b.Height == this.bay.Positions.Max(p => p.Height));
+                    this.IsPositionUpSelected = true;
                 }
 
                 await base.OnAppearedAsync();
@@ -376,12 +377,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsKeyboardOpened
                 &&
                 this.IsMoving;
-        }
-
-        private void ElevatorChanged()
-        {
-            Debug.WriteLine("ElevatorChanged:RefreshActionPoliciesAsync");
-            //this.RefreshActionPoliciesAsync().GetAwaiter().GetResult();
         }
 
         private void GoToMovementsExecuteCommand(bool isGuided)
