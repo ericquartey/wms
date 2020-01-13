@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initialcreation : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -178,8 +178,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Direction = table.Column<int>(nullable: false),
                     EjectLoadUnit = table.Column<bool>(nullable: false),
                     ErrorMovements = table.Column<int>(nullable: false),
-                    RestoreStateName = table.Column<string>(nullable: true),
-                    StateName = table.Column<string>(nullable: true),
+                    RestoreState = table.Column<int>(nullable: false),
+                    State = table.Column<int>(nullable: false),
                     LoadUnitCellSourceId = table.Column<int>(nullable: true),
                     LoadUnitDestination = table.Column<int>(nullable: false),
                     LoadUnitId = table.Column<int>(nullable: false),
@@ -1242,7 +1242,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 3, 13, 10, 25, 30, 302, DateTimeKind.Local).AddTicks(3145), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 3, 13, 14, 42, 25, 956, DateTimeKind.Local).AddTicks(222), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
