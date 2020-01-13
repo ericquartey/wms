@@ -354,6 +354,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return
                 this.CanBaseExecute()
                 &&
+                this.moveToCellPolicy?.IsAllowed == true
+                &&
                 this.InputHeight != null;
         }
 
