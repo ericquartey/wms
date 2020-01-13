@@ -118,6 +118,9 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(WarehouseIsFull), 1)]
         WarehouseIsFull,
 
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(CellLogicallyOccupied), 1)]
+        CellLogicallyOccupied,
+
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MoveBayChainNotAllowed), 1)]
         MoveBayChainNotAllowed,
 
