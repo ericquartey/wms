@@ -193,7 +193,7 @@ namespace Ferretto.VW.MAS.MissionManager
             var missions = missionsDataProvider.GetAllExecutingMissions(true).ToList();
             foreach (var mission in missions)
             {
-                if (string.IsNullOrEmpty(mission.RestoreStateName))
+                if (mission.RestoreState == MissionState.NotDefined)
                 {
                     mission.RestoreState = mission.State;
                 }

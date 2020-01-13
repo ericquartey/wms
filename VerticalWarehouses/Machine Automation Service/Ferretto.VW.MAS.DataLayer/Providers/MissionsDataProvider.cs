@@ -54,23 +54,26 @@ namespace Ferretto.VW.MAS.DataLayer
         public bool CanCreateMission(int loadingUnitId, BayNumber targetBay)
         {
             var returnValue = true;
-            // no duplicate of LU
-            returnValue = !missionCache.Any(m => m.Value.LoadUnitId == loadingUnitId
-                && m.Value.Status == MissionStatus.Executing
-                );
-            if (!returnValue)
+            lock (missionCache)
             {
-                this.errorProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisLoadUnit, targetBay);
-            }
-            else
-            {
-                // no duplicate of targetBay
-                returnValue = !missionCache.Any(m => m.Value.TargetBay == targetBay
+                // no duplicate of LU
+                returnValue = !missionCache.Any(m => m.Value.LoadUnitId == loadingUnitId
                     && m.Value.Status == MissionStatus.Executing
                     );
                 if (!returnValue)
                 {
-                    this.errorProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisBay, targetBay);
+                    this.errorProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisLoadUnit, targetBay);
+                }
+                else
+                {
+                    // no duplicate of targetBay
+                    returnValue = !missionCache.Any(m => m.Value.TargetBay == targetBay
+                        && m.Value.Status == MissionStatus.Executing
+                        );
+                    if (!returnValue)
+                    {
+                        this.errorProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisBay, targetBay);
+                    }
                 }
             }
 
@@ -79,7 +82,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public Mission Complete(int id)
         {
-            lock (this.dataContext)
+            lock (missionCache)
             {
                 var mission = missionCache[id];
                 if (mission is null)
@@ -106,7 +109,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public Mission CreateBayMission(int loadingUnitId, BayNumber bayNumber)
         {
-            lock (this.dataContext)
+            lock (missionCache)
             {
                 var entry = this.dataContext.Missions
                     .Add(
@@ -131,7 +134,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public Mission CreateBayMission(int loadingUnitId, BayNumber bayNumber, int wmsId, int wmsPriority)
         {
-            lock (this.dataContext)
+            lock (missionCache)
             {
                 var transaction = this.dataContext.Database.BeginTransaction();
 
@@ -172,7 +175,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public Mission CreateRecallMission(int loadingUnitId, BayNumber bayNumber)
         {
-            lock (this.dataContext)
+            lock (missionCache)
             {
                 var entry = this.dataContext.Missions.Add(
                     new Mission
@@ -196,7 +199,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void Delete(int id)
         {
-            lock (this.dataContext)
+            lock (missionCache)
             {
                 var mission = this.dataContext.Missions.SingleOrDefault(m => m.Id == id);
                 if (mission is null)
@@ -219,7 +222,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public IEnumerable<Mission> GetAllActiveMissions()
         {
-            lock (this.dataContext)
+            lock (missionCache)
             {
                 return missionCache
                     .Where(x => x.Value.Status != MissionStatus.Completed && x.Value.Status != MissionStatus.Aborted)
@@ -231,7 +234,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public IEnumerable<Mission> GetAllActiveMissionsByBay(BayNumber bayNumber)
         {
-            lock (this.dataContext)
+            lock (missionCache)
             {
                 return missionCache
                     .Where(x => x.Value.TargetBay == bayNumber
@@ -244,7 +247,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public IEnumerable<Mission> GetAllExecutingMissions(bool noCache = false)
         {
-            lock (this.dataContext)
+            lock (missionCache)
             {
                 if (noCache)
                 {
@@ -265,7 +268,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public IEnumerable<Mission> GetAllWmsMissions()
         {
-            lock (this.dataContext)
+            lock (missionCache)
             {
                 return missionCache
                     .Where(x => x.Value.WmsId != null)
@@ -275,7 +278,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public Mission GetById(int id)
         {
-            lock (this.dataContext)
+            lock (missionCache)
             {
                 var mission = missionCache.SingleOrDefault(m => m.Key == id).Value;
                 if (mission is null)
@@ -288,7 +291,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public bool IsMissionInWaitState(BayNumber bayNumber, int loadingUnitId)
         {
-            lock (this.dataContext)
+            lock (missionCache)
             {
                 return missionCache.Any(m => m.Value.TargetBay == bayNumber
                         && m.Value.Status == MissionStatus.Waiting
@@ -330,7 +333,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new ArgumentNullException(nameof(mission));
             }
 
-            lock (this.dataContext)
+            lock (missionCache)
             {
                 this.dataContext.Missions.Update(mission);
 
@@ -343,7 +346,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void UpdateHomingMissions(BayNumber bayNumber, Axis axis)
         {
-            lock (this.dataContext)
+            lock (missionCache)
             {
                 if (axis == Axis.HorizontalAndVertical)
                 {
@@ -376,13 +379,16 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private static void UpdateCache(Mission mission)
         {
-            if (missionCache.ContainsKey(mission.Id))
+            lock (missionCache)
             {
-                missionCache[mission.Id] = mission;
-            }
-            else
-            {
-                missionCache.Add(mission.Id, mission);
+                if (missionCache.ContainsKey(mission.Id))
+                {
+                    missionCache[mission.Id] = mission;
+                }
+                else
+                {
+                    missionCache.Add(mission.Id, mission);
+                }
             }
         }
 

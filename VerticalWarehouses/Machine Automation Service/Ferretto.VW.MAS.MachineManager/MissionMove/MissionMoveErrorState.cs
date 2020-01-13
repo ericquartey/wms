@@ -65,7 +65,28 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 switch (notificationStatus)
                 {
                     case MessageStatus.OperationEnd:
-                        if (notification.Type == MessageType.ShutterPositioning)
+                        if (notification.Type == MessageType.Homing
+                            && notification.Data is HomingMessageData messageData
+                            )
+                        {
+                            if (messageData.AxisToCalibrate == Axis.Horizontal
+                                && !this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator)
+                                )
+                            {
+                                this.Mission.NeedHomingAxis = Axis.None;
+                                this.MissionsDataProvider.Update(this.Mission);
+                            }
+                            else if (messageData.AxisToCalibrate == Axis.BayChain)
+                            {
+                                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+                                if (this.LoadingUnitMovementProvider.CheckBaySensors(bay, this.Mission.LoadUnitDestination, deposit: true) == MachineErrorCode.NoError)
+                                {
+                                    this.Mission.NeedHomingAxis = Axis.None;
+                                    this.MissionsDataProvider.Update(this.Mission);
+                                }
+                            }
+                        }
+                        else if (notification.Type == MessageType.ShutterPositioning)
                         {
                             this.Logger.LogDebug($"{this.GetType().Name}: Manual Shutter positioning end");
                             var shutterPosition = this.SensorsProvider.GetShutterPosition(notification.RequestingBay);

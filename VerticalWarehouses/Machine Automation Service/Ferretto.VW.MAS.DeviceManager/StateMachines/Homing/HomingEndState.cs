@@ -119,6 +119,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             }
             else
             {
+                if (this.machineData.AxisToCalibrate == Axis.Horizontal
+                    ||
+                    this.machineData.AxisToCalibrate == Axis.HorizontalAndVertical)
+                {
+                    this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>().UpdateLastIdealPosition(0);
+                }
+                else if (this.machineData.AxisToCalibrate == Axis.BayChain)
+                {
+                    this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>().UpdateLastIdealPosition(0, this.machineData.RequestingBay);
+                }
                 var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, MessageVerbosity.Info);
 
                 var notificationMessage = new NotificationMessage(
@@ -132,31 +142,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
 
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-
-                if (this.machineData.AxisToCalibrate == Axis.Horizontal
-                    ||
-                    this.machineData.AxisToCalibrate == Axis.HorizontalAndVertical)
-                {
-                    this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>().UpdateLastIdealPosition(0);
-
-                    if (!this.machineData.LoadingUnitId.HasValue
-                        && this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle
-                        )
-                    {
-                        this.scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>().UpdateHomingMissions(BayNumber.ElevatorBay, this.machineData.AxisToCalibrate);
-                    }
-                }
-                else if (this.machineData.AxisToCalibrate == Axis.BayChain)
-                {
-                    this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>().UpdateLastIdealPosition(0, this.machineData.RequestingBay);
-
-                    if (!this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay)
-                        && !this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay)
-                        )
-                    {
-                        this.scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>().UpdateHomingMissions(this.machineData.RequestingBay, this.machineData.AxisToCalibrate);
-                    }
-                }
             }
 
             if (this.stateData.StopRequestReason == StopRequestReason.NoReason
