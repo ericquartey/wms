@@ -210,7 +210,7 @@ namespace Ferretto.VW.App.Services
             set => this.SetProperty(ref this.notification, value, () => this.ShowNotification(this.notification, NotificationSeverity.Info));
         }
 
-        private bool IsHealthy => this.healthProbeService?.HealthStatus == HealthStatus.Healthy;
+        private bool IsHealthy => this.healthProbeService?.HealthStatus == HealthStatus.Healthy || this.healthProbeService?.HealthStatus == HealthStatus.Degraded;
 
         #endregion
 

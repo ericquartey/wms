@@ -127,7 +127,7 @@ namespace Ferretto.VW.App.Controls
 
         public ISensorsService SensorsService => this.sensorsService;
 
-        protected bool IsConnectedByMAS => this.healthProbeService.HealthStatus == HealthStatus.Healthy;
+        protected bool IsConnectedByMAS => (this.healthProbeService.HealthStatus == HealthStatus.Healthy || this.healthProbeService.HealthStatus == HealthStatus.Degraded);
 
         protected virtual bool IsDataRefreshSyncronous => false;
 
