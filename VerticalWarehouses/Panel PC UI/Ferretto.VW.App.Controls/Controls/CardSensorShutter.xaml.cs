@@ -53,8 +53,6 @@ namespace Ferretto.VW.App.Controls.Controls
             this.SubscribeToEvents();
 
             this.DataContext = this.sensorsService.ShutterSensors;
-
-            //this.sensorsService.RefreshAsync(true);
         }
 
         protected Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)

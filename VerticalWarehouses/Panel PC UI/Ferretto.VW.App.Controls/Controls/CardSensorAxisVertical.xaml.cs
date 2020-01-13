@@ -100,12 +100,12 @@ namespace Ferretto.VW.App.Controls.Controls
 
         protected void Disappear()
         {
-            this.eventAggregator
-                .GetEvent<NavigationCompleted>()
-                .Unsubscribe(this.machineStatusChangesToken);
-
             if (this.machineStatusChangesToken != null)
             {
+                this.eventAggregator
+                    .GetEvent<NavigationCompleted>()
+                    .Unsubscribe(this.machineStatusChangesToken);
+
                 this.machineStatusChangesToken.Dispose();
                 this.machineStatusChangesToken = null;
             }
@@ -118,8 +118,6 @@ namespace Ferretto.VW.App.Controls.Controls
         protected void OnAppeared()
         {
             this.SubscribeToEvents();
-
-            //this.sensorsService.RefreshAsync(true);
 
             this.OnDataRefresh();
         }
