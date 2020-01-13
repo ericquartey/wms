@@ -124,6 +124,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.displacementUp, value);
         }
 
+        public bool HasDisplacementDownValue => this.DisplacementDown.GetValueOrDefault(0) != 0;
+
+        public bool HasDisplacementUpValue => this.DisplacementUp.GetValueOrDefault(0) != 0;
+
+        public bool HasDisplacementValue => this.HasDisplacementUpValue || this.HasDisplacementDownValue;
+
         public bool HasStepConfirm => this.currentStep is BayCheckStep.Confirm;
 
         public bool HasStepPositionDown => this.currentStep is BayCheckStep.PositionDown;
@@ -131,12 +137,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool HasStepPositionDownVisible => this.Bay?.IsDouble ?? false;
 
         public bool HasStepPositionUp => this.currentStep is BayCheckStep.PositionUp;
-
-        public bool HasDisplacementUpValue => this.DisplacementUp.GetValueOrDefault(0) != 0;
-
-        public bool HasDisplacementDownValue => this.DisplacementDown.GetValueOrDefault(0) != 0;
-
-        public bool HasDisplacementValue => this.HasDisplacementUpValue || this.HasDisplacementDownValue;
 
         public bool IsCanStepValue => this.CanBaseExecute();
 
@@ -239,6 +239,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.UpdateStatusButtonFooter();
 
             await base.OnAppearedAsync();
+        }
+
+        protected override async Task OnDataRefreshAsync()
+        {
+            await this.SensorsService.RefreshAsync(true);
         }
 
         protected void OnStepChanged(StepChangedMessage e)

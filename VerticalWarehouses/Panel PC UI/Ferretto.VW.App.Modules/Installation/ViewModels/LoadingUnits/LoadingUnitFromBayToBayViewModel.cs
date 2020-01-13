@@ -229,6 +229,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             await this.InitializingData();
 
+            await this.SensorsService.RefreshAsync(true);
+
             await this.SetDataBays()
                 .ContinueWith((m) => this.RaiseCanExecuteChanged());
         }

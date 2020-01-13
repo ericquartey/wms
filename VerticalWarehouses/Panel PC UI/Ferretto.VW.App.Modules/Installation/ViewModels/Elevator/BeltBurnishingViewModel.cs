@@ -341,6 +341,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
+                await this.SensorsService.RefreshAsync(true);
+
                 await this.GetParameterValuesAsync();
 
                 this.IsExecutingProcedure = this.MachineService.MachineStatus.IsMoving;

@@ -164,6 +164,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected override async Task OnDataRefreshAsync()
         {
+            await this.SensorsService.RefreshAsync(true);
+
             await this.RetrieveProcedureInformationAsync();
         }
 
