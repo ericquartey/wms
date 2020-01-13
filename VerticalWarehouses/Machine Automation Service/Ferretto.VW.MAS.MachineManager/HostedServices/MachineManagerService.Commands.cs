@@ -113,12 +113,17 @@ namespace Ferretto.VW.MAS.MachineManager
         {
             if (command is null)
             {
-                return;
+                throw new ArgumentNullException(nameof(command));
+            }
+
+            if (serviceProvider is null)
+            {
+                throw new ArgumentNullException(nameof(serviceProvider));
             }
 
             if (!this.isDataLayerReady)
             {
-                this.Logger.LogError($"Failed to start Move mission: DataLayer is not ready!");
+                this.Logger.LogError($"Unable to start loading unit movement: dataLayer is not ready.");
                 this.NotifyCommandError(command);
                 return;
             }

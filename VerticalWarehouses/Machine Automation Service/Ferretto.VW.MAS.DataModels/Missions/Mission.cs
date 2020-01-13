@@ -1,7 +1,6 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataModels.Enumerations;
 
 namespace Ferretto.VW.MAS.DataModels
 {
@@ -30,10 +29,6 @@ namespace Ferretto.VW.MAS.DataModels
         public MissionState RestoreState { get; set; }
 
         public MissionState State { get; set; }
-
-        public string RestoreStateName => this.RestoreState.ToString();
-
-        public string StateName => this.State.ToString();
 
         public int? LoadUnitCellSourceId { get; set; }
 
@@ -69,7 +64,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsMissionToRestore()
         {
-            return !string.IsNullOrEmpty(this.RestoreStateName);
+            return this.RestoreState != MissionState.NotDefined;
         }
 
         public bool IsRestoringType()
@@ -91,11 +86,11 @@ namespace Ferretto.VW.MAS.DataModels
                 $"LoadUnitId={this.LoadUnitId}; " +
                 $"WmsId={this.WmsId}; " +
                 $"TargetBay={this.TargetBay}; " +
-                $"StateName={this.StateName}; " +
+                $"State={this.State}; " +
                 $"Source={this.LoadUnitSource}; " +
                 $"Destination={this.LoadUnitDestination}; " +
                 $"CellSourceId={this.LoadUnitCellSourceId}; " +
-                $"RestoreStateName={this.RestoreStateName}; " +
+                $"RestoreState={this.RestoreState}; " +
                 $"MissionType={this.MissionType}; " +
                 $"NeedHomingAxis={this.NeedHomingAxis}; " +
                 $"NeedMovingBackward={this.NeedMovingBackward}; " +

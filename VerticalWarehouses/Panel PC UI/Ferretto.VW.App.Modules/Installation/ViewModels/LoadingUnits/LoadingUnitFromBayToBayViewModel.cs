@@ -134,7 +134,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             (this.startToBayCommand = new DelegateCommand(
                 async () => await this.StartToBayAsync(),
                 () => !this.IsExecutingProcedure &&
-                      !this.IsWaitingForResponse &&
                       (!string.IsNullOrEmpty(this.MachineStatus.LoadingUnitPositionUpInBay?.Id.ToString()) ||
                        !string.IsNullOrEmpty(this.MachineStatus.LoadingUnitPositionDownInBay?.Id.ToString()))));
 
@@ -161,11 +160,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
-
-            await this.InitialinngData();
-
-            await this.SetDataBays()
-                .ContinueWith((m) => this.RaiseCanExecuteChanged());
         }
 
         public async Task StartToBayAsync()
@@ -231,6 +225,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.GetLoadingUnits().ConfigureAwait(false);
         }
 
+        protected override async Task OnDataRefreshAsync()
+        {
+            await this.InitializingData();
+
+            await this.SetDataBays()
+                .ContinueWith((m) => this.RaiseCanExecuteChanged());
+        }
+
         protected override void OnWaitResume()
         {
             this.RaiseCanExecuteChanged();
@@ -282,10 +284,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private async Task ConfirmEjectLoadingUnit()
         {
-            await this.MachineLoadingUnitsWebService.ResumeAsync(this.CurrentMissionId, this.Bay.Number);
+            await this.MachineLoadingUnitsWebService.ResumeAsync(this.CurrentMissionId, this.MachineService.BayNumber);
         }
 
-        private async Task InitialinngData()
+        private async Task InitializingData()
         {
             await this.GetLoadingUnits();
 
@@ -320,17 +322,17 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
             else
             {
-                if (this.Bay.Number == BayNumber.BayOne)
+                if (this.MachineService.BayNumber == BayNumber.BayOne)
                 {
                     this.ChangeDestination(BayNumber.BayOne);
                 }
 
-                if (this.Bay.Number == BayNumber.BayTwo)
+                if (this.MachineService.BayNumber == BayNumber.BayTwo)
                 {
                     this.ChangeDestination(BayNumber.BayTwo);
                 }
 
-                if (this.Bay.Number == BayNumber.BayThree)
+                if (this.MachineService.BayNumber == BayNumber.BayThree)
                 {
                     this.ChangeDestination(BayNumber.BayThree);
                 }

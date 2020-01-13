@@ -593,7 +593,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     BlockLevel = table.Column<int>(nullable: false),
-                    IsFree = table.Column<bool>(nullable: false),
+                    IsFree = table.Column<bool>(nullable: false, defaultValueSql: "1"),
                     PanelId = table.Column<int>(nullable: false),
                     Position = table.Column<double>(nullable: false),
                     Priority = table.Column<int>(nullable: false)
@@ -1242,7 +1242,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 3, 13, 10, 43, 54, 169, DateTimeKind.Local).AddTicks(4722), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 3, 13, 14, 58, 50, 590, DateTimeKind.Local).AddTicks(6716), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",

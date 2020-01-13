@@ -53,7 +53,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator
                 && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadUnit
                 && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation;
-            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.StateName, isEject, MessageStatus.OperationExecuting);
+            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.State.ToString(), isEject, MessageStatus.OperationExecuting);
             return true;
         }
 
@@ -65,7 +65,28 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 switch (notificationStatus)
                 {
                     case MessageStatus.OperationEnd:
-                        if (notification.Type == MessageType.ShutterPositioning)
+                        if (notification.Type == MessageType.Homing
+                            && notification.Data is HomingMessageData messageData
+                            )
+                        {
+                            if (messageData.AxisToCalibrate == Axis.Horizontal
+                                && !this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator)
+                                )
+                            {
+                                this.Mission.NeedHomingAxis = Axis.None;
+                                this.MissionsDataProvider.Update(this.Mission);
+                            }
+                            else if (messageData.AxisToCalibrate == Axis.BayChain)
+                            {
+                                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+                                if (this.LoadingUnitMovementProvider.CheckBaySensors(bay, this.Mission.LoadUnitDestination, deposit: true) == MachineErrorCode.NoError)
+                                {
+                                    this.Mission.NeedHomingAxis = Axis.None;
+                                    this.MissionsDataProvider.Update(this.Mission);
+                                }
+                            }
+                        }
+                        else if (notification.Type == MessageType.ShutterPositioning)
                         {
                             this.Logger.LogDebug($"{this.GetType().Name}: Manual Shutter positioning end");
                             var shutterPosition = this.SensorsProvider.GetShutterPosition(notification.RequestingBay);
@@ -165,7 +186,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override void OnResume(CommandMessage command)
         {
-            this.Logger.LogDebug($"{this.GetType().Name}: Resume mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, from {this.Mission.RestoreStateName}, loadUnit {this.Mission.LoadUnitId}");
+            this.Logger.LogDebug($"{this.GetType().Name}: Resume mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, from {this.Mission.RestoreState}, loadUnit {this.Mission.LoadUnitId}");
 
             switch (this.Mission.RestoreState)
             {
@@ -330,7 +351,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 if (this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
                 {
-                    this.Logger.LogDebug($"{this.GetType().Name}: Vertical position has changed {this.Mission.RestoreStateName} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
+                    this.Logger.LogDebug($"{this.GetType().Name}: Vertical position has changed {this.Mission.RestoreState} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
 
                     this.Mission.RestoreConditions = true;
                     this.Mission.RestoreState = MissionState.NotDefined;
@@ -442,7 +463,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 if (!this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
                 {
-                    this.Logger.LogDebug($"{this.GetType().Name}: Vertical position has changed {this.Mission.RestoreStateName} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
+                    this.Logger.LogDebug($"{this.GetType().Name}: Vertical position has changed {this.Mission.RestoreState} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
 
                     this.Mission.RestoreConditions = true;
                     this.Mission.RestoreState = MissionState.NotDefined;

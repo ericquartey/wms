@@ -173,7 +173,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.areItemsEnabled = this.machineModeService.MachinePower is MachinePowerState.Powered;
 
-                if (this.healthProbeService.HealthStatus == HealthStatus.Healthy)
+                if (this.healthProbeService.HealthStatus == HealthStatus.Healthy || this.healthProbeService.HealthStatus == HealthStatus.Degraded)
                 {
                     var setupStatus = await this.setupStatusWebService.GetAsync();
                     foreach (var menuItem in this.cellItems)

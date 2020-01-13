@@ -29,7 +29,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
-            await this.RetrieveLoadingUnitsAsync();
         }
 
         public override async Task StartAsync()
@@ -72,6 +71,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        protected override async Task OnDataRefreshAsync()
+        {
+            await this.RetrieveLoadingUnitsAsync();
         }
 
         #endregion

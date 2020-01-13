@@ -157,9 +157,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public async override Task OnAppearedAsync()
         {
-            await this.RetrieveCellsAsync();
-
             await base.OnAppearedAsync();
+        }
+
+        protected override async Task OnDataRefreshAsync()
+        {
+            await this.RetrieveCellsAsync();
         }
 
         protected async Task RetrieveCellsAsync()

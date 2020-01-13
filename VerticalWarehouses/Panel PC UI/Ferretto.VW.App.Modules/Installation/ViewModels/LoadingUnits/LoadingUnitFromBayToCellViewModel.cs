@@ -36,9 +36,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 if (this.LoadingUnitId is null)
                 {
                     var lst = await this.MachineLoadingUnitsWebService.GetAllAsync();
-                    if (lst.Count() > 0)
+                    if (lst.Any())
                     {
-                        this.LoadingUnitId = lst.Max(o => o.Id) + 1;
+                        this.LoadingUnitId = lst.Where(x => x.Status == LoadingUnitStatus.Undefined).FirstOrDefault()?.Id ?? (lst.Max(o => o.Id) + 1);
                     }
                     else
                     {
@@ -58,14 +58,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
-
-            await this.InitialinngData();
         }
 
         public override async Task StartAsync()
         {
             try
             {
+                this.IsWaitingForResponse = true;
+
                 if (!this.IsLoadingUnitIdValid)
                 {
                     await this.MachineLoadingUnitsWebService.InsertLoadingUnitOnlyDbAsync(this.LoadingUnitId.Value);
@@ -78,8 +78,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     this.ShowNotification("Tipo scelta sorgente non valida", Services.Models.NotificationSeverity.Warning);
                     return;
                 }
-
-                this.IsWaitingForResponse = true;
 
                 await this.MachineLoadingUnitsWebService.InsertLoadingUnitAsync(source, null, this.LoadingUnitId.Value);
             }
@@ -102,7 +100,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.GetLoadingUnits().ConfigureAwait(false);
         }
 
-        private async Task InitialinngData()
+        protected override async Task OnDataRefreshAsync()
+        {
+            await this.InitializingData();
+        }
+
+        private async Task InitializingData()
         {
             await this.GetLoadingUnits();
 

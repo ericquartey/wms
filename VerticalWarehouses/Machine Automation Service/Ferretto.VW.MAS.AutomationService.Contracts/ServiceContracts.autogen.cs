@@ -1298,12 +1298,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("state", Required = Newtonsoft.Json.Required.Always)]
         public MissionState State { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("restoreStateName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string RestoreStateName { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("stateName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string StateName { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("loadUnitCellSourceId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? LoadUnitCellSourceId { get; set; }
     
@@ -1604,6 +1598,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [System.Runtime.Serialization.EnumMember(Value = @"Aborted")]
         Aborted = 4,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Completing")]
+        Completing = 5,
     
     }
     
