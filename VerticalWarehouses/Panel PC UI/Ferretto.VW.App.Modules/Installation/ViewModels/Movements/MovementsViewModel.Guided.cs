@@ -593,11 +593,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     &&
                     this.SensorsService.Sensors.LuPresentInMachineSide
                     &&
-                    this.SensorsService.Sensors.LuPresentInOperatorSide
-                    &&
-                    this.loadFromCellPolicy?.IsAllowed == false
-                    &&
-                    this.unloadToCellPolicy?.IsAllowed == false;
+                    this.SensorsService.Sensors.LuPresentInOperatorSide;
             }
 
             return canMove;
