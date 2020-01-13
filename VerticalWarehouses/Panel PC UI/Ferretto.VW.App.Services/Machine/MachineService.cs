@@ -338,7 +338,7 @@ namespace Ferretto.VW.App.Services
             try
             {
                 ms.EmbarkedLoadingUnit = await this.machineElevatorWebService.GetLoadingUnitOnBoardAsync();
-                ms.EmbarkedLoadingUnitId = ms.EmbarkedLoadingUnit?.Id.ToString();
+                ms.EmbarkedLoadingUnitId = ms.EmbarkedLoadingUnit?.Id;
             }
             catch (Exception ex)
             {
@@ -573,7 +573,7 @@ namespace Ferretto.VW.App.Services
                                         if (dataPositioningInfo.AxisMovement == Axis.Vertical)
                                         {
                                             ms.VerticalTargetPosition = dataPositioningInfo.TargetPosition;
-                                            if (dataPositioningInfo.TargetSpeed.Length > 0)
+                                            if (dataPositioningInfo.TargetSpeed?.Length > 0)
                                             {
                                                 ms.VerticalSpeed = dataPositioningInfo.TargetSpeed[0];
                                             }
@@ -596,11 +596,11 @@ namespace Ferretto.VW.App.Services
                                 {
                                     this.WriteInfo(null);
                                 }
-                            }
 
-                            if (this.MachineStatus.IsMovingLoadingUnit)
-                            {
-                                this.Notification = "Movimento in corso...";
+                                if (message?.Data is MoveLoadingUnitMessageData moveLoadingUnitMessageData)
+                                {
+                                    this.Notification = $"({moveLoadingUnitMessageData.State}) Movimento in corso...";
+                                }
                             }
 
                             break;
@@ -652,6 +652,19 @@ namespace Ferretto.VW.App.Services
                                 Task.Run(async () => ms = await this.GetElevatorAsync(ms)).Wait();
 
                                 ms.IsMovingElevator = false;
+                                if (dataPositioning.AxisMovement == Axis.Vertical)
+                                {
+                                    ms.VerticalTargetPosition = null;
+                                    ms.VerticalSpeed = null;
+                                }
+                                else if (dataPositioning.AxisMovement == Axis.Horizontal)
+                                {
+                                    ms.HorizontalTargetPosition = null;
+                                }
+                                else if (dataPositioning.AxisMovement == Axis.BayChain)
+                                {
+                                    ms.BayChainTargetPosition = null;
+                                }
                             }
 
                             ms.IsMoving = false;
@@ -665,11 +678,6 @@ namespace Ferretto.VW.App.Services
                             {
                                 ms.IsMovingLoadingUnit = false;
                             }
-
-                            ms.VerticalSpeed = null;
-                            ms.VerticalTargetPosition = null;
-                            ms.HorizontalTargetPosition = null;
-                            ms.BayChainTargetPosition = null;
 
                             if (!this.MachineStatus.IsMovingLoadingUnit)
                             {
@@ -733,6 +741,19 @@ namespace Ferretto.VW.App.Services
                             if (message?.Data is PositioningMessageData dataPositioning)
                             {
                                 ms.IsMovingElevator = false;
+                                if (dataPositioning.AxisMovement == Axis.Vertical)
+                                {
+                                    ms.VerticalTargetPosition = null;
+                                    ms.VerticalSpeed = null;
+                                }
+                                else if (dataPositioning.AxisMovement == Axis.Horizontal)
+                                {
+                                    ms.HorizontalTargetPosition = null;
+                                }
+                                else if (dataPositioning.AxisMovement == Axis.BayChain)
+                                {
+                                    ms.BayChainTargetPosition = null;
+                                }
                             }
 
                             if (message?.Data is ShutterPositioningMessageData)
@@ -744,11 +765,6 @@ namespace Ferretto.VW.App.Services
                             {
                                 ms.IsMovingLoadingUnit = false;
                             }
-
-                            ms.VerticalSpeed = null;
-                            ms.VerticalTargetPosition = null;
-                            ms.HorizontalTargetPosition = null;
-                            ms.BayChainTargetPosition = null;
 
                             this.ShowNotification(message.Description, NotificationSeverity.Error);
 
@@ -874,6 +890,8 @@ namespace Ferretto.VW.App.Services
                         this.OnDataChanged,
                         ThreadOption.UIThread,
                         false);
+
+            this.sensorsService.OnUpdateSensors += (s, e) => this.OnChangedEventArgs(e);
         }
 
         private void UpdateMachineStatus(EventArgs e)
@@ -891,13 +909,25 @@ namespace Ferretto.VW.App.Services
 
                 ms.ElevatorVerticalPosition = dataElevatorPosition.VerticalPosition;
                 ms.ElevatorHorizontalPosition = dataElevatorPosition.HorizontalPosition;
+                ms.ElevatorPositionType = dataElevatorPosition.ElevatorPositionType;
 
                 if (dataElevatorPosition.CellId != null)
                 {
                     ms.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.CellWithNumber, dataElevatorPosition.CellId);
 
                     var cell = this.cells?.FirstOrDefault(l => l.Id.Equals(dataElevatorPosition.CellId));
-                    ms.LogicalPosition = cell?.IsFree.ToString() + " / " + cell?.Side.ToString();
+                    if (cell != null)
+                    {
+                        ms.LogicalPosition = string.Concat(
+                            cell?.Side.ToString(),
+                            " / ",
+                            cell.IsFree ? "Libera" : "Occupata",
+                            cell.BlockLevel != BlockLevel.Undefined && cell.BlockLevel != BlockLevel.None ? $" / {cell.BlockLevel}" : string.Empty);
+                    }
+                    else
+                    {
+                        ms.LogicalPosition = null;
+                    }
                     ms.LogicalPositionId = dataElevatorPosition.CellId.ToString();
 
                     ms.ElevatorPositionLoadingUnit = this.loadingUnits.FirstOrDefault(l => l.CellId.Equals(dataElevatorPosition.CellId));
@@ -917,6 +947,9 @@ namespace Ferretto.VW.App.Services
                     }
 
                     ms.LogicalPositionId = ((int)bay.Number).ToString();
+
+                    var position = this.bay.Positions.SingleOrDefault(p => p.Id == dataElevatorPosition.BayPositionId);
+                    ms.ElevatorPositionLoadingUnit = position?.LoadingUnit;
                 }
                 else
                 {
@@ -951,38 +984,38 @@ namespace Ferretto.VW.App.Services
                 switch (this.GetWarningAreaAttribute())
                 {
                     case WarningsArea.MovementsView:
-                        if (this.machineModeService.MachinePower != MachinePowerState.Powered)
-                        {
-                            this.ShowNotification("Manca marcia.", NotificationSeverity.Warning);
-                        }
-                        else if (!this.IsHoming)
-                        {
-                            this.ShowNotification("Homing non eseguito.", NotificationSeverity.Error);
-                        }
-                        else if (this.MachineStatus.BayChainPosition is null)
-                        {
-                            this.ShowNotification("Posizione catena sconosciuta.", NotificationSeverity.Error);
-                        }
-                        else if (string.IsNullOrEmpty(this.MachineStatus.ElevatorLogicalPosition))
-                        {
-                            this.ShowNotification("Posizione elevatore sconosciuta.", NotificationSeverity.Low);
-                        }
-                        else
-                        {
-                            this.ClearNotifications();
-                        }
-                        break;
-
                     case WarningsArea.Installation:
                         if (this.machineModeService.MachinePower != MachinePowerState.Powered)
                         {
                             this.ShowNotification("Manca marcia.", NotificationSeverity.Warning);
                         }
+                        else if (this.sensorsService.IsHorizontalInconsistentBothLow)
+                        {
+                            this.ShowNotification("Manca sensore nottolino a zero o presenza cassetto.", NotificationSeverity.Error);
+                        }
+                        else if (this.sensorsService.IsHorizontalInconsistentBothHigh)
+                        {
+                            this.ShowNotification("Inconsistenza sensore nottolino a zero e presenza cassetto.", NotificationSeverity.Error);
+                        }
+                        else if ((this.MachineStatus.EmbarkedLoadingUnitId.GetValueOrDefault() > 0 && (this.sensorsService.IsZeroChain || !this.sensorsService.IsLoadingUnitOnElevator)) ||
+                                 (this.MachineStatus.EmbarkedLoadingUnitId.GetValueOrDefault() == 0 && (!this.sensorsService.IsZeroChain || this.sensorsService.IsLoadingUnitOnElevator)))
+                        {
+                            this.ShowNotification("Inconsistenza stato di carico e sensori.", NotificationSeverity.Error);
+                        }
                         else if (!this.IsHoming)
                         {
                             this.ShowNotification("Homing non eseguito.", NotificationSeverity.Error);
                         }
-                        else if (view.Equals("VerticalResolutionCalibrationView", StringComparison.InvariantCultureIgnoreCase) &&
+                        else if ((((this.MachineStatus.LoadingUnitPositionDownInBay != null && !this.sensorsService.IsLoadingUnitInMiddleBottomBay) ||
+                                   (this.MachineStatus.LoadingUnitPositionUpInBay != null && !this.sensorsService.IsLoadingUnitInBay)) ||
+                                  ((this.MachineStatus.LoadingUnitPositionDownInBay == null && this.sensorsService.IsLoadingUnitInMiddleBottomBay) ||
+                                   (this.MachineStatus.LoadingUnitPositionUpInBay == null && this.sensorsService.IsLoadingUnitInBay))))
+                        {
+                            this.ShowNotification("Inconsistenza sensori di presenza cassetto in baia.", NotificationSeverity.Error);
+                        }
+                        else if ((view.Equals("VerticalResolutionCalibrationView", StringComparison.InvariantCultureIgnoreCase) ||
+                                  view.Equals("VerticalOffsetCalibrationView", StringComparison.InvariantCultureIgnoreCase) ||
+                                  view.Equals("BayCheckView", StringComparison.InvariantCultureIgnoreCase)) &&
                                  this.sensorsService.IsLoadingUnitOnElevator)
                         {
                             this.ShowNotification("Presenza cassetto sull'elevatore.", NotificationSeverity.Warning);

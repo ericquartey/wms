@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Services
@@ -22,6 +23,10 @@ namespace Ferretto.VW.App.Services
         Sensors Sensors { get; }
 
         ShutterSensors ShutterSensors { get; }
+        bool IsHorizontalInconsistentBothLow { get; }
+        bool IsHorizontalInconsistentBothHigh { get; }
+
+        event EventHandler<EventArgs> OnUpdateSensors;
 
         #endregion
 

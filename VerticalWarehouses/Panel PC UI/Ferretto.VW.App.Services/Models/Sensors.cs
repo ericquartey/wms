@@ -225,7 +225,7 @@ namespace Ferretto.VW.App.Services
 
         private bool zeroPawlSensor;
 
-        private bool zeroPawlSensorOneK;
+        private bool zeroPawlSensorOneTon;
 
         private bool zeroVerticalSensor;
 
@@ -451,7 +451,7 @@ namespace Ferretto.VW.App.Services
 
         public bool ZeroPawlSensor { get => this.zeroPawlSensor; set => this.SetProperty(ref this.zeroPawlSensor, value); }
 
-        public bool ZeroPawlSensorOneK { get => this.zeroPawlSensorOneK; set => this.SetProperty(ref this.zeroPawlSensorOneK, value); }
+        public bool ZeroPawlSensorOneTon { get => this.zeroPawlSensorOneTon; set => this.SetProperty(ref this.zeroPawlSensorOneTon, value); }
 
         public bool ZeroVerticalSensor { get => this.zeroVerticalSensor; set => this.SetProperty(ref this.zeroVerticalSensor, value); }
 

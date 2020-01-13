@@ -177,10 +177,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanExecuteStartCommand()
         {
-            return
-                !this.MachineService.MachineStatus.IsMoving
-                &&
-                !this.MachineService.MachineStatus.IsMovingLoadingUnit;
+            return !this.MachineService.MachineStatus.IsMoving &&
+                   !this.MachineService.MachineStatus.IsMovingLoadingUnit &&
+                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh;
         }
 
         private bool CanExecuteStopCommand()

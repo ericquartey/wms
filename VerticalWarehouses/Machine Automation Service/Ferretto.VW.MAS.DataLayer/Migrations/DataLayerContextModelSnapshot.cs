@@ -148,9 +148,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("BlockLevel");
 
-                    b.Property<bool>("IsFree")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("1");
+                    b.Property<bool>("IsFree");
 
                     b.Property<int>("PanelId");
 
@@ -988,9 +986,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("RestoreConditions");
 
-                    b.Property<string>("RestoreStateName");
+                    b.Property<int>("RestoreState");
 
-                    b.Property<string>("StateName");
+                    b.Property<int>("State");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -1074,7 +1072,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 3, 13, 10, 25, 30, 302, DateTimeKind.Local).AddTicks(3145),
+                            InstallationDate = new DateTime(2017, 3, 13, 10, 43, 54, 169, DateTimeKind.Local).AddTicks(4722),
                             ServiceStatus = 86
                         });
                 });

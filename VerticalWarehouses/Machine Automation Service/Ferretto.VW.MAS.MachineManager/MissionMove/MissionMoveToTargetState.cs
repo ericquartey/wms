@@ -34,8 +34,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             var measure = (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell);
             this.Mission.EjectLoadUnit = false;
-            this.Mission.RestoreStateName = null;
-            this.Mission.StateName = nameof(MissionMoveToTargetState);
+            this.Mission.RestoreState = MissionState.NotDefined;
+            this.Mission.State = MissionState.ToTarget;
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.Mission.StopReason = StopRequestReason.NoReason;
             this.MissionsDataProvider.Update(this.Mission);
@@ -85,6 +85,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             this.Mission.RestoreConditions = false;
             this.MissionsDataProvider.Update(this.Mission);
+
+            bool isEject = this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
+                && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator
+                && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadUnit
+                && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation;
+            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.StateName, isEject, MessageStatus.OperationExecuting);
             return true;
         }
 

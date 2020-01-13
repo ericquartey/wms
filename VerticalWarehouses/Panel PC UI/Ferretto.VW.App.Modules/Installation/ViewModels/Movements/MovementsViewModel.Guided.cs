@@ -576,6 +576,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 this.SelectedLoadingUnit.CellId != null
                 &&
+                this.moveToCellPolicy?.IsAllowed == true
+                &&
                 !this.SensorsService.Sensors.LuPresentInMachineSide
                 &&
                 !this.SensorsService.Sensors.LuPresentInOperatorSide;
@@ -591,11 +593,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     &&
                     this.SensorsService.Sensors.LuPresentInMachineSide
                     &&
-                    this.SensorsService.Sensors.LuPresentInOperatorSide
-                    &&
-                    this.loadFromCellPolicy?.IsAllowed == false
-                    &&
-                    this.unloadToCellPolicy?.IsAllowed == false;
+                    this.SensorsService.Sensors.LuPresentInOperatorSide;
             }
 
             return canMove;
@@ -657,7 +655,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 (this.SelectedCell != null ||
                     (this.MachineStatus.ElevatorLogicalPosition != null &&
-                     this.MachineStatus.ElevatorLogicalPosition.Contains("Cella"))) // TODO: X Mirco, DA CAMBIARE!!!!!
+                     this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Cell))
                 &&
                 (this.SelectedCell == null || this.unloadToCellPolicy?.IsAllowed == true);
         }

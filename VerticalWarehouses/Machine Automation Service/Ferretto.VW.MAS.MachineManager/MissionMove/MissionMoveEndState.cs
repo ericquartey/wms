@@ -33,8 +33,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command)
         {
-            this.Mission.RestoreStateName = null;
-            this.Mission.StateName = nameof(MissionMoveEndState);
+            this.Mission.RestoreState = MissionState.NotDefined;
+            this.Mission.State = MissionState.End;
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.Mission.BayNotifications = MissionBayNotifications.None;
             this.Mission.CloseShutterBayNumber = BayNumber.None;
@@ -54,6 +54,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.LoadingUnitMovementProvider.StopOperation(stopMessageData, BayNumber.All, MessageActor.MachineManager, this.Mission.TargetBay);
                 this.Mission.RestoreConditions = false;
                 this.MissionsDataProvider.Update(this.Mission);
+
+                bool isEject = this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
+                    && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator
+                    && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadUnit
+                    && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation;
+                this.SendMoveNotification(this.Mission.TargetBay, this.Mission.StateName, isEject, MessageStatus.OperationExecuting);
             }
 
             return true;

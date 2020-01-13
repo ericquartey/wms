@@ -187,23 +187,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsCanDestinationPosition1 =>
             this.CanBaseExecute() &&
-            !this.SensorsService.IsLoadingUnitOnElevator;
+                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh;
 
         public bool IsCanDestinationPosition2 =>
             this.CanBaseExecute() &&
-            !this.SensorsService.IsLoadingUnitOnElevator;
+                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh;
 
         public bool IsCanMeasuredPosition1 =>
             this.CanBaseExecute() &&
-            !this.SensorsService.IsLoadingUnitOnElevator;
+                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh;
 
         public bool IsCanMeasuredPosition2 =>
             this.CanBaseExecute() &&
-            !this.SensorsService.IsLoadingUnitOnElevator;
+                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh;
 
         public bool IsCanStartPosition =>
             this.CanBaseExecute() &&
-            !this.SensorsService.IsLoadingUnitOnElevator;
+                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh;
 
         public bool IsExecutingProcedure
         {
@@ -612,14 +617,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanMoveToStartDestination1()
         {
             return this.CanBaseExecute() &&
-                   !this.SensorsService.IsLoadingUnitOnElevator &&
+                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh &&
                    Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) != Convert.ToInt32(this.DestinationPosition1.GetValueOrDefault(0));
         }
 
         private bool CanMoveToStartDestination2()
         {
             return this.CanBaseExecute() &&
-                   !this.SensorsService.IsLoadingUnitOnElevator &&
+                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh &&
                    Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) != Convert.ToInt32(this.DestinationPosition2.GetValueOrDefault(0));
         }
 
@@ -628,7 +635,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             var b = this.CanBaseExecute() &&
                    string.IsNullOrEmpty(this.Error) &&
                    Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) != Convert.ToInt32(this.StartPosition) &&
-                   !this.SensorsService.IsLoadingUnitOnElevator;
+                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh;
             return b;
         }
 
@@ -643,20 +651,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanToConfirm()
         {
             return this.CanBaseExecute() &&
-                   !this.SensorsService.IsLoadingUnitOnElevator &&
+                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh &&
                    this.MeasuredPosition2.HasValue;
         }
 
         private bool CanToFirstMeasured()
         {
             return this.CanBaseExecute() &&
-                   !this.SensorsService.IsLoadingUnitOnElevator;
+                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh;
         }
 
         private bool CanToLastMeasured()
         {
             return this.CanBaseExecute() &&
-                   !this.SensorsService.IsLoadingUnitOnElevator &&
+                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh &&
                    this.MeasuredPosition1.HasValue;
         }
 

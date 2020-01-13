@@ -228,7 +228,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 else
                 {
                     var ns = typeof(MissionMoveBase).Namespace;
-                    var type = Type.GetType(string.Concat(ns, ".", mission.StateName));
+                    var type = Type.GetType(string.Concat(ns, ".MissionMove", mission.StateName, "State"));
 
                     ctor = type?.GetConstructor(new[] { typeof(Mission), typeof(IServiceProvider), typeof(IEventAggregator) });
                     cacheStates[mission.StateName] = ctor;

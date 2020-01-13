@@ -44,6 +44,8 @@ namespace Ferretto.VW.App.Services
 
         private bool bayZeroChainIsVisible;
 
+        private SubscriptionToken healthProbeToken;
+
         private SubscriptionToken sensorsToken;
 
         #endregion
@@ -65,6 +67,12 @@ namespace Ferretto.VW.App.Services
 
             this.SubscribeToEvents();
         }
+
+        #endregion
+
+        #region Events
+
+        public event EventHandler<EventArgs> OnUpdateSensors;
 
         #endregion
 
@@ -130,6 +138,10 @@ namespace Ferretto.VW.App.Services
 
         public bool IsExtraVertical => this.sensors.ExtraRunElevator;
 
+        public bool IsHorizontalInconsistentBothHigh => (this.IsZeroChain && this.IsLoadingUnitOnElevator);
+
+        public bool IsHorizontalInconsistentBothLow => (!this.IsZeroChain && !this.IsLoadingUnitOnElevator);
+
         public bool IsLoadingUnitInBay
         {
             get
@@ -186,7 +198,7 @@ namespace Ferretto.VW.App.Services
 
         public bool IsOneTonMachine => this.bayManagerService.Identity.IsOneTonMachine;
 
-        public bool IsZeroChain => this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
+        public bool IsZeroChain => this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneTon : this.sensors.ZeroPawlSensor;
 
         public bool IsZeroVertical => this.sensors.ZeroVerticalSensor;
 
@@ -294,6 +306,14 @@ namespace Ferretto.VW.App.Services
             this.RaisePropertyChanged();
         }
 
+        private async void OnHealthStatusChanged(HealthStatusChangedEventArgs status)
+        {
+            if (status.HealthStatus == HealthStatus.Healthy || status.HealthStatus == HealthStatus.Degraded)
+            {
+                await this.RefreshAsync(true);
+            }
+        }
+
         private async Task OnSensorsChangedAsync(NotificationMessageUI<SensorsChangedMessageData> message)
         {
             if (message?.Data?.SensorsStates != null)
@@ -313,6 +333,8 @@ namespace Ferretto.VW.App.Services
                 {
                     this.shutterSensors.Update(message.Data.SensorsStates, (int)this.Bay.Number);
                 }
+
+                this.OnUpdateSensors?.Invoke(this, EventArgs.Empty);
             }
 
             this.RaisePropertyChanged();
@@ -346,6 +368,8 @@ namespace Ferretto.VW.App.Services
 
         private void SubscribeToEvents()
         {
+            this.healthProbeToken = this.healthProbeService.HealthStatusChanged.Subscribe(this.OnHealthStatusChanged, ThreadOption.UIThread, false);
+
             this.sensorsToken = this.sensorsToken
                 ??
                 this.eventAggregator
