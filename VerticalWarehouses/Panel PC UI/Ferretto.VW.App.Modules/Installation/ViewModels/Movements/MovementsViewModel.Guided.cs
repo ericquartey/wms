@@ -153,7 +153,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public int? InputLoadingUnitId
         {
             get => this.inputLoadingUnitId;
-            set => this.SetProperty(ref this.inputLoadingUnitId, value, this.InputLoadingUnitIdPropertyChanged);
+            set => this.SetProperty(ref this.inputLoadingUnitId, value, this.InputLoadingUnitIdPropertyChanged);    // HACK: 1-3
         }
 
         public ICommand IntermediateShutterCommand =>
@@ -431,6 +431,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.selectedLoadingUnit, value))
                 {
+                    // HACK: 1
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -697,6 +698,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 return;
             }
 
+            // HACK: 2
             this.SelectedCell = this.inputCellId is null
                 ? null
                 : this.cells.SingleOrDefault(c => c.Id == this.inputCellId);
@@ -726,13 +728,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 return;
             }
 
+            // HACK: 1
             this.SelectedLoadingUnit = this.inputLoadingUnitId == null
                 ? null
                 : this.loadingUnits.SingleOrDefault(c => c.Id == this.inputLoadingUnitId);
 
             if (this.SelectedLoadingUnit != null)
             {
-                this.InputCellId = this.SelectedLoadingUnit.CellId;
+                // Hack: 3
+                this.inputCellId = this.SelectedLoadingUnit.CellId;
             }
         }
 
