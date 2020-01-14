@@ -1015,6 +1015,20 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 position.Height = height;
 
+                var status = this.dataContext.SetupStatus.FirstOrDefault();
+                if (bayNumber == BayNumber.BayOne)
+                {
+                    status.Bay1HeightCheck = true;
+                }
+                else if (bayNumber == BayNumber.BayTwo)
+                {
+                    status.Bay2HeightCheck = true;
+                }
+                else if (bayNumber == BayNumber.BayThree)
+                {
+                    status.Bay3HeightCheck = true;
+                }
+
                 this.dataContext.SaveChanges();
 
                 return this.GetByNumber(bayNumber);

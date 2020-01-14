@@ -52,6 +52,14 @@
                                 Content="{x:Static Resources:OperatorApp.CommonDown}" />
         </StackPanel>
 
+        <controls:PpcButton Grid.Row="1"
+                            Grid.Column="2"
+                            Margin="15,0,15,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding LoadingUnitsMissionsCommand}"
+                            Content="{x:Static Resources:OperatorApp.MissionsList}" />
+
 
         <controls:PpcButton Grid.Row="2"
                             Grid.Column="1"

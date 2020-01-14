@@ -54,6 +54,8 @@
     <None Remove="Views\About\GeneralView.xaml" />
     <None Remove="Views\About\StatisticsView.xaml" />
     <None Remove="Views\ItemOperations\LoadingUnitView.xaml" />
+    <None Remove="Views\Others\LoadingUnitMissionDataGridView.xaml" />
+    <None Remove="Views\Others\LoadingUnitsMissionsView.xaml" />
   </ItemGroup>
   
   <ItemGroup>
@@ -80,6 +82,12 @@
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Views\ItemOperations\LoadingUnitView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Others\LoadingUnitMissionDataGridView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Others\LoadingUnitsMissionsView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
   </ItemGroup>

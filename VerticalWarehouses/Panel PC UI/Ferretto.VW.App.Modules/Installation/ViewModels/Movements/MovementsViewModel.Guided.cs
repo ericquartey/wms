@@ -483,7 +483,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 (this.HealthProbeService.HealthStatus == HealthStatus.Healthy ||
                  this.HealthProbeService.HealthStatus == HealthStatus.Degraded))
             {
-                Debug.WriteLine("OnGuidedRaiseCanExecuteChanged:RefreshActionPoliciesAsync");
+
+                StackTrace stackTrace = new StackTrace();
+                var method1 = stackTrace.GetFrame(1).GetMethod().Name;
+                var method2 = stackTrace.GetFrame(2).GetMethod().Name;
+                var method3 = stackTrace.GetFrame(3).GetMethod().Name;
+                Debug.WriteLine($"OnGuidedRaiseCanExecuteChanged: {method3} -> {method2} -> {method1}");
+
                 Task.Run(async () => await this.RefreshActionPoliciesAsync()).GetAwaiter().GetResult();
 
                 //this.moveToLoadingUnitHeightCommand?.RaiseCanExecuteChanged();
@@ -534,22 +540,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanLoadFromBay()
         {
-            return
-                this.CanBaseExecute()
-                &&
-                this.SelectedBayPosition() != null
-                &&
-                this.loadFromBayPolicy?.IsAllowed == true;
+            var selectedBayPosition = this.SelectedBayPosition();
+            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+                   this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay &&
+                   this.CanBaseExecute() &&
+                   this.IsPositionUpSelected == this.MachineStatus.BayPositionUpper &&
+                   selectedBayPosition != null &&
+                   selectedBayPosition.LoadingUnit != null &&
+                   this.MachineStatus.EmbarkedLoadingUnit is null;
         }
 
         private bool CanLoadFromCell()
         {
-            return
-                this.CanBaseExecute()
-                &&
-                this.SelectedCell != null
-                &&
-                this.loadFromCellPolicy?.IsAllowed == true;
+            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+                   this.CanBaseExecute() &&
+                   this.SelectedCell != null &&
+                   this.loadFromCellPolicy?.IsAllowed == true;
         }
 
         private bool CanMoveCarouselDown()
@@ -570,7 +576,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanMoveToBayPosition()
         {
-            return
+            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
                 this.CanBaseExecute()
                 &&
                 this.SelectedBayPosition() != null
@@ -581,6 +587,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanMoveToLoadingUnitHeight()
         {
             var canMove =
+                (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+
                 this.CanBaseExecute()
                 &&
                 this.SelectedLoadingUnit != null
@@ -596,6 +604,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (!canMove)
             {
                 canMove =
+                    (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+
                     this.CanBaseExecute()
                     &&
                     this.SelectedLoadingUnit != null
@@ -622,12 +632,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanSelectBayPosition()
         {
-            return this.CanBaseExecute();
+            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+                   this.CanBaseExecute();
         }
 
         private bool CanTuneBay()
         {
-            return
+            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+
                 this.CanBaseExecute()
                 &&
                 !this.IsTuningBay
@@ -637,7 +649,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanTuningChain()
         {
-            return
+            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+
                 this.CanBaseExecute()
                 &&
                 !this.IsTuningChain
@@ -651,17 +664,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanUnloadToBay()
         {
-            return
-                this.CanBaseExecute()
-                &&
-                this.SelectedBayPosition() != null
-                &&
-                this.unloadToBayPolicy?.IsAllowed == true;
+            var selectedBayPosition = this.SelectedBayPosition();
+            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+                   this.CanBaseExecute() &&
+                   this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay &&
+                   this.IsPositionUpSelected == this.MachineStatus.BayPositionUpper &&
+                   selectedBayPosition != null &&
+                   selectedBayPosition.LoadingUnit == null &&
+                   this.MachineStatus.EmbarkedLoadingUnit != null;
         }
 
         private bool CanUnloadToCell()
         {
-            return
+            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+
                 this.CanBaseExecute()
                 &&
                 (this.SelectedCell != null ||
