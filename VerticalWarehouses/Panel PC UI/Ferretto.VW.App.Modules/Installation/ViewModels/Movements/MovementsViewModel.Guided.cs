@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using DevExpress.Mvvm;
@@ -91,7 +92,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand selectBayPositionUpCommand;
 
-        private BayPosition selectedBayPosition;
+        private BayPosition selectedBayPosition1;
 
         private Cell selectedCell;
 
@@ -395,14 +396,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.SelectBayPositionUp,
                 this.CanSelectBayPosition));
 
-        public BayPosition SelectedBayPosition
+        public BayPosition SelectedBayPosition1
         {
-            get => this.selectedBayPosition;
+            get => this.selectedBayPosition1;
             private set
             {
-                if (this.SetProperty(ref this.selectedBayPosition, value))
+                if (this.SetProperty(ref this.selectedBayPosition1, value))
                 {
-                    this.moveToBayPositionCommand?.RaiseCanExecuteChanged();
+                    this.RaiseCanExecuteChanged();
+                    //this.moveToBayPositionCommand?.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -416,7 +418,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     if (this.selectedCell != null)
                     {
-                        this.LoadingUnitInCell = this.loadingUnits.SingleOrDefault(l => l.CellId == this.selectedCell.Id);
+                        this.LoadingUnitInCell = this.LoadingUnits.SingleOrDefault(l => l.CellId == this.selectedCell.Id);
                     }
 
                     this.RaiseCanExecuteChanged();
@@ -473,16 +475,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.CanInputLoadingUnitId =
                 this.CanBaseExecute()
                 &&
-                this.loadingUnits != null
+                this.LoadingUnits != null
                 &&
-                this.cells != null;
+                this.Cells != null;
 
-            if (!this.IsMoving)
+            if (!this.IsMoving &&
+                (this.HealthProbeService.HealthStatus == HealthStatus.Healthy ||
+                 this.HealthProbeService.HealthStatus == HealthStatus.Degraded))
             {
                 Debug.WriteLine("OnGuidedRaiseCanExecuteChanged:RefreshActionPoliciesAsync");
                 Task.Run(async () => await this.RefreshActionPoliciesAsync()).GetAwaiter().GetResult();
 
-                this.moveToLoadingUnitHeightCommand?.RaiseCanExecuteChanged();
+                //this.moveToLoadingUnitHeightCommand?.RaiseCanExecuteChanged();
 
                 this.tuningBayCommand?.RaiseCanExecuteChanged();
                 this.tuningChainCommand?.RaiseCanExecuteChanged();
@@ -494,14 +498,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.moveCarouselDownCommand?.RaiseCanExecuteChanged();
                 this.moveCarouselUpCommand?.RaiseCanExecuteChanged();
 
-                this.loadFromBayCommand?.RaiseCanExecuteChanged();
-                this.loadFromCellCommand?.RaiseCanExecuteChanged();
-                this.unloadToBayCommand?.RaiseCanExecuteChanged();
-                this.unloadToCellCommand?.RaiseCanExecuteChanged();
+                //this.loadFromBayCommand?.RaiseCanExecuteChanged();
+                //this.loadFromCellCommand?.RaiseCanExecuteChanged();
+                //this.unloadToBayCommand?.RaiseCanExecuteChanged();
+                //this.unloadToCellCommand?.RaiseCanExecuteChanged();
 
                 this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
                 this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
-                this.moveToBayPositionCommand?.RaiseCanExecuteChanged();
+
+                //this.moveToBayPositionCommand?.RaiseCanExecuteChanged();
             }
         }
 
@@ -532,7 +537,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return
                 this.CanBaseExecute()
                 &&
-                this.SelectedBayPosition != null
+                this.SelectedBayPosition() != null
                 &&
                 this.loadFromBayPolicy?.IsAllowed == true;
         }
@@ -565,15 +570,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanMoveToBayPosition()
         {
-            if (this.selectedBayPosition != null)
-            {
-                Task.Run(async () => this.moveToBayPositionPolicy = await this.machineElevatorWebService.CanMoveToBayPositionAsync(this.selectedBayPosition.Id)).GetAwaiter().GetResult();
-            }
-
             return
                 this.CanBaseExecute()
                 &&
-                this.SelectedBayPosition != null
+                this.SelectedBayPosition() != null
                 &&
                 this.moveToBayPositionPolicy?.IsAllowed == true;
         }
@@ -654,7 +654,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return
                 this.CanBaseExecute()
                 &&
-                this.SelectedBayPosition != null
+                this.SelectedBayPosition() != null
                 &&
                 this.unloadToBayPolicy?.IsAllowed == true;
         }
@@ -693,7 +693,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void InputCellIdPropertyChanged()
         {
-            if (this.cells is null)
+            if (this.Cells is null)
             {
                 return;
             }
@@ -701,21 +701,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
             // HACK: 2
             this.selectedCell = this.inputCellId is null
                 ? null
-                : this.cells.SingleOrDefault(c => c.Id == this.inputCellId);
+                : this.Cells.SingleOrDefault(c => c.Id == this.inputCellId);
 
             if (this.selectedCell != null)
             {
                 this.inputHeight = this.SelectedCell.Position;
-                this.InputLoadingUnitId = this.loadingUnits.SingleOrDefault(l => l.CellId == this.selectedCell.Id)?.Id;
+                this.InputLoadingUnitId = this.LoadingUnits.SingleOrDefault(l => l.CellId == this.selectedCell.Id)?.Id;
             }
 
-            if (this.SelectedLoadingUnit?.CellId is null)
+            if (this.selectedLoadingUnit?.CellId is null)
             {
                 this.loadingUnitInCell = null;
             }
             else
             {
-                this.loadingUnitInCell = this.SelectedLoadingUnit;
+                this.loadingUnitInCell = this.selectedLoadingUnit;
             }
 
             this.RaisePropertyChanged(nameof(this.InputHeight));
@@ -725,24 +725,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void InputLoadingUnitIdPropertyChanged()
         {
-            if (this.loadingUnits is null)
+            if (this.LoadingUnits is null)
             {
                 return;
             }
 
+            // seleziono il cassetto in base al valore dello spin edit
             // HACK: 1
             this.selectedLoadingUnit = this.inputLoadingUnitId == null
                 ? null
-                : this.loadingUnits.SingleOrDefault(c => c.Id == this.inputLoadingUnitId);
+                : this.LoadingUnits.SingleOrDefault(c => c.Id == this.inputLoadingUnitId);
 
             if (this.selectedLoadingUnit != null)
             {
+                // valorizzo l'id della cella del cassetto selezionato nella view dei comandi manuali
                 // Hack: 3
-                this.inputCellId = this.selectedLoadingUnit.CellId;
-                this.RaisePropertyChanged(nameof(this.InputCellId));
-            }
+                this.InputCellId = this.selectedLoadingUnit.CellId;
 
-            this.RaiseCanExecuteChanged();
+                // Uso la proprietà per scatenare action sulla proprietà
+                //this.RaisePropertyChanged(nameof(this.InputCellId));
+            }
         }
 
         private async Task IntermediateShutterAsync()
@@ -771,13 +773,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                if (this.SelectedBayPosition.LoadingUnit is null)
+                var selectedBayPosition = this.SelectedBayPosition();
+                if (selectedBayPosition.LoadingUnit is null)
                 {
-                    await this.machineElevatorWebService.LoadFromBayAsync(this.SelectedBayPosition.Id);
+                    await this.machineElevatorWebService.LoadFromBayAsync(selectedBayPosition.Id);
                 }
                 else
                 {
-                    await this.machineLoadingUnitsWebService.StartMovingLoadingUnitToBayAsync(this.SelectedBayPosition.LoadingUnit.Id, LoadingUnitLocation.Elevator);
+                    await this.machineLoadingUnitsWebService.StartMovingLoadingUnitToBayAsync(selectedBayPosition.LoadingUnit.Id, LoadingUnitLocation.Elevator);
                 }
 
                 this.IsBusyLoadingFromBay = true;
@@ -867,10 +870,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                this.InputHeight = this.SelectedBayPosition.Height;
+                this.InputHeight = this.SelectedBayPosition().Height;
 
                 await this.machineElevatorWebService.MoveToBayPositionAsync(
-                    this.SelectedBayPosition.Id,
+                    this.SelectedBayPosition().Id,
                     computeElongation: true,
                     performWeighting: this.isUseWeightControl);
 
@@ -1011,13 +1014,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private void SelectBayPositionDown()
         {
             this.IsPositionDownSelected = true;
-            this.SelectedBayPosition = this.bay.Positions.Single(p => p.Height == this.bay.Positions.Min(pos => pos.Height));
+            this.RaiseCanExecuteChanged();
         }
 
         private void SelectBayPositionUp()
         {
             this.IsPositionUpSelected = true;
-            this.SelectedBayPosition = this.bay.Positions.Single(p => p.Height == this.bay.Positions.Max(pos => pos.Height));
+            this.RaiseCanExecuteChanged();
         }
 
         private async Task TuneBayAsync()
@@ -1077,13 +1080,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
+                var selectedBayPosition = this.SelectedBayPosition();
                 if (this.MachineStatus.EmbarkedLoadingUnit is null)
                 {
-                    await this.machineElevatorWebService.UnloadToBayAsync(this.SelectedBayPosition.Id);
+                    await this.machineElevatorWebService.UnloadToBayAsync(selectedBayPosition.Id);
                 }
                 else
                 {
-                    await this.machineLoadingUnitsWebService.EjectLoadingUnitAsync(this.SelectedBayPosition.Location, this.MachineStatus.EmbarkedLoadingUnit.Id);
+                    await this.machineLoadingUnitsWebService.EjectLoadingUnitAsync(selectedBayPosition.Location, this.MachineStatus.EmbarkedLoadingUnit.Id);
                 }
 
                 this.IsBusyUnloadingToBay = true;
