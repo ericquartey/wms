@@ -124,9 +124,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.displacementUp, value);
         }
 
-        public bool HasDisplacementDownValue => this.DisplacementDown.GetValueOrDefault(0) != 0;
+        public bool HasDisplacementDownValue => this.DisplacementDown != null;
 
-        public bool HasDisplacementUpValue => this.DisplacementUp.GetValueOrDefault(0) != 0;
+        public bool HasDisplacementUpValue => this.DisplacementUp != null;
 
         public bool HasDisplacementValue => this.HasDisplacementUpValue || this.HasDisplacementDownValue;
 
@@ -193,12 +193,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public int NumberStepConfirm => (this.Bay?.IsDouble ?? false) ? 3 : 2;
 
         public ICommand SaveCommand =>
-                            this.saveCommand
+            this.saveCommand
             ??
             (this.saveCommand = new DelegateCommand(
                 async () => await this.ApplyCorrectionAsync(),
-                () => this.DisplacementUp.GetValueOrDefault(0) != 0 ||
-                      this.DisplacementDown.GetValueOrDefault(0) != 0));
+                () => this.DisplacementUp != null ||
+                      this.DisplacementDown != null));
 
         public string ShutterLabel => this.SensorsService.ShutterSensors.Open ? "Chiudi serranda" : "Apri serranda";
 
@@ -317,22 +317,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
 
                 // Up
-                if (this.DisplacementUp.GetValueOrDefault(0) != 0)
+                if (this.DisplacementUp != null)
                 {
                     BayPosition bayPositionUp = this.Bay?.Positions.OrderBy(m => m.Height).Last();
                     await this.machineBaysWebService.UpdateHeightAsync(
-                        bayPositionUp.Id,
+                        1, // Valore fisso
                         this.NewPositionUp);
 
                     this.DisplacementUp = null;
                 }
 
                 // Down
-                if (this.DisplacementDown.GetValueOrDefault(0) != 0)
+                if (this.DisplacementDown != null)
                 {
                     BayPosition bayPositionDown = this.Bay?.Positions.OrderBy(m => m.Height).First();
                     await this.machineBaysWebService.UpdateHeightAsync(
-                        bayPositionDown.Id,
+                        2, // Valore fisso
                         this.NewPositionDown);
 
                     this.DisplacementDown = null;

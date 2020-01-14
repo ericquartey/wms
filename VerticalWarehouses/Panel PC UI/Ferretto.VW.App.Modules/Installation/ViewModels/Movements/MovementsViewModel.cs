@@ -169,8 +169,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsMovementsManual => !this.isMovementsGuided;
 
+        public override bool IsWaitingForResponse
+        {
+            get => this.isWaitingForResponse;
+            protected set => this.SetProperty(ref this.isWaitingForResponse, value);
+        }
+
         public ICommand ResetCommand =>
-            this.resetCommand
+                    this.resetCommand
             ??
             (this.resetCommand = new DelegateCommand(
                async () => await this.ResetCommandAsync(),
@@ -301,12 +307,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected override async Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
         {
-            await base.OnMachineStatusChangedAsync(e);
-
             if ((e.MachineStatus?.IsMoving ?? false) && this.IsExecutingProcedure)
             {
                 this.IsExecutingProcedure = false;
-                this.RaiseCanExecuteChanged();
             }
 
             // Se ho un cassetto a bordo devo movumentare quello con un vai a baia, scarica, o vai a cella. Quindi posso indicare nelle spinedit il suo valore
@@ -316,6 +319,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.InputLoadingUnitId = this.MachineStatus.EmbarkedLoadingUnit.Id;
             }
+
+            await base.OnMachineStatusChangedAsync(e);
         }
 
         protected override void RaiseCanExecuteChanged()

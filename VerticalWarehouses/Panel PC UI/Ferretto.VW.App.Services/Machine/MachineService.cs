@@ -473,6 +473,15 @@ namespace Ferretto.VW.App.Services
                     this.StopMoving();
                 }
             }
+
+            // Dal cambiamento di qualche sensore, viene scatenato l'evento per l'aggiornamento dei dati
+            if (e == EventArgs.Empty &&
+                !this.MachineStatus.IsMoving)
+            {
+                var ms = (MachineStatus)this.MachineStatus.Clone();
+                ms.FlagForNotification = !ms.FlagForNotification;
+                this.MachineStatus = ms;
+            }
         }
 
         private void OnDataChanged<TData>(NotificationMessageUI<TData> message)
