@@ -159,6 +159,12 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return false;
         }
 
+        private static bool EvaluateMissionPolicies(FsmType moveRequestedMission, CommandMessage command, IServiceProvider serviceProvider)
+        {
+            var returnValue = true;
+            return returnValue;
+        }
+
         /// <summary>
         /// Handles logic for deciding if a specific mission type can be created or not. Mostly based on related finite state machine type, instances and statuses.
         /// </summary>
@@ -173,7 +179,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
             if (returnValue)
             {
-                returnValue = this.EvaluateMissionPolicies(requestedMission, command, serviceScope.ServiceProvider);
+                returnValue = EvaluateMissionPolicies(requestedMission, command, serviceScope.ServiceProvider);
             }
             //else
             //{
@@ -181,12 +187,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             //    errorProvider.RecordNew(MachineErrorCode.AnotherMissionOfThisTypeIsActive);
             //}
 
-            return returnValue;
-        }
-
-        private bool EvaluateMissionPolicies(FsmType moveRequestedMission, CommandMessage command, IServiceProvider serviceProvider)
-        {
-            var returnValue = true;
             return returnValue;
         }
 

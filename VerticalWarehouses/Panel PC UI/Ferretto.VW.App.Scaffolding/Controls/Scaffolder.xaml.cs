@@ -1,6 +1,5 @@
 ﻿using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
 using Ferretto.VW.App.Scaffolding.Services;
-using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,60 +23,131 @@ namespace Ferretto.VW.App.Scaffolding.Controls
     /// </summary>
     public partial class Scaffolder : UserControl
     {
+        #region Fields
+
+        public static readonly DependencyProperty BreadcrumbProperty
+            = DependencyProperty.Register("Breadcrumb", typeof(ObservableCollection<Models.ScaffoldedStructure>), typeof(Scaffolder), new PropertyMetadata(new ObservableCollection<Models.ScaffoldedStructure>()));
+
+        public static readonly DependencyProperty EditingEntityProperty
+            = DependencyProperty.Register("EditingEntity", typeof(Models.ScaffoldedEntity), typeof(Scaffolder));
+
+        public static readonly DependencyProperty EntitiesProperty
+            = DependencyProperty.Register("Entities", typeof(ObservableCollection<Models.ScaffoldedEntity>), typeof(Scaffolder));
+
+        public static readonly DependencyProperty FocusStructureProperty
+            = DependencyProperty.Register("FocusStructure", typeof(Models.ScaffoldedStructure), typeof(Scaffolder), new PropertyMetadata(OnFocusStructurePropertyChanged));
+
+        public static readonly DependencyProperty ModelProperty
+            = DependencyProperty.Register("Model", typeof(object), typeof(Scaffolder), new PropertyMetadata(OnModelPropertyChanged));
+
+        public static readonly DependencyProperty SearchTextProperty
+            = DependencyProperty.Register("SearchText", typeof(string), typeof(Scaffolder), new PropertyMetadata(OnSearchTextPropertyChanged));
+
+        public static readonly DependencyProperty StructuresProperty
+            = DependencyProperty.Register("Structures", typeof(ObservableCollection<Models.ScaffoldedStructure>), typeof(Scaffolder));
+
+        private const string CATEGORY_SEPARATOR = "/";
+
+        private readonly List<ScaffoldedEntityDataTableItem> _elasticDataTable = new List<ScaffoldedEntityDataTableItem>();
+
+        private Models.ScaffoldedStructure _model = null;
+
+        private Models.ScaffoldedStructure _navigationRoot = null;
+
+        #endregion
+
+        #region Constructors
+
         public Scaffolder()
         {
             this.InitializeComponent();
         }
 
-        #region nested types
+        #endregion
 
-        class ScaffoldedEntityDataTableItem
+        #region Events
+
+        public event EventHandler Commit;
+
+        #endregion
+
+        #region Properties
+
+        public ObservableCollection<Models.ScaffoldedStructure> Breadcrumb
         {
-            public int Id { get; set; }
+            get => (ObservableCollection<Models.ScaffoldedStructure>)this.GetValue(BreadcrumbProperty);
+            set => this.SetValue(BreadcrumbProperty, value);
+        }
 
-            /// <summary>
-            /// Gets or sets the concatenated category names up to the actual <see cref="Entity"/>.
-            /// </summary>
-            public string FullCategory { get; set; }
+        public Models.ScaffoldedEntity EditingEntity
+        {
+            get => (Models.ScaffoldedEntity)this.GetValue(EditingEntityProperty);
+            set => this.SetValue(EditingEntityProperty, value);
+        }
 
-            /// <summary>
-            /// Gets or sets all the tags set up to the actual <see cref="Entity"/>.
-            /// </summary>
-            public IEnumerable<string> Tags { get; set; }
+        public ObservableCollection<Models.ScaffoldedEntity> Entities
+        {
+            get => (ObservableCollection<Models.ScaffoldedEntity>)this.GetValue(EntitiesProperty);
+            set => this.SetValue(EntitiesProperty, value);
+        }
 
-            /// <summary>
-            /// Gets or sets the pristine value of the <see cref="Entity"/>.
-            /// </summary>
-            public object OriginalValue { get; set; }
+        public Models.ScaffoldedStructure FocusStructure
+        {
+            get => (Models.ScaffoldedStructure)this.GetValue(FocusStructureProperty);
+            set => this.SetValue(FocusStructureProperty, value);
+        }
 
-            public Models.ScaffoldedEntity Entity { get; set; }
+        public object Model
+        {
+            get => this.GetValue(ModelProperty);
+            set => this.SetValue(ModelProperty, value);
+        }
+
+        public string SearchText
+        {
+            get => (string)this.GetValue(SearchTextProperty);
+            set => this.SetValue(SearchTextProperty, value);
+        }
+
+        public ObservableCollection<Models.ScaffoldedStructure> Structures
+        {
+            get => (ObservableCollection<Models.ScaffoldedStructure>)this.GetValue(StructuresProperty);
+            set => this.SetValue(StructuresProperty, value);
         }
 
         #endregion
 
-        #region fields
+        #region Methods
 
-        private readonly List<ScaffoldedEntityDataTableItem> _elasticDataTable = new List<ScaffoldedEntityDataTableItem>();
-
-        private Models.ScaffoldedStructure _model = null;
-        private Models.ScaffoldedStructure _navigationRoot = null;
-
-        #endregion
-
-        #region private
-
-        void RebuildElasticDataTable()
+        public void SelectCategory(object sender, EventArgs e)
         {
-            this._elasticDataTable.Clear();
-            if (this._model != null)
+            Models.ScaffoldedStructure context = ((FrameworkElement)sender).DataContext as Models.ScaffoldedStructure;
+            this.SetValue(FocusStructureProperty, context);
+        }
+
+        private static void OnFocusStructurePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+            => ((Scaffolder)d).OnFocusStructureChanged(e);
+
+        private static void OnModelPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+            => ((Scaffolder)d).OnModelChanged(e);
+
+        private static void OnSearchTextPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+            => ((Scaffolder)d).OnSearchTextChanged(e);
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            var breadcrumb = this.Breadcrumb;
+            if (breadcrumb?.Count >= 2)
             {
-                this.BuildUpElasticDataTable(this._model);
+                this.FocusStructure = breadcrumb[breadcrumb.Count - 1];
+            }
+            else
+            {
+                this.FocusStructure = this._navigationRoot;
             }
         }
 
-        const string CATEGORY_SEPARATOR = "/";
-
-        void BuildUpElasticDataTable(Models.ScaffoldedStructure branch, string category = default)
+        private void BuildUpElasticDataTable(Models.ScaffoldedStructure branch, string category = default)
         {
             foreach (var entity in branch.Entities)
             {
@@ -101,93 +171,50 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             }
         }
 
-        #endregion
-
-        #region dependency properties
-
-        public static readonly DependencyProperty ModelProperty
-            = DependencyProperty.Register("Model", typeof(object), typeof(Scaffolder), new PropertyMetadata(OnModelPropertyChanged));
-
-        private static void OnModelPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-            => ((Scaffolder)d).OnModelChanged(e);
-
-        private void OnModelChanged(DependencyPropertyChangedEventArgs e)
+        private void Edit_Click(object sender, RoutedEventArgs e)
         {
-            object model = e.NewValue;
-            this._model = model?.Scaffold();
-
-            this.Breadcrumb.Clear();
-            this.RebuildElasticDataTable();
-
-            if (model == null)
-            {
-                this.FocusStructure = this._navigationRoot = null;
-            }
-            else
-            {
-                var structureUnion = new[]{
-                    new Models.ScaffoldedStructure(Ferretto.VW.App.Scaffolding.Resources.UI.All,
-                    this._elasticDataTable.OrderBy(i => i.Entity.Id).Select(i => i.Entity),
-                    Array.Empty<Models.ScaffoldedStructure>())
-                }.Union(this._model.Children);
-
-                this.FocusStructure = this._navigationRoot = new Models.ScaffoldedStructure(
-                    Ferretto.VW.App.Scaffolding.Resources.UI.Root,
-                    Array.Empty<Models.ScaffoldedEntity>(),
-                    structureUnion);
-            }
+            this.TryEdit(((Button)sender).DataContext as Models.ScaffoldedEntity);
         }
 
-        public object Model
+        private void Editor_Commit(object sender, CommitEventArgs e)
         {
-            get => this.GetValue(ModelProperty);
-            set => this.SetValue(ModelProperty, value);
+            var entity = this.EditingEntity;
+            if (entity != null)
+            {
+                object value = entity.Property.GetValue(entity.Instance);
+                if (value != e.Value)
+                {
+                    entity.Property.SetValue(entity.Instance, Convert.ChangeType(e.Value, entity.Property.PropertyType, System.Globalization.CultureInfo.CurrentCulture));
+                    // trigger property change
+                    CollectionViewSource.GetDefaultView(this.Entities).Refresh();
+                    // broadcast commit
+                    this.OnCommit(EventArgs.Empty);
+                }
+            }
+
+            // reset the editing entity
+            this.EditingEntity = null;
         }
 
-        public static readonly DependencyProperty SearchTextProperty
-            = DependencyProperty.Register("SearchText", typeof(string), typeof(Scaffolder), new PropertyMetadata(OnSearchTextPropertyChanged));
-
-        private static void OnSearchTextPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-            => ((Scaffolder)d).OnSearchTextChanged(e);
-
-        private void OnSearchTextChanged(DependencyPropertyChangedEventArgs e)
+        private void ListView_Selected(object sender, RoutedEventArgs e)
         {
-            string searchText = (string)e.NewValue;
-            if (!string.IsNullOrEmpty(searchText))
-            {
-                // prepare
-                var query = this._elasticDataTable
-                    .Where(i =>
-                    {
-                        if (int.TryParse(searchText, out int id))
-                        {
-                            return i.Id == id;
-                        }
-                        return i.Tags.Any(t => t.ToLowerInvariant().Contains(searchText.ToLowerInvariant()));
-                    })
-                    .Select(i => new Models.ScaffoldedEntity(i.Entity.Property, i.Entity.Instance, i.Entity.Metadata, i.Id, i.FullCategory));
+            this.TryEdit(((ListView)sender).SelectedItem as Models.ScaffoldedEntity);
+        }
 
-                // exec
-                this.Breadcrumb.Clear();
-                this.FocusStructure = new Models.ScaffoldedStructure($"\"{searchText}\"", query, Array.Empty<Models.ScaffoldedStructure>());
-            }
-            else
+        private void ListViewItem_Click(object sender, RoutedEventArgs e)
+        {
+            // e.Handled = true;
+            var listViewItem = sender as ListViewItem;
+            if (listViewItem?.IsSelected == true)
             {
-                this.FocusStructure = this._navigationRoot;
+                this.TryEdit(listViewItem.DataContext as Models.ScaffoldedEntity);
             }
         }
 
-        public string SearchText
+        private void OnCommit(EventArgs e)
         {
-            get => (string)this.GetValue(SearchTextProperty);
-            set => this.SetValue(SearchTextProperty, value);
+            this.Commit?.Invoke(this, e);
         }
-
-        public static readonly DependencyProperty FocusStructureProperty
-            = DependencyProperty.Register("FocusStructure", typeof(Models.ScaffoldedStructure), typeof(Scaffolder), new PropertyMetadata(OnFocusStructurePropertyChanged));
-
-        private static void OnFocusStructurePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-            => ((Scaffolder)d).OnFocusStructureChanged(e);
 
         private void OnFocusStructureChanged(DependencyPropertyChangedEventArgs e)
         {
@@ -217,56 +244,67 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             }
         }
 
-        public Models.ScaffoldedStructure FocusStructure
+        private void OnModelChanged(DependencyPropertyChangedEventArgs e)
         {
-            get => (Models.ScaffoldedStructure)this.GetValue(FocusStructureProperty);
-            set => this.SetValue(FocusStructureProperty, value);
+            object model = e.NewValue;
+            this._model = model?.Scaffold();
+
+            this.Breadcrumb.Clear();
+            this.RebuildElasticDataTable();
+
+            if (model == null)
+            {
+                this.FocusStructure = this._navigationRoot = null;
+            }
+            else
+            {
+                var structureUnion = new[]{
+                    new Models.ScaffoldedStructure(Ferretto.VW.App.Scaffolding.Resources.UI.All,
+                    this._elasticDataTable.OrderBy(i => i.Entity.Id).Select(i => i.Entity),
+                    Array.Empty<Models.ScaffoldedStructure>())
+                }.Union(this._model.Children);
+
+                this.FocusStructure = this._navigationRoot = new Models.ScaffoldedStructure(
+                    Ferretto.VW.App.Scaffolding.Resources.UI.Root,
+                    Array.Empty<Models.ScaffoldedEntity>(),
+                    structureUnion);
+            }
         }
 
-        public static readonly DependencyProperty EntitiesProperty
-            = DependencyProperty.Register("Entities", typeof(ObservableCollection<Models.ScaffoldedEntity>), typeof(Scaffolder));
-
-        public ObservableCollection<Models.ScaffoldedEntity> Entities
+        private void OnSearchTextChanged(DependencyPropertyChangedEventArgs e)
         {
-            get => (ObservableCollection<Models.ScaffoldedEntity>)this.GetValue(EntitiesProperty);
-            set => this.SetValue(EntitiesProperty, value);
+            string searchText = (string)e.NewValue;
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                // prepare
+                var query = this._elasticDataTable
+                    .Where(i =>
+                    {
+                        if (int.TryParse(searchText, out int id))
+                        {
+                            return i.Id == id;
+                        }
+                        return i.Tags.Any(t => t.ToLowerInvariant().Contains(searchText.ToLowerInvariant()));
+                    })
+                    .Select(i => new Models.ScaffoldedEntity(i.Entity.Property, i.Entity.Instance, i.Entity.Metadata, i.Id, i.FullCategory));
+
+                // exec
+                this.Breadcrumb.Clear();
+                this.FocusStructure = new Models.ScaffoldedStructure($"\"{searchText}\"", query, Array.Empty<Models.ScaffoldedStructure>());
+            }
+            else
+            {
+                this.FocusStructure = this._navigationRoot;
+            }
         }
 
-        public static readonly DependencyProperty StructuresProperty
-            = DependencyProperty.Register("Structures", typeof(ObservableCollection<Models.ScaffoldedStructure>), typeof(Scaffolder));
-
-        public ObservableCollection<Models.ScaffoldedStructure> Structures
+        private void RebuildElasticDataTable()
         {
-            get => (ObservableCollection<Models.ScaffoldedStructure>)this.GetValue(StructuresProperty);
-            set => this.SetValue(StructuresProperty, value);
-        }
-
-        public static readonly DependencyProperty BreadcrumbProperty
-            = DependencyProperty.Register("Breadcrumb", typeof(ObservableCollection<Models.ScaffoldedStructure>), typeof(Scaffolder), new PropertyMetadata(new ObservableCollection<Models.ScaffoldedStructure>()));
-
-        public ObservableCollection<Models.ScaffoldedStructure> Breadcrumb
-        {
-            get => (ObservableCollection<Models.ScaffoldedStructure>)this.GetValue(BreadcrumbProperty);
-            set => this.SetValue(BreadcrumbProperty, value);
-        }
-
-        public static readonly DependencyProperty EditingEntityProperty
-            = DependencyProperty.Register("EditingEntity", typeof(Models.ScaffoldedEntity), typeof(Scaffolder));
-
-        public Models.ScaffoldedEntity EditingEntity
-        {
-            get => (Models.ScaffoldedEntity)this.GetValue(EditingEntityProperty);
-            set => this.SetValue(EditingEntityProperty, value);
-        }
-
-        #endregion
-
-        #region handlers + events
-
-        public void SelectCategory(object sender, EventArgs e)
-        {
-            Models.ScaffoldedStructure context = ((FrameworkElement)sender).DataContext as Models.ScaffoldedStructure;
-            this.SetValue(FocusStructureProperty, context);
+            this._elasticDataTable.Clear();
+            if (this._model != null)
+            {
+                this.BuildUpElasticDataTable(this._model);
+            }
         }
 
         private void Reset_Click(object sender, RoutedEventArgs e)
@@ -289,64 +327,34 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             }
         }
 
-        private void Edit_Click(object sender, RoutedEventArgs e)
+        #endregion
+
+        #region Classes
+
+        private class ScaffoldedEntityDataTableItem
         {
-            this.TryEdit(((Button)sender).DataContext as Models.ScaffoldedEntity);
-        }
+            #region Properties
 
-        private void ListView_Selected(object sender, RoutedEventArgs e)
-        {
-            this.TryEdit(((ListView)sender).SelectedItem as Models.ScaffoldedEntity);
-        }
+            public Models.ScaffoldedEntity Entity { get; set; }
 
-        private void ListViewItem_Click(object sender, RoutedEventArgs e)
-        {
-            // e.Handled = true;
-            var listViewItem = sender as ListViewItem;
-            if (listViewItem?.IsSelected == true)
-            {
-                this.TryEdit(listViewItem.DataContext as Models.ScaffoldedEntity);
-            }
-        }
+            /// <summary>
+            /// Gets or sets the concatenated category names up to the actual <see cref="Entity"/>.
+            /// </summary>
+            public string FullCategory { get; set; }
 
-        private void Back_Click(object sender, RoutedEventArgs e)
-        {
-            var breadcrumb = this.Breadcrumb;
-            if (breadcrumb?.Count >= 2)
-            {
-                this.FocusStructure = breadcrumb[breadcrumb.Count - 1];
-            }
-            else
-            {
-                this.FocusStructure = this._navigationRoot;
-            }
-        }
+            public int Id { get; set; }
 
-        private void Editor_Commit(object sender, CommitEventArgs e)
-        {
-            var entity = this.EditingEntity;
-            if (entity != null)
-            {
-                object value = entity.Property.GetValue(entity.Instance);
-                if (value != e.Value)
-                {
-                    entity.Property.SetValue(entity.Instance, Convert.ChangeType(e.Value, entity.Property.PropertyType, System.Globalization.CultureInfo.CurrentCulture));
-                    // trigger property change
-                    CollectionViewSource.GetDefaultView(this.Entities).Refresh();
-                    // broadcast commit
-                    this.OnCommit(EventArgs.Empty);
-                }
-            }
+            /// <summary>
+            /// Gets or sets the pristine value of the <see cref="Entity"/>.
+            /// </summary>
+            public object OriginalValue { get; set; }
 
-            // reset the editing entity
-            this.EditingEntity = null;
-        }
+            /// <summary>
+            /// Gets or sets all the tags set up to the actual <see cref="Entity"/>.
+            /// </summary>
+            public IEnumerable<string> Tags { get; set; }
 
-        public event EventHandler Commit;
-
-        private void OnCommit(EventArgs e)
-        {
-            this.Commit?.Invoke(this, e);
+            #endregion
         }
 
         #endregion

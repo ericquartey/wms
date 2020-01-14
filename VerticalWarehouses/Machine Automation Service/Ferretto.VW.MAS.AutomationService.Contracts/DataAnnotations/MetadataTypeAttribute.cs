@@ -6,15 +6,22 @@ namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
     /// Resolves the idiosincrasy between netcoreapp2.2 and MetadataTypeAttribute.
     /// </summary>
     /// <remarks>Workaround.</remarks>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple =false)]
-    public class MetadataTypeAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+    public sealed class MetadataTypeAttribute : Attribute
     {
+        #region Constructors
+
         public MetadataTypeAttribute(Type type)
         {
             this.MetadataClassType = type;
         }
 
-        public Type MetadataClassType { get; }
-    }
+        #endregion
 
+        #region Properties
+
+        public Type MetadataClassType { get; }
+
+        #endregion
+    }
 }
