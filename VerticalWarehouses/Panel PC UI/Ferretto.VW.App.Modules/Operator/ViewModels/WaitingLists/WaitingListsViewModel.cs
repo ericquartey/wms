@@ -303,18 +303,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
         }
 
-        private void RefreshLists(ObservableCollection<ItemList> newLists, int? lastItemListId)
-        {
-            this.lists.Clear();
-            newLists.ForEach(l => this.lists.Add(new ItemListExecution(l, this.machineId)));
-
-            this.RaisePropertyChanged(nameof(this.Lists));
-
-            this.SetCurrentIndex(lastItemListId);
-
-            this.SelectLoadingUnit();
-        }
-
         private async Task RefreshListsAsync()
         {
             while (this.IsVisible)

@@ -14,13 +14,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
     {
         #region Fields
 
+        private const int PollIntervalMilliseconds = 5000;
+
         private readonly IMachineMissionsWebService machineMissionsWebService;
+
+        private readonly IList<Mission> missions = new List<Mission>();
 
         private int currentMissionIndex;
 
         private DelegateCommand downCommand;
-
-        private IEnumerable<Mission> missions;
 
         private Mission selectedMission;
 
@@ -35,8 +37,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             : base(PresentationMode.Operator)
         {
             this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
-
-            this.missions = new List<Mission>();
         }
 
         #endregion
@@ -46,7 +46,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public ICommand DownCommand =>
             this.downCommand
             ??
-            (this.downCommand = new DelegateCommand(() => this.ChangeSelectedListAsync(false), this.CanDown));
+            (this.downCommand = new DelegateCommand(() => this.ChangeSelectedList(false), this.CanDown));
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -61,29 +61,27 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public ICommand UpCommand =>
             this.upCommand
             ??
-            (this.upCommand = new DelegateCommand(() => this.ChangeSelectedListAsync(true), this.CanUp));
+            (this.upCommand = new DelegateCommand(() => this.ChangeSelectedList(true), this.CanUp));
 
         #endregion
 
         #region Methods
 
-        public void ChangeSelectedListAsync(bool isUp)
+        public void ChangeSelectedList(bool isUp)
         {
-            if (this.missions == null)
+            if (this.missions is null)
             {
                 return;
             }
 
             if (this.missions.Any())
             {
-                this.currentMissionIndex = isUp ? --this.currentMissionIndex : ++this.currentMissionIndex;
-                if (this.currentMissionIndex < 0 || this.currentMissionIndex >= this.missions.Count())
-                {
-                    this.currentMissionIndex = (this.currentMissionIndex < 0) ? 0 : this.missions.Count() - 1;
-                }
+                var newIndex = isUp ? this.currentMissionIndex - 1 : this.currentMissionIndex + 1;
 
-                this.SelectListRow();
+                this.currentMissionIndex = Math.Max(0, Math.Min(newIndex, this.missions.Count - 1));
             }
+
+            this.SelectLoadingUnit();
         }
 
         public override async Task OnAppearedAsync()
@@ -93,7 +91,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.IsBackNavigationAllowed = true;
 
             await this.LoadListRowsAsync();
-            this.SelectListRow();
+
+            await this.RefreshMissionsAsync();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -107,7 +106,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         private bool CanDown()
         {
             return
-              this.currentMissionIndex < this.missions.Count() - 1;
+              this.currentMissionIndex < this.missions.Count - 1;
         }
 
         private bool CanUp()
@@ -120,9 +119,17 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             try
             {
-                this.missions = await this.machineMissionsWebService.GetAllAsync();
+                var lastMissionId = this.selectedMission?.Id;
+                var newMissions = await this.machineMissionsWebService.GetAllAsync();
+
+                this.missions.Clear();
+                newMissions.ForEach(l => this.missions.Add(l));
+
                 this.RaisePropertyChanged(nameof(this.Missions));
-                this.SelectedMission = this.missions.FirstOrDefault();
+
+                this.SetCurrentIndex(lastMissionId);
+
+                this.SelectLoadingUnit();
             }
             catch (Exception ex)
             {
@@ -130,10 +137,41 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
         }
 
-        private void SelectListRow()
+        private async Task RefreshMissionsAsync()
         {
-            this.SelectedMission = this.missions.ElementAt(this.currentMissionIndex);
+            while (this.IsVisible)
+            {
+                await Task.Delay(PollIntervalMilliseconds);
+                await this.LoadListRowsAsync();
+            }
+        }
+
+        private void SelectLoadingUnit()
+        {
+            if (this.missions.Any())
+            {
+                this.SelectedMission = this.missions.ElementAt(this.currentMissionIndex);
+            }
+            else
+            {
+                this.SelectedMission = null;
+            }
+
             this.RaiseCanExecuteChanged();
+        }
+
+        private void SetCurrentIndex(int? missionId)
+        {
+            if (missionId.HasValue
+                &&
+                this.missions.FirstOrDefault(l => l.Id == missionId.Value) is Mission missionFound)
+            {
+                this.currentMissionIndex = this.missions.IndexOf(missionFound);
+            }
+            else
+            {
+                this.currentMissionIndex = 0;
+            }
         }
 
         #endregion
