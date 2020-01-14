@@ -534,7 +534,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public MessageStatus ShutterStatus(NotificationMessage message)
         {
-            if (message.Type == MessageType.ShutterPositioning)
+            if (message.Type == MessageType.ShutterPositioning
+                || message.Type == MessageType.Homing
+                )
             {
                 return message.Status;
             }
