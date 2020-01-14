@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
+using DevExpress.Xpf.Data.Native;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -120,7 +122,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 ??
                 this.eventAggregator.GetEvent<NotificationEventUI<MoveLoadingUnitMessageData>>()
                     .Subscribe(
-                        this.OnLoadingUnitMoved,
+                        async m => await this.OnLoadingUnitMovedAsync(m),
                         ThreadOption.UIThread,
                         false);
 
@@ -174,14 +176,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
             if (this.missionOperationsService.CurrentMissionOperation is null)
             {
                 var bay = await this.bayManager.GetBayAsync();
-                if (bay.CurrentMission?.LoadUnitId != null)
+                var loadingUnit = bay.Positions.OrderByDescending(p => p.Height).Select(p => p.LoadingUnit).FirstOrDefault();
+                if (loadingUnit != null)
                 {
                     this.NavigationService.Appear(
                            nameof(Utils.Modules.Operator),
                            Utils.Modules.Operator.ItemOperations.LOADING_UNIT,
-                           bay.CurrentMission.LoadUnitId,
-                           trackCurrentView: true);
-                    this.lastActiveMissionId = bay.CurrentMission.Id;
+                           loadingUnit.Id,
+                           trackCurrentView: false);
+                    this.lastActiveMissionId = null;
                     this.isPerformingOperation = true;
                 }
             }
@@ -243,18 +246,21 @@ namespace Ferretto.VW.App.Operator.ViewModels
             await this.CheckForNewOperationAsync();
         }
 
-        private void OnLoadingUnitMoved(NotificationMessageUI<MoveLoadingUnitMessageData> message)
+        private async Task OnLoadingUnitMovedAsync(NotificationMessageUI<MoveLoadingUnitMessageData> message)
         {
             if (message.Data.MissionType is CommonUtils.Messages.Enumerations.MissionType.OUT
                 &&
-                message.Status is CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd)
+                message.Status is CommonUtils.Messages.Enumerations.MessageStatus.OperationWaitResume)
             {
+                var bay = await this.bayManager.GetBayAsync();
+
                 this.NavigationService.Appear(
-                       nameof(Utils.Modules.Operator),
-                       Utils.Modules.Operator.ItemOperations.LOADING_UNIT,
-                       message.Data.LoadingUnitId,
-                       trackCurrentView: true);
-                this.lastActiveMissionId = this.missionOperationsService.CurrentMission.Id;
+                    nameof(Utils.Modules.Operator),
+                    Utils.Modules.Operator.ItemOperations.LOADING_UNIT,
+                    message.Data.LoadingUnitId,
+                    trackCurrentView: true);
+
+                this.lastActiveMissionId = bay.CurrentMission?.Id;
                 this.isPerformingOperation = true;
             }
         }

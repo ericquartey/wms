@@ -199,14 +199,21 @@ namespace Ferretto.VW.MAS.MissionManager
             else if (mission.Status is MissionStatus.New)
             {
                 var cellsProvider = serviceProvider.GetRequiredService<ICellsProvider>();
-                var sourceCell = cellsProvider.GetByLoadingUnitId(mission.LoadUnitId);
-                if (sourceCell is null)
+                if (mission.MissionType is MissionType.OUT)
                 {
-                    this.Logger.LogDebug($"Bay {bayNumber}: loading unit  {mission.LoadUnitId} cannot be moved to bay because it is not located in a cell.");
+                    var sourceCell = cellsProvider.GetByLoadingUnitId(mission.LoadUnitId);
+                    if (sourceCell is null)
+                    {
+                        this.Logger.LogDebug($"Bay {bayNumber}: loading unit  {mission.LoadUnitId} cannot be moved to bay because it is not located in a cell.");
+                    }
+                    else
+                    {
+                        moveLoadingUnitProvider.ActivateMove(mission.Id, mission.MissionType, mission.LoadUnitId, bayNumber, MessageActor.MissionManager);
+                    }
                 }
-                else
+                else if (mission.MissionType is MissionType.IN)
                 {
-                    moveLoadingUnitProvider.ActivateMove(mission.Id, mission.MissionType, mission.LoadUnitId, bayNumber, MessageActor.MissionManager);
+                    moveLoadingUnitProvider.ActivateMoveToCell(mission.Id, mission.MissionType, mission.LoadUnitId, bayNumber, MessageActor.MissionManager);
                 }
             }
         }
@@ -406,51 +413,49 @@ namespace Ferretto.VW.MAS.MissionManager
         private async Task OnLoadingUnitMovedAsync(NotificationMessage message, IServiceProvider serviceProvider)
         {
             Contract.Requires(message != null);
+            Contract.Requires(message.Data is MoveLoadingUnitMessageData);
+
+            var luData = message.Data as MoveLoadingUnitMessageData;
+
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
 
-            if (message.Data is MoveLoadingUnitMessageData luData)
+            try
             {
-                try
+                var mission = missionsDataProvider.GetById(luData.MissionId.Value);
+                if (!luData.DestinationCellId.HasValue)
+                // loading unit to bay mission
                 {
-                    var mission = missionsDataProvider.GetById(luData.MissionId.Value);
-                    if (!luData.DestinationCellId.HasValue)
-                    // loading unit to bay mission
+                    var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                    if (mission.WmsId.HasValue)
                     {
-                        var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-                        if (mission.WmsId.HasValue)
+                        var wmsMission = await this.missionsWmsWebService.GetByIdAsync(mission.WmsId.Value);
+                        var newOperations = wmsMission.Operations.Where(o => o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Completed && o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Error);
+                        if (newOperations.Any())
                         {
-                            var wmsMission = await this.missionsWmsWebService.GetByIdAsync(mission.WmsId.Value);
-                            var newOperations = wmsMission.Operations.Where(o => o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Completed && o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Error);
-                            if (newOperations.Any())
-                            {
-                                var newOperation = newOperations.OrderBy(o => o.Priority).First();
-                                this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", mission.TargetBay, mission.WmsId.Value, newOperation.Id);
+                            var newOperation = newOperations.OrderBy(o => o.Priority).First();
+                            this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", mission.TargetBay, mission.WmsId.Value, newOperation.Id);
 
-                                await this.missionOperationsWmsWebService.ExecuteAsync(newOperation.Id);
+                            await this.missionOperationsWmsWebService.ExecuteAsync(newOperation.Id);
 
-                                baysDataProvider.AssignWmsMission(mission.TargetBay, mission, newOperation.Id);
-                                this.NotifyAssignedMissionOperationChanged(mission.TargetBay, wmsMission.Id, newOperation.Id);
-                            }
-                        }
-                        else
-                        {
-                            missionsDataProvider.Complete(mission.Id);
+                            baysDataProvider.AssignWmsMission(mission.TargetBay, mission, newOperation.Id);
+                            this.NotifyAssignedMissionOperationChanged(mission.TargetBay, wmsMission.Id, newOperation.Id);
                         }
                     }
                     else
-                    // any other mission type
                     {
-                        missionsDataProvider.Complete(mission.Id);
+                        baysDataProvider.AssignWmsMission(mission.TargetBay, mission, null);
+                        this.NotifyAssignedMissionOperationChanged(mission.TargetBay, null, null);
                     }
                 }
-                catch (EntityNotFoundException ex)
+                else
+                // any other mission type
                 {
-                    this.Logger.LogWarning($"mission not found: {luData.MissionId.Value}");
+                    missionsDataProvider.Complete(mission.Id);
                 }
-                catch (Exception ex)
-                {
-                    this.Logger.LogError($"Failed to process mission: {ex.Message}");
-                }
+            }
+            catch (Exception ex)
+            {
+                this.Logger.LogError($"Failed to process mission: {ex.Message}");
             }
 
             await this.InvokeSchedulerAsync();

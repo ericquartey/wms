@@ -6938,14 +6938,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task RecallAsync(int id)
+        public System.Threading.Tasks.Task RemoveFromBayAsync(int id)
         {
-            return RecallAsync(id, System.Threading.CancellationToken.None);
+            return RemoveFromBayAsync(id, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task RecallAsync(int id, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task RemoveFromBayAsync(int id, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
