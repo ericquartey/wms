@@ -1018,4 +1018,124 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="InventoryOperationCancelled" xml:space="preserve">
     <value>L'operazione di inventario è stata annullata.</value>
   </data>
+  <data name="Missions" xml:space="preserve">
+    <value>Missioni</value>
+  </data>
+  <data name="MissionsList" xml:space="preserve">
+    <value>Elenco missioni</value>
+  </data>
+  <data name="CreationDate" xml:space="preserve">
+    <value>Creazione</value>
+  </data>
+  <data name="MissionState" xml:space="preserve">
+    <value>Stato</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Baia</value>
+  </data>
+  <data name="BayNumberAll" xml:space="preserve">
+    <value>Tutti</value>
+  </data>
+  <data name="BayNumberElevatorBay" xml:space="preserve">
+    <value>Baia elevatore</value>
+  </data>
+  <data name="BayNumberBayThree" xml:space="preserve">
+    <value>Baia tre</value>
+  </data>
+  <data name="BayNumberBayTwo" xml:space="preserve">
+    <value>Baia due</value>
+  </data>
+  <data name="BlockLevelBlocked" xml:space="preserve">
+    <value>c</value>
+  </data>
+  <data name="BayNumberBayNone" xml:space="preserve">
+    <value>Nessuna baia</value>
+  </data>
+  <data name="StatusExecuting" xml:space="preserve">
+    <value>In esecuzione</value>
+  </data>
+  <data name="StatusNew" xml:space="preserve">
+    <value>Nuova</value>
+  </data>
+  <data name="StatusWaiting" xml:space="preserve">
+    <value>In attesa</value>
+  </data>
+  <data name="StatusCompleted" xml:space="preserve">
+    <value>Completata</value>
+  </data>
+  <data name="StatusAborted" xml:space="preserve">
+    <value>Abortita</value>
+  </data>
+  <data name="StatusCompleting" xml:space="preserve">
+    <value>In completamento</value>
+  </data>
+  <data name="BayNumberBayOne" xml:space="preserve">
+    <value>Baia uno</value>
+  </data>
+  <data name="MissionType" xml:space="preserve">
+    <value>Tipo missione</value>
+  </data>
+  <data name="MissionStatus" xml:space="preserve">
+    <value>Condizione</value>
+  </data>
+  <data name="BayTarget" xml:space="preserve">
+    <value>Baia</value>
+  </data>
+  <data name="MissionStateNew" xml:space="preserve">
+    <value>Nuovo</value>
+  </data>
+  <data name="MissionStateNotDefined" xml:space="preserve">
+    <value>Non definito</value>
+  </data>
+  <data name="MissionStateStart" xml:space="preserve">
+    <value>Inizio</value>
+  </data>
+  <data name="MissionStateToTarget" xml:space="preserve">
+    <value>A destinazione</value>
+  </data>
+  <data name="MissionStateWaitPick" xml:space="preserve">
+    <value>Attesa azione</value>
+  </data>
+  <data name="MissionStateCloseShutter" xml:space="preserve">
+    <value>Chiusura serranda</value>
+  </data>
+  <data name="MissionStateError" xml:space="preserve">
+    <value>Errore</value>
+  </data>
+  <data name="MissionStateEnd" xml:space="preserve">
+    <value>Fine</value>
+  </data>
+  <data name="MissionStateBayChain" xml:space="preserve">
+    <value>Taratura catena</value>
+  </data>
+  <data name="MissionStateDepositUnit" xml:space="preserve">
+    <value>Deposito unità</value>
+  </data>
+  <data name="MissionStateLoadElevator" xml:space="preserve">
+    <value>Carico elevatore</value>
+  </data>
+  <data name="MissionTypeManual" xml:space="preserve">
+    <value>Manuale</value>
+  </data>
+  <data name="MissionTypeIn" xml:space="preserve">
+    <value>Entrata</value>
+  </data>
+  <data name="MissionTypeTest" xml:space="preserve">
+    <value>Test</value>
+  </data>
+  <data name="MissionTypeCompact" xml:space="preserve">
+    <value>Compattazione</value>
+  </data>
+  <data name="MissionTypeWms" xml:space="preserve">
+    <value>Wms</value>
+  </data>
+  <data name="MissionTypeOut" xml:space="preserve">
+    <value>Uscita</value>
+  </data>
+  <data name="MissionTypeNoType" xml:space="preserve">
+    <value>Nessun tipo</value>
+  </data>
+  <data name="MisionStateNotDefined" xml:space="preserve">
+    <value>Non definito</value>
+  </data>
 </root>
