@@ -73,6 +73,8 @@ namespace Ferretto.VW.App.Services
 
         private bool hasShutter;
 
+        private SubscriptionToken healthStatusChangedToken;
+
         private bool isDisposed;
 
         private bool isHoming;
@@ -227,15 +229,27 @@ namespace Ferretto.VW.App.Services
 
         public async Task OnInitializationServiceAsync()
         {
-            try
+            this.healthStatusChangedToken = this.eventAggregator
+                .GetEvent<PubSubEvent<HealthStatusChangedEventArgs>>()
+                .Subscribe(
+                    async (e) => await this.OnHealthStatusChangedAsync(e),
+                    ThreadOption.UIThread,
+                    false);
+
+            if (this.healthProbeService.HealthStatus is HealthStatus.Healthy
+                ||
+                this.healthProbeService.HealthStatus is HealthStatus.Degraded)
             {
-                await this.InitializationHoming();
-                await this.InitializationBay();
-                await this.InitializationLoadUnits();
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
+                try
+                {
+                    await this.InitializationHoming();
+                    await this.InitializationBay();
+                    await this.InitializationLoadUnits();
+                }
+                catch (Exception ex)
+                {
+                    // do nothing
+                }
             }
         }
 
@@ -758,6 +772,27 @@ namespace Ferretto.VW.App.Services
         private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
         {
             this.UpdateMachineStatusByElevatorPosition(e, null);
+        }
+
+        private async Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
+        {
+            try
+            {
+                await this.InitializationHoming();
+                if (this.bays is null)
+                {
+                    await this.InitializationBay();
+                }
+                else
+                {
+                    await this.UpdateBay();
+                }
+                await this.InitializationLoadUnits();
+            }
+            catch (Exception ex)
+            {
+                // do nothing
+            }
         }
 
         private void ShowNotification(string message, NotificationSeverity severity = NotificationSeverity.Info)
