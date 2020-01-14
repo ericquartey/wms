@@ -473,5 +473,104 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
                 return ResourceManager.GetString("Orientation.Vertical", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Movimenti assistiti shutter.
+        /// </summary>
+        public static string Shutter_AssistedMovements {
+            get {
+                return ResourceManager.GetString("Shutter_AssistedMovements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Movimenti manuali shutter.
+        /// </summary>
+        public static string Shutter_ManualMovements {
+            get {
+                return ResourceManager.GetString("Shutter_ManualMovements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tipo shutter.
+        /// </summary>
+        public static string Shutter_Type {
+            get {
+                return ResourceManager.GetString("Shutter_Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feed rate parametri manuali shutter.
+        /// </summary>
+        public static string ShutterManualParameters_FeedRate {
+            get {
+                return ResourceManager.GetString("ShutterManualParameters_FeedRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Durata chiusura shutter.
+        /// </summary>
+        public static string ShutterManualParameters_HighSpeedDurationClose {
+            get {
+                return ResourceManager.GetString("ShutterManualParameters_HighSpeedDurationClose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Durata apertura shutter.
+        /// </summary>
+        public static string ShutterManualParameters_HighSpeedDurationOpen {
+            get {
+                return ResourceManager.GetString("ShutterManualParameters_HighSpeedDurationOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Velocità massima parametri manuali shutter.
+        /// </summary>
+        public static string ShutterManualParameters_MaxSpeed {
+            get {
+                return ResourceManager.GetString("ShutterManualParameters_MaxSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Velocità minima parametri manuali shutter.
+        /// </summary>
+        public static string ShutterManualParameters_MinSpeed {
+            get {
+                return ResourceManager.GetString("ShutterManualParameters_MinSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Non specificato.
+        /// </summary>
+        public static string ShutterType_NotSpecified {
+            get {
+                return ResourceManager.GetString("ShutterType.NotSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tre sensori.
+        /// </summary>
+        public static string ShutterType_ThreeSensors {
+            get {
+                return ResourceManager.GetString("ShutterType.ThreeSensors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Due sensori.
+        /// </summary>
+        public static string ShutterType_TwoSensors {
+            get {
+                return ResourceManager.GetString("ShutterType.TwoSensors", resourceCulture);
+            }
+        }
     }
 }
