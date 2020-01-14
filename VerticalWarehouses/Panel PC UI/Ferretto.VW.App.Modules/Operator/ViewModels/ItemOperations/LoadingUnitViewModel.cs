@@ -20,7 +20,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
-        private MAS.AutomationService.Contracts.Bay bay;
+        private Bay bay;
 
         private IEnumerable<TrayControlCompartment> compartments;
 
@@ -97,9 +97,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                await this.machineLoadingUnitsWebService.RecallAsync(this.LoadingUnit.Id);
+                await this.machineLoadingUnitsWebService.RemoveFromBayAsync(this.LoadingUnit.Id);
+
+                this.NavigationService.GoBack();
             }
-            catch (MAS.AutomationService.Contracts.MasWebApiException ex)
+            catch (MasWebApiException ex)
             {
                 this.ShowNotification(ex);
             }

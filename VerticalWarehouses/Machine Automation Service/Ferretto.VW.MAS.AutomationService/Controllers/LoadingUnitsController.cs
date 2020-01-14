@@ -201,7 +201,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult Recall(int id)
+        public IActionResult RemoveFromBayAsync(int id)
         {
             this.missionSchedulingProvider.QueueRecallMission(id, this.BayNumber);
 
