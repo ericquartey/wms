@@ -75,6 +75,8 @@
 
             public const string IMMEDIATELOADINGUNITCALL = "ImmediateLoadingUnitCallViewModel";
 
+            public const string LOADINGUNITSMISSIONS = "LoadingUnitsMissionsViewModel";
+
             public const string NAVIGATION = "OthersNavigationViewModel";
 
             #endregion

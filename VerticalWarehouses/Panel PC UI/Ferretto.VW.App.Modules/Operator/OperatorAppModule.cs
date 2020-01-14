@@ -73,6 +73,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
             containerRegistry.RegisterForNavigation<OthersNavigationView>();
             containerRegistry.RegisterForNavigation<ImmediateLoadingUnitCallView>();
+            containerRegistry.RegisterForNavigation<LoadingUnitsMissionsView>();
             containerRegistry.RegisterForNavigation<DrawerCompactingView>();
             containerRegistry.RegisterForNavigation<DrawerCompactingDetailView>();
             containerRegistry.RegisterForNavigation<StatisticsNavigationView>();
