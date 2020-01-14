@@ -190,7 +190,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     if (missionsDataProvider.CanCreateMission(messageData.LoadingUnitId.Value, command.RequestingBay))
                     {
                         // if there is a new or waiting mission we have to take her place
-                        var waitMission = missionsDataProvider.GetAllExecutingMissions(true).FirstOrDefault(m =>
+                        var waitMission = missionsDataProvider.GetAllExecutingMissions().FirstOrDefault(m =>
                             m.LoadUnitId == messageData.LoadingUnitId.Value
                             && (m.Status == MissionStatus.Waiting || m.Status == MissionStatus.New)
                             );

@@ -215,7 +215,7 @@ namespace Ferretto.VW.MAS.MissionManager
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
 
-            var missions = missionsDataProvider.GetAllExecutingMissions(true).ToList();
+            var missions = missionsDataProvider.GetAllExecutingMissions().ToList();
             foreach (var mission in missions)
             {
                 if (mission.RestoreState == MissionState.NotDefined)
