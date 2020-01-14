@@ -20,7 +20,7 @@
         <converters:DisplayNameConverter x:Key="DisplayNameConverter" />
         <converters:ScaffoldTypeConverter x:Key="ScaffoldTypeConverter" />
         <converters:IsReadOnlyConverter x:Key="IsReadOnlyConverter" />
-        <converters:IsEditableConverter x:Key="IsEnabledConverter" />
+        <converters:IsEditableConverter x:Key="IsEditableConverter" />
         <converters:TruthyToVisibilityConverter x:Key="TruthyToVisibilityConverter" />
         <converters:ValidationRuleConverter x:Key="ValidationRuleConverter" />
         <converters:DefaultValueConverter x:Key="DefaultValueConverter" />
@@ -95,7 +95,7 @@
                         </Setter>
 
                         <!-- this one's specific for this context! -->
-                        <Setter Property="IsEnabled" Value="{Binding Converter={StaticResource IsReadOnlyConverter}}" />
+                        <Setter Property="IsEnabled" Value="{Binding Converter={StaticResource IsEditableConverter}}" />
 
                         <Style.Triggers>
                             <MultiTrigger>
@@ -190,7 +190,7 @@
         </Grid.Visibility>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="{Binding Path=Structures.Count, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}, Converter={StaticResource TruthyToVisibilityConverter}}" />
+            <RowDefinition Height="{Binding Path=Structures.Count, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}, Converter={StaticResource TruthyToVisibilityConverter}, ConverterParameter=0.5}" />
             <RowDefinition Height="{Binding Path=Entities.Count, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}, Converter={StaticResource TruthyToVisibilityConverter}}" />
         </Grid.RowDefinitions>
 

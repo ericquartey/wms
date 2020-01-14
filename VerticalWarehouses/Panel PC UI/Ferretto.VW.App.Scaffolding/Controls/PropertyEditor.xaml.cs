@@ -111,7 +111,7 @@ namespace Ferretto.VW.App.Scaffolding.Controls
 
         private void OnValueChanged(DependencyPropertyChangedEventArgs e)
         {
-            this.IsDirty = e.NewValue != this.OriginalValue;
+            this.IsDirty = e.NewValue?.Equals(this.OriginalValue) != true;
 
             // validation
             var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
@@ -155,7 +155,7 @@ namespace Ferretto.VW.App.Scaffolding.Controls
 
         public static readonly DependencyProperty ValidationMessageProperty
             = DependencyProperty.Register("ValidationMessage", typeof(object), typeof(PropertyEditor));
-        
+
         public object ValidationMessage
         {
             get => this.GetValue(ValidationMessageProperty);

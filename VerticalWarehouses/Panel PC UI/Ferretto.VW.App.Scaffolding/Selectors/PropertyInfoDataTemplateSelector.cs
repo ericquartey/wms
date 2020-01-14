@@ -26,6 +26,15 @@ namespace Ferretto.VW.App.Scaffolding.Selectors
                     // TODO: custom stuff
                 }
 
+                // try with (enum)datatype
+                if (string.IsNullOrEmpty(resourceKey))
+                {
+                    if (entity.Property.PropertyType.IsEnum || metadata.OfType<EnumDataTypeAttribute>().Any())
+                    {
+                        resourceKey = "EnumDataTemplate";
+                    }
+                }
+
                 // try with datatype
                 if (string.IsNullOrEmpty(resourceKey))
                 {

@@ -143,7 +143,7 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             {
                 var structureUnion = new[]{
                     new Models.ScaffoldedStructure(Ferretto.VW.App.Scaffolding.Resources.UI.All,
-                    this._elasticDataTable.OrderBy(i => i.Entity.Id).Select(i => i.Entity),
+                    this._elasticDataTable.OrderBy(i => i.Entity.Id).Select(i => new Models.ScaffoldedEntity( i.Entity.Property, i.Entity.Instance, i.Entity.Metadata, i.Id, i.FullCategory)),
                     Array.Empty<Models.ScaffoldedStructure>())
                 }.Union(this._model.Children);
 
@@ -357,7 +357,7 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             if (entity != null)
             {
                 object value = entity.Property.GetValue(entity.Instance);
-                if (value != e.Value)
+                if (value?.Equals(e.Value) != true)
                 {
                     entity.Property.SetValue(entity.Instance, Convert.ChangeType(e.Value, entity.Property.PropertyType, System.Globalization.CultureInfo.CurrentCulture));
                     // trigger property change
@@ -419,14 +419,14 @@ namespace Ferretto.VW.App.Scaffolding.Controls
         [Bindable(true)]
         public object CommandParameter
         {
-            get =>this.GetValue(CommandParameterProperty);
-            set =>this.SetValue(CommandParameterProperty, value);
+            get => this.GetValue(CommandParameterProperty);
+            set => this.SetValue(CommandParameterProperty, value);
         }
 
         [Bindable(true)]
         public IInputElement CommandTarget
         {
-            get =>(IInputElement)this.GetValue(CommandTargetProperty);
+            get => (IInputElement)this.GetValue(CommandTargetProperty);
             set => this.SetValue(CommandTargetProperty, value);
         }
 

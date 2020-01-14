@@ -3,6 +3,7 @@ using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -21,6 +22,12 @@ namespace Ferretto.VW.App.Scaffolding.Services
         class MetadataServiceExecutor
         {
             private int idSeed = 0;
+            private readonly CultureInfo _culture;
+
+            public MetadataServiceExecutor(CultureInfo culture)
+            {
+                this._culture = culture;
+            }
 
             private static MemberInfo[] GetMemberInfos(Type type)
             {
@@ -41,7 +48,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                 return prop.Name;
             }
 
-            private static string GetCategoryName(MemberInfo member, object instance)
+            private static string GetCategoryName(MemberInfo member, object instance, CultureInfo culture)
             {
                 if (member.TryGetCustomAttribute<CategoryAttribute>(out var category))
                 {
@@ -58,7 +65,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                             object subValue = member.MemberType == MemberTypes.Field ? ((FieldInfo)member).GetValue(instance) : ((PropertyInfo)member).GetValue(instance);
                             if (subValue != null)
                             {
-                                return GetUnderlyingType(subPropInfo.GetValue(subValue));
+                                return GetUnderlyingType(subPropInfo.GetValue(subValue), culture);
                             }
                             else
                             {
@@ -66,10 +73,9 @@ namespace Ferretto.VW.App.Scaffolding.Services
                             }
                         }
                         // Ok, does then the owning type contain a 'PropertyReference'-named property?
-                        return GetUnderlyingType(instance.GetType().GetProperty(p.PropertyReference).GetValue(instance));
+                        return GetUnderlyingType(instance.GetType().GetProperty(p.PropertyReference).GetValue(instance), culture);
                     }).ToArray();
 
-                    IFormatProvider culture = Thread.CurrentThread.CurrentUICulture;
                     return string.Format(culture, category.Category(), categoryProperties);
                 }
                 return GetDisplayName(member);
@@ -78,7 +84,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
             /// <summary>
             /// Overload method for ARRAYS.
             /// </summary>
-            private static string GetCategoryName(Type itemtype, string format, object item, params CategoryParameterAttribute[] propertyReferences)
+            private static string GetCategoryName(Type itemtype, string format, object item, CultureInfo culture, params CategoryParameterAttribute[] propertyReferences)
             {
                 if (!(propertyReferences?.Length > 0))
                 {
@@ -101,18 +107,17 @@ namespace Ferretto.VW.App.Scaffolding.Services
                             {
                                 throw new ScaffoldingException($"{p.ValueStringifierType} does not implement {typeof(IValueStringifier)}.");
                             }
-                            return stringifier.Stringify(itemValue);
+                            return stringifier.Stringify(itemValue, culture);
                         }
                         catch
                         {
                             throw new ScaffoldingException($"Cannot create an instance of {p.ValueStringifierType}. No public empty constructor found.");
                         }
                     }
-                    return GetUnderlyingType(itemValue);
+                    return GetUnderlyingType(itemValue, culture);
 
                 }).ToArray();
 
-                IFormatProvider culture = System.Globalization.CultureInfo.CurrentCulture;
                 return string.Format(culture, format, categoryProperties);
             }
 
@@ -122,12 +127,12 @@ namespace Ferretto.VW.App.Scaffolding.Services
                 return coreType == typeof(string) || coreType.IsValueType || coreType.IsSerializable;
             }
 
-            private static object GetUnderlyingType(object obj)
+            private static object GetUnderlyingType(object obj, CultureInfo culture)
             {
                 if (obj is Enum @enum)
                 {
                     Type baseType = Enum.GetUnderlyingType(@enum.GetType());
-                    return System.Convert.ChangeType(obj, baseType, System.Globalization.CultureInfo.CurrentCulture);
+                    return System.Convert.ChangeType(obj, baseType, culture);
                 }
                 return obj;
             }
@@ -200,7 +205,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                                     continue;
                                 }
 
-                                string categoryName = GetCategoryName(elementType, format, item, categoryParameters.ToArray());
+                                string categoryName = GetCategoryName(elementType, format, item, this._culture, categoryParameters.ToArray());
                                 var newBranch = target.Children.FirstOrDefault(b => b.Category == categoryName);
                                 if (newBranch != null)
                                 {
@@ -224,7 +229,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                         // find or create category branch
                         if (hasCategory)
                         {
-                            string categoryName = GetCategoryName(prop, instance);
+                            string categoryName = GetCategoryName(prop, instance, this._culture);
                             var tget = target.Children.FirstOrDefault(c => c.Category == categoryName);
                             if (tget == null)
                             {
@@ -296,7 +301,10 @@ namespace Ferretto.VW.App.Scaffolding.Services
         }
 
         public static Models.ScaffoldedStructure Scaffold(this object instance)
-        => new MetadataServiceExecutor().ScaffoldTypeInternal(instance?.GetType() ?? throw new ArgumentNullException(nameof(instance)), instance, new ScaffoldedStructureInternal());
+            => instance.Scaffold(CultureInfo.CurrentCulture);
+
+        public static Models.ScaffoldedStructure Scaffold(this object instance, CultureInfo culture)
+        => new MetadataServiceExecutor(culture).ScaffoldTypeInternal(instance?.GetType() ?? throw new ArgumentNullException(nameof(instance)), instance, new ScaffoldedStructureInternal());
 
         #endregion
     }
