@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -11,6 +12,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
+using Microsoft.AspNetCore.Http;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -64,6 +66,8 @@ namespace Ferretto.VW.App.Services
         private IEnumerable<Cell> cells;
 
         private SubscriptionToken elevatorPositionChangedToken;
+
+        private bool executedInitialization;
 
         private SubscriptionToken fsmExceptionToken;
 
@@ -251,13 +255,21 @@ namespace Ferretto.VW.App.Services
                     // do nothing
                 }
             }
+            this.executedInitialization = true;
         }
 
         public async Task OnUpdateServiceAsync()
         {
-            await this.InitializationHoming();
-            await this.UpdateBay();
-            await this.InitializationLoadUnits();
+            if (!this.executedInitialization)
+            {
+                await this.OnInitializationServiceAsync();
+            }
+            else
+            {
+                await this.InitializationHoming();
+                await this.UpdateBay();
+                await this.InitializationLoadUnits();
+            }
         }
 
         public void ShowNotification(Exception exception)
@@ -279,7 +291,19 @@ namespace Ferretto.VW.App.Services
             this.machineStatus = new MachineStatus();
             this.loadingUnits = new List<LoadingUnit>();
 
-            Task.Run(async () => await this.OnInitializationServiceAsync()).GetAwaiter().GetResult();
+            Task.Run(async () =>
+            {
+                try
+                {
+                    await this.OnInitializationServiceAsync();
+                }
+                catch (HttpRequestException)
+                {
+                }
+                catch (Exception)
+                {
+                }
+            }).GetAwaiter().GetResult();
 
             this.SubscribeToEvents();
         }
@@ -905,9 +929,6 @@ namespace Ferretto.VW.App.Services
 
         private async Task UpdateBay()
         {
-            // Devo aggiornare i dati delle posizioni della baia
-            this.Bay = await this.bayManagerService.GetBayAsync();
-
             var ms = (MachineStatus)this.MachineStatus.Clone();
 
             ms = await this.GetElevatorAsync(ms);
