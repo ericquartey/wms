@@ -351,4 +351,7 @@
   <data name="CellLogicallyOccupied" xml:space="preserve">
     <value>Update database failed. One or more destination cells are logically occupied</value>
   </data>
+  <data name="ConditionsNotMetForHoming" xml:space="preserve">
+    <value>Homing conditions not met.</value>
+  </data>
 </root>

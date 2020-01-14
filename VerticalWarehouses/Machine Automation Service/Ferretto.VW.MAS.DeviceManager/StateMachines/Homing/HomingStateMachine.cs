@@ -213,7 +213,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     {
                         var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
 
-                        errorsProvider.RecordNew(DataModels.MachineErrorCode.ConditionsNotMetForPositioning, this.machineData.RequestingBay);
+                        errorsProvider.RecordNew(DataModels.MachineErrorCode.ConditionsNotMetForHoming, this.machineData.RequestingBay);
                     }
 
                     this.Logger.LogError($"Conditions not verified for homing: {errorText}");
@@ -259,6 +259,29 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 {
                     ok = false;
                     errorText = "Find Zero not possible with full elevator";
+                }
+                else if (this.machineData.RequestedAxisToCalibrate == Axis.Vertical
+                    || this.machineData.RequestedAxisToCalibrate == Axis.HorizontalAndVertical
+                    )
+                {
+                    using (var scope = this.ServiceScopeFactory.CreateScope())
+                    {
+                        var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+                        var bays = baysDataProvider.GetAll();
+                        foreach (var bay in bays)
+                        {
+                            if (bay.Shutter != null)
+                            {
+                                var shutterPosition = this.machineData.MachineSensorStatus.GetShutterPosition(BayNumber.BayOne);
+                                if (shutterPosition == ShutterPosition.Intermediate || shutterPosition == ShutterPosition.Opened)
+                                {
+                                    ok = false;
+                                    errorText = "Homing not possible with open shutter";
+                                    break;
+                                }
+                            }
+                        }
+                    }
                 }
             }
             else
