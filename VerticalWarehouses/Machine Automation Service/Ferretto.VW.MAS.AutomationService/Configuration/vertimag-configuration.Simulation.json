@@ -1696,7 +1696,7 @@
       "Step": 0.5
     },
     "BeltBurnishingTest": {
-      "RequiredCycles": 200
+      "RequiredCycles": 20
     },
     "BeltBurnishing": {
       "CycleQuantity": 5
