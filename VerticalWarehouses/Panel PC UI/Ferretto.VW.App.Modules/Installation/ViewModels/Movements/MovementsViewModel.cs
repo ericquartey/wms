@@ -230,6 +230,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.isManualMovementCompleted = false;
 
+                this.IsElevatorInBay = this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay;
+                this.IsElevatorInCell = this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Cell;
+
                 this.GoToMovementsExecuteCommand(this.isMovementsGuided);
 
                 this.InputLoadingUnitIdPropertyChanged();
