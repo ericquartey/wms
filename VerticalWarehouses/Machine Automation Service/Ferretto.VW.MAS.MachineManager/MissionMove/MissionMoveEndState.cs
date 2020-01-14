@@ -96,6 +96,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     )
                 {
                     this.Mission.BayNotifications = MissionBayNotifications.None;
+                    this.Mission.Status = MissionStatus.Aborted;
                     this.MissionsDataProvider.Update(this.Mission);
                     this.SendNotification();
                 }
@@ -125,6 +126,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     case BayNumber.BayThree:
                         stopped |= MissionBayNotifications.BayThree;
                         break;
+
+                    case BayNumber.ElevatorBay:
+                        stopped |= MissionBayNotifications.ElevatorBay;
+                        break;
                 }
             }
             return (stopped == this.Mission.BayNotifications);
@@ -138,7 +143,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation;
 
             var notificationText = $"Load Unit {this.Mission.LoadUnitId} end movement to bay {this.Mission.LoadUnitDestination}";
-            this.SendMoveNotification(this.Mission.TargetBay, notificationText, isEject, StopRequestReasonConverter.GetMessageStatusFromReason(this.Mission.StopReason));
+            this.SendMoveNotification(this.Mission.TargetBay, notificationText, isEject, MessageStatus.OperationEnd);
         }
 
         private bool UpdateStopList(BayNumber bay)
@@ -158,6 +163,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 case BayNumber.BayThree:
                     this.Mission.BayNotifications |= MissionBayNotifications.BayThree;
+                    update = true;
+                    break;
+
+                case BayNumber.ElevatorBay:
+                    this.Mission.BayNotifications |= MissionBayNotifications.ElevatorBay;
                     update = true;
                     break;
             }

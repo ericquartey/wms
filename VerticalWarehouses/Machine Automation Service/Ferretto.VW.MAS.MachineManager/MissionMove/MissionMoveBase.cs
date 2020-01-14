@@ -89,7 +89,16 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         if (this.Mission.LoadUnitId > 0)
                         {
-                            this.CellsProvider.SetLoadingUnit(destinationCellId.Value, this.Mission.LoadUnitId);
+                            try
+                            {
+                                this.CellsProvider.SetLoadingUnit(destinationCellId.Value, this.Mission.LoadUnitId);
+                            }
+                            catch (Exception ex)
+                            {
+                                this.Logger.LogError($"SetLoadingUnit: Load Unit {this.Mission.LoadUnitId}; error {ex.Message}");
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.CellLogicallyOccupied, this.Mission.TargetBay);
+                                throw new StateMachineException(ErrorDescriptions.CellLogicallyOccupied, this.Mission.TargetBay, MessageActor.MachineManager);
+                            }
                         }
                     }
                     else
@@ -155,7 +164,16 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     var sourceCellId = this.Mission.LoadUnitCellSourceId;
                     if (sourceCellId.HasValue)
                     {
-                        this.CellsProvider.SetLoadingUnit(sourceCellId.Value, null);
+                        try
+                        {
+                            this.CellsProvider.SetLoadingUnit(sourceCellId.Value, null);
+                        }
+                        catch (Exception ex)
+                        {
+                            this.Logger.LogError($"SetLoadingUnit: Load Unit {this.Mission.LoadUnitId}; error {ex.Message}");
+                            this.ErrorsProvider.RecordNew(MachineErrorCode.CellLogicallyOccupied, this.Mission.TargetBay);
+                            throw new StateMachineException(ErrorDescriptions.CellLogicallyOccupied, this.Mission.TargetBay, MessageActor.MachineManager);
+                        }
                     }
                     else
                     {

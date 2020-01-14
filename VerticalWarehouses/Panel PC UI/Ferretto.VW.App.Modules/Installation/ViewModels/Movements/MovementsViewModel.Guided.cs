@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -140,7 +141,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public int? InputCellId
         {
             get => this.inputCellId;
-            set => this.SetProperty(ref this.inputCellId, value, this.InputCellIdPropertyChanged);
+            set => this.SetProperty(ref this.inputCellId, value, this.InputCellIdPropertyChanged); // HACK: 2
         }
 
         public double? InputHeight
@@ -152,7 +153,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public int? InputLoadingUnitId
         {
             get => this.inputLoadingUnitId;
-            set => this.SetProperty(ref this.inputLoadingUnitId, value, this.InputLoadingUnitIdPropertyChanged);
+            set => this.SetProperty(ref this.inputLoadingUnitId, value, this.InputLoadingUnitIdPropertyChanged);    // HACK: 1-3
         }
 
         public ICommand IntermediateShutterCommand =>
@@ -169,8 +170,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isBusyLoadingFromBay, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsMoving));
-                    this.RaiseCanExecuteChanged();
+                    //this.RaisePropertyChanged(nameof(this.IsMoving));
+                    //this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -182,8 +183,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isBusyLoadingFromCell, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsMoving));
-                    this.RaiseCanExecuteChanged();
+                    //this.RaisePropertyChanged(nameof(this.IsMoving));
+                    //this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -195,8 +196,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isBusyUnloadingToBay, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsMoving));
-                    this.RaiseCanExecuteChanged();
+                    //this.RaisePropertyChanged(nameof(this.IsMoving));
+                    //this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -208,8 +209,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isBusyUnloadingToCell, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsMoving));
-                    this.RaiseCanExecuteChanged();
+                    //this.RaisePropertyChanged(nameof(this.IsMoving));
+                    //this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -221,8 +222,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isElevatorMovingToBay, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsMoving));
-                    this.RaiseCanExecuteChanged();
+                    //this.RaisePropertyChanged(nameof(this.IsMoving));
+                    //this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -234,8 +235,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isElevatorMovingToCell, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsMoving));
-                    this.RaiseCanExecuteChanged();
+                    //this.RaisePropertyChanged(nameof(this.IsMoving));
+                    //this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -247,8 +248,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isElevatorMovingToHeight, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsMoving));
-                    this.RaiseCanExecuteChanged();
+                    //this.RaisePropertyChanged(nameof(this.IsMoving));
+                    //this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -260,8 +261,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isElevatorMovingToLoadingUnit, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsMoving));
-                    this.RaiseCanExecuteChanged();
+                    //this.RaisePropertyChanged(nameof(this.IsMoving));
+                    //this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -293,7 +294,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsShutterMoving
         {
             get => this.isShutterMoving;
-            private set => this.SetProperty(ref this.isShutterMoving, value, this.RaiseCanExecuteChanged);
+            private set => this.SetProperty(ref this.isShutterMoving, value);
         }
 
         public bool IsTuningBay
@@ -303,8 +304,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isTuningBay, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsMoving));
-                    this.RaiseCanExecuteChanged();
+                    //this.RaisePropertyChanged(nameof(this.IsMoving));
+                    //this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -316,8 +317,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isTuningChain, value))
                 {
-                    this.RaisePropertyChanged(nameof(this.IsMoving));
-                    this.RaiseCanExecuteChanged();
+                    //this.RaisePropertyChanged(nameof(this.IsMoving));
+                    //this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -364,7 +365,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.moveToBayPositionCommand = new DelegateCommand(
                 async () => await this.MoveToBayPositionAsync(),
-                this.CanMoveToBayPosition));
+                () => this.CanMoveToBayPosition()));
 
         public ICommand MoveToLoadingUnitHeightCommand =>
            this.moveToLoadingUnitHeightCommand
@@ -401,7 +402,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.selectedBayPosition, value))
                 {
-                    this.RaiseCanExecuteChanged();
+                    this.moveToBayPositionCommand?.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -430,6 +431,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.selectedLoadingUnit, value))
                 {
+                    // HACK: 1
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -475,28 +477,32 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 this.cells != null;
 
-            this.RefreshActionPoliciesAsync().ConfigureAwait(false);
+            if (!this.IsMoving)
+            {
+                Debug.WriteLine("OnGuidedRaiseCanExecuteChanged:RefreshActionPoliciesAsync");
+                Task.Run(async () => await this.RefreshActionPoliciesAsync()).GetAwaiter().GetResult();
 
-            this.moveToLoadingUnitHeightCommand?.RaiseCanExecuteChanged();
+                this.moveToLoadingUnitHeightCommand?.RaiseCanExecuteChanged();
 
-            this.tuningBayCommand?.RaiseCanExecuteChanged();
-            this.tuningChainCommand?.RaiseCanExecuteChanged();
+                this.tuningBayCommand?.RaiseCanExecuteChanged();
+                this.tuningChainCommand?.RaiseCanExecuteChanged();
 
-            this.openShutterCommand?.RaiseCanExecuteChanged();
-            this.intermediateShutterCommand?.RaiseCanExecuteChanged();
-            this.closedShutterCommand?.RaiseCanExecuteChanged();
+                this.openShutterCommand?.RaiseCanExecuteChanged();
+                this.intermediateShutterCommand?.RaiseCanExecuteChanged();
+                this.closedShutterCommand?.RaiseCanExecuteChanged();
 
-            this.moveCarouselDownCommand?.RaiseCanExecuteChanged();
-            this.moveCarouselUpCommand?.RaiseCanExecuteChanged();
+                this.moveCarouselDownCommand?.RaiseCanExecuteChanged();
+                this.moveCarouselUpCommand?.RaiseCanExecuteChanged();
 
-            this.loadFromBayCommand?.RaiseCanExecuteChanged();
-            this.loadFromCellCommand?.RaiseCanExecuteChanged();
-            this.unloadToBayCommand?.RaiseCanExecuteChanged();
-            this.unloadToCellCommand?.RaiseCanExecuteChanged();
+                this.loadFromBayCommand?.RaiseCanExecuteChanged();
+                this.loadFromCellCommand?.RaiseCanExecuteChanged();
+                this.unloadToBayCommand?.RaiseCanExecuteChanged();
+                this.unloadToCellCommand?.RaiseCanExecuteChanged();
 
-            this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
-            this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
-            this.moveToBayPositionCommand?.RaiseCanExecuteChanged();
+                this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
+                this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
+                this.moveToBayPositionCommand?.RaiseCanExecuteChanged();
+            }
         }
 
         private bool CanCloseShutter()
@@ -559,6 +565,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanMoveToBayPosition()
         {
+            if (this.selectedBayPosition != null)
+            {
+                Task.Run(async () => this.moveToBayPositionPolicy = await this.machineElevatorWebService.CanMoveToBayPositionAsync(this.selectedBayPosition.Id)).GetAwaiter().GetResult();
+            }
+
             return
                 this.CanBaseExecute()
                 &&
@@ -687,25 +698,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 return;
             }
 
-            this.SelectedCell = this.inputCellId is null
+            // HACK: 2
+            this.selectedCell = this.inputCellId is null
                 ? null
                 : this.cells.SingleOrDefault(c => c.Id == this.inputCellId);
 
-            if (this.SelectedCell != null)
+            if (this.selectedCell != null)
             {
-                this.InputHeight = this.SelectedCell.Position;
+                this.inputHeight = this.SelectedCell.Position;
                 this.InputLoadingUnitId = this.loadingUnits.SingleOrDefault(l => l.CellId == this.selectedCell.Id)?.Id;
             }
 
             if (this.SelectedLoadingUnit?.CellId is null)
             {
-                this.LoadingUnitInCell = null;
+                this.loadingUnitInCell = null;
             }
             else
             {
-                this.LoadingUnitInCell = this.SelectedLoadingUnit;
+                this.loadingUnitInCell = this.SelectedLoadingUnit;
             }
 
+            this.RaisePropertyChanged(nameof(this.InputHeight));
+            this.RaisePropertyChanged(nameof(this.LoadingUnitInCell));
             this.RaiseCanExecuteChanged();
         }
 
@@ -716,14 +730,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 return;
             }
 
-            this.SelectedLoadingUnit = this.inputLoadingUnitId == null
+            // HACK: 1
+            this.selectedLoadingUnit = this.inputLoadingUnitId == null
                 ? null
                 : this.loadingUnits.SingleOrDefault(c => c.Id == this.inputLoadingUnitId);
 
-            if (this.SelectedLoadingUnit != null)
+            if (this.selectedLoadingUnit != null)
             {
-                this.InputCellId = this.SelectedLoadingUnit.CellId;
+                // Hack: 3
+                this.inputCellId = this.selectedLoadingUnit.CellId;
+                this.RaisePropertyChanged(nameof(this.InputCellId));
             }
+
+            this.RaiseCanExecuteChanged();
         }
 
         private async Task IntermediateShutterAsync()
@@ -923,7 +942,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                             this.IsCarouselMoving = false;
                         }
 
-                        await this.RefreshMachineInfoAsync();
+                        this.RefreshMachineInfo();
 
                         break;
                     }
@@ -931,7 +950,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
                     {
-                        await this.RefreshMachineInfoAsync();
+                        this.RefreshMachineInfo();
 
                         this.OperationWarningOrError(message.Status, message.Description);
                         break;
@@ -1092,10 +1111,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
                 else
                 {
-                    if (!string.IsNullOrEmpty(this.MachineStatus.LogicalPositionId))
+                    if (this.MachineStatus.LogicalPositionId.HasValue)
                     {
-                        int cell = int.Parse(this.MachineStatus.LogicalPositionId);
-                        await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(LoadingUnitLocation.LoadUnit, cell, this.MachineStatus.EmbarkedLoadingUnit.Id);
+                        await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(LoadingUnitLocation.LoadUnit, this.MachineStatus.LogicalPositionId, this.MachineStatus.EmbarkedLoadingUnit.Id);
                     }
                     else
                     {

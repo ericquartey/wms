@@ -95,6 +95,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         protected override async Task OnDataRefreshAsync()
         {
+            await this.SensorsService.RefreshAsync(true);
+
             await this.RetrieveLoadingUnitsAsync();
 
             this.SelectBayPositionDown();

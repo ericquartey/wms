@@ -480,6 +480,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
+                await this.SensorsService.RefreshAsync(true);
+
                 if (this.AxisUpperBound == 0 || this.AxisLowerBound == 0 || this.StartPosition == 0 || !this.DestinationPosition1.HasValue || !this.DestinationPosition2.HasValue)
                 {
                     var procedureParameters = await this.verticalOriginProcedureWebService.GetParametersAsync();

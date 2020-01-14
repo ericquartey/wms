@@ -34,13 +34,13 @@ namespace Ferretto.VW.App.Controls.Controls
         public static readonly DependencyProperty SensorsServiceProperty =
             DependencyProperty.Register(nameof(SensorsService), typeof(ISensorsService), typeof(CardSensorBay));
 
-        private readonly IEventAggregator eventAggregator;
+        private IEventAggregator eventAggregator;
 
-        private readonly IMachineService machineService;
-
-        private readonly ISensorsService sensorsService;
+        private IMachineService machineService;
 
         private SubscriptionToken machineStatusChangesToken;
+
+        private ISensorsService sensorsService;
 
         #endregion
 
@@ -55,39 +55,16 @@ namespace Ferretto.VW.App.Controls.Controls
                 return;
             }
 
-            this.Dispatcher.ShutdownStarted += this.Dispatcher_ShutdownStarted;
-
-            this.eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
-            this.machineService = ServiceLocator.Current.GetInstance<IMachineService>();
-            this.sensorsService = ServiceLocator.Current.GetInstance<ISensorsService>();
+            this.DataContext = this;
 
             this.Loaded += (s, e) =>
             {
-                this.sensorsService.RefreshAsync(true);
-                this.SensorsService = this.sensorsService;
-                this.MachineStatus = this.machineService.MachineStatus;
-
-                if (this.machineService.Bay.IsDouble)
-                {
-                    this.CardSensorLabel2 = "Alta";
-                    this.CardSensorLabel3 = "Bassa";
-                }
-                else
-                {
-                    this.CardSensorLabel2 = "Baia";
-                    this.CardSensorLabel3 = null;
-                }
+                this.OnAppeared();
             };
-
-            this.machineStatusChangesToken = this.machineStatusChangesToken
-                ?? this.eventAggregator
-                    .GetEvent<MachineStatusChangedPubSubEvent>()
-                    .Subscribe(
-                        async (m) => await this.OnMachineStatusChangedAsync(m),
-                        ThreadOption.UIThread,
-                        false);
-
-            this.DataContext = this;
+            this.Unloaded += (s, e) =>
+            {
+                this.Disappear();
+            };
         }
 
         #endregion
@@ -122,20 +99,66 @@ namespace Ferretto.VW.App.Controls.Controls
 
         #region Methods
 
-        protected Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
-        {
-            this.MachineStatus = e.MachineStatus;
-
-            return Task.CompletedTask;
-        }
-
-        private void Dispatcher_ShutdownStarted(object sender, EventArgs e)
+        protected void Disappear()
         {
             if (this.machineStatusChangesToken != null)
             {
+                this.eventAggregator
+                    .GetEvent<NavigationCompleted>()
+                    .Unsubscribe(this.machineStatusChangesToken);
+
                 this.machineStatusChangesToken.Dispose();
                 this.machineStatusChangesToken = null;
             }
+
+            this.eventAggregator = null;
+            this.sensorsService = null;
+            this.machineService = null;
+        }
+
+        protected void OnAppeared()
+        {
+            this.SubscribeToEvents();
+
+            this.OnDataRefresh();
+        }
+
+        protected void OnDataRefresh()
+        {
+            this.SensorsService = this.sensorsService;
+            this.MachineStatus = this.machineService.MachineStatus;
+
+            if (this.machineService.Bay.IsDouble)
+            {
+                this.CardSensorLabel2 = "Alta";
+                this.CardSensorLabel3 = "Bassa";
+            }
+            else
+            {
+                this.CardSensorLabel2 = "Baia";
+                this.CardSensorLabel3 = null;
+            }
+        }
+
+        protected Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
+        {
+            this.OnDataRefresh();
+            return Task.CompletedTask;
+        }
+
+        private void SubscribeToEvents()
+        {
+            this.eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
+            this.machineService = ServiceLocator.Current.GetInstance<IMachineService>();
+            this.sensorsService = ServiceLocator.Current.GetInstance<ISensorsService>();
+
+            this.machineStatusChangesToken = this.machineStatusChangesToken
+                ?? this.eventAggregator
+                    .GetEvent<MachineStatusChangedPubSubEvent>()
+                    .Subscribe(
+                        async (m) => await this.OnMachineStatusChangedAsync(m),
+                        ThreadOption.UIThread,
+                        false);
         }
 
         #endregion

@@ -33,13 +33,13 @@ namespace Ferretto.VW.App.Controls.Controls
         public static readonly DependencyProperty VerticalDescriptionProperty =
             DependencyProperty.Register(nameof(VerticalDescription), typeof(string), typeof(CardSensorAxisVertical));
 
-        private readonly IEventAggregator eventAggregator;
+        private IEventAggregator eventAggregator;
 
-        private readonly IMachineService machineService;
-
-        private readonly ISensorsService sensorsService;
+        private IMachineService machineService;
 
         private SubscriptionToken machineStatusChangesToken;
+
+        private ISensorsService sensorsService;
 
         #endregion
 
@@ -54,39 +54,16 @@ namespace Ferretto.VW.App.Controls.Controls
                 return;
             }
 
+            this.DataContext = this;
+
             this.Loaded += (s, e) =>
             {
-                this.sensorsService.RefreshAsync(true);
-                this.SensorsService = this.sensorsService;
-                this.EmbarkedLoadingUnit = this.machineService.MachineStatus.EmbarkedLoadingUnit;
-                this.ElevatorVerticalPosition = this.machineService.MachineStatus.ElevatorVerticalPosition;
-                this.VerticalDescription = string.Empty;
-                if (!(this.machineService.MachineStatus.VerticalTargetPosition is null))
-                {
-                    this.VerticalDescription += $"Target: {this.machineService.MachineStatus.VerticalTargetPosition?.ToString("F0")}";
-                }
-
-                if (!(this.machineService.MachineStatus.VerticalSpeed is null))
-                {
-                    this.VerticalDescription += $" Speed: {this.machineService.MachineStatus.VerticalSpeed?.ToString("F0")}";
-                }
+                this.OnAppeared();
             };
-
-            this.Dispatcher.ShutdownStarted += this.Dispatcher_ShutdownStarted;
-
-            this.eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
-            this.machineService = ServiceLocator.Current.GetInstance<IMachineService>();
-            this.sensorsService = ServiceLocator.Current.GetInstance<ISensorsService>();
-
-            this.machineStatusChangesToken = this.machineStatusChangesToken
-                ?? this.eventAggregator
-                    .GetEvent<MachineStatusChangedPubSubEvent>()
-                    .Subscribe(
-                        async (m) => await this.OnMachineStatusChangedAsync(m),
-                        ThreadOption.UIThread,
-                        false);
-
-            this.DataContext = this;
+            this.Unloaded += (s, e) =>
+            {
+                this.Disappear();
+            };
         }
 
         #endregion
@@ -121,8 +98,33 @@ namespace Ferretto.VW.App.Controls.Controls
 
         #region Methods
 
-        protected Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
+        protected void Disappear()
         {
+            if (this.machineStatusChangesToken != null)
+            {
+                this.eventAggregator
+                    .GetEvent<NavigationCompleted>()
+                    .Unsubscribe(this.machineStatusChangesToken);
+
+                this.machineStatusChangesToken.Dispose();
+                this.machineStatusChangesToken = null;
+            }
+
+            this.eventAggregator = null;
+            this.sensorsService = null;
+            this.machineService = null;
+        }
+
+        protected void OnAppeared()
+        {
+            this.SubscribeToEvents();
+
+            this.OnDataRefresh();
+        }
+
+        protected void OnDataRefresh()
+        {
+            this.SensorsService = this.sensorsService;
             this.EmbarkedLoadingUnit = this.machineService.MachineStatus.EmbarkedLoadingUnit;
             this.ElevatorVerticalPosition = this.machineService.MachineStatus.ElevatorVerticalPosition;
             this.VerticalDescription = string.Empty;
@@ -135,16 +137,27 @@ namespace Ferretto.VW.App.Controls.Controls
             {
                 this.VerticalDescription += $" Speed: {this.machineService.MachineStatus.VerticalSpeed?.ToString("F0")}";
             }
+        }
+
+        protected Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
+        {
+            this.OnDataRefresh();
             return Task.CompletedTask;
         }
 
-        private void Dispatcher_ShutdownStarted(object sender, EventArgs e)
+        private void SubscribeToEvents()
         {
-            if (this.machineStatusChangesToken != null)
-            {
-                this.machineStatusChangesToken.Dispose();
-                this.machineStatusChangesToken = null;
-            }
+            this.eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
+            this.machineService = ServiceLocator.Current.GetInstance<IMachineService>();
+            this.sensorsService = ServiceLocator.Current.GetInstance<ISensorsService>();
+
+            this.machineStatusChangesToken = this.machineStatusChangesToken
+                ?? this.eventAggregator
+                    .GetEvent<MachineStatusChangedPubSubEvent>()
+                    .Subscribe(
+                        async (m) => await this.OnMachineStatusChangedAsync(m),
+                        ThreadOption.UIThread,
+                        false);
         }
 
         #endregion

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -44,8 +45,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private readonly IMachineShuttersWebService shuttersWebService;
 
         private Bay bay;
-
-        private bool bayIsMultiPosition;
 
         private IEnumerable<Cell> cells;
 
@@ -116,11 +115,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public bool BayIsMultiPosition
-        {
-            get => this.bayIsMultiPosition;
-            set => this.SetProperty(ref this.bayIsMultiPosition, value);
-        }
+        public bool BayIsMultiPosition => this.MachineService.Bay.IsDouble;
 
         public override EnableMask EnableMask => EnableMask.MachinePoweredOn;
 
@@ -157,13 +152,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsElevatorInBay
         {
             get => this.isElevatorInBay;
-            private set => this.SetProperty(ref this.isElevatorInBay, value, this.ElevatorChanged);
+            private set => this.SetProperty(ref this.isElevatorInBay, value);
         }
 
         public bool IsElevatorInCell
         {
             get => this.isElevatorInCell;
-            private set => this.SetProperty(ref this.isElevatorInCell, value, this.ElevatorChanged);
+            private set => this.SetProperty(ref this.isElevatorInCell, value);
         }
 
         public bool IsExecutingProcedure
@@ -193,7 +188,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public string Title
         {
             get => this.title;
-            set => this.SetProperty(ref this.title, value, this.RaiseCanExecuteChanged);
+            set => this.SetProperty(ref this.title, value);
         }
 
         #endregion
@@ -231,17 +226,36 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.SubscribeToEvents();
 
-                this.GoToMovementsExecuteCommand(this.isMovementsGuided);
-
-                await this.RefreshMachineInfoAsync();
+                this.bay = this.MachineService.Bay;
 
                 this.LightIcon = !this.IsLightActive ? "LightbulbOnOutline" : "LightbulbOutline";
 
-                this.SelectBayPositionUp();
-
-                this.BayIsMultiPosition = this.bay.IsDouble;
-
                 this.isManualMovementCompleted = false;
+
+                this.GoToMovementsExecuteCommand(this.isMovementsGuided);
+
+                this.InputCellIdPropertyChanged();
+
+                this.InputLoadingUnitIdPropertyChanged();
+
+                if (this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Cell)
+                {
+                    this.inputCellId = this.MachineStatus.LogicalPositionId;
+                    this.RaisePropertyChanged(nameof(this.InputCellId));
+                }
+                else if (this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay)
+                {
+                    this.selectedBayPosition = this.bay.Positions.SingleOrDefault(p => p.Id == this.MachineStatus.BayPositionId);
+                    this.IsPositionUpSelected = this.selectedBayPosition is null || (this.MachineStatus.BayPositionUpper ?? true);
+                }
+
+                if (!this.IsPositionUpSelected && !this.IsPositionDownSelected)
+                {
+                    this.selectedBayPosition = this.bay.Positions.Single(b => b.Height == this.bay.Positions.Max(p => p.Height));
+                    this.IsPositionUpSelected = true;
+                }
+
+                this.RaisePropertyChanged(nameof(this.SelectedBayPosition));
 
                 await base.OnAppearedAsync();
             }
@@ -254,20 +268,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         protected override async Task OnDataRefreshAsync()
         {
             await this.SensorsService.RefreshAsync(true);
-
-            var elevatorPosition = await this.machineElevatorWebService.GetPositionAsync();
-
-            this.IsElevatorInCell = elevatorPosition.CellId != null;
-            this.IsElevatorInBay = elevatorPosition.BayPositionId != null;
-
-            if (this.IsElevatorInCell)
-            {
-                this.InputCellId = elevatorPosition.CellId;
-            }
-            else if (this.IsElevatorInBay)
-            {
-                this.SelectedBayPosition = this.bay.Positions.SingleOrDefault(p => p.Id == elevatorPosition.BayPositionId);
-            }
         }
 
         protected override async Task OnErrorStatusChangedAsync(MachineErrorEventArgs e)
@@ -315,8 +315,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.RaiseCanExecuteChanged();
 
-            this.OnManualRaiseCanExecuteChanged();
             this.OnGuidedRaiseCanExecuteChanged();
+            this.OnManualRaiseCanExecuteChanged();
 
             this.goToMovementsGuidedCommand?.RaiseCanExecuteChanged();
             this.goToMovementsManualCommand?.RaiseCanExecuteChanged();
@@ -332,7 +332,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.LabelMoveToLoadunit = InstallationApp.GoToDrawer;
             }
 
-            this.RaisePropertyChanged(nameof(this.IsMoving));
             this.RaisePropertyChanged(nameof(this.SensorsService));
             this.RaisePropertyChanged(nameof(this.MachineService));
             this.RaisePropertyChanged(nameof(this.MachineStatus));
@@ -386,11 +385,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsMoving;
         }
 
-        private void ElevatorChanged()
-        {
-            this.RefreshActionPoliciesAsync().ConfigureAwait(false);
-        }
-
         private void GoToMovementsExecuteCommand(bool isGuided)
         {
             if (isGuided)
@@ -410,8 +404,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
         {
-            this.IsElevatorInBay = e.BayPositionId != null;
-            this.IsElevatorInCell = e.CellId != null;
+            this.IsElevatorInBay = e.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay;
+            this.IsElevatorInCell = e.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Cell;
         }
 
         private async Task OnHomingChangedAsync(NotificationMessageUI<HomingMessageData> message)
@@ -422,7 +416,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     {
                         this.StopMoving();
 
-                        await this.RefreshMachineInfoAsync();
+                        this.RefreshMachineInfo();
                         break;
                     }
 
@@ -431,7 +425,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     {
                         this.StopMoving();
 
-                        await this.RefreshMachineInfoAsync();
+                        this.RefreshMachineInfo();
                         this.OperationWarningOrError(message.Status, message.Description);
                         break;
                     }
@@ -446,7 +440,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     {
                         this.StopMoving();
 
-                        await this.RefreshMachineInfoAsync();
+                        this.RefreshMachineInfo();
                         break;
                     }
 
@@ -455,7 +449,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     {
                         this.StopMoving();
 
-                        await this.RefreshMachineInfoAsync();
+                        this.RefreshMachineInfo();
                         break;
                     }
             }
@@ -496,7 +490,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (selectedBayPosition != null)
                 {
                     this.loadFromBayPolicy = await this.machineElevatorWebService.CanLoadFromBayAsync(selectedBayPosition.Id, this.SelectedBayPosition.LoadingUnit != null);
-                    this.loadFromBayCommand?.RaiseCanExecuteChanged();
+                    //this.loadFromBayCommand?.RaiseCanExecuteChanged();
 
                     // if (!string.IsNullOrEmpty(this.loadFromBayPolicy.Reason))
                     // {
@@ -505,7 +499,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     // System.Diagnostics.Debug.WriteLine($"ELEV <- BAY: {this.loadFromBayPolicy.IsAllowed} {this.loadFromBayPolicy.Reason}");
                     this.unloadToBayPolicy = await this.machineElevatorWebService.CanUnloadToBayAsync(selectedBayPosition.Id, this.MachineStatus.EmbarkedLoadingUnit != null);
-                    this.unloadToBayCommand?.RaiseCanExecuteChanged();
+                    //this.unloadToBayCommand?.RaiseCanExecuteChanged();
 
                     // if (!string.IsNullOrEmpty(this.unloadToBayPolicy.Reason))
                     // {
@@ -514,7 +508,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     // System.Diagnostics.Debug.WriteLine($"ELEV -> BAY: {this.unloadToBayPolicy.IsAllowed} {this.unloadToBayPolicy.Reason}");
                     this.moveToBayPositionPolicy = await this.machineElevatorWebService.CanMoveToBayPositionAsync(selectedBayPosition.Id);
-                    this.moveToBayPositionCommand?.RaiseCanExecuteChanged();
+                    //this.moveToBayPositionCommand?.RaiseCanExecuteChanged();
 
                     // if (!string.IsNullOrEmpty(this.moveToBayPositionPolicy.Reason))
                     // {
@@ -528,7 +522,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (selectedCell != null)
                 {
                     this.loadFromCellPolicy = await this.machineElevatorWebService.CanLoadFromCellAsync(selectedCell.Id);
-                    this.loadFromCellCommand?.RaiseCanExecuteChanged();
+                    //this.loadFromCellCommand?.RaiseCanExecuteChanged();
 
                     // if (!string.IsNullOrEmpty(this.loadFromCellPolicy.Reason))
                     // {
@@ -537,7 +531,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     // System.Diagnostics.Debug.WriteLine($"ELEV <- CELL: {this.loadFromCellPolicy.IsAllowed} {this.loadFromCellPolicy.Reason}");
                     this.unloadToCellPolicy = await this.machineElevatorWebService.CanUnloadToCellAsync(selectedCell.Id);
-                    this.unloadToCellCommand?.RaiseCanExecuteChanged();
+                    //this.unloadToCellCommand?.RaiseCanExecuteChanged();
 
                     // if (!string.IsNullOrEmpty(this.unloadToCellPolicy.Reason))
                     // {
@@ -546,7 +540,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     // System.Diagnostics.Debug.WriteLine($"ELEV -> CELL: {this.unloadToCellPolicy.IsAllowed} {this.unloadToCellPolicy.Reason}");
                     this.moveToCellPolicy = await this.machineElevatorWebService.CanMoveToCellAsync(selectedCell.Id);
-                    this.moveToCellHeightCommand?.RaiseCanExecuteChanged();
+                    //this.moveToCellHeightCommand?.RaiseCanExecuteChanged();
 
                     // if (!string.IsNullOrEmpty(this.moveToCellPolicy.Reason))
                     // {
@@ -559,14 +553,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (this.HasCarousel)
                 {
                     this.moveCarouselUpPolicy = await this.machineCarouselWebService.CanMoveAsync(VerticalMovementDirection.Up, this.IsMovementsManual ? MovementCategory.Manual : MovementCategory.Assisted);
-                    this.moveCarouselUpCommand?.RaiseCanExecuteChanged();
+                    //this.moveCarouselUpCommand?.RaiseCanExecuteChanged();
 
                     // if (!string.IsNullOrEmpty(this.moveCarouselUpPolicy.Reason))
                     // {
                     //    this.Log = $"{DateTime.Now.ToLocalTime()} - MoveCarouselUp - {this.moveCarouselUpPolicy.Reason}{Environment.NewLine}{this.Log}";
                     // }
                     this.moveCarouselDownPolicy = await this.machineCarouselWebService.CanMoveAsync(VerticalMovementDirection.Down, this.IsMovementsManual ? MovementCategory.Manual : MovementCategory.Assisted);
-                    this.moveCarouselDownCommand?.RaiseCanExecuteChanged();
+                    //this.moveCarouselDownCommand?.RaiseCanExecuteChanged();
 
                     // if (!string.IsNullOrEmpty(this.moveCarouselDownPolicy.Reason))
                     // {
@@ -580,16 +574,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task RefreshMachineInfoAsync()
+        private void RefreshMachineInfo()
         {
             try
             {
-                this.bay = this.MachineService.Bay;
+                //this.InputCellIdPropertyChanged();
+                //this.InputLoadingUnitIdPropertyChanged();
 
-                this.InputCellIdPropertyChanged();
-                this.InputLoadingUnitIdPropertyChanged();
-
-                this.RaiseCanExecuteChanged();
+                //this.RaiseCanExecuteChanged();
             }
             catch (Exception ex)
             {

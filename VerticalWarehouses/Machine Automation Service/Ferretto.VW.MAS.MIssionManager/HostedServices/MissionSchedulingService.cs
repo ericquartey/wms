@@ -28,6 +28,8 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private readonly IConfiguration configuration;
 
+        private readonly WMS.Data.WebAPI.Contracts.IMissionOperationsWmsWebService missionOperationsWmsWebService;
+
         private readonly WMS.Data.WebAPI.Contracts.IMissionsWmsWebService missionsWmsWebService;
 
         private bool dataLayerIsReady;
@@ -39,6 +41,7 @@ namespace Ferretto.VW.MAS.MissionManager
         public MissionSchedulingService(
             IConfiguration configuration,
             WMS.Data.WebAPI.Contracts.IMissionsWmsWebService missionsWmsWebService,
+            WMS.Data.WebAPI.Contracts.IMissionOperationsWmsWebService missionOperationsWmsWebService,
             IEventAggregator eventAggregator,
             ILogger<MissionSchedulingService> logger,
             IServiceScopeFactory serviceScopeFactory)
@@ -46,6 +49,7 @@ namespace Ferretto.VW.MAS.MissionManager
         {
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             this.missionsWmsWebService = missionsWmsWebService ?? throw new ArgumentNullException(nameof(missionsWmsWebService));
+            this.missionOperationsWmsWebService = missionOperationsWmsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWmsWebService));
         }
 
         #endregion
@@ -135,6 +139,16 @@ namespace Ferretto.VW.MAS.MissionManager
                             moveLoadingUnitProvider.ActivateMove(mission.Id, mission.MissionType, mission.LoadUnitId, bayNumber, MessageActor.MissionManager);
                         }
                     }
+                    else if (mission.Status is MissionStatus.Waiting)
+                    {
+                        var newOperation = newOperations.OrderBy(o => o.Priority).First();
+                        this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", mission.TargetBay, mission.WmsId.Value, newOperation.Id);
+
+                        await this.missionOperationsWmsWebService.ExecuteAsync(newOperation.Id);
+
+                        baysDataProvider.AssignWmsMission(mission.TargetBay, mission, newOperation.Id);
+                        this.NotifyAssignedMissionOperationChanged(mission.TargetBay, wmsMission.Id, newOperation.Id);
+                    }
                     //else if (mission.Status == MissionStatus.Waiting)
                     //{
                     //    var position = baysDataProvider.GetPositionByLocation(mission.LoadUnitDestination);
@@ -201,7 +215,7 @@ namespace Ferretto.VW.MAS.MissionManager
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
 
-            var missions = missionsDataProvider.GetAllExecutingMissions(true).ToList();
+            var missions = missionsDataProvider.GetAllExecutingMissions().ToList();
             foreach (var mission in missions)
             {
                 if (mission.RestoreState == MissionState.NotDefined)
@@ -412,6 +426,8 @@ namespace Ferretto.VW.MAS.MissionManager
                                 var newOperation = newOperations.OrderBy(o => o.Priority).First();
                                 this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", mission.TargetBay, mission.WmsId.Value, newOperation.Id);
 
+                                await this.missionOperationsWmsWebService.ExecuteAsync(newOperation.Id);
+
                                 baysDataProvider.AssignWmsMission(mission.TargetBay, mission, newOperation.Id);
                                 this.NotifyAssignedMissionOperationChanged(mission.TargetBay, wmsMission.Id, newOperation.Id);
                             }
@@ -477,15 +493,19 @@ namespace Ferretto.VW.MAS.MissionManager
                     // close operation and schedule next
                     baysDataProvider.ClearMission(bay.Number);
 
-                    var modeProvider = scope.ServiceProvider.GetRequiredService<IMachineModeProvider>();
+                    var currentMode = scope.ServiceProvider
+                        .GetRequiredService<IMachineModeProvider>()
+                        .GetCurrent();
 
-                    if (modeProvider.GetCurrent() == MachineMode.Automatic)
+                    switch (currentMode)
                     {
-                        await this.ScheduleMissionsOnBayAsync(bay.Number, scope.ServiceProvider);
-                    }
-                    else if (modeProvider.GetCurrent() == MachineMode.Compact)
-                    {
-                        await this.ScheduleCompactingMissionsAsync(scope.ServiceProvider);
+                        case MachineMode.Automatic:
+                            await this.ScheduleMissionsOnBayAsync(bay.Number, scope.ServiceProvider);
+                            break;
+
+                        case MachineMode.Compact:
+                            await this.ScheduleCompactingMissionsAsync(scope.ServiceProvider);
+                            break;
                     }
                 }
             }

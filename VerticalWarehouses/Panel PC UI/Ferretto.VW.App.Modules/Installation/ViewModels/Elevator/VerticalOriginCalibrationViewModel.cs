@@ -164,6 +164,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected override async Task OnDataRefreshAsync()
         {
+            await this.SensorsService.RefreshAsync(true);
+
             await this.RetrieveProcedureInformationAsync();
         }
 
@@ -254,26 +256,29 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnHomingProcedureStatusChanged(NotificationMessageUI<HomingMessageData> message)
         {
-            switch (message.Status)
+            if (message.Data.AxisToCalibrate == Axis.HorizontalAndVertical)
             {
-                case MessageStatus.OperationStart:
-                    this.ShowNotification(VW.App.Resources.InstallationApp.HorizontalHomingStarted);
+                switch (message.Status)
+                {
+                    case MessageStatus.OperationStart:
+                        this.ShowNotification(VW.App.Resources.InstallationApp.HorizontalHomingStarted);
 
-                    break;
+                        break;
 
-                case MessageStatus.OperationEnd:
-                    this.ShowNotification(
-                        VW.App.Resources.InstallationApp.HorizontalHomingCompleted,
-                        Services.Models.NotificationSeverity.Success);
+                    case MessageStatus.OperationEnd:
+                        this.ShowNotification(
+                            VW.App.Resources.InstallationApp.HorizontalHomingCompleted,
+                            Services.Models.NotificationSeverity.Success);
 
-                    break;
+                        break;
 
-                case MessageStatus.OperationError:
-                    this.ShowNotification(
-                        VW.App.Resources.InstallationApp.HorizontalHomingError,
-                        Services.Models.NotificationSeverity.Error);
+                    case MessageStatus.OperationError:
+                        this.ShowNotification(
+                            VW.App.Resources.InstallationApp.HorizontalHomingError,
+                            Services.Models.NotificationSeverity.Error);
 
-                    break;
+                        break;
+                }
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -16,9 +17,17 @@ namespace Ferretto.VW.MAS.AutomationService
     {
         #region Fields
 
+        internal const string ServiceConsoleArgument = "--service";
+
         private const int NoError = 0;
 
-        private const string ServiceConsoleArgument = "--service";
+        private const string PasswordConsoleArgument = "--password";
+
+        private const string RegisterAsServiceConsoleArgument = "--register-as-service";
+
+        private const string ServiceName = "Ferretto Machine Automation Service";
+
+        private const string UserConsoleArgument = "--user";
 
         #endregion
 
@@ -35,6 +44,14 @@ namespace Ferretto.VW.MAS.AutomationService
             try
             {
                 var pathToContentRoot = Directory.GetCurrentDirectory();
+
+                if (args.Contains(RegisterAsServiceConsoleArgument))
+                {
+                    return new ServiceBuilder(ServiceName)
+                        .Register(
+                            userName: GetArgumentValue(args, UserConsoleArgument),
+                            password: GetArgumentValue(args, PasswordConsoleArgument));
+                }
 
                 var isService = !Debugger.IsAttached && args.Contains(ServiceConsoleArgument);
                 if (isService)
@@ -60,11 +77,11 @@ namespace Ferretto.VW.MAS.AutomationService
                 }
                 else
                 {
-                    System.Console.Title = "Vertimag Automation Service";
+                    Console.Title = "Vertimag Automation Service";
                     host.Run();
                 }
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 logger?.LogError(ex, "Application terminated unexpectedly.");
 
@@ -74,6 +91,11 @@ namespace Ferretto.VW.MAS.AutomationService
             logger.LogInformation("Application terminated.");
 
             return NoError;
+        }
+
+        private static string GetArgumentValue(string[] args, string argumentName)
+        {
+            return args.SkipWhile(a => a != argumentName).Skip(1).First();
         }
 
         private static string GetVersion()

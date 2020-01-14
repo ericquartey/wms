@@ -900,6 +900,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial interface IMachineMissionsWebService
+    {
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Mission>> GetAllAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Mission>> GetAllAsync(System.Threading.CancellationToken cancellationToken);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineModeWebService
     {
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
@@ -3105,53 +3117,55 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         WarehouseIsFull = 36,
     
-        MoveBayChainNotAllowed = 37,
+        CellLogicallyOccupied = 37,
     
-        AutomaticRestoreNotAllowed = 38,
+        MoveBayChainNotAllowed = 38,
     
-        DestinationTypeNotValid = 39,
+        AutomaticRestoreNotAllowed = 39,
     
-        MissionTypeNotValid = 40,
+        DestinationTypeNotValid = 40,
     
-        ResumeCommandNotValid = 41,
+        MissionTypeNotValid = 41,
     
-        NoLoadUnitInSource = 42,
+        ResumeCommandNotValid = 42,
     
-        LoadUnitSourceDb = 43,
+        NoLoadUnitInSource = 43,
     
-        LoadUnitDestinationCell = 44,
+        LoadUnitSourceDb = 44,
     
-        LoadUnitElevator = 45,
+        LoadUnitDestinationCell = 45,
     
-        LoadUnitNotRemoved = 46,
+        LoadUnitElevator = 46,
     
-        LoadUnitDestinationBay = 47,
+        LoadUnitNotRemoved = 47,
     
-        LoadUnitSourceCell = 48,
+        LoadUnitDestinationBay = 48,
     
-        LoadUnitNotFound = 49,
+        LoadUnitSourceCell = 49,
     
-        LoadUnitNotLoaded = 50,
+        LoadUnitNotFound = 50,
     
-        LoadUnitSourceBay = 51,
+        LoadUnitNotLoaded = 51,
     
-        LoadUnitShutterOpen = 52,
+        LoadUnitSourceBay = 52,
     
-        LoadUnitShutterClosed = 53,
+        LoadUnitShutterOpen = 53,
     
-        LoadUnitPresentInCell = 54,
+        LoadUnitShutterClosed = 54,
     
-        LoadUnitOtherBay = 55,
+        LoadUnitPresentInCell = 55,
     
-        LoadUnitSourceElevator = 56,
+        LoadUnitOtherBay = 56,
     
-        LoadUnitMissingOnElevator = 57,
+        LoadUnitSourceElevator = 57,
     
-        LoadUnitMissingOnBay = 58,
+        LoadUnitMissingOnElevator = 58,
     
-        LoadUnitUndefinedUpper = 59,
+        LoadUnitMissingOnBay = 59,
     
-        LoadUnitUndefinedBottom = 60,
+        LoadUnitUndefinedUpper = 60,
+    
+        LoadUnitUndefinedBottom = 61,
     
         InverterErrorBaseCode = 1000,
     
