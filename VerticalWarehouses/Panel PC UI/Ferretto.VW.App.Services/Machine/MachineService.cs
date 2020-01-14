@@ -870,6 +870,9 @@ namespace Ferretto.VW.App.Services
 
         private async Task UpdateBay()
         {
+            // Devo aggiornare i dati delle posizioni della baia
+            this.Bay = await this.bayManagerService.GetBayAsync();
+
             var ms = (MachineStatus)this.MachineStatus.Clone();
 
             ms = await this.GetElevatorAsync(ms);
