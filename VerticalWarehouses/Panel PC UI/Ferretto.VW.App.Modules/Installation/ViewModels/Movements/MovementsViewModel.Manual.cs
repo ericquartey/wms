@@ -159,19 +159,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsCarouselClosing
         {
             get => this.isCarouselClosing;
-            private set => this.SetProperty(ref this.isCarouselClosing, value, this.RaiseCanExecuteChanged);
+            private set => this.SetProperty(ref this.isCarouselClosing, value);
         }
 
         public bool IsCarouselOpening
         {
             get => this.isCarouselOpening;
-            private set => this.SetProperty(ref this.isCarouselOpening, value, this.RaiseCanExecuteChanged);
+            private set => this.SetProperty(ref this.isCarouselOpening, value);
         }
 
         public bool IsElevatorMoving
         {
             get => this.isElevatorMoving;
-            private set => this.SetProperty(ref this.isElevatorMoving, value, this.RaiseCanExecuteChanged);
+            private set => this.SetProperty(ref this.isElevatorMoving, value);
         }
 
         public bool IsLightActive
@@ -183,37 +183,37 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsMovingElevatorBackwards
         {
             get => this.isMovingElevatorBackwards;
-            private set => this.SetProperty(ref this.isMovingElevatorBackwards, value, this.RaiseCanExecuteChanged);
+            private set => this.SetProperty(ref this.isMovingElevatorBackwards, value);
         }
 
         public bool IsMovingElevatorDown
         {
             get => this.isMovingElevatorDown;
-            private set => this.SetProperty(ref this.isMovingElevatorDown, value, this.RaiseCanExecuteChanged);
+            private set => this.SetProperty(ref this.isMovingElevatorDown, value);
         }
 
         public bool IsMovingElevatorForwards
         {
             get => this.isMovingElevatorForwards;
-            private set => this.SetProperty(ref this.isMovingElevatorForwards, value, this.RaiseCanExecuteChanged);
+            private set => this.SetProperty(ref this.isMovingElevatorForwards, value);
         }
 
         public bool IsMovingElevatorUp
         {
             get => this.isMovingElevatorUp;
-            private set => this.SetProperty(ref this.isMovingElevatorUp, value, this.RaiseCanExecuteChanged);
+            private set => this.SetProperty(ref this.isMovingElevatorUp, value);
         }
 
         public bool IsShutterMovingDown
         {
             get => this.isShutterMovingDown;
-            private set => this.SetProperty(ref this.isShutterMovingDown, value, this.RaiseCanExecuteChanged);
+            private set => this.SetProperty(ref this.isShutterMovingDown, value);
         }
 
         public bool IsShutterMovingUp
         {
             get => this.isShutterMovingUp;
-            private set => this.SetProperty(ref this.isShutterMovingUp, value, this.RaiseCanExecuteChanged);
+            private set => this.SetProperty(ref this.isShutterMovingUp, value);
         }
 
         public ICommand LightCommand =>
@@ -488,7 +488,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.CanInputCellId =
                 this.CanBaseExecute()
                 &&
-                this.cells != null;
+                this.Cells != null;
 
             this.CanInputHeight = this.CanBaseExecute();
 
@@ -529,8 +529,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                              !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
                                              !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
 
-            this.moveToCellHeightCommand?.RaiseCanExecuteChanged();
-            this.moveToHeightCommand?.RaiseCanExecuteChanged();
+            //this.moveToCellHeightCommand?.RaiseCanExecuteChanged();
+            //this.moveToHeightCommand?.RaiseCanExecuteChanged();
         }
 
         private void OnManualShutterPositionChanged(NotificationMessageUI<ShutterPositioningMessageData> message)

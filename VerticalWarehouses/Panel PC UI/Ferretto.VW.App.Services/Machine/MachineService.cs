@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -12,6 +12,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
+using Microsoft.AspNetCore.Http;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -20,7 +21,7 @@ using ShutterType = Ferretto.VW.MAS.AutomationService.Contracts.ShutterType;
 
 namespace Ferretto.VW.App.Services
 {
-    public class MachineService : BindableBase, IMachineService, IDisposable
+    public sealed class MachineService : BindableBase, IMachineService, IDisposable
     {
         #region Fields
 
@@ -66,6 +67,8 @@ namespace Ferretto.VW.App.Services
 
         private SubscriptionToken elevatorPositionChangedToken;
 
+        private bool executedInitialization;
+
         private SubscriptionToken fsmExceptionToken;
 
         private bool hasBayExternal;
@@ -73,6 +76,8 @@ namespace Ferretto.VW.App.Services
         private bool hasCarousel;
 
         private bool hasShutter;
+
+        private SubscriptionToken healthStatusChangedToken;
 
         private bool isDisposed;
 
@@ -192,8 +197,6 @@ namespace Ferretto.VW.App.Services
             set => this.SetProperty(ref this.loadingUnits, value, this.LoadUnitsNotificationProperty);
         }
 
-        protected NLog.Logger Logger => this.logger;
-
         public MachineMode MachineMode => this.machineModeService.MachineMode;
 
         public MachinePowerState MachinePower => this.machineModeService.MachinePower;
@@ -209,8 +212,6 @@ namespace Ferretto.VW.App.Services
             get => this.notification;
             set => this.SetProperty(ref this.notification, value, () => this.ShowNotification(this.notification, NotificationSeverity.Info));
         }
-
-        private bool IsHealthy => this.healthProbeService?.HealthStatus == HealthStatus.Healthy || this.healthProbeService?.HealthStatus == HealthStatus.Degraded;
 
         #endregion
 
@@ -232,16 +233,43 @@ namespace Ferretto.VW.App.Services
 
         public async Task OnInitializationServiceAsync()
         {
-            await this.InitializationHoming();
-            await this.InitializationBay();
-            await this.InitializationLoadUnits();
+            this.healthStatusChangedToken = this.eventAggregator
+                .GetEvent<PubSubEvent<HealthStatusChangedEventArgs>>()
+                .Subscribe(
+                    async (e) => await this.OnHealthStatusChangedAsync(e),
+                    ThreadOption.UIThread,
+                    false);
+
+            if (this.healthProbeService.HealthStatus is HealthStatus.Healthy
+                ||
+                this.healthProbeService.HealthStatus is HealthStatus.Degraded)
+            {
+                try
+                {
+                    await this.InitializationHoming();
+                    await this.InitializationBay();
+                    await this.InitializationLoadUnits();
+                }
+                catch (Exception ex)
+                {
+                    // do nothing
+                }
+            }
+            this.executedInitialization = true;
         }
 
         public async Task OnUpdateServiceAsync()
         {
-            await this.InitializationHoming();
-            await this.UpdateBay();
-            await this.InitializationLoadUnits();
+            if (!this.executedInitialization)
+            {
+                await this.OnInitializationServiceAsync();
+            }
+            else
+            {
+                await this.InitializationHoming();
+                await this.UpdateBay();
+                await this.InitializationLoadUnits();
+            }
         }
 
         public void ShowNotification(Exception exception)
@@ -251,7 +279,7 @@ namespace Ferretto.VW.App.Services
                 throw new ArgumentNullException(nameof(exception));
             }
 
-            this.Logger.Error(exception);
+            this.logger.Error(exception);
 
             this.eventAggregator
                 .GetEvent<PresentationNotificationPubSubEvent>()
@@ -263,7 +291,19 @@ namespace Ferretto.VW.App.Services
             this.machineStatus = new MachineStatus();
             this.loadingUnits = new List<LoadingUnit>();
 
-            Task.Run(async () => await this.OnInitializationServiceAsync()).GetAwaiter().GetResult();
+            Task.Run(async () =>
+            {
+                try
+                {
+                    await this.OnInitializationServiceAsync();
+                }
+                catch (HttpRequestException)
+                {
+                }
+                catch (Exception)
+                {
+                }
+            }).GetAwaiter().GetResult();
 
             this.SubscribeToEvents();
         }
@@ -274,6 +314,7 @@ namespace Ferretto.VW.App.Services
             {
                 this.machineLoadingUnitsWebService?.StopAsync(this.machineStatus.CurrentMissionId, this.BayNumber);
             }
+
             this.machineElevatorWebService?.StopAsync();
             this.machineCarouselWebService?.StopAsync();
             this.shuttersWebService?.StopAsync();
@@ -757,6 +798,27 @@ namespace Ferretto.VW.App.Services
             this.UpdateMachineStatusByElevatorPosition(e, null);
         }
 
+        private async Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
+        {
+            try
+            {
+                await this.InitializationHoming();
+                if (this.bays is null)
+                {
+                    await this.InitializationBay();
+                }
+                else
+                {
+                    await this.UpdateBay();
+                }
+                await this.InitializationLoadUnits();
+            }
+            catch (Exception ex)
+            {
+                // do nothing
+            }
+        }
+
         private void ShowNotification(string message, NotificationSeverity severity = NotificationSeverity.Info)
         {
             this.eventAggregator
@@ -908,8 +970,8 @@ namespace Ferretto.VW.App.Services
 
         private void UpdateMachineStatusByElevatorPosition(EventArgs e, MachineStatus ms)
         {
-            bool update = false;
-            bool machineStatusNull = false;
+            var update = false;
+            var machineStatusNull = false;
 
             if (ms is null)
             {

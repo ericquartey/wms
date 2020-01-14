@@ -447,12 +447,28 @@
                                 VerticalAlignment="Center">
                         <StackPanel.Style>
                             <Style>
+                                <Setter Property="StackPanel.Visibility" Value="Visible" />
                                 <Setter Property="Grid.RowSpan" Value="1" />
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding ElementName=Card, Path=MachineService.Bay.IsDouble}"
                                                  Value="false">
                                         <Setter Property="Grid.RowSpan" Value="2" />
                                     </DataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding ElementName=Card, Path=CardLuUp}" Value="{x:Null}" />
+                                            <Condition Binding="{Binding ElementName=Card, Path=MachineService.Bay.IsDouble}" Value="false" />
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="StackPanel.Visibility" Value="Collapsed" />
+                                    </MultiDataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding ElementName=Card, Path=CardLuUp}" Value="{x:Null}" />
+                                            <Condition Binding="{Binding ElementName=Card, Path=CardLuDown}" Value="{x:Null}" />
+                                            <Condition Binding="{Binding ElementName=Card, Path=MachineService.Bay.IsDouble}" Value="true" />
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="StackPanel.Visibility" Value="Collapsed" />
+                                    </MultiDataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </StackPanel.Style>
@@ -585,6 +601,14 @@
                                                  Value="false">
                                         <Setter Property="StackPanel.Visibility" Value="Collapsed" />
                                     </DataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding ElementName=Card, Path=CardLuUp}" Value="{x:Null}" />
+                                            <Condition Binding="{Binding ElementName=Card, Path=CardLuDown}" Value="{x:Null}" />
+                                            <Condition Binding="{Binding ElementName=Card, Path=MachineService.Bay.IsDouble}" Value="true" />
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="StackPanel.Visibility" Value="Collapsed" />
+                                    </MultiDataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </StackPanel.Style>

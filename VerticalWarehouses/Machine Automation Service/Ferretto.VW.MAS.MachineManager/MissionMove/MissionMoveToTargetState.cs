@@ -82,8 +82,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.Mission.RestoreConditions,
                     targetBayPositionId,
                     targetCellId);
+                this.Mission.RestoreConditions = false;
             }
-            this.Mission.RestoreConditions = false;
             this.MissionsDataProvider.Update(this.Mission);
 
             bool isEject = this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
