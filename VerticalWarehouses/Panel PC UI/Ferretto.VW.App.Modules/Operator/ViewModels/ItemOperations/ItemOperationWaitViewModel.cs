@@ -106,21 +106,23 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
-            this.missionToken = this.missionToken
+            this.missionToken =
+                this.missionToken
                 ??
                 this.eventAggregator.GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>()
-                .Subscribe(
-                    async e => await this.OnAssignedMissionOperationChangedAsync(e),
-                    ThreadOption.UIThread,
-                    false);
+                    .Subscribe(
+                        async e => await this.OnAssignedMissionOperationChangedAsync(e),
+                        ThreadOption.UIThread,
+                        false);
 
-            this.loadingUnitToken = this.loadingUnitToken
+            this.loadingUnitToken =
+                this.loadingUnitToken
                 ??
                 this.eventAggregator.GetEvent<NotificationEventUI<MoveLoadingUnitMessageData>>()
-                .Subscribe(
-                    this.OnLoadingUnitMoved,
-                    ThreadOption.UIThread,
-                    false);
+                    .Subscribe(
+                        this.OnLoadingUnitMoved,
+                        ThreadOption.UIThread,
+                        false);
 
             if (this.isPerformingOperation
                 &&
