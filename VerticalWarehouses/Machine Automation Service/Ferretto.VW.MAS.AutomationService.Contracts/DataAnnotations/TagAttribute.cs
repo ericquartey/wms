@@ -3,8 +3,10 @@
 namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
-    public class TagAttribute : Attribute, ILocalizableString
+    public sealed class TagAttribute : Attribute, ILocalizableString
     {
+        #region Constructors
+
         public TagAttribute()
         {
         }
@@ -14,11 +16,18 @@ namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
             this.Tag = tag;
         }
 
-        public string Tag { get; set; }
-        public Type ResourceType { get; set; }
+        #endregion
+
+        #region Properties
 
         string ILocalizableString.DefaultValue => this.Tag;
-        string ILocalizableString.ResourceName => this.Tag;
-    }
 
+        string ILocalizableString.ResourceName => this.Tag;
+
+        public Type ResourceType { get; set; }
+
+        public string Tag { get; set; }
+
+        #endregion
+    }
 }

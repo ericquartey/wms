@@ -488,7 +488,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.CanInputCellId =
                 this.CanBaseExecute()
                 &&
-                this.cells != null;
+                this.Cells != null;
 
             this.CanInputHeight = this.CanBaseExecute();
 
@@ -529,8 +529,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                              !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
                                              !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
 
-            this.moveToCellHeightCommand?.RaiseCanExecuteChanged();
-            this.moveToHeightCommand?.RaiseCanExecuteChanged();
+            //this.moveToCellHeightCommand?.RaiseCanExecuteChanged();
+            //this.moveToHeightCommand?.RaiseCanExecuteChanged();
         }
 
         private void OnManualShutterPositionChanged(NotificationMessageUI<ShutterPositioningMessageData> message)

@@ -347,7 +347,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.StopReason = StopRequestReason.NoReason;
             var destination = this.LoadingUnitMovementProvider.GetDestinationHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
             var current = this.LoadingUnitMovementProvider.GetCurrentVerticalPosition();
-            if ((!destination.HasValue || Math.Abs((destination.Value - current)) > 2))
+            if ((!destination.HasValue || Math.Abs(destination.Value - current) > 2)
+                && this.Mission.LoadUnitDestination == LoadingUnitLocation.Cell
+                )
             {
                 if (this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
                 {
@@ -358,6 +360,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.Mission.NeedMovingBackward = false;
                     var newStep = new MissionMoveToTargetState(this.Mission, this.ServiceProvider, this.EventAggregator);
                     newStep.OnEnter(null);
+                    return;
                 }
                 else
                 {
@@ -459,7 +462,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.StopReason = StopRequestReason.NoReason;
             var origin = this.LoadingUnitMovementProvider.GetSourceHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
             var current = this.LoadingUnitMovementProvider.GetCurrentVerticalPosition();
-            if ((!origin.HasValue || Math.Abs((origin.Value - current)) > 2))
+            if ((!origin.HasValue || Math.Abs(origin.Value - current) > 2)
+                && this.Mission.LoadUnitSource == LoadingUnitLocation.Cell
+                )
             {
                 if (!this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
                 {
@@ -505,8 +510,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
 
                 default:
-                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
                     // invert direction?
+                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
                     if (this.Mission.NeedMovingBackward)
                     {
                         this.Mission.Direction = bay.Side != WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;

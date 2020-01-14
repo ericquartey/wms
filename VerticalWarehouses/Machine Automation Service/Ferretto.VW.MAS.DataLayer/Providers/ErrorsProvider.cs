@@ -14,7 +14,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
-    internal sealed class ErrorsProvider : IErrorsProvider, IDisposable
+    internal sealed class ErrorsProvider : IErrorsProvider
     {
         #region Fields
 
@@ -25,8 +25,6 @@ namespace Ferretto.VW.MAS.DataLayer
         private readonly NotificationEvent notificationEvent;
 
         private readonly IServiceScopeFactory serviceScopeFactory;
-
-        private bool isDisposed;
 
         #endregion
 
@@ -50,12 +48,6 @@ namespace Ferretto.VW.MAS.DataLayer
         #endregion
 
         #region Methods
-
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-            this.Dispose(true);
-        }
 
         public MachineError GetCurrent()
         {
@@ -258,16 +250,6 @@ namespace Ferretto.VW.MAS.DataLayer
                    .ToArray();
             }
             errors.ToList().ForEach(id => this.Resolve(id));
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (!this.isDisposed)
-            {
-                return;
-            }
-
-            this.isDisposed = true;
         }
 
         private bool IsErrorStillActive(int code)

@@ -215,6 +215,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
                 case LoadingUnitLocation.Elevator:
                     targetPosition = this.elevatorProvider.VerticalPosition;
+                    if (moveData.LoadUnitSource != LoadingUnitLocation.Cell)
+                    {
+                        targetBayPositionId = this.baysDataProvider.GetPositionByLocation(moveData.LoadUnitSource).Id;
+                    }
                     break;
 
                 default:
@@ -530,7 +534,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public MessageStatus ShutterStatus(NotificationMessage message)
         {
-            if (message.Type == MessageType.ShutterPositioning)
+            if (message.Type == MessageType.ShutterPositioning
+                || message.Type == MessageType.Homing
+                )
             {
                 return message.Status;
             }

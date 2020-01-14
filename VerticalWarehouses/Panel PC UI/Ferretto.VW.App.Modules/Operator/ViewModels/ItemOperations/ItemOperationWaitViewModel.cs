@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
+using DevExpress.Xpf.Data.Native;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -30,6 +32,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
         private readonly IMissionOperationsService missionOperationsService;
 
         private bool isPerformingOperation;
+
+        private int? lastActiveMissionId;
 
         private int loadingUnitsMovements;
 
@@ -104,28 +108,35 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
-            this.missionToken = this.missionToken
+            this.missionToken =
+                this.missionToken
                 ??
                 this.eventAggregator.GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>()
-                .Subscribe(
-                    async e => await this.OnAssignedMissionOperationChangedAsync(e),
-                    ThreadOption.UIThread,
-                    false);
+                    .Subscribe(
+                        async e => await this.OnAssignedMissionOperationChangedAsync(e),
+                        ThreadOption.UIThread,
+                        false);
 
-            this.loadingUnitToken = this.loadingUnitToken
+            this.loadingUnitToken =
+                this.loadingUnitToken
                 ??
                 this.eventAggregator.GetEvent<NotificationEventUI<MoveLoadingUnitMessageData>>()
-                .Subscribe(
-                    this.OnLoadingUnitMoved,
-                    ThreadOption.UIThread,
-                    false);
+                    .Subscribe(
+                        async m => await this.OnLoadingUnitMovedAsync(m),
+                        ThreadOption.UIThread,
+                        false);
 
             if (this.isPerformingOperation
                 &&
-                this.machineModeService.MachineMode == MachineMode.Automatic)
+                this.machineModeService.MachineMode == MachineMode.Automatic
+                &&
+                this.lastActiveMissionId.HasValue
+                &&
+                this.lastActiveMissionId != this.missionOperationsService.CurrentMission?.Id)
             {
                 this.NavigationService.GoBack();
                 this.isPerformingOperation = false;
+                this.lastActiveMissionId = null;
                 return;
             }
 
@@ -165,13 +176,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
             if (this.missionOperationsService.CurrentMissionOperation is null)
             {
                 var bay = await this.bayManager.GetBayAsync();
-                if (bay.CurrentMission?.LoadUnitId != null)
+                var loadingUnit = bay.Positions.OrderByDescending(p => p.Height).Select(p => p.LoadingUnit).FirstOrDefault();
+                if (loadingUnit != null)
                 {
                     this.NavigationService.Appear(
                            nameof(Utils.Modules.Operator),
                            Utils.Modules.Operator.ItemOperations.LOADING_UNIT,
-                           bay.CurrentMission.LoadUnitId,
-                           trackCurrentView: true);
+                           loadingUnit.Id,
+                           trackCurrentView: false);
+                    this.lastActiveMissionId = null;
                     this.isPerformingOperation = true;
                 }
             }
@@ -185,6 +198,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                             Utils.Modules.Operator.ItemOperations.INVENTORY,
                             null,
                             trackCurrentView: true);
+                        this.lastActiveMissionId = this.missionOperationsService.CurrentMission.Id;
                         this.isPerformingOperation = true;
                         break;
 
@@ -194,6 +208,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                             Utils.Modules.Operator.ItemOperations.PICK,
                             null,
                             trackCurrentView: true);
+                        this.lastActiveMissionId = this.missionOperationsService.CurrentMission.Id;
                         this.isPerformingOperation = true;
                         break;
 
@@ -203,6 +218,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                             Utils.Modules.Operator.ItemOperations.PUT,
                             null,
                             trackCurrentView: true);
+                        this.lastActiveMissionId = this.missionOperationsService.CurrentMission.Id;
                         this.isPerformingOperation = true;
                         break;
 
@@ -212,6 +228,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                             Utils.Modules.Operator.ItemOperations.LOADING_UNIT_CHECK,
                             null,
                             trackCurrentView: true);
+                        this.lastActiveMissionId = this.missionOperationsService.CurrentMission.Id;
                         this.isPerformingOperation = true;
                         break;
                 }
@@ -229,17 +246,21 @@ namespace Ferretto.VW.App.Operator.ViewModels
             await this.CheckForNewOperationAsync();
         }
 
-        private void OnLoadingUnitMoved(NotificationMessageUI<MoveLoadingUnitMessageData> message)
+        private async Task OnLoadingUnitMovedAsync(NotificationMessageUI<MoveLoadingUnitMessageData> message)
         {
             if (message.Data.MissionType is CommonUtils.Messages.Enumerations.MissionType.OUT
                 &&
-                message.Status is CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd)
+                message.Status is CommonUtils.Messages.Enumerations.MessageStatus.OperationWaitResume)
             {
+                var bay = await this.bayManager.GetBayAsync();
+
                 this.NavigationService.Appear(
-                       nameof(Utils.Modules.Operator),
-                       Utils.Modules.Operator.ItemOperations.LOADING_UNIT,
-                       message.Data.LoadingUnitId,
-                       trackCurrentView: true);
+                    nameof(Utils.Modules.Operator),
+                    Utils.Modules.Operator.ItemOperations.LOADING_UNIT,
+                    message.Data.LoadingUnitId,
+                    trackCurrentView: true);
+
+                this.lastActiveMissionId = bay.CurrentMission?.Id;
                 this.isPerformingOperation = true;
             }
         }

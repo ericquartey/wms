@@ -72,6 +72,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 case FieldMessageType.Positioning:
                 case FieldMessageType.InverterSwitchOn:
                 case FieldMessageType.InverterSwitchOff:
+                    if (message.DeviceIndex != (byte)this.machineData.CurrentInverterIndex)
+                    {
+                        break;
+                    }
                     switch (message.Status)
                     {
                         case MessageStatus.OperationStop:
@@ -93,7 +97,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                 MessageType.Positioning,
                                 this.machineData.RequestingBay,
                                 this.machineData.TargetBay,
-                                StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
+                                StopRequestReasonConverter.GetMessageStatusFromReason(StopRequestReason.Stop));
 
                             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                             break;

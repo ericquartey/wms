@@ -644,11 +644,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task PauseAsync(int? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task RecallAsync(int id);
+        System.Threading.Tasks.Task RemoveFromBayAsync(int id);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task RecallAsync(int id, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task RemoveFromBayAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task ResumeAsync(int? missionId, BayNumber targetBay);
@@ -3051,121 +3051,123 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         ConditionsNotMetForRunning = 3,
     
-        SecurityWasTriggered = 4,
+        ConditionsNotMetForHoming = 4,
     
-        SecurityButtonWasTriggered = 5,
+        SecurityWasTriggered = 5,
     
-        SecurityBarrierWasTriggered = 6,
+        SecurityButtonWasTriggered = 6,
     
-        SecuritySensorWasTriggered = 7,
+        SecurityBarrierWasTriggered = 7,
     
-        InverterFaultStateDetected = 8,
+        SecuritySensorWasTriggered = 8,
     
-        CradleNotCorrectlyLoadedDuringPickup = 9,
+        InverterFaultStateDetected = 9,
     
-        CradleNotCorrectlyUnloadedDuringDeposit = 10,
+        CradleNotCorrectlyLoadedDuringPickup = 10,
     
-        ZeroSensorErrorAfterPickup = 11,
+        CradleNotCorrectlyUnloadedDuringDeposit = 11,
     
-        ZeroSensorErrorAfterDeposit = 12,
+        ZeroSensorErrorAfterPickup = 12,
     
-        InvalidPresenceSensors = 13,
+        ZeroSensorErrorAfterDeposit = 13,
     
-        MissingZeroSensorWithEmptyElevator = 14,
+        InvalidPresenceSensors = 14,
     
-        ZeroSensorActiveWithFullElevator = 15,
+        MissingZeroSensorWithEmptyElevator = 15,
     
-        LoadUnitPresentOnEmptyElevator = 16,
+        ZeroSensorActiveWithFullElevator = 16,
     
-        TopLevelBayOccupied = 17,
+        LoadUnitPresentOnEmptyElevator = 17,
     
-        BottomLevelBayOccupied = 18,
+        TopLevelBayOccupied = 18,
     
-        TopLevelBayEmpty = 19,
+        BottomLevelBayOccupied = 19,
     
-        BottomLevelBayEmpty = 20,
+        TopLevelBayEmpty = 20,
     
-        SensorZeroBayNotActiveAtStart = 21,
+        BottomLevelBayEmpty = 21,
     
-        InverterConnectionError = 22,
+        SensorZeroBayNotActiveAtStart = 22,
     
-        IoDeviceConnectionError = 23,
+        InverterConnectionError = 23,
     
-        LaserConnectionError = 24,
+        IoDeviceConnectionError = 24,
     
-        LoadUnitWeightExceeded = 25,
+        LaserConnectionError = 25,
     
-        LoadUnitWeightTooLow = 26,
+        LoadUnitWeightExceeded = 26,
     
-        MachineWeightExceeded = 27,
+        LoadUnitWeightTooLow = 27,
     
-        DestinationBelowLowerBound = 28,
+        MachineWeightExceeded = 28,
     
-        DestinationOverUpperBound = 29,
+        DestinationBelowLowerBound = 29,
     
-        BayInvertersBusy = 30,
+        DestinationOverUpperBound = 30,
     
-        IoDeviceError = 31,
+        BayInvertersBusy = 31,
     
-        MachineModeNotValid = 32,
+        IoDeviceError = 32,
     
-        AnotherMissionIsActiveForThisLoadUnit = 33,
+        MachineModeNotValid = 33,
     
-        AnotherMissionIsActiveForThisBay = 34,
+        AnotherMissionIsActiveForThisLoadUnit = 34,
     
-        AnotherMissionOfThisTypeIsActive = 35,
+        AnotherMissionIsActiveForThisBay = 35,
     
-        WarehouseIsFull = 36,
+        AnotherMissionOfThisTypeIsActive = 36,
     
-        CellLogicallyOccupied = 37,
+        WarehouseIsFull = 37,
     
-        MoveBayChainNotAllowed = 38,
+        CellLogicallyOccupied = 38,
     
-        AutomaticRestoreNotAllowed = 39,
+        MoveBayChainNotAllowed = 39,
     
-        DestinationTypeNotValid = 40,
+        AutomaticRestoreNotAllowed = 40,
     
-        MissionTypeNotValid = 41,
+        DestinationTypeNotValid = 41,
     
-        ResumeCommandNotValid = 42,
+        MissionTypeNotValid = 42,
     
-        NoLoadUnitInSource = 43,
+        ResumeCommandNotValid = 43,
     
-        LoadUnitSourceDb = 44,
+        NoLoadUnitInSource = 44,
     
-        LoadUnitDestinationCell = 45,
+        LoadUnitSourceDb = 45,
     
-        LoadUnitElevator = 46,
+        LoadUnitDestinationCell = 46,
     
-        LoadUnitNotRemoved = 47,
+        LoadUnitElevator = 47,
     
-        LoadUnitDestinationBay = 48,
+        LoadUnitNotRemoved = 48,
     
-        LoadUnitSourceCell = 49,
+        LoadUnitDestinationBay = 49,
     
-        LoadUnitNotFound = 50,
+        LoadUnitSourceCell = 50,
     
-        LoadUnitNotLoaded = 51,
+        LoadUnitNotFound = 51,
     
-        LoadUnitSourceBay = 52,
+        LoadUnitNotLoaded = 52,
     
-        LoadUnitShutterOpen = 53,
+        LoadUnitSourceBay = 53,
     
-        LoadUnitShutterClosed = 54,
+        LoadUnitShutterOpen = 54,
     
-        LoadUnitPresentInCell = 55,
+        LoadUnitShutterClosed = 55,
     
-        LoadUnitOtherBay = 56,
+        LoadUnitPresentInCell = 56,
     
-        LoadUnitSourceElevator = 57,
+        LoadUnitOtherBay = 57,
     
-        LoadUnitMissingOnElevator = 58,
+        LoadUnitSourceElevator = 58,
     
-        LoadUnitMissingOnBay = 59,
+        LoadUnitMissingOnElevator = 59,
     
-        LoadUnitUndefinedUpper = 60,
+        LoadUnitMissingOnBay = 60,
     
-        LoadUnitUndefinedBottom = 61,
+        LoadUnitUndefinedUpper = 61,
+    
+        LoadUnitUndefinedBottom = 62,
     
         InverterErrorBaseCode = 1000,
     

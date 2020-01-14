@@ -11,6 +11,8 @@ namespace Ferretto.VW.MAS.MachineManager.Providers.Interfaces
 
         void ActivateMove(int? missionId, MissionType missionType, int loadingUnitId, BayNumber requestingBay, MessageActor sender);
 
+        void ActivateMoveToCell(int? missionId, MissionType missionType, int loadingUnitId, BayNumber requestingBay, MessageActor sender);
+
         void EjectFromCell(MissionType missionType, LoadingUnitLocation destinationBay, int loadingUnitId, BayNumber requestingBay, MessageActor sender);
 
         void InsertToCell(MissionType missionType, LoadingUnitLocation sourceBay, int? destinationCellId, int loadingUnitId, BayNumber requestingBay, MessageActor sender);

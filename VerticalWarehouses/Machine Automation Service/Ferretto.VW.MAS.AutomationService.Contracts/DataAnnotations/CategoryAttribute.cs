@@ -2,10 +2,11 @@
 
 namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
 {
-
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
-    public class CategoryAttribute : Attribute, ILocalizableString
+    public sealed class CategoryAttribute : Attribute, ILocalizableString
     {
+        #region Constructors
+
         public CategoryAttribute()
         {
         }
@@ -15,11 +16,18 @@ namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
             this.Category = category;
         }
 
+        #endregion
+
+        #region Properties
+
         public string Category { get; set; }
-        public Type ResourceType { get; set; }
+
+        string ILocalizableString.DefaultValue => this.Category;
 
         string ILocalizableString.ResourceName => this.Category;
-        string ILocalizableString.DefaultValue => this.Category;
-    }
 
+        public Type ResourceType { get; set; }
+
+        #endregion
+    }
 }

@@ -133,6 +133,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Homing conditions not met..
+        /// </summary>
+        public static string ConditionsNotMetForHoming {
+            get {
+                return ResourceManager.GetString("ConditionsNotMetForHoming", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Positioning conditions not met..
         /// </summary>
         public static string ConditionsNotMetForPositioning {
