@@ -3,14 +3,21 @@
 namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
-    public class DefaultValueAttribute : Attribute
+    public sealed class DefaultValueAttribute : Attribute
     {
-        public DefaultValueAttribute(object value) 
+        #region Constructors
+
+        public DefaultValueAttribute(object value)
         {
             this.Value = value ?? throw new ArgumentNullException(nameof(value));
         }
 
-        public object Value { get; }
-    }
+        #endregion
 
+        #region Properties
+
+        public object Value { get; }
+
+        #endregion
+    }
 }
