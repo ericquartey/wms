@@ -140,7 +140,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
         private ShutterPosition GetCurrentPosition()
         {
             var value = ShutterPosition.NotSpecified;
-            if (this.Inputs[(int)InverterSensors.AGL_ShutterSensorA])
+            if (!this.Inputs[(int)InverterSensors.AGL_ShutterSensorA])
             {
                 if (this.Inputs[(int)InverterSensors.AGL_ShutterSensorB])
                 {
@@ -148,7 +148,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
                 }
                 else
                 {
-                    value = ShutterPosition.Half;
+                    value = ShutterPosition.Closed;  // .Half;
                 }
             }
             else
@@ -159,7 +159,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
                 }
                 else
                 {
-                    value = ShutterPosition.Closed;
+                    value = ShutterPosition.Half;  // .Closed;
                 }
             }
 
