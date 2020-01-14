@@ -94,14 +94,23 @@
                             </Setter.Value>
                         </Setter>
 
+                        <!-- this one's specific for this context! -->
+                        <Setter Property="IsEnabled" Value="{Binding Converter={StaticResource IsReadOnlyConverter}}" />
+
                         <Style.Triggers>
                             <MultiTrigger>
                                 <MultiTrigger.Conditions>
-                                    <Condition Property="IsSelected" Value="true" />
+                                    <Condition Property="IsSelected" Value="True" />
                                     <!--<Condition Property="Selector.IsSelectionActive" Value="true" />-->
                                 </MultiTrigger.Conditions>
                                 <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
                                 <Setter Property="Background" Value="{DynamicResource FerrettoMediumGray}" />
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsEnabled" Value="False" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Foreground" Value="{DynamicResource FerrettoMediumGray}" />
                             </MultiTrigger>
                         </Style.Triggers>
 
@@ -119,7 +128,60 @@
             <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
         </Style>
 
+        <Style x:Key="SearchTextBoxStyle" TargetType="{x:Type TextBox}"
+               BasedOn="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}">
+            <Setter Property="Foreground" Value="{DynamicResource FerrettoDarkGray}" />
+            <Setter Property="Background" Value="{DynamicResource FerrettoWhiteGray}" />
+        </Style>
+
+        <Style x:Key="IconButtonBorderStyle" TargetType="{x:Type Border}">
+            <Setter Property="Padding" Value="15" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
+        </Style>
+        <Style x:Key="IconButtonBorderInvertStyle" TargetType="{x:Type Border}"
+               BasedOn="{StaticResource IconButtonBorderStyle}">
+            <Setter Property="Background" Value="{DynamicResource FerrettoWhiteGray}" />
+        </Style>
+
+        <Style x:Key="IconButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="BorderBrush" Value="{x:Null}" />
+            <Setter Property="Background" Value="{x:Null}" />
+            <Setter Property="FontSize" Value="{DynamicResource FontSize_Very_High}" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Foreground" Value="{DynamicResource FerrettoLightGray}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Style="{StaticResource IconButtonBorderStyle}">
+                            <ContentPresenter />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="IconButtonInvertStyle" TargetType="{x:Type Button}"
+               BasedOn="{StaticResource IconButtonStyle}">
+            <Setter Property="Foreground" Value="{DynamicResource FerrettoMediumGray}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Style="{StaticResource IconButtonBorderInvertStyle}">
+                            <ContentPresenter />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </UserControl.Resources>
+
+    <!--
+===================================
+                UI
+===================================
+    -->
     <Grid>
         <Grid.Visibility>
             <Binding Path="Model"
@@ -138,11 +200,7 @@
 
             <Button Margin="0,0,0,8" Click="Back_Click"
                     Visibility="{Binding Path=Count, Converter={StaticResource TruthyToVisibilityConverter}}"
-                    BorderBrush="{DynamicResource FerrettoBlack}"
-                    FontSize="{DynamicResource FontSize_Very_High}"
-                    Padding="10"
-                    Foreground="{DynamicResource FerrettoLightGray}"
-                    Background="{x:Null}">
+                    Style="{StaticResource IconButtonStyle}">
                 <Button.Content>
                     <icons:FontAwesome Kind="ReplySolid" />
                 </Button.Content>
@@ -227,30 +285,37 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Text="{x:Static resx:UI.Search}" VerticalAlignment="Center"
                        Foreground="{DynamicResource FerrettoWhiteGray}"
                        FontSize="{DynamicResource FontSize_High}" Margin="0,0,10,0" />
 
-                <ctrls:PpcTextBox HorizontalAlignment="Stretch"
-                                  d:DataContext="{d:DesignInstance Type=design:SearchTextViewModel, IsDesignTimeCreatable=True}"
-                                  Background="{DynamicResource FerrettoWhiteGray}"
-                                  Foreground="{DynamicResource FerrettoDarkGray}"
-                                  Grid.Column="1" FontSize="{DynamicResource FontSize_High}"
-                                  InputText="{Binding Path=SearchText, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, UpdateSourceTrigger=PropertyChanged, Delay=500}"
+                <TextBox d:DataContext="{d:DesignInstance Type=design:SearchTextViewModel, IsDesignTimeCreatable=True}"
+                         Style="{StaticResource SearchTextBoxStyle}"
+                         Grid.Column="1"
+                         Text="{Binding Path=SearchText, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}, UpdateSourceTrigger=PropertyChanged, Delay=500}"
                     >
                     <i:Interaction.Behaviors>
-                        <behaviors:PpcTextBoxAutoSelectBehavior />
+                        <behaviors:TextBoxAutoSelectBehavior />
+                        <behaviors:TextBoxKeyboardBehavior KeyboardCaption="{x:Static resx:UI.Search}" />
                     </i:Interaction.Behaviors>
-                </ctrls:PpcTextBox>
+                </TextBox>
+
+                <Button d:DataContext="{d:DesignInstance Type=design:SearchTextViewModel, IsDesignTimeCreatable=True}"
+                        Visibility="{Binding Path=SearchText, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}, Converter={StaticResource TruthyToVisibilityConverter}}"
+                        Grid.Column="2" Click="Back_Click"
+                        Style="{StaticResource IconButtonInvertStyle}">
+                    <icons:FontAwesome Kind="BackspaceSolid" />
+                </Button>
             </Grid>
             <ScrollViewer VerticalScrollBarVisibility="Auto"
                       HorizontalAlignment="Stretch" Grid.Row="1">
 
                 <Border BorderThickness="1" BorderBrush="{DynamicResource FerrettoMediumGray}">
                     <!-- entities -->
-                    <ListView ItemsSource="{Binding}"
+                    <ListView ItemsSource="{Binding}" 
                               SelectionChanged="ListView_Selected"
                               HorizontalContentAlignment="Stretch">
                         <ListView.View>

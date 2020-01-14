@@ -41,7 +41,8 @@
 
 
         <scaffolding:Scaffolder Grid.Row="1"
-                                 Model="{Binding Path=Configuration}"/>
+                                Command="{Binding SaveCommand}"
+                                Model="{Binding Path=Configuration}"/>
 
         <!--<dxprg:PropertyGridControl Grid.Row="1" Visibility="Collapsed"
                                    AllowExpanding="Force"

@@ -82,8 +82,25 @@
             <DataTemplate.Resources>
                 <converters:TwoWayConverter x:Key="TwoWayConverter" />
             </DataTemplate.Resources>
-            <controls:IPAddressBox IsEnabled="{Binding Path=., Converter={StaticResource IsEditableConverter}}"
-                                   IPAddress="{Binding Path=Value, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Mode=TwoWay}" />
+            <controls:IPAddressBox IsEnabled="{Binding Path=., Converter={StaticResource IsEditableConverter}}" x:Name="field">
+                <controls:IPAddressBox.Resources>
+                    <validation:BindingProxy x:Key="valueBridge" Data="{Binding Path=Text, ElementName=field}" />
+                    <validation:BindingProxy x:Key="entityBridge" Data="{Binding Path=DataContext, ElementName=field}" />
+                </controls:IPAddressBox.Resources>
+                <controls:IPAddressBox.IPAddress>
+                    <Binding Path="Value" UpdateSourceTrigger="PropertyChanged"
+                             RelativeSource="{RelativeSource Mode=FindAncestor,AncestorType=UserControl}" Mode="TwoWay">
+                        <Binding.ValidationRules>
+                            <validation:CompositeValidationRule ValidatesOnTargetUpdated="True" Validated="CompositeValidationRule_Validated">
+                                <validation:CompositeValidationRule.CompositeValidator>
+                                    <validation:CompositeValidator Value="{Binding Data, Source={StaticResource valueBridge}}"
+                                                                   Rules="{Binding Data, Source={StaticResource entityBridge}, Converter={StaticResource ValidationRuleConverter}}" />
+                                </validation:CompositeValidationRule.CompositeValidator>
+                            </validation:CompositeValidationRule>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </controls:IPAddressBox.IPAddress>
+            </controls:IPAddressBox>
         </DataTemplate>
 
         <!-- string (default*) -->

@@ -16,13 +16,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Ferretto.VW.App.Controls;
+using System.ComponentModel;
 
 namespace Ferretto.VW.App.Scaffolding.Controls
 {
     /// <summary>
     /// Interaction logic for Scaffolder.xaml
     /// </summary>
-    public partial class Scaffolder : UserControl
+    [DefaultEvent(nameof(Commit))]
+    public partial class Scaffolder : UserControl, ICommandSource
     {
         public Scaffolder()
         {
@@ -101,6 +104,19 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             }
         }
 
+        void Back()
+        {
+            var breadcrumb = this.Breadcrumb;
+            if (breadcrumb?.Count >= 2)
+            {
+                this.FocusStructure = breadcrumb[breadcrumb.Count - 2];
+            }
+            else
+            {
+                this.FocusStructure = this._navigationRoot;
+            }
+        }
+
         #endregion
 
         #region dependency properties
@@ -153,27 +169,38 @@ namespace Ferretto.VW.App.Scaffolding.Controls
         private void OnSearchTextChanged(DependencyPropertyChangedEventArgs e)
         {
             string searchText = (string)e.NewValue;
-            if (!string.IsNullOrEmpty(searchText))
+
+            bool wasAlreadySearching = !string.IsNullOrEmpty((string)e.OldValue);
+            bool isStillSearching = !string.IsNullOrEmpty(searchText);
+
+            if (isStillSearching)
             {
-                // prepare
-                var query = this._elasticDataTable
+                // prepare new focusstruct
+                var query = this.FocusStructure.Entities
+                    .Join(this._elasticDataTable, entity => entity.Id, tableItem => tableItem.Id, (_, t) => t)
                     .Where(i =>
                     {
                         if (int.TryParse(searchText, out int id))
                         {
                             return i.Id == id;
                         }
-                        return i.Tags.Any(t => t.ToLowerInvariant().Contains(searchText.ToLowerInvariant()));
+                        return i.FullCategory.ToLowerInvariant().Contains(searchText.ToLowerInvariant());
                     })
                     .Select(i => new Models.ScaffoldedEntity(i.Entity.Property, i.Entity.Instance, i.Entity.Metadata, i.Id, i.FullCategory));
 
+                if (wasAlreadySearching)
+                {
+                    var breadcrumb = this.Breadcrumb;
+                    // remove last search (in order to replace it as the `FocusStructure` property changes).
+                    breadcrumb.RemoveAt(breadcrumb.Count - 1);
+                }
+
                 // exec
-                this.Breadcrumb.Clear();
                 this.FocusStructure = new Models.ScaffoldedStructure($"\"{searchText}\"", query, Array.Empty<Models.ScaffoldedStructure>());
             }
             else
             {
-                this.FocusStructure = this._navigationRoot;
+                this.Back();
             }
         }
 
@@ -281,6 +308,18 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             }
         }
 
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(this.SearchText))
+            {
+                this.SearchText = default;
+            }
+            else
+            {
+                this.Back();
+            }
+        }
+
         private void TryEdit(Models.ScaffoldedEntity entity)
         {
             if (entity?.IsEditable() == true)
@@ -301,24 +340,14 @@ namespace Ferretto.VW.App.Scaffolding.Controls
 
         private void ListViewItem_Click(object sender, RoutedEventArgs e)
         {
-            // e.Handled = true;
-            var listViewItem = sender as ListViewItem;
-            if (listViewItem?.IsSelected == true)
+            if (e.OriginalSource is DependencyObject d)
             {
-                this.TryEdit(listViewItem.DataContext as Models.ScaffoldedEntity);
-            }
-        }
-
-        private void Back_Click(object sender, RoutedEventArgs e)
-        {
-            var breadcrumb = this.Breadcrumb;
-            if (breadcrumb?.Count >= 2)
-            {
-                this.FocusStructure = breadcrumb[breadcrumb.Count - 1];
-            }
-            else
-            {
-                this.FocusStructure = this._navigationRoot;
+                var listViewItem = d.FindAncestor<ListViewItem>();
+                if (listViewItem?.IsSelected == true)
+                {
+                    e.Handled = true;
+                    this.TryEdit(listViewItem.DataContext as Models.ScaffoldedEntity);
+                }
             }
         }
 
@@ -347,6 +376,58 @@ namespace Ferretto.VW.App.Scaffolding.Controls
         private void OnCommit(EventArgs e)
         {
             this.Commit?.Invoke(this, e);
+            object argument = this.CommandParameter ?? this.Model;
+            if (this.Command != null && this.Command.CanExecute(argument))
+            {
+                this.Command.Execute(argument);
+            }
+        }
+
+        #endregion
+
+        #region ICommandSource
+
+        public static readonly DependencyProperty CommandProperty =
+                DependencyProperty.Register(
+                        "Command",
+                        typeof(ICommand),
+                        typeof(Scaffolder),
+                        new FrameworkPropertyMetadata(default(ICommand)));
+
+        public static readonly DependencyProperty CommandParameterProperty =
+                DependencyProperty.Register(
+                        "CommandParameter",
+                        typeof(object),
+                        typeof(Scaffolder),
+                        new FrameworkPropertyMetadata(default));
+
+        public static readonly DependencyProperty CommandTargetProperty =
+                DependencyProperty.Register(
+                        "CommandTarget",
+                        typeof(IInputElement),
+                        typeof(Scaffolder),
+                        new FrameworkPropertyMetadata(default(IInputElement)));
+
+
+        [Bindable(true)]
+        public ICommand Command
+        {
+            get => (ICommand)this.GetValue(CommandProperty);
+            set => this.SetValue(CommandProperty, value);
+        }
+
+        [Bindable(true)]
+        public object CommandParameter
+        {
+            get =>this.GetValue(CommandParameterProperty);
+            set =>this.SetValue(CommandParameterProperty, value);
+        }
+
+        [Bindable(true)]
+        public IInputElement CommandTarget
+        {
+            get =>(IInputElement)this.GetValue(CommandTargetProperty);
+            set => this.SetValue(CommandTargetProperty, value);
         }
 
         #endregion
