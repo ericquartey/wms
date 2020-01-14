@@ -241,7 +241,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Cell)
                 {
                     this.inputCellId = this.MachineStatus.LogicalPositionId;
-                    RaisePropertyChanged(nameof(this.InputCellId));
+                    this.RaisePropertyChanged(nameof(this.InputCellId));
                 }
                 else if (this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay)
                 {
@@ -254,7 +254,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.selectedBayPosition = this.bay.Positions.Single(b => b.Height == this.bay.Positions.Max(p => p.Height));
                     this.IsPositionUpSelected = true;
                 }
-                RaisePropertyChanged(nameof(this.SelectedBayPosition));
+
+                this.RaisePropertyChanged(nameof(this.SelectedBayPosition));
 
                 await base.OnAppearedAsync();
             }

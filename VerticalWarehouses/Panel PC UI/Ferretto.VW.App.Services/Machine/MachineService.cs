@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Services.Models;
@@ -20,7 +19,7 @@ using ShutterType = Ferretto.VW.MAS.AutomationService.Contracts.ShutterType;
 
 namespace Ferretto.VW.App.Services
 {
-    public class MachineService : BindableBase, IMachineService, IDisposable
+    public sealed class MachineService : BindableBase, IMachineService, IDisposable
     {
         #region Fields
 
@@ -192,8 +191,6 @@ namespace Ferretto.VW.App.Services
             set => this.SetProperty(ref this.loadingUnits, value, this.LoadUnitsNotificationProperty);
         }
 
-        protected NLog.Logger Logger => this.logger;
-
         public MachineMode MachineMode => this.machineModeService.MachineMode;
 
         public MachinePowerState MachinePower => this.machineModeService.MachinePower;
@@ -209,8 +206,6 @@ namespace Ferretto.VW.App.Services
             get => this.notification;
             set => this.SetProperty(ref this.notification, value, () => this.ShowNotification(this.notification, NotificationSeverity.Info));
         }
-
-        private bool IsHealthy => this.healthProbeService?.HealthStatus == HealthStatus.Healthy || this.healthProbeService?.HealthStatus == HealthStatus.Degraded;
 
         #endregion
 
@@ -232,9 +227,16 @@ namespace Ferretto.VW.App.Services
 
         public async Task OnInitializationServiceAsync()
         {
-            await this.InitializationHoming();
-            await this.InitializationBay();
-            await this.InitializationLoadUnits();
+            try
+            {
+                await this.InitializationHoming();
+                await this.InitializationBay();
+                await this.InitializationLoadUnits();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
         }
 
         public async Task OnUpdateServiceAsync()
@@ -251,7 +253,7 @@ namespace Ferretto.VW.App.Services
                 throw new ArgumentNullException(nameof(exception));
             }
 
-            this.Logger.Error(exception);
+            this.logger.Error(exception);
 
             this.eventAggregator
                 .GetEvent<PresentationNotificationPubSubEvent>()
@@ -274,6 +276,7 @@ namespace Ferretto.VW.App.Services
             {
                 this.machineLoadingUnitsWebService?.StopAsync(this.machineStatus.CurrentMissionId, this.BayNumber);
             }
+
             this.machineElevatorWebService?.StopAsync();
             this.machineCarouselWebService?.StopAsync();
             this.shuttersWebService?.StopAsync();
@@ -867,6 +870,9 @@ namespace Ferretto.VW.App.Services
 
         private async Task UpdateBay()
         {
+            // Devo aggiornare i dati delle posizioni della baia
+            this.Bay = await this.bayManagerService.GetBayAsync();
+
             var ms = (MachineStatus)this.MachineStatus.Clone();
 
             ms = await this.GetElevatorAsync(ms);
@@ -908,8 +914,8 @@ namespace Ferretto.VW.App.Services
 
         private void UpdateMachineStatusByElevatorPosition(EventArgs e, MachineStatus ms)
         {
-            bool update = false;
-            bool machineStatusNull = false;
+            var update = false;
+            var machineStatusNull = false;
 
             if (ms is null)
             {
