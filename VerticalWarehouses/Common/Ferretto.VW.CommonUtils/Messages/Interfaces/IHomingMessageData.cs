@@ -12,6 +12,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         int? LoadingUnitId { get; }
 
+        bool ShowErrors { get; }
+
         #endregion
     }
 }

@@ -256,7 +256,7 @@ namespace Ferretto.VW.MAS.MissionManager
             if (bays.Any(x => x.Carousel != null && !x.Carousel.IsHomingExecuted))
             {
                 var bayNumber = bays.First(x => x.Carousel != null && !x.Carousel.IsHomingExecuted).Number;
-                IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, Calibration.FindSensor, null);
+                IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, Calibration.FindSensor, null, false);
 
                 this.EventAggregator
                     .GetEvent<CommandEvent>()
@@ -271,7 +271,7 @@ namespace Ferretto.VW.MAS.MissionManager
             }
             else
             {
-                IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical, Calibration.FindSensor, null);
+                IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical, Calibration.FindSensor, null, false);
 
                 this.EventAggregator
                     .GetEvent<CommandEvent>()

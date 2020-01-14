@@ -102,7 +102,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             if (this.Mission.NeedHomingAxis == Axis.BayChain)
                             {
                                 this.Logger.LogDebug($"Homing Bay occupied start");
-                                this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, notification.RequestingBay, MessageActor.MachineManager);
+                                this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, notification.RequestingBay, MessageActor.MachineManager);
                             }
                             else
                             {
@@ -142,7 +142,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         public override void OnResume(CommandMessage command)
         {
 #if CHECK_BAY_SENSOR
-            if (!this.sensorsProvider.IsLoadingUnitInLocation(this.Mission.LoadingUnitDestination))
+            if (!this.SensorsProvider.IsLoadingUnitInLocation(this.Mission.LoadUnitDestination))
 #endif
             {
                 var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
@@ -159,9 +159,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 #if CHECK_BAY_SENSOR
             else
             {
-                var error = this.errorsProvider.RecordNew(result);
-                var description = string.Format(Resources.MissionMove.MoveBayChainNotAllowed, bay.Number, this.Mission.LoadUnitId, ex.Message);
-                throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
+                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotRemoved, this.Mission.TargetBay);
+                throw new StateMachineException(ErrorDescriptions.LoadUnitNotRemoved, this.Mission.TargetBay, MessageActor.MachineManager);
             }
 #endif
         }

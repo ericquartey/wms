@@ -1463,8 +1463,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"MoveBackward")]
         MoveBackward = 4,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"MoveShutter")]
-        MoveShutter = 8,
+        [System.Runtime.Serialization.EnumMember(Value = @"MoveShutterOpen")]
+        MoveShutterOpen = 8,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"MoveShutterClosed")]
+        MoveShutterClosed = 16,
     
     }
     

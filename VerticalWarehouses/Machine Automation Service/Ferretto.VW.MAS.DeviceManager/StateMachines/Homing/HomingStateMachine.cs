@@ -23,8 +23,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
         private readonly Calibration calibration;
 
-        private readonly int? loadingUnitId;
-
         private readonly IHomingMachineData machineData;
 
         #endregion
@@ -36,6 +34,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             Calibration calibration,
             int? loadingUnitId,
             bool isOneTonMachine,
+            bool showErrors,
             BayNumber requestingBay,
             BayNumber targetBay,
             IMachineResourcesProvider machineResourcesProvider,
@@ -47,7 +46,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
         {
             this.axisToCalibrate = axisToCalibrate;
             this.calibration = calibration;
-            this.loadingUnitId = loadingUnitId;
 
             this.machineData = new HomingMachineData(
                 isOneTonMachine,
@@ -56,6 +54,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 targetBay,
                 machineResourcesProvider,
                 baysDataProvider.GetInverterIndexByAxis(axisToCalibrate, targetBay),
+                showErrors,
                 eventAggregator,
                 logger,
                 serviceScopeFactory);
@@ -209,11 +208,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
                     this.PublishNotificationMessage(notificationMessage);
 
-                    using (var scope = this.ServiceScopeFactory.CreateScope())
+                    if (this.machineData.ShowErrors)
                     {
-                        var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+                        using (var scope = this.ServiceScopeFactory.CreateScope())
+                        {
+                            var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
 
-                        errorsProvider.RecordNew(DataModels.MachineErrorCode.ConditionsNotMetForHoming, this.machineData.RequestingBay);
+                            errorsProvider.RecordNew(DataModels.MachineErrorCode.ConditionsNotMetForHoming, this.machineData.RequestingBay);
+                        }
                     }
 
                     this.Logger.LogError($"Conditions not verified for homing: {errorText}");

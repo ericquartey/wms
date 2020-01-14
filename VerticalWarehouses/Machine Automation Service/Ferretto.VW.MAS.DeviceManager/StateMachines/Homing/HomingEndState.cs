@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     {
                         case MessageStatus.OperationStop:
                         case MessageStatus.OperationEnd:
-                            var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, MessageVerbosity.Info);
+                            var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, false, MessageVerbosity.Info);
 
                             var notificationMessage = new NotificationMessage(
                                 notificationMessageData,
@@ -123,13 +123,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     ||
                     this.machineData.AxisToCalibrate == Axis.HorizontalAndVertical)
                 {
-                    this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>().UpdateLastIdealPosition(0);
+                    var elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
+                    elevatorDataProvider.UpdateLastIdealPosition(0);
+                    elevatorDataProvider.SetCurrentBayPosition(null);
+                    elevatorDataProvider.SetCurrentCell(null);
                 }
                 else if (this.machineData.AxisToCalibrate == Axis.BayChain)
                 {
                     this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>().UpdateLastIdealPosition(0, this.machineData.RequestingBay);
                 }
-                var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, MessageVerbosity.Info);
+                var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, false, MessageVerbosity.Info);
 
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
