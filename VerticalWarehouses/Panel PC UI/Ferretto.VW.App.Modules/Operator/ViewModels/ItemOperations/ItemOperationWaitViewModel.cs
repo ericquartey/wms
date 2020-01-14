@@ -31,6 +31,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private bool isPerformingOperation;
 
+        private int? lastActiveMissionId;
+
         private int loadingUnitsMovements;
 
         private SubscriptionToken loadingUnitToken;
@@ -122,10 +124,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             if (this.isPerformingOperation
                 &&
-                this.machineModeService.MachineMode == MachineMode.Automatic)
+                this.machineModeService.MachineMode == MachineMode.Automatic
+                &&
+                this.lastActiveMissionId.HasValue
+                &&
+                this.lastActiveMissionId != this.missionOperationsService.CurrentMission?.Id)
             {
                 this.NavigationService.GoBack();
                 this.isPerformingOperation = false;
+                this.lastActiveMissionId = null;
                 return;
             }
 
@@ -172,6 +179,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                            Utils.Modules.Operator.ItemOperations.LOADING_UNIT,
                            bay.CurrentMission.LoadUnitId,
                            trackCurrentView: true);
+                    this.lastActiveMissionId = bay.CurrentMission.Id;
                     this.isPerformingOperation = true;
                 }
             }
@@ -185,6 +193,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                             Utils.Modules.Operator.ItemOperations.INVENTORY,
                             null,
                             trackCurrentView: true);
+                        this.lastActiveMissionId = this.missionOperationsService.CurrentMission.Id;
                         this.isPerformingOperation = true;
                         break;
 
@@ -194,6 +203,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                             Utils.Modules.Operator.ItemOperations.PICK,
                             null,
                             trackCurrentView: true);
+                        this.lastActiveMissionId = this.missionOperationsService.CurrentMission.Id;
                         this.isPerformingOperation = true;
                         break;
 
@@ -203,6 +213,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                             Utils.Modules.Operator.ItemOperations.PUT,
                             null,
                             trackCurrentView: true);
+                        this.lastActiveMissionId = this.missionOperationsService.CurrentMission.Id;
                         this.isPerformingOperation = true;
                         break;
 
@@ -212,6 +223,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                             Utils.Modules.Operator.ItemOperations.LOADING_UNIT_CHECK,
                             null,
                             trackCurrentView: true);
+                        this.lastActiveMissionId = this.missionOperationsService.CurrentMission.Id;
                         this.isPerformingOperation = true;
                         break;
                 }
@@ -240,6 +252,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                        Utils.Modules.Operator.ItemOperations.LOADING_UNIT,
                        message.Data.LoadingUnitId,
                        trackCurrentView: true);
+                this.lastActiveMissionId = this.missionOperationsService.CurrentMission.Id;
                 this.isPerformingOperation = true;
             }
         }

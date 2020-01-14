@@ -26,9 +26,6 @@ namespace Ferretto.VW.App.Controls
             typeof(PpcDialogView),
             new PropertyMetadata(ClosedChanged));
 
-        private readonly INavigationService
-            navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
-
         #endregion
 
         #region Constructors
@@ -162,10 +159,6 @@ namespace Ferretto.VW.App.Controls
             {
                 dialogView.Disappear();
             }
-        }
-
-        private void CheckDataContext()
-        {
         }
 
         private string GetAttachedViewModel()
