@@ -321,7 +321,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     BayPosition bayPositionUp = this.Bay?.Positions.OrderBy(m => m.Height).Last();
                     await this.machineBaysWebService.UpdateHeightAsync(
-                        1, //Valore fisso
+                        1, // Valore fisso
                         this.NewPositionUp);
 
                     this.DisplacementUp = null;
@@ -332,7 +332,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     BayPosition bayPositionDown = this.Bay?.Positions.OrderBy(m => m.Height).First();
                     await this.machineBaysWebService.UpdateHeightAsync(
-                        2, //Valore fisso
+                        2, // Valore fisso
                         this.NewPositionDown);
 
                     this.DisplacementDown = null;
