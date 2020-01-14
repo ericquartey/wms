@@ -312,6 +312,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 case MissionType.WMS:
                 case MissionType.OUT:
+                case MissionType.IN:
                     returnValue = (this.MachineModeDataProvider.Mode == MachineMode.Automatic);
                     break;
 

@@ -174,12 +174,13 @@ namespace Ferretto.VW.MAS.DataLayer
                         LoadUnitId = loadingUnitId,
                         TargetBay = bayNumber,
                         Status = MissionStatus.New,
+                        LoadUnitDestination = LoadingUnitLocation.Cell,
                         MissionType = MissionType.IN
                     });
 
                 this.dataContext.SaveChanges();
 
-                this.logger.LogInformation("Created internal MAS recall mission.");
+                this.logger.LogInformation($"Created internal MAS recall mission for loading unit {loadingUnitId}.");
 
                 return entry.Entity;
             }
