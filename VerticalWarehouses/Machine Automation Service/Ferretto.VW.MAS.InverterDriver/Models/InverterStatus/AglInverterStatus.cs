@@ -148,7 +148,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
                 }
                 else
                 {
-                    value = ShutterPosition.Closed;  // .Half;
+                    value = ShutterPosition.Closed;
                 }
             }
             else
@@ -159,7 +159,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
                 }
                 else
                 {
-                    value = ShutterPosition.Half;  // .Closed;
+                    value = ShutterPosition.Half;
                 }
             }
 
