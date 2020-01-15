@@ -26,4 +26,8 @@
     <ProjectReference Include="..\Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj" />
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="cd ..\Ferretto.VW.App&#xD;&#xA;mkdir publish\$(ConfigurationName)&#xD;&#xA;copy bin\$(ConfigurationName)\net471\$(TargetFileName) publish\$(ConfigurationName)\&#xD;&#xA;copy bin\$(ConfigurationName)\net471\Ferretto.VW.Devices.BarcodeReader.* publish\$(ConfigurationName)\" />
+  </Target>
+
 </Project>
