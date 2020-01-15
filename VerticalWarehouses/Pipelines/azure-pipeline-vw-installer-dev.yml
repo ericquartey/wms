@@ -1,7 +1,13 @@
 trigger:
-- develop
-- release
-- master
+  batch: true
+  branches:
+    include:
+    - develop
+    - release
+    - master
+  paths:
+    include:
+    - VerticalWarehouses/Installer/*
 
 pool:
   vmImage: 'windows-latest'
