@@ -6,7 +6,6 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
-        [Obsolete]
         void CompleteVerticalOrigin();
 
         SetupStatusCapabilities Get();

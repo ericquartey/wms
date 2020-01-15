@@ -21,7 +21,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             int? missionId = null,
             CommandAction commandAction = CommandAction.Start,
             StopRequestReason stopReason = StopRequestReason.NoReason,
-            MissionState state = MissionState.NotDefined,
+            MissionStep state = MissionStep.NotDefined,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.MissionType = missionType;
@@ -63,7 +63,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public int? SourceCellId { get; }
 
-        public MissionState State { get; }
+        public MissionStep State { get; }
 
         public StopRequestReason StopReason { get; }
 

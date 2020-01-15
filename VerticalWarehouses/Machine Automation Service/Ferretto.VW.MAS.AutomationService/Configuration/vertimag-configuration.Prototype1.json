@@ -38,6 +38,7 @@
         "Positions": [
           {
             "Height": 645,
+            "MaxSingleHeight": 695,
             "Location": "InternalBay1Down"
           }
         ],
@@ -85,10 +86,13 @@
         "Positions": [
           {
             "Height": 645,
+            "MaxSingleHeight": 320,
+            "MaxDoubleHeight": 695,
             "Location": "InternalBay2Down"
           },
           {
             "Height": 1045,
+            "MaxSingleHeight": 320,
             "Location": "InternalBay2Up"
           }
         ],

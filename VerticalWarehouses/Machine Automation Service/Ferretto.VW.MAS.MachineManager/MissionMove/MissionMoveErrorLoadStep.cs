@@ -11,11 +11,11 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.MachineManager.MissionMove
 {
-    public class MissionMoveErrorDepositState : MissionMoveBase
+    public class MissionMoveErrorLoadStep : MissionMoveBase
     {
         #region Constructors
 
-        public MissionMoveErrorDepositState(Mission mission,
+        public MissionMoveErrorLoadStep(Mission mission,
             IServiceProvider serviceProvider,
             IEventAggregator eventAggregator)
             : base(mission, serviceProvider, eventAggregator)
@@ -38,7 +38,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         /// <param name="command">not used</param>
         public override bool OnEnter(CommandMessage command)
         {
-            return this.EnterErrorState(MissionState.ErrorDeposit);
+            return this.EnterErrorState(MissionStep.ErrorLoad);
         }
 
         public override void OnNotification(NotificationMessage notification)
@@ -66,9 +66,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 )
                             {
                                 this.Mission.ErrorMovements = MissionErrorMovements.None;
-                                if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell)
+                                if (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell)
                                 {
-                                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+                                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
                                     this.Logger.LogDebug($"{this.GetType().Name}: Close Shutter positioning start");
                                     this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, restore: true);
                                     this.Mission.ErrorMovements |= MissionErrorMovements.MoveShutterClosed;
@@ -95,8 +95,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 this.Mission.ErrorMovements = MissionErrorMovements.None;
                                 this.Mission.RestoreConditions = true;
                                 this.Mission.NeedMovingBackward = false;
-                                this.Mission.RestoreState = MissionState.NotDefined;
-                                var newStep = new MissionMoveToTargetState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                this.Mission.RestoreStep = MissionStep.NotDefined;
+                                var newStep = new MissionMoveStartStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                                 newStep.OnEnter(null);
                             }
                             else
@@ -116,18 +116,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward))
                             {
                                 this.Mission.NeedMovingBackward = false;
-                                if (this.Mission.NeedHomingAxis == Axis.Horizontal)
-                                {
-                                    this.Mission.RestoreState = MissionState.NotDefined;
-                                    var newStep = new MissionMoveToTargetState(this.Mission, this.ServiceProvider, this.EventAggregator);
-                                    newStep.OnEnter(null);
-                                }
+                                this.RestoreOriginalStep();
                             }
                             else
                             {
-                                this.Mission.ErrorMovements &= ~MissionErrorMovements.MoveForward;
+                                this.Mission.ErrorMovements = MissionErrorMovements.None;
                                 this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, true);
-                                this.DepositUnitEnd(restore: true);
+                                this.LoadUnitEnd(restore: true);
                             }
                         }
                         break;
@@ -149,20 +144,20 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override void OnResume(CommandMessage command)
         {
-            this.Logger.LogDebug($"{this.GetType().Name}: Resume mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, from {this.Mission.RestoreState}, loadUnit {this.Mission.LoadUnitId}");
+            this.Logger.LogDebug($"{this.GetType().Name}: Resume mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, from {this.Mission.RestoreStep}, loadUnit {this.Mission.LoadUnitId}");
 
-            switch (this.Mission.RestoreState)
+            switch (this.Mission.RestoreStep)
             {
-                case MissionState.DepositUnit:
-                    this.RestoreDepositStart();
+                case MissionStep.LoadElevator:
+                    this.RestoreLoadElevatorStart();
                     break;
 
                 default:
-                    this.Logger.LogError($"{this.GetType().Name}: no valid RestoreState {this.Mission.RestoreState} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
+                    this.Logger.LogError($"{this.GetType().Name}: no valid RestoreState {this.Mission.RestoreStep} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
 
                     {
                         this.Mission.StopReason = StopRequestReason.NoReason;
-                        var newStep = new MissionMoveEndState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                         newStep.OnEnter(null);
                     }
                     break;
@@ -172,30 +167,31 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         /// <summary>
         /// we try to resolve different error situations:
         /// 1)  if the elevator has moved vertically we can start from previous step: if elevator is not full will be checked later
-        /// 2)  if we have to deposit in cell we try to move chain forward in manual mode calculating the distance. Then repeat deposit step
-        /// 3)  if we have to deposit in bay we have more cases:
-        ///     3.1) shutter is open: try to move forward in manual mode calculating the distance
-        ///     3.2) shutter is closed or intermediate: open the shutter and move chain back. Then repeat deposit step
+        /// 2)  if we have to load from cell we move chain back in manual mode (it is safer to have elevator empty). Then repeat loading step
+        /// 3)  if we have to load from bay we have more cases:
+        ///     3.1) shutter is open: try to move chain back in manual mode (profile measure is not possible in manual mode). Then repeat loading step
+        ///     3.2) shutter is closed or intermediate: open the shutter and start from 3.1)
         /// </summary>
         /// <returns></returns>
-        private void RestoreDepositStart()
+        private void RestoreLoadElevatorStart()
         {
             this.Mission.StopReason = StopRequestReason.NoReason;
-            var destination = this.LoadingUnitMovementProvider.GetDestinationHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
+            var origin = this.LoadingUnitMovementProvider.GetSourceHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
             var current = this.LoadingUnitMovementProvider.GetCurrentVerticalPosition();
-            if ((!destination.HasValue || Math.Abs(destination.Value - current) > 2)
-                && this.Mission.LoadUnitDestination == LoadingUnitLocation.Cell
+            if ((!origin.HasValue || Math.Abs(origin.Value - current) > 2)
+                && this.Mission.LoadUnitSource == LoadingUnitLocation.Cell
                 )
             {
-                if (this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
+                if (!this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
                 {
-                    this.Logger.LogDebug($"{this.GetType().Name}: Vertical position has changed {this.Mission.RestoreState} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
+                    this.Logger.LogDebug($"{this.GetType().Name}: Vertical position has changed {this.Mission.RestoreStep} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
 
                     this.Mission.RestoreConditions = true;
-                    this.Mission.RestoreState = MissionState.NotDefined;
+                    this.Mission.RestoreStep = MissionStep.NotDefined;
                     this.Mission.NeedMovingBackward = false;
-                    var newStep = new MissionMoveToTargetState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    var newStep = new MissionMoveStartStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     newStep.OnEnter(null);
+
                     return;
                 }
                 else
@@ -206,39 +202,41 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
 
             this.Mission.Direction = HorizontalMovementDirection.Backwards;
+            var measure = (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell);
             this.Mission.OpenShutterPosition = ShutterPosition.NotSpecified;
             this.Mission.ErrorMovements = MissionErrorMovements.None;
-            switch (this.Mission.LoadUnitDestination)
+            switch (this.Mission.LoadUnitSource)
             {
                 case LoadingUnitLocation.Cell:
-                    if (this.Mission.DestinationCellId != null)
+                    if (this.Mission.LoadUnitCellSourceId != null)
                     {
-                        var cell = this.CellsProvider.GetById(this.Mission.DestinationCellId.Value);
+                        var cell = this.CellsProvider.GetById(this.Mission.LoadUnitCellSourceId.Value);
+
                         // invert direction?
                         if (this.Mission.NeedMovingBackward)
                         {
-                            this.Mission.Direction = (cell.Side != WarehouseSide.Front) ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
+                            this.Mission.Direction = cell.Side != WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
                         }
                         else
                         {
-                            this.Mission.Direction = (cell.Side == WarehouseSide.Front) ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
+                            this.Mission.Direction = cell.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
                         }
                     }
 
                     break;
 
                 default:
-                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
                     // invert direction?
+                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
                     if (this.Mission.NeedMovingBackward)
                     {
-                        this.Mission.Direction = (bay.Side != WarehouseSide.Front) ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
+                        this.Mission.Direction = bay.Side != WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
                     }
                     else
                     {
-                        this.Mission.Direction = (bay.Side == WarehouseSide.Front) ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
+                        this.Mission.Direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
                     }
-                    this.Mission.OpenShutterPosition = this.LoadingUnitMovementProvider.GetShutterOpenPosition(bay, this.Mission.LoadUnitDestination);
+                    this.Mission.OpenShutterPosition = this.LoadingUnitMovementProvider.GetShutterOpenPosition(bay, this.Mission.LoadUnitSource);
                     var shutterPosition = this.SensorsProvider.GetShutterPosition(this.Mission.TargetBay);
                     if (this.Mission.OpenShutterPosition == ShutterPosition.Half && shutterPosition == ShutterPosition.Opened)
                     {
@@ -254,11 +252,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     break;
             }
-            if (this.Mission.NeedMovingBackward
-                || this.Mission.NeedHomingAxis == Axis.Horizontal
-                )
+            if (this.Mission.NeedMovingBackward)
             {
-                this.Mission.NeedMovingBackward = true;
                 this.Logger.LogDebug($"{this.GetType().Name}: Manual Horizontal back positioning start");
                 if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitBack(this.Mission.Direction, this.Mission.LoadUnitId, MessageActor.MachineManager, this.Mission.TargetBay))
                 {
@@ -274,7 +269,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             else
             {
                 this.Logger.LogDebug($"{this.GetType().Name}: Manual Horizontal forward positioning start");
-                if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, true, false, this.Mission.LoadUnitId, MessageActor.MachineManager, this.Mission.TargetBay))
+                if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, false, measure, this.Mission.LoadUnitId, MessageActor.MachineManager, this.Mission.TargetBay))
                 {
                     this.Mission.ErrorMovements |= MissionErrorMovements.MoveForward;
                 }
@@ -282,9 +277,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             if (!this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveForward) && !this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward))
             {
-                if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell)
+                if (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell)
                 {
-                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
                     this.Logger.LogDebug($"{this.GetType().Name}: Close Shutter positioning start");
                     this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, restore: true);
                     this.Mission.ErrorMovements |= MissionErrorMovements.MoveShutterClosed;
@@ -306,7 +301,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.ErrorMovements = MissionErrorMovements.None;
             this.Mission.NeedMovingBackward = false;
             this.Mission.RestoreConditions = true;
-            var newStep = new MissionMoveDepositUnitState(this.Mission, this.ServiceProvider, this.EventAggregator);
+            var newStep = new MissionMoveLoadElevatorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
             newStep.OnEnter(null);
         }
 
@@ -322,7 +317,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             else
             {
-                var isLoaded = (this.Mission.RestoreState == MissionState.DepositUnit);
+                var isLoaded = (this.Mission.RestoreStep == MissionStep.DepositUnit);
                 var measure = (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell);
                 if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, isLoaded, measure, this.Mission.LoadUnitId, MessageActor.MachineManager, this.Mission.TargetBay))
                 {

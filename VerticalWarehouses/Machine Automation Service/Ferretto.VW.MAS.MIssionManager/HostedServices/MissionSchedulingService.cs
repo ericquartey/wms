@@ -226,37 +226,37 @@ namespace Ferretto.VW.MAS.MissionManager
             var missions = missionsDataProvider.GetAllExecutingMissions().ToList();
             foreach (var mission in missions)
             {
-                if (mission.RestoreState == MissionState.NotDefined)
+                if (mission.RestoreStep == MissionStep.NotDefined)
                 {
-                    mission.RestoreState = mission.State;
+                    mission.RestoreStep = mission.Step;
                 }
                 IMissionMoveBase newStep;
 
-                if (mission.RestoreState == MissionState.BayChain)
+                if (mission.RestoreStep == MissionStep.BayChain)
                 {
                     mission.NeedHomingAxis = Axis.BayChain;
-                    newStep = new MissionMoveErrorState(mission, serviceProvider, eventAggregator);
+                    newStep = new MissionMoveErrorStep(mission, serviceProvider, eventAggregator);
                 }
-                else if (mission.RestoreState == MissionState.LoadElevator)
+                else if (mission.RestoreStep == MissionStep.LoadElevator)
                 {
                     mission.NeedMovingBackward = true;
                     mission.NeedHomingAxis = Axis.Horizontal;
-                    newStep = new MissionMoveErrorLoadState(mission, serviceProvider, eventAggregator);
+                    newStep = new MissionMoveErrorLoadStep(mission, serviceProvider, eventAggregator);
                 }
-                else if (mission.RestoreState == MissionState.DepositUnit)
+                else if (mission.RestoreStep == MissionStep.DepositUnit)
                 {
                     mission.NeedMovingBackward = true;
                     mission.NeedHomingAxis = Axis.Horizontal;
-                    newStep = new MissionMoveErrorDepositState(mission, serviceProvider, eventAggregator);
+                    newStep = new MissionMoveErrorDepositStep(mission, serviceProvider, eventAggregator);
                 }
-                else if (mission.RestoreState == MissionState.ToTarget)
+                else if (mission.RestoreStep == MissionStep.ToTarget)
                 {
                     mission.NeedHomingAxis = Axis.Horizontal;
-                    newStep = new MissionMoveErrorState(mission, serviceProvider, eventAggregator);
+                    newStep = new MissionMoveErrorStep(mission, serviceProvider, eventAggregator);
                 }
                 else
                 {
-                    newStep = new MissionMoveErrorState(mission, serviceProvider, eventAggregator);
+                    newStep = new MissionMoveErrorStep(mission, serviceProvider, eventAggregator);
                 }
                 newStep.OnEnter(null);
             }

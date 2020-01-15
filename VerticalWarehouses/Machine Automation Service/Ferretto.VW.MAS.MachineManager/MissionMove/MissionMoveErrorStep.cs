@@ -12,11 +12,11 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.MachineManager.MissionMove
 {
-    public class MissionMoveErrorState : MissionMoveBase
+    public class MissionMoveErrorStep : MissionMoveBase
     {
         #region Constructors
 
-        public MissionMoveErrorState(Mission mission,
+        public MissionMoveErrorStep(Mission mission,
             IServiceProvider serviceProvider,
             IEventAggregator eventAggregator)
             : base(mission, serviceProvider, eventAggregator)
@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         /// <param name="command">not used</param>
         public override bool OnEnter(CommandMessage command)
         {
-            return this.EnterErrorState(MissionState.Error);
+            return this.EnterErrorState(MissionStep.Error);
         }
 
         public override void OnNotification(NotificationMessage notification)
@@ -99,67 +99,67 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override void OnResume(CommandMessage command)
         {
-            this.Logger.LogDebug($"{this.GetType().Name}: Resume mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, from {this.Mission.RestoreState}, loadUnit {this.Mission.LoadUnitId}");
+            this.Logger.LogDebug($"{this.GetType().Name}: Resume mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, from {this.Mission.RestoreStep}, loadUnit {this.Mission.LoadUnitId}");
 
-            switch (this.Mission.RestoreState)
+            switch (this.Mission.RestoreStep)
             {
-                case MissionState.BayChain:
+                case MissionStep.BayChain:
                     this.RestoreBayChain();
                     break;
 
-                case MissionState.CloseShutter:
+                case MissionStep.CloseShutter:
                     this.RestoreCloseShutter();
                     break;
 
-                case MissionState.End:
-                    this.Mission.RestoreState = MissionState.NotDefined;
+                case MissionStep.End:
+                    this.Mission.RestoreStep = MissionStep.NotDefined;
                     this.Mission.RestoreConditions = false;
                     this.Mission.NeedMovingBackward = false;
                     {
-                        var newStep = new MissionMoveEndState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                         newStep.OnEnter(null);
                     }
                     break;
 
-                case MissionState.ToTarget:
+                case MissionStep.ToTarget:
                     this.Mission.RestoreConditions = true;
-                    this.Mission.RestoreState = MissionState.NotDefined;
+                    this.Mission.RestoreStep = MissionStep.NotDefined;
                     this.Mission.NeedMovingBackward = false;
                     this.Mission.StopReason = StopRequestReason.NoReason;
                     {
-                        var newStep = new MissionMoveToTargetState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        var newStep = new MissionMoveToTargetStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                         newStep.OnEnter(null);
                     }
                     break;
 
-                case MissionState.Start:
-                    this.Mission.RestoreState = MissionState.NotDefined;
+                case MissionStep.Start:
+                    this.Mission.RestoreStep = MissionStep.NotDefined;
                     this.Mission.RestoreConditions = false;
                     this.Mission.NeedMovingBackward = false;
                     this.Mission.StopReason = StopRequestReason.NoReason;
                     {
-                        var newStep = new MissionMoveStartState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        var newStep = new MissionMoveStartStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                         newStep.OnEnter(null);
                     }
                     break;
 
-                case MissionState.WaitPick:
-                    this.Mission.RestoreState = MissionState.NotDefined;
+                case MissionStep.WaitPick:
+                    this.Mission.RestoreStep = MissionStep.NotDefined;
                     this.Mission.RestoreConditions = false;
                     this.Mission.NeedMovingBackward = false;
                     this.Mission.StopReason = StopRequestReason.NoReason;
                     {
-                        var newStep = new MissionMoveWaitPickState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        var newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                         newStep.OnEnter(null);
                     }
                     break;
 
                 default:
-                    this.Logger.LogError($"{this.GetType().Name}: no valid RestoreState {this.Mission.RestoreState} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
+                    this.Logger.LogError($"{this.GetType().Name}: no valid RestoreState {this.Mission.RestoreStep} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
 
                     {
                         this.Mission.StopReason = StopRequestReason.NoReason;
-                        var newStep = new MissionMoveEndState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                         newStep.OnEnter(null);
                     }
                     break;
@@ -192,26 +192,26 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 var notificationText = $"Load Unit {this.Mission.LoadUnitId} placed on bay {bay.Number}";
                 this.SendMoveNotification(bay.Number, notificationText, false, MessageStatus.OperationWaitResume);
 
-                this.Mission.RestoreState = MissionState.NotDefined;
+                this.Mission.RestoreStep = MissionStep.NotDefined;
                 this.Mission.RestoreConditions = false;
                 this.Mission.NeedMovingBackward = false;
                 if (this.Mission.WmsId.HasValue)
                 {
-                    var newStep = new MissionMoveWaitPickState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    var newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     newStep.OnEnter(null);
                 }
                 else
                 {
-                    var newStep = new MissionMoveEndState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     newStep.OnEnter(null);
                 }
             }
             else
             {
                 this.Mission.RestoreConditions = true;
-                this.Mission.RestoreState = MissionState.NotDefined;
+                this.Mission.RestoreStep = MissionStep.NotDefined;
                 this.Mission.NeedMovingBackward = false;
-                var newStep = new MissionMoveBayChainState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                var newStep = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 newStep.OnEnter(null);
             }
         }
@@ -231,9 +231,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             else
             {
                 this.Mission.RestoreConditions = true;
-                this.Mission.RestoreState = MissionState.NotDefined;
+                this.Mission.RestoreStep = MissionStep.NotDefined;
                 this.Mission.NeedMovingBackward = false;
-                var newStep = new MissionMoveCloseShutterState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                var newStep = new MissionMoveCloseShutterStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 newStep.OnEnter(null);
             }
         }
@@ -243,7 +243,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.ErrorMovements = MissionErrorMovements.None;
             this.Mission.NeedMovingBackward = false;
             this.Mission.RestoreConditions = true;
-            var newStep = new MissionMoveCloseShutterState(this.Mission, this.ServiceProvider, this.EventAggregator);
+            var newStep = new MissionMoveCloseShutterStep(this.Mission, this.ServiceProvider, this.EventAggregator);
             newStep.OnEnter(null);
         }
 
