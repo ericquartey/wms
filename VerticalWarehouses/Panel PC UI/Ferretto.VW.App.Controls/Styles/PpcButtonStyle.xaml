@@ -663,4 +663,62 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="WizardIntoButton"
+           BasedOn="{StaticResource {x:Type controls:PpcButton}}"
+           TargetType="{x:Type controls:PpcButton}">
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="WizardConfirmButton"
+           BasedOn="{StaticResource WizardIntoButton}"
+           TargetType="{x:Type controls:PpcButton}">
+        <Setter Property="Background" Value="{DynamicResource FerrettoBlue}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoPureWhite}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="BorderTimeLine"
+           TargetType="{x:Type Border}">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoLightGray}" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="CornerRadius" Value="2" />
+    </Style>
+    <Style x:Key="BorderTimeLineCirle"
+           TargetType="{x:Type Border}">
+        <Setter Property="Width" Value="40" />
+        <Setter Property="Height" Value="40" />
+        <Setter Property="Background" Value="{DynamicResource PpcBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoLightGray}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
+        <Setter Property="CornerRadius" Value="20" />
+    </Style>
+    <Style x:Key="BorderTimeLineCirleTextBlock"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Margin" Value="-1,-1,0,0" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{DynamicResource FerrettoLightGray}" />
+    </Style>
+    <Style x:Key="BorderTimeLinePath"
+           TargetType="{x:Type Path}">
+        <Setter Property="Width" Value="26" />
+        <Setter Property="Height" Value="26" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="Data" Value="M18,0 L0,10 18,20" />
+        <Setter Property="Fill" Value="{DynamicResource PpcBackground}" />
+        <Setter Property="Stretch" Value="Fill" />
+        <Setter Property="Stroke" Value="{DynamicResource PpcBorderBrush}" />
+        <Setter Property="StrokeThickness" Value="2" />
+    </Style>
 </ResourceDictionary>
