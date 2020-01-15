@@ -877,6 +877,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             this.IsCarouselMoving = false;
                         }
+
                         break;
                     }
 
