@@ -182,7 +182,7 @@ namespace Ferretto.VW.MAS.MachineManager
                             }
                             else
                             {
-                                foreach (var mission in this.missionsDataProvider.GetAllActiveMissions())
+                                foreach (var mission in this.missionsDataProvider.GetAllMissions())
                                 {
                                     this.missionMoveProvider.StopMission(mission.Id, StopRequestReason.Abort, serviceProvider);
                                 }

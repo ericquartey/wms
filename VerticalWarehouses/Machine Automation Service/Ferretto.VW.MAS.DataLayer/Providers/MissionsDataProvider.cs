@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
+        private readonly IBaysDataProvider baysDataProvider;
+
         private readonly DataLayerContext dataContext;
 
         private readonly IErrorsProvider errorProvider;
@@ -32,12 +34,14 @@ namespace Ferretto.VW.MAS.DataLayer
         public MissionsDataProvider(
             DataLayerContext dataContext,
             IErrorsProvider errorProvider,
+            IBaysDataProvider baysDataProvider,
             IEventAggregator eventAggregator,
             ILogger<DataLayerService> logger)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
 
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.errorProvider = errorProvider ?? throw new ArgumentNullException(nameof(errorProvider));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
@@ -91,6 +95,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (mission.WmsId is null)
                 {
+                    this.baysDataProvider.ClearMission(mission.TargetBay);
                     this.Delete(mission.Id);
                 }
                 else
@@ -236,6 +241,16 @@ namespace Ferretto.VW.MAS.DataLayer
                 return this.dataContext.Missions
                     .Where(x => x.Status == MissionStatus.Executing
                         || x.Status == MissionStatus.Waiting);
+            }
+        }
+
+        public IEnumerable<Mission> GetAllMissions()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Missions
+                    .OrderBy(o => o.Priority)
+                    .ThenBy(o => o.CreationDate);
             }
         }
 

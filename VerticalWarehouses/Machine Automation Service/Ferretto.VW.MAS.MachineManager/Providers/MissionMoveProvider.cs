@@ -160,10 +160,17 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 var mission = missionsDataProvider.GetById(missionId);
                 if (mission != null)
                 {
-                    var state = GetStateByClassName(serviceProvider, mission, this.eventAggregator);
-                    if (state != null)
+                    if (mission.Status == MissionStatus.Completed)
                     {
-                        state.OnStop(stopRequest);
+                        missionsDataProvider.Complete(missionId);
+                    }
+                    else
+                    {
+                        var state = GetStateByClassName(serviceProvider, mission, this.eventAggregator);
+                        if (state != null)
+                        {
+                            state.OnStop(stopRequest);
+                        }
                     }
                 }
 

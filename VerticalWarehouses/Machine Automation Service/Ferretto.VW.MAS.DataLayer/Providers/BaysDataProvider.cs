@@ -191,7 +191,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var bay = this.dataContext.Bays.SingleOrDefault(b => b.Number == bayNumber);
+                var bay = this.dataContext.Bays.Include(b => b.CurrentMission).SingleOrDefault(b => b.Number == bayNumber);
                 if (bay is null)
                 {
                     throw new EntityNotFoundException(bayNumber.ToString());
@@ -873,8 +873,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                foreach (var bayPosition in this.dataContext.BayPositions
-                                            .Include(i => i.LoadingUnit))
+                foreach (var bayPosition in this.dataContext.BayPositions.Include(i => i.LoadingUnit))
                 {
                     if (bayPosition.LoadingUnit != null)
                     {
@@ -883,7 +882,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     }
                 }
 
-                foreach (var bay in this.dataContext.Bays.Include(i=> i.CurrentMission))
+                foreach (var bay in this.dataContext.Bays.Include(i => i.CurrentMission))
                 {
                     bay.CurrentMission = null;
                     bay.CurrentWmsMissionOperationId = null;
