@@ -33,7 +33,8 @@
         </ControlTemplate>
 
         <DataTemplate x:Key="DataTemplateAxis">
-            <Grid Margin="4">
+            <Grid Margin="4"
+                  UseLayoutRounding="True">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -372,7 +373,8 @@
         </DataTemplate>
 
         <DataTemplate x:Key="DataTemplateBay">
-            <Grid Margin="4">
+            <Grid Margin="4"
+                  UseLayoutRounding="True">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -823,7 +825,8 @@
         </DataTemplate>
 
         <DataTemplate x:Key="DataTemplateDrawer">
-            <Grid Margin="4">
+            <Grid Margin="4"
+                  UseLayoutRounding="True">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -969,7 +972,8 @@
         </DataTemplate>
 
         <DataTemplate x:Key="DataTemplatePosition">
-            <Grid Margin="4">
+            <Grid Margin="4"
+                  UseLayoutRounding="True">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -1228,7 +1232,8 @@
         </DataTemplate>
 
         <DataTemplate x:Key="DataTemplateShutter">
-            <Grid Margin="4">
+            <Grid Margin="4"
+                  UseLayoutRounding="True">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
