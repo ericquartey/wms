@@ -10,9 +10,9 @@
 
         Failed,
 
-        RolledBack,
-
         RollingBack,
+
+        RolledBack,
 
         RollbackFailed
     }
