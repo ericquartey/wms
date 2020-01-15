@@ -11,7 +11,7 @@ steps:
   displayName: 'Set Assembly Manifest Data'
   inputs:
     Path: '$(Build.SourcesDirectory)'
-    FileNames: '**/*.csproj'
+    FileNames: '**/*.manifest'
     InsertAttributes: true
     FileEncoding: 'auto'
     WriteBOM: false
