@@ -165,7 +165,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                             var inverterMessage = new InverterMessage(
                                 this.InverterStatus.SystemIndex,
                                 (short)InverterParameterId.HomingFastSpeed,
-                                fastSpeed);
+                                /*fastSpeed*/(int)speedValue);
 
                             this.Logger.LogDebug($"Set Homing Fast Speed={speedValue} mm/s [{fastSpeed} impulses], Axis={this.axisToCalibrate}");
 
@@ -243,7 +243,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                             var inverterMessage = new InverterMessage(
                                 this.InverterStatus.SystemIndex,
                                 (short)InverterParameterId.HomingCreepSpeed,
-                                creepSpeed);
+                                /*creepSpeed*/(int)speedValue);
 
                             this.Logger.LogDebug($"Set Homing Creep Speed={speedValue} mm/s [{creepSpeed} impulses], Axis={this.axisToCalibrate}");
 
