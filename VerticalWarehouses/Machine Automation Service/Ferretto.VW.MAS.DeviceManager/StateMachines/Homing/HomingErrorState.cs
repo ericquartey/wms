@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
         public override void Start()
         {
             var currentInverterIndex = this.machineData.CurrentInverterIndex;
-            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {currentInverterIndex}");
+            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {currentInverterIndex} show errors {this.machineData.ShowErrors}");
 
             if (this.machineData.ShowErrors)
             {

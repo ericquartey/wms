@@ -79,6 +79,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         public bool CheckBayHeight(Bay locationBay, Mission mission)
         {
             bool returnValue = false;
+#if CHECK_PROFILE
             var unitToMove = this.LoadingUnitsDataProvider.GetById(mission.LoadUnitId);
             var bayPosition = locationBay.Positions.First();
             var bay = this.BaysDataProvider.GetByNumber(locationBay.Number);
@@ -105,6 +106,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                 }
             }
+#else
+            returnValue = true;
+#endif
             return returnValue;
         }
 

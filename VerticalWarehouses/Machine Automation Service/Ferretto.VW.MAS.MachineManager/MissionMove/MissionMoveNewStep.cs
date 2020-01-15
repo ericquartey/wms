@@ -67,7 +67,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             bool returnValue = true;
 #if CHECK_BAY_SENSOR
-            if (!this.SensorsProvider.IsLoadingUnitInLocation(destination))
+            if (this.SensorsProvider.IsLoadingUnitInLocation(destination))
+            {
+                returnValue = false;
+            }
+            else
 #endif
             {
                 returnValue = (messageData.Source == destination)

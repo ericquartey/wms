@@ -73,7 +73,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         if (result != MachineErrorCode.NoError)
                         {
                             var error = this.ErrorsProvider.RecordNew(result, bayNumber);
-                            throw new StateMachineException(error.Description, this.Mission.TargetBay, MessageActor.MachineManager);
+                            throw new StateMachineException(error.Reason, this.Mission.TargetBay, MessageActor.MachineManager);
                         }
                     }
                     break;

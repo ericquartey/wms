@@ -249,4 +249,7 @@
   <data name="ConditionsNotMetForHoming" xml:space="preserve">
     <value>Condizioni per la calibrazione non soddisfatte.</value>
   </data>
+  <data name="LoadUnitHeightExceeded" xml:space="preserve">
+    <value>L'altezza del cassetto è eccessiva.</value>
+  </data>
 </root>

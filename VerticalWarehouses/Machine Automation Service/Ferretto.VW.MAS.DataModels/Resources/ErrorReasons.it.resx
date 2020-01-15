@@ -270,4 +270,7 @@
   <data name="ConditionsNotMetForHoming" xml:space="preserve">
     <value>Controllare che il nottolino sia a zero o che il cassetto sia completamente caricato a bordo elevatore. Controllare inoltre che la serranda sia chiusa.</value>
   </data>
+  <data name="LoadUnitHeightExceeded" xml:space="preserve">
+    <value>Abbassare l'altezza del materiale nel cassetto.</value>
+  </data>
 </root>

@@ -883,7 +883,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     }
                 }
 
-                foreach (var bay in this.dataContext.Bays)
+                foreach (var bay in this.dataContext.Bays.Include(i=> i.CurrentMission))
                 {
                     bay.CurrentMission = null;
                     bay.CurrentWmsMissionOperationId = null;

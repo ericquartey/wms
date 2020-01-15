@@ -131,11 +131,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     case MessageStatus.OperationError:
                     case MessageStatus.OperationRunningStop:
                         {
-                            this.Mission.ErrorMovements = MissionErrorMovements.None;
-                            this.MissionsDataProvider.Update(this.Mission);
+                            if (notification.Type != MessageType.Homing)
+                            {
+                                this.Mission.ErrorMovements = MissionErrorMovements.None;
+                                this.MissionsDataProvider.Update(this.Mission);
 
-                            var newMessageData = new StopMessageData(StopRequestReason.Error);
-                            this.LoadingUnitMovementProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MachineManager, this.Mission.TargetBay);
+                                var newMessageData = new StopMessageData(StopRequestReason.Error);
+                                this.LoadingUnitMovementProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MachineManager, this.Mission.TargetBay);
+                            }
                         }
                         break;
                 }
