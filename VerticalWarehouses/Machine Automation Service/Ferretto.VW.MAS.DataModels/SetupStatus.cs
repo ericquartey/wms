@@ -38,8 +38,6 @@
 
         public System.DateTime? CompletedDate { get; set; }
 
-        public bool Homing { get; set; }
-
         public bool HorizontalHoming { get; set; }
 
         public bool WeightMeasurement { get; set; }
