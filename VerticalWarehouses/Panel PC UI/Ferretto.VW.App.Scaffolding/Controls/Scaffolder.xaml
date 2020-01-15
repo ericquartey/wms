@@ -22,6 +22,7 @@
         <converters:IsReadOnlyConverter x:Key="IsReadOnlyConverter" />
         <converters:IsEditableConverter x:Key="IsEditableConverter" />
         <converters:TruthyToVisibilityConverter x:Key="TruthyToVisibilityConverter" />
+        <converters:MultiBooleanToVisibilityConverter x:Key="MultiBooleanToVisibilityConverter" />
         <converters:ValidationRuleConverter x:Key="ValidationRuleConverter" />
         <converters:DefaultValueConverter x:Key="DefaultValueConverter" />
 
@@ -50,6 +51,7 @@
             <Setter Property="BorderBrush" Value="{DynamicResource FerrettoMediumGray}" />
             <Setter Property="BorderThickness" Value="0,0,0,1" />
             <Setter Property="Padding" Value="10,5" />
+            <Setter Property="Margin" Value="-2,0" />
             <Setter Property="Height" Value="32" />
             <Setter Property="Template">
                 <Setter.Value>
@@ -66,9 +68,12 @@
             </Setter>
         </Style>
 
-        <Style TargetType="{x:Type ListView}">
+        <Style TargetType="{x:Type ListView}">            
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
             <Setter Property="Background" Value="{x:Null}"/>
-            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="BorderBrush" Value="{DynamicResource FerrettoMediumGray}"/>
+            <Setter Property="BorderThickness" Value="1" />
             <Setter Property="ItemContainerStyle">
                 <Setter.Value>
                     <Style TargetType="{x:Type ListViewItem}">
@@ -115,6 +120,37 @@
                         </Style.Triggers>
 
                     </Style>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListView}">
+                        <Border Name="Bd" CornerRadius="0"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="true">
+                            <ScrollViewer Style="{DynamicResource {x:Static GridView.GridViewScrollViewerStyleKey}}"
+                                      Padding="{TemplateBinding Padding}">
+                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </ScrollViewer>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!--<Trigger Property="IsEnabled"
+                                 Value="false">
+                                <Setter TargetName="Bd"
+                                    Property="Background"
+                                    Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                            </Trigger>-->
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsGrouping" Value="true" />
+                                    <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
                 </Setter.Value>
             </Setter>
             <EventSetter Event="MouseLeftButtonUp"
@@ -190,7 +226,19 @@
         </Grid.Visibility>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="{Binding Path=Structures.Count, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}, Converter={StaticResource TruthyToVisibilityConverter}, ConverterParameter=0.5}" />
+            <RowDefinition>
+                <RowDefinition.Height>
+                    <MultiBinding Converter="{StaticResource MultiBooleanToVisibilityConverter}">
+                        <Binding Path="Structures.Count"
+                                 RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}"
+                                 Converter="{StaticResource TruthyToVisibilityConverter}"/>
+                        <Binding Path="Entities.Count"
+                                 RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}"
+                                 Converter="{StaticResource TruthyToVisibilityConverter}"
+                                 ConverterParameter="Invert"/>
+                    </MultiBinding>
+                </RowDefinition.Height>
+            </RowDefinition>
             <RowDefinition Height="{Binding Path=Entities.Count, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}, Converter={StaticResource TruthyToVisibilityConverter}}" />
         </Grid.RowDefinitions>
 
@@ -244,8 +292,8 @@
 
         <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Column="0" Grid.Row="1"
                       Visibility="{Binding Path=Count, Converter={StaticResource TruthyToVisibilityConverter}}"
-                    d:DataContext="{d:DesignInstance Type=design:VertimagStructuresViewModel, IsDesignTimeCreatable=True}"
-                    DataContext="{Binding Path=Structures, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}}">
+                      d:DataContext="{d:DesignInstance Type=design:VertimagStructuresViewModel, IsDesignTimeCreatable=True}"
+                      DataContext="{Binding Path=Structures, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}}">
 
             <ItemsControl ItemsSource="{Binding}">
                 <ItemsControl.ItemsPanel>
@@ -310,108 +358,107 @@
                     <icons:FontAwesome Kind="BackspaceSolid" />
                 </Button>
             </Grid>
-            <ScrollViewer VerticalScrollBarVisibility="Auto"
+            <!--<ScrollViewer VerticalScrollBarVisibility="Auto"
                       HorizontalAlignment="Stretch" Grid.Row="1">
 
-                <Border BorderThickness="1" BorderBrush="{DynamicResource FerrettoMediumGray}">
-                    <!-- entities -->
-                    <ListView ItemsSource="{Binding}" 
-                              SelectionChanged="ListView_Selected"
-                              HorizontalContentAlignment="Stretch">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Header="Nome" Width="249">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Border Style="{StaticResource FirstCellBorderStyle}">
-                                                <TextBlock Style="{StaticResource CellTextBlockStyle}"
+                <Border BorderThickness="1" BorderBrush="{DynamicResource FerrettoMediumGray}">-->
+            <!-- entities -->
+            <ListView ItemsSource="{Binding}" Grid.Row="1"
+                      SelectionChanged="ListView_Selected">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Nome" Width="249">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource FirstCellBorderStyle}">
+                                        <TextBlock Style="{StaticResource CellTextBlockStyle}"
                                                            Text="{Binding Path=Caption}" />
-                                            </Border>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Id" Width="64">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Border Style="{StaticResource CellBorderStyle}">
-                                                <TextBlock Style="{StaticResource CellTextBlockStyle}"
+                                    </Border>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Id" Width="64">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource CellBorderStyle}">
+                                        <TextBlock Style="{StaticResource CellTextBlockStyle}"
                                                            Text="{Binding Path=Id}"
                                                            HorizontalAlignment="Center"/>
-                                            </Border>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Value" Width="146">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <DataTemplate.Resources>
-                                                <converters:TwoWayConverter x:Key="TwoWayConverter" />
-                                            </DataTemplate.Resources>
-                                            <Border Style="{StaticResource CellBorderStyle}">
-                                                <TextBlock Style="{StaticResource CellTextBlockStyle}">
-                                                    <TextBlock.Text>
-                                                        <MultiBinding Converter="{StaticResource TwoWayConverter}" ConverterCulture="{x:Static g11n:CultureInfo.CurrentCulture}">
-                                                            <Binding Path="Property" />
-                                                            <Binding Path="Instance" />
-                                                        </MultiBinding>
-                                                    </TextBlock.Text>
-                                                </TextBlock>
-                                            </Border>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Default" Width="92">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Border Style="{StaticResource CellBorderStyle}">
-                                                <TextBlock Style="{StaticResource CellTextBlockStyle}"
+                                    </Border>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Value" Width="146">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <DataTemplate.Resources>
+                                        <converters:TwoWayConverter x:Key="TwoWayConverter" />
+                                    </DataTemplate.Resources>
+                                    <Border Style="{StaticResource CellBorderStyle}">
+                                        <TextBlock Style="{StaticResource CellTextBlockStyle}">
+                                            <TextBlock.Text>
+                                                <MultiBinding Converter="{StaticResource TwoWayConverter}" ConverterCulture="{x:Static g11n:CultureInfo.CurrentCulture}">
+                                                    <Binding Path="Property" />
+                                                    <Binding Path="Instance" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </Border>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Default" Width="92">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource CellBorderStyle}">
+                                        <TextBlock Style="{StaticResource CellTextBlockStyle}"
                                                            Text="{Binding Converter={StaticResource DefaultValueConverter}}" />
-                                            </Border>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Min" Width="92">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Border Style="{StaticResource CellBorderStyle}">
-                                                <TextBlock Style="{StaticResource CellTextBlockStyle}"
+                                    </Border>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Min" Width="92">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource CellBorderStyle}">
+                                        <TextBlock Style="{StaticResource CellTextBlockStyle}"
                                                            Text="{Binding Converter={StaticResource DefaultValueConverter}, ConverterParameter=Min}" />
-                                            </Border>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Max" Width="92">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Border Style="{StaticResource CellBorderStyle}">
-                                                <TextBlock Style="{StaticResource CellTextBlockStyle}"
+                                    </Border>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Max" Width="92">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource CellBorderStyle}">
+                                        <TextBlock Style="{StaticResource CellTextBlockStyle}"
                                                            Text="{Binding Converter={StaticResource DefaultValueConverter}, ConverterParameter=Max}" />
-                                            </Border>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="U.m." Width="60">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Border Style="{StaticResource CellBorderStyle}">
-                                                <TextBlock Style="{StaticResource CellTextBlockStyle}"
+                                    </Border>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="U.m." Width="60">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource CellBorderStyle}">
+                                        <TextBlock Style="{StaticResource CellTextBlockStyle}"
                                                            Text="{Binding Converter={StaticResource DefaultValueConverter}, ConverterParameter=Unit}" />
-                                            </Border>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <!--<GridViewColumn Width="Auto">
+                                    </Border>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <!--<GridViewColumn Width="Auto">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <Button Content="{icons:FontAwesome Kind=EditRegular}" Click="Edit_Click" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>-->
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </Border>
-            </ScrollViewer>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <!--</Border>
+            </ScrollViewer>-->
         </Grid>
 
 

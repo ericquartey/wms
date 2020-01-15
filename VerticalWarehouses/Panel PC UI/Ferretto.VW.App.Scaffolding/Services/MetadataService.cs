@@ -226,7 +226,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
 
                     else
                     {
-                        // find or create category branch
+                        // find or create category branch (even if unfolding is ongoing)
                         if (hasCategory)
                         {
                             string categoryName = GetCategoryName(prop, instance, this._culture);
