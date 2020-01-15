@@ -8,6 +8,8 @@
     <Configurations>Debug;Release;Debug_no_autogen</Configurations>
     <LangVersion>latest</LangVersion>
     <ServerGarbageCollection>False</ServerGarbageCollection>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AssemblyName>Ferretto.VW.MAS.AutomationService</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'!='Release'">

@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 
 namespace Ferretto.VW.Installer
 {
-    internal sealed class MainWindowViewModel
+    internal sealed class MainWindowViewModel : BindableBase
     {
         #region Fields
 
-        private readonly InstallationService installationService = new InstallationService();
+        private readonly InstallationService installationService;
+
+        private Step selectedStep;
 
         #endregion
 
@@ -18,13 +18,39 @@ namespace Ferretto.VW.Installer
 
         public MainWindowViewModel()
         {
+            if (File.Exists("steps-snapshot.json"))
+            {
+                this.installationService = InstallationService.LoadAsync("steps.json");
+            }
+            else if (File.Exists("steps.json"))
+            {
+                this.installationService = InstallationService.LoadAsync("steps.json");
+            }
+            else
+            {
+                // no configuration file found
+            }
+
+            this.installationService.RunAsync();
         }
+
+        #endregion
+
+        #region Events
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion
 
         #region Properties
 
-        public IEnumerable<IStep> Steps => this.installationService.Steps;
+        public Step SelectedStep
+        {
+            get => this.selectedStep;
+            set => this.SetProperty(ref this.selectedStep, value);
+        }
+
+        public IEnumerable<Step> Steps => this.installationService.Steps;
 
         #endregion
     }
