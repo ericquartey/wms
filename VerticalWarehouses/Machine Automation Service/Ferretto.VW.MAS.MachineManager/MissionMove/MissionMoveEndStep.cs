@@ -104,7 +104,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override void OnStop(StopRequestReason reason, bool moveBackward = false)
         {
-            // no action
+            if (this.Mission.StopReason != StopRequestReason.NoReason)
+            {
+                this.Mission.Status = MissionStatus.Aborted;
+                this.MissionsDataProvider.Update(this.Mission);
+                this.SendNotification();
+            }
         }
 
         private bool AllStopped(IEnumerable<Bay> bays)
