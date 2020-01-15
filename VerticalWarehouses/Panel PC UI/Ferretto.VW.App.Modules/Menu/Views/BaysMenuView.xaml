@@ -62,8 +62,8 @@
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding BayControlCommand}"
                                         Content="Permette di verificare e correggere la quota delle varie posizioni sulle baie"
-                                        Kind="Account"
                                         IsCompleted="{Binding IsBayControlCompleted}"
+                                        Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
                     <controls:PpcButton Title="Barriera misura altezza"
@@ -73,8 +73,8 @@
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding BayHeightCommand}"
                                         Content="Permette la regolazione della barriera di rilevamento altezza del cassetto"
-                                        Kind="Account"
                                         IsCompleted="{Binding IsBayHeightCompleted}"
+                                        Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
                     <controls:PpcButton Title="Test serranda"
@@ -84,8 +84,8 @@
                                         BorderBrush="{DynamicResource FerrettoOrange}"
                                         Command="{Binding TestShutterCommand}"
                                         Content="Permette di effettuare una serie di test ripetitivi per la serranda"
-                                        Kind="Account"
                                         IsCompleted="{Binding IsTestShutterCompleted}"
+                                        Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
                     <controls:PpcButton Title="Test baia"
