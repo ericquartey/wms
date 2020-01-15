@@ -19,13 +19,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
     {
         #region Fields
 
-        private readonly IMachineBeltBurnishingProcedureWebService beltBurnishingProcedureWebService;
-
-        private readonly IMachineVerticalOffsetProcedureWebService verticalOffsetProcedureWebService;
-
-        private readonly IMachineVerticalOriginProcedureWebService verticalOriginProcedureWebService;
-
-        private readonly IMachineVerticalResolutionCalibrationProcedureWebService verticalResolutionCalibrationProcedureWebService;
+        private readonly IMachineSetupStatusWebService machineSetupStatusWebService;
 
         private DelegateCommand beltBurnishingCommand;
 
@@ -46,16 +40,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
         #region Constructors
 
         public ElevatorMenuViewModel(
-            IMachineVerticalResolutionCalibrationProcedureWebService verticalResolutionCalibrationProcedureWebService,
-            IMachineVerticalOffsetProcedureWebService verticalOffsetProcedureWebService,
-            IMachineBeltBurnishingProcedureWebService beltBurnishingProcedureWebService,
-            IMachineVerticalOriginProcedureWebService verticalOriginProcedureWebService)
+            IMachineSetupStatusWebService machineSetupStatusWebService)
             : base()
         {
-            this.verticalResolutionCalibrationProcedureWebService = verticalResolutionCalibrationProcedureWebService ?? throw new ArgumentNullException(nameof(verticalResolutionCalibrationProcedureWebService));
-            this.verticalOffsetProcedureWebService = verticalOffsetProcedureWebService ?? throw new ArgumentNullException(nameof(verticalOffsetProcedureWebService));
-            this.beltBurnishingProcedureWebService = beltBurnishingProcedureWebService ?? throw new ArgumentNullException(nameof(beltBurnishingProcedureWebService));
-            this.verticalOriginProcedureWebService = verticalOriginProcedureWebService ?? throw new ArgumentNullException(nameof(verticalOriginProcedureWebService));
+            this.machineSetupStatusWebService = machineSetupStatusWebService ?? throw new ArgumentNullException(nameof(machineSetupStatusWebService));
+
+            this.SetupStatusCapabilities = new SetupStatusCapabilities();
         }
 
         #endregion
@@ -83,33 +73,26 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Properties
 
+        protected SetupStepStatus BeltBurnishing => this.SetupStatusCapabilities?.BeltBurnishing ?? new SetupStepStatus();
+
         public ICommand BeltBurnishingCommand =>
-            this.beltBurnishingCommand
+                    this.beltBurnishingCommand
             ??
             (this.beltBurnishingCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.BeltBurnishing),
                 () => this.CanExecuteCommand() &&
-                      (this.MachineModeService.MachineMode == MachineMode.Manual ||
-                       this.MachineModeService.MachineMode == MachineMode.Test) &&
-                      ((this.MachineService.IsHoming &&
-                      ((this.VerticalResolutionCalibrationProcedureParameters != null &&
-                        this.VerticalResolutionCalibrationProcedureParameters.IsCompleted &&
-                        this.VerticalOffsetProcedureParameters != null &&
-                        this.VerticalOffsetProcedureParameters.IsCompleted) ||
-                       true)) || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
-                ));
-
-        public RepeatedTestProcedure BeltBurnishingProcedureParameters { get; private set; }
+                      (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Test) &&
+                      (this.BeltBurnishing.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public bool IsBeltBurnishing => this.BeltBurnishingProcedureParameters?.IsCompleted ?? false;
+        public bool IsBeltBurnishing => this.BeltBurnishing.IsCompleted;
 
-        public bool IsHoming => this.VerticalOriginCalibratioParameters?.IsCompleted ?? false;
+        public bool IsHoming => this.VerticalOriginCalibration.IsCompleted;
 
-        public bool IsVerticalOffsetProcedure => this.VerticalOffsetProcedureParameters?.IsCompleted ?? false;
+        public bool IsVerticalOffsetProcedure => this.VerticalOffsetCalibration.IsCompleted;
 
-        public bool IsVerticalResolutionCalibration => this.VerticalResolutionCalibrationProcedureParameters?.IsCompleted ?? false;
+        public bool IsVerticalResolutionCalibration => this.VerticalResolutionCalibration.IsCompleted;
 
         public ICommand TestDepositAndPickUpCommand =>
             this.testDepositAndPickUpCommand
@@ -118,8 +101,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.TestDepositAndPickUp),
                 () => this.CanExecuteCommand() &&
                       this.MachineModeService.MachineMode == MachineMode.Manual &&
-                      this.MachineService.IsHoming &&
+                      (this.BeltBurnishing.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus()) &&
                       false));
+
+        protected SetupStepStatus VerticalOffsetCalibration => this.SetupStatusCapabilities?.VerticalOffsetCalibration ?? new SetupStepStatus();
 
         public ICommand VerticalOffsetCalibrationCommand =>
             this.verticalOffsetCalibration
@@ -128,11 +113,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.VerticalOffsetCalibration),
                 () => this.CanExecuteCommand() &&
                       this.MachineModeService.MachineMode == MachineMode.Manual &&
-                      (this.MachineService.IsHoming || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
-                //&&
-                //this.VerticalResolutionCalibrationProcedureParameters != null &&
-                //this.VerticalResolutionCalibrationProcedureParameters.IsCompleted
+                      (this.VerticalOffsetCalibration.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
                 ));
+
+        protected SetupStepStatus VerticalOriginCalibration => this.SetupStatusCapabilities?.VerticalOriginCalibration ?? new SetupStepStatus();
 
         public ICommand VerticalOriginCalibrationCommand =>
             this.verticalOriginCalibration
@@ -140,19 +124,19 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.verticalOriginCalibration = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.VerticalOriginCalibration),
                 () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual));
+                      this.MachineModeService.MachineMode == MachineMode.Manual &&
+                      (this.VerticalOriginCalibration.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
-        public HomingProcedureParameters VerticalOriginCalibratioParameters { get; private set; }
+        protected SetupStepStatus VerticalResolutionCalibration => this.SetupStatusCapabilities?.VerticalResolutionCalibration ?? new SetupStepStatus();
 
         public ICommand VerticalResolutionCalibrationCommand =>
-                    this.verticalResolutionCalibration
+                            this.verticalResolutionCalibration
             ??
             (this.verticalResolutionCalibration = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.VerticalResolutionCalibration),
                 () => this.CanExecuteCommand() &&
                       this.MachineModeService.MachineMode == MachineMode.Manual &&
-                      (this.MachineService.IsHoming || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
-            ));
+                      (this.VerticalResolutionCalibration.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
         public ICommand WeightAnalysisCommand =>
             this.weightAnalysisCommand
@@ -160,7 +144,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.weightAnalysisCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.WeightAnalysis),
                 () => this.CanExecuteCommand() &&
-                (this.MachineService.IsHoming || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
+                (this.VerticalOriginCalibration.IsCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
             ));
 
         public ICommand WeightMeasurementCommand =>
@@ -169,12 +153,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.weightMeasurement = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.WeightMeasurement),
                 () => this.CanExecuteCommand() &&
-                (this.MachineService.IsHoming || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
+                (this.VerticalOriginCalibration.IsCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
             ));
 
-        protected OffsetCalibrationProcedure VerticalOffsetProcedureParameters { get; private set; }
-
-        protected VerticalResolutionCalibrationProcedure VerticalResolutionCalibrationProcedureParameters { get; private set; }
+        protected SetupStatusCapabilities SetupStatusCapabilities { get; private set; }
 
         #endregion
 
@@ -272,29 +254,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private async Task UpdateSetupStatusAsync()
         {
-            if (this.VerticalResolutionCalibrationProcedureParameters == null ||
-                !this.VerticalResolutionCalibrationProcedureParameters.IsCompleted)
-            {
-                this.VerticalResolutionCalibrationProcedureParameters = await this.verticalResolutionCalibrationProcedureWebService.GetParametersAsync();
-            }
-
-            if (this.VerticalOffsetProcedureParameters == null ||
-                !this.VerticalOffsetProcedureParameters.IsCompleted)
-            {
-                this.VerticalOffsetProcedureParameters = await this.verticalOffsetProcedureWebService.GetParametersAsync();
-            }
-
-            if (this.BeltBurnishingProcedureParameters == null ||
-                !this.BeltBurnishingProcedureParameters.IsCompleted)
-            {
-                this.BeltBurnishingProcedureParameters = await this.beltBurnishingProcedureWebService.GetParametersAsync();
-            }
-
-            if (this.VerticalOriginCalibratioParameters == null ||
-                !this.VerticalOriginCalibratioParameters.IsCompleted)
-            {
-                this.VerticalOriginCalibratioParameters = await this.verticalOriginProcedureWebService.GetParametersAsync();
-            }
+            this.SetupStatusCapabilities = await this.machineSetupStatusWebService.GetAsync();
 
             this.RaiseCanExecuteChanged();
         }

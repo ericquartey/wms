@@ -189,6 +189,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
                     if (testParameters.PerformedCycles >= testParameters.RequiredCycles)
                     {
+                        setupProceduresDataProvider.MarkAsCompleted(setupProceduresDataProvider.GetShutterTest());
                         this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.stateData));
                     }
                     else
