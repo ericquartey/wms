@@ -3,7 +3,7 @@
     // Warning: there names must match the class names, as they are used in GetStateByClassName
     public enum MissionState
     {
-        NotDefined,
+        NotDefined = 0,
 
         New,
 
@@ -23,6 +23,10 @@
 
         End,
 
-        Error
+        Error = 101,
+
+        ErrorLoad,
+
+        ErrorDeposit
     }
 }
