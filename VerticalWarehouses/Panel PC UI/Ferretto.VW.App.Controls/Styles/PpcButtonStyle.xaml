@@ -406,13 +406,28 @@
                                 FlowDirection="LeftToRight">
                             <Grid x:Name="PpcButton_Grid">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition x:Name="Column"
-                                                      Width="Auto" />
+                                    <ColumnDefinition x:Name="Column">
+                                        <ColumnDefinition.Style>
+                                            <Style TargetType="{x:Type ColumnDefinition}">
+                                                <Setter Property="Width" Value="55" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}"
+                                                                 Value="">
+                                                        <Setter Property="Width" Value="6" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}"
+                                                                 Value="{x:Null}">
+                                                        <Setter Property="Width" Value="6" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ColumnDefinition.Style>
+                                    </ColumnDefinition>
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
                                 <Border Name="PpcButtonMenu_Border"
-                                        Margin="0,-2"
+                                        Margin="-2,-1.5"
                                         BorderBrush="{TemplateBinding BorderBrush}"
                                         BorderThickness="6,0,0,0"
                                         Opacity="1"
@@ -423,23 +438,23 @@
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
                                         Background="Transparent">
+                                    <Border.Style>
+                                        <Style TargetType="{x:Type Border}">
+                                            <Setter Property="Border.Visibility" Value="Visible" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}"
+                                                             Value="">
+                                                    <Setter Property="Border.Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}"
+                                                             Value="{x:Null}">
+                                                    <Setter Property="Border.Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
                                     <Grid Grid.Column="0"
                                           Margin="15,0,0,0">
-                                        <Grid.Style>
-                                            <Style TargetType="{x:Type Grid}">
-                                                <Setter Property="Visibility" Value="Visible" />
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}"
-                                                                 Value="">
-                                                        <Setter Property="Visibility" Value="Collapsed" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}"
-                                                                 Value="{x:Null}">
-                                                        <Setter Property="Visibility" Value="Collapsed" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Grid.Style>
                                         <Ellipse Width="38"
                                                  Height="38"
                                                  HorizontalAlignment="Center"
@@ -461,7 +476,7 @@
                                 </Border>
 
                                 <TextBlock Grid.Column="1"
-                                           Margin="10,0"
+                                           Margin="8,0"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center"
                                            FontFamily="{TemplateBinding FontFamily}"
@@ -477,9 +492,8 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsActive" Value="True">
                             <Setter TargetName="PpcButtonMenu_Border" Property="Visibility" Value="Visible" />
-                            <Setter TargetName="PpcButtonMenu_MainBorder" Property="BorderThickness" Value="0,2,2,2" />
+                            <Setter TargetName="PpcButtonMenu_MainBorder" Property="BorderThickness" Value="2,2,2,2" />
                             <Setter TargetName="PpcButtonMenu_Badge" Property="Margin" Value="0,0,0,0" />
-                            <!--<Setter TargetName="Column" Property="Width" Value="55" />-->
                         </Trigger>
                     </ControlTemplate.Triggers>
 

@@ -63,6 +63,7 @@
                                         Command="{Binding BayControlCommand}"
                                         Content="Permette di verificare e correggere la quota delle varie posizioni sulle baie"
                                         Kind="Account"
+                                        IsCompleted="{Binding IsBayControlCompleted}"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
                     <controls:PpcButton Title="Barriera misura altezza"
@@ -73,6 +74,7 @@
                                         Command="{Binding BayHeightCommand}"
                                         Content="Permette la regolazione della barriera di rilevamento altezza del cassetto"
                                         Kind="Account"
+                                        IsCompleted="{Binding IsBayHeightCompleted}"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
                     <controls:PpcButton Title="Test serranda"
@@ -83,6 +85,7 @@
                                         Command="{Binding TestShutterCommand}"
                                         Content="Permette di effettuare una serie di test ripetitivi per la serranda"
                                         Kind="Account"
+                                        IsCompleted="{Binding IsTestShutterCompleted}"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
                     <controls:PpcButton Title="Test baia"
@@ -92,6 +95,7 @@
                                         BorderBrush="{DynamicResource FerrettoOrange}"
                                         Command="{Binding TestBayCommand}"
                                         Content="Permette di effettuare una serie di test ripetitivi per la baia"
+                                        IsCompleted="{Binding IsTestShutterCompleted}"
                                         IsEnabled="False"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}"

@@ -73,7 +73,7 @@ namespace Ferretto.VW.App.Services
 
                         if (sensorStates.Length > maxArrayIndex)
                         {
-                            this.Open = sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay1] && sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay1];
+                            this.Open = !sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay1] && sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay1];
                             this.Closed = !sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay1] && !sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay1];
                             this.MidWay = sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay1] && !sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay1];
                         }
@@ -89,7 +89,7 @@ namespace Ferretto.VW.App.Services
 
                         if (sensorStates.Length > maxArrayIndex)
                         {
-                            this.Open = sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay2] && sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay2];
+                            this.Open = !sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay2] && sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay2];
                             this.Closed = !sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay2] && !sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay2];
                             this.MidWay = sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay2] && !sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay2];
                         }
@@ -105,7 +105,7 @@ namespace Ferretto.VW.App.Services
 
                         if (sensorStates.Length > maxArrayIndex)
                         {
-                            this.Open = sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay3] && sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay3];
+                            this.Open = !sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay3] && sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay3];
                             this.Closed = !sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay3] && !sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay3];
                             this.MidWay = sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay3] && !sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay3];
                         }
