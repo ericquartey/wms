@@ -88,6 +88,78 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bay.
+        /// </summary>
+        public static string Bay {
+            get {
+                return ResourceManager.GetString("Bay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string BayNumberAll {
+            get {
+                return ResourceManager.GetString("BayNumberAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No bay.
+        /// </summary>
+        public static string BayNumberBayNone {
+            get {
+                return ResourceManager.GetString("BayNumberBayNone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay one.
+        /// </summary>
+        public static string BayNumberBayOne {
+            get {
+                return ResourceManager.GetString("BayNumberBayOne", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay three.
+        /// </summary>
+        public static string BayNumberBayThree {
+            get {
+                return ResourceManager.GetString("BayNumberBayThree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay two.
+        /// </summary>
+        public static string BayNumberBayTwo {
+            get {
+                return ResourceManager.GetString("BayNumberBayTwo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elevator bay.
+        /// </summary>
+        public static string BayNumberElevatorBay {
+            get {
+                return ResourceManager.GetString("BayNumberElevatorBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay.
+        /// </summary>
+        public static string BayTarget {
+            get {
+                return ResourceManager.GetString("BayTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Blocked.
         /// </summary>
         public static string BlockLevelBlocked {
@@ -354,6 +426,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ConfirmOnFull {
             get {
                 return ResourceManager.GetString("ConfirmOnFull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date.
+        /// </summary>
+        public static string CreationDate {
+            get {
+                return ResourceManager.GetString("CreationDate", resourceCulture);
             }
         }
         
@@ -2087,6 +2168,222 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not defined.
+        /// </summary>
+        public static string MisionStateNotDefined {
+            get {
+                return ResourceManager.GetString("MisionStateNotDefined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missions.
+        /// </summary>
+        public static string Missions {
+            get {
+                return ResourceManager.GetString("Missions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missions list.
+        /// </summary>
+        public static string MissionsList {
+            get {
+                return ResourceManager.GetString("MissionsList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to State.
+        /// </summary>
+        public static string MissionState {
+            get {
+                return ResourceManager.GetString("MissionState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay chain.
+        /// </summary>
+        public static string MissionStateBayChain {
+            get {
+                return ResourceManager.GetString("MissionStateBayChain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close shutter.
+        /// </summary>
+        public static string MissionStateCloseShutter {
+            get {
+                return ResourceManager.GetString("MissionStateCloseShutter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deposit unit.
+        /// </summary>
+        public static string MissionStateDepositUnit {
+            get {
+                return ResourceManager.GetString("MissionStateDepositUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End.
+        /// </summary>
+        public static string MissionStateEnd {
+            get {
+                return ResourceManager.GetString("MissionStateEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string MissionStateError {
+            get {
+                return ResourceManager.GetString("MissionStateError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load elevator.
+        /// </summary>
+        public static string MissionStateLoadElevator {
+            get {
+                return ResourceManager.GetString("MissionStateLoadElevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New.
+        /// </summary>
+        public static string MissionStateNew {
+            get {
+                return ResourceManager.GetString("MissionStateNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not defined.
+        /// </summary>
+        public static string MissionStateNotDefined {
+            get {
+                return ResourceManager.GetString("MissionStateNotDefined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        public static string MissionStateStart {
+            get {
+                return ResourceManager.GetString("MissionStateStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To target.
+        /// </summary>
+        public static string MissionStateToTarget {
+            get {
+                return ResourceManager.GetString("MissionStateToTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wait operator action.
+        /// </summary>
+        public static string MissionStateWaitPick {
+            get {
+                return ResourceManager.GetString("MissionStateWaitPick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string MissionStatus {
+            get {
+                return ResourceManager.GetString("MissionStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mission type.
+        /// </summary>
+        public static string MissionType {
+            get {
+                return ResourceManager.GetString("MissionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compact.
+        /// </summary>
+        public static string MissionTypeCompact {
+            get {
+                return ResourceManager.GetString("MissionTypeCompact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In.
+        /// </summary>
+        public static string MissionTypeIn {
+            get {
+                return ResourceManager.GetString("MissionTypeIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manual.
+        /// </summary>
+        public static string MissionTypeManual {
+            get {
+                return ResourceManager.GetString("MissionTypeManual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No type.
+        /// </summary>
+        public static string MissionTypeNoType {
+            get {
+                return ResourceManager.GetString("MissionTypeNoType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Out.
+        /// </summary>
+        public static string MissionTypeOut {
+            get {
+                return ResourceManager.GetString("MissionTypeOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test.
+        /// </summary>
+        public static string MissionTypeTest {
+            get {
+                return ResourceManager.GetString("MissionTypeTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wms.
+        /// </summary>
+        public static string MissionTypeWms {
+            get {
+                return ResourceManager.GetString("MissionTypeWms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Drawer operations.
         /// </summary>
         public static string NavigationMainMenuDrawerOperation {
@@ -2623,6 +2920,60 @@ namespace Ferretto.VW.App.Resources {
         public static string StatisticsNavigationMachine {
             get {
                 return ResourceManager.GetString("StatisticsNavigationMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aborted.
+        /// </summary>
+        public static string StatusAborted {
+            get {
+                return ResourceManager.GetString("StatusAborted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Completed.
+        /// </summary>
+        public static string StatusCompleted {
+            get {
+                return ResourceManager.GetString("StatusCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Completing.
+        /// </summary>
+        public static string StatusCompleting {
+            get {
+                return ResourceManager.GetString("StatusCompleting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Executing.
+        /// </summary>
+        public static string StatusExecuting {
+            get {
+                return ResourceManager.GetString("StatusExecuting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New.
+        /// </summary>
+        public static string StatusNew {
+            get {
+                return ResourceManager.GetString("StatusNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Waiting.
+        /// </summary>
+        public static string StatusWaiting {
+            get {
+                return ResourceManager.GetString("StatusWaiting", resourceCulture);
             }
         }
         

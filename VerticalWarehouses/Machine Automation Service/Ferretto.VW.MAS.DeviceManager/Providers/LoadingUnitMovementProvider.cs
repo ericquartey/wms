@@ -301,15 +301,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return targetPosition;
         }
 
-        public void Homing(Axis axis, Calibration calibration, int loadingUnitId, BayNumber requestingBay, MessageActor sender)
+        public void Homing(Axis axis, Calibration calibration, int loadingUnitId, bool showErrors, BayNumber requestingBay, MessageActor sender)
         {
             if (axis == Axis.BayChain)
             {
-                this.carouselProvider.Homing(calibration, loadingUnitId, requestingBay, sender);
+                this.carouselProvider.Homing(calibration, loadingUnitId, showErrors, requestingBay, sender);
             }
             else
             {
-                this.elevatorProvider.Homing(axis, calibration, loadingUnitId, requestingBay, sender);
+                this.elevatorProvider.Homing(axis, calibration, loadingUnitId, showErrors, requestingBay, sender);
             }
         }
 
@@ -534,7 +534,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public MessageStatus ShutterStatus(NotificationMessage message)
         {
-            if (message.Type == MessageType.ShutterPositioning)
+            if (message.Type == MessageType.ShutterPositioning
+                || message.Type == MessageType.Homing
+                )
             {
                 return message.Status;
             }

@@ -33,6 +33,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private int? loadingUnitId;
 
+        private DelegateCommand loadingUnitsMissionsCommand;
+
         private LoadingUnit selectedUnitUnit;
 
         private DelegateCommand upSelectionCommand;
@@ -102,6 +104,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
         }
 
         public IEnumerable<LoadingUnit> LoadingUnits => new BindingList<LoadingUnit>(this.loadingUnits);
+
+        public ICommand LoadingUnitsMissionsCommand =>
+                        this.loadingUnitsMissionsCommand
+                        ??
+                        (this.loadingUnitsMissionsCommand = new DelegateCommand(this.LoadingUnitsMissionsAppear));
 
         public LoadingUnit SelectedLoadingUnit
         {
@@ -257,6 +264,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.currentItemIndex = 0;
                 this.SelectLoadingUnit();
             }
+        }
+
+        private void LoadingUnitsMissionsAppear()
+        {
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Operator),
+                Utils.Modules.Operator.Others.LOADINGUNITSMISSIONS,
+                null,
+                trackCurrentView: true);
         }
 
         private void SelectLoadingUnit()

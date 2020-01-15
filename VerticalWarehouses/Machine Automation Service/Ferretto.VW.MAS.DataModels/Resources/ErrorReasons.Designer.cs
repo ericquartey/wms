@@ -133,6 +133,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check that the pawl is at zero or that the loading unit is fully loaded on the elevator. Check also that the shutter is not closed.
+        /// </summary>
+        public static string ConditionsNotMetForHoming {
+            get {
+                return ResourceManager.GetString("ConditionsNotMetForHoming", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check that the pawl is at zero or that the loading unit is fully loaded on the elevator..
         /// </summary>
         public static string ConditionsNotMetForPositioning {

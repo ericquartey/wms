@@ -357,4 +357,7 @@
   <data name="CellLogicallyOccupied" xml:space="preserve">
     <value>Update database failed. One or more destination cells are logically occupied</value>
   </data>
+  <data name="ConditionsNotMetForHoming" xml:space="preserve">
+    <value>Check that the pawl is at zero or that the loading unit is fully loaded on the elevator. Check also that the shutter is not closed</value>
+  </data>
 </root>

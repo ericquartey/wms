@@ -47,7 +47,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult FindZero()
         {
-            this.carouselProvider.Homing(Calibration.FindSensor, null, this.BayNumber, MessageActor.AutomationService);
+            this.carouselProvider.Homing(Calibration.FindSensor, null, true, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Homing()
         {
-            this.carouselProvider.Homing(Calibration.ResetEncoder, null, this.BayNumber, MessageActor.AutomationService);
+            this.carouselProvider.Homing(Calibration.ResetEncoder, null, true, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }

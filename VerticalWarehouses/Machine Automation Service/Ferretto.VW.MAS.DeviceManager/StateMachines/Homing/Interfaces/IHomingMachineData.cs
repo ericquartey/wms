@@ -28,6 +28,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing.Interfaces
 
         Axis RequestedAxisToCalibrate { get; set; }
 
+        bool ShowErrors { get; }
+
         #endregion
     }
 }
