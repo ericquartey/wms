@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -17,6 +18,15 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
+    public enum CellPanelsCheckStep
+    {
+        Inizialize,
+
+        Measured,
+
+        Confirm,
+    }
+
     [Warning(WarningsArea.Installation)]
     internal sealed class CellPanelsCheckViewModel : BaseMainViewModel
     {
@@ -37,6 +47,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private CellPanel currentPanel;
 
         private int currentPanelNumber;
+
+        private CellPanelsCheckStep currentStep;
 
         private SubscriptionToken elevatorPositionChangedToken;
 
@@ -66,6 +78,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private PositioningProcedure procedureParameters;
 
+        private SubscriptionToken stepChangedToken;
+
         private double? stepValue;
 
         private DelegateCommand stopCommand;
@@ -85,6 +99,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.machineCellPanelsWebService = machineCellPanelsWebService ?? throw new ArgumentNullException(nameof(machineCellPanelsWebService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.machineElevatorService = machineElevatorService ?? throw new ArgumentNullException(nameof(machineElevatorService));
+
+            this.CurrentStep = CellPanelsCheckStep.Inizialize;
         }
 
         #endregion
@@ -143,6 +159,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public CellPanelsCheckStep CurrentStep
+        {
+            get => this.currentStep;
+            protected set => this.SetProperty(ref this.currentStep, value, this.UpdateStatusButtonFooter);
+        }
+
         public double? Displacement
         {
             get => this.panelCorrection;
@@ -173,6 +195,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.hasReachedCellPosition;
             private set => this.SetProperty(ref this.hasReachedCellPosition, value);
         }
+
+        public bool HasStepConfirm => this.currentStep is CellPanelsCheckStep.Confirm;
+
+        public bool HasStepInitialize => this.currentStep is CellPanelsCheckStep.Inizialize;
+
+        public bool HasStepMeasured => this.currentStep is CellPanelsCheckStep.Measured;
 
         public double? InitialPosition
         {
@@ -270,41 +298,29 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.Disappear();
 
-            /*
-             * Avoid unsubscribing in case of navigation to error page.
-             * We may need to review this behaviour.
-             *
-            this.subscriptionToken?.Dispose();
-            this.subscriptionToken = null;
-            */
+            if (this.stepChangedToken != null)
+            {
+                this.EventAggregator.GetEvent<StepChangedPubSubEvent>().Unsubscribe(this.stepChangedToken);
+                this.stepChangedToken?.Dispose();
+                this.stepChangedToken = null;
+            }
         }
 
         public override async Task OnAppearedAsync()
         {
+            this.SubscribeToEvents();
+
+            this.UpdateStatusButtonFooter();
+
             await base.OnAppearedAsync();
+        }
 
-            this.elevatorPositionChangedToken = this.elevatorPositionChangedToken
-              ??
-              this.EventAggregator
-                  .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
-                  .Subscribe(
-                      this.OnElevatorPositionChanged,
-                      ThreadOption.UIThread,
-                      false);
-
-            this.subscriptionToken = this.subscriptionToken
-                ??
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                    .Subscribe(
-                        this.OnCurrentPositionChanged,
-                        ThreadOption.UIThread,
-                        false);
-
-            this.IsBackNavigationAllowed = true;
-
+        protected override async Task OnDataRefreshAsync()
+        {
             try
             {
+                await this.SensorsService.RefreshAsync(true);
+
                 this.Panels = await this.machineCellPanelsWebService.GetAllAsync();
 
                 this.CurrentHeight = this.machineElevatorService.Position.Vertical;
@@ -315,10 +331,53 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.InitialPosition = (this.initialPosition is null) ? this.currentHeight : this.initialPosition;
             }
-            catch (Exception ex)
+            catch (HttpRequestException ex)
             {
                 this.ShowNotification(ex);
             }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        protected void OnStepChanged(StepChangedMessage e)
+        {
+            switch (this.CurrentStep)
+            {
+                case CellPanelsCheckStep.Inizialize:
+                    if (e.Next)
+                    {
+                        this.CurrentStep = CellPanelsCheckStep.Measured;
+                    }
+
+                    break;
+
+                case CellPanelsCheckStep.Measured:
+                    if (e.Next)
+                    {
+                        this.CurrentStep = CellPanelsCheckStep.Confirm;
+                    }
+                    else
+                    {
+                        this.CurrentStep = CellPanelsCheckStep.Inizialize;
+                    }
+
+                    break;
+
+                case CellPanelsCheckStep.Confirm:
+                    if (!e.Next)
+                    {
+                        this.CurrentStep = CellPanelsCheckStep.Measured;
+                    }
+
+                    break;
+
+                default:
+                    break;
+            }
+
+            this.RaiseCanExecuteChanged();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -596,6 +655,62 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        private void SubscribeToEvents()
+        {
+            this.stepChangedToken = this.stepChangedToken
+                ?? this.EventAggregator
+                    .GetEvent<StepChangedPubSubEvent>()
+                    .Subscribe(
+                        (m) => this.OnStepChanged(m),
+                        ThreadOption.UIThread,
+                        false);
+
+            this.elevatorPositionChangedToken = this.elevatorPositionChangedToken
+              ??
+              this.EventAggregator
+                  .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
+                  .Subscribe(
+                      this.OnElevatorPositionChanged,
+                      ThreadOption.UIThread,
+                      false);
+
+            this.subscriptionToken = this.subscriptionToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        this.OnCurrentPositionChanged,
+                        ThreadOption.UIThread,
+                        false);
+        }
+
+        private void UpdateStatusButtonFooter()
+        {
+            switch (this.CurrentStep)
+            {
+                case CellPanelsCheckStep.Inizialize:
+                    this.ShowPrevStepSinglePage(true, false);
+                    this.ShowNextStepSinglePage(true, true);
+                    break;
+
+                case CellPanelsCheckStep.Measured:
+                    this.ShowPrevStepSinglePage(true, true);
+                    this.ShowNextStepSinglePage(true, true);
+                    break;
+
+                case CellPanelsCheckStep.Confirm:
+                    this.ShowPrevStepSinglePage(true, true);
+                    this.ShowNextStepSinglePage(true, false);
+                    break;
+            }
+
+            this.ShowAbortStep(true, !this.IsMoving);
+
+            this.RaisePropertyChanged(nameof(this.HasStepInitialize));
+            this.RaisePropertyChanged(nameof(this.HasStepMeasured));
+            this.RaisePropertyChanged(nameof(this.HasStepConfirm));
         }
 
         #endregion

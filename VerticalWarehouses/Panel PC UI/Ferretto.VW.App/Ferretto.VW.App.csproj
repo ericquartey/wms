@@ -8,6 +8,7 @@
     <StartupObject>Ferretto.VW.App.App</StartupObject>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <ApplicationManifest>properties/app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -88,6 +89,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Properties\app.manifest">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20200113135851_initialcreation")]
+    [Migration("20200115134411_initialcreation")]
     partial class initialcreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -94,6 +94,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<double>("MaxDoubleHeight");
+
+                    b.Property<double>("MaxSingleHeight");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BayId");
@@ -150,9 +154,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("BlockLevel");
 
-                    b.Property<bool>("IsFree")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("1");
+                    b.Property<bool>("IsFree");
 
                     b.Property<int>("PanelId");
 
@@ -633,6 +635,21 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Code = 61,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 62,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 63,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
                             Code = 1000,
                             TotalErrors = 0
                         },
@@ -990,13 +1007,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("RestoreConditions");
 
-                    b.Property<int>("RestoreState");
-
-                    b.Property<int>("State");
+                    b.Property<int>("RestoreStep");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("Step");
 
                     b.Property<int>("StopReason");
 
@@ -1076,7 +1093,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 3, 13, 14, 58, 50, 590, DateTimeKind.Local).AddTicks(6716),
+                            InstallationDate = new DateTime(2017, 3, 15, 14, 44, 10, 603, DateTimeKind.Local).AddTicks(5112),
                             ServiceStatus = 86
                         });
                 });
@@ -1123,6 +1140,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("VerticalOffsetCalibrationId");
 
+                    b.Property<int?>("VerticalOriginCalibrationId");
+
                     b.Property<int?>("VerticalResolutionCalibrationId");
 
                     b.HasKey("Id");
@@ -1144,6 +1163,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasIndex("ShutterTestId");
 
                     b.HasIndex("VerticalOffsetCalibrationId");
+
+                    b.HasIndex("VerticalOriginCalibrationId");
 
                     b.HasIndex("VerticalResolutionCalibrationId");
 
@@ -1189,6 +1210,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<DateTime?>("CompletedDate");
 
+                    b.Property<bool>("Homing");
+
                     b.Property<bool>("HorizontalHoming");
 
                     b.Property<bool>("WeightMeasurement");
@@ -1217,6 +1240,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Bay3Laser = false,
                             Bay3Shape = false,
                             Bay3Shutter = false,
+                            Homing = false,
                             HorizontalHoming = false,
                             WeightMeasurement = false
                         });
@@ -1619,6 +1643,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.OffsetCalibrationProcedure", "VerticalOffsetCalibration")
                         .WithMany()
                         .HasForeignKey("VerticalOffsetCalibrationId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.SetupProcedure", "VerticalOriginCalibration")
+                        .WithMany()
+                        .HasForeignKey("VerticalOriginCalibrationId");
 
                     b.HasOne("Ferretto.VW.MAS.DataModels.VerticalResolutionCalibrationProcedure", "VerticalResolutionCalibration")
                         .WithMany()

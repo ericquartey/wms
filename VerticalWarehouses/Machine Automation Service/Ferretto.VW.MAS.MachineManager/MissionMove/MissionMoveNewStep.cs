@@ -12,11 +12,11 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.MachineManager.MissionMove
 {
-    public class MissionMoveNewState : MissionMoveBase
+    public class MissionMoveNewStep : MissionMoveBase
     {
         #region Constructors
 
-        public MissionMoveNewState(Mission mission,
+        public MissionMoveNewStep(Mission mission,
             IServiceProvider serviceProvider,
             IEventAggregator eventAggregator)
             : base(mission, serviceProvider, eventAggregator)
@@ -47,7 +47,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.MissionsDataProvider.Update(this.Mission);
                 this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
-                var startState = new MissionMoveStartState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                var startState = new MissionMoveStartStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 returnValue = startState.OnEnter(null);
             }
             else
@@ -67,7 +67,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             bool returnValue = true;
 #if CHECK_BAY_SENSOR
-            if (!this.SensorsProvider.IsLoadingUnitInLocation(destination))
+            if (this.SensorsProvider.IsLoadingUnitInLocation(destination))
+            {
+                returnValue = false;
+            }
+            else
 #endif
             {
                 returnValue = (messageData.Source == destination)
@@ -95,21 +99,33 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 && destination != LoadingUnitLocation.NoLocation)
             {
                 var destinationBay = this.BaysDataProvider.GetByLoadingUnitLocation(destination);
-                if (destinationBay != null
-                    && destinationBay.Number != requestingBay
-                    )
+                if (destinationBay != null)
                 {
-                    // move from bay to bay
-                    if (this.BaysDataProvider.GetByLoadingUnitLocation(destination).Shutter.Type != ShutterType.NotSpecified
-                        && this.SensorsProvider.GetShutterPosition(destinationBay.Number) != ShutterPosition.Closed
-                        && this.SensorsProvider.GetShutterPosition(destinationBay.Number) != ShutterPosition.Opened
-                        )
+                    if (destinationBay.Number != requestingBay)
                     {
-                        if (showErrors)
+                        // move from bay to bay
+                        if (this.BaysDataProvider.GetByLoadingUnitLocation(destination).Shutter.Type != ShutterType.NotSpecified
+                            && this.SensorsProvider.GetShutterPosition(destinationBay.Number) != ShutterPosition.Closed
+                            && this.SensorsProvider.GetShutterPosition(destinationBay.Number) != ShutterPosition.Opened
+                            )
                         {
-                            this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, requestingBay);
+                            if (showErrors)
+                            {
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, requestingBay);
+                            }
+                            returnValue = false;
                         }
-                        returnValue = false;
+                    }
+                    else
+                    {
+                        if (!this.CheckBayHeight(destinationBay, mission))
+                        {
+                            if (showErrors)
+                            {
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitHeightExceeded, requestingBay);
+                            }
+                            returnValue = false;
+                        }
                     }
                 }
             }

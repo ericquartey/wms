@@ -98,20 +98,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            await base.OnAppearedAsync();
-
-            this.IsWaitingForResponse = true;
-
-            await this.RetrieveCellsAsync().ContinueWith((e) => { this.IsWaitingForResponse = false; });
-
             this.IsBackNavigationAllowed = true;
+
+            await base.OnAppearedAsync();
         }
 
-        protected override void RaiseCanExecuteChanged()
+        protected override async Task OnDataRefreshAsync()
         {
-            base.RaiseCanExecuteChanged();
-
-            this.ClearNotifications();
+            await this.RetrieveCellsAsync();
         }
 
         private async Task RetrieveCellsAsync()

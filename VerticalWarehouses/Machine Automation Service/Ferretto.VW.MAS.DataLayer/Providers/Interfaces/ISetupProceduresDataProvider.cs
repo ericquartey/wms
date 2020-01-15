@@ -27,6 +27,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         OffsetCalibrationProcedure GetVerticalOffsetCalibration();
 
+        SetupProcedure GetVerticalOriginCalibration();
+
         VerticalResolutionCalibrationProcedure GetVerticalResolutionCalibration();
 
         void Import(SetupProceduresSet setupProceduresSet, DataLayerContext context);

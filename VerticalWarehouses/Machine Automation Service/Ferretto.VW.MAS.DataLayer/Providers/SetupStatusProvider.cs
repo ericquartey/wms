@@ -39,15 +39,21 @@ namespace Ferretto.VW.MAS.DataLayer
         public void CompleteVerticalOrigin()
         {
             this.verticalOriginSetupStatusProvider.Complete();
+
+            lock (this.dataContext)
+            {
+                var procedureParameters = this.setupProceduresDataProvider.GetVerticalOriginCalibration();
+                this.setupProceduresDataProvider.MarkAsCompleted(procedureParameters);
+            }
         }
 
         public SetupStatusCapabilities Get()
         {
             var status = this.dataContext.SetupStatus.FirstOrDefault();
 
-            var verticalOrigin = this.verticalOriginSetupStatusProvider.Get();
-
             var setup = this.setupProceduresDataProvider.GetAll();
+
+            var verticalOrigin = setup.VerticalOriginCalibration;
 
             var statusCapabilities = new SetupStatusCapabilities
             {
@@ -155,7 +161,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 BeltBurnishing = new SetupStepStatus
                 {
                     IsCompleted = setup.BeltBurnishingTest.IsCompleted,
-                    CanBePerformed = verticalOrigin.IsCompleted,
+                    CanBePerformed = verticalOrigin.IsCompleted && setup.VerticalOffsetCalibration.IsCompleted && setup.VerticalOriginCalibration.IsCompleted,
                     InProgress = setup.BeltBurnishingTest.InProgress,
                 },
                 CellsHeightCheck = new SetupStepStatus
@@ -178,16 +184,19 @@ namespace Ferretto.VW.MAS.DataLayer
                     IsCompleted = setup.CellPanelsCheck.IsCompleted,
                     CanBePerformed = setup.VerticalOffsetCalibration.IsCompleted && verticalOrigin.IsCompleted,
                 },
-                VerticalOriginCalibration = verticalOrigin,
+                VerticalOriginCalibration = new SetupStepStatus
+                {
+                    IsCompleted = setup.VerticalOriginCalibration.IsCompleted,
+                },
                 VerticalOffsetCalibration = new SetupStepStatus
                 {
                     IsCompleted = setup.VerticalOffsetCalibration.IsCompleted,
-                    CanBePerformed = setup.VerticalResolutionCalibration.IsCompleted && verticalOrigin.IsCompleted,
+                    CanBePerformed = verticalOrigin.IsCompleted,
                 },
                 VerticalResolutionCalibration = new SetupStepStatus
                 {
                     IsCompleted = setup.VerticalResolutionCalibration.IsCompleted,
-                    CanBePerformed = setup.BeltBurnishingTest.IsCompleted && verticalOrigin.IsCompleted,
+                    CanBePerformed = verticalOrigin.IsCompleted,
                 },
                 WeightMeasurement = new SetupStepStatus
                 {

@@ -354,4 +354,7 @@
   <data name="ConditionsNotMetForHoming" xml:space="preserve">
     <value>Homing conditions not met.</value>
   </data>
+  <data name="LoadUnitHeightExceeded" xml:space="preserve">
+    <value>The height of the loading unit is over the maximum.</value>
+  </data>
 </root>

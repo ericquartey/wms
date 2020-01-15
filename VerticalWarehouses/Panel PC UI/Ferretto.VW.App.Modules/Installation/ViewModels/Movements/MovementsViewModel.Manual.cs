@@ -341,22 +341,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanMoveToCellHeight()
         {
-            return
-                this.CanBaseExecute()
-                &&
-                this.SelectedCell != null
-                &&
-                this.moveToCellPolicy?.IsAllowed == true;
+            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+                   this.CanBaseExecute() &&
+                   this.SelectedCell != null &&
+                   this.moveToCellPolicy?.IsAllowed == true;
         }
 
         private bool CanMoveToHeight()
         {
-            return
-                this.CanBaseExecute()
-                &&
-                this.moveToCellPolicy?.IsAllowed == true
-                &&
-                this.InputHeight != null;
+            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+                   this.CanBaseExecute() &&
+                   this.moveToCellPolicy?.IsAllowed == true &&
+                   this.InputHeight != null;
         }
 
         private void CloseOperation()
@@ -503,34 +499,36 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                              !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
 
             this.CanMoveElevatorBackwards = !this.IsMovingElevatorForwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown &&
-                                             !this.IsCarouselOpening && !this.IsCarouselOpening &&
-                                             !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
-                                             !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
+                                           !this.IsCarouselOpening && !this.IsCarouselOpening &&
+                                           !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
+                                           !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
             this.CanMoveElevatorForwards = !this.IsMovingElevatorBackwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown &&
-                                             !this.IsCarouselOpening && !this.IsCarouselOpening &&
-                                             !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
-                                             !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
+                                           !this.IsCarouselOpening && !this.IsCarouselOpening &&
+                                           !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
+                                           !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
 
-            this.CanMoveElevatorUp = !this.IsMovingElevatorDown && !this.isMovingElevatorForwards && !this.IsMovingElevatorBackwards && (this.SensorsService?.IsZeroChain ?? false) &&
-                                             !this.IsCarouselOpening && !this.IsCarouselOpening &&
-                                             !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
-                                             !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
-            this.CanMoveElevatorDown = !this.IsMovingElevatorUp && !this.isMovingElevatorForwards && !this.IsMovingElevatorBackwards && (this.SensorsService?.IsZeroChain ?? false) &&
-                                             !this.IsCarouselOpening && !this.IsCarouselOpening &&
-                                             !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
-                                             !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
+            this.CanMoveElevatorUp = (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+                                     !this.IsMovingElevatorDown && !this.isMovingElevatorForwards && !this.IsMovingElevatorBackwards &&
+                                     (this.SensorsService?.IsZeroChain ?? false) &&
+                                     !this.IsCarouselOpening && !this.IsCarouselOpening &&
+                                     !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
+                                     !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
+
+            this.CanMoveElevatorDown = (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+                                       !this.IsMovingElevatorUp && !this.isMovingElevatorForwards && !this.IsMovingElevatorBackwards &&
+                                       (this.SensorsService?.IsZeroChain ?? false) &&
+                                       !this.IsCarouselOpening && !this.IsCarouselOpening &&
+                                       !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
+                                       !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
 
             this.CanMoveCarouselCloseCommand = !this.IsCarouselOpening && this.moveCarouselDownPolicy?.IsAllowed == true &&
-                                             !this.IsMovingElevatorBackwards && !this.IsMovingElevatorForwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown &&
-                                             !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
-                                             !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
+                                               !this.IsMovingElevatorBackwards && !this.IsMovingElevatorForwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown &&
+                                               !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
+                                               !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
             this.CanMoveCarouselOpenCommand = !this.IsCarouselClosing && this.moveCarouselUpPolicy?.IsAllowed == true &&
-                                             !this.IsMovingElevatorBackwards && !this.IsMovingElevatorForwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown &&
-                                             !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
-                                             !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
-
-            //this.moveToCellHeightCommand?.RaiseCanExecuteChanged();
-            //this.moveToHeightCommand?.RaiseCanExecuteChanged();
+                                              !this.IsMovingElevatorBackwards && !this.IsMovingElevatorForwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown &&
+                                              !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
+                                              !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
         }
 
         private void OnManualShutterPositionChanged(NotificationMessageUI<ShutterPositioningMessageData> message)

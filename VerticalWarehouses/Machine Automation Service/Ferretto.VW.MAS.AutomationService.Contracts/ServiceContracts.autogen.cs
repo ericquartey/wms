@@ -1304,12 +1304,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public MissionErrorMovements ErrorMovements { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("restoreState", Required = Newtonsoft.Json.Required.Always)]
-        public MissionState RestoreState { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("state", Required = Newtonsoft.Json.Required.Always)]
-        public MissionState State { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("loadUnitCellSourceId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? LoadUnitCellSourceId { get; set; }
     
@@ -1340,10 +1334,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("restoreConditions", Required = Newtonsoft.Json.Required.Always)]
         public bool RestoreConditions { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("restoreStep", Required = Newtonsoft.Json.Required.Always)]
+        public MissionStep RestoreStep { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public MissionStatus Status { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("step", Required = Newtonsoft.Json.Required.Always)]
+        public MissionStep Step { get; set; }
     
         [Newtonsoft.Json.JsonProperty("stopReason", Required = Newtonsoft.Json.Required.Always)]
         public StopRequestReason StopReason { get; set; }
@@ -1472,33 +1472,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum MissionState
-    {
-        NotDefined = 0,
-    
-        New = 1,
-    
-        Start = 2,
-    
-        LoadElevator = 3,
-    
-        ToTarget = 4,
-    
-        DepositUnit = 5,
-    
-        WaitPick = 6,
-    
-        BayChain = 7,
-    
-        CloseShutter = 8,
-    
-        End = 9,
-    
-        Error = 10,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum LoadingUnitLocation
     {
         NoLocation = 0,
@@ -1593,6 +1566,37 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         Closed = 3,
     
         Intermediate = 4,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum MissionStep
+    {
+        NotDefined = 0,
+    
+        New = 1,
+    
+        Start = 2,
+    
+        LoadElevator = 3,
+    
+        ToTarget = 4,
+    
+        DepositUnit = 5,
+    
+        WaitPick = 6,
+    
+        BayChain = 7,
+    
+        CloseShutter = 8,
+    
+        End = 9,
+    
+        Error = 101,
+    
+        ErrorLoad = 102,
+    
+        ErrorDeposit = 103,
     
     }
     
@@ -1878,6 +1882,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("location", Required = Newtonsoft.Json.Required.Always)]
         public LoadingUnitLocation Location { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("maxDoubleHeight", Required = Newtonsoft.Json.Required.Always)]
+        public double MaxDoubleHeight { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("maxSingleHeight", Required = Newtonsoft.Json.Required.Always)]
+        public double MaxSingleHeight { get; set; }
     
         public string ToJson() 
         {
@@ -2702,6 +2712,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("verticalOffsetCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public OffsetCalibrationProcedure VerticalOffsetCalibration { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("verticalOriginCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public SetupProcedure VerticalOriginCalibration { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("verticalResolutionCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public VerticalResolutionCalibrationProcedure VerticalResolutionCalibration { get; set; }
     
@@ -3100,77 +3113,79 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         LoadUnitWeightExceeded = 26,
     
-        LoadUnitWeightTooLow = 27,
+        LoadUnitHeightExceeded = 27,
     
-        MachineWeightExceeded = 28,
+        LoadUnitWeightTooLow = 28,
     
-        DestinationBelowLowerBound = 29,
+        MachineWeightExceeded = 29,
     
-        DestinationOverUpperBound = 30,
+        DestinationBelowLowerBound = 30,
     
-        BayInvertersBusy = 31,
+        DestinationOverUpperBound = 31,
     
-        IoDeviceError = 32,
+        BayInvertersBusy = 32,
     
-        MachineModeNotValid = 33,
+        IoDeviceError = 33,
     
-        AnotherMissionIsActiveForThisLoadUnit = 34,
+        MachineModeNotValid = 34,
     
-        AnotherMissionIsActiveForThisBay = 35,
+        AnotherMissionIsActiveForThisLoadUnit = 35,
     
-        AnotherMissionOfThisTypeIsActive = 36,
+        AnotherMissionIsActiveForThisBay = 36,
     
-        WarehouseIsFull = 37,
+        AnotherMissionOfThisTypeIsActive = 37,
     
-        CellLogicallyOccupied = 38,
+        WarehouseIsFull = 38,
     
-        MoveBayChainNotAllowed = 39,
+        CellLogicallyOccupied = 39,
     
-        AutomaticRestoreNotAllowed = 40,
+        MoveBayChainNotAllowed = 40,
     
-        DestinationTypeNotValid = 41,
+        AutomaticRestoreNotAllowed = 41,
     
-        MissionTypeNotValid = 42,
+        DestinationTypeNotValid = 42,
     
-        ResumeCommandNotValid = 43,
+        MissionTypeNotValid = 43,
     
-        NoLoadUnitInSource = 44,
+        ResumeCommandNotValid = 44,
     
-        LoadUnitSourceDb = 45,
+        NoLoadUnitInSource = 45,
     
-        LoadUnitDestinationCell = 46,
+        LoadUnitSourceDb = 46,
     
-        LoadUnitElevator = 47,
+        LoadUnitDestinationCell = 47,
     
-        LoadUnitNotRemoved = 48,
+        LoadUnitElevator = 48,
     
-        LoadUnitDestinationBay = 49,
+        LoadUnitNotRemoved = 49,
     
-        LoadUnitSourceCell = 50,
+        LoadUnitDestinationBay = 50,
     
-        LoadUnitNotFound = 51,
+        LoadUnitSourceCell = 51,
     
-        LoadUnitNotLoaded = 52,
+        LoadUnitNotFound = 52,
     
-        LoadUnitSourceBay = 53,
+        LoadUnitNotLoaded = 53,
     
-        LoadUnitShutterOpen = 54,
+        LoadUnitSourceBay = 54,
     
-        LoadUnitShutterClosed = 55,
+        LoadUnitShutterOpen = 55,
     
-        LoadUnitPresentInCell = 56,
+        LoadUnitShutterClosed = 56,
     
-        LoadUnitOtherBay = 57,
+        LoadUnitPresentInCell = 57,
     
-        LoadUnitSourceElevator = 58,
+        LoadUnitOtherBay = 58,
     
-        LoadUnitMissingOnElevator = 59,
+        LoadUnitSourceElevator = 59,
     
-        LoadUnitMissingOnBay = 60,
+        LoadUnitMissingOnElevator = 60,
     
-        LoadUnitUndefinedUpper = 61,
+        LoadUnitMissingOnBay = 61,
     
-        LoadUnitUndefinedBottom = 62,
+        LoadUnitUndefinedUpper = 62,
+    
+        LoadUnitUndefinedBottom = 63,
     
         InverterErrorBaseCode = 1000,
     
@@ -3520,6 +3535,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class HomingProcedureParameters 
     {
+        [Newtonsoft.Json.JsonProperty("isCompleted", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsCompleted { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("lowerBound", Required = Newtonsoft.Json.Required.Always)]
         public double LowerBound { get; set; }
     

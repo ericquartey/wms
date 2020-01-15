@@ -421,6 +421,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The height of the loading unit is over the maximum..
+        /// </summary>
+        public static string LoadUnitHeightExceeded {
+            get {
+                return ResourceManager.GetString("LoadUnitHeightExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bay 1 occupied with unknown loading unit.
         /// </summary>
         public static string LoadUnitMissingOnBay1 {

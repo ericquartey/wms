@@ -360,4 +360,7 @@
   <data name="ConditionsNotMetForHoming" xml:space="preserve">
     <value>Check that the pawl is at zero or that the loading unit is fully loaded on the elevator. Check also that the shutter is not closed</value>
   </data>
+  <data name="LoadUnitHeightExceeded" xml:space="preserve">
+    <value>Try to lower the height of the load unit.</value>
+  </data>
 </root>

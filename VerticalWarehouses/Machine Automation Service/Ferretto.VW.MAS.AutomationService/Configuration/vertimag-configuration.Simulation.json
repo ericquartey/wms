@@ -38,6 +38,7 @@
         "Positions": [
           {
             "Height": 645,
+            "MaxSingleHeight": 695,
             "Location": "InternalBay1Down"
           }
         ],
@@ -85,10 +86,12 @@
         "Positions": [
           {
             "Height": 645,
+            "MaxSingleHeight": 395,
             "Location": "InternalBay2Down"
           },
           {
             "Height": 1045,
+            "MaxSingleHeight": 395,
             "Location": "InternalBay2Up"
           }
         ],
@@ -1735,6 +1738,8 @@
       "InitialPosition": 1000,
       "FinalPosition": 4500,
       "FeedRate": 0.2
+    },
+    "VerticalOriginCalibration": {
     }
   }
 }
