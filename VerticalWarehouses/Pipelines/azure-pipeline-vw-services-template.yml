@@ -33,7 +33,7 @@ steps:
     publishWebProjects: false
     projects: ${{ parameters.RestoreBuildProjects }}
     arguments: '--configuration ${{ parameters.BuildConfiguration }}  --framework ${{ parameters.TargetFramework }} --no-build --no-restore'
-    zipAfterPublish: true
+    zipAfterPublish: false
 
 
 - task: PublishBuildArtifacts@1
