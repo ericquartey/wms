@@ -1,0 +1,13 @@
+trigger:
+- develop
+- release
+- master
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+- template: azure-pipeline-vw-installer-template.yml
+  parameters:
+    BuildConfiguration: 'debug'
+    BuildPlatform: 'any cpu'
