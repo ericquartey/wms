@@ -555,13 +555,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanTuneBay()
         {
-            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
-
-                this.CanBaseExecute()
-                &&
-                !this.IsTuningBay
-                &&
-                this.SensorsService.Sensors.ACUBay1S3IND;
+            return this.CanBaseExecute() &&
+                   !this.IsTuningBay &&
+                   this.MachineStatus.LoadingUnitPositionDownInBay is null &&
+                   this.MachineStatus.LoadingUnitPositionUpInBay is null &&
+                   this.SensorsService.Sensors.ACUBay1S3IND;
         }
 
         private bool CanTuningChain()
