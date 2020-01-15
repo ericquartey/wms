@@ -189,6 +189,7 @@ namespace Ferretto.VW.MAS.DataLayer
             context.AddOrUpdate(setupProceduresSet?.ShutterTest, (e) => e.Id);
             context.AddOrUpdate(setupProceduresSet?.VerticalOffsetCalibration, (e) => e.Id);
             context.AddOrUpdate(setupProceduresSet?.VerticalResolutionCalibration, (e) => e.Id);
+            context.AddOrUpdate(setupProceduresSet?.VerticalOriginCalibration, (e) => e.Id);
         }
 
         public RepeatedTestProcedure IncreasePerformedCycles(RepeatedTestProcedure procedure)
@@ -255,6 +256,7 @@ namespace Ferretto.VW.MAS.DataLayer
             dataContext.AddOrUpdate(setupProceduresSet?.ShutterTest, (e) => e.Id);
             dataContext.AddOrUpdate(setupProceduresSet?.VerticalOffsetCalibration, (e) => e.Id);
             dataContext.AddOrUpdate(setupProceduresSet?.VerticalResolutionCalibration, (e) => e.Id);
+            dataContext.AddOrUpdate(setupProceduresSet?.VerticalOriginCalibration, (e) => e.Id);
 
             dataContext.SaveChanges();
         }

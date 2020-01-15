@@ -186,7 +186,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 },
                 VerticalOriginCalibration = {
                     IsCompleted = setup.VerticalOriginCalibration.IsCompleted,
-                    CanBePerformed = setup.VerticalResolutionCalibration.IsCompleted && verticalOrigin.IsCompleted,
                 },
                 VerticalOffsetCalibration = new SetupStepStatus
                 {
