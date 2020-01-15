@@ -141,6 +141,16 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public SetupProcedure GetVerticalOriginCalibration()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.SetupProceduresSets
+                    .Select(s => s.VerticalOriginCalibration)
+                    .Single();
+            }
+        }
+
         public VerticalResolutionCalibrationProcedure GetVerticalResolutionCalibration()
         {
             lock (this.dataContext)

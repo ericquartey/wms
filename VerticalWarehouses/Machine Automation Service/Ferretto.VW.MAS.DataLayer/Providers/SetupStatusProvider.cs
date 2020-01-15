@@ -39,15 +39,21 @@ namespace Ferretto.VW.MAS.DataLayer
         public void CompleteVerticalOrigin()
         {
             this.verticalOriginSetupStatusProvider.Complete();
+
+            lock (this.dataContext)
+            {
+                var procedureParameters = this.setupProceduresDataProvider.GetVerticalOriginCalibration();
+                this.setupProceduresDataProvider.MarkAsCompleted(procedureParameters);
+            }
         }
 
         public SetupStatusCapabilities Get()
         {
             var status = this.dataContext.SetupStatus.FirstOrDefault();
 
-            var verticalOrigin = this.verticalOriginSetupStatusProvider.Get();
-
             var setup = this.setupProceduresDataProvider.GetAll();
+
+            var verticalOrigin = setup.VerticalOriginCalibration;
 
             var statusCapabilities = new SetupStatusCapabilities
             {
@@ -178,7 +184,10 @@ namespace Ferretto.VW.MAS.DataLayer
                     IsCompleted = setup.CellPanelsCheck.IsCompleted,
                     CanBePerformed = setup.VerticalOffsetCalibration.IsCompleted && verticalOrigin.IsCompleted,
                 },
-                VerticalOriginCalibration = verticalOrigin,
+                VerticalOriginCalibration = {
+                    IsCompleted = setup.VerticalOriginCalibration.IsCompleted,
+                    CanBePerformed = setup.VerticalResolutionCalibration.IsCompleted && verticalOrigin.IsCompleted,
+                },
                 VerticalOffsetCalibration = new SetupStepStatus
                 {
                     IsCompleted = setup.VerticalOffsetCalibration.IsCompleted,
