@@ -8,7 +8,7 @@ parameters:
 steps:
 
 - task: DotNetCoreCLI@2
-  displayName: 'NuGet restore (dotnet)'
+  displayName: 'dotnet restore'
   inputs:
     command: restore
     projects: ${{ parameters.RestoreBuildProjects }} 
@@ -20,20 +20,20 @@ steps:
 
 
 - task: DotNetCoreCLI@2
-  displayName: 'Build VW Services (netcore)'
+  displayName: 'dotnet build'
   inputs:
     projects: ${{ parameters.RestoreBuildProjects }} 
-    arguments: '--configuration ${{ parameters.BuildConfiguration }} --framework ${{ parameters.TargetFramework }}'
+    arguments: '--configuration ${{ parameters.BuildConfiguration }} --framework ${{ parameters.TargetFramework }} --no-restore'
 
 
 - task: DotNetCoreCLI@2
-  displayName: 'Publish (netcore)'
+  displayName: 'dotnet publish'
   inputs:
     command: publish
     publishWebProjects: false
     projects: ${{ parameters.RestoreBuildProjects }}
     arguments: '--configuration ${{ parameters.BuildConfiguration }}  --framework ${{ parameters.TargetFramework }} --no-build --no-restore'
-    zipAfterPublish: false
+    zipAfterPublish: true
 
 
 - task: PublishBuildArtifacts@1

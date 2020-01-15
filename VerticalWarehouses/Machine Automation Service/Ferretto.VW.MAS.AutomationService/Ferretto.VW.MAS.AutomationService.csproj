@@ -8,7 +8,7 @@
     <Configurations>Debug;Release;Debug_no_autogen</Configurations>
     <LangVersion>latest</LangVersion>
     <ServerGarbageCollection>False</ServerGarbageCollection>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationManifest>properties/app.manifest</ApplicationManifest>
     <AssemblyName>Ferretto.VW.MAS.AutomationService</AssemblyName>
   </PropertyGroup>
 
@@ -78,7 +78,6 @@
 
   <ItemGroup>
     <Folder Include="Database\" />
-    <Folder Include="Properties\" />
   </ItemGroup>
 
   <Target Name="NSwag" AfterTargets="Build" Condition=" '$(Configuration)' == 'debug' and $(TargetFramework.StartsWith('netcore')) ">
