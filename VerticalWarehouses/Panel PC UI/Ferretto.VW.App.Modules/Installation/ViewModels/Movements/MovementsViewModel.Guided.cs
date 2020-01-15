@@ -60,8 +60,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand loadFromBayCommand;
 
-        private ActionPolicy loadFromBayPolicy;
-
         private DelegateCommand loadFromCellCommand;
 
         private ActionPolicy loadFromCellPolicy;
@@ -103,8 +101,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private DelegateCommand tuningChainCommand;
 
         private DelegateCommand unloadToBayCommand;
-
-        private ActionPolicy unloadToBayPolicy;
 
         private DelegateCommand unloadToCellCommand;
 
@@ -167,105 +163,49 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsBusyLoadingFromBay
         {
             get => this.isBusyLoadingFromBay;
-            private set
-            {
-                if (this.SetProperty(ref this.isBusyLoadingFromBay, value))
-                {
-                    //this.RaisePropertyChanged(nameof(this.IsMoving));
-                    //this.RaiseCanExecuteChanged();
-                }
-            }
+            private set => this.SetProperty(ref this.isBusyLoadingFromBay, value);
         }
 
         public bool IsBusyLoadingFromCell
         {
             get => this.isBusyLoadingFromCell;
-            private set
-            {
-                if (this.SetProperty(ref this.isBusyLoadingFromCell, value))
-                {
-                    //this.RaisePropertyChanged(nameof(this.IsMoving));
-                    //this.RaiseCanExecuteChanged();
-                }
-            }
+            private set => this.SetProperty(ref this.isBusyLoadingFromCell, value);
         }
 
         public bool IsBusyUnloadingToBay
         {
             get => this.isBusyUnloadingToBay;
-            private set
-            {
-                if (this.SetProperty(ref this.isBusyUnloadingToBay, value))
-                {
-                    //this.RaisePropertyChanged(nameof(this.IsMoving));
-                    //this.RaiseCanExecuteChanged();
-                }
-            }
+            private set => this.SetProperty(ref this.isBusyUnloadingToBay, value);
         }
 
         public bool IsBusyUnloadingToCell
         {
             get => this.isBusyUnloadingToCell;
-            private set
-            {
-                if (this.SetProperty(ref this.isBusyUnloadingToCell, value))
-                {
-                    //this.RaisePropertyChanged(nameof(this.IsMoving));
-                    //this.RaiseCanExecuteChanged();
-                }
-            }
+            private set => this.SetProperty(ref this.isBusyUnloadingToCell, value);
         }
 
         public bool IsElevatorMovingToBay
         {
             get => this.isElevatorMovingToBay;
-            private set
-            {
-                if (this.SetProperty(ref this.isElevatorMovingToBay, value))
-                {
-                    //this.RaisePropertyChanged(nameof(this.IsMoving));
-                    //this.RaiseCanExecuteChanged();
-                }
-            }
+            private set => this.SetProperty(ref this.isElevatorMovingToBay, value);
         }
 
         public bool IsElevatorMovingToCell
         {
             get => this.isElevatorMovingToCell;
-            private set
-            {
-                if (this.SetProperty(ref this.isElevatorMovingToCell, value))
-                {
-                    //this.RaisePropertyChanged(nameof(this.IsMoving));
-                    //this.RaiseCanExecuteChanged();
-                }
-            }
+            private set => this.SetProperty(ref this.isElevatorMovingToCell, value);
         }
 
         public bool IsElevatorMovingToHeight
         {
             get => this.isElevatorMovingToHeight;
-            private set
-            {
-                if (this.SetProperty(ref this.isElevatorMovingToHeight, value))
-                {
-                    //this.RaisePropertyChanged(nameof(this.IsMoving));
-                    //this.RaiseCanExecuteChanged();
-                }
-            }
+            private set => this.SetProperty(ref this.isElevatorMovingToHeight, value);
         }
 
         public bool IsElevatorMovingToLoadingUnit
         {
             get => this.isElevatorMovingToLoadingUnit;
-            private set
-            {
-                if (this.SetProperty(ref this.isElevatorMovingToLoadingUnit, value))
-                {
-                    //this.RaisePropertyChanged(nameof(this.IsMoving));
-                    //this.RaiseCanExecuteChanged();
-                }
-            }
+            private set => this.SetProperty(ref this.isElevatorMovingToLoadingUnit, value);
         }
 
         public bool IsPositionDownSelected
@@ -301,27 +241,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsTuningBay
         {
             get => this.isTuningBay;
-            private set
-            {
-                if (this.SetProperty(ref this.isTuningBay, value))
-                {
-                    //this.RaisePropertyChanged(nameof(this.IsMoving));
-                    //this.RaiseCanExecuteChanged();
-                }
-            }
+            private set => this.SetProperty(ref this.isTuningBay, value);
         }
 
         public bool IsTuningChain
         {
             get => this.isTuningChain;
-            private set
-            {
-                if (this.SetProperty(ref this.isTuningChain, value))
-                {
-                    //this.RaisePropertyChanged(nameof(this.IsMoving));
-                    //this.RaiseCanExecuteChanged();
-                }
-            }
+            private set => this.SetProperty(ref this.isTuningChain, value);
         }
 
         public bool IsUseWeightControl
@@ -404,7 +330,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (this.SetProperty(ref this.selectedBayPosition1, value))
                 {
                     this.RaiseCanExecuteChanged();
-                    //this.moveToBayPositionCommand?.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -483,16 +408,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 (this.HealthProbeService.HealthStatus == HealthStatus.Healthy ||
                  this.HealthProbeService.HealthStatus == HealthStatus.Degraded))
             {
-
+#if DEBUG
                 StackTrace stackTrace = new StackTrace();
                 var method1 = stackTrace.GetFrame(1).GetMethod().Name;
                 var method2 = stackTrace.GetFrame(2).GetMethod().Name;
                 var method3 = stackTrace.GetFrame(3).GetMethod().Name;
                 Debug.WriteLine($"OnGuidedRaiseCanExecuteChanged: {method3} -> {method2} -> {method1}");
+#endif
 
                 Task.Run(async () => await this.RefreshActionPoliciesAsync()).GetAwaiter().GetResult();
-
-                //this.moveToLoadingUnitHeightCommand?.RaiseCanExecuteChanged();
 
                 this.tuningBayCommand?.RaiseCanExecuteChanged();
                 this.tuningChainCommand?.RaiseCanExecuteChanged();
@@ -504,15 +428,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.moveCarouselDownCommand?.RaiseCanExecuteChanged();
                 this.moveCarouselUpCommand?.RaiseCanExecuteChanged();
 
-                //this.loadFromBayCommand?.RaiseCanExecuteChanged();
-                //this.loadFromCellCommand?.RaiseCanExecuteChanged();
-                //this.unloadToBayCommand?.RaiseCanExecuteChanged();
-                //this.unloadToCellCommand?.RaiseCanExecuteChanged();
-
                 this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
                 this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
-
-                //this.moveToBayPositionCommand?.RaiseCanExecuteChanged();
             }
         }
 
@@ -961,16 +878,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                             this.IsCarouselMoving = false;
                         }
 
-                        this.RefreshMachineInfo();
-
                         break;
                     }
 
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
                     {
-                        this.RefreshMachineInfo();
-
                         this.OperationWarningOrError(message.Status, message.Description);
                         break;
                     }
