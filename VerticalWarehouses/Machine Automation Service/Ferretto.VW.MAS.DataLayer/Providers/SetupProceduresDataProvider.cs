@@ -47,6 +47,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(s => s.ShutterTest)
                     .Include(s => s.VerticalResolutionCalibration)
                     .Include(s => s.VerticalOffsetCalibration)
+                    .Include(s => s.VerticalOriginCalibration)
                     .Single();
             }
         }
