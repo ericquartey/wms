@@ -14,7 +14,7 @@
         </Style.Triggers>
     </Style>
     <Style x:Key="WizardConfirmButton"
-           BasedOn="{DynamicResource WizardIntoButton}"
+           BasedOn="{StaticResource WizardIntoButton}"
            TargetType="{x:Type controls:PpcButton}">
         <Setter Property="Background" Value="{DynamicResource FerrettoBlue}" />
         <Setter Property="BorderBrush" Value="{DynamicResource FerrettoPureWhite}" />
