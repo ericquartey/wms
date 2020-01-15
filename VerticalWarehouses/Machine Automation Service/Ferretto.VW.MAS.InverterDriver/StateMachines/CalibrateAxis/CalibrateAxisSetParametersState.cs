@@ -138,28 +138,39 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                             if (this.axisToCalibrate == Axis.Horizontal)
                             {
                                 var axisParameters = this.ParentStateMachine.GetRequiredService<IElevatorDataProvider>().GetAxis(Orientation.Horizontal);
-                                speedValue = (axisParameters.HomingFastSpeed > 0) ? axisParameters.HomingFastSpeed : FAST_SPEED_ELEVATOR_DEFAULT;
+                                speedValue = (axisParameters.HomingFastSpeed > 0 && axisParameters.HomingFastSpeed < 10 * FAST_SPEED_ELEVATOR_DEFAULT) ? axisParameters.HomingFastSpeed : FAST_SPEED_ELEVATOR_DEFAULT;
                                 fastSpeed = this.ParentStateMachine.GetRequiredService<IInvertersProvider>().ConvertMillimetersToPulses(
-                                    (axisParameters.HomingFastSpeed > 0) ? axisParameters.HomingFastSpeed : FAST_SPEED_ELEVATOR_DEFAULT,
+                                    speedValue,
                                     Orientation.Horizontal);
+                                if (axisParameters.HomingFastSpeed >= 10 * FAST_SPEED_ELEVATOR_DEFAULT)
+                                {
+                                    this.Logger.LogWarning($"Homing Fast Speed parameter={axisParameters.HomingFastSpeed} mm/s too high! Limited to {speedValue}, Axis={this.axisToCalibrate}");
+                                }
                             }
                             else if (this.axisToCalibrate == Axis.BayChain)
                             {
                                 var bayProvider = this.ParentStateMachine.GetRequiredService<IBaysDataProvider>();
                                 var bayNumber = bayProvider.GetByInverterIndex(this.InverterStatus.SystemIndex);
                                 var bay = bayProvider.GetByNumber(bayNumber);
-
-                                speedValue = (bay.Carousel.HomingFastSpeed > 0) ? bay.Carousel.HomingFastSpeed : FAST_SPEED_CAROUSEL_DEFAULT;
-                                fastSpeed = (int)((bay.Carousel.HomingFastSpeed > 0 ? bay.Carousel.HomingFastSpeed : FAST_SPEED_CAROUSEL_DEFAULT) *
+                                speedValue = (bay.Carousel.HomingFastSpeed > 0 && bay.Carousel.HomingFastSpeed < 10 * FAST_SPEED_CAROUSEL_DEFAULT) ? bay.Carousel.HomingFastSpeed : FAST_SPEED_CAROUSEL_DEFAULT;
+                                fastSpeed = (int)(speedValue *
                                     this.ParentStateMachine.GetRequiredService<IBaysDataProvider>().GetResolution(this.InverterStatus.SystemIndex));
+                                if (bay.Carousel.HomingFastSpeed >= 10 * FAST_SPEED_CAROUSEL_DEFAULT)
+                                {
+                                    this.Logger.LogWarning($"Homing Fast Speed parameter={bay.Carousel.HomingFastSpeed} mm/s too high! Limited to {speedValue}, Axis={this.axisToCalibrate}");
+                                }
                             }
                             else
                             {
                                 var axisParameters = this.ParentStateMachine.GetRequiredService<IElevatorDataProvider>().GetAxis(Orientation.Vertical);
-                                speedValue = (axisParameters.HomingFastSpeed > 0) ? axisParameters.HomingFastSpeed : FAST_SPEED_ELEVATOR_DEFAULT;
+                                speedValue = (axisParameters.HomingFastSpeed > 0 && axisParameters.HomingFastSpeed < 10 * FAST_SPEED_ELEVATOR_DEFAULT) ? axisParameters.HomingFastSpeed : FAST_SPEED_ELEVATOR_DEFAULT;
                                 fastSpeed = this.ParentStateMachine.GetRequiredService<IInvertersProvider>().ConvertMillimetersToPulses(
-                                    (axisParameters.HomingFastSpeed > 0) ? axisParameters.HomingFastSpeed : FAST_SPEED_ELEVATOR_DEFAULT,
+                                    speedValue,
                                     Orientation.Vertical);
+                                if (axisParameters.HomingFastSpeed >= 10 * FAST_SPEED_ELEVATOR_DEFAULT)
+                                {
+                                    this.Logger.LogWarning($"Homing Fast Speed parameter={axisParameters.HomingFastSpeed} mm/s too high! Limited to {speedValue}, Axis={this.axisToCalibrate}");
+                                }
                             }
 
                             var inverterMessage = new InverterMessage(
@@ -216,10 +227,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                             if (this.axisToCalibrate == Axis.Horizontal)
                             {
                                 var axisParameters = this.ParentStateMachine.GetRequiredService<IElevatorDataProvider>().GetAxis(Orientation.Horizontal);
-                                speedValue = (axisParameters.HomingCreepSpeed > 0) ? axisParameters.HomingCreepSpeed : CREEP_SPEED_ELEVATOR_DEFAULT;
+                                speedValue = (axisParameters.HomingCreepSpeed > 0 && axisParameters.HomingCreepSpeed < 10 * CREEP_SPEED_ELEVATOR_DEFAULT) ? axisParameters.HomingCreepSpeed : CREEP_SPEED_ELEVATOR_DEFAULT;
                                 creepSpeed = this.ParentStateMachine.GetRequiredService<IInvertersProvider>().ConvertMillimetersToPulses(
-                                    (axisParameters.HomingCreepSpeed > 0) ? axisParameters.HomingCreepSpeed : CREEP_SPEED_ELEVATOR_DEFAULT,
+                                    speedValue,
                                     Orientation.Horizontal);
+                                if (axisParameters.HomingCreepSpeed >= 10 * CREEP_SPEED_ELEVATOR_DEFAULT)
+                                {
+                                    this.Logger.LogWarning($"Homing Creep Speed parameter={axisParameters.HomingCreepSpeed} mm/s too high! Limited to {speedValue}, Axis={this.axisToCalibrate}");
+                                }
                             }
                             else if (this.axisToCalibrate == Axis.BayChain)
                             {
@@ -227,17 +242,25 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                                 var bayNumber = bayProvider.GetByInverterIndex(this.InverterStatus.SystemIndex);
                                 var bay = bayProvider.GetByNumber(bayNumber);
 
-                                speedValue = (bay.Carousel.HomingCreepSpeed > 0) ? bay.Carousel.HomingCreepSpeed : CREEP_SPEED_CAROUSEL_DEFAULT;
-                                creepSpeed = (int)((bay.Carousel.HomingCreepSpeed > 0 ? bay.Carousel.HomingCreepSpeed : CREEP_SPEED_CAROUSEL_DEFAULT) *
+                                speedValue = (bay.Carousel.HomingCreepSpeed > 0 && bay.Carousel.HomingCreepSpeed < 10 * CREEP_SPEED_CAROUSEL_DEFAULT) ? bay.Carousel.HomingCreepSpeed : CREEP_SPEED_CAROUSEL_DEFAULT;
+                                creepSpeed = (int)(speedValue *
                                     this.ParentStateMachine.GetRequiredService<IBaysDataProvider>().GetResolution(this.InverterStatus.SystemIndex));
+                                if (bay.Carousel.HomingCreepSpeed >= 10 * CREEP_SPEED_CAROUSEL_DEFAULT)
+                                {
+                                    this.Logger.LogWarning($"Homing Creep Speed parameter={bay.Carousel.HomingCreepSpeed} mm/s too high! Limited to {speedValue}, Axis={this.axisToCalibrate}");
+                                }
                             }
                             else
                             {
                                 var axisParameters = this.ParentStateMachine.GetRequiredService<IElevatorDataProvider>().GetAxis(Orientation.Vertical);
-                                speedValue = (axisParameters.HomingCreepSpeed > 0) ? axisParameters.HomingCreepSpeed : CREEP_SPEED_ELEVATOR_DEFAULT;
+                                speedValue = (axisParameters.HomingCreepSpeed > 0 && axisParameters.HomingCreepSpeed < 10 * CREEP_SPEED_ELEVATOR_DEFAULT) ? axisParameters.HomingCreepSpeed : CREEP_SPEED_ELEVATOR_DEFAULT;
                                 creepSpeed = this.ParentStateMachine.GetRequiredService<IInvertersProvider>().ConvertMillimetersToPulses(
-                                    (axisParameters.HomingCreepSpeed > 0) ? axisParameters.HomingCreepSpeed : CREEP_SPEED_ELEVATOR_DEFAULT,
+                                    speedValue,
                                     Orientation.Vertical);
+                                if (axisParameters.HomingCreepSpeed >= 10 * CREEP_SPEED_ELEVATOR_DEFAULT)
+                                {
+                                    this.Logger.LogWarning($"Homing Creep Speed parameter={axisParameters.HomingCreepSpeed} mm/s too high! Limited to {speedValue}, Axis={this.axisToCalibrate}");
+                                }
                             }
 
                             var inverterMessage = new InverterMessage(

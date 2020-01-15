@@ -1304,12 +1304,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public MissionErrorMovements ErrorMovements { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("restoreState", Required = Newtonsoft.Json.Required.Always)]
-        public MissionState RestoreState { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("state", Required = Newtonsoft.Json.Required.Always)]
-        public MissionState State { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("loadUnitCellSourceId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? LoadUnitCellSourceId { get; set; }
     
@@ -1339,6 +1333,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("restoreConditions", Required = Newtonsoft.Json.Required.Always)]
         public bool RestoreConditions { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("restoreState", Required = Newtonsoft.Json.Required.Always)]
+        public MissionState RestoreState { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("state", Required = Newtonsoft.Json.Required.Always)]
+        public MissionState State { get; set; }
     
         [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
@@ -1472,33 +1472,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum MissionState
-    {
-        NotDefined = 0,
-    
-        New = 1,
-    
-        Start = 2,
-    
-        LoadElevator = 3,
-    
-        ToTarget = 4,
-    
-        DepositUnit = 5,
-    
-        WaitPick = 6,
-    
-        BayChain = 7,
-    
-        CloseShutter = 8,
-    
-        End = 9,
-    
-        Error = 10,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum LoadingUnitLocation
     {
         NoLocation = 0,
@@ -1593,6 +1566,37 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         Closed = 3,
     
         Intermediate = 4,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum MissionState
+    {
+        NotDefined = 0,
+    
+        New = 1,
+    
+        Start = 2,
+    
+        LoadElevator = 3,
+    
+        ToTarget = 4,
+    
+        DepositUnit = 5,
+    
+        WaitPick = 6,
+    
+        BayChain = 7,
+    
+        CloseShutter = 8,
+    
+        End = 9,
+    
+        Error = 101,
+    
+        ErrorLoad = 102,
+    
+        ErrorDeposit = 103,
     
     }
     
