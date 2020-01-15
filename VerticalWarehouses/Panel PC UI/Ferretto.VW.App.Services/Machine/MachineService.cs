@@ -619,7 +619,11 @@ namespace Ferretto.VW.App.Services
 
                                 if (message?.Data is MoveLoadingUnitMessageData moveLoadingUnitMessageData)
                                 {
-                                    this.Notification = $"({moveLoadingUnitMessageData.State}) Movimento in corso...";
+#if DEBUG
+                                    this.Notification = $"Movimento in corso... ({moveLoadingUnitMessageData.State})";
+#else
+                                    this.Notification = $"Movimento in corso...";
+#endif
                                 }
                             }
 

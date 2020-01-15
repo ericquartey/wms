@@ -430,8 +430,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
                     {
                         this.StopMoving();
-
-                        this.RefreshMachineInfo();
                         break;
                     }
 
@@ -439,8 +437,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
                     {
                         this.StopMoving();
-
-                        this.RefreshMachineInfo();
                         this.OperationWarningOrError(message.Status, message.Description);
                         break;
                     }
@@ -495,23 +491,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                // System.Diagnostics.Debug.WriteLine("*************");
-                // this.Log = $"*************{Environment.NewLine}{this.Log}";
                 var selectedBayPosition = this.SelectedBayPosition();
                 if (selectedBayPosition != null)
                 {
                     Debug.WriteLine("-->:RefreshActionPoliciesAsync:selectedBayPosition");
 
-                    // System.Diagnostics.Debug.WriteLine($"ELEV -> BAY: {this.unloadToBayPolicy.IsAllowed} {this.unloadToBayPolicy.Reason}");
                     this.moveToBayPositionPolicy = await this.machineElevatorWebService.CanMoveToBayPositionAsync(selectedBayPosition.Id);
                     this.moveToBayPositionCommand?.RaiseCanExecuteChanged();
-
-                    // if (!string.IsNullOrEmpty(this.moveToBayPositionPolicy.Reason))
-                    // {
-                    //    this.Log = $"{DateTime.Now.ToLocalTime()} - MoveToBayPosition - {this.moveToBayPositionPolicy.Reason}{Environment.NewLine}{this.Log}";
-                    // }
-
-                    // System.Diagnostics.Debug.WriteLine($"ELEV ^ BAY: {this.moveToBayPositionPolicy.IsAllowed} {this.moveToBayPositionPolicy.Reason}");
                 }
 
                 var selectedCell = this.SelectedCell;
@@ -521,19 +507,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.loadFromCellPolicy = await this.machineElevatorWebService.CanLoadFromCellAsync(selectedCell.Id);
                     this.loadFromCellCommand?.RaiseCanExecuteChanged();
 
-                    // if (!string.IsNullOrEmpty(this.loadFromCellPolicy.Reason))
-                    // {
-                    //    this.Log = $"{DateTime.Now.ToLocalTime()} - LoadFromCell - {this.loadFromCellPolicy.Reason}{Environment.NewLine}{this.Log}";
-                    // }
-
-                    // System.Diagnostics.Debug.WriteLine($"ELEV <- CELL: {this.loadFromCellPolicy.IsAllowed} {this.loadFromCellPolicy.Reason}");
                     this.unloadToCellPolicy = await this.machineElevatorWebService.CanUnloadToCellAsync(selectedCell.Id);
                     this.unloadToCellCommand?.RaiseCanExecuteChanged();
-
-                    // if (!string.IsNullOrEmpty(this.unloadToCellPolicy.Reason))
-                    // {
-                    //    this.Log = $"{DateTime.Now.ToLocalTime()} - UnloadToCell - {this.unloadToCellPolicy.Reason}{Environment.NewLine}{this.Log}";
-                    // }
                 }
 
                 var selectedLoadunitCell = this.SelectedLoadingUnit?.Cell;
@@ -541,7 +516,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     Debug.WriteLine("-->:RefreshActionPoliciesAsync:selectedCell + selectedLoadunitCell");
 
-                    // System.Diagnostics.Debug.WriteLine($"ELEV -> CELL: {this.unloadToCellPolicy.IsAllowed} {this.unloadToCellPolicy.Reason}");
                     if (selectedCell != null)
                     {
                         this.moveToCellPolicy = await this.machineElevatorWebService.CanMoveToCellAsync(selectedCell.Id);
@@ -553,13 +527,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.moveToCellPolicy = await this.machineElevatorWebService.CanMoveToCellAsync(selectedLoadunitCell.Id);
                         this.moveToLoadingUnitHeightCommand?.RaiseCanExecuteChanged();
                     }
-
-                    // if (!string.IsNullOrEmpty(this.moveToCellPolicy.Reason))
-                    // {
-                    //    this.Log = $"{DateTime.Now.ToLocalTime()} - MoveToCellHeight - {this.moveToCellPolicy.Reason}{Environment.NewLine}{this.Log}";
-                    // }
-
-                    // System.Diagnostics.Debug.WriteLine($"ELEV ^ CELL: {this.moveToCellPolicy.IsAllowed} {this.moveToCellPolicy.Reason}");
                 }
 
                 if (this.HasCarousel)
@@ -569,37 +536,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.moveCarouselUpPolicy = await this.machineCarouselWebService.CanMoveAsync(VerticalMovementDirection.Up, this.IsMovementsManual ? MovementCategory.Manual : MovementCategory.Assisted);
                     this.moveCarouselUpCommand?.RaiseCanExecuteChanged();
 
-                    // if (!string.IsNullOrEmpty(this.moveCarouselUpPolicy.Reason))
-                    // {
-                    //    this.Log = $"{DateTime.Now.ToLocalTime()} - MoveCarouselUp - {this.moveCarouselUpPolicy.Reason}{Environment.NewLine}{this.Log}";
-                    // }
-
                     if (this.IsMovementsManual)
                     {
                         this.moveCarouselDownPolicy = await this.machineCarouselWebService.CanMoveAsync(VerticalMovementDirection.Down, this.IsMovementsManual ? MovementCategory.Manual : MovementCategory.Assisted);
                         this.moveCarouselDownCommand?.RaiseCanExecuteChanged();
                     }
-
-                    // if (!string.IsNullOrEmpty(this.moveCarouselDownPolicy.Reason))
-                    // {
-                    //    this.Log = $"{DateTime.Now.ToLocalTime()} - MoveCarouselDown - {this.moveCarouselDownPolicy.Reason}{Environment.NewLine}{this.Log}";
-                    // }
                 }
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-        }
-
-        private void RefreshMachineInfo()
-        {
-            try
-            {
-                //this.InputCellIdPropertyChanged();
-                //this.InputLoadingUnitIdPropertyChanged();
-
-                //this.RaiseCanExecuteChanged();
             }
             catch (Exception ex)
             {
@@ -680,7 +622,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
                 await this.MachineService.StopMovingByAllAsync();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 this.CloseOperation();
                 this.ShowNotification(ex);
@@ -694,38 +636,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void SubscribeToEvents()
         {
-            //this.loadingUnits = this.MachineService.Loadunits;
-            //this.loadunitsToken = this.loadunitsToken
-            //     ??
-            //     this.EventAggregator
-            //         .GetEvent<LoadUnitsChangedPubSubEvent>()
-            //         .Subscribe(
-            //             m =>
-            //             {
-            //                 this.loadingUnits = m.Loadunits;
-            //                 this.InputLoadingUnitIdPropertyChanged();
-            //                 this.RaiseCanExecuteChanged();
-            //             },
-            //             ThreadOption.UIThread,
-            //             false,
-            //             m => this.IsVisible);
-
-            //this.cells = this.MachineService.Cells;
-            //this.cellsToken = this.cellsToken
-            //     ??
-            //     this.EventAggregator
-            //         .GetEvent<CellsChangedPubSubEvent>()
-            //         .Subscribe(
-            //             m =>
-            //             {
-            //                 this.cells = m.Cells;
-            //                 this.InputCellIdPropertyChanged();
-            //                 this.RaiseCanExecuteChanged();
-            //             },
-            //             ThreadOption.UIThread,
-            //             false,
-            //             m => this.IsVisible);
-
             this.homingToken = this.homingToken
                 ??
                 this.EventAggregator
