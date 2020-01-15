@@ -57,7 +57,7 @@
                                     VerticalAlignment="Center"
                                     Command="{Binding MoveToStartPositionCommand}"
                                     Content="Vai a quota"
-                                    Style="{StaticResource WizardIntoButton}" />
+                                    Style="{DynamicResource WizardIntoButton}" />
 
                 <ctrls:PpcSpinEdit Grid.Row="1"
                                    Width="250"
@@ -130,7 +130,7 @@
                                     VerticalAlignment="Center"
                                     Command="{Binding MoveToStartDestination1Command}"
                                     Content="Vai a quota"
-                                    Style="{StaticResource WizardIntoButton}" />
+                                    Style="{DynamicResource WizardIntoButton}" />
 
                 <TextBlock Grid.Row="2"
                            Grid.ColumnSpan="2"
@@ -204,7 +204,7 @@
                                     VerticalAlignment="Center"
                                     Command="{Binding MoveToStartDestination2Command}"
                                     Content="Vai a quota"
-                                    Style="{StaticResource WizardIntoButton}" />
+                                    Style="{DynamicResource WizardIntoButton}" />
 
                 <TextBlock Grid.Row="2"
                            Grid.ColumnSpan="2"

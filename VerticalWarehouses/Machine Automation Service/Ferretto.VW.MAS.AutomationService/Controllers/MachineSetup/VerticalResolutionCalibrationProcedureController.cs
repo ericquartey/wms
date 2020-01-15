@@ -26,18 +26,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IElevatorDataProvider elevatorDataProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider)
         {
-            if (elevatorDataProvider is null)
-            {
-                throw new ArgumentNullException(nameof(elevatorDataProvider));
-            }
-
-            if (setupProceduresDataProvider is null)
-            {
-                throw new ArgumentNullException(nameof(setupProceduresDataProvider));
-            }
-
-            this.elevatorDataProvider = elevatorDataProvider;
-            this.setupProceduresDataProvider = setupProceduresDataProvider;
+            this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
+            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
         }
 
         #endregion

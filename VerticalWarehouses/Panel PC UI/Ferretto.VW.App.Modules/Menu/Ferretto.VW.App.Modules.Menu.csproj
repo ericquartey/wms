@@ -53,17 +53,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Views\AccessoriesMenuView.xaml" />
-    <None Remove="Views\BaysMenuView.xaml" />
-    <None Remove="Views\CellsMenuView.xaml" />
-    <None Remove="Views\ElevatorMenuView.xaml" />
-    <None Remove="Views\InstallationNavigationFooterView.xaml" />
-    <None Remove="Views\InstallationNavigationMenuView.xaml" />
-    <None Remove="Views\LoadingUnitsMenuView.xaml" />
-    <None Remove="Views\OtherMenuView.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Page Remove="App.xaml" />
   </ItemGroup>
 
