@@ -215,6 +215,7 @@
                 "title": "The Items Schema",
                 "required": [
                   "Height",
+                  "MaxSingleHeight",
                   "Location"
                 ],
                 "properties": {
@@ -222,6 +223,22 @@
                     "$id": "#/properties/Machine/properties/Bays/items/properties/Positions/items/properties/Height",
                     "type": "number",
                     "title": "The Height Schema",
+                    "default": 0,
+                    "minimum": 0,
+                    "exclusiveMinimum": true
+                  },
+                  "MaxSingleHeight": {
+                    "$id": "#/properties/Machine/properties/Bays/items/properties/Positions/items/properties/MaxSingleHeight",
+                    "type": "number",
+                    "title": "The MaxSingleHeight Schema",
+                    "default": 0,
+                    "minimum": 0,
+                    "exclusiveMinimum": true
+                  },
+                  "MaxDoubleHeight": {
+                    "$id": "#/properties/Machine/properties/Bays/items/properties/Positions/items/properties/MaxDoubleHeight",
+                    "type": "number",
+                    "title": "The MaxDoubleHeight Schema",
                     "default": 0,
                     "minimum": 0,
                     "exclusiveMinimum": true

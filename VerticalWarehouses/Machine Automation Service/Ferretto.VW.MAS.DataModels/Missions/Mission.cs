@@ -46,11 +46,11 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool RestoreConditions { get; set; }
 
-        public MissionState RestoreState { get; set; }
-
-        public MissionState State { get; set; }
+        public MissionStep RestoreStep { get; set; }
 
         public MissionStatus Status { get; set; }
+
+        public MissionStep Step { get; set; }
 
         public StopRequestReason StopReason { get; set; }
 
@@ -64,7 +64,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsMissionToRestore()
         {
-            return this.RestoreState != MissionState.NotDefined;
+            return this.RestoreStep != MissionStep.NotDefined;
         }
 
         public bool IsRestoringType()
@@ -82,11 +82,11 @@ namespace Ferretto.VW.MAS.DataModels
                 $"LoadUnitId={this.LoadUnitId}; " +
                 $"WmsId={this.WmsId}; " +
                 $"TargetBay={this.TargetBay}; " +
-                $"State={this.State}; " +
+                $"Step={this.Step}; " +
                 $"Source={this.LoadUnitSource}; " +
                 $"Destination={this.LoadUnitDestination}; " +
                 $"CellSourceId={this.LoadUnitCellSourceId}; " +
-                $"RestoreState={this.RestoreState}; " +
+                $"RestoreStep={this.RestoreStep}; " +
                 $"MissionType={this.MissionType}; " +
                 $"NeedHomingAxis={this.NeedHomingAxis}; " +
                 $"NeedMovingBackward={this.NeedMovingBackward}; " +

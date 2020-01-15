@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
     {
         #region Fields
 
-        private static readonly IDictionary<MissionState, ConstructorInfo> cacheStates = new Dictionary<MissionState, ConstructorInfo>();
+        private static readonly IDictionary<MissionStep, ConstructorInfo> cacheStates = new Dictionary<MissionStep, ConstructorInfo>();
 
         private readonly IEventAggregator eventAggregator;
 
@@ -135,7 +135,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
         {
             lock (this.syncObject)
             {
-                var newState = new MissionMoveNewState(mission, serviceProvider, this.eventAggregator);
+                var newState = new MissionMoveNewStep(mission, serviceProvider, this.eventAggregator);
 
                 try
                 {
@@ -220,17 +220,17 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             ConstructorInfo ctor = null;
             lock (cacheStates)
             {
-                if (cacheStates.ContainsKey(mission.State))
+                if (cacheStates.ContainsKey(mission.Step))
                 {
-                    ctor = cacheStates[mission.State];
+                    ctor = cacheStates[mission.Step];
                 }
                 else
                 {
                     var ns = typeof(MissionMoveBase).Namespace;
-                    var type = Type.GetType(string.Concat(ns, ".MissionMove", mission.State.ToString(), "State"));
+                    var type = Type.GetType(string.Concat(ns, ".MissionMove", mission.Step.ToString(), "Step"));
 
                     ctor = type?.GetConstructor(new[] { typeof(Mission), typeof(IServiceProvider), typeof(IEventAggregator) });
-                    cacheStates[mission.State] = ctor;
+                    cacheStates[mission.Step] = ctor;
                 }
             }
             return (IMissionMoveBase)ctor?.Invoke(new object[] { mission, serviceProvider, eventAggregator });
