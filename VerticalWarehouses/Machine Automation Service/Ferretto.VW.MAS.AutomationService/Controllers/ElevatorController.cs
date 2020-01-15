@@ -107,7 +107,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult FindZero()
         {
-            this.elevatorProvider.Homing(Axis.Horizontal, Calibration.FindSensor, null, this.BayNumber, MessageActor.WebApi);
+            this.elevatorProvider.Homing(Axis.Horizontal, Calibration.FindSensor, null, true, this.BayNumber, MessageActor.WebApi);
             return this.Accepted();
         }
 
@@ -324,7 +324,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult SearchHorizontalZero()
         {
-            this.elevatorProvider.Homing(Axis.Horizontal, Calibration.FindSensor, null, this.BayNumber, MessageActor.WebApi);
+            this.elevatorProvider.Homing(Axis.Horizontal, Calibration.FindSensor, null, true, this.BayNumber, MessageActor.WebApi);
             return this.Accepted();
         }
 

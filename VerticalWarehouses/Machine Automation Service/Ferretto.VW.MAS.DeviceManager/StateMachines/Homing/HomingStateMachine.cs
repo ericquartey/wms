@@ -23,8 +23,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
         private readonly Calibration calibration;
 
-        private readonly int? loadingUnitId;
-
         private readonly IHomingMachineData machineData;
 
         #endregion
@@ -36,6 +34,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             Calibration calibration,
             int? loadingUnitId,
             bool isOneTonMachine,
+            bool showErrors,
             BayNumber requestingBay,
             BayNumber targetBay,
             IMachineResourcesProvider machineResourcesProvider,
@@ -47,7 +46,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
         {
             this.axisToCalibrate = axisToCalibrate;
             this.calibration = calibration;
-            this.loadingUnitId = loadingUnitId;
 
             this.machineData = new HomingMachineData(
                 isOneTonMachine,
@@ -56,6 +54,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 targetBay,
                 machineResourcesProvider,
                 baysDataProvider.GetInverterIndexByAxis(axisToCalibrate, targetBay),
+                showErrors,
                 eventAggregator,
                 logger,
                 serviceScopeFactory);
@@ -209,11 +208,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
                     this.PublishNotificationMessage(notificationMessage);
 
-                    using (var scope = this.ServiceScopeFactory.CreateScope())
+                    if (this.machineData.ShowErrors)
                     {
-                        var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+                        using (var scope = this.ServiceScopeFactory.CreateScope())
+                        {
+                            var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
 
-                        errorsProvider.RecordNew(DataModels.MachineErrorCode.ConditionsNotMetForPositioning, this.machineData.RequestingBay);
+                            errorsProvider.RecordNew(DataModels.MachineErrorCode.ConditionsNotMetForHoming, this.machineData.RequestingBay);
+                        }
                     }
 
                     this.Logger.LogError($"Conditions not verified for homing: {errorText}");
@@ -259,6 +261,29 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 {
                     ok = false;
                     errorText = "Find Zero not possible with full elevator";
+                }
+                else if (this.machineData.RequestedAxisToCalibrate == Axis.Vertical
+                    || this.machineData.RequestedAxisToCalibrate == Axis.HorizontalAndVertical
+                    )
+                {
+                    using (var scope = this.ServiceScopeFactory.CreateScope())
+                    {
+                        var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+                        var bays = baysDataProvider.GetAll();
+                        foreach (var bay in bays)
+                        {
+                            if (bay.Shutter != null)
+                            {
+                                var shutterPosition = this.machineData.MachineSensorStatus.GetShutterPosition(BayNumber.BayOne);
+                                if (shutterPosition == ShutterPosition.Intermediate || shutterPosition == ShutterPosition.Opened)
+                                {
+                                    ok = false;
+                                    errorText = "Homing not possible with open shutter";
+                                    break;
+                                }
+                            }
+                        }
+                    }
                 }
             }
             else

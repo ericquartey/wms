@@ -39,6 +39,8 @@ namespace Ferretto.VW.App.Services.Models
 
         private string errorDescription;
 
+        private bool flagForNotification;
+
         private double? horizontalTargetPosition;
 
         private bool isError;
@@ -143,6 +145,12 @@ namespace Ferretto.VW.App.Services.Models
         {
             get => this.errorDescription;
             set => this.SetProperty(ref this.errorDescription, value);
+        }
+
+        public bool FlagForNotification
+        {
+            get => this.flagForNotification;
+            set => this.SetProperty(ref this.flagForNotification, value);
         }
 
         public double? HorizontalTargetPosition

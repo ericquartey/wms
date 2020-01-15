@@ -255,4 +255,37 @@
   <data name="Orientation.Vertical" xml:space="preserve">
     <value>verticale</value>
   </data>
+  <data name="ShutterManualParameters_FeedRate" xml:space="preserve">
+    <value>Feed rate parametri manuali shutter</value>
+  </data>
+  <data name="ShutterManualParameters_HighSpeedDurationClose" xml:space="preserve">
+    <value>Durata chiusura shutter</value>
+  </data>
+  <data name="ShutterManualParameters_HighSpeedDurationOpen" xml:space="preserve">
+    <value>Durata apertura shutter</value>
+  </data>
+  <data name="ShutterManualParameters_MaxSpeed" xml:space="preserve">
+    <value>Velocità massima parametri manuali shutter</value>
+  </data>
+  <data name="ShutterManualParameters_MinSpeed" xml:space="preserve">
+    <value>Velocità minima parametri manuali shutter</value>
+  </data>
+  <data name="ShutterType.NotSpecified" xml:space="preserve">
+    <value>Non specificato</value>
+  </data>
+  <data name="ShutterType.ThreeSensors" xml:space="preserve">
+    <value>Tre sensori</value>
+  </data>
+  <data name="ShutterType.TwoSensors" xml:space="preserve">
+    <value>Due sensori</value>
+  </data>
+  <data name="Shutter_AssistedMovements" xml:space="preserve">
+    <value>Movimenti assistiti shutter</value>
+  </data>
+  <data name="Shutter_ManualMovements" xml:space="preserve">
+    <value>Movimenti manuali shutter</value>
+  </data>
+  <data name="Shutter_Type" xml:space="preserve">
+    <value>Tipo shutter</value>
+  </data>
 </root>

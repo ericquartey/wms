@@ -595,6 +595,75 @@
                                            Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
                                            TextWrapping="Wrap" />
 
+                                <!--<Rectangle Grid.RowSpan="2"
+                                           Grid.ColumnSpan="2"
+                                           Margin="80,0,0,0"
+                                           Opacity="0.8"
+                                           Stroke="{DynamicResource FerrettoBlue}"
+                                           StrokeThickness="25">
+                                    <Rectangle.LayoutTransform>
+                                        <TransformGroup>
+                                            <SkewTransform AngleX="275" AngleY="45" CenterX="0" CenterY="0" />
+                                            <RotateTransform Angle="315" />
+                                        </TransformGroup>
+                                    </Rectangle.LayoutTransform>
+                                    <Rectangle.Style>
+                                        <Style TargetType="{x:Type Rectangle}">
+                                            <Setter Property="Rectangle.Visibility" Value="Collapsed" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsCompleted, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                                                             Value="True">
+                                                    <Setter Property="Rectangle.Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Rectangle.Style>
+                                </Rectangle>-->
+
+                                <Grid Grid.RowSpan="2"
+                                      Grid.ColumnSpan="2">
+
+                                    <Grid.Style>
+                                        <Style TargetType="{x:Type Grid}">
+                                            <Setter Property="Grid.Visibility" Value="Collapsed" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsCompleted, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                                                             Value="True">
+                                                    <Setter Property="Grid.Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+
+                                    <Rectangle Grid.Row="0"
+                                               Grid.Column="0"
+                                               Margin="80,0,0,0"
+                                               Opacity="0.8"
+                                               Stroke="{DynamicResource FerrettoBlue}"
+                                               StrokeThickness="25">
+                                        <Rectangle.LayoutTransform>
+                                            <TransformGroup>
+                                                <SkewTransform AngleX="275" AngleY="45" CenterX="0" CenterY="0" />
+                                                <RotateTransform Angle="315" />
+                                            </TransformGroup>
+                                        </Rectangle.LayoutTransform>
+                                    </Rectangle>
+
+                                    <TextBlock Grid.Row="0"
+                                               Grid.Column="0"
+                                               Margin="0,0,4,2"
+                                               HorizontalAlignment="Right"
+                                               VerticalAlignment="Bottom"
+                                               FontSize="14"
+                                               Text="Completato">
+                                        <TextBlock.LayoutTransform>
+                                            <TransformGroup>
+                                                <RotateTransform Angle="310" />
+                                            </TransformGroup>
+                                        </TextBlock.LayoutTransform>
+                                    </TextBlock>
+                                </Grid>
+
                             </Grid>
                         </Border>
                     </Grid>

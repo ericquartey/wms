@@ -473,6 +473,15 @@ namespace Ferretto.VW.App.Services
                     this.StopMoving();
                 }
             }
+
+            // Dal cambiamento di qualche sensore, viene scatenato l'evento per l'aggiornamento dei dati
+            if (e == EventArgs.Empty &&
+                !this.MachineStatus.IsMoving)
+            {
+                var ms = (MachineStatus)this.MachineStatus.Clone();
+                ms.FlagForNotification = !ms.FlagForNotification;
+                this.MachineStatus = ms;
+            }
         }
 
         private void OnDataChanged<TData>(NotificationMessageUI<TData> message)
@@ -610,7 +619,11 @@ namespace Ferretto.VW.App.Services
 
                                 if (message?.Data is MoveLoadingUnitMessageData moveLoadingUnitMessageData)
                                 {
-                                    this.Notification = $"({moveLoadingUnitMessageData.State}) Movimento in corso...";
+#if DEBUG
+                                    this.Notification = $"Movimento in corso... ({moveLoadingUnitMessageData.State})";
+#else
+                                    this.Notification = $"Movimento in corso...";
+#endif
                                 }
                             }
 
@@ -1114,7 +1127,7 @@ namespace Ferretto.VW.App.Services
                         else if (!this.bay.IsExternal &&
                                  !this.sensorsService.ShutterSensors.Closed)
                         {
-                            this.ShowNotification("Serranda non copletamente chiusa.", NotificationSeverity.Warning);
+                            this.ShowNotification("Serranda non completamente chiusa.", NotificationSeverity.Warning);
                         }
                         else
                         {

@@ -1,1 +1,26 @@
-﻿{}
+﻿{
+  "steps": [
+    {
+      "$type": "Ferretto.VW.Installer.CommandlineStep, Ferretto.VW.Installer",
+      "number": 1,
+      "title": "Copy files to output dir",
+      "script": "echo ciao",
+      "rollbackScript": "abc",
+      "mustRollBack": true
+    },
+    {
+      "$type": "Ferretto.VW.Installer.CommandlineStep, Ferretto.VW.Installer",
+      "number": 2,
+      "title": "Register Service",
+      "script": "echo ho",
+      "rollbackScript": "abc",
+      "mustRollBack": true
+    },
+    {
+      "$type": "Ferretto.VW.Installer.MasHealthCheckStep, Ferretto.VW.Installer",
+      "number": 3,
+      "title": "Check MAS health",
+      "timeout": "10000"
+    }
+  ]
+}

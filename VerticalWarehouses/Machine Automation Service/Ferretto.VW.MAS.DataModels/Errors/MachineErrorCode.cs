@@ -18,6 +18,10 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorCondition(typeof(ISecurityIsClearedConditionEvaluator))]
         ConditionsNotMetForRunning,
 
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ConditionsNotMetForHoming))]
+        [ErrorCondition(typeof(IElevatorHorizontalChainZeroConditionEvaluator))]
+        ConditionsNotMetForHoming,
+
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SecurityWasTriggered))]
         [ErrorCondition(typeof(ISecurityIsClearedConditionEvaluator))]
         SecurityWasTriggered,

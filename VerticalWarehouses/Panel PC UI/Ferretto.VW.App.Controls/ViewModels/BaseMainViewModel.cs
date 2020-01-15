@@ -158,6 +158,13 @@ namespace Ferretto.VW.App.Controls
             this.sensorsToken?.Dispose();
             this.sensorsToken = null;
 
+            if (this.machineStatusChangesToken != null)
+            {
+                this.EventAggregator?.GetEvent<MachineStatusChangedPubSubEvent>().Unsubscribe(this.machineStatusChangesToken);
+                this.machineStatusChangesToken?.Dispose();
+                this.machineStatusChangesToken = null;
+            }
+
             //this.ClearSteps();
 
             /*
@@ -397,7 +404,7 @@ namespace Ferretto.VW.App.Controls
 
         private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
         {
-            this.RaiseCanExecuteChanged();
+            //this.RaiseCanExecuteChanged();
         }
 
         private void SubscribeEvents()

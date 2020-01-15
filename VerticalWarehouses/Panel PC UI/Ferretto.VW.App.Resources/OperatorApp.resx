@@ -1281,4 +1281,156 @@ Please put back any moved pieces in their original position.</value>
     <value>Inventory operation cancelled.</value>
     <comment>Description text</comment>
   </data>
+  <data name="Missions" xml:space="preserve">
+    <value>Missions</value>
+    <comment>Title text</comment>
+  </data>
+  <data name="MissionsList" xml:space="preserve">
+    <value>Missions list</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CreationDate" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="MissionState" xml:space="preserve">
+    <value>State</value>
+    <comment>header text</comment>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Bay</value>
+    <comment>Description text</comment>
+  </data>
+  <data name="BayNumberAll" xml:space="preserve">
+    <value>All</value>
+    <comment>description text</comment>
+  </data>
+  <data name="BayNumberElevatorBay" xml:space="preserve">
+    <value>Elevator bay</value>
+    <comment>Description text</comment>
+  </data>
+  <data name="BayNumberBayThree" xml:space="preserve">
+    <value>Bay three</value>
+    <comment>Description text</comment>
+  </data>
+  <data name="BayNumberBayTwo" xml:space="preserve">
+    <value>Bay two</value>
+    <comment>Description text</comment>
+  </data>
+  <data name="BayNumberBayNone" xml:space="preserve">
+    <value>No bay</value>
+    <comment>Description text</comment>
+  </data>
+  <data name="StatusExecuting" xml:space="preserve">
+    <value>Executing</value>
+    <comment>Description text</comment>
+  </data>
+  <data name="StatusNew" xml:space="preserve">
+    <value>New</value>
+    <comment>Description text</comment>
+  </data>
+  <data name="StatusWaiting" xml:space="preserve">
+    <value>Waiting</value>
+    <comment>Description text</comment>
+  </data>
+  <data name="StatusCompleted" xml:space="preserve">
+    <value>Completed</value>
+    <comment>Description text</comment>
+  </data>
+  <data name="StatusAborted" xml:space="preserve">
+    <value>Aborted</value>
+    <comment>Description text</comment>
+  </data>
+  <data name="StatusCompleting" xml:space="preserve">
+    <value>Completing</value>
+  </data>
+  <data name="BayNumberBayOne" xml:space="preserve">
+    <value>Bay one</value>
+    <comment>Description text</comment>
+  </data>
+  <data name="MissionType" xml:space="preserve">
+    <value>Mission type</value>
+    <comment>Header text</comment>
+  </data>
+  <data name="MissionStatus" xml:space="preserve">
+    <value>Status</value>
+    <comment>Header text</comment>
+  </data>
+  <data name="BayTarget" xml:space="preserve">
+    <value>Bay</value>
+  </data>
+  <data name="MissionStateNotDefined" xml:space="preserve">
+    <value>Not defined</value>
+    <comment>Enum for MissionState</comment>
+  </data>
+  <data name="MissionStateNew" xml:space="preserve">
+    <value>New</value>
+    <comment>Enum for MissionState</comment>
+  </data>
+  <data name="MissionStateStart" xml:space="preserve">
+    <value>Start</value>
+    <comment>Enum for MissionState</comment>
+  </data>
+  <data name="MissionStateLoadElevator" xml:space="preserve">
+    <value>Load elevator</value>
+    <comment>Enum for MissionState</comment>
+  </data>
+  <data name="MissionStateToTarget" xml:space="preserve">
+    <value>To target</value>
+    <comment>Enum for MissionState</comment>
+  </data>
+  <data name="MissionStateDepositUnit" xml:space="preserve">
+    <value>Deposit unit</value>
+    <comment>Enum for MissionState</comment>
+  </data>
+  <data name="MissionStateWaitPick" xml:space="preserve">
+    <value>Wait operator action</value>
+    <comment>Enum for MissionState</comment>
+  </data>
+  <data name="MissionStateBayChain" xml:space="preserve">
+    <value>Bay chain</value>
+    <comment>Enum for MissionState</comment>
+  </data>
+  <data name="MissionStateCloseShutter" xml:space="preserve">
+    <value>Close shutter</value>
+    <comment>Enum for MissionState</comment>
+  </data>
+  <data name="MissionStateEnd" xml:space="preserve">
+    <value>End</value>
+    <comment>Enum for MissionState</comment>
+  </data>
+  <data name="MissionStateError" xml:space="preserve">
+    <value>Error</value>
+    <comment>Enum for MissionState</comment>
+  </data>
+  <data name="MissionTypeNoType" xml:space="preserve">
+    <value>No type</value>
+    <comment>enum MIssionType</comment>
+  </data>
+  <data name="MissionTypeManual" xml:space="preserve">
+    <value>Manual</value>
+    <comment>enum MIssionType</comment>
+  </data>
+  <data name="MissionTypeWms" xml:space="preserve">
+    <value>Wms</value>
+    <comment>enum MIssionType</comment>
+  </data>
+  <data name="MissionTypeIn" xml:space="preserve">
+    <value>In</value>
+    <comment>enum MIssionType</comment>
+  </data>
+  <data name="MissionTypeOut" xml:space="preserve">
+    <value>Out</value>
+    <comment>enum MIssionType</comment>
+  </data>
+  <data name="MissionTypeTest" xml:space="preserve">
+    <value>Test</value>
+    <comment>enum MIssionType</comment>
+  </data>
+  <data name="MissionTypeCompact" xml:space="preserve">
+    <value>Compact</value>
+    <comment>enum MIssionType</comment>
+  </data>
+  <data name="MisionStateNotDefined" xml:space="preserve">
+    <value>Not defined</value>
+  </data>
 </root>

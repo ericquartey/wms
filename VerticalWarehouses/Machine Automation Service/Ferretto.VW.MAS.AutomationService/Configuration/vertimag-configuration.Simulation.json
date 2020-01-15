@@ -1696,7 +1696,7 @@
             "Step": 0.5
         },
         "BeltBurnishingTest": {
-            "RequiredCycles": 200
+            "RequiredCycles": 20
         },
         "BeltBurnishing": {
             "CycleQuantity": 5
@@ -1735,6 +1735,8 @@
             "InitialPosition": 1000,
             "FinalPosition": 4500,
             "FeedRate": 0.2
+        },
+        "VerticalOriginCalibration": {
         }
     }
 }

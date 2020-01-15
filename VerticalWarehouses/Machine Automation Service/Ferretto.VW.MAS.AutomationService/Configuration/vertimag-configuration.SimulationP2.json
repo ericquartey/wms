@@ -5892,7 +5892,7 @@
             "FeedRate": 0.2
         },
         "BeltBurnishingTest": {
-            "RequiredCycles": 200
+            "RequiredCycles": 20
         },
         "CarouselManualMovements": {
             "FeedRate": 0.04
@@ -5928,6 +5928,8 @@
             "InitialPosition": 1000,
             "FinalPosition": 5500,
             "FeedRate": 0.2
+        },
+        "VerticalOriginCalibration": {
         }
     }
 }

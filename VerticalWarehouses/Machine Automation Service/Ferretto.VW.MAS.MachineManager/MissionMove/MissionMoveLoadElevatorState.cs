@@ -65,6 +65,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         this.Mission.OpenShutterPosition = ShutterPosition.NotSpecified;
                     }
+#if CHECK_BAY_SENSOR
                     if (bay.Carousel != null)
                     {
                         var result = this.LoadingUnitMovementProvider.CheckBaySensors(bay, this.Mission.LoadUnitSource, deposit: false);
@@ -74,12 +75,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             throw new StateMachineException(error.Description, bay.Number, MessageActor.MachineManager);
                         }
                     }
+#endif
                     break;
             }
             if (this.Mission.NeedHomingAxis == Axis.Horizontal)
             {
                 this.Logger.LogDebug($"Homing elevator free start");
-                this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, this.Mission.TargetBay, MessageActor.MachineManager);
+                this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
             }
             else if (this.Mission.NeedHomingAxis == Axis.BayChain)
             {
@@ -175,7 +177,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             if (this.Mission.NeedHomingAxis == Axis.BayChain)
                             {
                                 this.Logger.LogDebug($"Homing Bay free start");
-                                this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, notification.RequestingBay, MessageActor.MachineManager);
+                                this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, notification.RequestingBay, MessageActor.MachineManager);
                             }
                             else
                             {

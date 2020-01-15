@@ -19,6 +19,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
     {
         #region Fields
 
+        private readonly IMachineBeltBurnishingProcedureWebService beltBurnishingProcedureWebService;
+
         private readonly IMachineVerticalOffsetProcedureWebService verticalOffsetProcedureWebService;
 
         private readonly IMachineVerticalResolutionCalibrationProcedureWebService verticalResolutionCalibrationProcedureWebService;
@@ -43,11 +45,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public ElevatorMenuViewModel(
             IMachineVerticalResolutionCalibrationProcedureWebService verticalResolutionCalibrationProcedureWebService,
-            IMachineVerticalOffsetProcedureWebService verticalOffsetProcedureWebService)
+            IMachineVerticalOffsetProcedureWebService verticalOffsetProcedureWebService,
+            IMachineBeltBurnishingProcedureWebService beltBurnishingProcedureWebService)
             : base()
         {
             this.verticalResolutionCalibrationProcedureWebService = verticalResolutionCalibrationProcedureWebService ?? throw new ArgumentNullException(nameof(verticalResolutionCalibrationProcedureWebService));
             this.verticalOffsetProcedureWebService = verticalOffsetProcedureWebService ?? throw new ArgumentNullException(nameof(verticalOffsetProcedureWebService));
+            this.beltBurnishingProcedureWebService = beltBurnishingProcedureWebService ?? throw new ArgumentNullException(nameof(beltBurnishingProcedureWebService));
         }
 
         #endregion
@@ -91,7 +95,17 @@ namespace Ferretto.VW.App.Menu.ViewModels
                        true)) || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
                 ));
 
+        public RepeatedTestProcedure BeltBurnishingProcedureParameters { get; private set; }
+
         public override EnableMask EnableMask => EnableMask.Any;
+
+        public bool IsBeltBurnishing => this.BeltBurnishingProcedureParameters?.IsCompleted ?? false;
+
+        public bool IsHoming => this.MachineService.IsHoming;
+
+        public bool IsVerticalOffsetProcedure => this.VerticalOffsetProcedureParameters?.IsCompleted ?? false;
+
+        public bool IsVerticalResolutionCalibration => this.VerticalResolutionCalibrationProcedureParameters?.IsCompleted ?? false;
 
         public ICommand TestDepositAndPickUpCommand =>
             this.testDepositAndPickUpCommand
@@ -174,6 +188,11 @@ namespace Ferretto.VW.App.Menu.ViewModels
         {
             base.RaiseCanExecuteChanged();
 
+            this.RaisePropertyChanged(nameof(this.IsHoming));
+            this.RaisePropertyChanged(nameof(this.IsVerticalOffsetProcedure));
+            this.RaisePropertyChanged(nameof(this.IsVerticalResolutionCalibration));
+            this.RaisePropertyChanged(nameof(this.IsBeltBurnishing));
+
             this.beltBurnishingCommand?.RaiseCanExecuteChanged();
             this.verticalOffsetCalibration?.RaiseCanExecuteChanged();
             this.verticalOriginCalibration?.RaiseCanExecuteChanged();
@@ -247,14 +266,22 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private async Task UpdateSetupStatusAsync()
         {
-            if (this.VerticalResolutionCalibrationProcedureParameters == null)
+            if (this.VerticalResolutionCalibrationProcedureParameters == null ||
+                !this.VerticalResolutionCalibrationProcedureParameters.IsCompleted)
             {
                 this.VerticalResolutionCalibrationProcedureParameters = await this.verticalResolutionCalibrationProcedureWebService.GetParametersAsync();
             }
 
-            if (this.VerticalOffsetProcedureParameters == null)
+            if (this.VerticalOffsetProcedureParameters == null ||
+                !this.VerticalOffsetProcedureParameters.IsCompleted)
             {
                 this.VerticalOffsetProcedureParameters = await this.verticalOffsetProcedureWebService.GetParametersAsync();
+            }
+
+            if (this.BeltBurnishingProcedureParameters == null ||
+                !this.BeltBurnishingProcedureParameters.IsCompleted)
+            {
+                this.BeltBurnishingProcedureParameters = await this.beltBurnishingProcedureWebService.GetParametersAsync();
             }
 
             this.RaiseCanExecuteChanged();

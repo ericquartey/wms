@@ -22,6 +22,8 @@
 
         public OffsetCalibrationProcedure VerticalOffsetCalibration { get; set; }
 
+        public SetupProcedure VerticalOriginCalibration { get; set; }
+
         public VerticalResolutionCalibrationProcedure VerticalResolutionCalibration { get; set; }
 
         #endregion

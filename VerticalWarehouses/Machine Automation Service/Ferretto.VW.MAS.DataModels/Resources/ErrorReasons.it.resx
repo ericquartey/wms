@@ -267,4 +267,7 @@
   <data name="CellLogicallyOccupied" xml:space="preserve">
     <value>Errore di aggiornamento dell'archivio delle celle. Una o più celle di destinazione risultano logicamente occupate</value>
   </data>
+  <data name="ConditionsNotMetForHoming" xml:space="preserve">
+    <value>Controllare che il nottolino sia a zero o che il cassetto sia completamente caricato a bordo elevatore. Controllare inoltre che la serranda sia chiusa.</value>
+  </data>
 </root>

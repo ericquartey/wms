@@ -61,8 +61,8 @@
     <None Remove="Controls\CardSensorBay.xaml" />
     <None Remove="Styles\ComboBoxStyle.xaml" />
     <None Remove="Styles\PasswordBoxEdit.xaml" />
-    <None Remove="Styles\RadioButton\RadioButtonStyle.xaml" />
     <None Remove="Styles\TextBlockStyles - Copy.xaml" />
+    <None Remove="Styles\WizardStyle.xaml" />
   </ItemGroup>
 
   <ItemGroup>

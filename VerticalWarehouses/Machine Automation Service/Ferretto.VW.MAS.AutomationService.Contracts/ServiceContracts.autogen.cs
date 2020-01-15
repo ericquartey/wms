@@ -1304,12 +1304,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public MissionErrorMovements ErrorMovements { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("restoreState", Required = Newtonsoft.Json.Required.Always)]
-        public MissionState RestoreState { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("state", Required = Newtonsoft.Json.Required.Always)]
-        public MissionState State { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("loadUnitCellSourceId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? LoadUnitCellSourceId { get; set; }
     
@@ -1339,6 +1333,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("restoreConditions", Required = Newtonsoft.Json.Required.Always)]
         public bool RestoreConditions { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("restoreState", Required = Newtonsoft.Json.Required.Always)]
+        public MissionState RestoreState { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("state", Required = Newtonsoft.Json.Required.Always)]
+        public MissionState State { get; set; }
     
         [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
@@ -1463,35 +1463,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"MoveBackward")]
         MoveBackward = 4,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"MoveShutter")]
-        MoveShutter = 8,
+        [System.Runtime.Serialization.EnumMember(Value = @"MoveShutterOpen")]
+        MoveShutterOpen = 8,
     
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum MissionState
-    {
-        NotDefined = 0,
-    
-        New = 1,
-    
-        Start = 2,
-    
-        LoadElevator = 3,
-    
-        ToTarget = 4,
-    
-        DepositUnit = 5,
-    
-        WaitPick = 6,
-    
-        BayChain = 7,
-    
-        CloseShutter = 8,
-    
-        End = 9,
-    
-        Error = 10,
+        [System.Runtime.Serialization.EnumMember(Value = @"MoveShutterClosed")]
+        MoveShutterClosed = 16,
     
     }
     
@@ -1590,6 +1566,37 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         Closed = 3,
     
         Intermediate = 4,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum MissionState
+    {
+        NotDefined = 0,
+    
+        New = 1,
+    
+        Start = 2,
+    
+        LoadElevator = 3,
+    
+        ToTarget = 4,
+    
+        DepositUnit = 5,
+    
+        WaitPick = 6,
+    
+        BayChain = 7,
+    
+        CloseShutter = 8,
+    
+        End = 9,
+    
+        Error = 101,
+    
+        ErrorLoad = 102,
+    
+        ErrorDeposit = 103,
     
     }
     
@@ -2699,6 +2706,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("verticalOffsetCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public OffsetCalibrationProcedure VerticalOffsetCalibration { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("verticalOriginCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public SetupProcedure VerticalOriginCalibration { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("verticalResolutionCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public VerticalResolutionCalibrationProcedure VerticalResolutionCalibration { get; set; }
     
@@ -3051,121 +3061,123 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         ConditionsNotMetForRunning = 3,
     
-        SecurityWasTriggered = 4,
+        ConditionsNotMetForHoming = 4,
     
-        SecurityButtonWasTriggered = 5,
+        SecurityWasTriggered = 5,
     
-        SecurityBarrierWasTriggered = 6,
+        SecurityButtonWasTriggered = 6,
     
-        SecuritySensorWasTriggered = 7,
+        SecurityBarrierWasTriggered = 7,
     
-        InverterFaultStateDetected = 8,
+        SecuritySensorWasTriggered = 8,
     
-        CradleNotCorrectlyLoadedDuringPickup = 9,
+        InverterFaultStateDetected = 9,
     
-        CradleNotCorrectlyUnloadedDuringDeposit = 10,
+        CradleNotCorrectlyLoadedDuringPickup = 10,
     
-        ZeroSensorErrorAfterPickup = 11,
+        CradleNotCorrectlyUnloadedDuringDeposit = 11,
     
-        ZeroSensorErrorAfterDeposit = 12,
+        ZeroSensorErrorAfterPickup = 12,
     
-        InvalidPresenceSensors = 13,
+        ZeroSensorErrorAfterDeposit = 13,
     
-        MissingZeroSensorWithEmptyElevator = 14,
+        InvalidPresenceSensors = 14,
     
-        ZeroSensorActiveWithFullElevator = 15,
+        MissingZeroSensorWithEmptyElevator = 15,
     
-        LoadUnitPresentOnEmptyElevator = 16,
+        ZeroSensorActiveWithFullElevator = 16,
     
-        TopLevelBayOccupied = 17,
+        LoadUnitPresentOnEmptyElevator = 17,
     
-        BottomLevelBayOccupied = 18,
+        TopLevelBayOccupied = 18,
     
-        TopLevelBayEmpty = 19,
+        BottomLevelBayOccupied = 19,
     
-        BottomLevelBayEmpty = 20,
+        TopLevelBayEmpty = 20,
     
-        SensorZeroBayNotActiveAtStart = 21,
+        BottomLevelBayEmpty = 21,
     
-        InverterConnectionError = 22,
+        SensorZeroBayNotActiveAtStart = 22,
     
-        IoDeviceConnectionError = 23,
+        InverterConnectionError = 23,
     
-        LaserConnectionError = 24,
+        IoDeviceConnectionError = 24,
     
-        LoadUnitWeightExceeded = 25,
+        LaserConnectionError = 25,
     
-        LoadUnitWeightTooLow = 26,
+        LoadUnitWeightExceeded = 26,
     
-        MachineWeightExceeded = 27,
+        LoadUnitWeightTooLow = 27,
     
-        DestinationBelowLowerBound = 28,
+        MachineWeightExceeded = 28,
     
-        DestinationOverUpperBound = 29,
+        DestinationBelowLowerBound = 29,
     
-        BayInvertersBusy = 30,
+        DestinationOverUpperBound = 30,
     
-        IoDeviceError = 31,
+        BayInvertersBusy = 31,
     
-        MachineModeNotValid = 32,
+        IoDeviceError = 32,
     
-        AnotherMissionIsActiveForThisLoadUnit = 33,
+        MachineModeNotValid = 33,
     
-        AnotherMissionIsActiveForThisBay = 34,
+        AnotherMissionIsActiveForThisLoadUnit = 34,
     
-        AnotherMissionOfThisTypeIsActive = 35,
+        AnotherMissionIsActiveForThisBay = 35,
     
-        WarehouseIsFull = 36,
+        AnotherMissionOfThisTypeIsActive = 36,
     
-        CellLogicallyOccupied = 37,
+        WarehouseIsFull = 37,
     
-        MoveBayChainNotAllowed = 38,
+        CellLogicallyOccupied = 38,
     
-        AutomaticRestoreNotAllowed = 39,
+        MoveBayChainNotAllowed = 39,
     
-        DestinationTypeNotValid = 40,
+        AutomaticRestoreNotAllowed = 40,
     
-        MissionTypeNotValid = 41,
+        DestinationTypeNotValid = 41,
     
-        ResumeCommandNotValid = 42,
+        MissionTypeNotValid = 42,
     
-        NoLoadUnitInSource = 43,
+        ResumeCommandNotValid = 43,
     
-        LoadUnitSourceDb = 44,
+        NoLoadUnitInSource = 44,
     
-        LoadUnitDestinationCell = 45,
+        LoadUnitSourceDb = 45,
     
-        LoadUnitElevator = 46,
+        LoadUnitDestinationCell = 46,
     
-        LoadUnitNotRemoved = 47,
+        LoadUnitElevator = 47,
     
-        LoadUnitDestinationBay = 48,
+        LoadUnitNotRemoved = 48,
     
-        LoadUnitSourceCell = 49,
+        LoadUnitDestinationBay = 49,
     
-        LoadUnitNotFound = 50,
+        LoadUnitSourceCell = 50,
     
-        LoadUnitNotLoaded = 51,
+        LoadUnitNotFound = 51,
     
-        LoadUnitSourceBay = 52,
+        LoadUnitNotLoaded = 52,
     
-        LoadUnitShutterOpen = 53,
+        LoadUnitSourceBay = 53,
     
-        LoadUnitShutterClosed = 54,
+        LoadUnitShutterOpen = 54,
     
-        LoadUnitPresentInCell = 55,
+        LoadUnitShutterClosed = 55,
     
-        LoadUnitOtherBay = 56,
+        LoadUnitPresentInCell = 56,
     
-        LoadUnitSourceElevator = 57,
+        LoadUnitOtherBay = 57,
     
-        LoadUnitMissingOnElevator = 58,
+        LoadUnitSourceElevator = 58,
     
-        LoadUnitMissingOnBay = 59,
+        LoadUnitMissingOnElevator = 59,
     
-        LoadUnitUndefinedUpper = 60,
+        LoadUnitMissingOnBay = 60,
     
-        LoadUnitUndefinedBottom = 61,
+        LoadUnitUndefinedUpper = 61,
+    
+        LoadUnitUndefinedBottom = 62,
     
         InverterErrorBaseCode = 1000,
     
