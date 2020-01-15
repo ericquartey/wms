@@ -11,6 +11,7 @@ using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.MachineManager;
 using Ferretto.VW.MAS.MachineManager.MissionMove;
+using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
 using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
@@ -229,24 +230,35 @@ namespace Ferretto.VW.MAS.MissionManager
                 {
                     mission.RestoreState = mission.State;
                 }
-                mission.State = MissionState.Error;
+                IMissionMoveBase newStep;
+
                 if (mission.RestoreState == MissionState.BayChain)
                 {
                     mission.NeedHomingAxis = Axis.BayChain;
+                    newStep = new MissionMoveErrorState(mission, serviceProvider, eventAggregator);
                 }
-                else if (mission.RestoreState == MissionState.LoadElevator
-                    || mission.RestoreState == MissionState.DepositUnit
-                    )
+                else if (mission.RestoreState == MissionState.LoadElevator)
                 {
                     mission.NeedMovingBackward = true;
                     mission.NeedHomingAxis = Axis.Horizontal;
+                    newStep = new MissionMoveErrorLoadState(mission, serviceProvider, eventAggregator);
+                }
+                else if (mission.RestoreState == MissionState.DepositUnit)
+                {
+                    mission.NeedMovingBackward = true;
+                    mission.NeedHomingAxis = Axis.Horizontal;
+                    newStep = new MissionMoveErrorDepositState(mission, serviceProvider, eventAggregator);
                 }
                 else if (mission.RestoreState == MissionState.ToTarget)
                 {
                     mission.NeedHomingAxis = Axis.Horizontal;
+                    newStep = new MissionMoveErrorState(mission, serviceProvider, eventAggregator);
                 }
-                var state = new MissionMoveErrorState(mission, serviceProvider, eventAggregator);
-                state.OnEnter(null);
+                else
+                {
+                    newStep = new MissionMoveErrorState(mission, serviceProvider, eventAggregator);
+                }
+                newStep.OnEnter(null);
             }
         }
 

@@ -26,10 +26,6 @@ namespace Ferretto.VW.MAS.DataModels
 
         public MissionErrorMovements ErrorMovements { get; set; }
 
-        public MissionState RestoreState { get; set; }
-
-        public MissionState State { get; set; }
-
         public int? LoadUnitCellSourceId { get; set; }
 
         public LoadingUnitLocation LoadUnitDestination { get; set; }
@@ -49,6 +45,10 @@ namespace Ferretto.VW.MAS.DataModels
         public int Priority { get; set; }
 
         public bool RestoreConditions { get; set; }
+
+        public MissionState RestoreState { get; set; }
+
+        public MissionState State { get; set; }
 
         public MissionStatus Status { get; set; }
 
@@ -71,13 +71,9 @@ namespace Ferretto.VW.MAS.DataModels
         {
             return this.MissionType == MissionType.WMS
                 || this.MissionType == MissionType.IN
-#if TEST_ERROR_STATE
                 || this.MissionType == MissionType.Manual
-#endif
                 || this.MissionType == MissionType.OUT;
         }
-
-        #endregion
 
         public override string ToString()
         {
@@ -108,5 +104,7 @@ namespace Ferretto.VW.MAS.DataModels
                 $"StopReason={this.StopReason}; ";
             return returnString;
         }
+
+        #endregion
     }
 }
