@@ -22,66 +22,6 @@
                                         TrueColor="{StaticResource FerrettoBlue}" />
         <!--#endregion-->
 
-        <!--#region Styles-->
-        <Style x:Key="WizardIntoButton"
-               BasedOn="{StaticResource {x:Type controls:PpcButton}}"
-               TargetType="{x:Type controls:PpcButton}">
-            <Style.Triggers>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="WizardConfirmButton"
-               BasedOn="{StaticResource WizardIntoButton}"
-               TargetType="{x:Type controls:PpcButton}">
-            <Setter Property="Background" Value="{DynamicResource FerrettoBlue}" />
-            <Setter Property="BorderBrush" Value="{DynamicResource FerrettoPureWhite}" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Style.Triggers>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="BorderTimeLine"
-               TargetType="{x:Type Border}">
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="BorderBrush" Value="{DynamicResource FerrettoLightGray}" />
-            <Setter Property="BorderThickness" Value="2.5" />
-            <Setter Property="CornerRadius" Value="2" />
-        </Style>
-        <Style x:Key="BorderTimeLineCirle"
-               TargetType="{x:Type Border}">
-            <Setter Property="Width" Value="40" />
-            <Setter Property="Height" Value="40" />
-            <Setter Property="Background" Value="{DynamicResource PpcBackground}" />
-            <Setter Property="BorderBrush" Value="{DynamicResource FerrettoLightGray}" />
-            <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
-            <Setter Property="CornerRadius" Value="20" />
-        </Style>
-        <Style x:Key="BorderTimeLineCirleTextBlock"
-               TargetType="{x:Type TextBlock}">
-            <Setter Property="Margin" Value="-1,-1,0,0" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="FontSize" Value="{StaticResource FontSize_High}" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="Foreground" Value="{DynamicResource FerrettoLightGray}" />
-        </Style>
-        <Style x:Key="BorderTimeLinePath"
-               TargetType="{x:Type Path}">
-            <Setter Property="Width" Value="26" />
-            <Setter Property="Height" Value="26" />
-            <Setter Property="HorizontalAlignment" Value="Right" />
-            <Setter Property="Data" Value="M18,5L0,11 18,17" />
-            <Setter Property="Fill" Value="{DynamicResource PpcBackground}" />
-            <Setter Property="Stretch" Value="Fill" />
-            <Setter Property="Stroke" Value="{DynamicResource PpcBorderBrush}" />
-            <Setter Property="StrokeThickness" Value="1.5" />
-        </Style>
-        <!--#endregion-->
-
         <!--#region DataTemplate Body-->
         <DataTemplate x:Key="DataTemplateInitialize">
             <Grid Margin="20"
@@ -434,11 +374,16 @@
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                            Text="1" />
             </Grid>
-            <Path Grid.Row="1"
+            <Grid Grid.Row="1"
                   Grid.Column="1"
                   Grid.ColumnSpan="2"
-                  Style="{DynamicResource BorderTimeLinePath}"
-                  Visibility="{Binding HasStepInitialize, Converter={StaticResource BTVC}, Mode=OneWay}" />
+                  Visibility="{Binding HasStepInitialize, Converter={StaticResource BTVC}, Mode=OneWay}">
+                <Path Height="24"
+                      VerticalAlignment="Center"
+                      StrokeThickness="0"
+                      Style="{DynamicResource BorderTimeLinePath}" />
+                <Path Style="{DynamicResource BorderTimeLinePath}" />
+            </Grid>
 
             <Grid Grid.Row="2">
                 <Border Background="{Binding HasStepElevatorPosition, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
@@ -446,11 +391,16 @@
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                            Text="2" />
             </Grid>
-            <Path Grid.Row="2"
+            <Grid Grid.Row="2"
                   Grid.Column="1"
                   Grid.ColumnSpan="2"
-                  Style="{DynamicResource BorderTimeLinePath}"
-                  Visibility="{Binding HasStepElevatorPosition, Converter={StaticResource BTVC}, Mode=OneWay}" />
+                  Visibility="{Binding HasStepElevatorPosition, Converter={StaticResource BTVC}, Mode=OneWay}">
+                <Path Height="24"
+                      VerticalAlignment="Center"
+                      StrokeThickness="0"
+                      Style="{DynamicResource BorderTimeLinePath}" />
+                <Path Style="{DynamicResource BorderTimeLinePath}" />
+            </Grid>
 
             <Grid Grid.Row="3">
                 <Border Background="{Binding HasStepDrawerPosition, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
@@ -458,11 +408,16 @@
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                            Text="3" />
             </Grid>
-            <Path Grid.Row="3"
+            <Grid Grid.Row="3"
                   Grid.Column="1"
                   Grid.ColumnSpan="2"
-                  Style="{DynamicResource BorderTimeLinePath}"
-                  Visibility="{Binding HasStepDrawerPosition, Converter={StaticResource BTVC}, Mode=OneWay}" />
+                  Visibility="{Binding HasStepDrawerPosition, Converter={StaticResource BTVC}, Mode=OneWay}">
+                <Path Height="24"
+                      VerticalAlignment="Center"
+                      StrokeThickness="0"
+                      Style="{DynamicResource BorderTimeLinePath}" />
+                <Path Style="{DynamicResource BorderTimeLinePath}" />
+            </Grid>
 
             <Grid Grid.Row="4">
                 <Border Background="{Binding HasStepShapePosition, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
@@ -470,11 +425,16 @@
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                            Text="4" />
             </Grid>
-            <Path Grid.Row="4"
+            <Grid Grid.Row="4"
                   Grid.Column="1"
                   Grid.ColumnSpan="2"
-                  Style="{DynamicResource BorderTimeLinePath}"
-                  Visibility="{Binding HasStepShapePosition, Converter={StaticResource BTVC}, Mode=OneWay}" />
+                  Visibility="{Binding HasStepShapePosition, Converter={StaticResource BTVC}, Mode=OneWay}">
+                <Path Height="24"
+                      VerticalAlignment="Center"
+                      StrokeThickness="0"
+                      Style="{DynamicResource BorderTimeLinePath}" />
+                <Path Style="{DynamicResource BorderTimeLinePath}" />
+            </Grid>
 
             <Grid Grid.Row="5">
                 <Border Background="{Binding HasStepTaraturaCatena, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
@@ -482,11 +442,16 @@
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                            Text="5" />
             </Grid>
-            <Path Grid.Row="5"
+            <Grid Grid.Row="5"
                   Grid.Column="1"
                   Grid.ColumnSpan="2"
-                  Style="{DynamicResource BorderTimeLinePath}"
-                  Visibility="{Binding HasStepTaraturaCatena, Converter={StaticResource BTVC}, Mode=OneWay}" />
+                  Visibility="{Binding HasStepTaraturaCatena, Converter={StaticResource BTVC}, Mode=OneWay}">
+                <Path Height="24"
+                      VerticalAlignment="Center"
+                      StrokeThickness="0"
+                      Style="{DynamicResource BorderTimeLinePath}" />
+                <Path Style="{DynamicResource BorderTimeLinePath}" />
+            </Grid>
 
             <Grid Grid.Row="6">
                 <Border Background="{Binding HasStepResultCheck, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
@@ -494,11 +459,16 @@
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                            Text="6" />
             </Grid>
-            <Path Grid.Row="6"
+            <Grid Grid.Row="6"
                   Grid.Column="1"
                   Grid.ColumnSpan="2"
-                  Style="{DynamicResource BorderTimeLinePath}"
-                  Visibility="{Binding HasStepResultCheck, Converter={StaticResource BTVC}, Mode=OneWay}" />
+                  Visibility="{Binding HasStepResultCheck, Converter={StaticResource BTVC}, Mode=OneWay}">
+                <Path Height="24"
+                      VerticalAlignment="Center"
+                      StrokeThickness="0"
+                      Style="{DynamicResource BorderTimeLinePath}" />
+                <Path Style="{DynamicResource BorderTimeLinePath}" />
+            </Grid>
             <!--#endregion-->
         </Grid>
         <!--#endregion-->
