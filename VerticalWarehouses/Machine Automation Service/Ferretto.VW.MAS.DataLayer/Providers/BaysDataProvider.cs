@@ -284,7 +284,7 @@ namespace Ferretto.VW.MAS.DataLayer
         public void FindZero(BayNumber bayNumber)
         {
             this.PublishCommand(
-                new HomingMessageData(Axis.BayChain, Calibration.FindSensor, null),
+                new HomingMessageData(Axis.BayChain, Calibration.FindSensor, null, true),
                 "Execute FindZeroSensor Command",
                 MessageActor.DeviceManager,
                 MessageType.Homing,
@@ -839,7 +839,7 @@ namespace Ferretto.VW.MAS.DataLayer
         public void PerformHoming(BayNumber bayNumber)
         {
             this.PublishCommand(
-                new HomingMessageData(Axis.BayChain, Calibration.ResetEncoder, null),
+                new HomingMessageData(Axis.BayChain, Calibration.ResetEncoder, null, true),
                 "Execute Homing Command",
                 MessageActor.DeviceManager,
                 MessageType.Homing,

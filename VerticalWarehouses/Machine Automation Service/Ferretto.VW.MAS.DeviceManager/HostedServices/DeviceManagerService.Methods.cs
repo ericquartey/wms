@@ -141,6 +141,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                         data.CalibrationType,
                         data.LoadingUnitId,
                         serviceProvider.GetRequiredService<IMachineProvider>().IsOneTonMachine(),
+                        data.ShowErrors,
                         receivedMessage.RequestingBay,
                         receivedMessage.TargetBay,
                         serviceProvider.GetRequiredService<IMachineResourcesProvider>(),

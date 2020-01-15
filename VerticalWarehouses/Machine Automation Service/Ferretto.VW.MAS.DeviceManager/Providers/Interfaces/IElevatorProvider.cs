@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         AxisBounds GetVerticalBounds();
 
-        void Homing(Axis calibrateAxis, Calibration calibration, int? loadUnitId, BayNumber bayNumber, MessageActor sender);
+        void Homing(Axis calibrateAxis, Calibration calibration, int? loadUnitId, bool showErrors, BayNumber bayNumber, MessageActor sender);
 
         bool IsZeroChainSensor();
 

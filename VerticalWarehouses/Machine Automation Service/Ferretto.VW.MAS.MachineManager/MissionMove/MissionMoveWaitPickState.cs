@@ -65,16 +65,16 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override void OnResume(CommandMessage command)
         {
+            var ejectBayLocation = this.Mission.LoadUnitDestination;
+            var bayPosition = this.BaysDataProvider.GetPositionByLocation(ejectBayLocation);
 #if CHECK_BAY_SENSOR
-            if (!this.sensorsProvider.IsLoadingUnitInLocation(this.ejectBay))
+            if (!this.SensorsProvider.IsLoadingUnitInLocation(ejectBayLocation))
 #endif
             {
                 if (command != null
                     && command.Data is IMoveLoadingUnitMessageData messageData
                     )
                 {
-                    var ejectBayLocation = this.Mission.LoadUnitDestination;
-                    var bayPosition = this.BaysDataProvider.GetPositionByLocation(ejectBayLocation);
                     if (messageData.MissionType == MissionType.NoType)
                     {
                         // Remove LoadUnit
@@ -117,7 +117,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 #if CHECK_BAY_SENSOR
             else
             {
-                this.errorsProvider.RecordNew(MachineErrorCode.LoadUnitNotRemoved, this.requestingBay);
+                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotRemoved, this.Mission.TargetBay);
+                throw new StateMachineException(ErrorDescriptions.LoadUnitNotRemoved, this.Mission.TargetBay, MessageActor.MachineManager);
             }
 #endif
         }

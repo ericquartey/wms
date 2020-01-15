@@ -43,7 +43,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
             if (message.Type == FieldMessageType.InverterPowerOff && message.Status != MessageStatus.OperationStart)
             {
-                var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, MessageVerbosity.Error);
+                var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, false, MessageVerbosity.Error);
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
                     "Homing Stopped due to an error",
@@ -71,7 +71,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             var currentInverterIndex = this.machineData.CurrentInverterIndex;
             this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {currentInverterIndex}");
 
-            var stopMessage = new FieldCommandMessage(
+            if (this.machineData.ShowErrors)
+            {
+                var stopMessage = new FieldCommandMessage(
                 null,
                 $"Reset Inverter Axis {this.machineData.AxisToCalibrate}",
                 FieldMessageActor.InverterDriver,
@@ -79,9 +81,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 FieldMessageType.InverterStop,
                 (byte)currentInverterIndex);
 
-            this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
+                this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
+            }
 
-            var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, MessageVerbosity.Info);
+            var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, false, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                                 notificationMessageData,
                                 "Homing Error",

@@ -14,6 +14,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Enumerations
 
         MoveBackward = 2,
 
-        MoveShutter = 4,
+        MoveShutterOpen = 4,
+
+        MoveShutterClosed = 8,
     }
 }
