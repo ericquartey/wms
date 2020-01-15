@@ -48,7 +48,7 @@
                TargetType="{x:Type Border}">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="BorderBrush" Value="{DynamicResource FerrettoLightGray}" />
-            <Setter Property="BorderThickness" Value="2.5" />
+            <Setter Property="BorderThickness" Value="2" />
             <Setter Property="CornerRadius" Value="2" />
         </Style>
         <Style x:Key="BorderTimeLineCirle"
@@ -74,11 +74,11 @@
             <Setter Property="Width" Value="26" />
             <Setter Property="Height" Value="26" />
             <Setter Property="HorizontalAlignment" Value="Right" />
-            <Setter Property="Data" Value="M18,5L0,11 18,17" />
+            <Setter Property="Data" Value="M18,0 L0,10 18,20" />
             <Setter Property="Fill" Value="{DynamicResource PpcBackground}" />
             <Setter Property="Stretch" Value="Fill" />
             <Setter Property="Stroke" Value="{DynamicResource PpcBorderBrush}" />
-            <Setter Property="StrokeThickness" Value="1.5" />
+            <Setter Property="StrokeThickness" Value="2" />
         </Style>
         <!--#endregion-->
 
@@ -498,11 +498,18 @@
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                            Text="1" />
             </Grid>
-            <Path Grid.Row="1"
+            <Grid Grid.Row="1"
                   Grid.Column="1"
-                  Grid.ColumnSpan="2"
-                  Style="{DynamicResource BorderTimeLinePath}"
-                  Visibility="{Binding HasStepPositionMeter, Converter={StaticResource BTVC}, Mode=OneWay}" />
+                  Grid.ColumnSpan="2">
+                <Path Height="24"
+                      VerticalAlignment="Center"
+                      StrokeThickness="0"
+                      Style="{DynamicResource BorderTimeLinePath}"
+                      Visibility="{Binding HasStepPositionMeter, Converter={StaticResource BTVC}, Mode=OneWay}" />
+                <Path Style="{DynamicResource BorderTimeLinePath}"
+                      Visibility="{Binding HasStepPositionMeter, Converter={StaticResource BTVC}, Mode=OneWay}" />
+
+            </Grid>
 
             <Grid Grid.Row="2">
                 <Border Background="{Binding HasStepFirstMeasured, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
