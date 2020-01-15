@@ -232,7 +232,7 @@
                                         VerticalAlignment="Center"
                                         Command="{Binding MoveToBayPositionCommand}"
                                         Content="Vai a posizione"
-                                        Style="{StaticResource WizardIntoButton}" />
+                                        Style="{DynamicResource WizardIntoButton}" />
 
                     <controls:PpcButton Grid.Row="2"
                                         Grid.Column="2"
@@ -240,7 +240,7 @@
                                         VerticalAlignment="Center"
                                         Command="{Binding MoveToShutterCommand}"
                                         Content="{Binding ShutterLabel}"
-                                        Style="{StaticResource WizardIntoButton}" />
+                                        Style="{DynamicResource WizardIntoButton}" />
 
                 </StackPanel>
 
@@ -271,7 +271,7 @@
                                     VerticalAlignment="Center"
                                     Command="{Binding DisplacementCommand}"
                                     Content="Sposta elevatore"
-                                    Style="{StaticResource WizardIntoButton}" />
+                                    Style="{DynamicResource WizardIntoButton}" />
 
                 <controls:PpcButton Grid.Row="4"
                                     Grid.Column="2"
@@ -280,7 +280,7 @@
                                     VerticalAlignment="Center"
                                     Command="{Binding MoveToNextCommand}"
                                     Content="Avanti"
-                                    Style="{StaticResource WizardConfirmButton}" />
+                                    Style="{DynamicResource WizardConfirmButton}" />
 
             </Grid>
         </DataTemplate>
@@ -494,7 +494,7 @@
                                         VerticalAlignment="Center"
                                         Command="{Binding MoveToBayPositionCommand}"
                                         Content="Vai a posizione"
-                                        Style="{StaticResource WizardIntoButton}" />
+                                        Style="{DynamicResource WizardIntoButton}" />
 
                     <controls:PpcButton Grid.Row="2"
                                         Grid.Column="2"
@@ -502,7 +502,7 @@
                                         VerticalAlignment="Center"
                                         Command="{Binding MoveToShutterCommand}"
                                         Content="{Binding ShutterLabel}"
-                                        Style="{StaticResource WizardIntoButton}" />
+                                        Style="{DynamicResource WizardIntoButton}" />
                 </StackPanel>
 
                 <TextBlock Grid.Row="3"
@@ -532,7 +532,7 @@
                                     VerticalAlignment="Center"
                                     Command="{Binding DisplacementCommand}"
                                     Content="Sposta elevatore"
-                                    Style="{StaticResource WizardIntoButton}" />
+                                    Style="{DynamicResource WizardIntoButton}" />
 
                 <controls:PpcButton Grid.Row="4"
                                     Grid.Column="2"
@@ -541,7 +541,7 @@
                                     VerticalAlignment="Center"
                                     Command="{Binding MoveToNextCommand}"
                                     Content="Avanti"
-                                    Style="{StaticResource WizardConfirmButton}" />
+                                    Style="{DynamicResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
 
