@@ -14,7 +14,7 @@
         </Style.Triggers>
     </Style>
     <Style x:Key="WizardConfirmButton"
-           BasedOn="{StaticResource WizardIntoButton}"
+           BasedOn="{DynamicResource WizardIntoButton}"
            TargetType="{x:Type controls:PpcButton}">
         <Setter Property="Background" Value="{DynamicResource FerrettoBlue}" />
         <Setter Property="BorderBrush" Value="{DynamicResource FerrettoPureWhite}" />
@@ -46,7 +46,7 @@
         <Setter Property="Margin" Value="-1,-1,0,0" />
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="FontSize" Value="{StaticResource FontSize_High}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Foreground" Value="{DynamicResource FerrettoLightGray}" />
     </Style>

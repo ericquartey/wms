@@ -6,15 +6,14 @@ trigger:
     - release
     - master
   paths:
-    exclude:
+    include:
     - VerticalWarehouses/Installer/*
-    - VerticalWarehouses/Simulator/*
 
 pool:
   vmImage: 'windows-latest'
 
 steps:
-- template: azure-pipeline-vw-ui-template.yml
+- template: azure-pipeline-vw-installer-template.yml
   parameters:
     BuildConfiguration: 'debug'
     BuildPlatform: 'any cpu'

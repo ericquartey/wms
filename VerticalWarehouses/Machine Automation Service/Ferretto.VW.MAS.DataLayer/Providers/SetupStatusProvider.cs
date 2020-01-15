@@ -184,9 +184,9 @@ namespace Ferretto.VW.MAS.DataLayer
                     IsCompleted = setup.CellPanelsCheck.IsCompleted,
                     CanBePerformed = setup.VerticalOffsetCalibration.IsCompleted && verticalOrigin.IsCompleted,
                 },
-                VerticalOriginCalibration = {
+                VerticalOriginCalibration = new SetupStepStatus
+                {
                     IsCompleted = setup.VerticalOriginCalibration.IsCompleted,
-                    CanBePerformed = setup.VerticalResolutionCalibration.IsCompleted && verticalOrigin.IsCompleted,
                 },
                 VerticalOffsetCalibration = new SetupStepStatus
                 {
