@@ -46,8 +46,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private double? inputUpperBound;
 
-        private bool isCompleted;
-
         private bool isExecutingProcedure;
 
         private double? machineLowerBound;
@@ -407,7 +405,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (message.IsNotRunning())
             {
                 this.IsExecutingProcedure = false;
-                this.isCompleted = true;
             }
 
             if (message.IsErrored())
@@ -427,7 +424,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 message.Data?.ExecutedCycles == message.Data.RequiredCycles)
             {
                 this.ShowNotification(VW.App.Resources.InstallationApp.CompletedTest, Services.Models.NotificationSeverity.Success);
-                this.isCompleted = true;
                 this.IsExecutingProcedure = false;
             }
         }
@@ -439,7 +435,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 var totalCyclesToPerform = this.InputRequiredCycles.Value - this.CumulativePerformedCycles.Value;
                 if (totalCyclesToPerform <= 0)
                 {
-                    this.isCompleted = true;
                     this.ShowNotification("Required amount of cycles was completed.", Services.Models.NotificationSeverity.Warning);
                     return;
                 }
@@ -450,8 +445,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.totalPerformedCyclesBeforeStart = this.CumulativePerformedCycles ?? 0;
                 this.PerformedCyclesThisSession = 0;
                 this.RaisePropertyChanged(nameof(this.PerformedCyclesThisSession));
-
-                this.isCompleted = false;
 
                 await this.beltBurnishingWebService.StartAsync(
                     this.InputUpperBound.Value,
@@ -477,8 +470,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsExecutingProcedure = true;
 
                 await this.beltBurnishingWebService.StopAsync();
-
-                this.isCompleted = true;
             }
             catch (Exception ex)
             {
