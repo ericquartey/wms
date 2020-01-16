@@ -9,10 +9,10 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:scaffolding="clr-namespace:Ferretto.VW.App.Scaffolding.Controls;assembly=Ferretto.VW.App.Scaffolding"
             d:DesignHeight="450"
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
-            xmlns:scaffolding="clr-namespace:Ferretto.VW.App.Scaffolding.Controls;assembly=Ferretto.VW.App.Scaffolding"
             mc:Ignorable="d">
     <ctrls:View.Resources>
         <ctrls:PropertyGridCellTemplateSelector x:Key="PropertyGridCellTemplateSelector" />
@@ -39,26 +39,9 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="Modifica configurazione" />
 
-
         <scaffolding:Scaffolder Grid.Row="1"
                                 Command="{Binding SaveCommand}"
-                                Model="{Binding Path=Configuration}"/>
-
-        <!--<dxprg:PropertyGridControl Grid.Row="1" Visibility="Collapsed"
-                                   AllowExpanding="Force"
-                                   ExpandCategoriesWhenSelectedObjectChanged="True"
-                                   IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}"
-                                   SelectedObject="{Binding Configuration}"
-                                   ShowCategories="False"
-                                   ShowMenuButtonInRows="False"
-                                   ShowToolPanel="False">
-
-            <dxprg:PropertyDefinition CellTemplateSelector="{StaticResource PropertyGridCellTemplateSelector}"
-                                      InsertDefinitionsFrom="{dxprg:RootPropertyDefinition}"
-                                      Path="*" />
-
-
-        </dxprg:PropertyGridControl>-->
+                                Model="{Binding Path=Configuration}" />
 
         <Grid Grid.Row="1"
               Grid.Column="1">
@@ -80,12 +63,13 @@
                                 Content="{x:Static res:InstallationApp.Export}"
                                 IsBusy="{Binding IsBusy}" />
 
-            <controls:PpcButton Grid.Row="2" Visibility="Collapsed"
+            <controls:PpcButton Grid.Row="2"
                                 Margin="15,15,15,0"
                                 VerticalAlignment="Bottom"
                                 Command="{Binding SaveCommand}"
                                 Content="{x:Static res:General.Save}"
-                                IsBusy="{Binding IsBusy}" />
+                                IsBusy="{Binding IsBusy}"
+                                Visibility="Collapsed" />
         </Grid>
     </Grid>
 </ctrls:View>
