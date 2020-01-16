@@ -470,6 +470,7 @@ namespace Ferretto.VW.MAS.DataLayer
                      .Include(b => b.Shutter)
                      .Include(b => b.Carousel)
                      .Include(b => b.Positions)
+                     .Include(b => b.CurrentMission)
                     .FirstOrDefault(b => b.Positions.Any(p => p.Location == location));
             }
         }
