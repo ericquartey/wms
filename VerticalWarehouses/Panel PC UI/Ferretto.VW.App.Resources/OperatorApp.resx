@@ -1292,9 +1292,9 @@ Please put back any moved pieces in their original position.</value>
   <data name="CreationDate" xml:space="preserve">
     <value>Date</value>
   </data>
-  <data name="MissionState" xml:space="preserve">
-    <value>State</value>
-    <comment>header text</comment>
+  <data name="MissionStep" xml:space="preserve">
+    <value>Step</value>
+    <comment>Header text</comment>
   </data>
   <data name="Bay" xml:space="preserve">
     <value>Bay</value>
