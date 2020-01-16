@@ -61,7 +61,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     this.Mission.Direction = (bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards);
                     this.Mission.OpenShutterPosition = this.LoadingUnitMovementProvider.GetShutterOpenPosition(bay, this.Mission.LoadUnitSource);
-                    if (this.Mission.OpenShutterPosition == this.SensorsProvider.GetShutterPosition(bay.Number))
+                    var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(bay.Number);
+                    if (this.Mission.OpenShutterPosition == this.SensorsProvider.GetShutterPosition(shutterInverter))
                     {
                         this.Mission.OpenShutterPosition = ShutterPosition.NotSpecified;
                     }
@@ -147,7 +148,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                         if (notification.Type == MessageType.ShutterPositioning)
                         {
-                            var shutterPosition = this.SensorsProvider.GetShutterPosition(notification.RequestingBay);
+                            var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(notification.RequestingBay);
+                            var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
                             if (shutterPosition == this.Mission.OpenShutterPosition)
                             {
                                 if (this.Mission.NeedHomingAxis == Axis.BayChain)

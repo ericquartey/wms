@@ -825,6 +825,8 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public InverterIndex GetShutterInverterIndex(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.Inverter.Index;
+
         public void Light(BayNumber bayNumber, bool enable)
         {
             this.PublishCommand(

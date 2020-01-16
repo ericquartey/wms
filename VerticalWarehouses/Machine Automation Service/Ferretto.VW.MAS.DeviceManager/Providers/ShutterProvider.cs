@@ -108,7 +108,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public bool MoveTo(ShutterPosition targetPosition, BayNumber bayNumber, MessageActor sender)
         {
             var direction = ShutterMovementDirection.NotSpecified;
-            var position = this.sensorsProvider.GetShutterPosition(bayNumber);
+            var shutterInverter = this.baysDataProvider.GetShutterInverterIndex(bayNumber);
+            var position = this.sensorsProvider.GetShutterPosition(shutterInverter);
             switch (targetPosition)
             {
                 case ShutterPosition.Closed:

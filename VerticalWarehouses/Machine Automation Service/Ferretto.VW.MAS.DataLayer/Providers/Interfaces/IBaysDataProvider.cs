@@ -100,6 +100,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         double GetResolution(InverterIndex inverterIndex);
 
+        InverterIndex GetShutterInverterIndex(BayNumber bayNumber);
+
         void Light(BayNumber bayNumber, bool enable);
 
         void PerformHoming(BayNumber bayNumber);
