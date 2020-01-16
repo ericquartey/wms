@@ -96,7 +96,7 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 var entity =
-                this.dataContext.Machines
+                this.dataContext.Machines.AsNoTracking()
                     .Include(m => m.Elevator)
                         .ThenInclude(e => e.Axes)
                             .ThenInclude(a => a.EmptyLoadMovement)
