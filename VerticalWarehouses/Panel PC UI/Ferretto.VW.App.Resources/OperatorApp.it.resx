@@ -1027,8 +1027,8 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="CreationDate" xml:space="preserve">
     <value>Creazione</value>
   </data>
-  <data name="MissionState" xml:space="preserve">
-    <value>Stato</value>
+  <data name="MissionStep" xml:space="preserve">
+    <value>Step</value>
   </data>
   <data name="Bay" xml:space="preserve">
     <value>Baia</value>
