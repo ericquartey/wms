@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources;
-using System.ComponentModel.DataAnnotations;
+using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts
 {
     [Ferretto.VW.MAS.Scaffolding.DataAnnotations.MetadataType(typeof(Machine.Metadata))]
     public partial class Machine
     {
-        class Metadata
+        private class Metadata
         {
-            [Category(Category = nameof(Vertimag.Bay), ResourceType =typeof(Vertimag))]
+            [Category(Category = nameof(Vertimag.Bay), ResourceType = typeof(Vertimag))]
             [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
             public System.Collections.Generic.IEnumerable<Bay> Bays { get; set; }
 
@@ -20,7 +17,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public Elevator Elevator { get; set; }
 
             [Editable(false)]
-            [Display(ResourceType =typeof(Vertimag), Name = nameof(Vertimag.Machine_Height))]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_Height))]
             public double Height { get; set; }
 
             [Editable(false)]

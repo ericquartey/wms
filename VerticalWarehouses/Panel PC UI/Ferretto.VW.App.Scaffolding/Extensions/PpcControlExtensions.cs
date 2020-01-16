@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Controls;
-using Ferretto.VW.App.Controls.Controls;
 
 namespace Ferretto.VW.App.Controls.Controls
 {

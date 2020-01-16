@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
-using System.Reflection;
+using System.Linq;
 using System.Windows.Data;
-using System.Collections.Generic;
 
 namespace Ferretto.VW.App.Scaffolding.Converters
 {
@@ -17,7 +16,7 @@ namespace Ferretto.VW.App.Scaffolding.Converters
                 // detour to the 'Metadata'
                 value = entity.Metadata;
             }
-            
+
             if (value is IEnumerable<Attribute> metadata)
             {
                 var editable = metadata.OfType<EditableAttribute>().FirstOrDefault();
@@ -35,5 +34,4 @@ namespace Ferretto.VW.App.Scaffolding.Converters
             throw new NotSupportedException();
         }
     }
-
 }

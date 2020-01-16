@@ -1,8 +1,8 @@
 ﻿<UserControl x:Class="Ferretto.VW.App.Scaffolding.Controls.PropertyEditor"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:Ferretto.VW.App.Scaffolding.Controls"
              xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:converters="clr-namespace:Ferretto.VW.App.Scaffolding.Converters"
@@ -49,9 +49,9 @@
 
                                 <TextBlock DockPanel.Dock="Right" Visibility="Collapsed"
                                 Foreground="{DynamicResource FerrettoRed}"
-                                Margin="5" 
+                                Margin="5"
                                 FontSize="{DynamicResource FontSize_Normal}"
-                                Text="{Binding ElementName=MyAdorner, 
+                                Text="{Binding ElementName=MyAdorner,
                            Path=AdornedElement.(Validation.Errors)/ErrorContent}">
                                 </TextBlock>
 
@@ -63,14 +63,12 @@
                                     <iconPacks:PackIconModern
                                           Foreground="{DynamicResource FerrettoPureWhite}"
                                           Kind="WarningCircle" />
-
                                 </Border>
 
                                 <Border BorderBrush="{DynamicResource FerrettoRed}"
                                     BorderThickness="{DynamicResource PpcBorderThickness}">
                                     <AdornedElementPlaceholder Name="MyAdorner" />
                                 </Border>
-
                             </DockPanel>
                         </ControlTemplate>
                     </Setter.Value>
@@ -78,8 +76,8 @@
                 <Style.Triggers>
                     <Trigger Property="Validation.HasError" Value="true">
                         <Setter Property="ToolTip"
-                        Value="{Binding RelativeSource={RelativeSource Self}, 
-                        Path=(Validation.Errors)/ErrorContent}"/>
+                        Value="{Binding RelativeSource={RelativeSource Self},
+                        Path=(Validation.Errors)/ErrorContent}" />
                     </Trigger>
                 </Style.Triggers>
             </Style>
@@ -125,7 +123,7 @@
                     </ComboBox.Resources>
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Converter={StaticResource EnumValueToStringConverter}}"/>
+                            <TextBlock Text="{Binding Converter={StaticResource EnumValueToStringConverter}}" />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                     <ComboBox.SelectedValue>
@@ -150,7 +148,6 @@
                     <converters:TwoWayConverter x:Key="TwoWayConverter" />
                 </DataTemplate.Resources>
 
-
                 <ctrls:PpcTextBox DataContext="{Binding}" HorizontalAlignment="Stretch"
                               Keyboard="{Binding Path=.,Converter={StaticResource KeyboardTypeConverter}}"
                               FontSize="{DynamicResource FontSize_High}"
@@ -160,7 +157,6 @@
                         <Binding Path="Value" UpdateSourceTrigger="PropertyChanged"
                              Converter="{StaticResource TwoWayConverter}" ConverterCulture="{x:Static g11n:CultureInfo.CurrentCulture}"
                              RelativeSource="{RelativeSource Mode=FindAncestor,AncestorType=UserControl}" Mode="TwoWay">
-
                         </Binding>
                     </ctrls:PpcTextBox.InputText>
                 </ctrls:PpcTextBox>
@@ -201,11 +197,8 @@
                     </interactivity:Interaction.Behaviors>
                 </TextBox>
             </DataTemplate>
-
         </ResourceDictionary>
-
     </UserControl.Resources>
-
 
     <!-- layout -->
     <Grid Background="{DynamicResource FerrettoBlack}"
@@ -238,7 +231,7 @@
                             </MultiBinding>
                         </ctrls:PpcButton.IsEnabled>
                     </ctrls:PpcButton>
-                    <ctrls:PpcButton Content="{x:Static resx:UI.Cancel}" Click="Cancel_Click"/>
+                    <ctrls:PpcButton Content="{x:Static resx:UI.Cancel}" Click="Cancel_Click" />
                 </StackPanel>
 
                 <!-- validators -->
@@ -277,7 +270,6 @@
                                 HorizontalContentAlignment="Stretch"
                                 ContentTemplateSelector="{StaticResource PropertyInfoDataTemplateSelector}" Margin="0,10">
                 </ContentControl>
-
             </Grid>
         </Border>
     </Grid>

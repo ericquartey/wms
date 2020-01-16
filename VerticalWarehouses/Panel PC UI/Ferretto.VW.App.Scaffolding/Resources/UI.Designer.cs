@@ -79,6 +79,15 @@ namespace Ferretto.VW.App.Scaffolding.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nessun elemento corrispondente al criterio di navigazione..
+        /// </summary>
+        public static string Empty {
+            get {
+                return ResourceManager.GetString("Empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Root.
         /// </summary>
         public static string Root {

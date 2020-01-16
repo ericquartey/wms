@@ -1,10 +1,7 @@
 ﻿using System.Globalization;
-using System.Linq;
-using System.Windows.Controls;
 
 namespace Ferretto.VW.App.Scaffolding.ValidationRules
 {
-
     public class CompositeValidationRule : NotifyValidationRule
     {
         public CompositeValidator CompositeValidator { get; set; }
@@ -27,6 +24,5 @@ namespace Ferretto.VW.App.Scaffolding.ValidationRules
             this.OnValidated(new ValidationEventArgs(true));
             return new System.Windows.Controls.ValidationResult(true, default);
         }
-
     }
 }
