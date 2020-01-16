@@ -85,7 +85,7 @@
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="Spostamento"
+                    <controls:PpcButton Title="Spostamento da cella a cella"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.5.4"
@@ -95,7 +95,7 @@
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="Spostamento da Baia a Baia"
+                    <controls:PpcButton Title="Spostamento da baia a baia"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.5.5"
