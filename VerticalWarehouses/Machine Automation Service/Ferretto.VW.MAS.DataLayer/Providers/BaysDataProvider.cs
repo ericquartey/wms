@@ -470,6 +470,7 @@ namespace Ferretto.VW.MAS.DataLayer
                      .Include(b => b.Shutter)
                      .Include(b => b.Carousel)
                      .Include(b => b.Positions)
+                     .Include(b => b.CurrentMission)
                     .FirstOrDefault(b => b.Positions.Any(p => p.Location == location));
             }
         }
@@ -824,6 +825,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 return bay.Resolution;
             }
         }
+
+        public InverterIndex GetShutterInverterIndex(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.Inverter.Index;
 
         public void Light(BayNumber bayNumber, bool enable)
         {

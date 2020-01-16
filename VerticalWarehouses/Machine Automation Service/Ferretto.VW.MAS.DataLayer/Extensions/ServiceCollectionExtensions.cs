@@ -55,15 +55,15 @@ namespace Ferretto.VW.MAS.DataLayer
                 .AddTransient<ISetupProceduresDataProvider, SetupProceduresDataProvider>()
                 .AddTransient<ITorqueCurrentMeasurementsDataProvider, TorqueCurrentMeasurementsDataProvider>()
                 .AddTransient<IWmsSettingsProvider, WmsSettingsProvider>()
-                .AddTransient<IUsersProvider, UsersProvider>();
+                .AddTransient<IUsersProvider, UsersProvider>()
+                .AddTransient<IMachineMissionsProvider, MachineMissionsProvider>();
 
             services
                 .AddSingleton<IMachineProvider, MachineProvider>()
                 .AddSingleton<IVerticalOriginVolatileSetupStatusProvider, VerticalOriginVolatileSetupStatusProvider>()
                 .AddSingleton<IMachineModeVolatileDataProvider, MachineModeVolatileDataProvider>()
                 .AddSingleton<IElevatorVolatileDataProvider, ElevatorVolatileDataProvider>()
-                .AddSingleton<IBayChainVolatileDataProvider, BayChainVolatileDataProvider>()
-                .AddSingleton<IMachineMissionsProvider, MachineMissionsProvider>();
+                .AddSingleton<IBayChainVolatileDataProvider, BayChainVolatileDataProvider>();
 
             return services;
         }

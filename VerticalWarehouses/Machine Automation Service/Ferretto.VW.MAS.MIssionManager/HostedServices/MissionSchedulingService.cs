@@ -434,7 +434,22 @@ namespace Ferretto.VW.MAS.MissionManager
             try
             {
                 var mission = missionsDataProvider.GetById(luData.MissionId.Value);
-                if (!luData.DestinationCellId.HasValue)
+                if (luData.Destination == LoadingUnitLocation.Elevator
+                    && !mission.WmsId.HasValue)
+                {
+                    if (luData.Source != LoadingUnitLocation.Cell)
+                    {
+                        var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                        var bay = baysDataProvider.GetByLoadingUnitLocation(luData.Source);
+                        if (bay.CurrentMission != null)
+                        {
+                            baysDataProvider.ClearMission(bay.Number);
+                            missionsDataProvider.Complete(bay.CurrentMission.Id);
+                        }
+                    }
+                    missionsDataProvider.Complete(mission.Id);
+                }
+                else if (!luData.DestinationCellId.HasValue)
                 // loading unit to bay mission
                 {
                     var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();

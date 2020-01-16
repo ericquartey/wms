@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 
 namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 {
@@ -14,7 +15,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool[] GetAll();
 
-        ShutterPosition GetShutterPosition(BayNumber bayNumber);
+        ShutterPosition GetShutterPosition(InverterIndex inverterIndex);
 
         bool IsLoadingUnitInLocation(LoadingUnitLocation location);
 
