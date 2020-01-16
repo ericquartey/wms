@@ -468,6 +468,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 return this.dataContext.Bays
                     .AsNoTracking()
                      .Include(b => b.Shutter)
+                        .ThenInclude(i => i.Inverter)
                      .Include(b => b.Carousel)
                      .Include(b => b.Positions)
                         .ThenInclude(t => t.LoadingUnit)
