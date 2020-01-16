@@ -10,11 +10,13 @@
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:scaffolding="clr-namespace:Ferretto.VW.App.Scaffolding.Controls;assembly=Ferretto.VW.App.Scaffolding"
+            xmlns:converters2="clr-namespace:Ferretto.VW.App.Scaffolding.Converters;assembly=Ferretto.VW.App.Scaffolding"
             d:DesignHeight="450"
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
     <ctrls:View.Resources>
+        <converters2:TruthyToVisibilityConverter x:Key="TruthyToVisibilityConverter" />
         <ctrls:PropertyGridCellTemplateSelector x:Key="PropertyGridCellTemplateSelector" />
         <Style TargetType="{x:Type dxprg:RowControl}">
             <Setter Property="FontSize" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_FontSize}" />
@@ -22,7 +24,7 @@
         </Style>
     </ctrls:View.Resources>
 
-    <Grid Margin="15,15,0,0">
+    <Grid Margin="15,15,15,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -39,32 +41,46 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="Modifica configurazione" />
 
-        <scaffolding:Scaffolder Grid.Row="1"
+        <scaffolding:Scaffolder Grid.Row="1" x:Name="scaffolder"
+                                HorizontalAlignment="Stretch"
                                 Command="{Binding SaveCommand}"
-                                Model="{Binding Path=Configuration}" />
+                                IsBusy="{Binding IsBusy}"
+                                Model="{Binding Path=Configuration}">
+            <!--<scaffolding:Scaffolder.Style>
+                <Style TargetType="{x:Type scaffolding:Scaffolder}">
+                    <Style.Triggers>
+                        <Trigger Property="IsNavigating" Value="True">
+                            <Setter Property="Grid.ColumnSpan" Value="2" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </scaffolding:Scaffolder.Style>-->
+        </scaffolding:Scaffolder>
 
         <Grid Grid.Row="1"
               Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <controls:PpcButton Grid.Row="0"
-                                Margin="15,0,15,0"
+            <controls:PpcButton Grid.Row="1"
+                                Margin="15,0,0,0"
+                                Visibility="{Binding IsNavigating, ElementName=scaffolder, Converter={StaticResource TruthyToVisibilityConverter}, ConverterParameter=Invert}"
                                 Command="{Binding GoToImport}"
                                 Content="{x:Static res:InstallationApp.Restore}"
                                 IsBusy="{Binding IsBusy}" />
 
-            <controls:PpcButton Grid.Row="1"
-                                Margin="15,15,15,0"
+            <controls:PpcButton Grid.Row="2"
+                                Margin="15,15,0,0"
+                                Visibility="{Binding IsNavigating, ElementName=scaffolder, Converter={StaticResource TruthyToVisibilityConverter}, ConverterParameter=Invert}"
                                 Command="{Binding GoToExport}"
                                 Content="{x:Static res:InstallationApp.Export}"
                                 IsBusy="{Binding IsBusy}" />
 
             <controls:PpcButton Grid.Row="2"
-                                Margin="15,15,15,0"
+                                Margin="15,15,0,0"
                                 VerticalAlignment="Bottom"
                                 Command="{Binding SaveCommand}"
                                 Content="{x:Static res:General.Save}"

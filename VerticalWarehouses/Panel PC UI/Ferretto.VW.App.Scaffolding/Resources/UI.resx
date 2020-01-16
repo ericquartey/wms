@@ -123,6 +123,9 @@
   <data name="Cancel" xml:space="preserve">
     <value>Annulla</value>
   </data>
+  <data name="Empty" xml:space="preserve">
+    <value>Nessun elemento corrispondente al criterio di navigazione.</value>
+  </data>
   <data name="Root" xml:space="preserve">
     <value>Root</value>
   </data>

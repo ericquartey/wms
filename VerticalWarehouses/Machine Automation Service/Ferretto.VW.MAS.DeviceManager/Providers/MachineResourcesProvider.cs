@@ -146,6 +146,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return inverterStatus.CurrentShutterPosition;
         }
 
+        public bool IsBayLightOn(BayNumber bayNumber)
+        {
+            if (this.machineProvider.IsBayLightOn.TryGetValue(bayNumber, out var isLight))
+            {
+                return isLight;
+            }
+            return false;
+        }
+
         public bool IsDrawerInBayBottom(BayNumber bayNumber)
         {
             switch (bayNumber)

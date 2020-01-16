@@ -2,8 +2,8 @@
 
 namespace Ferretto.VW.App.Scaffolding.ValidationRules
 {
-    public class ValidationEventArgs : EventArgs {
-
+    public class ValidationEventArgs : EventArgs
+    {
         internal ValidationEventArgs(bool isValid, object errorContent = null) : base()
         {
             this.IsValid = isValid;

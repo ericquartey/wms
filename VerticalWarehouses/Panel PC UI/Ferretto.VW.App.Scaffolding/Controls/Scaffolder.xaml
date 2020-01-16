@@ -49,6 +49,13 @@
             <Setter Property="ToolTip" Value="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
         </Style>
 
+        <Style x:Key="BreadcrumbTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="{DynamicResource FerrettoMediumGray}" />
+            <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
+            <Setter Property="Margin" Value="5,0,0,0" />
+        </Style>
+
         <Style TargetType="{x:Type GridViewColumnHeader}">
             <Setter Property="Background" Value="{x:Null}" />
             <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
@@ -77,6 +84,12 @@
             </Setter>
         </Style>
 
+        <Style TargetType="Border" x:Key="ListBoxItemBorder">
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+            <Setter Property="CornerRadius" Value="0" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+        </Style>
+
         <Style TargetType="{x:Type ListView}">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="ScrollViewer.PanningMode" Value="Both" />
@@ -96,15 +109,29 @@
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                    <Border Background="{TemplateBinding Background}"
-                                            BorderBrush="{DynamicResource FerrettoMediumGray}"
-                                            BorderThickness="0,0,0,1"
-                                            CornerRadius="0"
-                                            SnapsToDevicePixels="true">
-                                        <GridViewRowPresenter />
+                                    <Border Background="{TemplateBinding Background}" Name="border"
+                                                BorderBrush="{DynamicResource FerrettoMediumGray}"
+                                                Style="{StaticResource ListBoxItemBorder}">
+                                        <Grid>
+                                            <GridViewRowPresenter />
+                                            <ProgressBar Margin="0" IsHitTestVisible="False"
+                                             HorizontalAlignment="Stretch"
+                                             VerticalAlignment="Stretch"
+                                             Background="{TemplateBinding Background}"
+                                             BorderBrush="{TemplateBinding BorderBrush}"
+                                             Foreground="{DynamicResource PpcButtonForeground}"
+                                             IsIndeterminate="True"
+                                             Opacity="0.2">
+                                                <ProgressBar.Visibility>
+                                                    <MultiBinding Converter="{StaticResource MultiBooleanToVisibilityConverter}">
+                                                        <Binding Path="IsBusy" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}" />
+                                                        <Binding Path="IsSelected" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}" />
+                                                    </MultiBinding>
+                                                </ProgressBar.Visibility>
+                                            </ProgressBar>
+                                        </Grid>
                                     </Border>
                                 </ControlTemplate>
-
                             </Setter.Value>
                         </Setter>
 
@@ -120,6 +147,16 @@
                                 <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
                                 <Setter Property="Background" Value="{DynamicResource FerrettoMediumGray}" />
                             </MultiTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=Self}}" Value="True" />
+                                    <Condition Value="True"
+                                               Binding="{Binding Path=IsBusy, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}}" />
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
+                                <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
+                                <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
+                            </MultiDataTrigger>
                             <MultiTrigger>
                                 <MultiTrigger.Conditions>
                                     <Condition Property="IsEnabled" Value="False" />
@@ -127,7 +164,6 @@
                                 <Setter Property="Foreground" Value="{DynamicResource FerrettoMediumGray}" />
                             </MultiTrigger>
                         </Style.Triggers>
-
                     </Style>
                 </Setter.Value>
             </Setter>
@@ -150,7 +186,7 @@
                                  Value="false">
                                 <Setter TargetName="Bd"
                                     Property="Background"
-                                    Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                                    Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
                             </Trigger>-->
                             <MultiTrigger>
                                 <MultiTrigger.Conditions>
@@ -163,16 +199,22 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <EventSetter Event="MouseLeftButtonUp"
+            <EventSetter Event="MouseDoubleClick"
                          Handler="ListViewItem_Click" />
             <EventSetter Event="TouchUp"
                          Handler="ListViewItem_Click" />
-        </Style>
-
-        <Style x:Key="BreadcrumbTextBlock"
-               TargetType="{x:Type TextBlock}">
-            <Setter Property="Foreground" Value="{DynamicResource FerrettoMediumGray}" />
-            <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
+            <Style.Triggers>
+                <Trigger Property="HasItems" Value="False">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <TextBlock Style="{StaticResource BreadcrumbTextBlock}"
+                                           Text="{x:Static resx:UI.Empty}" />
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
         <Style x:Key="SearchTextBoxStyle"
@@ -226,7 +268,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
     </UserControl.Resources>
 
     <!--
@@ -276,8 +317,7 @@
                 </Button.Content>
             </Button>
 
-
-            <TextBlock Margin="10,0,5,0"
+            <TextBlock Margin="10,0,0,0"
                        VerticalAlignment="Center"
                        Style="{StaticResource BreadcrumbTextBlock}"
                        Text="{x:Static resx:UI.Root}"
@@ -293,18 +333,6 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <!--<Button Margin="0,0,0,8">
-                            <Button.Content>
-                                <Border Padding="5" BorderThickness="1">
-                                    <TextBlock Text="{Binding Category}" />
-                                </Border>
-                            </Button.Content>
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Click">
-                                    <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" MethodName="SelectCategory" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </Button>-->
                         <TextBlock Style="{StaticResource BreadcrumbTextBlock}">
                             <Run>/</Run>
                             <Run Text="{Binding Category, Mode=OneWay}" />
@@ -341,7 +369,6 @@
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </ctrls:PpcButton>
-
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
@@ -350,8 +377,13 @@
         <Grid Grid.Row="2"
               d:DataContext="{d:DesignInstance Type=design:VertimagEntitiesViewModel,
                                                IsDesignTimeCreatable=True}"
-              DataContext="{Binding Path=Entities, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}}"
-              Visibility="{Binding Path=Count, Converter={StaticResource TruthyToVisibilityConverter}}">
+              DataContext="{Binding Path=Entities, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}}">
+            <Grid.Visibility>
+                <MultiBinding Converter="{StaticResource MultiBooleanToVisibilityConverter}" ConverterParameter="Or">
+                    <Binding Path="Count" Converter="{StaticResource TruthyToVisibilityConverter}" />
+                    <Binding Path="SearchText" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}" Converter="{StaticResource TruthyToVisibilityConverter}" />
+                </MultiBinding>
+            </Grid.Visibility>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
@@ -406,32 +438,16 @@
                     </Button.Template>
                 </Button>
             </Grid>
-            <!--<ScrollViewer VerticalScrollBarVisibility="Auto"
-                      HorizontalAlignment="Stretch" Grid.Row="1">
-
-                <Border BorderThickness="1" BorderBrush="{DynamicResource FerrettoMediumGray}">-->
             <!--  entities  -->
             <ListView Grid.Row="1"
-                      ItemsSource="{Binding}"
-                      SelectionChanged="ListView_Selected">
+                      ItemsSource="{Binding}">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Width="249"
-                                        Header="Nome">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Border Style="{StaticResource FirstCellBorderStyle}">
-                                        <TextBlock Style="{StaticResource CellTextBlockStyle}"
-                                                   Text="{Binding Path=Caption}" />
-                                    </Border>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Width="64"
+                        <GridViewColumn Width="63"
                                         Header="Id">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Border Style="{StaticResource CellBorderStyle}">
+                                    <Border Style="{StaticResource FirstCellBorderStyle}">
                                         <TextBlock HorizontalAlignment="Center"
                                                    Style="{StaticResource CellTextBlockStyle}"
                                                    Text="{Binding Path=Id}" />
@@ -439,7 +455,18 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Width="146"
+                        <GridViewColumn Width="258"
+                                        Header="Nome">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource CellBorderStyle}">
+                                        <TextBlock Style="{StaticResource CellTextBlockStyle}"
+                                                   Text="{Binding Path=Caption}" />
+                                    </Border>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="240"
                                         Header="Value">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -460,7 +487,7 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Width="92"
+                        <GridViewColumn Width="110"
                                         Header="Default">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -471,7 +498,7 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Width="92"
+                        <GridViewColumn Width="110"
                                         Header="Min">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -482,7 +509,7 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Width="92"
+                        <GridViewColumn Width="110"
                                         Header="Max">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -493,7 +520,7 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Width="60"
+                        <GridViewColumn Width="64"
                                         Header="U.m.">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -514,10 +541,7 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <!--</Border>
-            </ScrollViewer>-->
         </Grid>
-
 
         <controls:PropertyEditor x:Name="editor"
                                  Grid.RowSpan="3"
@@ -526,6 +550,5 @@
                                  Commit="Editor_Commit"
                                  Entity="{Binding Path=EditingEntity, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
                                  Visibility="{Binding Path=Entity, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource TruthyToVisibilityConverter}}" />
-
     </Grid>
 </UserControl>
