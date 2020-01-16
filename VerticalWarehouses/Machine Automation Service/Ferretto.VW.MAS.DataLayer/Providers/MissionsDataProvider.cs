@@ -217,7 +217,8 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Where(x => x.Status != MissionStatus.Completed
                         && x.Status != MissionStatus.Aborted)
                     .OrderBy(o => o.Priority)
-                    .ThenBy(o => o.CreationDate);
+                    .ThenBy(o => o.CreationDate)
+                    .ToList();
             }
         }
 
@@ -230,7 +231,8 @@ namespace Ferretto.VW.MAS.DataLayer
                         && x.Status != MissionStatus.Completed
                         && x.Status != MissionStatus.Aborted)
                     .OrderBy(o => o.Priority)
-                    .ThenBy(o => o.CreationDate);
+                    .ThenBy(o => o.CreationDate)
+                    .ToList();
             }
         }
 
@@ -240,7 +242,8 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 return this.dataContext.Missions
                     .Where(x => x.Status == MissionStatus.Executing
-                        || x.Status == MissionStatus.Waiting);
+                        || x.Status == MissionStatus.Waiting)
+                    .ToList();
             }
         }
 
@@ -250,7 +253,8 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 return this.dataContext.Missions
                     .OrderBy(o => o.Priority)
-                    .ThenBy(o => o.CreationDate);
+                    .ThenBy(o => o.CreationDate)
+                    .ToList();
             }
         }
 
@@ -259,7 +263,8 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Missions
-                    .Where(x => x.WmsId != null);
+                    .Where(x => x.WmsId != null)
+                    .ToList();
             }
         }
 

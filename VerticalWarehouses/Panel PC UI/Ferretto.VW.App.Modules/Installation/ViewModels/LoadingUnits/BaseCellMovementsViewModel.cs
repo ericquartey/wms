@@ -21,8 +21,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private AxisBounds axisBounds;
 
-        private IEnumerable<Cell> cells;
-
         private int? destinationCellId;
 
         #endregion
@@ -50,6 +48,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #endregion
 
         #region Properties
+
+        private IEnumerable<Cell> Cells => this.MachineService.Cells;
 
         public int? DestinationCellId
         {
@@ -110,7 +110,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     return false;
                 }
 
-                var cellFound = this.cells.FirstOrDefault(l =>
+                var cellFound = this.Cells.FirstOrDefault(l =>
                                                           !(this.axisBounds is null) &&
                                                           l.Position > this.axisBounds.Lower &&
                                                           l.Position < this.axisBounds.Upper &&
@@ -133,23 +133,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     return false;
                 }
 
-                return this.cells.Any(l => l.Id == this.destinationCellId.Value);
+                return this.Cells.Any(l => l.Id == this.destinationCellId.Value);
             }
         }
 
         public bool IsLoadingUnitInBay => this.sensorsService.IsLoadingUnitInBay;
-
-        protected IEnumerable<Cell> Cells
-        {
-            get => this.cells;
-            private set
-            {
-                if (this.SetProperty(ref this.cells, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
 
         #endregion
 
@@ -173,7 +161,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.axisBounds = await this.machineElevatorWebService.GetVerticalBoundsAsync();
 
-                this.Cells = await this.machineCellsWebService.GetAllAsync();
                 if (this.DestinationCellId is null)
                 {
                     if (this.Cells.Count() > 0)

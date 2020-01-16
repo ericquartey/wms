@@ -16,6 +16,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
+        private readonly IBaysDataProvider baysDataProvider;
+
         private readonly ISensorsProvider sensorsProvider;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
@@ -28,9 +30,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public ShuttersController(
             ISetupProceduresDataProvider setupProceduresDataProvider,
+            IBaysDataProvider baysDataProvider,
             IShutterProvider shutterProvider,
             ISensorsProvider sensorsProvider)
         {
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
             this.shutterProvider = shutterProvider ?? throw new ArgumentNullException(nameof(shutterProvider));
@@ -49,7 +53,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("position")]
         public ActionResult<ShutterPosition> GetShutterPosition()
         {
-            return this.Ok(this.sensorsProvider.GetShutterPosition(this.BayNumber));
+            var index = this.baysDataProvider.GetShutterInverterIndex(this.BayNumber);
+            return this.Ok(this.sensorsProvider.GetShutterPosition(index));
         }
 
         [HttpGet("test-parameters")]

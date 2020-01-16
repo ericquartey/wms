@@ -2195,15 +2195,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to State.
-        /// </summary>
-        public static string MissionState {
-            get {
-                return ResourceManager.GetString("MissionState", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Bay chain.
         /// </summary>
         public static string MissionStateBayChain {
@@ -2308,6 +2299,15 @@ namespace Ferretto.VW.App.Resources {
         public static string MissionStatus {
             get {
                 return ResourceManager.GetString("MissionStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Step.
+        /// </summary>
+        public static string MissionStep {
+            get {
+                return ResourceManager.GetString("MissionStep", resourceCulture);
             }
         }
         

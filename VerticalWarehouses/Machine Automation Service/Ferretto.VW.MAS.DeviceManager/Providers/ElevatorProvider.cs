@@ -130,7 +130,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             // check #4: the shutter must be completely closed or open depending if mission is guided or not
-            var shutterPosition = this.machineResourcesProvider.GetShutterPosition(bayNumber);
+            var shutterInverter = this.baysDataProvider.GetShutterInverterIndex(bayNumber);
+            var shutterPosition = this.machineResourcesProvider.GetShutterPosition(shutterInverter);
             if (shutterPosition != ShutterPosition.NotSpecified)
             {
                 if (isGuided)
@@ -338,7 +339,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             // check #4: the shutter must be completely closed or open depending if mission is guided or not
-            var shutterPosition = this.machineResourcesProvider.GetShutterPosition(bayNumber);
+            var shutterInverter = this.baysDataProvider.GetShutterInverterIndex(bayNumber);
+            var shutterPosition = this.machineResourcesProvider.GetShutterPosition(shutterInverter);
             if (shutterPosition != ShutterPosition.NotSpecified)
             {
                 if (isGuided)

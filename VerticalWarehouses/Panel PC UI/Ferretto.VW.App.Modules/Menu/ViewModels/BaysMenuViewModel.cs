@@ -142,6 +142,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
         {
             base.RaiseCanExecuteChanged();
 
+            this.RaisePropertyChanged(nameof(this.IsBayControlCompleted));
+            this.RaisePropertyChanged(nameof(this.IsBayHeightCompleted));
+            this.RaisePropertyChanged(nameof(this.IsTestShutterCompleted));
+
             this.bayControlCommand?.RaiseCanExecuteChanged();
             this.bayHeightCommand?.RaiseCanExecuteChanged();
             this.testShutterCommand?.RaiseCanExecuteChanged();
