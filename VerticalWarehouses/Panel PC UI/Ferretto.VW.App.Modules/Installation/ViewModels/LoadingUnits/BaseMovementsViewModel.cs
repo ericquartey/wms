@@ -68,14 +68,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #endregion
 
-        //public Bay Bay { get; private set; }
-
-        //public bool BayIsMultiPosition
-        //{
-        //    get => this.bayIsMultiPosition;
-        //    set => this.SetProperty(ref this.bayIsMultiPosition, value);
-        //}
-
         #region Properties
 
         public int? CurrentMissionId { get; private set; }
@@ -223,16 +215,19 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             base.Disappear();
 
-            /*
-             * Avoid unsubscribing in case of navigation to error page.
-             * We may need to review this behaviour.
-             *
-            this.subscriptionToken?.Dispose();
-            this.subscriptionToken = null;
+            if (this.moveLoadingUnitToken != null)
+            {
+                this.EventAggregator.GetEvent<NotificationEventUI<MoveLoadingUnitMessageData>>().Unsubscribe(this.moveLoadingUnitToken);
+                this.moveLoadingUnitToken?.Dispose();
+                this.moveLoadingUnitToken = null;
+            }
 
-            this.sensorsToken?.Dispose();
-            this.sensorsToken = null;
-            */
+            if (this.fsmExceptionToken != null)
+            {
+                this.EventAggregator.GetEvent<NotificationEventUI<FsmExceptionMessageData>>().Unsubscribe(this.fsmExceptionToken);
+                this.fsmExceptionToken?.Dispose();
+                this.fsmExceptionToken = null;
+            }
         }
 
         public MAS.AutomationService.Contracts.LoadingUnitLocation GetLoadingUnitSource(bool isPositionDownSelected)

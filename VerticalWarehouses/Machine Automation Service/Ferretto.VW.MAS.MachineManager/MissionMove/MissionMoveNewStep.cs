@@ -67,7 +67,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         private bool CheckBayDestination(IMoveLoadingUnitMessageData messageData, BayNumber requestingBay, LoadingUnitLocation destination, Mission mission, bool showErrors = true)
         {
             bool returnValue = true;
-            InverterIndex shutterDestinationIndex;
+            Bay bay;
 #if CHECK_BAY_SENSOR
             if (this.SensorsProvider.IsLoadingUnitInLocation(destination))
             {
@@ -86,10 +86,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, requestingBay);
                 }
             }
-            else if (this.BaysDataProvider.GetByLoadingUnitLocation(destination).Shutter.Type != ShutterType.NotSpecified
-                && (shutterDestinationIndex = this.BaysDataProvider.GetShutterInverterIndex(requestingBay)) != InverterIndex.None
-                && this.SensorsProvider.GetShutterPosition(shutterDestinationIndex) != ShutterPosition.Closed
-                && this.SensorsProvider.GetShutterPosition(shutterDestinationIndex) != ShutterPosition.Opened
+            else if ((bay = this.BaysDataProvider.GetByLoadingUnitLocation(destination)) != null
+                && bay.Shutter.Type != ShutterType.NotSpecified
+                && this.SensorsProvider.GetShutterPosition(bay.Shutter.Inverter.Index) != ShutterPosition.Closed
+                && this.SensorsProvider.GetShutterPosition(bay.Shutter.Inverter.Index) != ShutterPosition.Opened
                 )
             {
                 if (showErrors)
@@ -107,11 +107,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     if (destinationBay.Number != requestingBay)
                     {
                         // move from bay to bay
-                        InverterIndex shutterDestinationBayIndex;
-                        if (this.BaysDataProvider.GetByLoadingUnitLocation(destination).Shutter.Type != ShutterType.NotSpecified
-                            && (shutterDestinationBayIndex = this.BaysDataProvider.GetShutterInverterIndex(destinationBay.Number)) != InverterIndex.None
-                            && this.SensorsProvider.GetShutterPosition(shutterDestinationBayIndex) != ShutterPosition.Closed
-                            && this.SensorsProvider.GetShutterPosition(shutterDestinationBayIndex) != ShutterPosition.Opened
+                        if (destinationBay.Shutter.Type != ShutterType.NotSpecified
+                            && this.SensorsProvider.GetShutterPosition(destinationBay.Shutter.Inverter.Index) != ShutterPosition.Closed
+                            && this.SensorsProvider.GetShutterPosition(destinationBay.Shutter.Inverter.Index) != ShutterPosition.Opened
                             )
                         {
                             if (showErrors)
@@ -123,7 +121,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
-                        if (!this.CheckBayHeight(destinationBay, mission))
+                        if (!this.CheckBayHeight(destinationBay, destination, mission))
                         {
                             if (showErrors)
                             {
@@ -368,7 +366,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         private bool IsSourceOk(Mission mission, IMoveLoadingUnitMessageData messageData, BayNumber requestingBay)
         {
             LoadingUnit unitToMove = null;
-            InverterIndex shutterDestinationIndex;
+            Bay bay;
 
             switch (messageData.Source)
             {
@@ -487,10 +485,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceBay, requestingBay);
                     }
 #endif
-                    else if (this.BaysDataProvider.GetByLoadingUnitLocation(messageData.Source).Shutter.Type != ShutterType.NotSpecified
+                    else if ((bay = this.BaysDataProvider.GetByLoadingUnitLocation(messageData.Source)) != null
+                        && bay.Shutter.Type != ShutterType.NotSpecified
                         && messageData.InsertLoadingUnit
-                        && (shutterDestinationIndex = this.BaysDataProvider.GetShutterInverterIndex(requestingBay)) != InverterIndex.None
-                        && this.SensorsProvider.GetShutterPosition(shutterDestinationIndex) != ShutterPosition.Closed)
+                        && this.SensorsProvider.GetShutterPosition(bay.Shutter.Inverter.Index) != ShutterPosition.Closed)
                     {
                         unitToMove = null;
                         this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, requestingBay);

@@ -176,7 +176,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public ICommand ResetCommand =>
-                    this.resetCommand
+            this.resetCommand
             ??
             (this.resetCommand = new DelegateCommand(
                async () => await this.ResetCommandAsync(),
@@ -551,18 +551,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task ResetCommandAsync()
         {
+            this.IsKeyboardOpened = true;
+
             var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, this.Title, DialogType.Question, DialogButtons.YesNo);
             if (messageBoxResult is DialogResult.Yes)
             {
                 try
                 {
                     this.IsWaitingForResponse = true;
-
+                    
                     await this.machineMissionOperationsWebService.ResetMachineAsync();
 
-                    this.RaiseCanExecuteChanged();
-
                     this.ShowNotification(InstallationApp.ResetMachineSuccessfull, Services.Models.NotificationSeverity.Success);
+
+                    this.RaiseCanExecuteChanged();
                 }
                 catch (Exception ex)
                 {
@@ -570,8 +572,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
                 finally
                 {
+                    this.IsKeyboardOpened = false;
+
                     this.IsWaitingForResponse = false;
                 }
+            }
+            else
+            {
+                this.IsKeyboardOpened = false;
             }
         }
 
