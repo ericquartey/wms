@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -12,6 +13,8 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
     {
         #region Fields
 
+        private readonly IBaysDataProvider baysDataProvider;
+
         private readonly ICellsProvider cellsProvider;
 
         #endregion
@@ -20,9 +23,11 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         public MoveLoadingUnitProvider(
             ICellsProvider cellsProvider,
+            IBaysDataProvider baysDataProvider,
             IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
         }
 
@@ -134,6 +139,9 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         public void MoveFromBayToBay(MissionType missionType, LoadingUnitLocation sourceBay, LoadingUnitLocation destinationBay, BayNumber requestingBay, MessageActor sender)
         {
+            var bay = this.baysDataProvider.GetByLoadingUnitLocation(sourceBay);
+            var loadUnit = bay?.Positions.FirstOrDefault(x => x.Location == sourceBay)?.LoadingUnit;
+
             this.SendCommandToMachineManager(
             new MoveLoadingUnitMessageData(
                 missionType,
@@ -141,7 +149,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 destinationBay,
                 null,
                 null,
-                null,
+                loadUnit?.Id,
                 false,
                 true),
             $"Bay {requestingBay} requested to move Loading unit in Bay {sourceBay} to Bay {destinationBay}",
@@ -152,6 +160,9 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         public void MoveFromBayToCell(MissionType missionType, LoadingUnitLocation sourceBay, int? destinationCellId, BayNumber requestingBay, MessageActor sender)
         {
+            var bay = this.baysDataProvider.GetByLoadingUnitLocation(sourceBay);
+            var loadUnit = bay?.Positions.FirstOrDefault(x => x.Location == sourceBay)?.LoadingUnit;
+
             this.SendCommandToMachineManager(
                 new MoveLoadingUnitMessageData(
                     missionType,
@@ -159,7 +170,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     LoadingUnitLocation.Cell,
                     null,
                     destinationCellId,
-                    null),
+                    loadUnit?.Id),
                 $"Bay {requestingBay} requested to move Loading unit in Bay {sourceBay} to destination Cell {destinationCellId}",
                 sender,
                 MessageType.MoveLoadingUnit,
