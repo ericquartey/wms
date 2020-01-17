@@ -66,7 +66,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.RestoreConditions = false;
             this.MissionsDataProvider.Update(this.Mission);
 
-            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), false, MessageStatus.OperationExecuting);
+            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationExecuting);
 
             return true;
         }
@@ -92,7 +92,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             this.Mission.LoadUnitDestination = destination.Location;
 
                             var notificationText = $"Load Unit {this.Mission.LoadUnitId} placed on bay {bay.Number}";
-                            this.SendMoveNotification(bay.Number, notificationText, false, MessageStatus.OperationWaitResume);
+                            this.SendMoveNotification(bay.Number, notificationText, MessageStatus.OperationWaitResume);
 
                             if (this.Mission.RestoreConditions)
                             {

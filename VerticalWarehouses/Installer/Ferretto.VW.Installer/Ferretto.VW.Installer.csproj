@@ -69,6 +69,9 @@
     <None Update="App.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Properties\app.manifest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="steps.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

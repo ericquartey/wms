@@ -15,13 +15,12 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             LoadingUnitLocation destination,
             int? sourceCellId,
             int? destinationCellId,
-            int? loadingUnitId,
-            bool insertLoadingUnit = false,
-            bool ejectLoadingUnit = false,
+            int? loadUnitId,
+            bool insertLoadUnit = false,
             int? missionId = null,
             CommandAction commandAction = CommandAction.Start,
             StopRequestReason stopReason = StopRequestReason.NoReason,
-            MissionStep state = MissionStep.NotDefined,
+            MissionStep step = MissionStep.NotDefined,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.MissionType = missionType;
@@ -29,13 +28,12 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.Destination = destination;
             this.SourceCellId = sourceCellId;
             this.DestinationCellId = destinationCellId;
-            this.LoadingUnitId = loadingUnitId;
-            this.InsertLoadingUnit = insertLoadingUnit;
-            this.EjectLoadingUnit = ejectLoadingUnit;
+            this.LoadUnitId = loadUnitId;
+            this.InsertLoadUnit = insertLoadUnit;
             this.MissionId = missionId;
             this.CommandAction = commandAction;
             this.StopReason = stopReason;
-            this.State = state;
+            this.MissionStep = step;
             this.Verbosity = verbosity;
         }
 
@@ -49,13 +47,13 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public int? DestinationCellId { get; set; }
 
-        public bool EjectLoadingUnit { get; }
+        public bool InsertLoadUnit { get; }
 
-        public bool InsertLoadingUnit { get; }
-
-        public int? LoadingUnitId { get; }
+        public int? LoadUnitId { get; }
 
         public int? MissionId { get; }
+
+        public MissionStep MissionStep { get; }
 
         public MissionType MissionType { get; set; }
 
@@ -63,11 +61,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public int? SourceCellId { get; }
 
-        public MissionStep State { get; }
-
         public StopRequestReason StopReason { get; }
-
-        public BayNumber TargetBay { get; set; }
 
         public MessageVerbosity Verbosity { get; }
 

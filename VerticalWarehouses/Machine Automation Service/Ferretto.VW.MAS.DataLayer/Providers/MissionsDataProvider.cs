@@ -297,12 +297,11 @@ namespace Ferretto.VW.MAS.DataLayer
                         MissionType.NoType,
                         LoadingUnitLocation.NoLocation,
                         LoadingUnitLocation.NoLocation,
-                        null,
-                        null,
-                        null,
-                        false,
-                        false,
-                        null,
+                        sourceCellId: null,
+                        destinationCellId: null,
+                        loadUnitId: null,
+                        insertLoadUnit: false,
+                        missionId: null,
                         CommandAction.Abort);
 
             this.eventAggregator

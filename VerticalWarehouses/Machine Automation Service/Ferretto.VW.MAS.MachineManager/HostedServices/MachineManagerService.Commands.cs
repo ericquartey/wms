@@ -33,6 +33,10 @@ namespace Ferretto.VW.MAS.MachineManager
                 case MessageType.MoveLoadingUnit:
                     this.OnMoveLoadingUnit(command, serviceProvider);
                     break;
+
+                case MessageType.FullTest:
+                    this.OnFullTest(command, serviceProvider);
+                    break;
             }
 
             return Task.CompletedTask;
@@ -107,6 +111,11 @@ namespace Ferretto.VW.MAS.MachineManager
                 this.Logger.LogError($"Invalid command message data {command.Data.GetType().Name} for Change Running State Command");
                 this.NotifyCommandError(command);
             }
+        }
+
+        private void OnFullTest(CommandMessage command, IServiceProvider serviceProvider)
+        {
+            throw new NotImplementedException();
         }
 
         private void OnMoveLoadingUnit(CommandMessage command, IServiceProvider serviceProvider)
@@ -243,7 +252,7 @@ namespace Ferretto.VW.MAS.MachineManager
                         {
                             if (!this.missionMoveProvider.ResumeMission(messageData.MissionId.Value, command, serviceProvider))
                             {
-                                this.Logger.LogError("Supplied mission Id to be stopped is no longer valid");
+                                this.Logger.LogError("Supplied mission Id to be resumed is no longer valid");
                                 this.NotifyCommandError(command);
                             }
                         }
@@ -252,6 +261,25 @@ namespace Ferretto.VW.MAS.MachineManager
                             foreach (var mission in this.missionsDataProvider.GetAllActiveMissions())
                             {
                                 this.missionMoveProvider.ResumeMission(mission.Id, command, serviceProvider);
+                            }
+                        }
+
+                        break;
+
+                    case CommandAction.Test:
+                        if (messageData.MissionId != null)
+                        {
+                            if (!this.missionMoveProvider.TestMission(messageData.MissionId.Value, command, serviceProvider))
+                            {
+                                this.Logger.LogError("Supplied mission Id to be tested is no longer valid");
+                                this.NotifyCommandError(command);
+                            }
+                        }
+                        else
+                        {
+                            foreach (var mission in this.missionsDataProvider.GetAllActiveMissions())
+                            {
+                                this.missionMoveProvider.TestMission(mission.Id, command, serviceProvider);
                             }
                         }
 

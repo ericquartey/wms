@@ -1398,7 +1398,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         Abort = 4,
     
-        Stop = 5,
+        Test = 5,
+    
+        Stop = 6,
     
     }
     
@@ -1552,7 +1554,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         OUT = 4,
     
-        Test = 5,
+        FullTest = 5,
     
         Compact = 6,
     

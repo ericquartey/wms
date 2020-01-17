@@ -178,6 +178,25 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             }
         }
 
+        public bool TestMission(int missionId, CommandMessage command, IServiceProvider serviceProvider)
+        {
+            lock (this.syncObject)
+            {
+                var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+                var mission = missionsDataProvider.GetById(missionId);
+                if (mission != null)
+                {
+                    var state = GetStateByClassName(serviceProvider, mission, this.eventAggregator);
+                    if (state != null)
+                    {
+                        state.OnResume(command);
+                    }
+                }
+
+                return true;
+            }
+        }
+
         public bool TryCreateMachineMission(CommandMessage command, IServiceProvider serviceProvider, out Mission mission)
         {
             if (command is null)
@@ -190,15 +209,15 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 mission = null;
 
                 if (command.Data is IMoveLoadingUnitMessageData messageData
-                    && messageData.LoadingUnitId.HasValue
+                    && messageData.LoadUnitId.HasValue
                     )
                 {
                     var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
-                    if (missionsDataProvider.CanCreateMission(messageData.LoadingUnitId.Value, command.RequestingBay))
+                    if (missionsDataProvider.CanCreateMission(messageData.LoadUnitId.Value, command.RequestingBay))
                     {
                         // if there is a new or waiting mission we have to take her place
                         var waitMission = missionsDataProvider.GetAllExecutingMissions().FirstOrDefault(m =>
-                            m.LoadUnitId == messageData.LoadingUnitId.Value
+                            m.LoadUnitId == messageData.LoadUnitId.Value
                             && (m.Status == MissionStatus.Waiting || m.Status == MissionStatus.New)
                             );
                         if (waitMission != null)
@@ -214,7 +233,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                             }
                         }
 
-                        mission = missionsDataProvider.CreateBayMission(messageData.LoadingUnitId.Value, command.RequestingBay);
+                        mission = missionsDataProvider.CreateBayMission(messageData.LoadUnitId.Value, command.RequestingBay);
                         return true;
                     }
                 }
