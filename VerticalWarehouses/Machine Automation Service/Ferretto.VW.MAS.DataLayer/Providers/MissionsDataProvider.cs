@@ -107,7 +107,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public Mission CreateBayMission(int loadingUnitId, BayNumber bayNumber)
+        public Mission CreateBayMission(int loadingUnitId, BayNumber bayNumber, MissionType missionType)
         {
             lock (this.dataContext)
             {
@@ -118,7 +118,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         CreationDate = DateTime.Now,
                         LoadUnitId = loadingUnitId,
                         TargetBay = bayNumber,
-                        MissionType = MissionType.OUT,
+                        MissionType = missionType,
                         Status = MissionStatus.New
                     });
 

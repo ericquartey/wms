@@ -132,7 +132,7 @@ namespace Ferretto.VW.MAS.MachineManager
 
             if (!this.isDataLayerReady)
             {
-                this.Logger.LogError($"Unable to start loading unit movement: dataLayer is not ready.");
+                this.Logger.LogError($"Unable to start load unit movement: dataLayer is not ready.");
                 this.NotifyCommandError(command);
                 return;
             }
@@ -149,11 +149,11 @@ namespace Ferretto.VW.MAS.MachineManager
                             {
                                 try
                                 {
-                                    this.missionMoveProvider.StartMission(mission, command, serviceProvider);
+                                    this.missionMoveProvider.StartMission(mission, command, serviceProvider, true);
                                 }
                                 catch (Exception ex)
                                 {
-                                    this.Logger.LogError($"Failed to start Move Loading Unit State machine mission: {ex.Message}");
+                                    this.Logger.LogError($"Failed to start mission: {ex.Message}");
                                     this.NotifyCommandError(command);
                                 }
                             }
@@ -170,11 +170,11 @@ namespace Ferretto.VW.MAS.MachineManager
                         try
                         {
                             var mission = this.missionsDataProvider.GetById(messageData.MissionId.Value);
-                            this.missionMoveProvider.StartMission(mission, command, serviceProvider);
+                            this.missionMoveProvider.StartMission(mission, command, serviceProvider, false);
                         }
                         catch (Exception ex)
                         {
-                            this.Logger.LogError($"Failed to start mission: {ex.Message}");
+                            this.Logger.LogError($"Failed to activate mission: {ex.Message}");
                         }
                         break;
 
@@ -185,7 +185,7 @@ namespace Ferretto.VW.MAS.MachineManager
                             {
                                 if (!this.missionMoveProvider.StopMission(messageData.MissionId.Value, StopRequestReason.Abort, serviceProvider))
                                 {
-                                    this.Logger.LogError("Supplied mission Id to be stopped is no longer valid");
+                                    this.Logger.LogError("Supplied mission Id to be aborted is no longer valid");
                                     this.NotifyCommandError(command);
                                 }
                             }

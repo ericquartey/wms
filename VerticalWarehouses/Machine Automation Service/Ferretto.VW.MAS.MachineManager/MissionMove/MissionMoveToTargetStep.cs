@@ -30,7 +30,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
         }
 
-        public override bool OnEnter(CommandMessage command)
+        public override bool OnEnter(CommandMessage command, bool showErrors = true)
         {
             var measure = (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell);
             this.Mission.EjectLoadUnit = false;

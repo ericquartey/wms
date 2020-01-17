@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Mission Complete(int id);
 
-        Mission CreateBayMission(int loadingUnitId, BayNumber bayNumber);
+        Mission CreateBayMission(int loadingUnitId, BayNumber bayNumber, MissionType missionType);
 
         Mission CreateBayMission(int loadingUnitId, BayNumber bayNumber, int wmsId, int wmsPriority);
 

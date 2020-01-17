@@ -305,7 +305,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public abstract void OnCommand(CommandMessage command);
 
-        public abstract bool OnEnter(CommandMessage command);
+        public abstract bool OnEnter(CommandMessage command, bool showErrors = true);
 
         public void OnHomingNotification(HomingMessageData messageData)
         {
