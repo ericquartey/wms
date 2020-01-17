@@ -197,9 +197,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return true;
         }
 
-        public void ResetTest()
+        public void ResetTest(BayNumber bayNumber)
         {
-            var procedureParameters = this.setupProceduresDataProvider.GetShutterTest();
+            var procedureParameters = this.setupProceduresDataProvider.GetShutterTest(bayNumber);
 
             this.setupProceduresDataProvider.ResetPerformedCycles(procedureParameters);
         }

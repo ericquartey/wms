@@ -250,19 +250,15 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Bay1HeightCheck = table.Column<bool>(nullable: false),
                     Bay1Laser = table.Column<bool>(nullable: false),
                     Bay1Shape = table.Column<bool>(nullable: false),
-                    Bay1Shutter = table.Column<bool>(nullable: false),
                     Bay2FirstLoadingUnit = table.Column<bool>(nullable: false),
                     Bay2HeightCheck = table.Column<bool>(nullable: false),
                     Bay2Laser = table.Column<bool>(nullable: false),
                     Bay2Shape = table.Column<bool>(nullable: false),
-                    Bay2Shutter = table.Column<bool>(nullable: false),
                     Bay3FirstLoadingUnit = table.Column<bool>(nullable: false),
                     Bay3HeightCheck = table.Column<bool>(nullable: false),
                     Bay3Laser = table.Column<bool>(nullable: false),
                     Bay3Shape = table.Column<bool>(nullable: false),
-                    Bay3Shutter = table.Column<bool>(nullable: false),
                     CompletedDate = table.Column<DateTime>(nullable: true),
-                    Homing = table.Column<bool>(nullable: false),
                     HorizontalHoming = table.Column<bool>(nullable: false),
                     WeightMeasurement = table.Column<bool>(nullable: false)
                 },
@@ -387,14 +383,18 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    BayHeightCheckId = table.Column<int>(nullable: true),
+                    Bay1HeightCheckId = table.Column<int>(nullable: true),
+                    Bay1ShutterTestId = table.Column<int>(nullable: true),
+                    Bay2HeightCheckId = table.Column<int>(nullable: true),
+                    Bay2ShutterTestId = table.Column<int>(nullable: true),
+                    Bay3HeightCheckId = table.Column<int>(nullable: true),
+                    Bay3ShutterTestId = table.Column<int>(nullable: true),
                     BeltBurnishingTestId = table.Column<int>(nullable: true),
                     CellPanelsCheckId = table.Column<int>(nullable: true),
                     CellsHeightCheckId = table.Column<int>(nullable: true),
                     DepositAndPickUpTestId = table.Column<int>(nullable: true),
                     LoadFirstDrawerTestId = table.Column<int>(nullable: true),
                     ShutterHeightCheckId = table.Column<int>(nullable: true),
-                    ShutterTestId = table.Column<int>(nullable: true),
                     VerticalOffsetCalibrationId = table.Column<int>(nullable: true),
                     VerticalOriginCalibrationId = table.Column<int>(nullable: true),
                     VerticalResolutionCalibrationId = table.Column<int>(nullable: true)
@@ -403,8 +403,38 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     table.PrimaryKey("PK_SetupProceduresSets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SetupProceduresSets_SetupProcedures_BayHeightCheckId",
-                        column: x => x.BayHeightCheckId,
+                        name: "FK_SetupProceduresSets_SetupProcedures_Bay1HeightCheckId",
+                        column: x => x.Bay1HeightCheckId,
+                        principalTable: "SetupProcedures",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SetupProceduresSets_SetupProcedures_Bay1ShutterTestId",
+                        column: x => x.Bay1ShutterTestId,
+                        principalTable: "SetupProcedures",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SetupProceduresSets_SetupProcedures_Bay2HeightCheckId",
+                        column: x => x.Bay2HeightCheckId,
+                        principalTable: "SetupProcedures",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SetupProceduresSets_SetupProcedures_Bay2ShutterTestId",
+                        column: x => x.Bay2ShutterTestId,
+                        principalTable: "SetupProcedures",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SetupProceduresSets_SetupProcedures_Bay3HeightCheckId",
+                        column: x => x.Bay3HeightCheckId,
+                        principalTable: "SetupProcedures",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SetupProceduresSets_SetupProcedures_Bay3ShutterTestId",
+                        column: x => x.Bay3ShutterTestId,
                         principalTable: "SetupProcedures",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -441,12 +471,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     table.ForeignKey(
                         name: "FK_SetupProceduresSets_SetupProcedures_ShutterHeightCheckId",
                         column: x => x.ShutterHeightCheckId,
-                        principalTable: "SetupProcedures",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_SetupProceduresSets_SetupProcedures_ShutterTestId",
-                        column: x => x.ShutterTestId,
                         principalTable: "SetupProcedures",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -1267,12 +1291,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 3, 15, 14, 44, 10, 603, DateTimeKind.Local).AddTicks(5112), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 3, 17, 13, 43, 51, 379, DateTimeKind.Local).AddTicks(1429), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
-                columns: new[] { "Id", "AllLoadingUnits", "Bay1FirstLoadingUnit", "Bay1HeightCheck", "Bay1Laser", "Bay1Shape", "Bay1Shutter", "Bay2FirstLoadingUnit", "Bay2HeightCheck", "Bay2Laser", "Bay2Shape", "Bay2Shutter", "Bay3FirstLoadingUnit", "Bay3HeightCheck", "Bay3Laser", "Bay3Shape", "Bay3Shutter", "CompletedDate", "Homing", "HorizontalHoming", "WeightMeasurement" },
-                values: new object[] { 1, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, null, false, false, false });
+                columns: new[] { "Id", "AllLoadingUnits", "Bay1FirstLoadingUnit", "Bay1HeightCheck", "Bay1Laser", "Bay1Shape", "Bay2FirstLoadingUnit", "Bay2HeightCheck", "Bay2Laser", "Bay2Shape", "Bay3FirstLoadingUnit", "Bay3HeightCheck", "Bay3Laser", "Bay3Shape", "CompletedDate", "HorizontalHoming", "WeightMeasurement" },
+                values: new object[] { 1, false, false, false, false, false, false, false, false, false, false, false, false, false, null, false, false });
 
             migrationBuilder.InsertData(
                 table: "WmsSettings",
@@ -1456,9 +1480,34 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_SetupProceduresSets_BayHeightCheckId",
+                name: "IX_SetupProceduresSets_Bay1HeightCheckId",
                 table: "SetupProceduresSets",
-                column: "BayHeightCheckId");
+                column: "Bay1HeightCheckId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SetupProceduresSets_Bay1ShutterTestId",
+                table: "SetupProceduresSets",
+                column: "Bay1ShutterTestId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SetupProceduresSets_Bay2HeightCheckId",
+                table: "SetupProceduresSets",
+                column: "Bay2HeightCheckId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SetupProceduresSets_Bay2ShutterTestId",
+                table: "SetupProceduresSets",
+                column: "Bay2ShutterTestId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SetupProceduresSets_Bay3HeightCheckId",
+                table: "SetupProceduresSets",
+                column: "Bay3HeightCheckId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SetupProceduresSets_Bay3ShutterTestId",
+                table: "SetupProceduresSets",
+                column: "Bay3ShutterTestId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SetupProceduresSets_BeltBurnishingTestId",
@@ -1489,11 +1538,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "IX_SetupProceduresSets_ShutterHeightCheckId",
                 table: "SetupProceduresSets",
                 column: "ShutterHeightCheckId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SetupProceduresSets_ShutterTestId",
-                table: "SetupProceduresSets",
-                column: "ShutterTestId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SetupProceduresSets_VerticalOffsetCalibrationId",

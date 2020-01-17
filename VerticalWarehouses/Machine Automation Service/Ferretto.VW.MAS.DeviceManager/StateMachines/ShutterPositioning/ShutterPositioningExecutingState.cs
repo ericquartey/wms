@@ -194,13 +194,13 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                         .GetRequiredService<ISetupProceduresDataProvider>();
 
                     var testParameters = setupProceduresDataProvider.IncreasePerformedCycles(
-                        setupProceduresDataProvider.GetShutterTest());
+                        setupProceduresDataProvider.GetShutterTest(this.machineData.RequestingBay));
 
                     this.machineData.PositioningMessageData.PerformedCycles = testParameters.PerformedCycles;
 
                     if (testParameters.PerformedCycles >= testParameters.RequiredCycles)
                     {
-                        setupProceduresDataProvider.MarkAsCompleted(setupProceduresDataProvider.GetShutterTest());
+                        setupProceduresDataProvider.MarkAsCompleted(setupProceduresDataProvider.GetShutterTest(this.machineData.RequestingBay));
                         this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.stateData));
                     }
                     else

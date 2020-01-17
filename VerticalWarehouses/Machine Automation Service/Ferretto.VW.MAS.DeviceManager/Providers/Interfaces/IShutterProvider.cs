@@ -9,7 +9,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
         void Move(ShutterMovementDirection direction, BayNumber bayNumber, MessageActor sender);
 
         bool MoveTo(ShutterPosition targetPosition, BayNumber bayNumber, MessageActor sender);
-        void ResetTest();
+
+        void ResetTest(BayNumber bayNumber);
+
         void RunTest(int delayInSeconds, int testCycleCount, BayNumber bayNumber, MessageActor sender);
 
         void Stop(BayNumber bayNumber, MessageActor sender);

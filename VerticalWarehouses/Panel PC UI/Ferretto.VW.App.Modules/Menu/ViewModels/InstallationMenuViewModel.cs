@@ -131,45 +131,49 @@ namespace Ferretto.VW.App.Menu.ViewModels
             }
 
             this.source = new List<dynamic>();
-            this.source.Add(new { Text = InstallationApp.VerticalAxisHomedDone, Status = status.VerticalOriginCalibration.IsCompleted ? "CheckCircle" : "CloseCircleOutline" });
-            this.source.Add(new { Text = InstallationApp.VerticalResolutionDone, Status = status.VerticalResolutionCalibration.IsCompleted ? "CheckCircle" : "CloseCircleOutline" });
-            this.source.Add(new { Text = InstallationApp.VerticalOffsetVerify, Status = status.VerticalOffsetCalibration.IsCompleted ? "CheckCircle" : "CloseCircleOutline" });
+            this.source.Add(new { Text = InstallationApp.VerticalAxisHomedDone, Status = status.VerticalOriginCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete });
+            this.source.Add(new { Text = InstallationApp.VerticalResolutionDone, Status = status.VerticalResolutionCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete });
+            this.source.Add(new { Text = InstallationApp.VerticalOffsetVerify, Status = status.VerticalOffsetCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete });
             this.source.Add(new
             {
                 Text = InstallationApp.BeltBurnishingDone,
-                Status = status.BeltBurnishing.InProgress ? "ProgressCheck" : status.BeltBurnishing.IsCompleted ? "CheckCircle" : "CloseCircleOutline",
+                Status = status.BeltBurnishing.InProgress ? InstallationStatus.Inprogress : status.BeltBurnishing.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
             });
-            this.source.Add(new { Text = InstallationApp.CellsControl, Status = status.CellPanelsCheck.IsCompleted && status.CellsHeightCheck.IsCompleted ? "CheckCircle" : "CloseCircleOutline" });
-            this.source.Add(new { Text = InstallationApp.BayHeightCheck, Status = bayStatus.Check.IsCompleted ? "CheckCircle" : "CloseCircleOutline" });
-            this.source.Add(new { Text = InstallationApp.BarrierCalibration, Status = bayStatus.Shape.IsCompleted ? "CheckCircle" : "CloseCircleOutline" });
+            this.source.Add(new { Text = InstallationApp.CellsControl, Status = status.CellPanelsCheck.IsCompleted && status.CellsHeightCheck.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete });
+            this.source.Add(new { Text = InstallationApp.BayHeightCheck, Status = bayStatus.Check.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete });
+            this.source.Add(new { Text = InstallationApp.BarrierCalibration, Status = bayStatus.Shape.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete });
 
             if (this.MachineService.HasCarousel)
             {
-                this.source.Add(new { Text = "Test giostra", Status = false ? "CheckCircle" : "CloseCircleOutline" });
+                this.source.Add(new { Text = "Test giostra", Status = false ? InstallationStatus.Complete : InstallationStatus.Incomplete });
             }
 
             if (this.MachineService.HasBayExternal)
             {
-                this.source.Add(new { Text = "Test baia esterna", Status = false ? "CheckCircle" : "CloseCircleOutline" });
+                this.source.Add(new { Text = "Test baia esterna", Status = false ? InstallationStatus.Complete : InstallationStatus.Incomplete });
             }
 
             if (this.MachineService.HasShutter)
             {
-                this.source.Add(new { Text = "Test serranda", Status = bayStatus.Shutter.IsCompleted ? "CheckCircle" : "CloseCircleOutline" });
+                this.source.Add(new
+                {
+                    Text = "Test serranda",
+                    Status = bayStatus.Shutter.InProgress ? InstallationStatus.Inprogress : bayStatus.Shutter.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
+                });
             }
 
-            this.source.Add(new { Text = "Completare i test sulle altre baie", Status = false ? "CheckCircle" : "CloseCircleOutline" });
+            this.source.Add(new { Text = "Completare i test sulle altre baie", Status = false ? InstallationStatus.Complete : InstallationStatus.Incomplete });
 
             this.source.Add(new
             {
                 Text = InstallationApp.LoadFirstDrawerPageHeader,
-                Status = status.AllLoadingUnits.IsCompleted ? "CheckCircle" : "CloseCircleOutline",
+                Status = status.AllLoadingUnits.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
             });
 
-            this.source.Add(new { Text = "Conferma collaudo", Status = status.IsComplete ? "CheckCircle" : "CloseCircleOutline" });
+            this.source.Add(new { Text = "Conferma collaudo", Status = status.IsComplete ? InstallationStatus.Complete : InstallationStatus.Incomplete });
 
             this.ProceduresCount = this.source.Count;
-            this.ProceduresCompleted = this.source.Count(c => c.Status == "CheckCircle");
+            this.ProceduresCompleted = this.source.Count(c => c.Status == InstallationStatus.Complete);
             this.ProceduresCompletedPercent = (int)((double)this.ProceduresCompleted / (double)this.ProceduresCount * 100.0);
 
             this.RaisePropertyChanged(nameof(this.Source));
