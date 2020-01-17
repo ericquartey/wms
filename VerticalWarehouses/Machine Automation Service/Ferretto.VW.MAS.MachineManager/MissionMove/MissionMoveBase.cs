@@ -202,11 +202,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.ErrorMovements = MissionErrorMovements.None;
             this.MissionsDataProvider.Update(this.Mission);
 
-            bool isEject = this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadUnit
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation;
-            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), isEject, MessageStatus.OperationExecuting);
+            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationExecuting);
             return true;
         }
 
@@ -380,7 +376,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
         }
 
-        public void SendMoveNotification(BayNumber targetBay, string description, bool isEject, MessageStatus messageStatus)
+        public void SendMoveNotification(BayNumber targetBay, string description, MessageStatus messageStatus)
         {
             var messageData = new MoveLoadingUnitMessageData(
                 this.Mission.MissionType,
@@ -390,11 +386,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Mission.DestinationCellId,
                 this.Mission.LoadUnitId,
                 (this.Mission.LoadUnitDestination == LoadingUnitLocation.Cell),
-                isEject,
                 this.Mission.Id,
                 this.Mission.Action,
-                this.Mission.StopReason,
-                this.Mission.Step);
+                this.Mission.StopReason);
 
             var msg = new NotificationMessage(
                 messageData,

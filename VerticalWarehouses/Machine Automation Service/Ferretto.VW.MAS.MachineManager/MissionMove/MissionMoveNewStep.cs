@@ -188,11 +188,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         mission.DestinationCellId = messageData.DestinationCellId;
                         mission.LoadUnitDestination = LoadingUnitLocation.Cell;
                     }
-                    else if (messageData.LoadingUnitId.HasValue)
+                    else if (messageData.LoadUnitId.HasValue)
                     {
                         try
                         {
-                            mission.DestinationCellId = this.CellsProvider.FindEmptyCell(messageData.LoadingUnitId.Value);
+                            mission.DestinationCellId = this.CellsProvider.FindEmptyCell(messageData.LoadUnitId.Value);
                         }
                         catch (Exception)
                         {
@@ -333,7 +333,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     returnValue = (this.MachineModeDataProvider.Mode == MachineMode.Automatic);
                     break;
 
-                case MissionType.Test:
+                case MissionType.FullTest:
                     returnValue = (this.MachineModeDataProvider.Mode == MachineMode.Test);
                     break;
 
@@ -389,9 +389,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
 
                 case LoadingUnitLocation.LoadUnit:
-                    if (messageData.LoadingUnitId != null)
+                    if (messageData.LoadUnitId != null)
                     {
-                        unitToMove = this.LoadingUnitsDataProvider.GetById(messageData.LoadingUnitId.Value);
+                        unitToMove = this.LoadingUnitsDataProvider.GetById(messageData.LoadUnitId.Value);
                     }
 
                     if (unitToMove != null)
@@ -446,16 +446,16 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
 
                 default:
-                    if (messageData.InsertLoadingUnit)
+                    if (messageData.InsertLoadUnit)
                     {
-                        if (messageData.LoadingUnitId.HasValue)
+                        if (messageData.LoadUnitId.HasValue)
                         {
-                            var bayPosition = this.BaysDataProvider.GetLoadingUnitLocationByLoadingUnit(messageData.LoadingUnitId.Value);
+                            var bayPosition = this.BaysDataProvider.GetLoadingUnitLocationByLoadingUnit(messageData.LoadUnitId.Value);
                             if (bayPosition == LoadingUnitLocation.NoLocation
                                 || bayPosition == messageData.Source
                                 )
                             {
-                                unitToMove = this.LoadingUnitsDataProvider.GetById(messageData.LoadingUnitId.Value);
+                                unitToMove = this.LoadingUnitsDataProvider.GetById(messageData.LoadUnitId.Value);
                             }
                             else
                             {
@@ -487,7 +487,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 #endif
                     else if ((bay = this.BaysDataProvider.GetByLoadingUnitLocation(messageData.Source)) != null
                         && bay.Shutter.Type != ShutterType.NotSpecified
-                        && messageData.InsertLoadingUnit
+                        && messageData.InsertLoadUnit
                         && this.SensorsProvider.GetShutterPosition(bay.Shutter.Inverter.Index) != ShutterPosition.Closed)
                     {
                         unitToMove = null;

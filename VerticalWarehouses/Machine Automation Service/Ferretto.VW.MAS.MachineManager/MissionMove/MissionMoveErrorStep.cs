@@ -194,7 +194,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
 
                 var notificationText = $"Load Unit {this.Mission.LoadUnitId} placed on bay {bay.Number}";
-                this.SendMoveNotification(bay.Number, notificationText, false, MessageStatus.OperationWaitResume);
+                this.SendMoveNotification(bay.Number, notificationText, MessageStatus.OperationWaitResume);
 
                 this.Mission.RestoreStep = MissionStep.NotDefined;
                 this.Mission.RestoreConditions = false;
