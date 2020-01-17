@@ -30,8 +30,6 @@
 
         public const string SHUTTTERHEIGHTCONTROL = "ShutterHeightControlViewModel";
 
-        public const string UPDATE = "UpdateViewModel";
-
         public const string USERS = "UsersViewModel";
 
         public const string VERTICALOFFSETCALIBRATION = "VerticalOffsetCalibrationViewModel";
@@ -191,6 +189,17 @@
             public const string SECURITY = "OtherSensorsViewModel";
 
             public const string VERTICALAXIS = "VerticalAxisSensorsViewModel";
+
+            #endregion
+        }
+
+        public static class Update
+        {
+            #region Fields
+
+            public const string STEP1 = "UpdateStep1ViewModel";
+
+            public const string STEP2 = "UpdateStep2ViewModel";
 
             #endregion
         }
