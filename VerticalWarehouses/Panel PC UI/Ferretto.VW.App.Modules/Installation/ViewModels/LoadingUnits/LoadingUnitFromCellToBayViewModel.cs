@@ -120,14 +120,31 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private bool CanConfirmEjectLoadingUnit()
         {
-            return this.isEjectLoadingUnitConfirmationEnabled &&
+            return this.LoadingUnitId.HasValue &&
+                   this.isEjectLoadingUnitConfirmationEnabled &&
                    ((this.MachineStatus.LoadingUnitPositionUpInBay != null && this.IsPositionUpSelected) ||
                     (this.MachineStatus.LoadingUnitPositionDownInBay != null && this.IsPositionDownSelected));
         }
 
         private async Task ConfirmEjectLoadingUnit()
         {
-            await this.machineBaysWebService.RemoveLoadUnitAsync(this.LoadingUnitId.Value);
+            if (this.LoadingUnitId.HasValue)
+            {
+                try
+                {
+                    await this.machineBaysWebService.RemoveLoadUnitAsync(this.LoadingUnitId.Value);
+
+                    this.SensorsService.RefreshAsync(true);
+                    this.MachineService.OnUpdateServiceAsync();
+
+                    this.ShowNotification($"Cassetto id {this.LoadingUnitId.Value} estratto", Services.Models.NotificationSeverity.Warning);
+
+                }
+                catch (Exception e)
+                {
+                    this.ShowNotification(e);
+                }
+            }
         }
 
         #endregion

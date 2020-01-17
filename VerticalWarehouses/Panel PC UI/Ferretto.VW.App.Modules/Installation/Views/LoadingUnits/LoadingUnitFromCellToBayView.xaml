@@ -124,7 +124,8 @@
                            Margin="0,15,15,0"
                            EditValue="{Binding LoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='2'}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                           LabelText="{x:Static res:InstallationApp.InsertDesiredLoadingUnitId}" />
+                           LabelText="{x:Static res:InstallationApp.InsertDesiredLoadingUnitId}"
+                           MinValue="1" />
 
         <TextBlock Grid.Row="4"
                    Grid.Column="1"
