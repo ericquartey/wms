@@ -33,6 +33,10 @@ namespace Ferretto.VW.MAS.MachineManager
                 case MessageType.MoveLoadingUnit:
                     this.OnMoveLoadingUnit(command, serviceProvider);
                     break;
+
+                case MessageType.FullTest:
+                    this.OnFullTest(command, serviceProvider);
+                    break;
             }
 
             return Task.CompletedTask;
@@ -107,6 +111,11 @@ namespace Ferretto.VW.MAS.MachineManager
                 this.Logger.LogError($"Invalid command message data {command.Data.GetType().Name} for Change Running State Command");
                 this.NotifyCommandError(command);
             }
+        }
+
+        private void OnFullTest(CommandMessage command, IServiceProvider serviceProvider)
+        {
+            throw new NotImplementedException();
         }
 
         private void OnMoveLoadingUnit(CommandMessage command, IServiceProvider serviceProvider)
