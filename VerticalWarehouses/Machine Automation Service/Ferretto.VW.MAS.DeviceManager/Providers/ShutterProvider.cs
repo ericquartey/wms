@@ -199,6 +199,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void ResetTest()
         {
+            var procedureParameters = this.setupProceduresDataProvider.GetShutterTest();
+
+            this.setupProceduresDataProvider.ResetPerformedCycles(procedureParameters);
         }
 
         public void RunTest(int delayInSeconds, int testCycleCount, BayNumber bayNumber, MessageActor sender)
