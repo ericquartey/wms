@@ -463,8 +463,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.Disappear();
 
-            this.sensorsToken?.Dispose();
-            this.sensorsToken = null;
+            if (this.stepChangedToken != null)
+            {
+                this.EventAggregator.GetEvent<StepChangedPubSubEvent>().Unsubscribe(this.sensorsToken);
+                this.sensorsToken?.Dispose();
+                this.sensorsToken = null;
+            }
+
+            if (this.stepChangedToken != null)
+            {
+                this.EventAggregator.GetEvent<StepChangedPubSubEvent>().Unsubscribe(this.stepChangedToken);
+                this.stepChangedToken?.Dispose();
+                this.stepChangedToken = null;
+            }
         }
 
         public override async Task OnAppearedAsync()

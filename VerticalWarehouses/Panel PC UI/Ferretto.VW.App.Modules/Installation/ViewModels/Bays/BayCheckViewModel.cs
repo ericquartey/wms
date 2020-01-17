@@ -230,6 +230,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             base.Disappear();
 
             this.MachineService.PropertyChanged -= this.MachineService_PropertyChanged;
+
+            if (this.stepChangedToken != null)
+            {
+                this.EventAggregator.GetEvent<StepChangedPubSubEvent>().Unsubscribe(this.stepChangedToken);
+                this.stepChangedToken?.Dispose();
+                this.stepChangedToken = null;
+            }
         }
 
         public override async Task OnAppearedAsync()
