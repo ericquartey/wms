@@ -186,7 +186,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public ICommand ResetCommand =>
-                                                                                            this.resetCommand
+            this.resetCommand
             ??
             (this.resetCommand = new DelegateCommand(
                 async () => await this.ResetAsync(),
@@ -410,7 +410,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanStopTest()
         {
-            return this.MachineService.MachineStatus.IsMoving;
+            return this.IsMoving;
         }
 
         private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
