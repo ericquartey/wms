@@ -835,6 +835,14 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public InverterIndex GetShutterInverterIndex(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.Inverter.Index;
 
+        public bool IsMissionInBay(Mission mission)
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Bays.Include(b => b.CurrentMission).Any(b => b.CurrentMission.Id == mission.Id);
+            }
+        }
+
         public void Light(BayNumber bayNumber, bool enable)
         {
             this.PublishCommand(

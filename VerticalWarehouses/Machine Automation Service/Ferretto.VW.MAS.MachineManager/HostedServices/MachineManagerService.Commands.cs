@@ -170,7 +170,10 @@ namespace Ferretto.VW.MAS.MachineManager
                         try
                         {
                             var mission = this.missionsDataProvider.GetById(messageData.MissionId.Value);
-                            this.missionMoveProvider.StartMission(mission, command, serviceProvider, false);
+                            if (!this.missionMoveProvider.StartMission(mission, command, serviceProvider, false))
+                            {
+                                this.Logger.LogWarning($"Conditions not met to activate Mission {mission.Id}, Load Unit {mission.LoadUnitId} .");
+                            }
                         }
                         catch (Exception ex)
                         {

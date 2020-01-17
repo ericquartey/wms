@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -37,6 +38,8 @@ namespace Ferretto.VW.MAS.DataLayer
         IEnumerable<Mission> GetAllWmsMissions();
 
         Mission GetById(int id);
+
+        IDbContextTransaction GetContextTransaction();
 
         bool IsMissionInWaitState(BayNumber bayNumber, int loadingUnitId);
 
