@@ -81,8 +81,8 @@
                     },
                     "AssistedMovements": {
                         "FeedRate": 1,
-                        "MaxSpeed": 6300,
-                        "MinSpeed": 500,
+                        "MaxSpeed": 6400,
+                        "MinSpeed": 1000,
                         "HighSpeedDurationOpen": 18,
                         "HighSpeedDurationClose": 17
                     }

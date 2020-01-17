@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Globalization;
 using System.Reflection;
-using System.Windows;
 using System.Windows.Data;
 
 namespace Ferretto.VW.App.Scaffolding.Converters
 {
     public class TwoWayConverter : IMultiValueConverter, IValueConverter
     {
-        PropertyInfo _pinfo;
-        object _entity;
+        private PropertyInfo _pinfo;
+        private object _entity;
 
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
@@ -28,7 +27,6 @@ namespace Ferretto.VW.App.Scaffolding.Converters
                 }
                 return retval;
             }
-
 
             // surrender fallback
             return values;

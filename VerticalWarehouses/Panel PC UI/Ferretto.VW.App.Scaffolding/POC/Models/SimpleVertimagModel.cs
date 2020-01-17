@@ -1,9 +1,6 @@
-﻿using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
 
 namespace Ferretto.VW.App.Scaffolding.Models
 {
@@ -57,7 +54,7 @@ namespace Ferretto.VW.App.Scaffolding.Models
         [DefaultValue(5001)]
         public int TcpPort { get; set; }
 
-        #endregion
+        #endregion Properties
     }
 
     [MAS.Scaffolding.DataAnnotations.MetadataType(typeof(Inverter.Metadata))]
@@ -66,7 +63,7 @@ namespace Ferretto.VW.App.Scaffolding.Models
         public System.Net.IPAddress IpAddress { get; set; }
         public int TcpPort { get; set; }
 
-        class Metadata
+        private class Metadata
         {
             [Required]
             public System.Net.IPAddress IpAddress;
@@ -95,5 +92,4 @@ namespace Ferretto.VW.App.Scaffolding.Models
 
         None = 0xFF,
     }
-
 }

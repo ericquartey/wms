@@ -1,13 +1,13 @@
-﻿using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Controls.Controls.Keyboards;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Controls.Controls.Keyboards;
 
 namespace Ferretto.VW.App.Scaffolding.Behaviors
 {
-    public class TextBoxKeyboardBehavior : TogglableBehavior<TextBox> {
-
+    public class TextBoxKeyboardBehavior : TogglableBehavior<TextBox>
+    {
         protected override void OnDetaching()
         {
             this.AssociatedObject.TouchDown -= this.TextBox_TouchDown;
