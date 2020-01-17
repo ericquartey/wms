@@ -743,6 +743,11 @@ namespace Ferretto.VW.MAS.DataLayer
             return returnValue;
         }
 
+        public bool GetLightOn(BayNumber bayNumber)
+        {
+            return this.machineProvider.IsBayLightOn.GetValueOrDefault(bayNumber);
+        }
+
         public LoadingUnit GetLoadingUnitByDestination(LoadingUnitLocation location)
         {
             lock (this.dataContext)
