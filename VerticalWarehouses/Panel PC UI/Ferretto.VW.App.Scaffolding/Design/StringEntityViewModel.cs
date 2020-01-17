@@ -11,7 +11,7 @@ namespace Ferretto.VW.App.Scaffolding.Design
         private static readonly PropertyInfo _property;
         private static readonly IEnumerable<Attribute> _metadata;
 
-        class Entity
+        private class Entity
         {
             [System.ComponentModel.DataAnnotations.Display(Name = "Property name")]
             public string Value { get; set; } = "Property value";

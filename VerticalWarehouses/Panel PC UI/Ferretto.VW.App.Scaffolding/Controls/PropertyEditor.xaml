@@ -1,8 +1,8 @@
 ﻿<UserControl x:Class="Ferretto.VW.App.Scaffolding.Controls.PropertyEditor"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:Ferretto.VW.App.Scaffolding.Controls"
              xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:converters="clr-namespace:Ferretto.VW.App.Scaffolding.Converters"
@@ -18,186 +18,187 @@
              Name="editor"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <converters:DisplayNameConverter x:Key="DisplayNameConverter" />
-        <converters:MultiBooleanToVisibilityConverter x:Key="MultiBooleanToVisibilityConverter" />
-        <converters:ScaffoldTypeConverter x:Key="ScaffoldTypeConverter" />
-        <converters:IsReadOnlyConverter x:Key="IsReadOnlyConverter" />
-        <converters:IsEditableConverter x:Key="IsEditableConverter" />
-        <converters:TruthyToVisibilityConverter x:Key="TruthyToVisibilityConverter" />
-        <converters:ValidationRuleConverter x:Key="ValidationRuleConverter" />
-        <converters:DefaultValueConverter x:Key="DefaultValueConverter" />
-        <converters:TwoWayConverter x:Key="TwoWayConverter" />
-        <converters:KeyboardTypeConverter x:Key="KeyboardTypeConverter" />
-        <converters:EnumDatasourceConverter x:Key="EnumDatasourceConverter" />
-        <converters:EnumValueToStringConverter x:Key="EnumValueToStringConverter" />
 
-        <selectors:PropertyInfoDataTemplateSelector x:Key="PropertyInfoDataTemplateSelector" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Ferretto.VW.App.Scaffolding;Component/Styles/ComboBox.xaml" />
+            </ResourceDictionary.MergedDictionaries>
 
-        <!-- styles -->        
-        <Style x:Key="TextBoxStyle" TargetType="{x:Type TextBox}"
+            <converters:DisplayNameConverter x:Key="DisplayNameConverter" />
+            <converters:MultiBooleanToVisibilityConverter x:Key="MultiBooleanToVisibilityConverter" />
+            <converters:ScaffoldTypeConverter x:Key="ScaffoldTypeConverter" />
+            <converters:IsReadOnlyConverter x:Key="IsReadOnlyConverter" />
+            <converters:IsEditableConverter x:Key="IsEditableConverter" />
+            <converters:TruthyToVisibilityConverter x:Key="TruthyToVisibilityConverter" />
+            <converters:ValidationRuleConverter x:Key="ValidationRuleConverter" />
+            <converters:DefaultValueConverter x:Key="DefaultValueConverter" />
+            <converters:TwoWayConverter x:Key="TwoWayConverter" />
+            <converters:KeyboardTypeConverter x:Key="KeyboardTypeConverter" />
+            <converters:EnumDatasourceConverter x:Key="EnumDatasourceConverter" />
+            <converters:EnumValueToStringConverter x:Key="EnumValueToStringConverter" />
+
+            <selectors:PropertyInfoDataTemplateSelector x:Key="PropertyInfoDataTemplateSelector" />
+
+            <!-- styles -->
+            <Style x:Key="TextBoxStyle" TargetType="{x:Type TextBox}"
                BasedOn="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}">
-            <Setter Property="Validation.ErrorTemplate">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <DockPanel LastChildFill="False">
+                <Setter Property="Validation.ErrorTemplate">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <DockPanel LastChildFill="False">
 
-                            <TextBlock DockPanel.Dock="Right" Visibility="Collapsed"
+                                <TextBlock DockPanel.Dock="Right" Visibility="Collapsed"
                                 Foreground="{DynamicResource FerrettoRed}"
-                                Margin="5" 
+                                Margin="5"
                                 FontSize="{DynamicResource FontSize_Normal}"
-                                Text="{Binding ElementName=MyAdorner, 
+                                Text="{Binding ElementName=MyAdorner,
                            Path=AdornedElement.(Validation.Errors)/ErrorContent}">
-                            </TextBlock>
+                                </TextBlock>
 
-                            <Border DockPanel.Dock="Right"
+                                <Border DockPanel.Dock="Right"
                                     Padding="5"
                                     CornerRadius="0,2,2,0"
                                     Background="{DynamicResource FerrettoRed}">
 
-                                <iconPacks:PackIconModern
+                                    <iconPacks:PackIconModern
                                           Foreground="{DynamicResource FerrettoPureWhite}"
                                           Kind="WarningCircle" />
-                                
-                            </Border>
+                                </Border>
 
-                            <Border BorderBrush="{DynamicResource FerrettoRed}"
+                                <Border BorderBrush="{DynamicResource FerrettoRed}"
                                     BorderThickness="{DynamicResource PpcBorderThickness}">
-                                <AdornedElementPlaceholder Name="MyAdorner" />
-                            </Border>
+                                    <AdornedElementPlaceholder Name="MyAdorner" />
+                                </Border>
+                            </DockPanel>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="Validation.HasError" Value="true">
+                        <Setter Property="ToolTip"
+                        Value="{Binding RelativeSource={RelativeSource Self},
+                        Path=(Validation.Errors)/ErrorContent}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
 
-                        </DockPanel>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="Validation.HasError" Value="true">
-                    <Setter Property="ToolTip"
-                        Value="{Binding RelativeSource={RelativeSource Self}, 
-                        Path=(Validation.Errors)/ErrorContent}"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <!-- content templates: -->
-        <!-- IP address -->
-        <DataTemplate x:Key="IPAddressDataTemplate">
-            <DataTemplate.Resources>
-                <converters:TwoWayConverter x:Key="TwoWayConverter" />
-            </DataTemplate.Resources>
-            <controls:IPAddressBox IsEnabled="{Binding Path=., Converter={StaticResource IsEditableConverter}}" x:Name="field">
-                <controls:IPAddressBox.Resources>
-                    <validation:BindingProxy x:Key="valueBridge" Data="{Binding Path=Text, ElementName=field}" />
-                    <validation:BindingProxy x:Key="entityBridge" Data="{Binding Path=DataContext, ElementName=field}" />
-                </controls:IPAddressBox.Resources>
-                <controls:IPAddressBox.IPAddress>
-                    <Binding Path="Value" UpdateSourceTrigger="PropertyChanged"
+            <!-- content templates: -->
+            <!-- IP address -->
+            <DataTemplate x:Key="IPAddressDataTemplate">
+                <DataTemplate.Resources>
+                    <converters:TwoWayConverter x:Key="TwoWayConverter" />
+                </DataTemplate.Resources>
+                <controls:IPAddressBox IsEnabled="{Binding Path=., Converter={StaticResource IsEditableConverter}}" x:Name="field">
+                    <controls:IPAddressBox.Resources>
+                        <validation:BindingProxy x:Key="valueBridge" Data="{Binding Path=Text, ElementName=field}" />
+                        <validation:BindingProxy x:Key="entityBridge" Data="{Binding Path=DataContext, ElementName=field}" />
+                    </controls:IPAddressBox.Resources>
+                    <controls:IPAddressBox.IPAddress>
+                        <Binding Path="Value" UpdateSourceTrigger="PropertyChanged"
                              RelativeSource="{RelativeSource Mode=FindAncestor,AncestorType=controls:PropertyEditor}" Mode="TwoWay">
-                        <Binding.ValidationRules>
-                            <validation:CompositeValidationRule ValidatesOnTargetUpdated="True" Validated="CompositeValidationRule_Validated">
-                                <validation:CompositeValidationRule.CompositeValidator>
-                                    <validation:CompositeValidator Value="{Binding Data, Source={StaticResource valueBridge}}"
+                            <Binding.ValidationRules>
+                                <validation:CompositeValidationRule ValidatesOnTargetUpdated="True" Validated="CompositeValidationRule_Validated">
+                                    <validation:CompositeValidationRule.CompositeValidator>
+                                        <validation:CompositeValidator Value="{Binding Data, Source={StaticResource valueBridge}}"
                                                                    Rules="{Binding Data, Source={StaticResource entityBridge}, Converter={StaticResource ValidationRuleConverter}}" />
-                                </validation:CompositeValidationRule.CompositeValidator>
-                            </validation:CompositeValidationRule>
-                        </Binding.ValidationRules>
-                    </Binding>
-                </controls:IPAddressBox.IPAddress>
-            </controls:IPAddressBox>
-        </DataTemplate>
+                                    </validation:CompositeValidationRule.CompositeValidator>
+                                </validation:CompositeValidationRule>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </controls:IPAddressBox.IPAddress>
+                </controls:IPAddressBox>
+            </DataTemplate>
 
-        <!-- Enum -->
-        <DataTemplate x:Key="EnumDataTemplate">
-            <DataTemplate.Resources>
-                <converters:TwoWayConverter x:Key="TwoWayConverter" />
-            </DataTemplate.Resources>
-            <ComboBox Style="{StaticResource FlatComboBoxStyle}"
+            <!-- Enum -->
+            <DataTemplate x:Key="EnumDataTemplate">
+                <DataTemplate.Resources>
+                    <converters:TwoWayConverter x:Key="TwoWayConverter" />
+                </DataTemplate.Resources>
+                <ComboBox Style="{StaticResource ScaffoldingComboBoxStyle}"
                       ItemsSource="{Binding Converter={StaticResource EnumDatasourceConverter}}"
                       x:Name="field">
-                <ComboBox.Resources>
-                    <validation:BindingProxy x:Key="valueBridge" Data="{Binding Path=Text, ElementName=field}" />
-                    <validation:BindingProxy x:Key="entityBridge" Data="{Binding Path=DataContext, ElementName=field}" />
-                </ComboBox.Resources>
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Converter={StaticResource EnumValueToStringConverter}}"/>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-                <ComboBox.SelectedItem>
-                    <Binding Path="Value" UpdateSourceTrigger="PropertyChanged"
+                    <ComboBox.Resources>
+                        <validation:BindingProxy x:Key="valueBridge" Data="{Binding Path=Text, ElementName=field}" />
+                        <validation:BindingProxy x:Key="entityBridge" Data="{Binding Path=DataContext, ElementName=field}" />
+                    </ComboBox.Resources>
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Converter={StaticResource EnumValueToStringConverter}}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                    <ComboBox.SelectedValue>
+                        <Binding Path="Value" UpdateSourceTrigger="PropertyChanged"
                              RelativeSource="{RelativeSource Mode=FindAncestor,AncestorType=controls:PropertyEditor}" Mode="TwoWay">
-                        <Binding.ValidationRules>
-                            <validation:CompositeValidationRule ValidatesOnTargetUpdated="True" Validated="CompositeValidationRule_Validated">
-                                <validation:CompositeValidationRule.CompositeValidator>
-                                    <validation:CompositeValidator Value="{Binding Data, Source={StaticResource valueBridge}}"
+                            <Binding.ValidationRules>
+                                <validation:CompositeValidationRule ValidatesOnTargetUpdated="True" Validated="CompositeValidationRule_Validated">
+                                    <validation:CompositeValidationRule.CompositeValidator>
+                                        <validation:CompositeValidator Value="{Binding Data, Source={StaticResource valueBridge}}"
                                                                    Rules="{Binding Data, Source={StaticResource entityBridge}, Converter={StaticResource ValidationRuleConverter}}" />
-                                </validation:CompositeValidationRule.CompositeValidator>
-                            </validation:CompositeValidationRule>
-                        </Binding.ValidationRules>
-                    </Binding>
-                </ComboBox.SelectedItem>
-            </ComboBox>
-        </DataTemplate>
+                                    </validation:CompositeValidationRule.CompositeValidator>
+                                </validation:CompositeValidationRule>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </ComboBox.SelectedValue>
+                </ComboBox>
+            </DataTemplate>
 
-        <!-- string (deprecated*) -->
-        <DataTemplate x:Key="NewStringDataTemplate">
-            <DataTemplate.Resources>
-                <converters:TwoWayConverter x:Key="TwoWayConverter" />
-            </DataTemplate.Resources>
+            <!-- string (deprecated*) -->
+            <DataTemplate x:Key="NewStringDataTemplate">
+                <DataTemplate.Resources>
+                    <converters:TwoWayConverter x:Key="TwoWayConverter" />
+                </DataTemplate.Resources>
 
-
-            <ctrls:PpcTextBox DataContext="{Binding}" HorizontalAlignment="Stretch"
+                <ctrls:PpcTextBox DataContext="{Binding}" HorizontalAlignment="Stretch"
                               Keyboard="{Binding Path=.,Converter={StaticResource KeyboardTypeConverter}}"
                               FontSize="{DynamicResource FontSize_High}"
                               IsEnabled="{Binding Path=.,Converter={StaticResource IsEditableConverter}}" x:Name="field">
-                
-                <ctrls:PpcTextBox.InputText>
-                    <Binding Path="Value" UpdateSourceTrigger="PropertyChanged"
+
+                    <ctrls:PpcTextBox.InputText>
+                        <Binding Path="Value" UpdateSourceTrigger="PropertyChanged"
                              Converter="{StaticResource TwoWayConverter}" ConverterCulture="{x:Static g11n:CultureInfo.CurrentCulture}"
                              RelativeSource="{RelativeSource Mode=FindAncestor,AncestorType=UserControl}" Mode="TwoWay">
-                        
-                    </Binding>
-                </ctrls:PpcTextBox.InputText>
-            </ctrls:PpcTextBox>
-        </DataTemplate>
+                        </Binding>
+                    </ctrls:PpcTextBox.InputText>
+                </ctrls:PpcTextBox>
+            </DataTemplate>
 
-        <!-- string -->
-        <DataTemplate x:Key="StringDataTemplate">
-            <DataTemplate.Resources>
-                <converters:TwoWayConverter x:Key="TwoWayConverter" />
-            </DataTemplate.Resources>
+            <!-- string -->
+            <DataTemplate x:Key="StringDataTemplate">
+                <DataTemplate.Resources>
+                    <converters:TwoWayConverter x:Key="TwoWayConverter" />
+                </DataTemplate.Resources>
 
-            <TextBox DataContext="{Binding}"
+                <TextBox DataContext="{Binding}"
                      Style="{StaticResource TextBoxStyle}"
                      IsEnabled="{Binding Path=.,Converter={StaticResource IsEditableConverter}}" x:Name="field">
-                <TextBox.Resources>
-                    <validation:BindingProxy x:Key="valueBridge" Data="{Binding Path=Text, ElementName=field}" />
-                    <validation:BindingProxy x:Key="entityBridge" Data="{Binding Path=DataContext, ElementName=field}" />
-                </TextBox.Resources>
-                <TextBox.Text>
-                    <Binding Path="Value" UpdateSourceTrigger="PropertyChanged"
+                    <TextBox.Resources>
+                        <validation:BindingProxy x:Key="valueBridge" Data="{Binding Path=Text, ElementName=field}" />
+                        <validation:BindingProxy x:Key="entityBridge" Data="{Binding Path=DataContext, ElementName=field}" />
+                    </TextBox.Resources>
+                    <TextBox.Text>
+                        <Binding Path="Value" UpdateSourceTrigger="PropertyChanged"
                              Converter="{StaticResource TwoWayConverter}" ConverterCulture="{x:Static g11n:CultureInfo.CurrentCulture}"
                              RelativeSource="{RelativeSource Mode=FindAncestor,AncestorType=UserControl}" Mode="TwoWay">
-                        <Binding.ValidationRules>
-                            <validation:CompositeValidationRule ValidatesOnTargetUpdated="True" Validated="CompositeValidationRule_Validated">
-                                <validation:CompositeValidationRule.CompositeValidator>
-                                    <validation:CompositeValidator Value="{Binding Data, Source={StaticResource valueBridge}}"
+                            <Binding.ValidationRules>
+                                <validation:CompositeValidationRule ValidatesOnTargetUpdated="True" Validated="CompositeValidationRule_Validated">
+                                    <validation:CompositeValidationRule.CompositeValidator>
+                                        <validation:CompositeValidator Value="{Binding Data, Source={StaticResource valueBridge}}"
                                                                    Rules="{Binding Data, Source={StaticResource entityBridge}, Converter={StaticResource ValidationRuleConverter}}" />
-                                </validation:CompositeValidationRule.CompositeValidator>
-                            </validation:CompositeValidationRule>
-                        </Binding.ValidationRules>
-                    </Binding>
-                </TextBox.Text>
+                                    </validation:CompositeValidationRule.CompositeValidator>
+                                </validation:CompositeValidationRule>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
 
-                <!-- keyboard interactivity -->
-                <interactivity:Interaction.Behaviors>
-                    <behaviors:TextBoxKeyboardBehavior Keyboard="{Binding Converter={StaticResource KeyboardTypeConverter}}"
+                    <!-- keyboard interactivity -->
+                    <interactivity:Interaction.Behaviors>
+                        <behaviors:TextBoxKeyboardBehavior Keyboard="{Binding Converter={StaticResource KeyboardTypeConverter}}"
                         KeyboardCaption="{Binding Converter={StaticResource DisplayNameConverter}}" />
-                </interactivity:Interaction.Behaviors>
-            </TextBox>
-        </DataTemplate>
-
+                    </interactivity:Interaction.Behaviors>
+                </TextBox>
+            </DataTemplate>
+        </ResourceDictionary>
     </UserControl.Resources>
-
 
     <!-- layout -->
     <Grid Background="{DynamicResource FerrettoBlack}"
@@ -230,7 +231,7 @@
                             </MultiBinding>
                         </ctrls:PpcButton.IsEnabled>
                     </ctrls:PpcButton>
-                    <ctrls:PpcButton Content="{x:Static resx:UI.Cancel}" Click="Cancel_Click"/>
+                    <ctrls:PpcButton Content="{x:Static resx:UI.Cancel}" Click="Cancel_Click" />
                 </StackPanel>
 
                 <!-- validators -->
@@ -269,7 +270,6 @@
                                 HorizontalContentAlignment="Stretch"
                                 ContentTemplateSelector="{StaticResource PropertyInfoDataTemplateSelector}" Margin="0,10">
                 </ContentControl>
-
             </Grid>
         </Border>
     </Grid>

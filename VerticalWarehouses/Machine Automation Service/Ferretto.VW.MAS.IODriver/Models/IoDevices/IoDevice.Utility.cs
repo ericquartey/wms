@@ -97,7 +97,8 @@ namespace Ferretto.VW.MAS.IODriver
 
                         break;
 
-                    case 0x11: // new release
+                    case 0x11:
+                    case 0x12: // new release
                         switch (nBytesReceived)
                         {
                             case NBYTES_TELEGRAM_DATA + 11: // 26

@@ -35,6 +35,10 @@ namespace Ferretto.VW.MAS.DataModels
 
         public LoadingUnitLocation Location { get; set; }
 
+        public double MaxDoubleHeight { get; set; }
+
+        public double MaxSingleHeight { get; set; }
+
         #endregion
 
         #region Methods

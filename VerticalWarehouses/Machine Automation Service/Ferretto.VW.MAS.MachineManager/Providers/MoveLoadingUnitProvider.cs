@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -12,6 +13,8 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
     {
         #region Fields
 
+        private readonly IBaysDataProvider baysDataProvider;
+
         private readonly ICellsProvider cellsProvider;
 
         #endregion
@@ -20,9 +23,11 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         public MoveLoadingUnitProvider(
             ICellsProvider cellsProvider,
+            IBaysDataProvider baysDataProvider,
             IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
         }
 
@@ -37,11 +42,10 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     MissionType.NoType,
                     LoadingUnitLocation.NoLocation,
                     LoadingUnitLocation.NoLocation,
-                    null,
-                    null,
-                    null,
-                    false,
-                    false,
+                    sourceCellId: null,
+                    destinationCellId: null,
+                    loadUnitId: null,
+                    insertLoadUnit: false,
                     missionId,
                     CommandAction.Abort),
                 $"Bay {requestingBay} requested to abort move Loading unit on Bay {targetBay}",
@@ -58,11 +62,10 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     missionType,
                     LoadingUnitLocation.LoadUnit,
                     LoadingUnitLocation.NoLocation,
-                    null,
-                    null,
+                    sourceCellId: null,
+                    destinationCellId: null,
                     loadingUnitId,
-                    false,
-                    false,
+                    insertLoadUnit: false,
                     missionId,
                     CommandAction.Activate),
                 $"Bay {requestingBay} requested to activate move Loading unit {loadingUnitId} to Bay {requestingBay}",
@@ -78,11 +81,10 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     missionType,
                     LoadingUnitLocation.LoadUnit,
                     LoadingUnitLocation.Cell,
-                    null,
-                    null,
+                    sourceCellId: null,
+                    destinationCellId: null,
                     loadingUnitId,
-                    false,
-                    false,
+                    insertLoadUnit: false,
                     missionId,
                     CommandAction.Activate),
                 $"Bay {requestingBay} requested to activate move Loading unit {loadingUnitId} to Bay {requestingBay}",
@@ -98,11 +100,10 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     missionType,
                     LoadingUnitLocation.LoadUnit,
                     destinationBay,
-                    null,
-                    null,
+                    sourceCellId: null,
+                    destinationCellId: null,
                     loadingUnitId,
-                    false,
-                    true),
+                    insertLoadUnit: false),
                  $"Bay {requestingBay} requested to eject Loading unit {loadingUnitId} to Bay {destinationBay}",
                  sender,
                  MessageType.MoveLoadingUnit,
@@ -122,10 +123,10 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     missionType,
                     sourceBay,
                     LoadingUnitLocation.Cell,
-                    null,
+                    sourceCellId: null,
                     destinationCellId,
                     loadingUnitId,
-                    true),
+                    insertLoadUnit: true),
                 $"Bay {requestingBay} requested to move Loading unit in Bay {sourceBay} to destination Cell {destinationCellId}",
                 sender,
                 MessageType.MoveLoadingUnit,
@@ -134,16 +135,18 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         public void MoveFromBayToBay(MissionType missionType, LoadingUnitLocation sourceBay, LoadingUnitLocation destinationBay, BayNumber requestingBay, MessageActor sender)
         {
+            var bay = this.baysDataProvider.GetByLoadingUnitLocation(sourceBay);
+            var loadUnit = bay?.Positions.FirstOrDefault(x => x.Location == sourceBay)?.LoadingUnit;
+
             this.SendCommandToMachineManager(
             new MoveLoadingUnitMessageData(
                 missionType,
                 sourceBay,
                 destinationBay,
-                null,
-                null,
-                null,
-                false,
-                true),
+                sourceCellId: null,
+                destinationCellId: null,
+                loadUnit?.Id,
+                insertLoadUnit: false),
             $"Bay {requestingBay} requested to move Loading unit in Bay {sourceBay} to Bay {destinationBay}",
             sender,
             MessageType.MoveLoadingUnit,
@@ -152,14 +155,17 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         public void MoveFromBayToCell(MissionType missionType, LoadingUnitLocation sourceBay, int? destinationCellId, BayNumber requestingBay, MessageActor sender)
         {
+            var bay = this.baysDataProvider.GetByLoadingUnitLocation(sourceBay);
+            var loadUnit = bay?.Positions.FirstOrDefault(x => x.Location == sourceBay)?.LoadingUnit;
+
             this.SendCommandToMachineManager(
                 new MoveLoadingUnitMessageData(
                     missionType,
                     sourceBay,
                     LoadingUnitLocation.Cell,
-                    null,
+                    sourceCellId: null,
                     destinationCellId,
-                    null),
+                    loadUnit?.Id),
                 $"Bay {requestingBay} requested to move Loading unit in Bay {sourceBay} to destination Cell {destinationCellId}",
                 sender,
                 MessageType.MoveLoadingUnit,
@@ -179,7 +185,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     LoadingUnitLocation.Cell,
                     destinationBay,
                     sourceCellId,
-                    null,
+                    destinationCellId: null,
                     loadUnitId),
                 $"Bay {requestingBay} requested to move Loading unit in Cell {sourceCellId} to destination {destinationBay}",
                 sender,
@@ -220,8 +226,8 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     missionType,
                     LoadingUnitLocation.LoadUnit,
                     destination,
-                    null,
-                    null,
+                    sourceCellId: null,
+                    destinationCellId: null,
                     loadingUnitId),
                 $"Bay {requestingBay} requested to move Loading unit {loadingUnitId} to Bay {destination}",
                 sender,
@@ -236,7 +242,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     missionType,
                     LoadingUnitLocation.LoadUnit,
                     LoadingUnitLocation.Cell,
-                    null,
+                    sourceCellId: null,
                     destinationCellId,
                     loadingUnitId),
                 $"Bay {requestingBay} requested to move Loading unit {loadingUnitId} to Cell {destinationCellId}",
@@ -252,11 +258,10 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     MissionType.NoType,
                     LoadingUnitLocation.NoLocation,
                     LoadingUnitLocation.NoLocation,
-                    null,
-                    null,
-                    null,
-                    false,
-                    false,
+                    sourceCellId: null,
+                    destinationCellId: null,
+                    loadUnitId: null,
+                    insertLoadUnit: false,
                     missionId,
                     CommandAction.Pause),
                 $"Bay {requestingBay} requested to pause move Loading unit on Bay {targetBay}",
@@ -273,11 +278,10 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     MissionType.NoType,
                     LoadingUnitLocation.NoLocation,
                     LoadingUnitLocation.NoLocation,
-                    null,
-                    null,
-                    null,
-                    false,
-                    false,
+                    sourceCellId: null,
+                    destinationCellId: null,
+                    loadUnitId: null,
+                    insertLoadUnit: false,
                     missionId,
                     CommandAction.Resume),
                 $"Bay {requestingBay} requested to resume move Loading unit on Bay {targetBay}",
@@ -293,11 +297,10 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     (wmsId.HasValue ? MissionType.WMS : MissionType.Manual),
                     sourceBay,
                     destination,
-                    null,
-                    null,
-                    null,
-                    false,
-                    false,
+                    sourceCellId: null,
+                    destinationCellId: null,
+                    loadUnitId: null,
+                    insertLoadUnit: false,
                     missionId,
                     CommandAction.Resume);
             data.WmsId = wmsId;
@@ -316,11 +319,10 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     MissionType.NoType,
                     LoadingUnitLocation.NoLocation,
                     LoadingUnitLocation.NoLocation,
-                    null,
-                    null,
-                    null,
-                    false,
-                    false,
+                    sourceCellId: null,
+                    destinationCellId: null,
+                    loadUnitId: null,
+                    insertLoadUnit: false,
                     missionId,
                     CommandAction.Stop),
                 $"Bay {requestingBay} requested to stop move Loading unit on Bay {targetBay}",

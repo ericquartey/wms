@@ -63,7 +63,6 @@
     <None Remove="Styles\ComboBoxStyle.xaml" />
     <None Remove="Styles\PasswordBoxEdit.xaml" />
     <None Remove="Styles\TextBlockStyles - Copy.xaml" />
-    <None Remove="Styles\WizardStyle.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -73,10 +72,6 @@
 
   <ItemGroup>
     <Page Update="Styles\TextBlockStyles.xaml">
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Page>
-    <Page Update="Styles\WizardStyle.xaml">
       <Generator>XamlIntelliSenseFileGenerator</Generator>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Page>

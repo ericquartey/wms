@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using Ferretto.VW.App.Scaffolding.Models;
 
 namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
 {
-
     public static class DataAnnotationAttributeExtensions
     {
         #region Localization
@@ -35,7 +32,7 @@ namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
         public static string Tag(this TagAttribute attribute)
             => (attribute ?? throw new ArgumentNullException(nameof(attribute))).Localize();
 
-        #endregion
+        #endregion Localization
 
         #region Display name
 
@@ -69,7 +66,7 @@ namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
             return property.Name;
         }
 
-        #endregion
+        #endregion Display name
 
         #region Editable
 
@@ -99,8 +96,7 @@ namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
             return true;
         }
 
-
-        #endregion
+        #endregion Editable
 
         #region Default value/unit/Range min/max
 
@@ -150,7 +146,7 @@ namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
         public static object RangeMax(this ScaffoldedEntity entity)
             => (entity ?? throw new ArgumentNullException(nameof(entity))).Metadata?.RangeMax();
 
-        #endregion
+        #endregion Default value/unit/Range min/max
 
         #region Validation
 
@@ -177,6 +173,6 @@ namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
             }
         }
 
-        #endregion
+        #endregion Validation
     }
 }

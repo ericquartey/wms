@@ -6,7 +6,6 @@ using System.Windows.Data;
 
 namespace Ferretto.VW.App.Scaffolding.Converters
 {
-
     public class EnumDatasourceConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -29,5 +28,4 @@ namespace Ferretto.VW.App.Scaffolding.Converters
             throw new NotSupportedException();
         }
     }
-
 }

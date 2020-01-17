@@ -1179,7 +1179,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Spostamento cassetto da cella a cella</value>
   </data>
   <data name="MoveLoadingUnitFromCellToBay" xml:space="preserve">
-    <value>Spostamento cassetto da cella in baia</value>
+    <value>Rimozione cassetto (movimento da cella a baia)</value>
   </data>
   <data name="ConfirmEjectLoadingUnit" xml:space="preserve">
     <value>Conferma estrazione cassetto</value>

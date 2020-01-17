@@ -10,11 +10,11 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.MachineManager.MissionMove
 {
-    public class MissionMoveStartState : MissionMoveBase
+    public class MissionMoveStartStep : MissionMoveBase
     {
         #region Constructors
 
-        public MissionMoveStartState(Mission mission,
+        public MissionMoveStartStep(Mission mission,
             IServiceProvider serviceProvider,
             IEventAggregator eventAggregator)
             : base(mission, serviceProvider, eventAggregator)
@@ -31,8 +31,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command)
         {
-            this.Mission.RestoreState = MissionState.NotDefined;
-            this.Mission.State = MissionState.Start;
+            this.Mission.RestoreStep = MissionStep.NotDefined;
+            this.Mission.Step = MissionStep.Start;
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.Mission.CloseShutterBayNumber = BayNumber.None;
             this.Mission.StopReason = StopRequestReason.NoReason;
@@ -113,13 +113,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.RestoreConditions = false;
             this.MissionsDataProvider.Update(this.Mission);
 
-            bool isEject = this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadUnit
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation;
-
             var notificationText = $"Load Unit {this.Mission.LoadUnitId} start movement to bay {this.Mission.LoadUnitDestination}";
-            this.SendMoveNotification(this.Mission.TargetBay, notificationText, isEject, MessageStatus.OperationStart);
+            this.SendMoveNotification(this.Mission.TargetBay, notificationText, MessageStatus.OperationStart);
 
             return true;
         }
@@ -142,12 +137,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         if (this.Mission.LoadUnitSource is LoadingUnitLocation.Elevator)
                         {
-                            var newStep = new MissionMoveDepositUnitState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            var newStep = new MissionMoveDepositUnitStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                             newStep.OnEnter(null);
                         }
                         else
                         {
-                            var newStep = new MissionMoveLoadElevatorState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            var newStep = new MissionMoveLoadElevatorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                             newStep.OnEnter(null);
                         }
                     }

@@ -92,6 +92,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<double>("MaxDoubleHeight");
+
+                    b.Property<double>("MaxSingleHeight");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BayId");
@@ -639,6 +643,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Code = 63,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
                             Code = 1000,
                             TotalErrors = 0
                         },
@@ -996,13 +1005,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("RestoreConditions");
 
-                    b.Property<int>("RestoreState");
-
-                    b.Property<int>("State");
+                    b.Property<int>("RestoreStep");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("Step");
 
                     b.Property<int>("StopReason");
 
@@ -1082,7 +1091,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 3, 15, 11, 11, 44, 167, DateTimeKind.Local).AddTicks(6476),
+                            InstallationDate = new DateTime(2017, 3, 15, 14, 44, 10, 603, DateTimeKind.Local).AddTicks(5112),
                             ServiceStatus = 86
                         });
                 });

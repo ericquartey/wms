@@ -191,7 +191,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var bay = this.dataContext.Bays.SingleOrDefault(b => b.Number == bayNumber);
+                var bay = this.dataContext.Bays.Include(b => b.CurrentMission).SingleOrDefault(b => b.Number == bayNumber);
                 if (bay is null)
                 {
                     throw new EntityNotFoundException(bayNumber.ToString());
@@ -468,8 +468,11 @@ namespace Ferretto.VW.MAS.DataLayer
                 return this.dataContext.Bays
                     .AsNoTracking()
                      .Include(b => b.Shutter)
+                        .ThenInclude(i => i.Inverter)
                      .Include(b => b.Carousel)
                      .Include(b => b.Positions)
+                        .ThenInclude(t => t.LoadingUnit)
+                     .Include(b => b.CurrentMission)
                     .FirstOrDefault(b => b.Positions.Any(p => p.Location == location));
             }
         }
@@ -825,6 +828,8 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public InverterIndex GetShutterInverterIndex(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.Inverter.Index;
+
         public void Light(BayNumber bayNumber, bool enable)
         {
             this.PublishCommand(
@@ -873,8 +878,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                foreach (var bayPosition in this.dataContext.BayPositions
-                                            .Include(i => i.LoadingUnit))
+                foreach (var bayPosition in this.dataContext.BayPositions.Include(i => i.LoadingUnit))
                 {
                     if (bayPosition.LoadingUnit != null)
                     {
@@ -883,7 +887,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     }
                 }
 
-                foreach (var bay in this.dataContext.Bays)
+                foreach (var bay in this.dataContext.Bays.Include(i => i.CurrentMission))
                 {
                     bay.CurrentMission = null;
                     bay.CurrentWmsMissionOperationId = null;

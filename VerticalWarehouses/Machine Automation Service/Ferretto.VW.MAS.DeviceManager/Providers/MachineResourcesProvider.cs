@@ -4,6 +4,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.SensorsStatus;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Microsoft.Extensions.Logging;
@@ -19,8 +20,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         private const int INVERTER_INPUTS = 8;
 
         private const int REMOTEIO_INPUTS = 16;
-
-        private readonly IBaysDataProvider baysDataProvider;
 
         private readonly ILogger<MachineResourcesProvider> logger;
 
@@ -44,7 +43,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             ILogger<MachineResourcesProvider> logger)
         {
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
-            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.logger = logger;
         }
 
@@ -137,26 +135,24 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return (bool[])this.sensorStatus.Clone();
         }
 
-        public ShutterPosition GetShutterPosition(BayNumber bayNumber)
+        public ShutterPosition GetShutterPosition(InverterIndex inverterIndex)
         {
-            var bay = this.baysDataProvider.GetByNumber(bayNumber);
-
-            if (bay.Shutter is null)
-            {
-                throw new ArgumentOutOfRangeException(nameof(bayNumber), "The specified bay has no shutter");
-            }
-            if (bay.Shutter.Type == ShutterType.NotSpecified)
-            {
-                return ShutterPosition.NotSpecified;
-            }
-
-            var inverterStatus = new AglInverterStatus(bay.Shutter.Inverter.Index);
+            var inverterStatus = new AglInverterStatus(inverterIndex);
 
             var sensorStart = (int)(IOMachineSensors.PowerOnOff + (byte)inverterStatus.SystemIndex * inverterStatus.Inputs.Length);
 
             Array.Copy(this.sensorStatus, sensorStart, inverterStatus.Inputs, 0, inverterStatus.Inputs.Length);
 
             return inverterStatus.CurrentShutterPosition;
+        }
+
+        public bool IsBayLightOn(BayNumber bayNumber)
+        {
+            if (this.machineProvider.IsBayLightOn.TryGetValue(bayNumber, out var isLight))
+            {
+                return isLight;
+            }
+            return false;
         }
 
         public bool IsDrawerInBayBottom(BayNumber bayNumber)

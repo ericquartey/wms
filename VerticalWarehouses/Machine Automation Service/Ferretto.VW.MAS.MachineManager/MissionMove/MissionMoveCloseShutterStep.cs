@@ -11,11 +11,11 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.MachineManager.MissionMove
 {
-    public class MissionMoveCloseShutterState : MissionMoveBase
+    public class MissionMoveCloseShutterStep : MissionMoveBase
     {
         #region Constructors
 
-        public MissionMoveCloseShutterState(Mission mission,
+        public MissionMoveCloseShutterStep(Mission mission,
             IServiceProvider serviceProvider,
             IEventAggregator eventAggregator)
             : base(mission, serviceProvider, eventAggregator)
@@ -32,8 +32,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command)
         {
-            this.Mission.RestoreState = MissionState.NotDefined;
-            this.Mission.State = MissionState.CloseShutter;
+            this.Mission.RestoreStep = MissionStep.NotDefined;
+            this.Mission.Step = MissionStep.CloseShutter;
             this.Mission.StopReason = StopRequestReason.NoReason;
             this.MissionsDataProvider.Update(this.Mission);
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
@@ -49,11 +49,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.RestoreConditions = false;
             this.MissionsDataProvider.Update(this.Mission);
 
-            bool isEject = this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadUnit
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation;
-            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.State.ToString(), isEject, MessageStatus.OperationExecuting);
+            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationExecuting);
             return true;
         }
 
@@ -93,15 +89,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         private void CloseShutterEnd()
         {
-            bool isEject = this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
+            if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
                 && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator
                 && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadUnit
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation;
-            if (isEject)
+                && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation)
             {
                 var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
                 var description = $"Load Unit {this.Mission.LoadUnitId} placed on bay {bay.Number}";
-                this.SendMoveNotification(bay.Number, description, isEject, MessageStatus.OperationWaitResume);
+                this.SendMoveNotification(bay.Number, description, MessageStatus.OperationWaitResume);
 
                 if (this.Mission.WmsId.HasValue)
                 {
@@ -109,24 +104,24 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         || bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitDestination).IsUpper
                         || bay.Carousel is null)
                     {
-                        var newStep = new MissionMoveWaitPickState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        var newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                         newStep.OnEnter(null);
                     }
                     else
                     {
-                        var newStep = new MissionMoveBayChainState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        var newStep = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                         newStep.OnEnter(null);
                     }
                 }
                 else
                 {
-                    var newStep = new MissionMoveEndState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     newStep.OnEnter(null);
                 }
             }
             else
             {
-                var newStep = new MissionMoveEndState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 newStep.OnEnter(null);
             }
         }

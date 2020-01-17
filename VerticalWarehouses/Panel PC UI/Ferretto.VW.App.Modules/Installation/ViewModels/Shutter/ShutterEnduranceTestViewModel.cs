@@ -30,8 +30,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineShuttersWebService shuttersWebService;
 
-        private int bayNumber;
-
         private int? cumulativePerformedCycles;
 
         private int? cumulativePerformedCyclesBeforeStart;
@@ -117,44 +115,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public string Error => string.Join(
-                    System.Environment.NewLine,
-            this[nameof(this.InputDelayBetweenCycles)],
-            this[nameof(this.InputRequiredCycles)]);
+            System.Environment.NewLine,
+            this[nameof(this.InputDelayBetweenCycles)]);
 
         public int? InputDelayBetweenCycles
         {
             get => this.inputDelayBetweenCycles;
-            set
-            {
-                if (this.SetProperty(ref this.inputDelayBetweenCycles, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
+            set => this.SetProperty(ref this.inputDelayBetweenCycles, value);
         }
 
         public int? InputRequiredCycles
         {
             get => this.inputRequiredCycles;
-            set
-            {
-                if (this.SetProperty(ref this.inputRequiredCycles, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
+            set => this.SetProperty(ref this.inputRequiredCycles, value);
         }
 
         public bool IsExecutingProcedure
         {
             get => this.isExecutingProcedure;
-            private set
-            {
-                if (this.SetProperty(ref this.isExecutingProcedure, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
+            set => this.SetProperty(ref this.isExecutingProcedure, value);
         }
 
         public bool IsShutterThreeSensors
@@ -195,19 +174,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 switch (columnName)
                 {
-                    case nameof(this.InputRequiredCycles):
-                        if (!this.InputRequiredCycles.HasValue)
-                        {
-                            return $"InputRequiredCycles is required.";
-                        }
-
-                        if (this.InputRequiredCycles.Value <= 0)
-                        {
-                            return "InputRequiredCycles must be strictly positive.";
-                        }
-
-                        break;
-
                     case nameof(this.InputDelayBetweenCycles):
                         if (!this.InputDelayBetweenCycles.HasValue)
                         {
@@ -233,17 +199,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override void Disappear()
         {
             base.Disappear();
-
-            /*
-             * Avoid unsubscribing in case of navigation to error page.
-             * We may need to review this behaviour.
-             *
-            this.shutterTestStatusChangedToken?.Dispose();
-            this.shutterTestStatusChangedToken = null;
-
-            this.sensorsChangedToken?.Dispose();
-            this.sensorsChangedToken = null;
-            */
         }
 
         public override async Task OnAppearedAsync()

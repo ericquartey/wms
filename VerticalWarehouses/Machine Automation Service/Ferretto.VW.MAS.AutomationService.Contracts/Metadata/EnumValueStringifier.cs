@@ -6,6 +6,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 {
     public class EnumValueStringifier : IValueStringifier
     {
+        #region Methods
+
         public string Stringify(object value)
             => this.Stringify(value, System.Globalization.CultureInfo.CurrentCulture);
 
@@ -24,5 +26,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             string resourceName = string.Concat(value.GetType().Name, ".", name);
             return Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources.Vertimag.ResourceManager.GetString(resourceName, culture) ?? name;
         }
+
+        #endregion Methods
     }
 }

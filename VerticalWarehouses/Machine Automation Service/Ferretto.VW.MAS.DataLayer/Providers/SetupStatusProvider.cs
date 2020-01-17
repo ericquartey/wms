@@ -161,7 +161,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 BeltBurnishing = new SetupStepStatus
                 {
                     IsCompleted = setup.BeltBurnishingTest.IsCompleted,
-                    CanBePerformed = verticalOrigin.IsCompleted,
+                    CanBePerformed = verticalOrigin.IsCompleted && setup.VerticalOffsetCalibration.IsCompleted && setup.VerticalOriginCalibration.IsCompleted,
                     InProgress = setup.BeltBurnishingTest.InProgress,
                 },
                 CellsHeightCheck = new SetupStepStatus
@@ -191,12 +191,12 @@ namespace Ferretto.VW.MAS.DataLayer
                 VerticalOffsetCalibration = new SetupStepStatus
                 {
                     IsCompleted = setup.VerticalOffsetCalibration.IsCompleted,
-                    CanBePerformed = setup.VerticalResolutionCalibration.IsCompleted && verticalOrigin.IsCompleted,
+                    CanBePerformed = verticalOrigin.IsCompleted,
                 },
                 VerticalResolutionCalibration = new SetupStepStatus
                 {
                     IsCompleted = setup.VerticalResolutionCalibration.IsCompleted,
-                    CanBePerformed = setup.BeltBurnishingTest.IsCompleted && verticalOrigin.IsCompleted,
+                    CanBePerformed = verticalOrigin.IsCompleted,
                 },
                 WeightMeasurement = new SetupStepStatus
                 {

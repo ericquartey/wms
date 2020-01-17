@@ -24,5 +24,4 @@ namespace Ferretto.VW.App.Scaffolding.Converters
             throw new NotSupportedException();
         }
     }
-
 }

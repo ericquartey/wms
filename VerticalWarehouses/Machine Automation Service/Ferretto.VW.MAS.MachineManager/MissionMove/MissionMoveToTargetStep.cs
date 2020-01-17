@@ -11,11 +11,11 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.MachineManager.MissionMove
 {
-    public class MissionMoveToTargetState : MissionMoveBase
+    public class MissionMoveToTargetStep : MissionMoveBase
     {
         #region Constructors
 
-        public MissionMoveToTargetState(Mission mission,
+        public MissionMoveToTargetStep(Mission mission,
             IServiceProvider serviceProvider,
             IEventAggregator eventAggregator)
             : base(mission, serviceProvider, eventAggregator)
@@ -34,8 +34,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             var measure = (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell);
             this.Mission.EjectLoadUnit = false;
-            this.Mission.RestoreState = MissionState.NotDefined;
-            this.Mission.State = MissionState.ToTarget;
+            this.Mission.RestoreStep = MissionStep.NotDefined;
+            this.Mission.Step = MissionStep.ToTarget;
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.Mission.StopReason = StopRequestReason.NoReason;
             this.MissionsDataProvider.Update(this.Mission);
@@ -86,11 +86,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             this.MissionsDataProvider.Update(this.Mission);
 
-            bool isEject = this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadUnit
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation;
-            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.State.ToString(), isEject, MessageStatus.OperationExecuting);
+            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationExecuting);
             return true;
         }
 
@@ -184,12 +180,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         && !this.Mission.EjectLoadUnit
                         )
                     {
-                        var newStep = new MissionMoveEndState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                         newStep.OnEnter(null);
                     }
                     else
                     {
-                        var newStep = new MissionMoveDepositUnitState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        var newStep = new MissionMoveDepositUnitStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                         newStep.OnEnter(null);
                     }
                 }

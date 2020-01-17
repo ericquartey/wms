@@ -257,7 +257,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.NavigationService.Appear(
                     nameof(Utils.Modules.Operator),
                     Utils.Modules.Operator.ItemOperations.LOADING_UNIT,
-                    message.Data.LoadingUnitId,
+                    message.Data.LoadUnitId,
                     trackCurrentView: true);
 
                 this.lastActiveMissionId = bay.CurrentMission?.Id;
