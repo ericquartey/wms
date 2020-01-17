@@ -463,8 +463,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.Disappear();
 
-            this.sensorsToken?.Dispose();
-            this.sensorsToken = null;
+            if (this.stepChangedToken != null)
+            {
+                this.EventAggregator.GetEvent<StepChangedPubSubEvent>().Unsubscribe(this.sensorsToken);
+                this.sensorsToken?.Dispose();
+                this.sensorsToken = null;
+            }
+
+            if (this.stepChangedToken != null)
+            {
+                this.EventAggregator.GetEvent<StepChangedPubSubEvent>().Unsubscribe(this.stepChangedToken);
+                this.stepChangedToken?.Dispose();
+                this.stepChangedToken = null;
+            }
         }
 
         public override async Task OnAppearedAsync()
@@ -482,11 +493,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 await this.SensorsService.RefreshAsync(true);
 
+                // devo controllare che non sia cambiata dai parametri o altre baie
+                this.CurrentResolution = await this.machineElevatorWebService.GetVerticalResolutionAsync();
+
                 if (this.AxisUpperBound == 0 || this.AxisLowerBound == 0 || this.StartPosition == 0 || !this.DestinationPosition1.HasValue || !this.DestinationPosition2.HasValue)
                 {
                     var procedureParameters = await this.verticalOriginProcedureWebService.GetParametersAsync();
                     this.ProcedureParameters = await this.resolutionCalibrationWebService.GetParametersAsync();
-                    this.CurrentResolution = await this.machineElevatorWebService.GetVerticalResolutionAsync();
 
                     this.StartPosition = this.ProcedureParameters.StartPosition;
                     this.DestinationPosition1 = this.ProcedureParameters.InitialPosition;

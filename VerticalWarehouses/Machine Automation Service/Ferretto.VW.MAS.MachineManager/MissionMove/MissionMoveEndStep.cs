@@ -5,17 +5,16 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Messages;
-using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.MachineManager.MissionMove
 {
-    public class MissionMoveEndState : MissionMoveBase
+    public class MissionMoveEndStep : MissionMoveBase
     {
         #region Constructors
 
-        public MissionMoveEndState(Mission mission,
+        public MissionMoveEndStep(Mission mission,
             IServiceProvider serviceProvider,
             IEventAggregator eventAggregator)
             : base(mission, serviceProvider, eventAggregator)
@@ -33,8 +32,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command)
         {
-            this.Mission.RestoreState = MissionState.NotDefined;
-            this.Mission.State = MissionState.End;
+            this.Mission.RestoreStep = MissionStep.NotDefined;
+            this.Mission.Step = MissionStep.End;
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.Mission.BayNotifications = MissionBayNotifications.None;
             this.Mission.CloseShutterBayNumber = BayNumber.None;
@@ -55,11 +54,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Mission.RestoreConditions = false;
                 this.MissionsDataProvider.Update(this.Mission);
 
-                bool isEject = this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
-                    && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator
-                    && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadUnit
-                    && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation;
-                this.SendMoveNotification(this.Mission.TargetBay, this.Mission.State.ToString(), isEject, MessageStatus.OperationExecuting);
+                this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationExecuting);
             }
 
             return true;
@@ -105,7 +100,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override void OnStop(StopRequestReason reason, bool moveBackward = false)
         {
-            // no action
+            if (this.Mission.StopReason != StopRequestReason.NoReason)
+            {
+                this.Mission.Status = MissionStatus.Aborted;
+                this.MissionsDataProvider.Update(this.Mission);
+                this.SendNotification();
+            }
         }
 
         private bool AllStopped(IEnumerable<Bay> bays)
@@ -137,13 +137,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         private void SendNotification()
         {
-            var isEject = this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadUnit
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation;
-
             var notificationText = $"Load Unit {this.Mission.LoadUnitId} end movement to bay {this.Mission.LoadUnitDestination}";
-            this.SendMoveNotification(this.Mission.TargetBay, notificationText, isEject, MessageStatus.OperationEnd);
+            this.SendMoveNotification(this.Mission.TargetBay, notificationText, MessageStatus.OperationEnd);
         }
 
         private bool UpdateStopList(BayNumber bay)

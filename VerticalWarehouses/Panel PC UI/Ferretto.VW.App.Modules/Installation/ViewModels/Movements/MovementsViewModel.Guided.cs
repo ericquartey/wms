@@ -398,11 +398,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         protected void OnGuidedRaiseCanExecuteChanged()
         {
             this.CanInputLoadingUnitId =
-                this.CanBaseExecute()
-                &&
-                this.LoadingUnits != null
-                &&
-                this.Cells != null;
+                this.CanBaseExecute() &&
+                this.LoadingUnits != null &&
+                this.Cells != null &&
+                this.MachineStatus.EmbarkedLoadingUnit is null;
 
             if (!this.IsMoving &&
                 (this.HealthProbeService.HealthStatus == HealthStatus.Healthy ||
@@ -469,10 +468,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanLoadFromCell()
         {
+            var cellPosition = this.Cells.FirstOrDefault(f => f.Id == this.MachineStatus?.LogicalPositionId);
+
             return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+                   this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Cell &&
                    this.CanBaseExecute() &&
                    this.SelectedCell != null &&
-                   this.loadFromCellPolicy?.IsAllowed == true;
+                   !(cellPosition?.IsFree ?? true)  &&
+                   this.MachineStatus.EmbarkedLoadingUnit is null;
         }
 
         private bool CanMoveCarouselDown()
@@ -592,14 +595,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanUnloadToCell()
         {
             return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
-
                 this.CanBaseExecute()
                 &&
                 (this.SelectedCell != null ||
                     (this.MachineStatus.ElevatorLogicalPosition != null &&
                      this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Cell))
                 &&
-                (this.SelectedCell == null || this.unloadToCellPolicy?.IsAllowed == true);
+                this.MachineStatus.EmbarkedLoadingUnit != null;
         }
 
         private async Task ClosedShutterAsync()

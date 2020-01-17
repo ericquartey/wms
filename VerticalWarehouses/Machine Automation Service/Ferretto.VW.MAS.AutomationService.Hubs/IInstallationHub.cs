@@ -9,6 +9,8 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         Task BayChainPositionChanged(double position, BayNumber bayNumber);
 
+        Task BayLightChanged(bool isLightOn, BayNumber bayNumber);
+
         Task CalibrateAxisNotify(IBaseNotificationMessageUI message);
 
         Task CurrentPositionChanged(IBaseNotificationMessageUI message);

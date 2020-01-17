@@ -439,6 +439,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Try to lower the height of the load unit..
+        /// </summary>
+        public static string LoadUnitHeightExceeded {
+            get {
+                return ResourceManager.GetString("LoadUnitHeightExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check the loading unit id on the bay 1. Check that the loading unit presence sensors are working properly. Put the machine in Automatic..
         /// </summary>
         public static string LoadUnitMissingOnBay1 {

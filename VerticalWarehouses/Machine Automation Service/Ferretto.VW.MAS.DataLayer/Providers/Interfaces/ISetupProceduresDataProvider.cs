@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.DataModels;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Ferretto.VW.MAS.DataLayer
@@ -9,7 +10,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         SetupProceduresSet GetAll();
 
-        PositioningProcedure GetBayHeightCheck();
+        PositioningProcedure GetBayHeightCheck(BayNumber bayNumber);
 
         RepeatedTestProcedure GetBeltBurnishingTest();
 
@@ -23,9 +24,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         SetupProcedure GetShutterHeightCheck();
 
-        RepeatedTestProcedure GetShutterTest();
+        RepeatedTestProcedure GetShutterTest(BayNumber bayNumber);
 
         OffsetCalibrationProcedure GetVerticalOffsetCalibration();
+
+        SetupProcedure GetVerticalOriginCalibration();
 
         VerticalResolutionCalibrationProcedure GetVerticalResolutionCalibration();
 
@@ -34,6 +37,8 @@ namespace Ferretto.VW.MAS.DataLayer
         RepeatedTestProcedure IncreasePerformedCycles(RepeatedTestProcedure depositAndPickUpTest);
 
         SetupProcedure MarkAsCompleted(SetupProcedure procedureParameters);
+
+        RepeatedTestProcedure ResetPerformedCycles(RepeatedTestProcedure procedure);
 
         void Update(SetupProceduresSet setupProceduresSet, DataLayerContext dataContext);
 

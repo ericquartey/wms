@@ -1,0 +1,46 @@
+parameters:
+  BuildConfiguration: 'debug'
+  BuildPlatform: 'any cpu'
+
+steps:
+
+- template: ../../Pipelines/azure-pipeline-net4-nuget-template.yml
+  parameters:
+    RestoreSolution: '**/Installer.sln'
+
+
+- template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
+
+
+- task: VSBuild@1
+  displayName: 'Build Installer.sln'
+  inputs:
+    solution: 'VerticalWarehouses/Installer.sln'
+    platform: ${{ parameters.BuildPlatform }}
+    configuration: ${{ parameters.BuildConfiguration }}
+    msbuildArchitecture: x64
+
+
+- task: PublishSymbols@2
+  displayName: 'Publish symbols path'
+  inputs:
+    SearchPattern: 'VerticalWarehouses/Installer/**/bin/**/*.pdb'
+    PublishSymbols: false
+  continueOnError: true
+
+
+- task: CopyFiles@2
+  displayName: 'Copy Files to staging directory'
+  inputs:
+    SourceFolder: '$(system.defaultworkingdirectory)'
+    Contents: 'VerticalWarehouses/Installer/**/bin/${{ parameters.BuildConfiguration }}/**'
+    TargetFolder: '$(build.artifactstagingdirectory)'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Installer'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)/VerticalWarehouses/Installer/Ferretto.VW.Installer/bin/${{ parameters.BuildConfiguration }}/net471'
+    ArtifactName: 'installer'
+
+

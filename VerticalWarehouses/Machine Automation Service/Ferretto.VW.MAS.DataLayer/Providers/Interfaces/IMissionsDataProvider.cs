@@ -32,6 +32,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IEnumerable<Mission> GetAllExecutingMissions();
 
+        IEnumerable<Mission> GetAllMissions();
+
         IEnumerable<Mission> GetAllWmsMissions();
 
         Mission GetById(int id);

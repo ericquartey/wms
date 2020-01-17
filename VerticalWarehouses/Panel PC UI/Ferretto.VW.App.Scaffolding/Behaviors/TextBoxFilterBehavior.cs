@@ -1,15 +1,7 @@
-﻿using Microsoft.Xaml.Behaviors;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
 namespace Ferretto.VW.App.Scaffolding.Behaviors
 {
-
     public abstract class TextBoxFilterBehavior : TextBoxValidationBehavior
     {
         protected override void OnDetaching()
@@ -43,6 +35,5 @@ namespace Ferretto.VW.App.Scaffolding.Behaviors
             }
             e.Handled = !accept;
         }
-
     }
 }

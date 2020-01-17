@@ -1,13 +1,12 @@
-﻿using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources;
-using System.ComponentModel.DataAnnotations;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts
 {
     [Ferretto.VW.MAS.Scaffolding.DataAnnotations.MetadataType(typeof(ShutterManualParameters.Metadata))]
     public partial class ShutterManualParameters
     {
-        class Metadata
+        private class Metadata
         {
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ShutterManualParameters_FeedRate))]
             public double FeedRate { get; set; }

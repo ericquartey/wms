@@ -180,10 +180,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private bool CanShowItemOperations()
         {
-            return
-                !this.IsWaitingForResponse
-                &&
-                this.IsWmsEnabled;
+            return !this.IsWaitingForResponse;
         }
 
         private bool CanShowItemSearch()

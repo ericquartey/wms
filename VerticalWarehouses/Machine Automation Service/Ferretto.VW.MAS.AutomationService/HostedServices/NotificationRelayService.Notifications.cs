@@ -122,6 +122,10 @@ namespace Ferretto.VW.MAS.AutomationService
                 case MessageType.FsmException:
                     await this.OnFsmException(message);
                     break;
+
+                case MessageType.BayLight:
+                    await this.OnBayLight(message);
+                    break;
             }
         }
 

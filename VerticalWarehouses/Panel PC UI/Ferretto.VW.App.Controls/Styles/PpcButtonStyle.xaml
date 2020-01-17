@@ -406,13 +406,28 @@
                                 FlowDirection="LeftToRight">
                             <Grid x:Name="PpcButton_Grid">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition x:Name="Column"
-                                                      Width="Auto" />
+                                    <ColumnDefinition x:Name="Column">
+                                        <ColumnDefinition.Style>
+                                            <Style TargetType="{x:Type ColumnDefinition}">
+                                                <Setter Property="Width" Value="55" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}"
+                                                                 Value="">
+                                                        <Setter Property="Width" Value="6" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}"
+                                                                 Value="{x:Null}">
+                                                        <Setter Property="Width" Value="6" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ColumnDefinition.Style>
+                                    </ColumnDefinition>
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
                                 <Border Name="PpcButtonMenu_Border"
-                                        Margin="0,-2"
+                                        Margin="-2,-1.5"
                                         BorderBrush="{TemplateBinding BorderBrush}"
                                         BorderThickness="6,0,0,0"
                                         Opacity="1"
@@ -423,23 +438,23 @@
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
                                         Background="Transparent">
+                                    <Border.Style>
+                                        <Style TargetType="{x:Type Border}">
+                                            <Setter Property="Border.Visibility" Value="Visible" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}"
+                                                             Value="">
+                                                    <Setter Property="Border.Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}"
+                                                             Value="{x:Null}">
+                                                    <Setter Property="Border.Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
                                     <Grid Grid.Column="0"
                                           Margin="15,0,0,0">
-                                        <Grid.Style>
-                                            <Style TargetType="{x:Type Grid}">
-                                                <Setter Property="Visibility" Value="Visible" />
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}"
-                                                                 Value="">
-                                                        <Setter Property="Visibility" Value="Collapsed" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}"
-                                                                 Value="{x:Null}">
-                                                        <Setter Property="Visibility" Value="Collapsed" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Grid.Style>
                                         <Ellipse Width="38"
                                                  Height="38"
                                                  HorizontalAlignment="Center"
@@ -461,7 +476,7 @@
                                 </Border>
 
                                 <TextBlock Grid.Column="1"
-                                           Margin="10,0"
+                                           Margin="8,0"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center"
                                            FontFamily="{TemplateBinding FontFamily}"
@@ -477,9 +492,8 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsActive" Value="True">
                             <Setter TargetName="PpcButtonMenu_Border" Property="Visibility" Value="Visible" />
-                            <Setter TargetName="PpcButtonMenu_MainBorder" Property="BorderThickness" Value="0,2,2,2" />
+                            <Setter TargetName="PpcButtonMenu_MainBorder" Property="BorderThickness" Value="2,2,2,2" />
                             <Setter TargetName="PpcButtonMenu_Badge" Property="Margin" Value="0,0,0,0" />
-                            <!--<Setter TargetName="Column" Property="Width" Value="55" />-->
                         </Trigger>
                     </ControlTemplate.Triggers>
 
@@ -595,31 +609,6 @@
                                            Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
                                            TextWrapping="Wrap" />
 
-                                <!--<Rectangle Grid.RowSpan="2"
-                                           Grid.ColumnSpan="2"
-                                           Margin="80,0,0,0"
-                                           Opacity="0.8"
-                                           Stroke="{DynamicResource FerrettoBlue}"
-                                           StrokeThickness="25">
-                                    <Rectangle.LayoutTransform>
-                                        <TransformGroup>
-                                            <SkewTransform AngleX="275" AngleY="45" CenterX="0" CenterY="0" />
-                                            <RotateTransform Angle="315" />
-                                        </TransformGroup>
-                                    </Rectangle.LayoutTransform>
-                                    <Rectangle.Style>
-                                        <Style TargetType="{x:Type Rectangle}">
-                                            <Setter Property="Rectangle.Visibility" Value="Collapsed" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsCompleted, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
-                                                             Value="True">
-                                                    <Setter Property="Rectangle.Visibility" Value="Visible" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Rectangle.Style>
-                                </Rectangle>-->
-
                                 <Grid Grid.RowSpan="2"
                                       Grid.ColumnSpan="2">
 
@@ -637,28 +626,30 @@
 
                                     <Rectangle Grid.Row="0"
                                                Grid.Column="0"
-                                               Margin="80,0,0,0"
+                                               Margin="100,22,0,0"
                                                Opacity="0.8"
                                                Stroke="{DynamicResource FerrettoBlue}"
                                                StrokeThickness="25">
                                         <Rectangle.LayoutTransform>
                                             <TransformGroup>
-                                                <SkewTransform AngleX="275" AngleY="45" CenterX="0" CenterY="0" />
-                                                <RotateTransform Angle="315" />
+                                                <SkewTransform AngleX="275" AngleY="37" CenterX="0.5" CenterY="0.5" />
+                                                <RotateTransform Angle="300" />
                                             </TransformGroup>
                                         </Rectangle.LayoutTransform>
                                     </Rectangle>
 
                                     <TextBlock Grid.Row="0"
                                                Grid.Column="0"
-                                               Margin="0,0,4,4"
+                                               Margin="0,0,-2,4"
                                                HorizontalAlignment="Right"
                                                VerticalAlignment="Bottom"
+                                               FontFamily="{DynamicResource VWAPP_TitleFont}"
                                                FontSize="14"
+                                               FontWeight="Light"
                                                Text="Completato">
                                         <TextBlock.LayoutTransform>
                                             <TransformGroup>
-                                                <RotateTransform Angle="310" />
+                                                <RotateTransform Angle="296" />
                                             </TransformGroup>
                                         </TextBlock.LayoutTransform>
                                     </TextBlock>
@@ -671,5 +662,63 @@
 
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <Style x:Key="WizardIntoButton"
+           BasedOn="{StaticResource {x:Type controls:PpcButton}}"
+           TargetType="{x:Type controls:PpcButton}">
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="WizardConfirmButton"
+           BasedOn="{StaticResource WizardIntoButton}"
+           TargetType="{x:Type controls:PpcButton}">
+        <Setter Property="Background" Value="{DynamicResource FerrettoBlue}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoPureWhite}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="BorderTimeLine"
+           TargetType="{x:Type Border}">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoLightGray}" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="CornerRadius" Value="2" />
+    </Style>
+    <Style x:Key="BorderTimeLineCirle"
+           TargetType="{x:Type Border}">
+        <Setter Property="Width" Value="40" />
+        <Setter Property="Height" Value="40" />
+        <Setter Property="Background" Value="{DynamicResource PpcBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoLightGray}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
+        <Setter Property="CornerRadius" Value="20" />
+    </Style>
+    <Style x:Key="BorderTimeLineCirleTextBlock"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Margin" Value="-1,-1,0,0" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{DynamicResource FerrettoLightGray}" />
+    </Style>
+    <Style x:Key="BorderTimeLinePath"
+           TargetType="{x:Type Path}">
+        <Setter Property="Width" Value="26" />
+        <Setter Property="Height" Value="26" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="Data" Value="M18,0 L0,10 18,20" />
+        <Setter Property="Fill" Value="{DynamicResource PpcBackground}" />
+        <Setter Property="Stretch" Value="Fill" />
+        <Setter Property="Stroke" Value="{DynamicResource PpcBorderBrush}" />
+        <Setter Property="StrokeThickness" Value="2" />
     </Style>
 </ResourceDictionary>

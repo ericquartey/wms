@@ -4,6 +4,8 @@
     {
         #region Properties
 
+        public bool IsCompleted { get; set; }
+
         public double LowerBound { get; set; }
 
         public double Offset { get; set; }

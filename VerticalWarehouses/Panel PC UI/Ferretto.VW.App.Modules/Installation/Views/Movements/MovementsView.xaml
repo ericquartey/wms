@@ -148,7 +148,7 @@
 
                         <ctrls:PpcSpinEdit Grid.Column="2"
                                            Height="60"
-                                           MinWidth="210"
+                                           MinWidth="208"
                                            Margin="5"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center"
@@ -196,10 +196,16 @@
                                             Content="{x:Static res:InstallationApp.GoToBay}"
                                             IsBusy="{Binding IsElevatorMovingToBay}" />
 
-                        <StackPanel Grid.Column="2"
-                                    Grid.ColumnSpan="2"
-                                    Orientation="Horizontal">
-                            <controls:PpcButton Width="100"
+                        <Grid Grid.Column="2"
+                              Grid.ColumnSpan="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <controls:PpcButton Grid.Column="0"
+                                                Width="99"
                                                 Margin="5"
                                                 HorizontalAlignment="Center"
                                                 Command="{Binding SelectBayPositionDownCommand}"
@@ -208,7 +214,8 @@
                                                 IsEnabled="{Binding IsPositionUpSelected}"
                                                 Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
 
-                            <controls:PpcButton Width="100"
+                            <controls:PpcButton Grid.Column="1"
+                                                Width="99"
                                                 Margin="5"
                                                 HorizontalAlignment="Center"
                                                 Command="{Binding SelectBayPositionUpCommand}"
@@ -217,7 +224,8 @@
                                                 IsEnabled="{Binding IsPositionDownSelected}"
                                                 Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
 
-                            <controls:PpcButton Width="60"
+                            <controls:PpcButton Grid.Column="2"
+                                                Width="59"
                                                 Margin="5"
                                                 HorizontalAlignment="Center"
                                                 HorizontalContentAlignment="Center"
@@ -238,7 +246,7 @@
                                 </controls:PpcButton.Style>
                             </controls:PpcButton>
 
-                        </StackPanel>
+                        </Grid>
                     </Grid>
 
                     <Grid Grid.Row="2"

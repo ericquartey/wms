@@ -27,8 +27,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
-        //private bool bayIsMultiPosition;
-
         private SubscriptionToken fsmExceptionToken;
 
         private bool isExecutingProcedure;
@@ -67,14 +65,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         }
 
         #endregion
-
-        //public Bay Bay { get; private set; }
-
-        //public bool BayIsMultiPosition
-        //{
-        //    get => this.bayIsMultiPosition;
-        //    set => this.SetProperty(ref this.bayIsMultiPosition, value);
-        //}
 
         #region Properties
 
@@ -186,14 +176,20 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             ??
             (this.selectBayPositionDownCommand = new DelegateCommand(
                 this.SelectBayPositionDown,
-                () => !this.IsExecutingProcedure && this.IsPositionUpSelected));
+                () => !this.IsExecutingProcedure &&
+                      this.IsPositionUpSelected &&
+                      this.MachineStatus.LoadingUnitPositionUpInBay is null &&
+                      this.MachineStatus.LoadingUnitPositionDownInBay is null));
 
         public ICommand SelectBayPositionUpCommand =>
             this.selectBayPositionUpCommand
             ??
             (this.selectBayPositionUpCommand = new DelegateCommand(
                 this.SelectBayPositionUp,
-                () => !this.IsExecutingProcedure && !this.IsPositionUpSelected));
+                () => !this.IsExecutingProcedure &&
+                      !this.IsPositionUpSelected &&
+                      this.MachineStatus.LoadingUnitPositionUpInBay is null &&
+                      this.MachineStatus.LoadingUnitPositionDownInBay is null));
 
         public ICommand StartCommand =>
                this.startCommand
@@ -223,16 +219,19 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             base.Disappear();
 
-            /*
-             * Avoid unsubscribing in case of navigation to error page.
-             * We may need to review this behaviour.
-             *
-            this.subscriptionToken?.Dispose();
-            this.subscriptionToken = null;
+            if (this.moveLoadingUnitToken != null)
+            {
+                this.EventAggregator.GetEvent<NotificationEventUI<MoveLoadingUnitMessageData>>().Unsubscribe(this.moveLoadingUnitToken);
+                this.moveLoadingUnitToken?.Dispose();
+                this.moveLoadingUnitToken = null;
+            }
 
-            this.sensorsToken?.Dispose();
-            this.sensorsToken = null;
-            */
+            if (this.fsmExceptionToken != null)
+            {
+                this.EventAggregator.GetEvent<NotificationEventUI<FsmExceptionMessageData>>().Unsubscribe(this.fsmExceptionToken);
+                this.fsmExceptionToken?.Dispose();
+                this.fsmExceptionToken = null;
+            }
         }
 
         public MAS.AutomationService.Contracts.LoadingUnitLocation GetLoadingUnitSource(bool isPositionDownSelected)
@@ -310,6 +309,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.IsPositionDownSelected = true;
             this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
             this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
+
+            this.RaiseCanExecuteChanged();
         }
 
         public virtual void SelectBayPositionUp()
@@ -317,6 +318,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.IsPositionUpSelected = true;
             this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
             this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
+
+            this.RaiseCanExecuteChanged();
         }
 
         public virtual Task StartAsync()

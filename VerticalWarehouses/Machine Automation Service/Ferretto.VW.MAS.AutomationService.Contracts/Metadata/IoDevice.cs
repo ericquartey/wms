@@ -1,12 +1,12 @@
-﻿using Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts
 {
     [Ferretto.VW.MAS.Scaffolding.DataAnnotations.MetadataType(typeof(IoDevice.Metadata))]
     public partial class IoDevice
     {
-        class Metadata
+        private class Metadata
         {
             [Editable(false)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.IoDevice_Index))]
@@ -23,5 +23,4 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public int TcpPort { get; set; }
         }
     }
-
 }

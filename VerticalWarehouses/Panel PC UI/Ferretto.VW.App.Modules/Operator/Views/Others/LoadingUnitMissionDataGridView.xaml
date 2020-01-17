@@ -136,7 +136,7 @@
                 </DataGridTextColumn>
                 <DataGridTemplateColumn x:Name="Column3"
                                             Width="1*"
-                                            Header="{x:Static Res:OperatorApp.MissionState}">
+                                            Header="{x:Static Res:OperatorApp.MissionStep}">
                     <DataGridTemplateColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -160,67 +160,67 @@
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding State}">
                                                 <DataTrigger.Value>
-                                                    <model:MissionState>NotDefined</model:MissionState>
+                                                    <model:MissionStep>NotDefined</model:MissionStep>
                                                 </DataTrigger.Value>
                                                 <Setter Property="Text" Value="{x:Static Res:OperatorApp.MisionStateNotDefined}" />
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding State}">
                                                 <DataTrigger.Value>
-                                                    <model:MissionState>New</model:MissionState>
+                                                    <model:MissionStep>New</model:MissionStep>
                                                 </DataTrigger.Value>
                                                 <Setter Property="Text" Value="{x:Static Res:OperatorApp.MissionStateNew}" />
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding State}">
                                                 <DataTrigger.Value>
-                                                    <model:MissionState>Start</model:MissionState>
+                                                    <model:MissionStep>Start</model:MissionStep>
                                                 </DataTrigger.Value>
                                                 <Setter Property="Text" Value="{x:Static Res:OperatorApp.MissionStateStart}" />
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding State}">
                                                 <DataTrigger.Value>
-                                                    <model:MissionState>LoadElevator</model:MissionState>
+                                                    <model:MissionStep>LoadElevator</model:MissionStep>
                                                 </DataTrigger.Value>
                                                 <Setter Property="Text" Value="{x:Static Res:OperatorApp.MissionStateLoadElevator}" />
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding State}">
                                                 <DataTrigger.Value>
-                                                    <model:MissionState>ToTarget</model:MissionState>
+                                                    <model:MissionStep>ToTarget</model:MissionStep>
                                                 </DataTrigger.Value>
                                                 <Setter Property="Text" Value="{x:Static Res:OperatorApp.MissionStateToTarget}" />
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding State}">
                                                 <DataTrigger.Value>
-                                                    <model:MissionState>DepositUnit</model:MissionState>
+                                                    <model:MissionStep>DepositUnit</model:MissionStep>
                                                 </DataTrigger.Value>
                                                 <Setter Property="Text" Value="{x:Static Res:OperatorApp.MissionStateDepositUnit}" />
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding State}">
                                                 <DataTrigger.Value>
-                                                    <model:MissionState>WaitPick</model:MissionState>
+                                                    <model:MissionStep>WaitPick</model:MissionStep>
                                                 </DataTrigger.Value>
                                                 <Setter Property="Text" Value="{x:Static Res:OperatorApp.MissionStateWaitPick}" />
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding State}">
                                                 <DataTrigger.Value>
-                                                    <model:MissionState>BayChain</model:MissionState>
+                                                    <model:MissionStep>BayChain</model:MissionStep>
                                                 </DataTrigger.Value>
                                                 <Setter Property="Text" Value="{x:Static Res:OperatorApp.MissionStateBayChain}" />
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding State}">
                                                 <DataTrigger.Value>
-                                                    <model:MissionState>CloseShutter</model:MissionState>
+                                                    <model:MissionStep>CloseShutter</model:MissionStep>
                                                 </DataTrigger.Value>
                                                 <Setter Property="Text" Value="{x:Static Res:OperatorApp.MissionStateCloseShutter}" />
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding State}">
                                                 <DataTrigger.Value>
-                                                    <model:MissionState>End</model:MissionState>
+                                                    <model:MissionStep>End</model:MissionStep>
                                                 </DataTrigger.Value>
                                                 <Setter Property="Text" Value="{x:Static Res:OperatorApp.MissionStateEnd}" />
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding State}">
                                                 <DataTrigger.Value>
-                                                    <model:MissionState>Error</model:MissionState>
+                                                    <model:MissionStep>Error</model:MissionStep>
                                                 </DataTrigger.Value>
                                                 <Setter Property="Text" Value="{x:Static Res:OperatorApp.MissionStateError}" />
                                             </DataTrigger>

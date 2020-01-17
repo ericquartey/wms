@@ -28,6 +28,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly Services.IDialogService dialogService;
 
+        private readonly IInstallationHubClient installationHubClient;
+
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         private readonly IMachineBaysWebService machineBaysWebService;
@@ -91,7 +93,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             Services.IDialogService dialogService,
             IMachineBaysWebService machineBaysWebService,
             IMachineMissionOperationsWebService machineMissionOperationsWebService,
-            IBayManager bayManagerService)
+            IBayManager bayManagerService,
+            IInstallationHubClient installationHubClient)
             : base(PresentationMode.Installer)
         {
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
@@ -103,6 +106,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.machineMissionOperationsWebService = machineMissionOperationsWebService ?? throw new ArgumentNullException(nameof(machineMissionOperationsWebService));
+            this.installationHubClient = installationHubClient ?? throw new ArgumentNullException(nameof(installationHubClient));
         }
 
         #endregion
@@ -176,7 +180,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public ICommand ResetCommand =>
-                    this.resetCommand
+            this.resetCommand
             ??
             (this.resetCommand = new DelegateCommand(
                async () => await this.ResetCommandAsync(),
@@ -273,6 +277,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected override async Task OnDataRefreshAsync()
         {
+            this.IsLightActive = await this.machineBaysWebService.GetLightAsync();
+
             await this.SensorsService.RefreshAsync(true);
         }
 
@@ -409,6 +415,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.RaisePropertyChanged(nameof(this.IsMovementsGuided));
             this.RaisePropertyChanged(nameof(this.IsMovementsManual));
+        }
+
+        private async Task OnBayLightChangedAsync(object sender, BayLightChangedEventArgs e)
+        {
+            if (this.Bay?.Number == e.BayNumber)
+            {
+                this.IsLightActive = e.IsLightOn;
+                this.LightIcon = !this.IsLightActive ? "LightbulbOnOutline" : "LightbulbOutline";
+            }
         }
 
         private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
@@ -551,6 +566,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task ResetCommandAsync()
         {
+            this.IsKeyboardOpened = true;
+
             var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, this.Title, DialogType.Question, DialogButtons.YesNo);
             if (messageBoxResult is DialogResult.Yes)
             {
@@ -560,9 +577,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     await this.machineMissionOperationsWebService.ResetMachineAsync();
 
-                    this.RaiseCanExecuteChanged();
-
                     this.ShowNotification(InstallationApp.ResetMachineSuccessfull, Services.Models.NotificationSeverity.Success);
+
+                    this.RaiseCanExecuteChanged();
                 }
                 catch (Exception ex)
                 {
@@ -570,8 +587,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
                 finally
                 {
+                    this.IsKeyboardOpened = false;
+
                     this.IsWaitingForResponse = false;
                 }
+            }
+            else
+            {
+                this.IsKeyboardOpened = false;
             }
         }
 
@@ -675,6 +698,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         ThreadOption.UIThread,
                         false,
                         m => this.IsVisible);
+
+            this.installationHubClient.BayLightChanged += async (sender, e) => await this.OnBayLightChangedAsync(sender, e);
         }
 
         #endregion

@@ -12,11 +12,11 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.MachineManager.MissionMove
 {
-    public class MissionMoveWaitPickState : MissionMoveBase
+    public class MissionMoveWaitPickStep : MissionMoveBase
     {
         #region Constructors
 
-        public MissionMoveWaitPickState(Mission mission,
+        public MissionMoveWaitPickStep(Mission mission,
             IServiceProvider serviceProvider,
             IEventAggregator eventAggregator)
             : base(mission, serviceProvider, eventAggregator)
@@ -33,8 +33,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command)
         {
-            this.Mission.RestoreState = MissionState.NotDefined;
-            this.Mission.State = MissionState.WaitPick;
+            this.Mission.RestoreStep = MissionStep.NotDefined;
+            this.Mission.Step = MissionStep.WaitPick;
             this.Mission.StopReason = StopRequestReason.NoReason;
             this.MissionsDataProvider.Update(this.Mission);
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
@@ -51,11 +51,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.RestoreConditions = false;
             this.MissionsDataProvider.Update(this.Mission);
 
-            bool isEject = this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadUnit
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation;
-            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.State.ToString(), isEject, MessageStatus.OperationExecuting);
+            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationExecuting);
             return true;
         }
 
@@ -83,7 +79,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                         this.BaysDataProvider.RemoveLoadingUnit(lu);
 
-                        var newStep = new MissionMoveEndState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                         newStep.OnEnter(null);
                     }
                     else
@@ -104,7 +100,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             this.Mission.LoadUnitDestination = messageData.Destination;
                         }
                         this.MissionsDataProvider.Update(this.Mission);
-                        var newStep = new MissionMoveStartState(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        var newStep = new MissionMoveStartStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                         newStep.OnEnter(null);
                     }
                 }

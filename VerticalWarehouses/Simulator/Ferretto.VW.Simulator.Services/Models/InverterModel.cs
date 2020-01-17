@@ -512,7 +512,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public bool IsShutterHalf => this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value && !this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value;
 
-        public bool IsShutterOpened => this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value && this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value;
+        public bool IsShutterOpened => !this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value && this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value;
 
         public bool IsStartedOnBoard { get; set; }
 
@@ -1037,12 +1037,12 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
             else if (this.AxisPosition >= 10)
             {
-                this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value = true;
+                this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value = false;
                 this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value = true;
             }
             else
             {
-                this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value = false;
+                this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value = true;
                 this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value = true;
             }
 

@@ -12,7 +12,7 @@
 
         OUT,
 
-        Test,
+        FullTest,
 
         Compact
     }

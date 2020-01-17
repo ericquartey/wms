@@ -26,10 +26,6 @@ namespace Ferretto.VW.MAS.DataModels
 
         public MissionErrorMovements ErrorMovements { get; set; }
 
-        public MissionState RestoreState { get; set; }
-
-        public MissionState State { get; set; }
-
         public int? LoadUnitCellSourceId { get; set; }
 
         public LoadingUnitLocation LoadUnitDestination { get; set; }
@@ -50,7 +46,11 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool RestoreConditions { get; set; }
 
+        public MissionStep RestoreStep { get; set; }
+
         public MissionStatus Status { get; set; }
+
+        public MissionStep Step { get; set; }
 
         public StopRequestReason StopReason { get; set; }
 
@@ -64,20 +64,16 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsMissionToRestore()
         {
-            return this.RestoreState != MissionState.NotDefined;
+            return this.RestoreStep != MissionStep.NotDefined;
         }
 
         public bool IsRestoringType()
         {
             return this.MissionType == MissionType.WMS
                 || this.MissionType == MissionType.IN
-#if TEST_ERROR_STATE
                 || this.MissionType == MissionType.Manual
-#endif
                 || this.MissionType == MissionType.OUT;
         }
-
-        #endregion
 
         public override string ToString()
         {
@@ -86,11 +82,11 @@ namespace Ferretto.VW.MAS.DataModels
                 $"LoadUnitId={this.LoadUnitId}; " +
                 $"WmsId={this.WmsId}; " +
                 $"TargetBay={this.TargetBay}; " +
-                $"State={this.State}; " +
+                $"Step={this.Step}; " +
                 $"Source={this.LoadUnitSource}; " +
                 $"Destination={this.LoadUnitDestination}; " +
                 $"CellSourceId={this.LoadUnitCellSourceId}; " +
-                $"RestoreState={this.RestoreState}; " +
+                $"RestoreStep={this.RestoreStep}; " +
                 $"MissionType={this.MissionType}; " +
                 $"NeedHomingAxis={this.NeedHomingAxis}; " +
                 $"NeedMovingBackward={this.NeedMovingBackward}; " +
@@ -108,5 +104,7 @@ namespace Ferretto.VW.MAS.DataModels
                 $"StopReason={this.StopReason}; ";
             return returnString;
         }
+
+        #endregion
     }
 }

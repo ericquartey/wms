@@ -115,6 +115,15 @@ namespace Ferretto.VW.MAS.AutomationService
             await this.operatorHub.Clients.All.BayStatusChanged(data.BayNumber, data.BayStatus);
         }
 
+        private async Task OnBayLight(NotificationMessage receivedMessage)
+        {
+            if (receivedMessage.Status == MessageStatus.OperationEnd
+                && this.machineProvider.IsBayLightOn.ContainsKey(receivedMessage.RequestingBay))
+            {
+                await this.installationHub.Clients.All.BayLightChanged(this.machineProvider.IsBayLightOn[receivedMessage.RequestingBay], receivedMessage.RequestingBay);
+            }
+        }
+
         private async Task OnChangeRunningState(NotificationMessage receivedMessage)
         {
             if (receivedMessage.Data is ChangeRunningStateMessageData data)

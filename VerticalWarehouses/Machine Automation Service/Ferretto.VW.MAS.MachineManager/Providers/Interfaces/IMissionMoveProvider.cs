@@ -20,6 +20,8 @@ namespace Ferretto.VW.MAS.MachineManager.Providers.Interfaces
 
         bool StopMission(int missionId, StopRequestReason stopRequest, IServiceProvider serviceProvider);
 
+        bool TestMission(int missionId, CommandMessage command, IServiceProvider serviceProvider);
+
         bool TryCreateMachineMission(CommandMessage command, IServiceProvider serviceProvider, out Mission mission);
 
         #endregion

@@ -4,7 +4,17 @@
     {
         #region Properties
 
-        public PositioningProcedure BayHeightCheck { get; set; }
+        public PositioningProcedure Bay1HeightCheck { get; set; }
+
+        public RepeatedTestProcedure Bay1ShutterTest { get; set; }
+
+        public PositioningProcedure Bay2HeightCheck { get; set; }
+
+        public RepeatedTestProcedure Bay2ShutterTest { get; set; }
+
+        public PositioningProcedure Bay3HeightCheck { get; set; }
+
+        public RepeatedTestProcedure Bay3ShutterTest { get; set; }
 
         public RepeatedTestProcedure BeltBurnishingTest { get; set; }
 
@@ -18,9 +28,9 @@
 
         public SetupProcedure ShutterHeightCheck { get; set; }
 
-        public RepeatedTestProcedure ShutterTest { get; set; }
-
         public OffsetCalibrationProcedure VerticalOffsetCalibration { get; set; }
+
+        public SetupProcedure VerticalOriginCalibration { get; set; }
 
         public VerticalResolutionCalibrationProcedure VerticalResolutionCalibration { get; set; }
 

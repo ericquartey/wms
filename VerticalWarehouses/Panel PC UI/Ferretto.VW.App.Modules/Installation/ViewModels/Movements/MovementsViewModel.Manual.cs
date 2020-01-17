@@ -294,11 +294,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                this.IsLightActive = !this.IsLightActive;
-                this.LightIcon = !this.IsLightActive ? "LightbulbOnOutline" : "LightbulbOutline";
-                await this.machineBaysWebService.LightAsync(this.IsLightActive);
+                await this.machineBaysWebService.SetLightAsync(!this.IsLightActive);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
@@ -509,14 +507,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.CanMoveElevatorUp = (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
                                      !this.IsMovingElevatorDown && !this.isMovingElevatorForwards && !this.IsMovingElevatorBackwards &&
-                                     (this.SensorsService?.IsZeroChain ?? false) &&
+                                     ((this.SensorsService?.IsZeroChain ?? false) || this.SensorsService.IsLoadingUnitOnElevator) &&
                                      !this.IsCarouselOpening && !this.IsCarouselOpening &&
                                      !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
                                      !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
 
             this.CanMoveElevatorDown = (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
                                        !this.IsMovingElevatorUp && !this.isMovingElevatorForwards && !this.IsMovingElevatorBackwards &&
-                                       (this.SensorsService?.IsZeroChain ?? false) &&
+                                       ((this.SensorsService?.IsZeroChain ?? false) || this.SensorsService.IsLoadingUnitOnElevator) &&
                                        !this.IsCarouselOpening && !this.IsCarouselOpening &&
                                        !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
                                        !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;

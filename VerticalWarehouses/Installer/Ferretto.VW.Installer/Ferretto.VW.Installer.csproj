@@ -7,7 +7,6 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <StartupObject>Ferretto.VW.Installer.App</StartupObject>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -68,6 +67,9 @@
 
   <ItemGroup>
     <None Update="App.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Properties\app.manifest">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="steps.json">

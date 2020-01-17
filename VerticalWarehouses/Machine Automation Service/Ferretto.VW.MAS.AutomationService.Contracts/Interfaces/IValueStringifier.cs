@@ -6,5 +6,4 @@ namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
     {
         string Stringify(object value, CultureInfo culture);
     }
-
 }

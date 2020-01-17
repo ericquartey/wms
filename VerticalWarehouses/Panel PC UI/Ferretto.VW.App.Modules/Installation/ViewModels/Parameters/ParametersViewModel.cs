@@ -61,9 +61,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isBusy, value))
                 {
-                    ((DelegateCommand)this.goToExport).RaiseCanExecuteChanged();
-                    ((DelegateCommand)this.goToImport).RaiseCanExecuteChanged();
-                    ((DelegateCommand)this.saveCommand).RaiseCanExecuteChanged();
+                    this.goToExport?.RaiseCanExecuteChanged();
+                    this.goToImport?.RaiseCanExecuteChanged();
+                    this.saveCommand?.RaiseCanExecuteChanged();
                     this.IsBackNavigationAllowed = !this.isBusy;
                 }
             }
@@ -81,14 +81,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            await base.OnAppearedAsync();
-
             try
             {
                 this.IsBusy = true;
                 this.IsBackNavigationAllowed = true;
                 this.configuration = await this.machineConfigurationWebService.GetAsync();
                 this.RaisePropertyChanged(nameof(this.Configuration));
+
+                await base.OnAppearedAsync();
             }
             catch (Exception ex)
             {
@@ -120,8 +120,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             try
             {
                 this.IsBusy = true;
-
-                this.ClearNotifications();
 
                 await this.machineConfigurationWebService.SetAsync(this.configuration);
 

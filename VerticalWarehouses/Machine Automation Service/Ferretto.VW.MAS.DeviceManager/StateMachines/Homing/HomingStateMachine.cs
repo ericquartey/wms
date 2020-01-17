@@ -274,7 +274,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                         {
                             if (bay.Shutter != null)
                             {
-                                var shutterPosition = this.machineData.MachineSensorStatus.GetShutterPosition(BayNumber.BayOne);
+                                var shutterInverter = bay.Shutter.Inverter.Index;
+                                var shutterPosition = this.machineData.MachineSensorStatus.GetShutterPosition(shutterInverter);
                                 if (shutterPosition == ShutterPosition.Intermediate || shutterPosition == ShutterPosition.Opened)
                                 {
                                     ok = false;

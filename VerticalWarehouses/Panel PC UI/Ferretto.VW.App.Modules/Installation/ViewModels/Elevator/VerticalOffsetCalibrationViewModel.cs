@@ -343,6 +343,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            if (this.stepChangedToken != null)
+            {
+                this.EventAggregator.GetEvent<StepChangedPubSubEvent>().Unsubscribe(this.stepChangedToken);
+                this.stepChangedToken?.Dispose();
+                this.stepChangedToken = null;
+            }
+        }
+
         public override async Task OnAppearedAsync()
         {
             this.SubscribeToEvents();

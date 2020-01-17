@@ -71,6 +71,7 @@
 
   <ItemGroup>
     <None Remove="Controls\PropertyEditor.xaml" />
+    <None Remove="Styles\ComboBox.xaml" />
   </ItemGroup>
 
   <ItemGroup>

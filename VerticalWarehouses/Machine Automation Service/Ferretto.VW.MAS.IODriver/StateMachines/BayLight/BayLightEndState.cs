@@ -5,6 +5,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.IODriver.StateMachines.BayLight
@@ -50,7 +51,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.BayLight
         public override void Start()
         {
             var endNotification = new FieldNotificationMessage(
-                null,
+                new BayLightFieldMessageData(this.enable),
                 $"Bay light={this.enable} completed",
                 FieldMessageActor.IoDriver,
                 FieldMessageActor.IoDriver,

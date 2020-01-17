@@ -130,7 +130,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             // check #4: the shutter must be completely closed or open depending if mission is guided or not
-            var shutterPosition = this.machineResourcesProvider.GetShutterPosition(bayNumber);
+            var shutterInverter = this.baysDataProvider.GetShutterInverterIndex(bayNumber);
+            var shutterPosition = this.machineResourcesProvider.GetShutterPosition(shutterInverter);
             if (shutterPosition != ShutterPosition.NotSpecified)
             {
                 if (isGuided)
@@ -338,7 +339,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             // check #4: the shutter must be completely closed or open depending if mission is guided or not
-            var shutterPosition = this.machineResourcesProvider.GetShutterPosition(bayNumber);
+            var shutterInverter = this.baysDataProvider.GetShutterInverterIndex(bayNumber);
+            var shutterPosition = this.machineResourcesProvider.GetShutterPosition(shutterInverter);
             if (shutterPosition != ShutterPosition.NotSpecified)
             {
                 if (isGuided)
@@ -958,6 +960,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.ElevatorBay);
         }
 
+        public void ResetBeltBurnishing()
+        {
+            var procedureParameters = this.setupProceduresDataProvider.GetBeltBurnishingTest();
+
+            this.setupProceduresDataProvider.ResetPerformedCycles(procedureParameters);
+        }
+
         public void RunTorqueCurrentSampling(
             double displacement,
             double netWeight,
@@ -1048,11 +1057,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         }
 
         public void StartBeltBurnishing(
-                            double upperBoundPosition,
-                    double lowerBoundPosition,
-                    int delayStart,
-                    BayNumber requestingBay,
-                    MessageActor sender)
+                        double upperBoundPosition,
+                double lowerBoundPosition,
+                int delayStart,
+                BayNumber requestingBay,
+                MessageActor sender)
         {
             if (upperBoundPosition <= 0)
             {

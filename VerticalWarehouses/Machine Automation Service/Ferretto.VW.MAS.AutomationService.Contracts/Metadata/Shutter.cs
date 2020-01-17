@@ -1,17 +1,17 @@
-﻿using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources;
-using System.ComponentModel.DataAnnotations;
+using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts
 {
     [Ferretto.VW.MAS.Scaffolding.DataAnnotations.MetadataType(typeof(Shutter.Metadata))]
     public partial class Shutter
     {
-        class Metadata
+        private class Metadata
         {
-            [Category(ResourceType = typeof(Vertimag), Category =nameof(Vertimag.Shutter_AssistedMovements))]
+            [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.Shutter_AssistedMovements))]
             public ShutterManualParameters AssistedMovements { get; set; }
-            
+
             public Inverter Inverter { get; set; }
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.Shutter_ManualMovements))]

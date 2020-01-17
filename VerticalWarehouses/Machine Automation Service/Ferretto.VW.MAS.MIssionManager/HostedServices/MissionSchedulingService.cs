@@ -11,6 +11,7 @@ using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.MachineManager;
 using Ferretto.VW.MAS.MachineManager.MissionMove;
+using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
 using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
@@ -225,28 +226,39 @@ namespace Ferretto.VW.MAS.MissionManager
             var missions = missionsDataProvider.GetAllExecutingMissions().ToList();
             foreach (var mission in missions)
             {
-                if (mission.RestoreState == MissionState.NotDefined)
+                if (mission.RestoreStep == MissionStep.NotDefined)
                 {
-                    mission.RestoreState = mission.State;
+                    mission.RestoreStep = mission.Step;
                 }
-                mission.State = MissionState.Error;
-                if (mission.RestoreState == MissionState.BayChain)
+                IMissionMoveBase newStep;
+
+                if (mission.RestoreStep == MissionStep.BayChain)
                 {
                     mission.NeedHomingAxis = Axis.BayChain;
+                    newStep = new MissionMoveErrorStep(mission, serviceProvider, eventAggregator);
                 }
-                else if (mission.RestoreState == MissionState.LoadElevator
-                    || mission.RestoreState == MissionState.DepositUnit
-                    )
+                else if (mission.RestoreStep == MissionStep.LoadElevator)
                 {
                     mission.NeedMovingBackward = true;
                     mission.NeedHomingAxis = Axis.Horizontal;
+                    newStep = new MissionMoveErrorLoadStep(mission, serviceProvider, eventAggregator);
                 }
-                else if (mission.RestoreState == MissionState.ToTarget)
+                else if (mission.RestoreStep == MissionStep.DepositUnit)
+                {
+                    mission.NeedMovingBackward = true;
+                    mission.NeedHomingAxis = Axis.Horizontal;
+                    newStep = new MissionMoveErrorDepositStep(mission, serviceProvider, eventAggregator);
+                }
+                else if (mission.RestoreStep == MissionStep.ToTarget)
                 {
                     mission.NeedHomingAxis = Axis.Horizontal;
+                    newStep = new MissionMoveErrorStep(mission, serviceProvider, eventAggregator);
                 }
-                var state = new MissionMoveErrorState(mission, serviceProvider, eventAggregator);
-                state.OnEnter(null);
+                else
+                {
+                    newStep = new MissionMoveErrorStep(mission, serviceProvider, eventAggregator);
+                }
+                newStep.OnEnter(null);
             }
         }
 
@@ -422,7 +434,22 @@ namespace Ferretto.VW.MAS.MissionManager
             try
             {
                 var mission = missionsDataProvider.GetById(luData.MissionId.Value);
-                if (!luData.DestinationCellId.HasValue)
+                if (luData.Destination == LoadingUnitLocation.Elevator
+                    && !mission.WmsId.HasValue)
+                {
+                    if (luData.Source != LoadingUnitLocation.Cell)
+                    {
+                        var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                        var bay = baysDataProvider.GetByLoadingUnitLocation(luData.Source);
+                        if (bay.CurrentMission != null)
+                        {
+                            baysDataProvider.ClearMission(bay.Number);
+                            missionsDataProvider.Complete(bay.CurrentMission.Id);
+                        }
+                    }
+                    missionsDataProvider.Complete(mission.Id);
+                }
+                else if (!luData.DestinationCellId.HasValue)
                 // loading unit to bay mission
                 {
                     var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();

@@ -108,7 +108,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public bool MoveTo(ShutterPosition targetPosition, BayNumber bayNumber, MessageActor sender)
         {
             var direction = ShutterMovementDirection.NotSpecified;
-            var position = this.sensorsProvider.GetShutterPosition(bayNumber);
+            var shutterInverter = this.baysDataProvider.GetShutterInverterIndex(bayNumber);
+            var position = this.sensorsProvider.GetShutterPosition(shutterInverter);
             switch (targetPosition)
             {
                 case ShutterPosition.Closed:
@@ -194,6 +195,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.None);
 
             return true;
+        }
+
+        public void ResetTest(BayNumber bayNumber)
+        {
+            var procedureParameters = this.setupProceduresDataProvider.GetShutterTest(bayNumber);
+
+            this.setupProceduresDataProvider.ResetPerformedCycles(procedureParameters);
         }
 
         public void RunTest(int delayInSeconds, int testCycleCount, BayNumber bayNumber, MessageActor sender)

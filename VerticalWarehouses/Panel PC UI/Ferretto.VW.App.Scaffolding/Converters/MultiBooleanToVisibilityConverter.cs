@@ -1,20 +1,35 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
 
 namespace Ferretto.VW.App.Scaffolding.Converters
 {
     public class MultiBooleanToVisibilityConverter : IMultiValueConverter
     {
+        #region Methods
+
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            bool finalValue = true;
+            string logicalOperaror = System.Convert.ToString(parameter, culture) ?? "And";
+            bool isLogicOr = string.Equals(logicalOperaror, "Or", StringComparison.OrdinalIgnoreCase);
+
+            // choose the value that better fits the least-probable result:
+            // 'Or' means: 'at least 1 true' (start with false and check for a true that breaks the loop)
+            // 'And' means: 'Not even 1 false' (start with true and check for a false that breaks the loop)
+            bool finalValue = isLogicOr ? false : true;
             if (values != null)
             {
                 foreach (var value in values)
                 {
-                    if (value.Equals(false))
+                    if (isLogicOr)
+                    {
+                        if (value.Equals(true))
+                        {
+                            finalValue = true;
+                            break;
+                        }
+                    }
+                    else if (value.Equals(false))
                     {
                         finalValue = false;
                         break;
@@ -29,5 +44,7 @@ namespace Ferretto.VW.App.Scaffolding.Converters
         {
             throw new NotSupportedException();
         }
+
+        #endregion Methods
     }
 }

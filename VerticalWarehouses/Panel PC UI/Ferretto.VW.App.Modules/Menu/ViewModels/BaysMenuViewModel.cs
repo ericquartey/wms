@@ -19,6 +19,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
     {
         #region Fields
 
+        private readonly IMachineSetupStatusWebService machineSetupStatusWebService;
+
         private DelegateCommand bayControlCommand;
 
         private DelegateCommand bayHeightCommand;
@@ -29,9 +31,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Constructors
 
-        public BaysMenuViewModel()
+        public BaysMenuViewModel(
+            IMachineSetupStatusWebService machineSetupStatusWebService)
             : base()
         {
+            this.machineSetupStatusWebService = machineSetupStatusWebService ?? throw new ArgumentNullException(nameof(machineSetupStatusWebService));
+
+            this.SetupStatusCapabilities = new SetupStatusCapabilities();
         }
 
         #endregion
@@ -58,7 +64,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.BayControl),
                 () => this.CanExecuteCommand() &&
                       this.MachineModeService.MachineMode == MachineMode.Manual &&
-                      (this.MachineService.IsHoming || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
+                      (this.BayControl.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
                 ));
 
         public ICommand BayHeightCommand =>
@@ -68,12 +74,18 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.BayHeight),
                 () => this.CanExecuteCommand() &&
                       this.MachineModeService.MachineMode == MachineMode.Manual &&
-                      (this.MachineService.IsHoming || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
+                      (true || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
                 ));
 
         public override EnableMask EnableMask => EnableMask.Any;
 
+        public bool IsBayControlCompleted => this.BayControl.IsCompleted;
+
+        public bool IsBayHeightCompleted => false;
+
         public bool IsTestBayVisible => (this.MachineService.HasBayExternal || this.MachineService.HasCarousel);
+
+        public bool IsTestShutterCompleted => this.BayShutter.IsCompleted;
 
         public ICommand TestShutterCommand =>
             this.testShutterCommand
@@ -81,16 +93,58 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.testShutterCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.TestShutter),
                 () => this.CanExecuteCommand() &&
-                     (this.MachineModeService.MachineMode == MachineMode.Manual ||
-                      this.MachineModeService.MachineMode == MachineMode.Test)));
+                      (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Test) &&
+                      (this.BayShutter.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
+
+        protected SetupStepStatus BayControl => this.BaySetupStatus?.Check ?? new SetupStepStatus();
+
+        protected BaySetupStatus BaySetupStatus
+        {
+            get
+            {
+                BaySetupStatus res = null;
+
+                switch (this.MachineService.BayNumber)
+                {
+                    case BayNumber.BayOne:
+                        res = this.SetupStatusCapabilities?.Bay1;
+                        break;
+
+                    case BayNumber.BayTwo:
+                        res = this.SetupStatusCapabilities?.Bay2;
+                        break;
+
+                    case BayNumber.BayThree:
+                        res = this.SetupStatusCapabilities?.Bay3;
+                        break;
+                }
+
+                return res;
+            }
+        }
+
+        protected SetupStepStatus BayShutter => this.BaySetupStatus?.Shutter ?? new SetupStepStatus();
+
+        protected SetupStatusCapabilities SetupStatusCapabilities { get; private set; }
 
         #endregion
 
         #region Methods
 
+        protected override async Task OnDataRefreshAsync()
+        {
+            this.SetupStatusCapabilities = await this.machineSetupStatusWebService.GetAsync();
+
+            this.RaiseCanExecuteChanged();
+        }
+
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
+
+            this.RaisePropertyChanged(nameof(this.IsBayControlCompleted));
+            this.RaisePropertyChanged(nameof(this.IsBayHeightCompleted));
+            this.RaisePropertyChanged(nameof(this.IsTestShutterCompleted));
 
             this.bayControlCommand?.RaiseCanExecuteChanged();
             this.bayHeightCommand?.RaiseCanExecuteChanged();

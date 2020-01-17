@@ -104,6 +104,8 @@
 
         BayChainPosition,
 
-        BayLight
+        BayLight,
+
+        FullTest
     }
 }

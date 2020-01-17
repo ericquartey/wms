@@ -37,9 +37,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Properties
 
         public ICommand ConfirmEjectLoadingUnitCommand =>
-                this.confirmEjectLoadingUnitCommand
-                ??
-                (this.confirmEjectLoadingUnitCommand = new DelegateCommand(async () => await this.ConfirmEjectLoadingUnit(), this.CanConfirmEjectLoadingUnit));
+            this.confirmEjectLoadingUnitCommand
+            ??
+            (this.confirmEjectLoadingUnitCommand = new DelegateCommand(
+                async () => await this.ConfirmEjectLoadingUnit(),
+                            this.CanConfirmEjectLoadingUnit));
 
         #endregion
 
@@ -88,9 +90,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             base.Ended();
 
-            this.isEjectLoadingUnitConfirmationEnabled = false;
+            this.isEjectLoadingUnitConfirmationEnabled = true;
 
-            this.confirmEjectLoadingUnitCommand.RaiseCanExecuteChanged();
+            this.RaiseCanExecuteChanged();
         }
 
         protected override async Task OnDataRefreshAsync()
@@ -104,11 +106,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         protected override void OnWaitResume()
         {
-            this.RaiseCanExecuteChanged();
-
             this.isEjectLoadingUnitConfirmationEnabled = true;
 
-            this.confirmEjectLoadingUnitCommand.RaiseCanExecuteChanged();
+            this.RaiseCanExecuteChanged();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -120,12 +120,31 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private bool CanConfirmEjectLoadingUnit()
         {
-            return this.isEjectLoadingUnitConfirmationEnabled;
+            return this.LoadingUnitId.HasValue &&
+                   this.isEjectLoadingUnitConfirmationEnabled &&
+                   ((this.MachineStatus.LoadingUnitPositionUpInBay != null && this.IsPositionUpSelected) ||
+                    (this.MachineStatus.LoadingUnitPositionDownInBay != null && this.IsPositionDownSelected));
         }
 
         private async Task ConfirmEjectLoadingUnit()
         {
-            await this.machineBaysWebService.RemoveLoadUnitAsync(this.LoadingUnitId.Value);
+            if (this.LoadingUnitId.HasValue)
+            {
+                try
+                {
+                    await this.machineBaysWebService.RemoveLoadUnitAsync(this.LoadingUnitId.Value);
+
+                    this.SensorsService.RefreshAsync(true);
+                    this.MachineService.OnUpdateServiceAsync();
+
+                    this.ShowNotification($"Cassetto id {this.LoadingUnitId.Value} estratto", Services.Models.NotificationSeverity.Warning);
+
+                }
+                catch (Exception e)
+                {
+                    this.ShowNotification(e);
+                }
+            }
         }
 
         #endregion

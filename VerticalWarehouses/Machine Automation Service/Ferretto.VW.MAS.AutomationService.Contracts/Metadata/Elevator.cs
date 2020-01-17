@@ -1,14 +1,13 @@
-﻿using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources;
-using System.ComponentModel.DataAnnotations;
+using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts
 {
     [Ferretto.VW.MAS.Scaffolding.DataAnnotations.MetadataType(typeof(Elevator.Metadata))]
     partial class Elevator
     {
-
-        class Metadata
+        private class Metadata
         {
             [Category(Category = nameof(Vertimag.ElevatorAxis), ResourceType = typeof(Vertimag))]
             [CategoryParameter(nameof(ElevatorAxis.Orientation), ValueStringifierType = typeof(EnumValueStringifier))]

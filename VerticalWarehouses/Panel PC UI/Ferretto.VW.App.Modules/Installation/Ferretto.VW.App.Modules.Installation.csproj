@@ -71,6 +71,7 @@
     <None Remove="Views\CellsLoadingUnits\LoadingUnitsView.xaml" />
     <None Remove="Views\DateTime\DateTimeView.xaml" />
     <None Remove="Views\Elevator\VerticalOffsetCalibrationView.xaml" />
+    <None Remove="Views\LoadingUnits\FullTestView.xaml" />
     <None Remove="Views\LoadingUnits\LoadingUnitFromBayToBayView.xaml" />
     <None Remove="Views\Movements\MovementsView.xaml" />
     <None Remove="Views\Profiles\ProfileHeightCheckView.xaml" />
@@ -106,6 +107,9 @@
     </Compile>
     <Compile Update="Views\LoadingUnits\LoadingUnitFromBayToBayView.xaml.cs">
       <DependentUpon>LoadingUnitFromBayToBayView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\LoadingUnits\FullTestView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Views\Movements\MovementsView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>

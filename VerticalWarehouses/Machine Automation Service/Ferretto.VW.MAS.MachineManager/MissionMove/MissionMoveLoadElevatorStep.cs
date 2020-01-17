@@ -10,11 +10,11 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.MachineManager.MissionMove
 {
-    public class MissionMoveLoadElevatorState : MissionMoveBase
+    public class MissionMoveLoadElevatorStep : MissionMoveBase
     {
         #region Constructors
 
-        public MissionMoveLoadElevatorState(Mission mission,
+        public MissionMoveLoadElevatorStep(Mission mission,
             IServiceProvider serviceProvider,
             IEventAggregator eventAggregator)
             : base(mission, serviceProvider, eventAggregator)
@@ -31,8 +31,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command)
         {
-            this.Mission.RestoreState = MissionState.NotDefined;
-            this.Mission.State = MissionState.LoadElevator;
+            this.Mission.RestoreStep = MissionStep.NotDefined;
+            this.Mission.Step = MissionStep.LoadElevator;
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.Mission.Direction = HorizontalMovementDirection.Backwards;
             this.Mission.StopReason = StopRequestReason.NoReason;
@@ -61,7 +61,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     this.Mission.Direction = (bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards);
                     this.Mission.OpenShutterPosition = this.LoadingUnitMovementProvider.GetShutterOpenPosition(bay, this.Mission.LoadUnitSource);
-                    if (this.Mission.OpenShutterPosition == this.SensorsProvider.GetShutterPosition(bay.Number))
+                    var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(bay.Number);
+                    if (this.Mission.OpenShutterPosition == this.SensorsProvider.GetShutterPosition(shutterInverter))
                     {
                         this.Mission.OpenShutterPosition = ShutterPosition.NotSpecified;
                     }
@@ -72,7 +73,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         if (result != MachineErrorCode.NoError)
                         {
                             var error = this.ErrorsProvider.RecordNew(result, bay.Number);
-                            throw new StateMachineException(error.Description, bay.Number, MessageActor.MachineManager);
+                            throw new StateMachineException(error.Reason, bay.Number, MessageActor.MachineManager);
                         }
                     }
 #endif
@@ -104,11 +105,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.RestoreConditions = false;
             this.MissionsDataProvider.Update(this.Mission);
 
-            bool isEject = this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadUnit
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation;
-            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.State.ToString(), isEject, MessageStatus.OperationExecuting);
+            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationExecuting);
             return true;
         }
 
@@ -147,7 +144,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                         if (notification.Type == MessageType.ShutterPositioning)
                         {
-                            var shutterPosition = this.SensorsProvider.GetShutterPosition(notification.RequestingBay);
+                            var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(notification.RequestingBay);
+                            var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
                             if (shutterPosition == this.Mission.OpenShutterPosition)
                             {
                                 if (this.Mission.NeedHomingAxis == Axis.BayChain)
