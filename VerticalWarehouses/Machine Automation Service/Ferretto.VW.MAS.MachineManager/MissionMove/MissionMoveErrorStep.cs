@@ -168,6 +168,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     break;
             }
+            this.MachineModeDataProvider.Mode = MachineMode.Manual;
+            this.Logger.LogInformation($"Machine status switched to {this.MachineModeDataProvider.Mode}");
         }
 
         private void RestoreBayChain()
