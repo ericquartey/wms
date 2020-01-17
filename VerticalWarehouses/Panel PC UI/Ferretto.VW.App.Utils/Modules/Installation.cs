@@ -14,6 +14,8 @@
 
         public const string DATETIME = "DateTimeViewModel";
 
+        public const string FULLTEST = "FullTestViewModel";
+
         public const string LOADFIRSTDRAWER = "LoadFirstDrawerViewModel";
 
         public const string MOVEMENTS = "MovementsViewModel";

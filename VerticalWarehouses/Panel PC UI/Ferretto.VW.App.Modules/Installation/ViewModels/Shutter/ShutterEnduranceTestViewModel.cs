@@ -22,8 +22,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IBayManager bayManager;
-
         private readonly IMachineSensorsWebService machineSensorsWebService;
 
         private readonly ShutterSensors sensors = new ShutterSensors();
@@ -60,13 +58,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public ShutterEnduranceTestViewModel(
             IMachineShuttersWebService shuttersWebService,
-            IBayManager bayManager,
             IMachineSensorsWebService machineSensorsWebService)
             : base(PresentationMode.Installer)
         {
             this.machineSensorsWebService = machineSensorsWebService ?? throw new System.ArgumentNullException(nameof(machineSensorsWebService));
             this.shuttersWebService = shuttersWebService ?? throw new System.ArgumentNullException(nameof(shuttersWebService));
-            this.bayManager = bayManager ?? throw new System.ArgumentNullException(nameof(bayManager));
         }
 
         #endregion
