@@ -962,6 +962,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void ResetBeltBurnishing()
         {
+            var procedureParameters = this.setupProceduresDataProvider.GetBeltBurnishingTest();
+
+            this.setupProceduresDataProvider.ResetPerformedCycles(procedureParameters);
         }
 
         public void RunTorqueCurrentSampling(

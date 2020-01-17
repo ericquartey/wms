@@ -236,6 +236,29 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public RepeatedTestProcedure ResetPerformedCycles(RepeatedTestProcedure procedure)
+        {
+            lock (this.dataContext)
+            {
+                var existingProcedure = this.dataContext.SetupProcedures.SingleOrDefault(p => p.Id == procedure.Id);
+
+                if (existingProcedure is RepeatedTestProcedure repeatedTestProcedure)
+                {
+                    repeatedTestProcedure.PerformedCycles = 0;
+                    repeatedTestProcedure.IsCompleted = false;
+
+                    this.dataContext.SetupProcedures.Update(repeatedTestProcedure);
+                    this.dataContext.SaveChanges();
+
+                    return repeatedTestProcedure;
+                }
+                else
+                {
+                    throw new EntityNotFoundException(procedure.Id);
+                }
+            }
+        }
+
         public void Update(SetupProceduresSet setupProceduresSet, DataLayerContext dataContext)
         {
             _ = setupProceduresSet ?? throw new System.ArgumentNullException(nameof(setupProceduresSet));

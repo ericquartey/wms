@@ -37,6 +37,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         SetupProcedure MarkAsCompleted(SetupProcedure procedureParameters);
 
+        RepeatedTestProcedure ResetPerformedCycles(RepeatedTestProcedure procedure);
+
         void Update(SetupProceduresSet setupProceduresSet, DataLayerContext dataContext);
 
         #endregion
