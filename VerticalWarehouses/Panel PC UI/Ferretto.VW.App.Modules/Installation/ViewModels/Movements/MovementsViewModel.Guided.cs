@@ -398,11 +398,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         protected void OnGuidedRaiseCanExecuteChanged()
         {
             this.CanInputLoadingUnitId =
-                this.CanBaseExecute()
-                &&
-                this.LoadingUnits != null
-                &&
-                this.Cells != null;
+                this.CanBaseExecute() &&
+                this.LoadingUnits != null &&
+                this.Cells != null &&
+                this.MachineStatus.EmbarkedLoadingUnit is null;
 
             if (!this.IsMoving &&
                 (this.HealthProbeService.HealthStatus == HealthStatus.Healthy ||
