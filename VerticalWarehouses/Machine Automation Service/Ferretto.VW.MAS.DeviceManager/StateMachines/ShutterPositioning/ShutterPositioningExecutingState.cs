@@ -176,7 +176,18 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             switch (messageData.ShutterPosition)
             {
                 case ShutterPosition.Opened:
+                    if (this.machineData.PositioningMessageData.Delay > 0)
+                    {
+                        this.delayTimerUp.Change(this.machineData.PositioningMessageData.Delay, this.machineData.PositioningMessageData.Delay);
+                    }
+                    else
+                    {
+                        this.StartPositioning(ShutterPosition.Opened, ShutterMovementDirection.Down);
+                    }
 
+                    break;
+
+                case ShutterPosition.Closed:
                     var setupProceduresDataProvider = this.ParentStateMachine.ServiceScopeFactory
                         .CreateScope()
                         .ServiceProvider
@@ -196,24 +207,12 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                     {
                         if (this.machineData.PositioningMessageData.Delay > 0)
                         {
-                            this.delayTimerUp.Change(this.machineData.PositioningMessageData.Delay, this.machineData.PositioningMessageData.Delay);
+                            this.delayTimerDown.Change(this.machineData.PositioningMessageData.Delay, this.machineData.PositioningMessageData.Delay);
                         }
                         else
                         {
-                            this.StartPositioning(ShutterPosition.Opened, ShutterMovementDirection.Down);
+                            this.StartPositioning(ShutterPosition.Closed, ShutterMovementDirection.Up);
                         }
-                    }
-
-                    break;
-
-                case ShutterPosition.Closed:
-                    if (this.machineData.PositioningMessageData.Delay > 0)
-                    {
-                        this.delayTimerDown.Change(this.machineData.PositioningMessageData.Delay, this.machineData.PositioningMessageData.Delay);
-                    }
-                    else
-                    {
-                        this.StartPositioning(ShutterPosition.Closed, ShutterMovementDirection.Up);
                     }
 
                     break;
