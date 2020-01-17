@@ -83,6 +83,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("reset-test")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult ResetTest()
+        {
+            this.shutterProvider.ResetTest();
+
+            return this.Accepted();
+        }
+
         [HttpPost("run-test")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]

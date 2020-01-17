@@ -197,6 +197,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return true;
         }
 
+        public void ResetTest()
+        {
+        }
+
         public void RunTest(int delayInSeconds, int testCycleCount, BayNumber bayNumber, MessageActor sender)
         {
             if (delayInSeconds < 0)

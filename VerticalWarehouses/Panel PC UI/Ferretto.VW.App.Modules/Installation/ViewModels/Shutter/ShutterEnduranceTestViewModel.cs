@@ -44,6 +44,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private int performedCyclesThisSession;
 
+        private DelegateCommand resetTestCommand;
+
         private SubscriptionToken sensorsChangedToken;
 
         private SubscriptionToken shutterTestStatusChangedToken;
@@ -144,6 +146,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.performedCyclesThisSession, value);
         }
 
+        public ICommand ResetTestCommand =>
+            this.resetTestCommand
+            ??
+            (this.resetTestCommand = new DelegateCommand(
+                async () => await this.ResetTestAsync(),
+                this.CanExecuteResetTestCommand));
+
         public ShutterSensors Sensors => this.sensors;
 
         public ICommand StartCommand =>
@@ -225,8 +234,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.RaiseCanExecuteChanged();
 
-            this.startTestCommand.RaiseCanExecuteChanged();
-            this.stopTestCommand.RaiseCanExecuteChanged();
+            this.startTestCommand?.RaiseCanExecuteChanged();
+            this.stopTestCommand?.RaiseCanExecuteChanged();
+            this.resetTestCommand?.RaiseCanExecuteChanged();
+        }
+
+        private bool CanExecuteResetTestCommand()
+        {
+            return this.CumulativePerformedCycles.HasValue &&
+                   this.CumulativePerformedCycles > 0 &&
+                   !this.IsExecutingProcedure &&
+                   string.IsNullOrWhiteSpace(this.Error);
         }
 
         private bool CanExecuteStartCommand()
@@ -265,6 +283,29 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CumulativePerformedCycles = message.Data.PerformedCycles;
 
                 this.CyclesPercent = ((double)this.PerformedCyclesThisSession / (double)this.InputRequiredCycles) * 100.0;
+            }
+        }
+
+        private async Task ResetTestAsync()
+        {
+            try
+            {
+                this.IsExecutingProcedure = true;
+                this.IsWaitingForResponse = true;
+
+                this.CumulativePerformedCycles = 0;
+                this.CumulativePerformedCyclesBeforeStart = 0;
+
+                await this.shuttersWebService.ResetTestAsync();
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsExecutingProcedure = false;
+                this.IsWaitingForResponse = false;
             }
         }
 
