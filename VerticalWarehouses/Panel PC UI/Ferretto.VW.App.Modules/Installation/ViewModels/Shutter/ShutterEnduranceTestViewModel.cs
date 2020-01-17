@@ -253,12 +253,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    this.InputRequiredCycles.HasValue &&
                    this.CumulativePerformedCycles < this.InputRequiredCycles &&
                    !this.IsExecutingProcedure &&
+                   !this.IsMoving &&
                    string.IsNullOrWhiteSpace(this.Error);
         }
 
         private bool CanExecuteStopCommand()
         {
             return
+                this.IsMoving &&
                 this.IsExecutingProcedure;
         }
 
