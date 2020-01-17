@@ -960,6 +960,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.ElevatorBay);
         }
 
+        public void ResetBeltBurnishing()
+        {
+        }
+
         public void RunTorqueCurrentSampling(
             double displacement,
             double netWeight,
@@ -1050,11 +1054,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         }
 
         public void StartBeltBurnishing(
-                            double upperBoundPosition,
-                    double lowerBoundPosition,
-                    int delayStart,
-                    BayNumber requestingBay,
-                    MessageActor sender)
+                        double upperBoundPosition,
+                double lowerBoundPosition,
+                int delayStart,
+                BayNumber requestingBay,
+                MessageActor sender)
         {
             if (upperBoundPosition <= 0)
             {
