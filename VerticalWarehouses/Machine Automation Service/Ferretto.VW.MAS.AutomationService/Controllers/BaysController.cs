@@ -105,6 +105,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.setupProceduresDataProvider.GetBayHeightCheck());
         }
 
+        [HttpPost("get-light")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public ActionResult<bool> GetLight()
+        {
+            return this.Ok(this.baysDataProvider.GetLightOn(this.BayNumber));
+        }
+
         [HttpPost("homing")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
@@ -115,22 +124,22 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
-        [HttpPost("light")]
-        [ProducesResponseType(StatusCodes.Status202Accepted)]
-        [ProducesDefaultResponseType]
-        public IActionResult Light(bool enable)
-        {
-            this.baysDataProvider.Light(this.BayNumber, enable);
-
-            return this.Accepted();
-        }
-
         [HttpGet("remove-load-unit")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
         public IActionResult RemoveLoadUnit(int loadingUnitId)
         {
             this.baysDataProvider.RemoveLoadingUnit(loadingUnitId);
+            return this.Accepted();
+        }
+
+        [HttpPost("set-light")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult SetLight(bool enable)
+        {
+            this.baysDataProvider.Light(this.BayNumber, enable);
+
             return this.Accepted();
         }
 

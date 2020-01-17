@@ -78,7 +78,7 @@ namespace Ferretto.VW.MAS.DataLayer
         InverterIndex GetInverterIndexByProfile(BayNumber bayNumber);
 
         IoIndex GetIoDevice(BayNumber bayNumber);
-
+        bool GetLightOn(BayNumber bayNumber);
         LoadingUnit GetLoadingUnitByDestination(LoadingUnitLocation location);
 
         double? GetLoadingUnitDestinationHeight(LoadingUnitLocation location);

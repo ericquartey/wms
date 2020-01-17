@@ -20,6 +20,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         public event EventHandler<BayChainPositionChangedEventArgs> BayChainPositionChanged;
 
+        public event EventHandler<BayLightChangedEventArgs> BayLightChanged;
+
         public event EventHandler<ElevatorPositionChangedEventArgs> ElevatorPositionChanged;
 
         public event EventHandler<MachineModeChangedEventArgs> MachineModeChanged;
@@ -90,15 +92,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             connection.On<NotificationMessageUI<FsmExceptionMessageData>>(
                 nameof(IInstallationHub.FsmException), this.OnFsmException);
 
+            connection.On<bool, BayNumber>(
+                nameof(IInstallationHub.BayLightChanged), this.OnBayLightChanged);
+
             connection.On(
                 nameof(IInstallationHub.SystemTimeChanged), this.OnSystemTimeChanged);
         }
 
         private void OnBayChainPositionChanged(double position, BayNumber bayNumber)
         {
-            this.BayChainPositionChanged?.Invoke(
-                this,
-                new BayChainPositionChangedEventArgs(position, bayNumber));
+            this.BayChainPositionChanged?.Invoke(this, new BayChainPositionChangedEventArgs(position, bayNumber));
+        }
+
+        private void OnBayLightChanged(bool isLightOn, BayNumber bayNumber)
+        {
+            this.BayLightChanged?.Invoke(this, new BayLightChangedEventArgs(isLightOn, bayNumber));
         }
 
         private void OnCalibrateAxisNotify(NotificationMessageUI<CalibrateAxisMessageData> message)
