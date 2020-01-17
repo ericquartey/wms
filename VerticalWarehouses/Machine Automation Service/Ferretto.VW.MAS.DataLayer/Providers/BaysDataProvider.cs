@@ -887,6 +887,13 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     if (bayPosition.LoadingUnit != null)
                     {
+                        var lu = this.dataContext.LoadingUnits.SingleOrDefault(l => l.Id == bayPosition.LoadingUnit.Id);
+                        if (lu != null)
+                        {
+                            lu.Status = DataModels.Enumerations.LoadingUnitStatus.Undefined;
+                            this.dataContext.LoadingUnits.Update(lu);
+                        }
+
                         bayPosition.LoadingUnit = null;
                         this.dataContext.BayPositions.Update(bayPosition);
                     }
