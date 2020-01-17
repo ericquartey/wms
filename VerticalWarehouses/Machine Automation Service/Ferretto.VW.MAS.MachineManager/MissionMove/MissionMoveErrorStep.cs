@@ -37,7 +37,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         /// Only a call to OnResume can wake up the mission.
         /// </summary>
         /// <param name="command">not used</param>
-        public override bool OnEnter(CommandMessage command)
+        public override bool OnEnter(CommandMessage command, bool showErrors = true)
         {
             return this.EnterErrorState(MissionStep.Error);
         }

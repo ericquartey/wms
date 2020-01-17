@@ -7,6 +7,8 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -107,7 +109,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public Mission CreateBayMission(int loadingUnitId, BayNumber bayNumber)
+        public Mission CreateBayMission(int loadingUnitId, BayNumber bayNumber, MissionType missionType)
         {
             lock (this.dataContext)
             {
@@ -118,7 +120,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         CreationDate = DateTime.Now,
                         LoadUnitId = loadingUnitId,
                         TargetBay = bayNumber,
-                        MissionType = MissionType.OUT,
+                        MissionType = missionType,
                         Status = MissionStatus.New
                     });
 
@@ -281,6 +283,11 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public IDbContextTransaction GetContextTransaction()
+        {
+            return this.dataContext.Database.BeginTransaction();
+        }
+
         public bool IsMissionInWaitState(BayNumber bayNumber, int loadingUnitId)
         {
             lock (this.dataContext)
@@ -326,7 +333,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             lock (this.dataContext)
             {
-                this.dataContext.Missions.Update(mission);
+                this.dataContext.AddOrUpdate(mission, (e) => e.Id);
 
                 this.dataContext.SaveChanges();
             }

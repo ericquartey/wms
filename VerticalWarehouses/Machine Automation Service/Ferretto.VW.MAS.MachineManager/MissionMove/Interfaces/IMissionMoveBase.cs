@@ -27,7 +27,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces
 
         void OnCommand(CommandMessage command);
 
-        bool OnEnter(CommandMessage command);
+        bool OnEnter(CommandMessage command, bool showErrors = true);
 
         void OnNotification(NotificationMessage message);
 
