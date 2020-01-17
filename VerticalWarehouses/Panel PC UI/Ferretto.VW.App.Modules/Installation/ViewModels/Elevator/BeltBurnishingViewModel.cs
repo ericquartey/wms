@@ -515,7 +515,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
                 this.IsExecutingProcedure = true;
 
-                await this.beltBurnishingWebService.StopAsync();
+                await this.MachineService.StopMovingByAllAsync();
 
                 this.isCompleted = true;
             }

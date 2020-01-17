@@ -340,7 +340,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.shuttersWebService.StopAsync();
+                await this.MachineService.StopMovingByAllAsync();
             }
             catch (System.Exception ex)
             {
