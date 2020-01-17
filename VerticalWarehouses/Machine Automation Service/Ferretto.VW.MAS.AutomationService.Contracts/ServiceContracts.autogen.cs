@@ -2727,8 +2727,23 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class SetupProceduresSet : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("bayHeightCheck", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public PositioningProcedure BayHeightCheck { get; set; }
+        [Newtonsoft.Json.JsonProperty("bay1HeightCheck", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public PositioningProcedure Bay1HeightCheck { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("bay1ShutterTest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public RepeatedTestProcedure Bay1ShutterTest { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("bay2HeightCheck", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public PositioningProcedure Bay2HeightCheck { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("bay2ShutterTest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public RepeatedTestProcedure Bay2ShutterTest { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("bay3HeightCheck", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public PositioningProcedure Bay3HeightCheck { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("bay3ShutterTest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public RepeatedTestProcedure Bay3ShutterTest { get; set; }
     
         [Newtonsoft.Json.JsonProperty("beltBurnishingTest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public RepeatedTestProcedure BeltBurnishingTest { get; set; }
@@ -2747,9 +2762,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("shutterHeightCheck", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupProcedure ShutterHeightCheck { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("shutterTest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public RepeatedTestProcedure ShutterTest { get; set; }
     
         [Newtonsoft.Json.JsonProperty("verticalOffsetCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public OffsetCalibrationProcedure VerticalOffsetCalibration { get; set; }

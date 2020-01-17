@@ -1091,7 +1091,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 3, 15, 14, 44, 10, 603, DateTimeKind.Local).AddTicks(5112),
+                            InstallationDate = new DateTime(2017, 3, 17, 13, 43, 51, 379, DateTimeKind.Local).AddTicks(1429),
                             ServiceStatus = 86
                         });
                 });
@@ -1120,7 +1120,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("BayHeightCheckId");
+                    b.Property<int?>("Bay1HeightCheckId");
+
+                    b.Property<int?>("Bay1ShutterTestId");
+
+                    b.Property<int?>("Bay2HeightCheckId");
+
+                    b.Property<int?>("Bay2ShutterTestId");
+
+                    b.Property<int?>("Bay3HeightCheckId");
+
+                    b.Property<int?>("Bay3ShutterTestId");
 
                     b.Property<int?>("BeltBurnishingTestId");
 
@@ -1134,8 +1144,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("ShutterHeightCheckId");
 
-                    b.Property<int?>("ShutterTestId");
-
                     b.Property<int?>("VerticalOffsetCalibrationId");
 
                     b.Property<int?>("VerticalOriginCalibrationId");
@@ -1144,7 +1152,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BayHeightCheckId");
+                    b.HasIndex("Bay1HeightCheckId");
+
+                    b.HasIndex("Bay1ShutterTestId");
+
+                    b.HasIndex("Bay2HeightCheckId");
+
+                    b.HasIndex("Bay2ShutterTestId");
+
+                    b.HasIndex("Bay3HeightCheckId");
+
+                    b.HasIndex("Bay3ShutterTestId");
 
                     b.HasIndex("BeltBurnishingTestId");
 
@@ -1157,8 +1175,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasIndex("LoadFirstDrawerTestId");
 
                     b.HasIndex("ShutterHeightCheckId");
-
-                    b.HasIndex("ShutterTestId");
 
                     b.HasIndex("VerticalOffsetCalibrationId");
 
@@ -1184,8 +1200,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("Bay1Shape");
 
-                    b.Property<bool>("Bay1Shutter");
-
                     b.Property<bool>("Bay2FirstLoadingUnit");
 
                     b.Property<bool>("Bay2HeightCheck");
@@ -1193,8 +1207,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<bool>("Bay2Laser");
 
                     b.Property<bool>("Bay2Shape");
-
-                    b.Property<bool>("Bay2Shutter");
 
                     b.Property<bool>("Bay3FirstLoadingUnit");
 
@@ -1204,11 +1216,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("Bay3Shape");
 
-                    b.Property<bool>("Bay3Shutter");
-
                     b.Property<DateTime?>("CompletedDate");
-
-                    b.Property<bool>("Homing");
 
                     b.Property<bool>("HorizontalHoming");
 
@@ -1227,18 +1235,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Bay1HeightCheck = false,
                             Bay1Laser = false,
                             Bay1Shape = false,
-                            Bay1Shutter = false,
                             Bay2FirstLoadingUnit = false,
                             Bay2HeightCheck = false,
                             Bay2Laser = false,
                             Bay2Shape = false,
-                            Bay2Shutter = false,
                             Bay3FirstLoadingUnit = false,
                             Bay3HeightCheck = false,
                             Bay3Laser = false,
                             Bay3Shape = false,
-                            Bay3Shutter = false,
-                            Homing = false,
                             HorizontalHoming = false,
                             WeightMeasurement = false
                         });
@@ -1606,9 +1610,29 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.SetupProceduresSet", b =>
                 {
-                    b.HasOne("Ferretto.VW.MAS.DataModels.PositioningProcedure", "BayHeightCheck")
+                    b.HasOne("Ferretto.VW.MAS.DataModels.PositioningProcedure", "Bay1HeightCheck")
                         .WithMany()
-                        .HasForeignKey("BayHeightCheckId");
+                        .HasForeignKey("Bay1HeightCheckId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "Bay1ShutterTest")
+                        .WithMany()
+                        .HasForeignKey("Bay1ShutterTestId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.PositioningProcedure", "Bay2HeightCheck")
+                        .WithMany()
+                        .HasForeignKey("Bay2HeightCheckId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "Bay2ShutterTest")
+                        .WithMany()
+                        .HasForeignKey("Bay2ShutterTestId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.PositioningProcedure", "Bay3HeightCheck")
+                        .WithMany()
+                        .HasForeignKey("Bay3HeightCheckId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "Bay3ShutterTest")
+                        .WithMany()
+                        .HasForeignKey("Bay3ShutterTestId");
 
                     b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "BeltBurnishingTest")
                         .WithMany()
@@ -1633,10 +1657,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.SetupProcedure", "ShutterHeightCheck")
                         .WithMany()
                         .HasForeignKey("ShutterHeightCheckId");
-
-                    b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "ShutterTest")
-                        .WithMany()
-                        .HasForeignKey("ShutterTestId");
 
                     b.HasOne("Ferretto.VW.MAS.DataModels.OffsetCalibrationProcedure", "VerticalOffsetCalibration")
                         .WithMany()

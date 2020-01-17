@@ -102,7 +102,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("height-check-parameters")]
         public ActionResult<PositioningProcedure> GetHeightCheckParameters()
         {
-            return this.Ok(this.setupProceduresDataProvider.GetBayHeightCheck());
+            return this.Ok(this.setupProceduresDataProvider.GetBayHeightCheck(this.BayNumber));
         }
 
         [HttpPost("get-light")]

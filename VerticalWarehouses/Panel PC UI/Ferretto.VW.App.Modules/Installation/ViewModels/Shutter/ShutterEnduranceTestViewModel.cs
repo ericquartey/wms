@@ -249,10 +249,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanExecuteStartCommand()
         {
-            return
-                !this.IsExecutingProcedure
-                &&
-                string.IsNullOrWhiteSpace(this.Error);
+            return this.CumulativePerformedCycles.HasValue &&
+                   this.InputRequiredCycles.HasValue &&
+                   this.CumulativePerformedCycles < this.InputRequiredCycles &&
+                   !this.IsExecutingProcedure &&
+                   string.IsNullOrWhiteSpace(this.Error);
         }
 
         private bool CanExecuteStopCommand()
@@ -278,7 +279,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsExecutingProcedure = false;
             }
-            else if (message.Data != null)
+
+            if (message.Data != null)
             {
                 this.CumulativePerformedCycles = message.Data.PerformedCycles;
 
@@ -290,7 +292,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                this.IsExecutingProcedure = true;
                 this.IsWaitingForResponse = true;
 
                 this.CumulativePerformedCycles = 0;
@@ -304,7 +305,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             finally
             {
-                this.IsExecutingProcedure = false;
                 this.IsWaitingForResponse = false;
             }
         }
