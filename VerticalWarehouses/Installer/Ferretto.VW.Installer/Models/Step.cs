@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Ferretto.VW.Installer
@@ -30,12 +31,6 @@ namespace Ferretto.VW.Installer
 
         #endregion
 
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
-
         #region Properties
 
         public TimeSpan? Duration
@@ -59,7 +54,7 @@ namespace Ferretto.VW.Installer
         public string Log
         {
             get => this.log;
-            set => this.SetProperty(ref this.log, value);
+            private set => this.SetProperty(ref this.log, value);
         }
 
         public bool MustRollback { get; set; }
@@ -92,17 +87,20 @@ namespace Ferretto.VW.Installer
             }
 
             this.StartTime = DateTime.Now;
+            var timer = new Timer(this.OnTimerTick, null, 0, 500);
 
             this.Status = StepStatus.InProgress;
 
             try
             {
                 this.Status = await this.OnApplyAsync();
+                timer.Dispose();
                 this.EndTime = DateTime.Now;
             }
             catch
             {
                 this.Status = StepStatus.Failed;
+                timer.Dispose();
             }
         }
 
@@ -130,9 +128,24 @@ namespace Ferretto.VW.Installer
             return $"{this.Number}: {this.Title} ({this.Status})" ?? base.ToString();
         }
 
+        protected void LogWrite(char message)
+        {
+            this.Log += message;
+        }
+
+        protected void LogWriteLine(string message)
+        {
+            this.Log += message + Environment.NewLine;
+        }
+
         protected abstract Task<StepStatus> OnApplyAsync();
 
         protected abstract Task<StepStatus> OnRollbackAsync();
+
+        private void OnTimerTick(object state)
+        {
+            this.Duration = DateTime.Now - this.StartTime;
+        }
 
         #endregion
     }

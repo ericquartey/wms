@@ -4,7 +4,7 @@
       "$type": "Ferretto.VW.Installer.CommandlineStep, Ferretto.VW.Installer",
       "number": 1,
       "title": "Copy files to output dir",
-      "script": "echo ciao",
+      "script": "timeout /T 3",
       "rollbackScript": "abc",
       "mustRollBack": true
     },
@@ -12,7 +12,7 @@
       "$type": "Ferretto.VW.Installer.CommandlineStep, Ferretto.VW.Installer",
       "number": 2,
       "title": "Register Service",
-      "script": "echo ho",
+      "script": "timeout /T 3",
       "rollbackScript": "abc",
       "mustRollBack": true
     },

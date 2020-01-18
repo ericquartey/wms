@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 
 namespace Ferretto.VW.Installer
 {
@@ -15,7 +16,8 @@ namespace Ferretto.VW.Installer
 
         protected void RaisePropertyChanged(string propertyName)
         {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            Application.Current?.Dispatcher.Invoke(() =>
+                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
         }
 
         protected bool SetProperty<T>(ref T field, T value, [CallerMemberName]string propertyName = null)

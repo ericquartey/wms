@@ -8,10 +8,12 @@
         Title="MainWindow"
         Width="1000"
         Height="450"
+        WindowStyle="None"
         mc:Ignorable="d">
     <Grid>
         <Grid.Resources>
             <installer:StatusToIconNameConverter x:Key="STIC" />
+            <installer:StatusToColorConverter x:Key="STCC" />
             <installer:TimespanConverter x:Key="TSC" />
         </Grid.Resources>
         <Grid>
@@ -21,33 +23,43 @@
             </Grid.ColumnDefinitions>
 
             <ListBox Grid.Column="0"
+                     HorizontalContentAlignment="Stretch"
                      ItemsSource="{Binding Steps}"
                      SelectedItem="{Binding SelectedStep, Mode=TwoWay}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <icon:PackIconMaterial Width="24"
-                                                   Height="24"
-                                                   VerticalAlignment="Center"
-                                                   BorderThickness="1"
-                                                   Kind="{Binding Status, Converter={StaticResource STIC}}" />
-                            <TextBlock Margin="10,0,0,0"
-                                       HorizontalAlignment="Left"
-                                       VerticalAlignment="Center"
-                                       Text="{Binding Title}" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
 
-                            <TextBlock Margin="10,0,0,0"
+
+                            <icon:PackIconMaterial Width="18"
+                                                   Height="18"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="{Binding Status, Converter={StaticResource STCC}}"
+                                                   Kind="{Binding Status, Converter={StaticResource STIC}}" />
+                            <TextBlock Grid.Column="1"
+                                       Margin="10,0,0,0"
+                                       VerticalAlignment="Center"
+                                       Text="{Binding Title}"
+                                       TextAlignment="Left" />
+
+                            <TextBlock Grid.Column="2"
+                                       Margin="0,0,10,0"
                                        HorizontalAlignment="Right"
                                        VerticalAlignment="Center"
                                        Text="{Binding Duration, Converter={StaticResource TSC}}" />
 
-                        </StackPanel>
+                        </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
             <TextBox Grid.Column="1"
                      IsReadOnly="True"
-                     Text="{Binding SelectedStep.Log}" />
+                     Text="{Binding SelectedStep.Log, Mode=OneWay}" />
         </Grid>
     </Grid>
 </Window>

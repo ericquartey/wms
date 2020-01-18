@@ -1,4 +1,7 @@
 ﻿using System;
+using System.IO;
+using System.ServiceModel.Channels;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Ferretto.VW.Installer
@@ -56,6 +59,28 @@ namespace Ferretto.VW.Installer
                     : StepStatus.RollbackFailed);
         }
 
+        private void ReadStandardOutput(object obj)
+        {
+            var inputStream = obj as StreamReader;
+
+            if (inputStream is null)
+            {
+                return;
+            }
+
+            try
+            {
+                while (!inputStream.EndOfStream)
+                {
+                    this.LogWrite((char)inputStream.Read());
+                }
+            }
+            catch
+            {
+                // do nothing
+            }
+        }
+
         private bool TryRunCommandline(string command)
         {
             if (string.IsNullOrWhiteSpace(command))
@@ -74,8 +99,9 @@ namespace Ferretto.VW.Installer
                 process.StartInfo.RedirectStandardError = true;
 
                 process.Start();
+                new Thread(new ParameterizedThreadStart(this.ReadStandardOutput))
+                   .Start(process.StandardOutput);
                 process.WaitForExit();
-                this.Log = process.StandardOutput.ReadToEnd();
 
                 return process.ExitCode >= 0;
             }
