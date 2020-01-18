@@ -71,7 +71,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
         void MoveToRelativeVerticalPosition(double distance, BayNumber requestingBay, MessageActor sender);
 
         void MoveVerticalManual(VerticalMovementDirection direction, BayNumber requestingBay, MessageActor sender);
-
+        void ResetBeltBurnishing();
         void RunTorqueCurrentSampling(double displacement, double netWeight, int? loadingUnitId, BayNumber requestingBay, MessageActor sender);
 
         MovementProfileType SelectProfileType(HorizontalMovementDirection direction, bool elevatorHasLoadingUnit);

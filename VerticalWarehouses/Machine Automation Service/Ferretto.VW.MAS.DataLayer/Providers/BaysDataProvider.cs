@@ -743,6 +743,11 @@ namespace Ferretto.VW.MAS.DataLayer
             return returnValue;
         }
 
+        public bool GetLightOn(BayNumber bayNumber)
+        {
+            return this.machineProvider.IsBayLightOn.GetValueOrDefault(bayNumber);
+        }
+
         public LoadingUnit GetLoadingUnitByDestination(LoadingUnitLocation location)
         {
             lock (this.dataContext)
@@ -830,6 +835,14 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public InverterIndex GetShutterInverterIndex(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.Inverter.Index;
 
+        public bool IsMissionInBay(Mission mission)
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Bays.Include(b => b.CurrentMission).Any(b => b.CurrentMission.Id == mission.Id);
+            }
+        }
+
         public void Light(BayNumber bayNumber, bool enable)
         {
             this.PublishCommand(
@@ -882,6 +895,13 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     if (bayPosition.LoadingUnit != null)
                     {
+                        var lu = this.dataContext.LoadingUnits.SingleOrDefault(l => l.Id == bayPosition.LoadingUnit.Id);
+                        if (lu != null)
+                        {
+                            lu.Status = DataModels.Enumerations.LoadingUnitStatus.Undefined;
+                            this.dataContext.LoadingUnits.Update(lu);
+                        }
+
                         bayPosition.LoadingUnit = null;
                         this.dataContext.BayPositions.Update(bayPosition);
                     }

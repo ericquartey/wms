@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
         }
 
-        public override bool OnEnter(CommandMessage command)
+        public override bool OnEnter(CommandMessage command, bool showErrors = true)
         {
             this.Mission.RestoreStep = MissionStep.NotDefined;
             this.Mission.Step = MissionStep.DepositUnit;
@@ -154,6 +154,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 break;
                             }
                         }
+
                         if ((this.Mission.OpenShutterPosition != ShutterPosition.NotSpecified && (this.Mission.DeviceNotifications == (MissionDeviceNotifications.Positioning | MissionDeviceNotifications.Shutter)))
                             || (this.Mission.OpenShutterPosition == ShutterPosition.NotSpecified && (this.Mission.DeviceNotifications == MissionDeviceNotifications.Positioning))
                             )

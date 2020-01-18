@@ -27,8 +27,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
-        //private bool bayIsMultiPosition;
-
         private SubscriptionToken fsmExceptionToken;
 
         private bool isExecutingProcedure;
@@ -178,14 +176,20 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             ??
             (this.selectBayPositionDownCommand = new DelegateCommand(
                 this.SelectBayPositionDown,
-                () => !this.IsExecutingProcedure && this.IsPositionUpSelected));
+                () => !this.IsExecutingProcedure &&
+                      this.IsPositionUpSelected &&
+                      this.MachineStatus.LoadingUnitPositionUpInBay is null &&
+                      this.MachineStatus.LoadingUnitPositionDownInBay is null));
 
         public ICommand SelectBayPositionUpCommand =>
             this.selectBayPositionUpCommand
             ??
             (this.selectBayPositionUpCommand = new DelegateCommand(
                 this.SelectBayPositionUp,
-                () => !this.IsExecutingProcedure && !this.IsPositionUpSelected));
+                () => !this.IsExecutingProcedure &&
+                      !this.IsPositionUpSelected &&
+                      this.MachineStatus.LoadingUnitPositionUpInBay is null &&
+                      this.MachineStatus.LoadingUnitPositionDownInBay is null));
 
         public ICommand StartCommand =>
                this.startCommand
@@ -305,6 +309,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.IsPositionDownSelected = true;
             this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
             this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
+
+            this.RaiseCanExecuteChanged();
         }
 
         public virtual void SelectBayPositionUp()
@@ -312,6 +318,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.IsPositionUpSelected = true;
             this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
             this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
+
+            this.RaiseCanExecuteChanged();
         }
 
         public virtual Task StartAsync()

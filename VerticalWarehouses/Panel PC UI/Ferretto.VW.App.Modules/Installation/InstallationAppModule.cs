@@ -55,14 +55,16 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<VerticalOffsetCalibrationView>();
             containerRegistry.RegisterForNavigation<VerticalOriginCalibrationView>();
             containerRegistry.RegisterForNavigation<VerticalResolutionCalibrationView>();
+            containerRegistry.RegisterForNavigation<SaveRestoreConfigView>();
+            containerRegistry.RegisterForNavigation<DrawerLoadingUnloadingTestView>();
+            containerRegistry.RegisterForNavigation<CellsSideControlView>();
+
             containerRegistry.RegisterForNavigation<LoadFirstDrawerView>();
             containerRegistry.RegisterForNavigation<LoadingUnitFromBayToCellView>();
             containerRegistry.RegisterForNavigation<LoadingUnitFromBayToBayView>();
             containerRegistry.RegisterForNavigation<LoadingUnitFromCellToBayView>();
             containerRegistry.RegisterForNavigation<LoadingUnitFromCellToCellView>();
-            containerRegistry.RegisterForNavigation<SaveRestoreConfigView>();
-            containerRegistry.RegisterForNavigation<DrawerLoadingUnloadingTestView>();
-            containerRegistry.RegisterForNavigation<CellsSideControlView>();
+            containerRegistry.RegisterForNavigation<FullTestView>();
 
             containerRegistry.RegisterForNavigation<ProfileHeightCheckView>();
             containerRegistry.RegisterForNavigation<ProfileHeightCheckStep1View>();
@@ -88,7 +90,7 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<CellsLoadingUnitsMenuView>();
             containerRegistry.RegisterForNavigation<CellsView>();
             containerRegistry.RegisterForNavigation<LoadingUnitsView>();
-            containerRegistry.RegisterForNavigation<UpdateView>();
+            containerRegistry.RegisterForNavigation<UpdateStep1View>();
             containerRegistry.RegisterForNavigation<UsersView>();
             containerRegistry.RegisterForNavigation<ParameterInverterView>();
             containerRegistry.RegisterForNavigation<ComunicationWmsView>();

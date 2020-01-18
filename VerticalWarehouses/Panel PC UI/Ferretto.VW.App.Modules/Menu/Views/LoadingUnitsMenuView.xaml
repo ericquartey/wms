@@ -105,7 +105,7 @@
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="Completo"
+                    <controls:PpcButton Title="Test Completo"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.5.6"

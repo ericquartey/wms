@@ -14,6 +14,8 @@
 
         public const string DATETIME = "DateTimeViewModel";
 
+        public const string FULLTEST = "FullTestViewModel";
+
         public const string LOADFIRSTDRAWER = "LoadFirstDrawerViewModel";
 
         public const string MOVEMENTS = "MovementsViewModel";
@@ -29,8 +31,6 @@
         public const string SHUTTERENDURANCETEST = "ShutterEnduranceTestViewModel";
 
         public const string SHUTTTERHEIGHTCONTROL = "ShutterHeightControlViewModel";
-
-        public const string UPDATE = "UpdateViewModel";
 
         public const string USERS = "UsersViewModel";
 
@@ -191,6 +191,17 @@
             public const string SECURITY = "OtherSensorsViewModel";
 
             public const string VERTICALAXIS = "VerticalAxisSensorsViewModel";
+
+            #endregion
+        }
+
+        public static class Update
+        {
+            #region Fields
+
+            public const string STEP1 = "UpdateStep1ViewModel";
+
+            public const string STEP2 = "UpdateStep2ViewModel";
 
             #endregion
         }

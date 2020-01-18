@@ -96,8 +96,11 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
         {
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
-                var setupProceduresProvider = scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
-                this.machineData.PositioningMessageData.PerformedCycles = setupProceduresProvider.GetShutterTest().PerformedCycles;
+                if (this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterTest)
+                {
+                    var setupProceduresProvider = scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
+                    this.machineData.PositioningMessageData.PerformedCycles = setupProceduresProvider.GetShutterTest(this.machineData.RequestingBay).PerformedCycles;
+                }
 
                 var stateData = new ShutterPositioningStateData(this, this.machineData);
 

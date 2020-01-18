@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
         }
 
-        public override bool OnEnter(CommandMessage command)
+        public override bool OnEnter(CommandMessage command, bool showErrors = true)
         {
             this.Mission.RestoreStep = MissionStep.NotDefined;
             this.Mission.Step = MissionStep.WaitPick;

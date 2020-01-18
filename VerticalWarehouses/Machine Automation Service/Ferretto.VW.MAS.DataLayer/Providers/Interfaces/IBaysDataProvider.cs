@@ -79,6 +79,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IoIndex GetIoDevice(BayNumber bayNumber);
 
+        bool GetLightOn(BayNumber bayNumber);
+
         LoadingUnit GetLoadingUnitByDestination(LoadingUnitLocation location);
 
         double? GetLoadingUnitDestinationHeight(LoadingUnitLocation location);
@@ -101,6 +103,8 @@ namespace Ferretto.VW.MAS.DataLayer
         double GetResolution(InverterIndex inverterIndex);
 
         InverterIndex GetShutterInverterIndex(BayNumber bayNumber);
+
+        bool IsMissionInBay(Mission mission);
 
         void Light(BayNumber bayNumber, bool enable);
 

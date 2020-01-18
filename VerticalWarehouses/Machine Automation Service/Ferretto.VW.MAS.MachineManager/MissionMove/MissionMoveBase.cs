@@ -202,6 +202,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.MissionsDataProvider.Update(this.Mission);
 
             this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationExecuting);
+
             return true;
         }
 
@@ -305,7 +306,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public abstract void OnCommand(CommandMessage command);
 
-        public abstract bool OnEnter(CommandMessage command);
+        public abstract bool OnEnter(CommandMessage command, bool showErrors = true);
 
         public void OnHomingNotification(HomingMessageData messageData)
         {

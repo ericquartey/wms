@@ -16,8 +16,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -202,6 +202,14 @@
 
             </Border>
         </Border>
+
+        <controls:PpcButton Grid.Row="4"
+                            Grid.Column="3"
+                            Margin="0,0,15,15"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding ResetCommand}"
+                            Content="{x:Static res:InstallationApp.Reset}" />
 
         <StackPanel Grid.Row="5"
                     Grid.Column="2"

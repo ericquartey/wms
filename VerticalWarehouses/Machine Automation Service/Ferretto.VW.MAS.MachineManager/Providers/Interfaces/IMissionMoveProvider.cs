@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers.Interfaces
 
         bool ResumeMission(int missionId, CommandMessage command, IServiceProvider serviceProvider);
 
-        bool StartMission(Mission mission, CommandMessage command, IServiceProvider serviceProvider);
+        bool StartMission(Mission mission, CommandMessage command, IServiceProvider serviceProvider, bool showErrors);
 
         bool StopMission(int missionId, StopRequestReason stopRequest, IServiceProvider serviceProvider);
 
