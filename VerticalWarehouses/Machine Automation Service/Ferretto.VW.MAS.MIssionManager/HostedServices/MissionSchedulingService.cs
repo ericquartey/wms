@@ -257,13 +257,9 @@ namespace Ferretto.VW.MAS.MissionManager
                     mission.NeedHomingAxis = Axis.Horizontal;
                     newStep = new MissionMoveErrorDepositStep(mission, serviceProvider, eventAggregator);
                 }
-                else if (mission.RestoreStep == MissionStep.ToTarget)
-                {
-                    mission.NeedHomingAxis = Axis.Horizontal;
-                    newStep = new MissionMoveErrorStep(mission, serviceProvider, eventAggregator);
-                }
                 else
                 {
+                    mission.NeedHomingAxis = Axis.Horizontal;
                     newStep = new MissionMoveErrorStep(mission, serviceProvider, eventAggregator);
                 }
                 newStep.OnEnter(null);
