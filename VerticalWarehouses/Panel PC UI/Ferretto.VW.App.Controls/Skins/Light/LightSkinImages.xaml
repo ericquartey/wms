@@ -26,7 +26,7 @@
                  UriSource="/Ferretto.VW.App.Controls;Component/Assets/cassetto.jpg" />
 
     <BitmapImage x:Key="LoginBackground"
-                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/LoginBackground.jpg" />
+                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/bkg_login.jpg" />
 
     <BitmapImage x:Key="Ferretto_Small_Logo_Inverse"
                  UriSource="/Ferretto.VW.App.Controls;Component/Assets/ferrettogrouplogo_small_dark.png" />

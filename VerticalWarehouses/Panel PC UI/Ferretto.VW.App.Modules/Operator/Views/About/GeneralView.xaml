@@ -63,7 +63,7 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <Grid Grid.RowSpan="5"
+            <Grid Grid.RowSpan="7"
                   Grid.ColumnSpan="12"
                   Margin="0,0,15,0">
                 <Image HorizontalAlignment="Center"

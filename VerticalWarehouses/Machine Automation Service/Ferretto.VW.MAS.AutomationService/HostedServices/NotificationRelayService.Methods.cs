@@ -52,27 +52,31 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private async Task HomingMethod(NotificationMessage receivedMessage, IServiceProvider serviceProvider)
         {
-            if (receivedMessage.Status == MessageStatus.OperationEnd
-                && receivedMessage.Data is IHomingMessageData data)
+            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+            if (!missionsDataProvider.GetAllActiveMissions().Any())
             {
-                if (data.AxisToCalibrate == Axis.BayChain)
+                if (receivedMessage.Status == MessageStatus.OperationEnd
+                    && receivedMessage.Data is IHomingMessageData data)
                 {
-                    var bay = this.baysDataProvider.GetByNumber(receivedMessage.RequestingBay);
-                    this.baysDataProvider.UpdateHoming(bay.Number, true);
+                    if (data.AxisToCalibrate == Axis.BayChain)
+                    {
+                        var bay = this.baysDataProvider.GetByNumber(receivedMessage.RequestingBay);
+                        this.baysDataProvider.UpdateHoming(bay.Number, true);
+                    }
+                    else if (data.AxisToCalibrate == Axis.HorizontalAndVertical)
+                    {
+                        this.machineProvider.IsHomingExecuted = true;
+                        this.ChangeMachineMode(serviceProvider);
+                    }
+                    else
+                    {
+                        this.ChangeMachineMode(serviceProvider);
+                    }
                 }
-                else if (data.AxisToCalibrate == Axis.HorizontalAndVertical)
+                else if (receivedMessage.Status == MessageStatus.OperationError)
                 {
-                    this.machineProvider.IsHomingExecuted = true;
                     this.ChangeMachineMode(serviceProvider);
                 }
-                else
-                {
-                    this.ChangeMachineMode(serviceProvider);
-                }
-            }
-            else if (receivedMessage.Status == MessageStatus.OperationError)
-            {
-                this.ChangeMachineMode(serviceProvider);
             }
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
             await this.installationHub.Clients.All.HomingProcedureStatusChanged(message);
