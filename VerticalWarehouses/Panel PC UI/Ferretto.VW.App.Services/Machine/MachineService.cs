@@ -233,13 +233,6 @@ namespace Ferretto.VW.App.Services
 
         public async Task OnInitializationServiceAsync()
         {
-            this.healthStatusChangedToken = this.eventAggregator
-                .GetEvent<PubSubEvent<HealthStatusChangedEventArgs>>()
-                .Subscribe(
-                    async (e) => await this.OnHealthStatusChangedAsync(e),
-                    ThreadOption.UIThread,
-                    false);
-
             if (this.healthProbeService.HealthStatus is HealthStatus.Healthy
                 ||
                 this.healthProbeService.HealthStatus is HealthStatus.Degraded)
@@ -291,6 +284,8 @@ namespace Ferretto.VW.App.Services
             this.machineStatus = new MachineStatus();
             this.loadingUnits = new List<LoadingUnit>();
 
+            this.SubscribeToEvents();
+
             Task.Run(async () =>
             {
                 try
@@ -304,8 +299,6 @@ namespace Ferretto.VW.App.Services
                 {
                 }
             }).GetAwaiter().GetResult();
-
-            this.SubscribeToEvents();
         }
 
         public async Task StopMovingByAllAsync()
@@ -620,7 +613,7 @@ namespace Ferretto.VW.App.Services
                                 if (message?.Data is MoveLoadingUnitMessageData moveLoadingUnitMessageData)
                                 {
 #if DEBUG
-                                    this.Notification = $"Movimento in corso... ({moveLoadingUnitMessageData.State})";
+                                    this.Notification = $"Movimento in corso... ({moveLoadingUnitMessageData.MissionStep})";
 #else
                                     this.Notification = $"Movimento in corso...";
 #endif
@@ -855,6 +848,13 @@ namespace Ferretto.VW.App.Services
 
         private void SubscribeToEvents()
         {
+            this.healthStatusChangedToken = this.eventAggregator
+                .GetEvent<PubSubEvent<HealthStatusChangedEventArgs>>()
+                .Subscribe(
+                    async (e) => await this.OnHealthStatusChangedAsync(e),
+                    ThreadOption.UIThread,
+                    false);
+
             this.receiveHomingUpdateToken = this.eventAggregator
                     .GetEvent<NotificationEventUI<HomingMessageData>>()
                     .Subscribe(

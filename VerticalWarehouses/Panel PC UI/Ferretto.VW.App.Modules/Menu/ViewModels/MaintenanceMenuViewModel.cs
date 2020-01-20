@@ -154,7 +154,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     case Menu.Update:
                         this.NavigationService.Appear(
                             nameof(Utils.Modules.Installation),
-                            Utils.Modules.Installation.UPDATE,
+                            Utils.Modules.Installation.Update.STEP1,
                             data: null,
                             trackCurrentView: true);
                         break;

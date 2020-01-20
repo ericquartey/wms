@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             try
             {
-                var binPath = typeof(Program).Assembly.Location;
+                var binPath = Process.GetCurrentProcess().MainModule.FileName;
                 var serviceStopCommand = $"sc stop \"{this.ServiceName}\"";
                 var serviceDeleteCommand = $"sc delete \"{this.ServiceName}\"";
 

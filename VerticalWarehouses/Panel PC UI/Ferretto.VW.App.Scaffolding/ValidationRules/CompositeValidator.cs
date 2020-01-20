@@ -24,7 +24,7 @@ namespace Ferretto.VW.App.Scaffolding.ValidationRules
 
         private static void OnRulesPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((CompositeValidator)d).OnRulesChanged(new RulesChangedEventArgs(e.OldValue as ObservableCollection<ValidationRule>, e.NewValue as ObservableCollection<ValidationRule>)); 
+            ((CompositeValidator)d).OnRulesChanged(new RulesChangedEventArgs(e.OldValue as ObservableCollection<ValidationRule>, e.NewValue as ObservableCollection<ValidationRule>));
         }
 
         protected virtual void OnRulesChanged(RulesChangedEventArgs e)

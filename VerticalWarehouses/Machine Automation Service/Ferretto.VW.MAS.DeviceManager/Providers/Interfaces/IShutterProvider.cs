@@ -10,6 +10,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool MoveTo(ShutterPosition targetPosition, BayNumber bayNumber, MessageActor sender);
 
+        void ResetTest(BayNumber bayNumber);
+
         void RunTest(int delayInSeconds, int testCycleCount, BayNumber bayNumber, MessageActor sender);
 
         void Stop(BayNumber bayNumber, MessageActor sender);

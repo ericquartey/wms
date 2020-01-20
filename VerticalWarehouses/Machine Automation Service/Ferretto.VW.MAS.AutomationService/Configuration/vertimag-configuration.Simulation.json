@@ -478,7 +478,12 @@
             "Position": 1865,
             "Priority": 19,
             "BlockLevel": "None"
-          },
+          }
+        ]
+      },
+      {
+        "Side": "Front",
+        "Cells": [
           {
             "Id": 21,
             "Position": 1890,
@@ -539,7 +544,12 @@
             "Position": 2115,
             "Priority": 39,
             "BlockLevel": "None"
-          },
+          }
+        ]
+      },
+      {
+        "Side": "Front",
+        "Cells": [
           {
             "Id": 41,
             "Position": 2140,
@@ -601,7 +611,12 @@
             "Position": 2365,
             "Priority": 59,
             "BlockLevel": "None"
-          },
+          }
+        ]
+      },
+      {
+        "Side": "Front",
+        "Cells": [
           {
             "Id": 61,
             "Position": 2390,
@@ -662,7 +677,12 @@
             "Position": 2615,
             "Priority": 79,
             "BlockLevel": "None"
-          },
+          }
+        ]
+      },
+      {
+        "Side": "Front",
+        "Cells": [
           {
             "Id": 81,
             "Position": 2640,
@@ -724,7 +744,12 @@
             "Priority": 99,
             "IsFree": true,
             "BlockLevel": "None"
-          },
+          }
+        ]
+      },
+      {
+        "Side": "Front",
+        "Cells": [
           {
             "Id": 101,
             "Position": 2890,
@@ -785,7 +810,12 @@
             "Position": 3115,
             "Priority": 119,
             "BlockLevel": "None"
-          },
+          }
+        ]
+      },
+      {
+        "Side": "Front",
+        "Cells": [
           {
             "Id": 121,
             "Position": 3140,
@@ -846,7 +876,12 @@
             "Position": 3365,
             "Priority": 139,
             "BlockLevel": "None"
-          },
+          }
+        ]
+      },
+      {
+        "Side": "Front",
+        "Cells": [
           {
             "Id": 141,
             "Position": 3390,
@@ -908,7 +943,12 @@
             "Position": 3615,
             "Priority": 159,
             "BlockLevel": "None"
-          },
+          }
+        ]
+      },
+      {
+        "Side": "Front",
+        "Cells": [
           {
             "Id": 161,
             "Position": 3640,
@@ -969,7 +1009,12 @@
             "Position": 3865,
             "Priority": 179,
             "BlockLevel": "None"
-          },
+          }
+        ]
+      },
+      {
+        "Side": "Front",
+        "Cells": [
           {
             "Id": 181,
             "Position": 3890,
@@ -1030,7 +1075,12 @@
             "Position": 4115,
             "Priority": 199,
             "BlockLevel": "None"
-          },
+          }
+        ]
+      },
+      {
+        "Side": "Front",
+        "Cells": [
           {
             "Id": 201,
             "Position": 4140,
@@ -1049,7 +1099,6 @@
             "Priority": 205,
             "BlockLevel": "None"
           }
-
         ]
       },
       {
@@ -1114,7 +1163,12 @@
             "Position": 1865,
             "Priority": 20,
             "BlockLevel": "None"
-          },
+          }
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
           {
             "Id": 22,
             "Position": 1890,
@@ -1175,7 +1229,12 @@
             "Position": 2115,
             "Priority": 40,
             "BlockLevel": "None"
-          },
+          }
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
           {
             "Id": 42,
             "Position": 2140,
@@ -1237,7 +1296,12 @@
             "Position": 2365,
             "Priority": 60,
             "BlockLevel": "None"
-          },
+          }
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
           {
             "Id": 62,
             "Position": 2390,
@@ -1298,7 +1362,12 @@
             "Position": 2615,
             "Priority": 80,
             "BlockLevel": "None"
-          },
+          }
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
           {
             "Id": 82,
             "Position": 2640,
@@ -1360,7 +1429,12 @@
             "Priority": 100,
             "IsFree": true,
             "BlockLevel": "None"
-          },
+          }
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
           {
             "Id": 102,
             "Position": 2890,
@@ -1421,7 +1495,12 @@
             "Position": 3115,
             "Priority": 120,
             "BlockLevel": "None"
-          },
+          }
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
           {
             "Id": 122,
             "Position": 3140,
@@ -1482,7 +1561,12 @@
             "Position": 3365,
             "Priority": 140,
             "BlockLevel": "None"
-          },
+          }
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
           {
             "Id": 142,
             "Position": 3390,
@@ -1544,7 +1628,12 @@
             "Position": 3615,
             "Priority": 160,
             "BlockLevel": "None"
-          },
+          }
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
           {
             "Id": 162,
             "Position": 3640,
@@ -1605,7 +1694,12 @@
             "Position": 3865,
             "Priority": 180,
             "BlockLevel": "None"
-          },
+          }
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
           {
             "Id": 182,
             "Position": 3890,
@@ -1667,7 +1761,12 @@
             "Position": 4115,
             "Priority": 200,
             "BlockLevel": "None"
-          },
+          }
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
           {
             "Id": 202,
             "Position": 4140,
@@ -1721,10 +1820,24 @@
     "LoadFirstDrawerTest": {
       "FeedRate": 0.2
     },
-    "ShutterHeightCheck": {
+    "Bay1HeightCheck": {
       "FeedRate": 0.1
     },
-    "ShutterTest": {
+    "Bay2HeightCheck": {
+      "FeedRate": 0.1
+    },
+    "Bay3HeightCheck": {
+      "FeedRate": 0.1
+    },
+    "Bay1ShutterTest": {
+      "FeedRate": 1.0,
+      "RequiredCycles": 20
+    },
+    "Bay2ShutterTest": {
+      "FeedRate": 1.0,
+      "RequiredCycles": 20
+    },
+    "Bay3ShutterTest": {
       "FeedRate": 1.0,
       "RequiredCycles": 20
     },

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
@@ -30,11 +31,14 @@ namespace Ferretto.VW.MAS.DataLayer
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.cache = cache ?? throw new ArgumentNullException(nameof(cache));
+            this.IsBayLightOn = new Dictionary<BayNumber, bool>();
         }
 
         #endregion
 
         #region Properties
+
+        public Dictionary<BayNumber, bool> IsBayLightOn { get; set; }
 
         public bool IsHomingExecuted { get; set; }
 

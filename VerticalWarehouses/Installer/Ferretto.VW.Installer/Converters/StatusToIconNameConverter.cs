@@ -13,13 +13,14 @@ namespace Ferretto.VW.Installer
         {
             switch ((StepStatus)value)
             {
-                case StepStatus.Done: return "CircleOutline";
-                case StepStatus.Failed: return "CloseCircleOutline";
-                case StepStatus.ToDo: return "CloseCircleOutline";
-                case StepStatus.InProgress: return "ArrowRightDropCircleOutline";
+                case StepStatus.Done: return "CheckCircle";
+                case StepStatus.Failed: return "AlertCircle";
+                case StepStatus.ToDo: return "Clock";
+                case StepStatus.InProgress: return "PlayCircle";
                 case StepStatus.RollingBack: return "BackupRestore";
+                case StepStatus.RolledBack: return "BackupRestore";
                 case StepStatus.RollbackFailed: return "BackupRestore";
-                default: return "ABTesting";
+                default: return "CircleOutline";
             }
         }
 

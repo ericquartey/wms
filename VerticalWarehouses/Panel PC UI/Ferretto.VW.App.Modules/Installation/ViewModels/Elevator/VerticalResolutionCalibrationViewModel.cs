@@ -185,30 +185,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool HasStepPositionMeter => this.currentStep is CalibrationStep.PositionMeter;
 
-        public bool IsCanDestinationPosition1 =>
-            this.CanBaseExecute() &&
-                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
-                   !this.SensorsService.IsHorizontalInconsistentBothHigh;
+        public bool IsCanDestinationPosition1 => this.CanBaseExecute();
 
-        public bool IsCanDestinationPosition2 =>
-            this.CanBaseExecute() &&
-                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
-                   !this.SensorsService.IsHorizontalInconsistentBothHigh;
+        public bool IsCanDestinationPosition2 => this.CanBaseExecute();
 
-        public bool IsCanMeasuredPosition1 =>
-            this.CanBaseExecute() &&
-                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
-                   !this.SensorsService.IsHorizontalInconsistentBothHigh;
+        public bool IsCanMeasuredPosition1 => this.CanBaseExecute();
 
-        public bool IsCanMeasuredPosition2 =>
-            this.CanBaseExecute() &&
-                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
-                   !this.SensorsService.IsHorizontalInconsistentBothHigh;
+        public bool IsCanMeasuredPosition2 => this.CanBaseExecute();
 
-        public bool IsCanStartPosition =>
-            this.CanBaseExecute() &&
-                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
-                   !this.SensorsService.IsHorizontalInconsistentBothHigh;
+        public bool IsCanStartPosition => this.CanBaseExecute();
 
         public bool IsExecutingProcedure
         {
@@ -463,8 +448,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.Disappear();
 
-            this.sensorsToken?.Dispose();
-            this.sensorsToken = null;
+            if (this.stepChangedToken != null)
+            {
+                this.EventAggregator.GetEvent<StepChangedPubSubEvent>().Unsubscribe(this.sensorsToken);
+                this.sensorsToken?.Dispose();
+                this.sensorsToken = null;
+            }
+
+            if (this.stepChangedToken != null)
+            {
+                this.EventAggregator.GetEvent<StepChangedPubSubEvent>().Unsubscribe(this.stepChangedToken);
+                this.stepChangedToken?.Dispose();
+                this.stepChangedToken = null;
+            }
         }
 
         public override async Task OnAppearedAsync()
@@ -612,25 +608,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanBaseExecute()
         {
-            return
-                !this.IsKeyboardOpened
-                &&
-                !this.IsMoving;
+            return !this.IsKeyboardOpened &&
+                   !this.IsMoving &&
+                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh &&
+                   !this.SensorsService.IsLoadingUnitOnElevator;
         }
 
         private bool CanMoveToStartDestination1()
         {
             return this.CanBaseExecute() &&
-                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
-                   !this.SensorsService.IsHorizontalInconsistentBothHigh &&
                    Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) != Convert.ToInt32(this.DestinationPosition1.GetValueOrDefault(0));
         }
 
         private bool CanMoveToStartDestination2()
         {
             return this.CanBaseExecute() &&
-                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
-                   !this.SensorsService.IsHorizontalInconsistentBothHigh &&
                    Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) != Convert.ToInt32(this.DestinationPosition2.GetValueOrDefault(0));
         }
 
@@ -638,9 +631,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             var b = this.CanBaseExecute() &&
                    string.IsNullOrEmpty(this.Error) &&
-                   Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) != Convert.ToInt32(this.StartPosition) &&
-                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
-                   !this.SensorsService.IsHorizontalInconsistentBothHigh;
+                   Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) != Convert.ToInt32(this.StartPosition);
             return b;
         }
 
@@ -655,23 +646,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanToConfirm()
         {
             return this.CanBaseExecute() &&
-                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
-                   !this.SensorsService.IsHorizontalInconsistentBothHigh &&
                    this.MeasuredPosition2.HasValue;
         }
 
         private bool CanToFirstMeasured()
         {
-            return this.CanBaseExecute() &&
-                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
-                   !this.SensorsService.IsHorizontalInconsistentBothHigh;
+            return this.CanBaseExecute();
         }
 
         private bool CanToLastMeasured()
         {
             return this.CanBaseExecute() &&
-                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
-                   !this.SensorsService.IsHorizontalInconsistentBothHigh &&
                    this.MeasuredPosition1.HasValue;
         }
 

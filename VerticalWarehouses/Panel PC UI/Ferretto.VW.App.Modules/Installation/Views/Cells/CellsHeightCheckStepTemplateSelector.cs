@@ -9,7 +9,7 @@ using Ferretto.VW.App.Installation.ViewModels;
 
 namespace Ferretto.VW.App.Installation.Views
 {
-    public class CellPanelsCheckStepTemplateSelector : DataTemplateSelector
+    public class CellsHeightCheckStepTemplateSelector : DataTemplateSelector
     {
         #region Properties
 
@@ -25,16 +25,16 @@ namespace Ferretto.VW.App.Installation.Views
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            CellPanelsCheckStep value = (CellPanelsCheckStep)(item ?? CellPanelsCheckStep.Inizialize);
+            CellsHeightCheckStep value = (CellsHeightCheckStep)(item ?? CellsHeightCheckStep.Inizialize);
             switch (value)
             {
-                case CellPanelsCheckStep.Inizialize:
+                case CellsHeightCheckStep.Inizialize:
                     return this.EnumInizialize;
 
-                case CellPanelsCheckStep.Measured:
+                case CellsHeightCheckStep.Measured:
                     return this.EnumMeasured;
 
-                case CellPanelsCheckStep.Confirm:
+                case CellsHeightCheckStep.Confirm:
                     return this.EnumConfirm;
             }
 

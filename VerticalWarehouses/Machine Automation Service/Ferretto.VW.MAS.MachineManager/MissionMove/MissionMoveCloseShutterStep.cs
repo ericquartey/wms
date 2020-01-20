@@ -30,7 +30,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
         }
 
-        public override bool OnEnter(CommandMessage command)
+        public override bool OnEnter(CommandMessage command, bool showErrors = true)
         {
             this.Mission.RestoreStep = MissionStep.NotDefined;
             this.Mission.Step = MissionStep.CloseShutter;
@@ -49,11 +49,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.RestoreConditions = false;
             this.MissionsDataProvider.Update(this.Mission);
 
-            bool isEject = this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadUnit
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation;
-            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), isEject, MessageStatus.OperationExecuting);
+            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationExecuting);
             return true;
         }
 
@@ -93,15 +89,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         private void CloseShutterEnd()
         {
-            bool isEject = this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
+            if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
                 && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator
                 && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadUnit
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation;
-            if (isEject)
+                && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation)
             {
                 var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
                 var description = $"Load Unit {this.Mission.LoadUnitId} placed on bay {bay.Number}";
-                this.SendMoveNotification(bay.Number, description, isEject, MessageStatus.OperationWaitResume);
+                this.SendMoveNotification(bay.Number, description, MessageStatus.OperationWaitResume);
 
                 if (this.Mission.WmsId.HasValue)
                 {

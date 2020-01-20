@@ -1673,10 +1673,24 @@
     "LoadFirstDrawerTest": {
       "FeedRate": 0.2
     },
-    "ShutterHeightCheck": {
+    "Bay1HeightCheck": {
       "FeedRate": 0.1
     },
-    "ShutterTest": {
+    "Bay2HeightCheck": {
+      "FeedRate": 0.1
+    },
+    "Bay3HeightCheck": {
+      "FeedRate": 0.1
+    },
+    "Bay1ShutterTest": {
+      "FeedRate": 1.0,
+      "RequiredCycles": 20
+    },
+    "Bay2ShutterTest": {
+      "FeedRate": 1.0,
+      "RequiredCycles": 20
+    },
+    "Bay3ShutterTest": {
       "FeedRate": 1.0,
       "RequiredCycles": 20
     },

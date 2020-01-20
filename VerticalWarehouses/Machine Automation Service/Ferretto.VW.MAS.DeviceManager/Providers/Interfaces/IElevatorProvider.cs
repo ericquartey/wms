@@ -60,7 +60,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void MoveHorizontalProfileCalibration(HorizontalMovementDirection direction, BayNumber requestingBay, MessageActor sender);
 
-        void MoveToAbsoluteVerticalPosition(bool manualMovment, double targetPosition, bool computeElongation, bool performWeighting, int? targetBayPositionId, int? targetCellId, BayNumber requestingBay, MessageActor sender);
+        void MoveToAbsoluteVerticalPosition(
+            bool manualMovment,
+            double targetPosition,
+            bool computeElongation,
+            bool performWeighting,
+            int? targetBayPositionId,
+            int? targetCellId,
+            bool checkHomingDone,
+            BayNumber requestingBay,
+            MessageActor sender);
 
         void MoveToBayPosition(int bayPositionId, bool computeElongation, bool performWeighting, BayNumber bayNumber, MessageActor sender);
 
@@ -71,6 +80,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
         void MoveToRelativeVerticalPosition(double distance, BayNumber requestingBay, MessageActor sender);
 
         void MoveVerticalManual(VerticalMovementDirection direction, BayNumber requestingBay, MessageActor sender);
+
+        void ResetBeltBurnishing();
 
         void RunTorqueCurrentSampling(double displacement, double netWeight, int? loadingUnitId, BayNumber requestingBay, MessageActor sender);
 

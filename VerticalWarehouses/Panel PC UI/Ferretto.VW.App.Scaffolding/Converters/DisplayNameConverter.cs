@@ -1,11 +1,8 @@
-﻿using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Data;
+using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
 
 namespace Ferretto.VW.App.Scaffolding.Converters
 {
@@ -31,5 +28,4 @@ namespace Ferretto.VW.App.Scaffolding.Converters
             throw new NotSupportedException();
         }
     }
-
 }

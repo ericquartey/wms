@@ -107,8 +107,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.testCompleteCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.TestComplete),
                 () => this.CanExecuteCommand() &&
-                      this.MachineService.IsHoming &&
-                      false));
+                      this.MachineService.IsHoming));
 
         #endregion
 
@@ -171,6 +170,11 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     break;
 
                 case Menu.TestComplete:
+                    this.NavigationService.Appear(
+                       nameof(Utils.Modules.Installation),
+                       Utils.Modules.Installation.FULLTEST,
+                       data: null,
+                       trackCurrentView: true);
                     break;
             }
         }

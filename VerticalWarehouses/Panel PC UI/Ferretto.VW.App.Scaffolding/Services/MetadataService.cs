@@ -1,14 +1,11 @@
-﻿using Ferretto.VW.App.Scaffolding.Exceptions;
-using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using Ferretto.VW.App.Scaffolding.Exceptions;
+using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
 
 namespace Ferretto.VW.App.Scaffolding.Services
 {
@@ -19,7 +16,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
         /// <summary>
         /// Use it and throw it away...
         /// </summary>
-        class MetadataServiceExecutor
+        private class MetadataServiceExecutor
         {
             private int idSeed = 0;
             private readonly CultureInfo _culture;
@@ -115,7 +112,6 @@ namespace Ferretto.VW.App.Scaffolding.Services
                         }
                     }
                     return GetUnderlyingType(itemValue, culture);
-
                 }).ToArray();
 
                 return string.Format(culture, format, categoryProperties);
@@ -139,7 +135,6 @@ namespace Ferretto.VW.App.Scaffolding.Services
 
             public Models.ScaffoldedStructure ScaffoldTypeInternal(Type type, object instance, ScaffoldedStructureInternal branch, ScaffoldedStructureInternal root = default, bool unfoldingBranch = false)
             {
-
                 root = root ?? branch;
                 if (instance != null && instance.GetType() != type)
                 {
@@ -174,7 +169,8 @@ namespace Ferretto.VW.App.Scaffolding.Services
                     bool hasCategoryParameters = categoryParameters.Any();
                     bool isSimpleType = IsSimpleType(propertyType);
 
-                    #region  array? (must have Category AND CategoryParameter attributes)
+                    #region array? (must have Category AND CategoryParameter attributes)
+
                     // flattening
                     if (!isSimpleType && (typeof(System.Collections.IEnumerable)).IsAssignableFrom(propertyType))
                     {
@@ -222,7 +218,8 @@ namespace Ferretto.VW.App.Scaffolding.Services
                         }
                         // continue;
                     }
-                    #endregion
+
+                    #endregion array? (must have Category AND CategoryParameter attributes)
 
                     else
                     {
@@ -265,15 +262,12 @@ namespace Ferretto.VW.App.Scaffolding.Services
 
                 // at the end of all recursions...
                 return root.Publish();
-
             }
-
         }
 
-        #endregion
+        #endregion NESTED TYPES
 
         #region PRIVATE
-
 
         private static Models.ScaffoldedEntity Publish(this ScaffoldedEntityInternal entity)
             => new Models.ScaffoldedEntity(entity.Property, entity.Instance, entity.Metadata, entity.Id);
@@ -290,7 +284,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                 );
         }
 
-        #endregion
+        #endregion PRIVATE
 
         #region PUBLIC
 
@@ -306,7 +300,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
         public static Models.ScaffoldedStructure Scaffold(this object instance, CultureInfo culture)
         => new MetadataServiceExecutor(culture).ScaffoldTypeInternal(instance?.GetType() ?? throw new ArgumentNullException(nameof(instance)), instance, new ScaffoldedStructureInternal());
 
-        #endregion
+        #endregion PUBLIC
     }
 
     internal class ScaffoldedStructureInternal

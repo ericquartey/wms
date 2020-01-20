@@ -67,13 +67,6 @@
         </StackPanel>
 
         <Grid Grid.Row="1">
-
-            <Grid.Background>
-                <ImageBrush ImageSource="{DynamicResource LoginBackground}"
-                            Opacity="0.3"
-                            Stretch="UniformToFill" />
-            </Grid.Background>
-
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
@@ -82,6 +75,14 @@
                 <RowDefinition />
                 <RowDefinition />
             </Grid.RowDefinitions>
+
+            <Grid.Background>
+                <ImageBrush AlignmentX="Left"
+                            AlignmentY="Bottom"
+                            ImageSource="{DynamicResource LoginBackground}"
+                            Opacity="0.3"
+                            Stretch="UniformToFill" />
+            </Grid.Background>
 
             <controls:PpcMenuButton Title="{x:Static res:Menu.MenuOperation}"
                                     Grid.Row="0"

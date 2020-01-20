@@ -258,6 +258,13 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 var elevator = this.dataContext.Elevators.Single();
 
+                var lu = this.dataContext.LoadingUnits.SingleOrDefault(l => l.Id == elevator.LoadingUnitId);
+                if (lu != null)
+                {
+                    lu.Status = DataModels.Enumerations.LoadingUnitStatus.Undefined;
+                    this.dataContext.LoadingUnits.Update(lu);
+                }
+
                 elevator.LoadingUnit = null;
                 elevator.LoadingUnitId = null;
 

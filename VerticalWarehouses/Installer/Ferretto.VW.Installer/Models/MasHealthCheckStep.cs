@@ -34,21 +34,31 @@ namespace Ferretto.VW.Installer
                 string status = null;
                 var requestUri = new Uri($"{this.BaseUrl}/health/live");
                 var startTime = DateTime.Now;
+                var isHealthy = false;
                 do
                 {
                     try
                     {
+                        this.LogWriteLine($"GET {requestUri}");
                         var message = await httpClient.GetAsync(requestUri);
                         status = await message.Content.ReadAsStringAsync();
+
+                        this.LogWriteLine($"Response: {status}");
                     }
                     catch
                     {
-                        // do nothing
+                        this.LogWriteLine("Call failed.");
                     }
-                }
-                while (!status.Equals("healthy", StringComparison.OrdinalIgnoreCase) && (startTime - DateTime.Now).TotalMilliseconds < this.Timeout);
 
-                return status.Equals("healthy", StringComparison.OrdinalIgnoreCase)
+                    isHealthy = status?.Equals("healthy", StringComparison.OrdinalIgnoreCase) == true;
+                }
+                while (!isHealthy && (DateTime.Now - startTime).TotalMilliseconds < this.Timeout);
+
+                this.LogWriteLine(isHealthy
+                    ? "Service is healthy."
+                    : $"Service was not healthy after {this.Timeout}ms.");
+
+                return isHealthy
                     ? StepStatus.Done
                     : StepStatus.Failed;
             }

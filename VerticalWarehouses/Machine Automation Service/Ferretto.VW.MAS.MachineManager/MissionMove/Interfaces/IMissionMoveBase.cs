@@ -27,7 +27,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces
 
         void OnCommand(CommandMessage command);
 
-        bool OnEnter(CommandMessage command);
+        bool OnEnter(CommandMessage command, bool showErrors = true);
 
         void OnNotification(NotificationMessage message);
 
@@ -35,7 +35,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces
 
         void OnStop(StopRequestReason reason, bool moveBackward = false);
 
-        void SendMoveNotification(BayNumber targetBay, string description, bool isEject, MessageStatus messageStatus);
+        void SendMoveNotification(BayNumber targetBay, string description, MessageStatus messageStatus);
 
         void SendPositionNotification(string description);
 

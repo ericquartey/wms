@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -35,6 +34,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.ErrorsProvider = this.ServiceProvider.GetRequiredService<IErrorsProvider>();
             this.LoadingUnitMovementProvider = this.ServiceProvider.GetRequiredService<ILoadingUnitMovementProvider>();
             this.LoadingUnitsDataProvider = this.ServiceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
+            this.MachineProvider = this.ServiceProvider.GetRequiredService<IMachineProvider>();
             this.MissionsDataProvider = this.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
             this.SensorsProvider = this.ServiceProvider.GetRequiredService<ISensorsProvider>();
             this.MachineModeDataProvider = this.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
@@ -63,6 +63,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         internal ILoadingUnitMovementProvider LoadingUnitMovementProvider { get; }
 
         internal ILoadingUnitsDataProvider LoadingUnitsDataProvider { get; }
+
+        public IMachineProvider MachineProvider { get; }
 
         internal ILogger<MachineManagerService> Logger { get; }
 
@@ -149,8 +151,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     var bayPosition = this.BaysDataProvider.GetPositionByLocation(this.Mission.LoadUnitDestination);
                     if (this.Mission.LoadUnitId > 0)
                     {
-                        this.BaysDataProvider.SetLoadingUnit(bayPosition.Id, this.Mission.LoadUnitId);
-                        this.LoadingUnitsDataProvider.SetHeight(this.Mission.LoadUnitId, 0);
+                        this.BaysDataProvider.SetLoadingUnit(bayPosition.Id, this.Mission.LoadUnitId, 0);
                     }
                 }
 
@@ -176,7 +177,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Mission.NeedMovingBackward = false;
             }
 
-            this.MissionsDataProvider.Update(this.Mission);
             if (bayShutter)
             {
                 this.BaysDataProvider.Light(this.Mission.TargetBay, true);
@@ -202,11 +202,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.ErrorMovements = MissionErrorMovements.None;
             this.MissionsDataProvider.Update(this.Mission);
 
-            bool isEject = this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadUnit
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation;
-            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), isEject, MessageStatus.OperationExecuting);
+            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationExecuting);
+
             return true;
         }
 
@@ -310,7 +307,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public abstract void OnCommand(CommandMessage command);
 
-        public abstract bool OnEnter(CommandMessage command);
+        public abstract bool OnEnter(CommandMessage command, bool showErrors = true);
 
         public void OnHomingNotification(HomingMessageData messageData)
         {
@@ -380,7 +377,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
         }
 
-        public void SendMoveNotification(BayNumber targetBay, string description, bool isEject, MessageStatus messageStatus)
+        public void SendMoveNotification(BayNumber targetBay, string description, MessageStatus messageStatus)
         {
             var messageData = new MoveLoadingUnitMessageData(
                 this.Mission.MissionType,
@@ -390,11 +387,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Mission.DestinationCellId,
                 this.Mission.LoadUnitId,
                 (this.Mission.LoadUnitDestination == LoadingUnitLocation.Cell),
-                isEject,
                 this.Mission.Id,
                 this.Mission.Action,
-                this.Mission.StopReason,
-                this.Mission.Step);
+                this.Mission.StopReason);
 
             var msg = new NotificationMessage(
                 messageData,

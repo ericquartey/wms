@@ -1,10 +1,10 @@
 ﻿namespace Ferretto.VW.App.Installation.Views
 {
-    public partial class UpdateView
+    public partial class CellsHeightCheckView
     {
         #region Constructors
 
-        public UpdateView()
+        public CellsHeightCheckView()
         {
             this.InitializeComponent();
         }

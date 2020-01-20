@@ -60,7 +60,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("test-parameters")]
         public ActionResult<RepeatedTestProcedure> GetTestParameters()
         {
-            return this.Ok(this.setupProceduresDataProvider.GetShutterTest());
+            return this.Ok(this.setupProceduresDataProvider.GetShutterTest(this.BayNumber));
         }
 
         [HttpPost("move")]
@@ -79,6 +79,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult MoveTo(ShutterPosition targetPosition)
         {
             this.shutterProvider.MoveTo(targetPosition, this.BayNumber, MessageActor.AutomationService);
+
+            return this.Accepted();
+        }
+
+        [HttpPost("reset-test")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult ResetTest()
+        {
+            this.shutterProvider.ResetTest(this.BayNumber);
 
             return this.Accepted();
         }

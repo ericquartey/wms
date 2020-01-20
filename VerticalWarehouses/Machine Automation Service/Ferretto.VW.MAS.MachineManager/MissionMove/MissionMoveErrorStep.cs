@@ -5,6 +5,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
+using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -37,7 +38,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         /// Only a call to OnResume can wake up the mission.
         /// </summary>
         /// <param name="command">not used</param>
-        public override bool OnEnter(CommandMessage command)
+        public override bool OnEnter(CommandMessage command, bool showErrors = true)
         {
             return this.EnterErrorState(MissionStep.Error);
         }
@@ -116,7 +117,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
 
                 case MissionStep.End:
-                    this.Mission.RestoreStep = MissionStep.NotDefined;
                     this.Mission.RestoreConditions = false;
                     this.Mission.NeedMovingBackward = false;
                     {
@@ -126,18 +126,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
 
                 case MissionStep.ToTarget:
-                    this.Mission.RestoreConditions = true;
-                    this.Mission.RestoreStep = MissionStep.NotDefined;
-                    this.Mission.NeedMovingBackward = false;
-                    this.Mission.StopReason = StopRequestReason.NoReason;
-                    {
-                        var newStep = new MissionMoveToTargetStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                        newStep.OnEnter(null);
-                    }
+                    this.RestoreMoveToTarget();
                     break;
 
                 case MissionStep.Start:
-                    this.Mission.RestoreStep = MissionStep.NotDefined;
                     this.Mission.RestoreConditions = false;
                     this.Mission.NeedMovingBackward = false;
                     this.Mission.StopReason = StopRequestReason.NoReason;
@@ -148,7 +140,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
 
                 case MissionStep.WaitPick:
-                    this.Mission.RestoreStep = MissionStep.NotDefined;
                     this.Mission.RestoreConditions = false;
                     this.Mission.NeedMovingBackward = false;
                     this.Mission.StopReason = StopRequestReason.NoReason;
@@ -168,6 +159,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     break;
             }
+            this.MachineModeDataProvider.Mode = MachineMode.Manual;
+            this.Logger.LogInformation($"Machine status switched to {this.MachineModeDataProvider.Mode}");
         }
 
         private void RestoreBayChain()
@@ -194,7 +187,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
 
                 var notificationText = $"Load Unit {this.Mission.LoadUnitId} placed on bay {bay.Number}";
-                this.SendMoveNotification(bay.Number, notificationText, false, MessageStatus.OperationWaitResume);
+                this.SendMoveNotification(bay.Number, notificationText, MessageStatus.OperationWaitResume);
 
                 this.Mission.RestoreStep = MissionStep.NotDefined;
                 this.Mission.RestoreConditions = false;
@@ -243,12 +236,51 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
         }
 
+        private void RestoreMoveToTarget()
+        {
+            this.Mission.RestoreConditions = true;
+            this.Mission.NeedMovingBackward = false;
+            this.Mission.StopReason = StopRequestReason.NoReason;
+            if (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell)
+            {
+                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
+                if (bay is null)
+                {
+                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceBay, this.Mission.TargetBay);
+                    throw new StateMachineException(ErrorDescriptions.LoadUnitSourceBay, this.Mission.TargetBay, MessageActor.MachineManager);
+                }
+                var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(this.Mission.TargetBay);
+                var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
+                if (shutterPosition != ShutterPosition.Opened)
+                {
+                    this.Mission.OpenShutterPosition = ShutterPosition.Opened;
+                    this.Logger.LogDebug($"{this.GetType().Name}: Manual Shutter positioning start");
+                    this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.Mission.OpenShutterPosition, this.Mission.TargetBay, true);
+                    this.Mission.ErrorMovements = MissionErrorMovements.MoveShutterOpen;
+                    this.MissionsDataProvider.Update(this.Mission);
+                    return;
+                }
+            }
+
+            this.Mission.RestoreStep = MissionStep.NotDefined;
+            var newStep = new MissionMoveToTargetStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+            newStep.OnEnter(null);
+        }
+
         private void RestoreOriginalStep()
         {
             this.Mission.ErrorMovements = MissionErrorMovements.None;
             this.Mission.NeedMovingBackward = false;
             this.Mission.RestoreConditions = true;
-            var newStep = new MissionMoveCloseShutterStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+            IMissionMoveBase newStep;
+            if (this.Mission.RestoreStep == MissionStep.CloseShutter)
+            {
+                newStep = new MissionMoveCloseShutterStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+            }
+            else
+            {
+                newStep = new MissionMoveToTargetStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+            }
             newStep.OnEnter(null);
         }
 

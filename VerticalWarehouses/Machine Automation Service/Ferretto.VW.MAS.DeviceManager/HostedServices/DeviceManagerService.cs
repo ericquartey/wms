@@ -648,6 +648,19 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                     var enable = ((IBayLightFieldMessageData)receivedMessage.Data).Enable;
 
+                    if (receivedMessage.Status == MessageStatus.OperationEnd)
+                    {
+                        var machineProvider = serviceProvider.GetRequiredService<IMachineProvider>();
+                        if (machineProvider.IsBayLightOn.ContainsKey(bayNumber))
+                        {
+                            machineProvider.IsBayLightOn[bayNumber] = enable;
+                        }
+                        else
+                        {
+                            machineProvider.IsBayLightOn.Add(bayNumber, enable);
+                        }
+                    }
+
                     this.EventAggregator
                         .GetEvent<NotificationEvent>()
                         .Publish(

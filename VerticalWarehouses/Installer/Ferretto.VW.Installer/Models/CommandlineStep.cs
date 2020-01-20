@@ -1,4 +1,7 @@
 ﻿using System;
+using System.IO;
+using System.ServiceModel.Channels;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Ferretto.VW.Installer
@@ -10,18 +13,13 @@ namespace Ferretto.VW.Installer
         public CommandlineStep(int number, string title, string rollbackScript, string script)
             : base(number, title)
         {
-            if (rollbackScript is null)
-            {
-                throw new ArgumentNullException(nameof(rollbackScript));
-            }
-
             if (script is null)
             {
                 throw new ArgumentNullException(nameof(script));
             }
 
-            this.RollbackScript = rollbackScript;
             this.Script = script;
+            this.RollbackScript = rollbackScript;
         }
 
         #endregion
@@ -56,6 +54,28 @@ namespace Ferretto.VW.Installer
                     : StepStatus.RollbackFailed);
         }
 
+        private void ReadStandardOutput(object obj)
+        {
+            var inputStream = obj as StreamReader;
+
+            if (inputStream is null)
+            {
+                return;
+            }
+
+            try
+            {
+                while (!inputStream.EndOfStream)
+                {
+                    this.LogWrite((char)inputStream.Read());
+                }
+            }
+            catch
+            {
+                // do nothing
+            }
+        }
+
         private bool TryRunCommandline(string command)
         {
             if (string.IsNullOrWhiteSpace(command))
@@ -73,9 +93,13 @@ namespace Ferretto.VW.Installer
                 process.StartInfo.RedirectStandardOutput = true;
                 process.StartInfo.RedirectStandardError = true;
 
+                this.LogWriteLine($"> {command}");
+
                 process.Start();
+                var thread = new Thread(new ParameterizedThreadStart(this.ReadStandardOutput));
+                thread.Start(process.StandardOutput);
                 process.WaitForExit();
-                this.Log = process.StandardOutput.ReadToEnd();
+                thread.Join();
 
                 return process.ExitCode >= 0;
             }

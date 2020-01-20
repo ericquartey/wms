@@ -131,7 +131,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             }
         }
 
-        public bool StartMission(Mission mission, CommandMessage command, IServiceProvider serviceProvider)
+        public bool StartMission(Mission mission, CommandMessage command, IServiceProvider serviceProvider, bool showErrors)
         {
             lock (this.syncObject)
             {
@@ -139,7 +139,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
                 try
                 {
-                    return newState.OnEnter(command);
+                    return newState.OnEnter(command, showErrors);
                 }
                 catch (StateMachineException ex)
                 {
@@ -178,6 +178,25 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             }
         }
 
+        public bool TestMission(int missionId, CommandMessage command, IServiceProvider serviceProvider)
+        {
+            lock (this.syncObject)
+            {
+                var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+                var mission = missionsDataProvider.GetById(missionId);
+                if (mission != null)
+                {
+                    var state = GetStateByClassName(serviceProvider, mission, this.eventAggregator);
+                    if (state != null)
+                    {
+                        state.OnResume(command);
+                    }
+                }
+
+                return true;
+            }
+        }
+
         public bool TryCreateMachineMission(CommandMessage command, IServiceProvider serviceProvider, out Mission mission)
         {
             if (command is null)
@@ -190,32 +209,49 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 mission = null;
 
                 if (command.Data is IMoveLoadingUnitMessageData messageData
-                    && messageData.LoadingUnitId.HasValue
+                    && messageData.LoadUnitId.HasValue
                     )
                 {
                     var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
-                    if (missionsDataProvider.CanCreateMission(messageData.LoadingUnitId.Value, command.RequestingBay))
+                    if (missionsDataProvider.CanCreateMission(messageData.LoadUnitId.Value, command.RequestingBay))
                     {
-                        // if there is a new or waiting mission we have to take her place
-                        var waitMission = missionsDataProvider.GetAllExecutingMissions().FirstOrDefault(m =>
-                            m.LoadUnitId == messageData.LoadingUnitId.Value
-                            && (m.Status == MissionStatus.Waiting || m.Status == MissionStatus.New)
-                            );
-                        if (waitMission != null)
+                        var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                        bool updateBay = false;
+                        using (var transaction = missionsDataProvider.GetContextTransaction())
                         {
-                            try
+                            // if there is a new or waiting mission we have to take her place
+                            var waitMission = missionsDataProvider.GetAllMissions()
+                            .FirstOrDefault(m => m.LoadUnitId == messageData.LoadUnitId.Value
+                                && !m.WmsId.HasValue
+                                && (m.Status == MissionStatus.Waiting || m.Status == MissionStatus.New || m.Status == MissionStatus.Completed)
+                            );
+                            if (waitMission != null
+                                && baysDataProvider.IsMissionInBay(waitMission)
+                                )
                             {
-                                missionsDataProvider.Delete(waitMission.Id);
-                                this.Logger.LogDebug($"{this.GetType().Name}: Delete {waitMission}");
+                                updateBay = true;
                             }
-                            catch (Exception)
-                            {
-                                return false;
-                            }
-                        }
 
-                        mission = missionsDataProvider.CreateBayMission(messageData.LoadingUnitId.Value, command.RequestingBay);
-                        return true;
+                            mission = missionsDataProvider.CreateBayMission(messageData.LoadUnitId.Value, command.RequestingBay, MissionType.Manual);
+                            if (updateBay)
+                            {
+                                baysDataProvider.AssignMission(command.RequestingBay, mission);
+                            }
+                            if (waitMission != null)
+                            {
+                                try
+                                {
+                                    missionsDataProvider.Delete(waitMission.Id);
+                                    this.Logger.LogDebug($"{this.GetType().Name}: Delete {waitMission}");
+                                }
+                                catch (Exception)
+                                {
+                                    return false;
+                                }
+                            }
+                            transaction.Commit();
+                            return true;
+                        }
                     }
                 }
             }

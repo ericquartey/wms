@@ -27,8 +27,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
-        //private bool bayIsMultiPosition;
-
         private SubscriptionToken fsmExceptionToken;
 
         private bool isExecutingProcedure;
@@ -178,14 +176,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             ??
             (this.selectBayPositionDownCommand = new DelegateCommand(
                 this.SelectBayPositionDown,
-                () => !this.IsExecutingProcedure && this.IsPositionUpSelected));
+                this.CanSelectBayPositionDown));
 
         public ICommand SelectBayPositionUpCommand =>
             this.selectBayPositionUpCommand
             ??
             (this.selectBayPositionUpCommand = new DelegateCommand(
                 this.SelectBayPositionUp,
-                () => !this.IsExecutingProcedure && !this.IsPositionUpSelected));
+                this.CanSelectBayPositionUp));
 
         public ICommand StartCommand =>
                this.startCommand
@@ -204,6 +202,18 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #endregion
 
         #region Methods
+
+        public virtual bool CanSelectBayPositionDown()
+        {
+            return !this.IsExecutingProcedure &&
+                   this.IsPositionUpSelected;
+        }
+
+        public virtual bool CanSelectBayPositionUp()
+        {
+            return !this.IsExecutingProcedure &&
+                   !this.IsPositionUpSelected;
+        }
 
         public virtual bool CanStart()
         {
@@ -305,6 +315,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.IsPositionDownSelected = true;
             this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
             this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
+
+            this.RaiseCanExecuteChanged();
         }
 
         public virtual void SelectBayPositionUp()
@@ -312,6 +324,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.IsPositionUpSelected = true;
             this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
             this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
+
+            this.RaiseCanExecuteChanged();
         }
 
         public virtual Task StartAsync()

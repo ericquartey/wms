@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
@@ -30,7 +31,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
         }
 
-        public override bool OnEnter(CommandMessage command)
+        public override bool OnEnter(CommandMessage command, bool showErrors = true)
         {
             this.Mission.RestoreStep = MissionStep.NotDefined;
             this.Mission.Step = MissionStep.BayChain;
@@ -66,7 +67,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.RestoreConditions = false;
             this.MissionsDataProvider.Update(this.Mission);
 
-            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), false, MessageStatus.OperationExecuting);
+            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationExecuting);
 
             return true;
         }
@@ -92,7 +93,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             this.Mission.LoadUnitDestination = destination.Location;
 
                             var notificationText = $"Load Unit {this.Mission.LoadUnitId} placed on bay {bay.Number}";
-                            this.SendMoveNotification(bay.Number, notificationText, false, MessageStatus.OperationWaitResume);
+                            this.SendMoveNotification(bay.Number, notificationText, MessageStatus.OperationWaitResume);
 
                             if (this.Mission.RestoreConditions)
                             {
@@ -109,9 +110,18 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 this.BayChainEnd();
                             }
                         }
-                        else if (notification.Type == MessageType.Homing)
+                        else if (notification.Type == MessageType.Homing
+                            && notification.Data is HomingMessageData messageData)
                         {
-                            this.BayChainEnd();
+                            if (messageData.AxisToCalibrate == Axis.BayChain)
+                            {
+                                this.Logger.LogDebug($"Homing elevator free start");
+                                this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, notification.RequestingBay, MessageActor.MachineManager);
+                            }
+                            else
+                            {
+                                this.BayChainEnd();
+                            }
                         }
                     }
                     break;

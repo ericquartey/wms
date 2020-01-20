@@ -1,8 +1,8 @@
-﻿using Ferretto.VW.App.Controls.Controls;
-using Microsoft.Xaml.Behaviors;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using Ferretto.VW.App.Controls.Controls;
+using Microsoft.Xaml.Behaviors;
 
 namespace Ferretto.VW.App.Scaffolding.Behaviors
 {
@@ -54,6 +54,5 @@ namespace Ferretto.VW.App.Scaffolding.Behaviors
             get => (bool)this.GetValue(IsEnabledProperty);
             set => this.SetValue(IsEnabledProperty, value);
         }
-
     }
 }
