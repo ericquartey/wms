@@ -257,13 +257,9 @@ namespace Ferretto.VW.MAS.MissionManager
                     mission.NeedHomingAxis = Axis.Horizontal;
                     newStep = new MissionMoveErrorDepositStep(mission, serviceProvider, eventAggregator);
                 }
-                else if (mission.RestoreStep == MissionStep.ToTarget)
-                {
-                    mission.NeedHomingAxis = Axis.Horizontal;
-                    newStep = new MissionMoveErrorStep(mission, serviceProvider, eventAggregator);
-                }
                 else
                 {
+                    mission.NeedHomingAxis = Axis.Horizontal;
                     newStep = new MissionMoveErrorStep(mission, serviceProvider, eventAggregator);
                 }
                 newStep.OnEnter(null);
@@ -325,15 +321,18 @@ namespace Ferretto.VW.MAS.MissionManager
                         {
                             var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
                             var machineModeDataProvider = scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
+                            var missionsDataProvider = scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
 
-                            if (machineProvider.IsHomingExecuted)
+                            if (!machineProvider.IsHomingExecuted
+                                && !missionsDataProvider.GetAllActiveMissions().Any(m => m.Step >= MissionStep.Error)
+                                )
                             {
-                                machineModeDataProvider.Mode = MachineMode.Automatic;
-                                this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
+                                this.GenerateHoming(bayProvider);
                             }
                             else
                             {
-                                this.GenerateHoming(bayProvider);
+                                machineModeDataProvider.Mode = MachineMode.Automatic;
+                                this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
                             }
                         }
                         break;

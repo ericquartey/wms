@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Threading;
 
 namespace Ferretto.VW.Installer
 {
@@ -20,6 +21,7 @@ namespace Ferretto.VW.Installer
         {
             if (File.Exists("steps-snapshot.json"))
             {
+                //this.installationService = InstallationService.LoadAsync("steps-snapshot.json");
                 this.installationService = InstallationService.LoadAsync("steps.json");
             }
             else if (File.Exists("steps.json"))
@@ -31,14 +33,10 @@ namespace Ferretto.VW.Installer
                 // no configuration file found
             }
 
-            this.installationService.RunAsync();
+            this.installationService.PropertyChanged += this.InstallationService_PropertyChanged;
+
+            new Thread(new ThreadStart(async () => await this.installationService.RunAsync())).Start();
         }
-
-        #endregion
-
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion
 
@@ -51,6 +49,18 @@ namespace Ferretto.VW.Installer
         }
 
         public IEnumerable<Step> Steps => this.installationService.Steps;
+
+        #endregion
+
+        #region Methods
+
+        private void InstallationService_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(InstallationService.ActiveStep))
+            {
+                this.SelectedStep = this.installationService.ActiveStep;
+            }
+        }
 
         #endregion
     }

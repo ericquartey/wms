@@ -215,12 +215,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             bool computeElongation)
         {
             this.elevatorProvider.MoveToAbsoluteVerticalPosition(
-                true,
+                manualMovment: true,
                 targetPosition,
                 computeElongation,
                 performWeighting,
-                null,
-                null,
+                targetBayPositionId: null,
+                targetCellId: null,
+                checkHomingDone: true,
                 this.BayNumber,
                 MessageActor.AutomationService);
 
@@ -289,12 +290,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             bool computeElongation)
         {
             this.elevatorProvider.MoveToAbsoluteVerticalPosition(
-                false,
+                manualMovment: false,
                 targetPosition,
                 computeElongation,
                 performWeighting,
-                null,
-                null,
+                targetBayPositionId: null,
+                targetCellId: null,
+                checkHomingDone: true,
                 this.BayNumber,
                 MessageActor.AutomationService);
 

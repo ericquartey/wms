@@ -55,6 +55,7 @@
                 </Border.Effect>
 
                 <Grid>
+
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="3*" />
                         <ColumnDefinition Width="2*" />
@@ -65,21 +66,25 @@
                             BorderThickness="0"
                             CornerRadius="4,0,0,4">
                         <Border.Background>
-                            <ImageBrush ImageSource="{DynamicResource LoginBackground}"
+                            <ImageBrush AlignmentX="Left"
+                                        AlignmentY="Bottom"
+                                        ImageSource="{DynamicResource LoginBackground}"
                                         Opacity="0.7"
                                         Stretch="UniformToFill" />
                         </Border.Background>
+
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
 
+
                             <Border BorderBrush="{DynamicResource FerrettoDarkGray}"
                                     BorderThickness="0"
-                                    CornerRadius="4,0,0,4">
+                                    CornerRadius="4,0,0,0">
                                 <Border.Background>
-                                    <SolidColorBrush Opacity="0.5"
+                                    <SolidColorBrush Opacity="0.7"
                                                      Color="Black" />
                                 </Border.Background>
                                 <StackPanel Margin="4">

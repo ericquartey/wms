@@ -121,15 +121,18 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         if (this.Mission.NeedHomingAxis == Axis.Horizontal)
                         {
-                            this.Logger.LogDebug($"MoveLoadingUnit start: direction {this.Mission.Direction}, openShutter {this.Mission.OpenShutterPosition}, measure {measure}");
-                            this.LoadingUnitMovementProvider.MoveLoadingUnit(this.Mission.Direction, true, this.Mission.OpenShutterPosition, measure, MessageActor.MachineManager, this.Mission.TargetBay, this.Mission.LoadUnitId);
+                            this.Mission.NeedHomingAxis = Axis.None;
+                            this.MissionsDataProvider.Update(this.Mission);
+                            // restart movement from the beginning!
+                            var newStep = new MissionMoveStartStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            newStep.OnEnter(null);
                         }
                         else if (this.Mission.NeedHomingAxis == Axis.BayChain)
                         {
+                            this.Mission.NeedHomingAxis = Axis.None;
+                            this.MissionsDataProvider.Update(this.Mission);
                             this.LoadUnitEnd();
                         }
-                        this.Mission.NeedHomingAxis = Axis.None;
-                        this.MissionsDataProvider.Update(this.Mission);
                     }
                     else
                     {

@@ -8,6 +8,8 @@
 
         public const string CELLPANELSCHECK = "CellPanelsCheckViewModel";
 
+        public const string CELLSHEIGHTCHECK = "CellsHeightCheckViewModel";
+
         public const string CELLSSIDECONTROL = "CellsSideControlViewModel";
 
         public const string COMUNICATIONWMS = "ComunicationWmsViewModel";

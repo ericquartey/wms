@@ -64,14 +64,22 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                 }
 
-                this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value,
-                    this.Mission.CloseShutterBayNumber,
-                    measure: false,
-                    MessageActor.MachineManager,
-                    this.Mission.TargetBay,
-                    this.Mission.RestoreConditions,
-                    targetBayPositionId,
-                    targetCellId);
+                if (this.Mission.NeedHomingAxis == Axis.Horizontal)
+                {
+                    this.Logger.LogDebug($"Homing elevator free start");
+                    this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
+                }
+                else
+                {
+                    this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value,
+                        this.Mission.CloseShutterBayNumber,
+                        measure: false,
+                        MessageActor.MachineManager,
+                        this.Mission.TargetBay,
+                        this.Mission.RestoreConditions,
+                        targetBayPositionId,
+                        targetCellId);
+                }
             }
             else
             {
@@ -100,14 +108,22 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                 }
 
-                this.LoadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight.Value,
-                    this.Mission.CloseShutterBayNumber,
-                    measure: false,
-                    MessageActor.MachineManager,
-                    this.Mission.TargetBay,
-                    this.Mission.RestoreConditions,
-                    targetBayPositionId,
-                    targetCellId);
+                if (this.Mission.NeedHomingAxis == Axis.Horizontal)
+                {
+                    this.Logger.LogDebug($"Homing elevator free start");
+                    this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
+                }
+                else
+                {
+                    this.LoadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight.Value,
+                        this.Mission.CloseShutterBayNumber,
+                        measure: false,
+                        MessageActor.MachineManager,
+                        this.Mission.TargetBay,
+                        this.Mission.RestoreConditions,
+                        targetBayPositionId,
+                        targetCellId);
+                }
             }
             this.Mission.Status = MissionStatus.Executing;
             this.Mission.RestoreConditions = false;
@@ -126,24 +142,59 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-                    if (this.UpdateResponseList(notification.Type))
+                    if (notification.Type == MessageType.Homing)
                     {
+                        this.Mission.NeedHomingAxis = Axis.None;
                         this.MissionsDataProvider.Update(this.Mission);
-                    }
 
-                    if ((this.Mission.CloseShutterBayNumber != BayNumber.None && (this.Mission.DeviceNotifications == (MissionDeviceNotifications.Positioning | MissionDeviceNotifications.Shutter)))
-                        || (this.Mission.CloseShutterBayNumber == BayNumber.None && (this.Mission.DeviceNotifications == MissionDeviceNotifications.Positioning))
-                        )
-                    {
                         if (this.Mission.LoadUnitSource is LoadingUnitLocation.Elevator)
                         {
-                            var newStep = new MissionMoveDepositUnitStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                            newStep.OnEnter(null);
+                            var destinationHeight = this.LoadingUnitMovementProvider.GetDestinationHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
+
+                            this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value,
+                                this.Mission.CloseShutterBayNumber,
+                                measure: false,
+                                MessageActor.MachineManager,
+                                this.Mission.TargetBay,
+                                this.Mission.RestoreConditions,
+                                targetBayPositionId,
+                                targetCellId);
                         }
                         else
                         {
-                            var newStep = new MissionMoveLoadElevatorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                            newStep.OnEnter(null);
+                            var sourceHeight = this.LoadingUnitMovementProvider.GetSourceHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
+
+                            this.LoadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight.Value,
+                                this.Mission.CloseShutterBayNumber,
+                                measure: false,
+                                MessageActor.MachineManager,
+                                this.Mission.TargetBay,
+                                this.Mission.RestoreConditions,
+                                targetBayPositionId,
+                                targetCellId);
+                        }
+                    }
+                    else
+                    {
+                        if (this.UpdateResponseList(notification.Type))
+                        {
+                            this.MissionsDataProvider.Update(this.Mission);
+                        }
+
+                        if ((this.Mission.CloseShutterBayNumber != BayNumber.None && (this.Mission.DeviceNotifications == (MissionDeviceNotifications.Positioning | MissionDeviceNotifications.Shutter)))
+                            || (this.Mission.CloseShutterBayNumber == BayNumber.None && (this.Mission.DeviceNotifications == MissionDeviceNotifications.Positioning))
+                            )
+                        {
+                            if (this.Mission.LoadUnitSource is LoadingUnitLocation.Elevator)
+                            {
+                                var newStep = new MissionMoveDepositUnitStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                newStep.OnEnter(null);
+                            }
+                            else
+                            {
+                                var newStep = new MissionMoveLoadElevatorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                newStep.OnEnter(null);
+                            }
                         }
                     }
                     break;

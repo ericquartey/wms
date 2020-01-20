@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
@@ -109,9 +110,18 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 this.BayChainEnd();
                             }
                         }
-                        else if (notification.Type == MessageType.Homing)
+                        else if (notification.Type == MessageType.Homing
+                            && notification.Data is HomingMessageData messageData)
                         {
-                            this.BayChainEnd();
+                            if (messageData.AxisToCalibrate == Axis.BayChain)
+                            {
+                                this.Logger.LogDebug($"Homing elevator free start");
+                                this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, notification.RequestingBay, MessageActor.MachineManager);
+                            }
+                            else
+                            {
+                                this.BayChainEnd();
+                            }
                         }
                     }
                     break;
