@@ -767,6 +767,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     bool performWeighting,
                     int? targetBayPositionId,
                     int? targetCellId,
+                    bool checkHomingDone,
                     BayNumber requestingBay,
                     MessageActor sender)
         {
@@ -778,7 +779,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 requestingBay,
                 sender,
                 targetBayPositionId,
-                targetCellId);
+                targetCellId,
+                checkHomingDone);
         }
 
         public void MoveToBayPosition(int bayPositionId, bool computeElongation, bool performWeighting, BayNumber bayNumber, MessageActor sender)
@@ -794,12 +796,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.MoveToVerticalPosition(
                 performWeighting ? MovementMode.PositionAndMeasureWeight : MovementMode.Position,
                 bayPosition.Height,
-                false,
+                manualMovement: false,
                 computeElongation,
                 bayNumber,
                 sender,
                 bayPositionId,
-                targetCellId: null);
+                targetCellId: null,
+                checkHomingDone: true);
         }
 
         public void MoveToCell(int cellId, bool computeElongation, bool performWeighting, BayNumber requestingBay, MessageActor sender)
@@ -815,12 +818,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.MoveToVerticalPosition(
                 performWeighting ? MovementMode.PositionAndMeasureWeight : MovementMode.Position,
                 cell.Position,
-                false,
+                manualMovement: false,
                 computeElongation,
                 requestingBay,
                 sender,
                 targetBayPositionId: null,
-                cellId);
+                cellId,
+                checkHomingDone: true);
         }
 
         public void MoveToFreeCell(int loadUnitId, bool computeElongation, bool performWeighting, BayNumber requestingBay, MessageActor sender)
@@ -837,12 +841,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.MoveToVerticalPosition(
                 performWeighting ? MovementMode.PositionAndMeasureWeight : MovementMode.Position,
                 cell.Position,
-                false,
+                manualMovement: false,
                 computeElongation,
                 requestingBay,
                 sender,
                 targetBayPositionId: null,
-                cellId);
+                cellId,
+                checkHomingDone: true);
         }
 
         public void MoveToRelativeVerticalPosition(double distance, BayNumber requestingBay, MessageActor sender)
@@ -1235,7 +1240,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             BayNumber requestingBay,
             MessageActor sender,
             int? targetBayPositionId,
-            int? targetCellId)
+            int? targetCellId,
+            bool checkHomingDone)
         {
             var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
 
@@ -1251,7 +1257,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 throw new InvalidOperationException(string.Format(Resources.Elevator.TargetPositionOutOfBounds, targetPosition, lowerBound, upperBound));
             }
 
-            var homingDone = this.machineProvider.IsHomingExecuted;
+            var homingDone = (checkHomingDone ? this.machineProvider.IsHomingExecuted : true);
 
             var sensors = this.sensorsProvider.GetAll();
             var isLoadingUnitOnBoard =
