@@ -664,6 +664,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm update.
+        /// </summary>
+        public static string ConfirmUpdate {
+            get {
+                return ResourceManager.GetString("ConfirmUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm update to {0} &apos;{1}&apos; ?.
+        /// </summary>
+        public static string ConfirmUpdateVer {
+            get {
+                return ResourceManager.GetString("ConfirmUpdateVer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Correct.
         /// </summary>
         public static string Correct {
@@ -1119,6 +1137,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Error {
             get {
                 return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error during initial update phase..
+        /// </summary>
+        public static string ErrorOnInitialPhaseUpdate {
+            get {
+                return ResourceManager.GetString("ErrorOnInitialPhaseUpdate", resourceCulture);
             }
         }
         
@@ -3488,6 +3515,15 @@ namespace Ferretto.VW.App.Resources {
         public static string UpdateResolution {
             get {
                 return ResourceManager.GetString("UpdateResolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update successfully completed..
+        /// </summary>
+        public static string UpdateSuccessfullyCompleted {
+            get {
+                return ResourceManager.GetString("UpdateSuccessfullyCompleted", resourceCulture);
             }
         }
         

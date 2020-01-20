@@ -16,12 +16,27 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
     [Warning(WarningsArea.Maintenance)]
     public class UpdateStep1ViewModel : BaseUpdateViewModel
     {
+        #region Fields
+
+        private DelegateCommand nextCommand;
+
+        #endregion
+
         #region Constructors
 
         public UpdateStep1ViewModel()
             : base()
         {
         }
+
+        #endregion
+
+        #region Properties
+
+        public ICommand NextCommand =>
+                        this.nextCommand
+                        ??
+                        (this.nextCommand = new DelegateCommand(() => this.GoNextStep(), this.CanGoNextStep));
 
         #endregion
 
@@ -36,6 +51,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             this.IsWaitingForResponse = true;
 
+            this.IsBusy = false;
+
             await base.OnAppearedAsync();
 
             this.IsBackNavigationAllowed = true;
@@ -48,10 +65,16 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         protected override void RaiseCanExecuteChanged()
         {
+            this.nextCommand.RaiseCanExecuteChanged();
             base.RaiseCanExecuteChanged();
         }
 
-        private void NavigationCheck()
+        private bool CanGoNextStep()
+        {
+            return this.Installations.Count > 0;
+        }
+
+        private void GoNextStep()
         {
             try
             {

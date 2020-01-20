@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Threading;
 using System.Xml;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 
@@ -34,7 +35,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private const int SECSUPDATESINTERVAL = 3;
 
-        private readonly string configurationUpdatePath;
+        private readonly string configurationUpdateRepositoryPath;
 
         private readonly IList<InstallerInfo> installations = new List<InstallerInfo>();
 
@@ -57,7 +58,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public BaseUpdateViewModel()
             : base(Services.PresentationMode.Installer)
         {
-            this.configurationUpdatePath = ConfigurationManager.AppSettings.GetUpdatePath();
+            this.configurationUpdateRepositoryPath = ConfigurationManager.AppSettings.GetUpdateRepositoryPath();
         }
 
         #endregion
@@ -143,7 +144,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 if (!this.isSystemConfigurationPathReady)
                 {
-                    return $"System path '{this.configurationUpdatePath}' not found";
+                    return $"System path '{this.configurationUpdateRepositoryPath}' not found";
                 }
 
                 return "Valid system path found";
@@ -270,16 +271,18 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 &&
                 this.IsInstallationReady)
             {
+                this.RaiseCanExecuteChanged();
                 return;
             }
 
             this.RefreshDevicesStatus();
             this.RaisePropertyChanged();
+            this.RaiseCanExecuteChanged();
         }
 
         private void RefreshDefaultPath()
         {
-            if (!Directory.Exists(this.configurationUpdatePath))
+            if (!Directory.Exists(this.configurationUpdateRepositoryPath))
             {
                 this.isSystemConfigurationPathReady = false;
                 return;
@@ -287,7 +290,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             this.isSystemConfigurationPathReady = true;
 
-            this.CheckPath(this.configurationUpdatePath);
+            this.CheckPath(this.configurationUpdateRepositoryPath);
         }
 
         private void RefreshDevicesStatus()
@@ -328,80 +331,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         private void UpdateTimer_Tick(object sender, EventArgs e)
         {
             this.Refresh();
-        }
-
-        #endregion
-    }
-
-    public class InstallerInfo
-    {
-        #region Fields
-
-        private const string ASSEMBLYNAMEPANELINSTALLER = "Ferretto.VW.Installer";
-
-        private const string ASSEMBLYNAMEPANELPC = "Ferretto.VW.App";
-
-        private const string ASSEMBLYNAMESERVICE = "Ferretto.VW.MAS.AutomationService";
-
-        #endregion
-
-        #region Constructors
-
-        public InstallerInfo(string fileName)
-        {
-            this.FileName = fileName;
-        }
-
-        public InstallerInfo(string productVersion, string serviceVersion, string panelPcVersion, string fileName)
-        {
-            this.ProductVersion = productVersion;
-            this.ServiceVersion = serviceVersion;
-            this.PanelPcVersion = panelPcVersion;
-            this.FileName = fileName;
-        }
-
-        #endregion
-
-        #region Properties
-
-        public string FileName { get; private set; }
-
-        public bool IsValid => !string.IsNullOrEmpty(this.FileName) &&
-                               !string.IsNullOrEmpty(this.PanelPcVersion) &&
-                               //!string.IsNullOrEmpty(this.ProductVersion) &&
-                               !string.IsNullOrEmpty(this.ServiceVersion);
-
-        public string PanelPcVersion { get; private set; }
-
-        public string ProductVersion { get; private set; }
-
-        public string ServiceVersion { get; private set; }
-
-        #endregion
-
-        #region Methods
-
-        public void SetAssemblyVersion(string assemblyName, string version)
-        {
-            if (assemblyName == ASSEMBLYNAMEPANELINSTALLER)
-            {
-                this.ProductVersion = version;
-            }
-
-            if (assemblyName == ASSEMBLYNAMEPANELPC)
-            {
-                this.PanelPcVersion = version;
-            }
-
-            if (assemblyName == ASSEMBLYNAMESERVICE)
-            {
-                this.ServiceVersion = version;
-            }
-        }
-
-        public void SetFileName(string fileName)
-        {
-            this.FileName = fileName;
         }
 
         #endregion
