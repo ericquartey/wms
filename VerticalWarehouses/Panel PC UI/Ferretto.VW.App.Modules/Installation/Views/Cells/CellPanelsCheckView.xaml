@@ -264,7 +264,7 @@
                        Margin="0,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:InstallationApp.PanelsControlDescription}" />
+                       Text="Controllo quote celle" />
         </StackPanel>
         <!--#endregion-->
 
