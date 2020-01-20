@@ -332,6 +332,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected void OnStepChanged(StepChangedMessage e)
         {
+            if (e.Next)
+            {
+                this.CurrentPanelNumber++;
+            }
+            else
+            {
+                this.CurrentPanelNumber--;
+            }
+
             this.RaiseCanExecuteChanged();
         }
 
@@ -645,8 +654,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.ShowPrevStepSinglePage(true, true);
             this.ShowNextStepSinglePage(true, true);
-
-            this.ShowAbortStep(false, true);
+            this.ShowAbortStep(true, true);
         }
 
         #endregion
