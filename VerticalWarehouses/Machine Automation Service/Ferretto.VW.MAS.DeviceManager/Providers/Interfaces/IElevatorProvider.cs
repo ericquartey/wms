@@ -68,6 +68,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
             int? targetBayPositionId,
             int? targetCellId,
             bool checkHomingDone,
+            bool waitContinue,
             BayNumber requestingBay,
             MessageActor sender);
 

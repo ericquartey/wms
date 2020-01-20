@@ -33,6 +33,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         public override bool OnEnter(CommandMessage command, bool showErrors = true)
         {
             var measure = (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell);
+            var waitContinue = measure;
             this.Mission.EjectLoadUnit = false;
             this.Mission.RestoreStep = MissionStep.NotDefined;
             this.Mission.Step = MissionStep.ToTarget;
@@ -51,6 +52,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 this.Mission.CloseShutterBayNumber = (bay.Shutter.Type != ShutterType.NotSpecified ? bay.Number : BayNumber.None);
                 measure = true;
+                waitContinue = !bay.IsExternal;
             }
 
             var destinationHeight = this.LoadingUnitMovementProvider.GetDestinationHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
@@ -88,7 +90,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.Mission.TargetBay,
                     this.Mission.RestoreConditions,
                     targetBayPositionId,
-                    targetCellId);
+                    targetCellId,
+                    waitContinue);
                 this.Mission.RestoreConditions = false;
             }
             this.MissionsDataProvider.Update(this.Mission);
@@ -115,8 +118,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
 
                         var destinationHeight = this.LoadingUnitMovementProvider.GetDestinationHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
+
                         this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value,
-                            this.Mission.CloseShutterBayNumber,
+                            BayNumber.None,
                             measure,
                             MessageActor.MachineManager,
                             notification.RequestingBay,
@@ -130,13 +134,28 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             || notification.Type == MessageType.ShutterPositioning
                             )
                         {
-                            if (this.UpdateResponseList(notification.Type))
+                            if (this.Mission.NeedHomingAxis == Axis.Horizontal
+                                && notification.Type == MessageType.ShutterPositioning
+                                )
+                            {
+                                this.Mission.CloseShutterBayNumber = BayNumber.None;
+                                this.MissionsDataProvider.Update(this.Mission);
+
+                                this.Logger.LogDebug($"Homing elevator occupied start");
+                                this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
+                            }
+                            else if (this.UpdateResponseList(notification.Type))
                             {
                                 this.MissionsDataProvider.Update(this.Mission);
-                                if (this.Mission.NeedHomingAxis == Axis.Horizontal)
+                                if (notification.Type == MessageType.ShutterPositioning)
                                 {
-                                    this.Logger.LogDebug($"Homing elevator occupied start");
-                                    this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
+                                    var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(notification.RequestingBay);
+                                    var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
+                                    if (shutterPosition == this.Mission.OpenShutterPosition)
+                                    {
+                                        this.Logger.LogDebug($"ContinuePositioning");
+                                        this.LoadingUnitMovementProvider.ContinuePositioning(MessageActor.MachineManager, notification.RequestingBay);
+                                    }
                                 }
                             }
                         }

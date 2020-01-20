@@ -38,6 +38,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         #region Methods
 
+        public override void Continue()
+        {
+            this.data.WaitContinue = false;
+            this.Logger.LogDebug($"Continue command received for inverter {this.inverterStatus.SystemIndex}");
+        }
+
         /// <inheritdoc />
         public override void Start()
         {
