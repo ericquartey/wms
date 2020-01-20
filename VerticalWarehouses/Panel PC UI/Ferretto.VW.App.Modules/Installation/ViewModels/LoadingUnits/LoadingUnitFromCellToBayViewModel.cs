@@ -47,6 +47,22 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Methods
 
+        public override bool CanSelectBayPositionDown()
+        {
+            return !this.IsExecutingProcedure &&
+                      this.IsPositionUpSelected &&
+                      this.MachineStatus.LoadingUnitPositionUpInBay is null &&
+                      this.MachineStatus.LoadingUnitPositionDownInBay is null;
+        }
+
+        public override bool CanSelectBayPositionUp()
+        {
+            return !this.IsExecutingProcedure &&
+                      !this.IsPositionUpSelected &&
+                      this.MachineStatus.LoadingUnitPositionUpInBay is null &&
+                      this.MachineStatus.LoadingUnitPositionDownInBay is null;
+        }
+
         public override async Task OnAppearedAsync()
         {
             this.LoadingUnitId = null;
@@ -138,7 +154,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     this.MachineService.OnUpdateServiceAsync();
 
                     this.ShowNotification($"Cassetto id {this.LoadingUnitId.Value} estratto", Services.Models.NotificationSeverity.Warning);
-
                 }
                 catch (Exception e)
                 {
