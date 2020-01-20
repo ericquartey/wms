@@ -491,7 +491,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 this.elevatorProvider.MoveToAbsoluteVerticalPosition(
                     manualMovment: false,
                     targetHeight,
-                    true,
+                    computeElongation: true,
                     measure,
                     targetBayPositionId,
                     targetCellId,
