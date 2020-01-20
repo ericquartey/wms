@@ -3,10 +3,12 @@ using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -37,6 +39,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if (returnValue)
             {
                 this.Mission.Status = MissionStatus.New;
+                var machineProvider = this.ServiceProvider.GetRequiredService<IMachineProvider>();
+
+                this.Mission.NeedHomingAxis = (machineProvider.IsHomingExecuted ? Axis.None : Axis.Horizontal);
+
                 if (command != null
                     && command.Data is IMoveLoadingUnitMessageData messageData
                     )
