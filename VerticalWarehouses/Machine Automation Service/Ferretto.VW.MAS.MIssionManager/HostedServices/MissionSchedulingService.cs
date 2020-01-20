@@ -99,7 +99,11 @@ namespace Ferretto.VW.MAS.MissionManager
             var mission = activeMissions.FirstOrDefault(x => x.Status == MissionStatus.Executing || x.Status == MissionStatus.Waiting);
             if (mission is null)
             {
-                mission = activeMissions.FirstOrDefault(x => x.Status == MissionStatus.New);
+                mission = activeMissions.FirstOrDefault(x => x.Status == MissionStatus.New
+                    && (x.MissionType == MissionType.IN
+                        || x.MissionType == MissionType.OUT
+                        || x.MissionType == MissionType.WMS
+                    ));
                 if (mission is null)
                 {
                     // no more missions are available for scheduling on this bay
@@ -128,6 +132,10 @@ namespace Ferretto.VW.MAS.MissionManager
                         // activate new mission
                         var cellsProvider = serviceProvider.GetRequiredService<ICellsProvider>();
                         var sourceCell = cellsProvider.GetByLoadingUnitId(mission.LoadUnitId);
+                        if (sourceCell is null)
+                        {
+                            this.Logger.LogDebug($"Bay {bayNumber}: WMS mission {mission.WmsId} can not start because LoadUnit {mission.LoadUnitId} is not in a cell.");
+                        }
                         if (sourceCell is null)
                         {
                             this.Logger.LogDebug($"Bay {bayNumber}: WMS mission {mission.WmsId} can not start because LoadUnit {mission.LoadUnitId} is not in a cell.");
@@ -249,13 +257,9 @@ namespace Ferretto.VW.MAS.MissionManager
                     mission.NeedHomingAxis = Axis.Horizontal;
                     newStep = new MissionMoveErrorDepositStep(mission, serviceProvider, eventAggregator);
                 }
-                else if (mission.RestoreStep == MissionStep.ToTarget)
-                {
-                    mission.NeedHomingAxis = Axis.Horizontal;
-                    newStep = new MissionMoveErrorStep(mission, serviceProvider, eventAggregator);
-                }
                 else
                 {
+                    mission.NeedHomingAxis = Axis.Horizontal;
                     newStep = new MissionMoveErrorStep(mission, serviceProvider, eventAggregator);
                 }
                 newStep.OnEnter(null);
@@ -317,15 +321,18 @@ namespace Ferretto.VW.MAS.MissionManager
                         {
                             var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
                             var machineModeDataProvider = scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
+                            var missionsDataProvider = scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
 
-                            if (machineProvider.IsHomingExecuted)
+                            if (!machineProvider.IsHomingExecuted
+                                && !missionsDataProvider.GetAllActiveMissions().Any(m => m.Step >= MissionStep.Error)
+                                )
                             {
-                                machineModeDataProvider.Mode = MachineMode.Automatic;
-                                this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
+                                this.GenerateHoming(bayProvider);
                             }
                             else
                             {
-                                this.GenerateHoming(bayProvider);
+                                machineModeDataProvider.Mode = MachineMode.Automatic;
+                                this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
                             }
                         }
                         break;

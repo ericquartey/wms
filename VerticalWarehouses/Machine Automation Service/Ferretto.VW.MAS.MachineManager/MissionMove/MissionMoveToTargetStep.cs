@@ -30,7 +30,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
         }
 
-        public override bool OnEnter(CommandMessage command)
+        public override bool OnEnter(CommandMessage command, bool showErrors = true)
         {
             var measure = (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell);
             this.Mission.EjectLoadUnit = false;
@@ -69,8 +69,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             if (this.Mission.NeedHomingAxis == Axis.Horizontal)
             {
-                this.Logger.LogDebug($"Homing elevator occupied start");
-                this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
+                if (this.Mission.CloseShutterBayNumber == BayNumber.None)
+                {
+                    this.Logger.LogDebug($"Homing elevator occupied start");
+                    this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
+                }
+                else
+                {
+                    this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, this.Mission.CloseShutterBayNumber, this.Mission.RestoreConditions);
+                }
             }
             else
             {
@@ -101,7 +108,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MessageStatus.OperationEnd:
                     if (notification.Type == MessageType.Homing)
                     {
-                        // do not clear needHoming because will have to do it after unloading (DepositUnitState)
+                        if (!this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
+                        {
+                            this.Mission.NeedHomingAxis = Axis.None;
+                            this.MissionsDataProvider.Update(this.Mission);
+                        }
+
                         var destinationHeight = this.LoadingUnitMovementProvider.GetDestinationHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
                         this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value,
                             this.Mission.CloseShutterBayNumber,
@@ -121,6 +133,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             if (this.UpdateResponseList(notification.Type))
                             {
                                 this.MissionsDataProvider.Update(this.Mission);
+                                if (this.Mission.NeedHomingAxis == Axis.Horizontal)
+                                {
+                                    this.Logger.LogDebug($"Homing elevator occupied start");
+                                    this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
+                                }
                             }
                         }
                     }

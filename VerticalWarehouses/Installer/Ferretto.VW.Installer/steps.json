@@ -3,24 +3,56 @@
     {
       "$type": "Ferretto.VW.Installer.CommandlineStep, Ferretto.VW.Installer",
       "number": 1,
-      "title": "Copy files to output dir",
-      "script": "echo ciao",
-      "rollbackScript": "abc",
+      "title": "Fake step 1",
+      "script": "timeout /T 3",
+      "rollbackScript": "timeout /T 2",
+      "mustRollBack": true
+    },
+    /* {
+      "$type": "Ferretto.VW.Installer.CommandlineStep, Ferretto.VW.Installer",
+      "number": 2,
+      "title": "Fake step 2",
+      "script": "timeout /T 3",
+      "rollbackScript": "timeout /T 2",
       "mustRollBack": true
     },
     {
       "$type": "Ferretto.VW.Installer.CommandlineStep, Ferretto.VW.Installer",
-      "number": 2,
+      "number": 3,
+      "title": "Disabilita UWF",
+      "script": "uwfmgr filter disable",
+      "rollbackScript": "uwfmgr filter enable",
+      "mustRollBack": true
+    },*/
+    /*{
+      "$type": "Ferretto.VW.Installer.CommandlineStep, Ferretto.VW.Installer",
+      "number": 4,
+      "title": "Restart system",
+      "script": "shutdown /r /t 0 /f /d p:4:2 /c \"Vertimag Software Setup\"",
+      "mustRollBack": false
+    },*/
+    /* {
+      "$type": "Ferretto.VW.Installer.CommandlineStep, Ferretto.VW.Installer",
+      "number": 5,
       "title": "Register Service",
-      "script": "echo ho",
+      "script": "timeout /T 3",
       "rollbackScript": "abc",
+      "mustRollBack": true
+    },*/
+    {
+      "$type": "Ferretto.VW.Installer.MasHealthCheckStep, Ferretto.VW.Installer",
+      "number": 6,
+      "title": "Verifica stato del MAS",
+      "timeout": "10000",
       "mustRollBack": true
     },
     {
-      "$type": "Ferretto.VW.Installer.MasHealthCheckStep, Ferretto.VW.Installer",
-      "number": 3,
-      "title": "Check MAS health",
-      "timeout": "10000"
+      "$type": "Ferretto.VW.Installer.CommandlineStep, Ferretto.VW.Installer",
+      "number": 7,
+      "title": "Riabilita UWF",
+      "script": "uwfmgr filter enable",
+      "rollbackScript": "uwfmgr filter disable",
+      "mustRollBack": true
     }
   ]
 }

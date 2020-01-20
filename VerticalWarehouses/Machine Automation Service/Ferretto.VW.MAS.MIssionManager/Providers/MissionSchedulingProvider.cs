@@ -79,7 +79,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 loadingUnitId,
                 targetBayNumber);
 
-            var mission = this.missionsDataProvider.CreateBayMission(loadingUnitId, targetBayNumber);
+            var mission = this.missionsDataProvider.CreateBayMission(loadingUnitId, targetBayNumber, MissionType.OUT);
 
             this.NotifyNewMachineMissionAvailable(mission);
         }

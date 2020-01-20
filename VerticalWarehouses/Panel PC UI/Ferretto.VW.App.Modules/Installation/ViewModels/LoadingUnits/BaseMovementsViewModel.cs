@@ -176,20 +176,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             ??
             (this.selectBayPositionDownCommand = new DelegateCommand(
                 this.SelectBayPositionDown,
-                () => !this.IsExecutingProcedure &&
-                      this.IsPositionUpSelected &&
-                      this.MachineStatus.LoadingUnitPositionUpInBay is null &&
-                      this.MachineStatus.LoadingUnitPositionDownInBay is null));
+                this.CanSelectBayPositionDown));
 
         public ICommand SelectBayPositionUpCommand =>
             this.selectBayPositionUpCommand
             ??
             (this.selectBayPositionUpCommand = new DelegateCommand(
                 this.SelectBayPositionUp,
-                () => !this.IsExecutingProcedure &&
-                      !this.IsPositionUpSelected &&
-                      this.MachineStatus.LoadingUnitPositionUpInBay is null &&
-                      this.MachineStatus.LoadingUnitPositionDownInBay is null));
+                this.CanSelectBayPositionUp));
 
         public ICommand StartCommand =>
                this.startCommand
@@ -208,6 +202,18 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #endregion
 
         #region Methods
+
+        public virtual bool CanSelectBayPositionDown()
+        {
+            return !this.IsExecutingProcedure &&
+                   this.IsPositionUpSelected;
+        }
+
+        public virtual bool CanSelectBayPositionUp()
+        {
+            return !this.IsExecutingProcedure &&
+                   !this.IsPositionUpSelected;
+        }
 
         public virtual bool CanStart()
         {

@@ -253,13 +253,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    this.InputRequiredCycles.HasValue &&
                    this.CumulativePerformedCycles < this.InputRequiredCycles &&
                    !this.IsExecutingProcedure &&
+                   !this.MachineStatus.IsMovingShutter &&
                    string.IsNullOrWhiteSpace(this.Error);
         }
 
         private bool CanExecuteStopCommand()
         {
-            return
-                this.IsExecutingProcedure;
+            return this.MachineStatus.IsMovingShutter &&
+                   this.IsExecutingProcedure;
         }
 
         private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
@@ -339,7 +340,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.shuttersWebService.StopAsync();
+                await this.MachineService.StopMovingByAllAsync();
             }
             catch (System.Exception ex)
             {

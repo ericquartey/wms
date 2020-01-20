@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         /// Only a call to OnResume can wake up the mission.
         /// </summary>
         /// <param name="command">not used</param>
-        public override bool OnEnter(CommandMessage command)
+        public override bool OnEnter(CommandMessage command, bool showErrors = true)
         {
             return this.EnterErrorState(MissionStep.ErrorLoad);
         }
@@ -69,11 +69,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 this.Mission.ErrorMovements = MissionErrorMovements.None;
                                 if (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell)
                                 {
-                                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
-                                    this.Logger.LogDebug($"{this.GetType().Name}: Close Shutter positioning start");
-                                    this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, restore: true);
-                                    this.Mission.ErrorMovements |= MissionErrorMovements.MoveShutterClosed;
-                                    this.MissionsDataProvider.Update(this.Mission);
+                                    this.CloseShutter();
                                     break;
                                 }
                                 else
@@ -117,7 +113,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward))
                             {
                                 this.Mission.NeedMovingBackward = false;
-                                this.RestoreOriginalStep();
+                                if (this.Mission.LoadUnitSource == LoadingUnitLocation.Cell)
+                                {
+                                    this.RestoreOriginalStep();
+                                }
+                                else
+                                {
+                                    this.CloseShutter();
+                                }
                             }
                             else
                             {
@@ -166,6 +169,17 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     break;
             }
+            this.MachineModeDataProvider.Mode = MachineMode.Manual;
+            this.Logger.LogInformation($"Machine status switched to {this.MachineModeDataProvider.Mode}");
+        }
+
+        private void CloseShutter()
+        {
+            var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
+            this.Logger.LogDebug($"{this.GetType().Name}: Close Shutter positioning start");
+            this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, restore: true);
+            this.Mission.ErrorMovements |= MissionErrorMovements.MoveShutterClosed;
+            this.MissionsDataProvider.Update(this.Mission);
         }
 
         /// <summary>

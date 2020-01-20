@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -251,6 +252,26 @@ namespace Ferretto.VW.MAS.DeviceManager
                 this.EventAggregator
                     .GetEvent<NotificationEvent>()
                     .Publish(notificationMessage);
+
+                if (message.Status == MessageStatus.OperationError
+                    && (message.Type == MessageType.Positioning
+                        || message.Type == MessageType.Homing
+                        || message.Type == MessageType.ShutterPositioning
+                        )
+                    )
+                {
+                    var messageData = new ChangeRunningStateMessageData(false, null, CommandAction.Start, StopRequestReason.Stop);
+                    this.EventAggregator
+                        .GetEvent<CommandEvent>()
+                        .Publish(
+                            new CommandMessage(
+                                messageData,
+                                "OperationError",
+                                MessageActor.MachineManager,
+                                MessageActor.DeviceManager,
+                                MessageType.ChangeRunningState,
+                                message.RequestingBay));
+                }
             }
 
             if (message.Type is MessageType.DataLayerReady)

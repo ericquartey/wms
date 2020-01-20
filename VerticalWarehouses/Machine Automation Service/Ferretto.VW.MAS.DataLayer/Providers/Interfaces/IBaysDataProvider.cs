@@ -78,7 +78,9 @@ namespace Ferretto.VW.MAS.DataLayer
         InverterIndex GetInverterIndexByProfile(BayNumber bayNumber);
 
         IoIndex GetIoDevice(BayNumber bayNumber);
+
         bool GetLightOn(BayNumber bayNumber);
+
         LoadingUnit GetLoadingUnitByDestination(LoadingUnitLocation location);
 
         double? GetLoadingUnitDestinationHeight(LoadingUnitLocation location);
@@ -102,6 +104,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         InverterIndex GetShutterInverterIndex(BayNumber bayNumber);
 
+        bool IsMissionInBay(Mission mission);
+
         void Light(BayNumber bayNumber, bool enable);
 
         void PerformHoming(BayNumber bayNumber);
@@ -116,10 +120,12 @@ namespace Ferretto.VW.MAS.DataLayer
 
         /// <summary>
         /// Specifies that the given loading unit is now located in a bay position.
+        /// It updates bay and LoadUnit db tables.
         /// </summary>
         /// <param name="bayPositionId">The identifier of the bay position where the loading unit is now located.</param>
         /// <param name="loadingUnitId">The identifier of the loading unit.</param>
-        void SetLoadingUnit(int bayPositionId, int? loadingUnitId);
+        /// <param name="height">"only when it is not null"</param>
+        void SetLoadingUnit(int bayPositionId, int? loadingUnitId, double? height = null);
 
         void UpdateHoming(BayNumber bayNumber, bool isExecuted);
 

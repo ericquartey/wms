@@ -64,7 +64,7 @@
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="Controllo pannelli mensola"
+                    <controls:PpcButton Title="Controllo quote celle"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.4.2"
@@ -74,7 +74,7 @@
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="Controllo quote celle"
+                    <controls:PpcButton Title="Controllo quote celle (obsoleto)"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.4.3"
@@ -84,7 +84,7 @@
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="Modifica blocco celle"
+                    <controls:PpcButton Title="Modifica blocco celle (obsoleto)"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.4.4"
