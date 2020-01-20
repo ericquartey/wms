@@ -1,4 +1,6 @@
-﻿using Ferretto.VW.CommonUtils.Messages;
+﻿using Ferretto.VW.CommonUtils;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DeviceManager.Positioning.Interfaces;
@@ -128,6 +130,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 this.scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>().Mode = MachineMode.Manual;
                 this.Logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
             }
+
+            var stopMachineData = new ChangeRunningStateMessageData(false, null, CommandAction.Start, StopRequestReason.Stop);
+            var stopMachineMessage = new CommandMessage(stopMachineData,
+                "Positioning OperationError",
+                MessageActor.MachineManager,
+                MessageActor.DeviceManager,
+                MessageType.ChangeRunningState,
+                this.machineData.RequestingBay);
+            this.ParentStateMachine.PublishCommandMessage(stopMachineMessage);
         }
 
         public override void Stop(StopRequestReason reason)

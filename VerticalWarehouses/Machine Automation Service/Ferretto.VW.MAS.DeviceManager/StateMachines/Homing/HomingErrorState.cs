@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages;
+﻿using Ferretto.VW.CommonUtils;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DeviceManager.Homing.Interfaces;
@@ -82,6 +83,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 (byte)currentInverterIndex);
 
                 this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
+
+                var stopMachineData = new ChangeRunningStateMessageData(false, null, CommandAction.Start, StopRequestReason.Stop);
+                var stopMachineMessage = new CommandMessage(stopMachineData,
+                    "Homing OperationError",
+                    MessageActor.MachineManager,
+                    MessageActor.DeviceManager,
+                    MessageType.ChangeRunningState,
+                    this.machineData.RequestingBay);
+                this.ParentStateMachine.PublishCommandMessage(stopMachineMessage);
             }
 
             var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, false, MessageVerbosity.Info);

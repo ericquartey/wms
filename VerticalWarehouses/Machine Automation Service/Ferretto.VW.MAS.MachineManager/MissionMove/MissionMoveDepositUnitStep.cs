@@ -80,7 +80,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
             }
 
-            if (!this.MachineProvider.IsHomingExecuted)
+            if (this.Mission.NeedHomingAxis == Axis.Horizontal)
             {
                 if (this.Mission.OpenShutterPosition != ShutterPosition.NotSpecified)
                 {
@@ -114,7 +114,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MessageStatus.OperationEnd:
                     if (notification.Type == MessageType.Homing)
                     {
-                        this.Mission.NeedHomingAxis = Axis.None;
+                        if (!this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
+                        {
+                            this.Mission.NeedHomingAxis = Axis.None;
+                        }
                         this.DepositUnitEnd();
                     }
                     else
@@ -134,7 +137,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
                             if (shutterPosition == this.Mission.OpenShutterPosition)
                             {
-                                if (!this.MachineProvider.IsHomingExecuted)
+                                if (this.Mission.NeedHomingAxis == Axis.Horizontal)
                                 {
                                     this.Logger.LogDebug($"Manual Horizontal forward positioning start");
                                     this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, true, false, this.Mission.LoadUnitId, MessageActor.MachineManager, this.Mission.TargetBay);

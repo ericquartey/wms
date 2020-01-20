@@ -108,8 +108,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MessageStatus.OperationEnd:
                     if (notification.Type == MessageType.Homing)
                     {
-                        this.Mission.NeedHomingAxis = Axis.None;
-                        this.MissionsDataProvider.Update(this.Mission);
+                        if (!this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
+                        {
+                            this.Mission.NeedHomingAxis = Axis.None;
+                            this.MissionsDataProvider.Update(this.Mission);
+                        }
 
                         var destinationHeight = this.LoadingUnitMovementProvider.GetDestinationHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
                         this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value,
