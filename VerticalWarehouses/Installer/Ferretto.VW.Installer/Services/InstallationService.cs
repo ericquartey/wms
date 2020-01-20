@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using NLog;
 
 namespace Ferretto.VW.Installer
 {
@@ -16,6 +17,8 @@ namespace Ferretto.VW.Installer
             TypeNameHandling = TypeNameHandling.Auto,
             Formatting = Formatting.Indented,
         };
+
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private Step activeStep;
 
@@ -85,11 +88,23 @@ namespace Ferretto.VW.Installer
                 while (this.Steps.Any(s => s.Status != StepStatus.Done) || this.Steps.FirstOrDefault(s => s.MustRollback)?.Status is StepStatus.RolledBack)
                 // stop when all steps are done or when the first step was rolled back
                 {
-                    var stepToRollback = this.Steps.Any(s => s.Status == StepStatus.RolledBack)
-                        ? this.Steps.TakeWhile(s => s.Status != StepStatus.RolledBack).LastOrDefault()
-                        : null;
+                    var hasRolledbackSteps = this.Steps.Any(s => s.Status == StepStatus.RolledBack);
 
-                    if (stepToRollback is null)
+                    if (hasRolledbackSteps)
+                    {
+                        var stepToRollback = this.Steps.TakeWhile(s => s.Status != StepStatus.RolledBack).LastOrDefault();
+
+                        if (stepToRollback != null)
+                        {
+                            await this.RollbackStep(stepToRollback);
+                        }
+                        else
+                        {
+                            this.logger.Debug("Installation rollback completed.");
+                            return;
+                        }
+                    }
+                    else
                     {
                         this.ActiveStep = this.Steps.FirstOrDefault(s => s.Status == StepStatus.ToDo);
                         this.Dump();
@@ -97,14 +112,13 @@ namespace Ferretto.VW.Installer
 
                         await this.ActiveStep.ApplyAsync();
                         this.Dump();
-                        if (this.ActiveStep.Status is StepStatus.Failed && this.ActiveStep.MustRollback)
+                        if (this.ActiveStep.Status is StepStatus.Failed)
                         {
-                            await this.RollbackStep(this.ActiveStep);
+                            if (this.ActiveStep.MustRollback)
+                            {
+                                await this.RollbackStep(this.ActiveStep);
+                            }
                         }
-                    }
-                    else
-                    {
-                        await this.RollbackStep(stepToRollback);
                     }
                 }
             }

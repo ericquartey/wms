@@ -13,18 +13,13 @@ namespace Ferretto.VW.Installer
         public CommandlineStep(int number, string title, string rollbackScript, string script)
             : base(number, title)
         {
-            if (rollbackScript is null)
-            {
-                throw new ArgumentNullException(nameof(rollbackScript));
-            }
-
             if (script is null)
             {
                 throw new ArgumentNullException(nameof(script));
             }
 
-            this.RollbackScript = rollbackScript;
             this.Script = script;
+            this.RollbackScript = rollbackScript;
         }
 
         #endregion
@@ -98,10 +93,13 @@ namespace Ferretto.VW.Installer
                 process.StartInfo.RedirectStandardOutput = true;
                 process.StartInfo.RedirectStandardError = true;
 
+                this.LogWriteLine($"> {command}");
+
                 process.Start();
-                new Thread(new ParameterizedThreadStart(this.ReadStandardOutput))
-                   .Start(process.StandardOutput);
+                var thread = new Thread(new ParameterizedThreadStart(this.ReadStandardOutput));
+                thread.Start(process.StandardOutput);
                 process.WaitForExit();
+                thread.Join();
 
                 return process.ExitCode >= 0;
             }

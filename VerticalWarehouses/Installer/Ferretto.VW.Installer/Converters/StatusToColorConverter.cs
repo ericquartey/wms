@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Drawing;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media;
 
 namespace Ferretto.VW.Installer
 {
@@ -19,13 +19,14 @@ namespace Ferretto.VW.Installer
 
             switch ((StepStatus)value)
             {
-                case StepStatus.Done: return Color.DarkGreen;
-                case StepStatus.Failed: return Brushes.Firebrick;
-                case StepStatus.ToDo: return Brushes.Gray;
-                case StepStatus.InProgress: return Brushes.Blue;
-                case StepStatus.RollingBack: return Brushes.Gold;
-                case StepStatus.RollbackFailed: return Brushes.Firebrick;
-                default: return Brushes.Pink;
+                case StepStatus.Done: return "DarkGreen";
+                case StepStatus.Failed: return "Firebrick";
+                case StepStatus.ToDo: return "Gray";
+                case StepStatus.InProgress: return nameof(Colors.CornflowerBlue);
+                case StepStatus.RolledBack: return "DarkGreen";
+                case StepStatus.RollingBack: return "Gold";
+                case StepStatus.RollbackFailed: return "Firebrick";
+                default: return nameof(Colors.White);
             }
         }
 
