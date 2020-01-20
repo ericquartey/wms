@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using NLog;
 
 namespace Ferretto.VW.Installer
 {
@@ -14,15 +15,24 @@ namespace Ferretto.VW.Installer
         private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings()
         {
             TypeNameHandling = TypeNameHandling.Auto,
+            Formatting = Formatting.Indented,
         };
+
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+
+        private Step activeStep;
 
         #endregion
 
         #region Properties
 
-        public IEnumerable<Step> Steps { get; private set; }
+        public Step ActiveStep
+        {
+            get => this.activeStep;
+            private set => this.SetProperty(ref this.activeStep, value);
+        }
 
-        private Step ActiveStep { get; set; }
+        public IEnumerable<Step> Steps { get; private set; }
 
         #endregion
 
@@ -37,7 +47,7 @@ namespace Ferretto.VW.Installer
 
             var stepsJsonFile = System.IO.File.ReadAllText(fileName);
 
-            var serviceAnon = new { Steps = new List<Step>() };
+            var serviceAnon = new { Steps = Array.Empty<Step>() };
             serviceAnon = JsonConvert.DeserializeAnonymousType(stepsJsonFile, serviceAnon, SerializerSettings);
 
             return new InstallationService()
@@ -75,46 +85,46 @@ namespace Ferretto.VW.Installer
 
             try
             {
-                while (this.Steps.All(s => s.Status != StepStatus.Done) || this.Steps.FirstOrDefault(s => s.MustRollback)?.Status is StepStatus.RolledBack)
+                while (this.Steps.Any(s => s.Status != StepStatus.Done) || this.Steps.FirstOrDefault(s => s.MustRollback)?.Status is StepStatus.RolledBack)
                 // stop when all steps are done or when the first step was rolled back
                 {
-                    var stepToRollback = this.Steps.Any(s => s.Status == StepStatus.RolledBack)
-                        ? this.Steps.TakeWhile(s => s.Status != StepStatus.RolledBack).LastOrDefault()
-                        : null;
+                    var hasRolledbackSteps = this.Steps.Any(s => s.Status == StepStatus.RolledBack);
 
-                    if (stepToRollback is null)
+                    if (hasRolledbackSteps)
+                    {
+                        var stepToRollback = this.Steps.TakeWhile(s => s.Status != StepStatus.RolledBack).LastOrDefault();
+
+                        if (stepToRollback != null)
+                        {
+                            await this.RollbackStep(stepToRollback);
+                        }
+                        else
+                        {
+                            this.logger.Debug("Installation rollback completed.");
+                            return;
+                        }
+                    }
+                    else
                     {
                         this.ActiveStep = this.Steps.FirstOrDefault(s => s.Status == StepStatus.ToDo);
                         this.Dump();
                         this.RaisePropertyChanged(nameof(this.ActiveStep));
 
                         await this.ActiveStep.ApplyAsync();
-
-                        if (this.ActiveStep.Status is StepStatus.Failed && this.ActiveStep.MustRollback)
+                        this.Dump();
+                        if (this.ActiveStep.Status is StepStatus.Failed)
                         {
-                            await RollbackStep(this.ActiveStep);
+                            if (this.ActiveStep.MustRollback)
+                            {
+                                await this.RollbackStep(this.ActiveStep);
+                            }
                         }
-                    }
-                    else
-                    {
-                        await RollbackStep(stepToRollback);
                     }
                 }
             }
             catch
             {
-                throw;
-            }
-        }
-
-        private static async Task RollbackStep(Step stepToRollback)
-        {
-            await stepToRollback.RollbackAsync();
-
-            if (stepToRollback.Status is StepStatus.RollbackFailed)
-            {
-                throw new InvalidOperationException(
-                    $"Unable to continue with setup because rollback of step {stepToRollback.Number} failed.");
+                // do nothing
             }
         }
 
@@ -123,6 +133,17 @@ namespace Ferretto.VW.Installer
             var objectString = JsonConvert.SerializeObject(this, SerializerSettings);
 
             System.IO.File.WriteAllText("steps-snapshot.json", objectString);
+        }
+
+        private async Task RollbackStep(Step stepToRollback)
+        {
+            await stepToRollback.RollbackAsync();
+            this.Dump();
+            if (stepToRollback.Status is StepStatus.RollbackFailed)
+            {
+                throw new InvalidOperationException(
+                    $"Unable to continue with setup because rollback of step {stepToRollback.Number} failed.");
+            }
         }
 
         #endregion

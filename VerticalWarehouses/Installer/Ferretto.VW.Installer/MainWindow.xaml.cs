@@ -1,4 +1,7 @@
-﻿namespace Ferretto.VW.Installer
+﻿using System.Windows;
+using NLog.Time;
+
+namespace Ferretto.VW.Installer
 {
     public partial class MainWindow
     {
@@ -7,6 +10,14 @@
         public MainWindow()
         {
             this.InitializeComponent();
+#if !DEBUG
+            this.Top = 0;
+            this.Left = 0;
+            this.Width = System.Windows.SystemParameters.PrimaryScreenWidth;
+            this.Height = SystemParameters.PrimaryScreenHeight;
+#else
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+#endif
         }
 
         #endregion

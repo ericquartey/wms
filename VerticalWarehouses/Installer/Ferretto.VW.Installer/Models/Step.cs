@@ -1,6 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using NLog;
 
 namespace Ferretto.VW.Installer
 {
@@ -8,11 +12,13 @@ namespace Ferretto.VW.Installer
     {
         #region Fields
 
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+
+        private readonly StringBuilder stringBuilder = new StringBuilder();
+
         private TimeSpan? duration;
 
         private DateTime? endTime;
-
-        private string log = string.Empty;
 
         private DateTime? startTime;
 
@@ -27,12 +33,6 @@ namespace Ferretto.VW.Installer
             this.Title = title;
             this.Number = number;
         }
-
-        #endregion
-
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion
 
@@ -58,8 +58,13 @@ namespace Ferretto.VW.Installer
 
         public string Log
         {
-            get => this.log;
-            set => this.SetProperty(ref this.log, value);
+            get => this.stringBuilder.ToString();
+            private set
+            {
+                this.stringBuilder.Clear();
+                this.stringBuilder.Append(value);
+                this.RaisePropertyChanged();
+            }
         }
 
         public bool MustRollback { get; set; }
@@ -91,36 +96,48 @@ namespace Ferretto.VW.Installer
                 throw new InvalidOperationException($"Step '{this.Title}' cannot be executed because its status is {this.Status}.");
             }
 
+            this.LogWriteLine($"Start step '{this.Title}'.");
+
             this.StartTime = DateTime.Now;
+            var timer = new Timer(this.OnTimerTick, null, 0, 500);
 
             this.Status = StepStatus.InProgress;
 
             try
             {
                 this.Status = await this.OnApplyAsync();
+                timer.Dispose();
                 this.EndTime = DateTime.Now;
+                this.LogWriteLine($"Step completed with status '{this.Status}'.");
             }
             catch
             {
                 this.Status = StepStatus.Failed;
+                this.LogWriteLine("Step failed unexpectedly.");
+                timer.Dispose();
             }
         }
 
         public async Task RollbackAsync()
         {
-            if (this.Status != StepStatus.Failed)
+            if (this.Status != StepStatus.Failed && this.Status != StepStatus.Done)
             {
                 throw new InvalidOperationException($"Step '{this.Title}' cannot be rolled back because its status is {this.Status}.");
             }
+
+            this.LogWriteLine("Starting rollback.");
 
             this.Status = StepStatus.RollingBack;
 
             try
             {
                 this.Status = await this.OnRollbackAsync();
+                this.LogWriteLine($"Rollback of step completed with status {this.Status}.");
             }
             catch
             {
+                this.LogWriteLine("Rollback of step failed unexpectedly.");
+
                 this.Status = StepStatus.RollbackFailed;
             }
         }
@@ -130,9 +147,39 @@ namespace Ferretto.VW.Installer
             return $"{this.Number}: {this.Title} ({this.Status})" ?? base.ToString();
         }
 
+        protected void LogWrite(char message)
+        {
+            if (message == '\0')
+            {
+                return;
+            }
+
+            this.stringBuilder.Append(message);
+            this.RaisePropertyChanged(nameof(this.Log));
+        }
+
+        protected void LogWriteLine(string message)
+        {
+            if (!this.stringBuilder.ToString().EndsWith(Environment.NewLine, StringComparison.OrdinalIgnoreCase))
+            {
+                this.stringBuilder.Append(Environment.NewLine);
+            }
+
+            this.stringBuilder.Append(message).Append(Environment.NewLine);
+
+            this.logger.Debug(message);
+
+            this.RaisePropertyChanged(nameof(this.Log));
+        }
+
         protected abstract Task<StepStatus> OnApplyAsync();
 
         protected abstract Task<StepStatus> OnRollbackAsync();
+
+        private void OnTimerTick(object state)
+        {
+            this.Duration = DateTime.Now - this.StartTime;
+        }
 
         #endregion
     }
