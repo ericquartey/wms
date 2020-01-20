@@ -489,12 +489,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             try
             {
                 this.elevatorProvider.MoveToAbsoluteVerticalPosition(
-                    false,
+                    manualMovment: false,
                     targetHeight,
                     true,
                     measure,
                     targetBayPositionId,
                     targetCellId,
+                    checkHomingDone: false,
                     requestingBay,
                     MessageActor.MachineManager);
             }
