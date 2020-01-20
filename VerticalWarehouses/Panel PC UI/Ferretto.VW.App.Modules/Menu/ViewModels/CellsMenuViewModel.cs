@@ -152,7 +152,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 case Menu.CellsHeightCheck:
                     this.NavigationService.Appear(
                         nameof(Utils.Modules.Installation),
-                        Utils.Modules.Installation.CellsHeightCheck.STEP1,
+                        Utils.Modules.Installation.CELLSHEIGHTCHECK,
+                        //Utils.Modules.Installation.CellsHeightCheck.STEP1,
                         data: null,
                         trackCurrentView: true);
                     break;
