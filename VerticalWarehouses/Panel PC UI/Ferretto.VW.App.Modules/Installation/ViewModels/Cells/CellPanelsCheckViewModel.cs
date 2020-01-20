@@ -162,7 +162,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public CellPanelsCheckStep CurrentStep
         {
             get => this.currentStep;
-            protected set => this.SetProperty(ref this.currentStep, value, this.UpdateStatusButtonFooter);
+            set => this.SetProperty(ref this.currentStep, value, this.UpdateStatusButtonFooter);
         }
 
         public double? Displacement
@@ -224,21 +224,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.isElevatorMovingUp;
             private set => this.SetProperty(ref this.isElevatorMovingUp, value);
-        }
-
-        public override bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            protected set
-            {
-                if (this.SetProperty(ref this.isWaitingForResponse, value))
-                {
-                    if (this.isWaitingForResponse)
-                    {
-                        this.ClearNotifications();
-                    }
-                }
-            }
         }
 
         public ICommand MoveDownCommand =>

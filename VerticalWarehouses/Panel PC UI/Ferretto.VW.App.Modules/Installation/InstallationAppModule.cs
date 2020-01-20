@@ -78,6 +78,7 @@ namespace Ferretto.VW.App.Modules.Installation
 
             containerRegistry.RegisterForNavigation<BeltBurnishingView>();
 
+            containerRegistry.RegisterForNavigation<CellsHeightCheckView>();
             containerRegistry.RegisterForNavigation<CellsHeightCheckStep1View>();
             containerRegistry.RegisterForNavigation<CellsHeightCheckStep2View>();
             containerRegistry.RegisterForNavigation<CellPanelsCheckView>();
