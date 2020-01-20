@@ -483,9 +483,11 @@
 
         <!--#endregion-->
 
-        <controls:PpcButton Grid.Row="7"
+        <controls:PpcButton Grid.Row="6"
                             Grid.Column="3"
                             Margin="0,15,15,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
                             Command="{Binding StopCommand}"
                             Content="{x:Static res:InstallationApp.Stop}" />
         <!--#endregion-->
