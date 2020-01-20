@@ -177,9 +177,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             (this.selectBayPositionDownCommand = new DelegateCommand(
                 this.SelectBayPositionDown,
                 () => !this.IsExecutingProcedure &&
-                      this.IsPositionUpSelected &&
+                      this.IsPositionUpSelected /*&&
                       this.MachineStatus.LoadingUnitPositionUpInBay is null &&
-                      this.MachineStatus.LoadingUnitPositionDownInBay is null));
+                      this.MachineStatus.LoadingUnitPositionDownInBay is null*/));
 
         public ICommand SelectBayPositionUpCommand =>
             this.selectBayPositionUpCommand
@@ -187,9 +187,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             (this.selectBayPositionUpCommand = new DelegateCommand(
                 this.SelectBayPositionUp,
                 () => !this.IsExecutingProcedure &&
-                      !this.IsPositionUpSelected &&
+                      !this.IsPositionUpSelected /*&&
                       this.MachineStatus.LoadingUnitPositionUpInBay is null &&
-                      this.MachineStatus.LoadingUnitPositionDownInBay is null));
+                      this.MachineStatus.LoadingUnitPositionDownInBay is null*/));
 
         public ICommand StartCommand =>
                this.startCommand
