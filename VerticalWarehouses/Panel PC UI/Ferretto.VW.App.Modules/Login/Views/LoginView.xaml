@@ -65,13 +65,13 @@
                             BorderBrush="{DynamicResource FerrettoDarkGray}"
                             BorderThickness="0"
                             CornerRadius="4,0,0,4">
-                        <!--<Border.Background>
+                        <Border.Background>
                             <ImageBrush AlignmentX="Left"
                                         AlignmentY="Bottom"
                                         ImageSource="{DynamicResource LoginBackground}"
                                         Opacity="0.7"
                                         Stretch="UniformToFill" />
-                        </Border.Background>-->
+                        </Border.Background>
 
                         <Grid>
                             <Grid.RowDefinitions>
@@ -79,21 +79,12 @@
                                 <RowDefinition />
                             </Grid.RowDefinitions>
 
-                            <Grid Grid.RowSpan="5"
-                                  Grid.ColumnSpan="12"
-                                  Margin="0">
-                                <Image HorizontalAlignment="Left"
-                                       VerticalAlignment="Bottom"
-                                       Opacity="0.7"
-                                       Source="{DynamicResource LoginBackground}"
-                                       Stretch="UniformToFill" />
-                            </Grid>
 
                             <Border BorderBrush="{DynamicResource FerrettoDarkGray}"
                                     BorderThickness="0"
-                                    CornerRadius="4,0,0,4">
+                                    CornerRadius="4,0,0,0">
                                 <Border.Background>
-                                    <SolidColorBrush Opacity="0.5"
+                                    <SolidColorBrush Opacity="0.7"
                                                      Color="Black" />
                                 </Border.Background>
                                 <StackPanel Margin="4">

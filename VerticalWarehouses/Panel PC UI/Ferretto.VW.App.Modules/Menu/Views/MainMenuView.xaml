@@ -67,29 +67,6 @@
         </StackPanel>
 
         <Grid Grid.Row="1">
-
-            <!--<Grid.Background>
-                <ImageBrush AlignmentX="Left"
-                            AlignmentY="Bottom"
-                            ImageSource="{DynamicResource LoginBackground}"
-                            Opacity="0.3"
-                            Stretch="UniformToFill" />
-            </Grid.Background>-->
-
-            <Grid Grid.RowSpan="2"
-                  Grid.ColumnSpan="12"
-                  Margin="0">
-                <Image HorizontalAlignment="Left"
-                       VerticalAlignment="Bottom"
-                       Opacity="0.3"
-                       Source="{DynamicResource LoginBackground}"
-                       Stretch="UniformToFill">
-                    <!--<Image.Effect>
-                        <BlurEffect Radius="5" />
-                    </Image.Effect>-->
-                </Image>
-            </Grid>
-
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
@@ -98,6 +75,14 @@
                 <RowDefinition />
                 <RowDefinition />
             </Grid.RowDefinitions>
+
+            <Grid.Background>
+                <ImageBrush AlignmentX="Left"
+                            AlignmentY="Bottom"
+                            ImageSource="{DynamicResource LoginBackground}"
+                            Opacity="0.3"
+                            Stretch="UniformToFill" />
+            </Grid.Background>
 
             <controls:PpcMenuButton Title="{x:Static res:Menu.MenuOperation}"
                                     Grid.Row="0"
