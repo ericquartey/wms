@@ -20,6 +20,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private readonly IBayManager bayManager;
 
+        private readonly int bayNumber;
+
         private readonly IMachineBaysWebService machineBaysWebService;
 
         private readonly IMissionOperationsService missionOperationsService;
@@ -27,8 +29,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         private readonly ISessionService sessionService;
 
         private bool areItemsEnabled;
-
-        private int bayNumber;
 
         private bool checkOnlyFirstAppeared;
 
@@ -73,10 +73,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             private set => this.SetProperty(ref this.areItemsEnabled, value);
         }
 
-        public int BayNumber
-        {
-            get => (int)this.MachineService?.BayNumber;
-        }
+        public int BayNumber => (int)this.MachineService?.BayNumber;
 
         public ICommand DrawerActivityButtonCommand => this.drawerActivityButtonCommand
             ??
@@ -152,6 +149,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
         {
+            if (e is null)
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
+
             await base.OnMachinePowerChangedAsync(e);
 
             this.AreItemsEnabled = e.MachinePowerState is MachinePowerState.Powered;
