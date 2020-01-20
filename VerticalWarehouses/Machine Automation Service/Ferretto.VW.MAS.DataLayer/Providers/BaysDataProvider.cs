@@ -989,9 +989,20 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
 
                 bay.Carousel.IsHomingExecuted = isExecuted;
+                bay.IsActive = true;
                 this.dataContext.SaveChanges();
 
-                this.Activate(bayNumber);
+                this.notificationEvent.Publish(
+                  new NotificationMessage(
+                      new BayOperationalStatusChangedMessageData
+                      {
+                          BayStatus = bay.Status,
+                      },
+                      $"Bay #{bay.Number} status changed to {bay.Status}",
+                      MessageActor.MissionManager,
+                      MessageActor.WebApi,
+                      MessageType.BayOperationalStatusChanged,
+                      bay.Number));
             }
         }
 

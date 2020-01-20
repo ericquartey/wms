@@ -34,6 +34,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.ErrorsProvider = this.ServiceProvider.GetRequiredService<IErrorsProvider>();
             this.LoadingUnitMovementProvider = this.ServiceProvider.GetRequiredService<ILoadingUnitMovementProvider>();
             this.LoadingUnitsDataProvider = this.ServiceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
+            this.MachineProvider = this.ServiceProvider.GetRequiredService<IMachineProvider>();
             this.MissionsDataProvider = this.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
             this.SensorsProvider = this.ServiceProvider.GetRequiredService<ISensorsProvider>();
             this.MachineModeDataProvider = this.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
@@ -62,6 +63,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         internal ILoadingUnitMovementProvider LoadingUnitMovementProvider { get; }
 
         internal ILoadingUnitsDataProvider LoadingUnitsDataProvider { get; }
+
+        public IMachineProvider MachineProvider { get; }
 
         internal ILogger<MachineManagerService> Logger { get; }
 
