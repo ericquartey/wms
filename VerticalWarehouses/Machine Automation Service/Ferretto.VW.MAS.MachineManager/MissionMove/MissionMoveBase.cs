@@ -148,8 +148,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     var bayPosition = this.BaysDataProvider.GetPositionByLocation(this.Mission.LoadUnitDestination);
                     if (this.Mission.LoadUnitId > 0)
                     {
-                        this.BaysDataProvider.SetLoadingUnit(bayPosition.Id, this.Mission.LoadUnitId);
-                        this.LoadingUnitsDataProvider.SetHeight(this.Mission.LoadUnitId, 0);
+                        this.BaysDataProvider.SetLoadingUnit(bayPosition.Id, this.Mission.LoadUnitId, 0);
                     }
                 }
 
@@ -175,7 +174,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Mission.NeedMovingBackward = false;
             }
 
-            this.MissionsDataProvider.Update(this.Mission);
             if (bayShutter)
             {
                 this.BaysDataProvider.Light(this.Mission.TargetBay, true);

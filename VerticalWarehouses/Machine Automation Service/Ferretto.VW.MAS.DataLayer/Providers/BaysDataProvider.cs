@@ -939,7 +939,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void SetLoadingUnit(int bayPositionId, int? loadingUnitId)
+        public void SetLoadingUnit(int bayPositionId, int? loadingUnitId, double? height = null)
         {
             var position = this.dataContext.BayPositions.Include(i => i.LoadingUnit).SingleOrDefault(p => p.Id == bayPositionId);
             if (position is null)
@@ -960,6 +960,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
 
                 loadingUnit.Status = DataModels.Enumerations.LoadingUnitStatus.InBay;
+                if (height.HasValue)
+                {
+                    loadingUnit.Height = height.Value;
+                }
                 position.LoadingUnit = loadingUnit;
             }
 
