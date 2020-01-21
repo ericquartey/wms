@@ -124,7 +124,10 @@ namespace Ferretto.VW.MAS.MissionManager
 
                 var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
                 var wmsMission = await this.missionsWmsWebService.GetByIdAsync(mission.WmsId.Value);
-                var newOperations = wmsMission.Operations.Where(o => o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Completed && o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Error);
+                var newOperations = wmsMission.Operations.Where(o =>
+                    o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Completed
+                    &&
+                    o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Error);
                 if (newOperations.Any())
                 {
                     if (mission.Status is MissionStatus.New)

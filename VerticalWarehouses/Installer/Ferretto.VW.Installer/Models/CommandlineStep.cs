@@ -30,6 +30,8 @@ namespace Ferretto.VW.Installer
 
         public string Script { get; }
 
+        public bool UsePowerShell { get; set; }
+
         #endregion
 
         #region Methods
@@ -83,17 +85,20 @@ namespace Ferretto.VW.Installer
                 throw new ArgumentException("Unable to run the commandline command.", nameof(command));
             }
 
+            command = this.InterpolateVariables(command);
+
             using (var process = new System.Diagnostics.Process())
             {
-                process.StartInfo.FileName = "cmd.exe";
-                process.StartInfo.Arguments = $"/C {command}";
+                process.StartInfo.FileName = this.UsePowerShell ? "powershell.exe" : "cmd.exe";
+                process.StartInfo.Arguments = this.UsePowerShell ? $"-Version 2.0 -NoLogo -NonInteractive -Command \"{command}\"" : $"/C {command}";
                 process.StartInfo.CreateNoWindow = true;
                 process.StartInfo.ErrorDialog = false;
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.RedirectStandardOutput = true;
                 process.StartInfo.RedirectStandardError = true;
 
-                this.LogWriteLine($"> {command}");
+                var shellType = this.UsePowerShell ? "ps" : "cmd";
+                this.LogWriteLine($"{shellType}> {command}");
 
                 process.Start();
                 var thread = new Thread(new ParameterizedThreadStart(this.ReadStandardOutput));
