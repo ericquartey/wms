@@ -357,4 +357,7 @@
   <data name="LoadUnitHeightExceeded" xml:space="preserve">
     <value>The height of the loading unit is over the maximum.</value>
   </data>
+  <data name="LoadUnitShutterInvalid" xml:space="preserve">
+    <value>Errore stato serranda</value>
+  </data>
 </root>

@@ -273,4 +273,7 @@
   <data name="LoadUnitHeightExceeded" xml:space="preserve">
     <value>Abbassare l'altezza del materiale nel cassetto.</value>
   </data>
+  <data name="LoadUnitShutterInvalid" xml:space="preserve">
+    <value>Serranda non in posizione chiusa nè aperta. Verificare lo stato dei sensori.</value>
+  </data>
 </root>

@@ -3233,21 +3233,23 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         LoadUnitShutterOpen = 55,
     
-        LoadUnitShutterClosed = 56,
+        LoadUnitShutterInvalid = 56,
     
-        LoadUnitPresentInCell = 57,
+        LoadUnitShutterClosed = 57,
     
-        LoadUnitOtherBay = 58,
+        LoadUnitPresentInCell = 58,
     
-        LoadUnitSourceElevator = 59,
+        LoadUnitOtherBay = 59,
     
-        LoadUnitMissingOnElevator = 60,
+        LoadUnitSourceElevator = 60,
     
-        LoadUnitMissingOnBay = 61,
+        LoadUnitMissingOnElevator = 61,
     
-        LoadUnitUndefinedUpper = 62,
+        LoadUnitMissingOnBay = 62,
     
-        LoadUnitUndefinedBottom = 63,
+        LoadUnitUndefinedUpper = 63,
+    
+        LoadUnitUndefinedBottom = 64,
     
         InverterErrorBaseCode = 1000,
     
