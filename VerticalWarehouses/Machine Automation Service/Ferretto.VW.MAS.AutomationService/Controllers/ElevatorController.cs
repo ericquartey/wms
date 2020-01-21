@@ -222,6 +222,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 targetBayPositionId: null,
                 targetCellId: null,
                 checkHomingDone: true,
+                waitContinue: false,
                 this.BayNumber,
                 MessageActor.AutomationService);
 
@@ -297,6 +298,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 targetBayPositionId: null,
                 targetCellId: null,
                 checkHomingDone: true,
+                waitContinue: false,
                 this.BayNumber,
                 MessageActor.AutomationService);
 

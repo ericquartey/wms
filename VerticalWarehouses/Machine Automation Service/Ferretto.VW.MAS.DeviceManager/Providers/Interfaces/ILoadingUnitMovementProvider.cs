@@ -49,7 +49,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void OpenShutter(MessageActor sender, ShutterPosition openShutter, BayNumber requestingBay, bool restore);
 
-        void PositionElevatorToPosition(double targetHeight, BayNumber shutterBay, bool measure, MessageActor sender, BayNumber requestingBay, bool restore, int? targetBayPositionId, int? targetCellId);
+        void PositionElevatorToPosition(double targetHeight,
+            BayNumber shutterBay,
+            bool measure,
+            MessageActor sender,
+            BayNumber requestingBay,
+            bool restore,
+            int? targetBayPositionId,
+            int? targetCellId,
+            bool waitContinue = false);
 
         MessageStatus PositionElevatorToPositionStatus(NotificationMessage message);
 
