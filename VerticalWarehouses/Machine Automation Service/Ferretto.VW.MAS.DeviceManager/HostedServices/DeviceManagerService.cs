@@ -252,26 +252,6 @@ namespace Ferretto.VW.MAS.DeviceManager
                 this.EventAggregator
                     .GetEvent<NotificationEvent>()
                     .Publish(notificationMessage);
-
-                if (message.Status == MessageStatus.OperationError
-                    && (message.Type == MessageType.Positioning
-                        || message.Type == MessageType.Homing
-                        || message.Type == MessageType.ShutterPositioning
-                        )
-                    )
-                {
-                    var messageData = new ChangeRunningStateMessageData(false, null, CommandAction.Start, StopRequestReason.Stop);
-                    this.EventAggregator
-                        .GetEvent<CommandEvent>()
-                        .Publish(
-                            new CommandMessage(
-                                messageData,
-                                "OperationError",
-                                MessageActor.MachineManager,
-                                MessageActor.DeviceManager,
-                                MessageType.ChangeRunningState,
-                                message.RequestingBay));
-                }
             }
 
             if (message.Type is MessageType.DataLayerReady)

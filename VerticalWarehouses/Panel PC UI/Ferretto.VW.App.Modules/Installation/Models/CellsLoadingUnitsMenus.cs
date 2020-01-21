@@ -14,9 +14,9 @@ namespace Ferretto.VW.App.Installation.Resources
         [Display(Description = "Controllo Pannelli")]
         CellPanelsCheck,
 
-        [View(Utils.Modules.Installation.CellsHeightCheck.STEP1, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Cell)]
-        [Display(Description = "Modifica quote celle")]
-        CellsHeightCheck,
+        //[View(Utils.Modules.Installation.CellsHeightCheck.STEP1, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Cell)]
+        //[Display(Description = "Modifica quote celle")]
+        //CellsHeightCheck,
 
         [View(Utils.Modules.Installation.CELLSSIDECONTROL, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Cell)]
         [Display(Description = "Modifica blocco celle")]

@@ -622,13 +622,13 @@ namespace Ferretto.VW.Simulator.Services.Models
             {
                 if (!this.homingTimerActive)
                 {
-                    this.TargetPosition[Axis.Vertical] = 0 + new Random().Next(-5, 15);
+                    this.TargetPosition[Axis.Vertical] = 0;// + new Random().Next(-5, 15);
                     this.TargetPosition[Axis.Horizontal] = this.AxisPosition;
                     if (this.calibrationMode == InverterCalibrationMode.FindSensor ||
                         this.calibrationMode == InverterCalibrationMode.FindSensorCarousel
                         )
                     {
-                        this.TargetPosition[Axis.Horizontal] += new Random().Next(-5, 15);
+                        //this.TargetPosition[Axis.Horizontal] += new Random().Next(-5, 15);
                     }
                     this.homingTimerActive = true;
                     this.homingTimer.Change(0, 500);
@@ -1231,7 +1231,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 if (this.OperationMode == InverterOperationMode.TableTravel)
                 {
                     // simulate positioning error
-                    this.AxisPosition += (short)(new Random().Next(-3, 3));
+                    //this.AxisPosition += (short)(new Random().Next(-3, 3));
                 }
                 this.ControlWord &= 0xFFEF;     // Reset Rfg Enable Signal
                 this.StatusWord |= 0x1000;      // Set Point Ack

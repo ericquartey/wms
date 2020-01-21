@@ -139,7 +139,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 Text = InstallationApp.BeltBurnishingDone,
                 Status = status.BeltBurnishing.InProgress ? InstallationStatus.Inprogress : status.BeltBurnishing.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
             });
-            this.source.Add(new { Text = InstallationApp.CellsControl, Status = status.CellPanelsCheck.IsCompleted && status.CellsHeightCheck.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete });
+            this.source.Add(new { Text = InstallationApp.CellsControl, Status = status.CellPanelsCheck.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete });
             this.source.Add(new { Text = InstallationApp.BayHeightCheck, Status = bayStatus.Check.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete });
             this.source.Add(new { Text = InstallationApp.BarrierCalibration, Status = bayStatus.Shape.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete });
 

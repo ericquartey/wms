@@ -262,7 +262,7 @@
                                    EditValue="{Binding NewResolution, StringFormat={}{0:F6}}"
                                    IsEnabled="False"
                                    LabelText="Nuova risoluzione"
-                                   Mask="###0.#####0" />
+                                   Mask="###0.000000" />
 
                 <controls:PpcButton Grid.Row="3"
                                     Command="{Binding SaveCommand}"

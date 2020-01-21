@@ -225,6 +225,28 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public PositioningProcedure InProgressProcedure(PositioningProcedure procedure)
+        {
+            lock (this.dataContext)
+            {
+                var existingProcedure = this.dataContext.SetupProcedures.SingleOrDefault(p => p.Id == procedure.Id);
+
+                if (existingProcedure is PositioningProcedure positioningProcedure)
+                {
+                    positioningProcedure.InProgress = true;
+
+                    this.dataContext.SetupProcedures.Update(positioningProcedure);
+                    this.dataContext.SaveChanges();
+
+                    return positioningProcedure;
+                }
+                else
+                {
+                    throw new EntityNotFoundException(procedure.Id);
+                }
+            }
+        }
+
         public SetupProcedure MarkAsCompleted(SetupProcedure procedure)
         {
             lock (this.dataContext)
@@ -241,6 +263,11 @@ namespace Ferretto.VW.MAS.DataLayer
                 if (existingProcedure is RepeatedTestProcedure repeatedTestProcedure)
                 {
                     repeatedTestProcedure.InProgress = false;
+                }
+
+                if (existingProcedure is PositioningProcedure positioningProcedure)
+                {
+                    positioningProcedure.InProgress = false;
                 }
 
                 this.dataContext.SetupProcedures.Update(existingProcedure);

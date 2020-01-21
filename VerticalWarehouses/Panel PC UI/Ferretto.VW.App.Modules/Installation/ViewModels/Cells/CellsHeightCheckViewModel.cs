@@ -76,7 +76,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.MachineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.machineElevatorService = machineElevatorService ?? throw new ArgumentNullException(nameof(machineElevatorService));
 
-            this.InitializeNavigationMenu();
+            //this.InitializeNavigationMenu();
         }
 
         #endregion
@@ -255,19 +255,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (message.IsErrored())
             {
                 this.IsElevatorMoving = false;
-                this.ShowSteps();
+                //this.ShowSteps();
             }
             else if (message.IsNotRunning())
             {
                 this.IsElevatorMoving = false;
                 this.isElevatorOperationCompleted = true;
-                this.ShowSteps();
+                //this.ShowSteps();
 
                 switch (message.Status)
                 {
                     case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
                         {
-                            this.NavigateToNextStep();
+                            //this.NavigateToNextStep();
 
                             break;
                         }
@@ -358,23 +358,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsElevatorMoving;
         }
 
-        private void InitializeNavigationMenu()
-        {
-            this.menuItems.Add(
-                new NavigationMenuItem(
-                    Utils.Modules.Installation.CellsHeightCheck.STEP1,
-                    nameof(Utils.Modules.Installation),
-                    VW.App.Resources.InstallationApp.Step1,
-                    trackCurrentView: false));
-
-            this.menuItems.Add(
-                new NavigationMenuItem(
-                    Utils.Modules.Installation.CellsHeightCheck.STEP2,
-                    nameof(Utils.Modules.Installation),
-                    VW.App.Resources.InstallationApp.Step2,
-                    trackCurrentView: false));
-        }
-
         private async Task MoveToCellHeightAsync()
         {
             try
@@ -398,25 +381,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
-        }
-
-        private void NavigateToNextStep()
-        {
-            if (this.NavigationService.IsActiveView(nameof(Utils.Modules.Installation), Utils.Modules.Installation.CellsHeightCheck.STEP1))
-            {
-                this.NavigationService.Appear(
-                    nameof(Utils.Modules.Installation),
-                    Utils.Modules.Installation.CellsHeightCheck.STEP2,
-                    this.SelectedCell,
-                    trackCurrentView: false);
-            }
-        }
-
-        private void ShowSteps()
-        {
-            this.ShowPrevStep(true, false);
-            this.ShowNextStep(true, this.isElevatorOperationCompleted, nameof(Utils.Modules.Installation), Utils.Modules.Installation.CellsHeightCheck.STEP2);
-            this.ShowAbortStep(true, true);
         }
 
         private async Task StopAsync()

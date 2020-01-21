@@ -126,6 +126,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
 
                 case MissionStep.ToTarget:
+                case MissionStep.BackToTarget:
                     this.RestoreMoveToTarget();
                     break;
 
