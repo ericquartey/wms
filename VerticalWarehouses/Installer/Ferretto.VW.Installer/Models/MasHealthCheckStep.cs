@@ -19,9 +19,9 @@ namespace Ferretto.VW.Installer
 
         #region Properties
 
-        public string BaseUrl => ConfigurationManager.AppSettings.Get("MAS:BaseUrl");
-
         public int Timeout { get; }
+
+        public string Url { get; set; }
 
         #endregion
 
@@ -32,22 +32,22 @@ namespace Ferretto.VW.Installer
             using (var httpClient = new HttpClient())
             {
                 string status = null;
-                var requestUri = new Uri($"{this.BaseUrl}/health/live");
+                var requestUri = new Uri(this.InterpolateVariables(this.Url));
                 var startTime = DateTime.Now;
                 var isHealthy = false;
                 do
                 {
                     try
                     {
-                        this.LogWriteLine($"GET {requestUri}");
+                        this.LogWriteLine($"HTTP GET {requestUri}");
                         var message = await httpClient.GetAsync(requestUri);
                         status = await message.Content.ReadAsStringAsync();
 
-                        this.LogWriteLine($"Response: {status}");
+                        this.LogWriteLine($"HTTP response: '{status}'");
                     }
                     catch
                     {
-                        this.LogWriteLine("Call failed.");
+                        this.LogWriteLine("HTTP request failed.");
                     }
 
                     isHealthy = status?.Equals("healthy", StringComparison.OrdinalIgnoreCase) == true;
