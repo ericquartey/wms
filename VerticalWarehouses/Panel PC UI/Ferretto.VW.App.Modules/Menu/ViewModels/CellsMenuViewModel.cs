@@ -94,7 +94,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.CellsBlockTuning),
                 () => this.CanExecuteCommand() &&
                       this.MachineModeService.MachineMode == MachineMode.Manual &&
-                      (this.MachineService.IsHoming || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
+                      (this.CellsHeightCheck.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
                 ));
 
         public ICommand CellsCommand =>
@@ -107,7 +107,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
         protected SetupStepStatus CellsHeightCheck => this.SetupStatusCapabilities?.CellsHeightCheck ?? new SetupStepStatus();
 
         public ICommand CellsHeightCheckCommand =>
-                    this.cellsHeightCheckCommand
+            this.cellsHeightCheckCommand
             ??
             (this.cellsHeightCheckCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.CellsHeightCheck),
