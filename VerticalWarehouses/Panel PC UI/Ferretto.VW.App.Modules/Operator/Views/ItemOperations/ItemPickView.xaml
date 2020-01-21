@@ -69,7 +69,8 @@
                                VerticalAlignment="Top"
                                EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                IsEnabled="{Binding CanInputQuantity}"
-                               LabelText="{x:Static resources:OperatorApp.PickedQuantity}" />
+                               LabelText="{x:Static resources:OperatorApp.PickedQuantity}"
+                               Mask="F4" />
 
             <StackPanel Grid.Row="4"
                         Grid.ColumnSpan="4"
@@ -81,8 +82,8 @@
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
                                     Command="{Binding ShowDetailsCommand}"
-                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}"
-                                    Content="{x:Static resources:OperatorApp.Details}" />
+                                    Content="{x:Static resources:OperatorApp.Details}"
+                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
 
                 <controls:PpcButton Grid.Row="4"
@@ -92,8 +93,8 @@
                                     VerticalAlignment="Top"
                                     Command="{Binding EmptyOperationCommand}"
                                     Content="{x:Static resources:OperatorApp.ConfirmOnEmpty}"
-                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}"
-                                    IsBusy="{Binding IsBusyConfirmingOperation}" />
+                                    IsBusy="{Binding IsBusyConfirmingOperation}"
+                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
                 <controls:PpcButton Grid.Row="4"
                                     Grid.Column="3"
@@ -102,8 +103,8 @@
                                     VerticalAlignment="Top"
                                     Command="{Binding ConfirmOperationCommand}"
                                     Content="{x:Static resources:OperatorApp.Confirm}"
-                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}"
-                                    IsBusy="{Binding IsBusyConfirmingOperation}" />
+                                    IsBusy="{Binding IsBusyConfirmingOperation}"
+                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
                 <controls:PpcButton Grid.Row="4"
                                     Grid.Column="3"
@@ -112,8 +113,8 @@
                                     VerticalAlignment="Top"
                                     Command="{Binding ConfirmOperationCanceledCommand}"
                                     Content="{x:Static resources:OperatorApp.CancelPick}"
-                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVC}}"
-                                    IsBusy="{Binding IsBusyConfirmingOperation}" />
+                                    IsBusy="{Binding IsBusyConfirmingOperation}"
+                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVC}}" />
             </StackPanel>
         </Grid>
     </Grid>

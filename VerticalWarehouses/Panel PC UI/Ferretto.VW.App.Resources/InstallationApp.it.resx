@@ -1373,4 +1373,16 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="DateTimeEnteredIsInvalid" xml:space="preserve">
     <value>Data e/o ora inserite non valide.</value>
   </data>
+  <data name="ConfirmUpdateVer" xml:space="preserve">
+    <value>Confermi aggiornamento a {0} '{1}' ?</value>
+  </data>
+  <data name="ConfirmUpdate" xml:space="preserve">
+    <value>Conferma aggiornamento</value>
+  </data>
+  <data name="UpdateSuccessfullyCompleted" xml:space="preserve">
+    <value>Aggiornamento completato con seccesso.</value>
+  </data>
+  <data name="ErrorOnInitialPhaseUpdate" xml:space="preserve">
+    <value>Errore in fase iniziale aggiornamento.</value>
+  </data>
 </root>

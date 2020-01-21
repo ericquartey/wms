@@ -3,52 +3,47 @@
     {
       "$type": "Ferretto.VW.Installer.CommandlineStep, Ferretto.VW.Installer",
       "number": 1,
-      "title": "Fake step 1",
-      "script": "timeout /T 3",
-      "rollbackScript": "timeout /T 2",
-      "mustRollBack": true
-    },
-    /* {
-      "$type": "Ferretto.VW.Installer.CommandlineStep, Ferretto.VW.Installer",
-      "number": 2,
-      "title": "Fake step 2",
-      "script": "timeout /T 3",
-      "rollbackScript": "timeout /T 2",
-      "mustRollBack": true
-    },
-    {
-      "$type": "Ferretto.VW.Installer.CommandlineStep, Ferretto.VW.Installer",
-      "number": 3,
       "title": "Disabilita UWF",
       "script": "uwfmgr filter disable",
       "rollbackScript": "uwfmgr filter enable",
       "mustRollBack": true
-    },*/
+    },
     /*{
       "$type": "Ferretto.VW.Installer.CommandlineStep, Ferretto.VW.Installer",
-      "number": 4,
+      "number": 2,
       "title": "Restart system",
       "script": "shutdown /r /t 0 /f /d p:4:2 /c \"Vertimag Software Setup\"",
       "mustRollBack": false
     },*/
-    /* {
+    {
       "$type": "Ferretto.VW.Installer.CommandlineStep, Ferretto.VW.Installer",
-      "number": 5,
-      "title": "Register Service",
-      "script": "timeout /T 3",
-      "rollbackScript": "abc",
-      "mustRollBack": true
-    },*/
+      "number": 3,
+      "title": "Ferma il MAS",
+      "script": "Stop-Service \"$(MAS:ServiceName)\"",
+      "rollbackScript": "Start-Service \"$(MAS:ServiceName)\"",
+      "mustRollBack": true,
+      "usePowerShell": true
+    },
+    {
+      "$type": "Ferretto.VW.Installer.CommandlineStep, Ferretto.VW.Installer",
+      "number": 4,
+      "title": "Riavvia il MAS",
+      "script": "Start-Service \"$(MAS:ServiceName)\"",
+      "rollbackScript": "Stop-Service \"$(MAS:ServiceName)\"",
+      "mustRollBack": true,
+      "usePowerShell": true
+    },
     {
       "$type": "Ferretto.VW.Installer.MasHealthCheckStep, Ferretto.VW.Installer",
-      "number": 6,
+      "number": 5,
       "title": "Verifica stato del MAS",
+      "url": "$(MAS:BaseUrl)/health/live",
       "timeout": "10000",
       "mustRollBack": true
     },
     {
       "$type": "Ferretto.VW.Installer.CommandlineStep, Ferretto.VW.Installer",
-      "number": 7,
+      "number": 6,
       "title": "Riabilita UWF",
       "script": "uwfmgr filter enable",
       "rollbackScript": "uwfmgr filter disable",

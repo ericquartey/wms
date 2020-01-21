@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
-    internal class PositioningTableWaitState : InverterStateBase
+    internal class PositioningWaitState : InverterStateBase
     {
         #region Fields
 
@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         #region Constructors
 
-        public PositioningTableWaitState(
+        public PositioningWaitState(
             IInverterStateMachine parentStateMachine,
             IInverterPositioningFieldMessageData data,
             IPositioningInverterStatus inverterStatus,
@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
-            this.Logger.LogDebug("Inverter Positioning Table Wait State");
+            this.Logger.LogDebug("Inverter Positioning Wait State");
         }
 
         /// <inheritdoc />
@@ -48,7 +48,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             this.Logger.LogDebug("1:Positioning Stop requested");
 
             this.ParentStateMachine.ChangeState(
-                new PositioningTableDisableOperationState(
+                new PositioningDisableOperationState(
                     this.ParentStateMachine,
                     this.InverterStatus as IPositioningInverterStatus,
                     this.Logger,
@@ -78,7 +78,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
                 if (!this.data.WaitContinue)
                 {
-                    this.ParentStateMachine.ChangeState(new PositioningTableEnableOperationState(this.ParentStateMachine, this.data, this.InverterStatus as IPositioningInverterStatus, this.Logger));
+                    this.ParentStateMachine.ChangeState(new PositioningEnableOperationState(this.ParentStateMachine, this.data, this.InverterStatus as IPositioningInverterStatus, this.Logger));
                 }
                 else
                 {

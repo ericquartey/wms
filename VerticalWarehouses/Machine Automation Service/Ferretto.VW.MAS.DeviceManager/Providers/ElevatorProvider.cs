@@ -768,6 +768,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     int? targetBayPositionId,
                     int? targetCellId,
                     bool checkHomingDone,
+                    bool waitContinue,
                     BayNumber requestingBay,
                     MessageActor sender)
         {
@@ -780,7 +781,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 sender,
                 targetBayPositionId,
                 targetCellId,
-                checkHomingDone);
+                checkHomingDone,
+                waitContinue);
         }
 
         public void MoveToBayPosition(int bayPositionId, bool computeElongation, bool performWeighting, BayNumber bayNumber, MessageActor sender)
@@ -802,7 +804,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 sender,
                 bayPositionId,
                 targetCellId: null,
-                checkHomingDone: true);
+                checkHomingDone: true,
+                waitContinue: false);
         }
 
         public void MoveToCell(int cellId, bool computeElongation, bool performWeighting, BayNumber requestingBay, MessageActor sender)
@@ -824,7 +827,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 sender,
                 targetBayPositionId: null,
                 cellId,
-                checkHomingDone: true);
+                checkHomingDone: true,
+                waitContinue: false);
         }
 
         public void MoveToFreeCell(int loadUnitId, bool computeElongation, bool performWeighting, BayNumber requestingBay, MessageActor sender)
@@ -847,7 +851,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 sender,
                 targetBayPositionId: null,
                 cellId,
-                checkHomingDone: true);
+                checkHomingDone: true,
+                waitContinue: false);
         }
 
         public void MoveToRelativeVerticalPosition(double distance, BayNumber requestingBay, MessageActor sender)
@@ -1241,7 +1246,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             MessageActor sender,
             int? targetBayPositionId,
             int? targetCellId,
-            bool checkHomingDone)
+            bool checkHomingDone,
+            bool waitContinue)
         {
             var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
 
@@ -1299,6 +1305,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 ComputeElongation = computeElongation,
                 TargetBayPositionId = targetBayPositionId,
                 TargetCellId = targetCellId,
+                WaitContinue = waitContinue
             };
 
             this.logger.LogDebug(
