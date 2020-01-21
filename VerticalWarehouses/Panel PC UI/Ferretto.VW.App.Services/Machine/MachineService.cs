@@ -480,6 +480,7 @@ namespace Ferretto.VW.App.Services
         private void OnDataChanged<TData>(NotificationMessageUI<TData> message)
             where TData : class, IMessageData
         {
+
             try
             {
                 if (message?.Data is HomingMessageData dataHoming)
@@ -526,7 +527,7 @@ namespace Ferretto.VW.App.Services
 
                                 ms.CurrentMissionId = messageData.MissionId;
 
-                                this.Notification = "Movimento in corso...";
+                                this.Notification = $"Movimento in corso... ({this.MachineStatus?.CurrentMissionId} - {message.Description})";
                             }
 
                             if (message?.Data is PositioningMessageData dataPositioning)
@@ -568,6 +569,15 @@ namespace Ferretto.VW.App.Services
 
                     case MessageStatus.OperationExecuting:
                         {
+                            if (message?.Data is PositioningMessageData dataLog)
+                            {
+                                this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status}; {dataLog?.AxisMovement};");
+                            }
+                            else
+                            {
+                                this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status};");
+                            }
+
                             if (this.MachineStatus.IsMoving)
                             {
                                 if (message?.Data is PositioningMessageData dataPositioningInfo
@@ -609,15 +619,13 @@ namespace Ferretto.VW.App.Services
                                 {
                                     this.WriteInfo(null);
                                 }
+                            }
 
-                                if (message?.Data is MoveLoadingUnitMessageData moveLoadingUnitMessageData)
-                                {
-#if DEBUG
-                                    this.Notification = $"Movimento in corso... ({moveLoadingUnitMessageData.MissionStep} - {this.MachineStatus?.CurrentMissionId})";
-#else
-                                    this.Notification = $"Movimento in corso...";
-#endif
-                                }
+                            if (message?.Data is MoveLoadingUnitMessageData moveLoadingUnitMessageData)
+                            {
+                                this.logger.Debug($"OnMoveLoadingUnitMessageData:{moveLoadingUnitMessageData.MissionStep};");
+
+                                this.Notification = $"Movimento in corso... ({this.MachineStatus?.CurrentMissionId} - {message.Description})";
                             }
 
                             break;
