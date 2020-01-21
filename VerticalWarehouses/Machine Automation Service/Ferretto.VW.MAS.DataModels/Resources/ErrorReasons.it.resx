@@ -148,7 +148,7 @@
     <value>La configurazione della velocità del movimento dell'asse  {0} non è valida: velocità a vuoto minore del pieno carico</value>
   </data>
   <data name="InvalidPresenceSensors" xml:space="preserve">
-    <value>Sensori di presenza invalidi</value>
+    <value>Sensori di presenza non validi</value>
   </data>
   <data name="InverterErrorBaseCode" xml:space="preserve">
     <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
@@ -272,5 +272,8 @@
   </data>
   <data name="LoadUnitHeightExceeded" xml:space="preserve">
     <value>Abbassare l'altezza del materiale nel cassetto.</value>
+  </data>
+  <data name="LoadUnitShutterInvalid" xml:space="preserve">
+    <value>Serranda non in posizione chiusa nè aperta. Verificare lo stato dei sensori.</value>
   </data>
 </root>

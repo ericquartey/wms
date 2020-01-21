@@ -76,7 +76,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
         protected SetupStepStatus BeltBurnishing => this.SetupStatusCapabilities?.BeltBurnishing ?? new SetupStepStatus();
 
         public ICommand BeltBurnishingCommand =>
-                    this.beltBurnishingCommand
+            this.beltBurnishingCommand
             ??
             (this.beltBurnishingCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.BeltBurnishing),
@@ -124,13 +124,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.verticalOriginCalibration = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.VerticalOriginCalibration),
                 () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual &&
-                      (this.VerticalOriginCalibration.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
+                      this.MachineModeService.MachineMode == MachineMode.Manual));
 
         protected SetupStepStatus VerticalResolutionCalibration => this.SetupStatusCapabilities?.VerticalResolutionCalibration ?? new SetupStepStatus();
 
         public ICommand VerticalResolutionCalibrationCommand =>
-                            this.verticalResolutionCalibration
+            this.verticalResolutionCalibration
             ??
             (this.verticalResolutionCalibration = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.VerticalResolutionCalibration),

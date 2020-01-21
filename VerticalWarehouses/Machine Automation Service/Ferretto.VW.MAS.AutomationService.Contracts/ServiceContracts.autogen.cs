@@ -177,11 +177,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<PositioningProcedure> GetProcedureParametersAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<CellPanel> UpdateHeightAsync(int cellId, double newHeight);
+        System.Threading.Tasks.Task<CellPanel> UpdateHeightAsync(int cellPanelId, double heightDifference);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<CellPanel> UpdateHeightAsync(int cellId, double newHeight, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<CellPanel> UpdateHeightAsync(int cellPanelId, double heightDifference, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -1632,7 +1632,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         CloseShutter = 8,
     
-        End = 9,
+        BackToTarget = 9,
+    
+        End = 10,
     
         Error = 101,
     
@@ -2200,6 +2202,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class PositioningProcedure : SetupProcedure
     {
+        [Newtonsoft.Json.JsonProperty("inProgress", Required = Newtonsoft.Json.Required.Always)]
+        public bool InProgress { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("step", Required = Newtonsoft.Json.Required.Always)]
         public double Step { get; set; }
     
@@ -2296,6 +2301,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     {
         [Newtonsoft.Json.JsonProperty("cells", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<Cell> Cells { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("isChecked", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsChecked { get; set; }
     
         [Newtonsoft.Json.JsonProperty("side", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
@@ -3225,21 +3233,23 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         LoadUnitShutterOpen = 55,
     
-        LoadUnitShutterClosed = 56,
+        LoadUnitShutterInvalid = 56,
     
-        LoadUnitPresentInCell = 57,
+        LoadUnitShutterClosed = 57,
     
-        LoadUnitOtherBay = 58,
+        LoadUnitPresentInCell = 58,
     
-        LoadUnitSourceElevator = 59,
+        LoadUnitOtherBay = 59,
     
-        LoadUnitMissingOnElevator = 60,
+        LoadUnitSourceElevator = 60,
     
-        LoadUnitMissingOnBay = 61,
+        LoadUnitMissingOnElevator = 61,
     
-        LoadUnitUndefinedUpper = 62,
+        LoadUnitMissingOnBay = 62,
     
-        LoadUnitUndefinedBottom = 63,
+        LoadUnitUndefinedUpper = 63,
+    
+        LoadUnitUndefinedBottom = 64,
     
         InverterErrorBaseCode = 1000,
     

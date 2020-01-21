@@ -1697,25 +1697,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<CellPanel> UpdateHeightAsync(int cellId, double newHeight)
+        public System.Threading.Tasks.Task<CellPanel> UpdateHeightAsync(int cellPanelId, double heightDifference)
         {
-            return UpdateHeightAsync(cellId, newHeight, System.Threading.CancellationToken.None);
+            return UpdateHeightAsync(cellPanelId, heightDifference, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<CellPanel> UpdateHeightAsync(int cellId, double newHeight, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<CellPanel> UpdateHeightAsync(int cellPanelId, double heightDifference, System.Threading.CancellationToken cancellationToken)
         {
-            if (cellId == null)
-                throw new System.ArgumentNullException("cellId");
+            if (cellPanelId == null)
+                throw new System.ArgumentNullException("cellPanelId");
     
-            if (newHeight == null)
-                throw new System.ArgumentNullException("newHeight");
+            if (heightDifference == null)
+                throw new System.ArgumentNullException("heightDifference");
     
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cell-panels/height?");
-            urlBuilder_.Append(System.Uri.EscapeDataString("cellId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(cellId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Append(System.Uri.EscapeDataString("newHeight") + "=").Append(System.Uri.EscapeDataString(ConvertToString(newHeight, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("cellPanelId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(cellPanelId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("heightDifference") + "=").Append(System.Uri.EscapeDataString(ConvertToString(heightDifference, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
             var client_ = _httpClient;

@@ -15,6 +15,8 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
                 throw new System.ArgumentNullException(nameof(builder));
             }
 
+            builder.Property(s => s.IsFree).HasDefaultValue(true);
+
             builder.HasKey(c => c.Id);
 
             builder
