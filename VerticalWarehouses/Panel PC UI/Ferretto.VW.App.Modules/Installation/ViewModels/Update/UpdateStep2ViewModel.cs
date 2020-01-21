@@ -55,13 +55,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Constructors
 
-        public UpdateStep2ViewModel(
-            IDialogService dialogService,
-            IMachineMissionsWebService machineMissionsWebService)
+        public UpdateStep2ViewModel(IDialogService dialogService)
             : base(PresentationMode.Operator)
         {
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
-            this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
 
             this.updateExchangeTemp = ConfigurationManager.AppSettings.GetUpdateExchangeTemp();
             this.updateExchangeInstallerPath = ConfigurationManager.AppSettings.GetUpdateExchangeInstallerPath();
