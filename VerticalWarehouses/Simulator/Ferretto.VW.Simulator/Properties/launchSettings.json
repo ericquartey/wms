@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Simulator": {
+      "commandName": "Project"
+    },
+    "Simulator (auto start)": {
+      "commandName": "Project",
+      "commandLineArgs": "--autostart"
+    }
+  }
+}
