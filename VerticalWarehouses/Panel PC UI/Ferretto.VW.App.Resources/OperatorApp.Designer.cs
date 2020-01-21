@@ -1727,6 +1727,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading unit in bay.
+        /// </summary>
+        public static string LoadingUnitInBay {
+            get {
+                return ResourceManager.GetString("LoadingUnitInBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There is 1 loading unit send to bay.
         /// </summary>
         public static string LoadingUnitSendToBay {
@@ -2632,6 +2641,15 @@ namespace Ferretto.VW.App.Resources {
         public static string QuantityToPick {
             get {
                 return ResourceManager.GetString("QuantityToPick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recall Drawer.
+        /// </summary>
+        public static string RecallDrawer {
+            get {
+                return ResourceManager.GetString("RecallDrawer", resourceCulture);
             }
         }
         

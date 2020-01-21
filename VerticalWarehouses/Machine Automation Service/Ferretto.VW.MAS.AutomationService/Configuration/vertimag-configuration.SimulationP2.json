@@ -147,7 +147,7 @@
         },
         "Laser": {
           "IpAddress": "127.0.0.1",
-          "TcpPort": 2020
+          "TcpPort": 12020
         }
       },
       {

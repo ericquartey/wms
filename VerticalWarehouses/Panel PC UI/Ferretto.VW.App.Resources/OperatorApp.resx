@@ -1433,4 +1433,10 @@ Please put back any moved pieces in their original position.</value>
   <data name="MisionStateNotDefined" xml:space="preserve">
     <value>Not defined</value>
   </data>
+  <data name="LoadingUnitInBay" xml:space="preserve">
+    <value>Loading unit in bay</value>
+  </data>
+  <data name="RecallDrawer" xml:space="preserve">
+    <value>Recall Drawer</value>
+  </data>
 </root>

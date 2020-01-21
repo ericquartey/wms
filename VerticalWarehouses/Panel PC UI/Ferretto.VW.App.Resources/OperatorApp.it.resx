@@ -1138,4 +1138,10 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="MisionStateNotDefined" xml:space="preserve">
     <value>Non definito</value>
   </data>
+  <data name="LoadingUnitInBay" xml:space="preserve">
+    <value>Cassetto in baia</value>
+  </data>
+  <data name="RecallDrawer" xml:space="preserve">
+    <value>Richiama Cassetto</value>
+  </data>
 </root>
