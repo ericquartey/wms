@@ -8,7 +8,6 @@ using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
-using Ferretto.VW.MAS.Utils.Messages;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.DeviceManager.Providers
@@ -27,6 +26,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly IElevatorProvider elevatorProvider;
 
+        private readonly IErrorsProvider errorsProvider;
+
         private readonly ISensorsProvider sensorsProvider;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
@@ -43,6 +44,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             ICellsProvider cellsProvider,
             IElevatorProvider elevatorProvider,
             IElevatorDataProvider elevatorDataProvider,
+            IErrorsProvider errorsProvider,
             ISensorsProvider sensorsProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider,
             IShutterProvider shutterProvider,
@@ -54,6 +56,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
             this.elevatorProvider = elevatorProvider ?? throw new ArgumentNullException(nameof(elevatorProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
+            this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
             this.shutterProvider = shutterProvider ?? throw new ArgumentNullException(nameof(shutterProvider));
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
@@ -130,6 +133,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 }
                 else
                 {
+                    this.errorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, requestingBay);
                     throw new StateMachineException(ex.Message, requestingBay, sender);
                 }
             }
@@ -346,6 +350,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 }
                 catch (InvalidOperationException ex)
                 {
+                    this.errorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, requestingBay);
                     throw new StateMachineException(ex.Message, requestingBay, sender);
                 }
             }
@@ -353,18 +358,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, ShutterPosition moveShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId)
         {
-            try
+            this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, loadUnitId, null, (moveShutter != ShutterPosition.NotSpecified), measure, requestingBay, sender);
+            if (moveShutter != ShutterPosition.NotSpecified)
             {
-                this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, loadUnitId, null, (moveShutter != ShutterPosition.NotSpecified), measure, requestingBay, sender);
-
-                if (moveShutter != ShutterPosition.NotSpecified)
+                try
                 {
                     this.shutterProvider.MoveTo(moveShutter, requestingBay, sender);
                 }
-            }
-            catch (InvalidOperationException ex)
-            {
-                throw new StateMachineException(ex.Message, requestingBay, sender);
+                catch (InvalidOperationException ex)
+                {
+                    throw new StateMachineException(ex.Message, requestingBay, sender);
+                }
             }
         }
 
@@ -466,6 +470,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 }
                 catch (InvalidOperationException ex)
                 {
+                    this.errorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, requestingBay);
                     throw new StateMachineException(ex.Message, requestingBay, sender);
                 }
             }
