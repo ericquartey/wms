@@ -11,9 +11,6 @@ namespace Ferretto.VW.Simulator.Services
         {
             switch (typeof(T))
             {
-                case var service when service == typeof(ISessionService):
-                    return new SessionService() as T;
-
                 case var service when service == typeof(IThemeService):
                     return new ThemeService() as T;
 
