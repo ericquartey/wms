@@ -234,38 +234,46 @@ namespace Ferretto.VW.MAS.MissionManager
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
 
-            var missions = missionsDataProvider.GetAllExecutingMissions().ToList();
+            var missions = missionsDataProvider.GetAllMissions().ToList();
             foreach (var mission in missions)
             {
-                if (mission.RestoreStep == MissionStep.NotDefined)
+                if (mission.Status == MissionStatus.New)
                 {
-                    mission.RestoreStep = mission.Step;
+                    missionsDataProvider.Delete(mission.Id);
                 }
-                IMissionMoveBase newStep;
+                else if (mission.Status != MissionStatus.Completed
+                    && mission.Status != MissionStatus.Aborted)
+                {
+                    if (mission.RestoreStep == MissionStep.NotDefined)
+                    {
+                        mission.RestoreStep = mission.Step;
+                    }
+                    IMissionMoveBase newStep;
 
-                if (mission.RestoreStep == MissionStep.BayChain)
-                {
-                    mission.NeedHomingAxis = Axis.BayChain;
-                    newStep = new MissionMoveErrorStep(mission, serviceProvider, eventAggregator);
+                    if (mission.RestoreStep == MissionStep.BayChain)
+                    {
+                        mission.NeedHomingAxis = Axis.BayChain;
+                        newStep = new MissionMoveErrorStep(mission, serviceProvider, eventAggregator);
+                    }
+                    else if (mission.RestoreStep == MissionStep.LoadElevator)
+                    {
+                        mission.NeedMovingBackward = true;
+                        mission.NeedHomingAxis = Axis.Horizontal;
+                        newStep = new MissionMoveErrorLoadStep(mission, serviceProvider, eventAggregator);
+                    }
+                    else if (mission.RestoreStep == MissionStep.DepositUnit)
+                    {
+                        mission.NeedMovingBackward = true;
+                        mission.NeedHomingAxis = Axis.Horizontal;
+                        newStep = new MissionMoveErrorDepositStep(mission, serviceProvider, eventAggregator);
+                    }
+                    else
+                    {
+                        mission.NeedHomingAxis = Axis.Horizontal;
+                        newStep = new MissionMoveErrorStep(mission, serviceProvider, eventAggregator);
+                    }
+                    newStep.OnEnter(null);
                 }
-                else if (mission.RestoreStep == MissionStep.LoadElevator)
-                {
-                    mission.NeedMovingBackward = true;
-                    mission.NeedHomingAxis = Axis.Horizontal;
-                    newStep = new MissionMoveErrorLoadStep(mission, serviceProvider, eventAggregator);
-                }
-                else if (mission.RestoreStep == MissionStep.DepositUnit)
-                {
-                    mission.NeedMovingBackward = true;
-                    mission.NeedHomingAxis = Axis.Horizontal;
-                    newStep = new MissionMoveErrorDepositStep(mission, serviceProvider, eventAggregator);
-                }
-                else
-                {
-                    mission.NeedHomingAxis = Axis.Horizontal;
-                    newStep = new MissionMoveErrorStep(mission, serviceProvider, eventAggregator);
-                }
-                newStep.OnEnter(null);
             }
         }
 
