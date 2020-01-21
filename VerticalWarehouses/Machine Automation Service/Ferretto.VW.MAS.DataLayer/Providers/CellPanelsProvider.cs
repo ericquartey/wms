@@ -13,13 +13,17 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
+
         #endregion
 
         #region Constructors
 
-        public CellPanelsProvider(DataLayerContext dataContext)
+        public CellPanelsProvider(DataLayerContext dataContext,
+            ISetupProceduresDataProvider setupProceduresDataProvider)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
         }
 
         #endregion
@@ -36,21 +40,17 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public CellPanel UpdateHeight(int cellId, double newHeight)
+        public CellPanel UpdateHeight(int cellPanelId, double heightDifference)
         {
             lock (this.dataContext)
             {
-                var cell = this.dataContext.Cells.SingleOrDefault(c => c.Id == cellId);
-                if (cell is null)
-                {
-                    throw new EntityNotFoundException(cellId);
-                }
-
                 var cellPanel = this.dataContext.CellPanels
                     .Include(p => p.Cells)
-                    .SingleOrDefault(p => p.Cells.Contains(cell));
-
-                var heightDifference = newHeight - cell.Position;
+                    .SingleOrDefault(c => c.Id == cellPanelId);
+                if (cellPanel is null)
+                {
+                    throw new EntityNotFoundException(cellPanelId);
+                }
 
                 var highestPanelHeight = cellPanel?.Cells.Max(c => c.Position) + heightDifference;
                 var lowestPanelHeight = cellPanel?.Cells.Min(c => c.Position) + heightDifference;
@@ -62,18 +62,18 @@ namespace Ferretto.VW.MAS.DataLayer
                         &&
                         c.Position > lowestPanelHeight
                         &&
-                        c.PanelId != cell.PanelId
+                        c.PanelId != cellPanelId
                         &&
                         c.Side == cellPanel.Side);
 
                 if (isOverlapping)
                 {
                     throw new ArgumentOutOfRangeException(
-                        nameof(newHeight),
+                        nameof(heightDifference),
                         Resources.Cells.TheSpecifiedHeightWouldCauseThePanelToOverlapWithOtherPanels);
                 }
 
-                if (cellPanel != null)
+                if (cellPanel != null && heightDifference != 0)
                 {
                     foreach (var panelCell in cellPanel.Cells)
                     {
@@ -81,13 +81,27 @@ namespace Ferretto.VW.MAS.DataLayer
 
                         this.dataContext.Cells.Update(panelCell);
                     }
+
+                    this.dataContext.SaveChanges();
                 }
+
+                cellPanel.IsChecked = true;
+                this.dataContext.CellPanels.Update(cellPanel);
 
                 this.dataContext.SaveChanges();
 
+                if (!this.dataContext.CellPanels.Any(c => !c.IsChecked))
+                {
+                    this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetCellPanelsCheck());
+                }
+                else
+                {
+                    this.setupProceduresDataProvider.InProgressProcedure(this.setupProceduresDataProvider.GetCellPanelsCheck());
+                }
+
                 return this.dataContext.CellPanels
                     .Include(p => p.Cells)
-                    .SingleOrDefault(p => p.Cells.Contains(cell));
+                    .SingleOrDefault(p => p.Id == cellPanelId);
             }
         }
 

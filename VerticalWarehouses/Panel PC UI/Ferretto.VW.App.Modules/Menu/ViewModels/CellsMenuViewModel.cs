@@ -19,6 +19,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
     {
         #region Fields
 
+        private readonly IMachineSetupStatusWebService machineSetupStatusWebService;
+
         private DelegateCommand bayFirstLoadingUnitCommand;
 
         private DelegateCommand cellPanelsCheckCommand;
@@ -33,9 +35,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Constructors
 
-        public CellsMenuViewModel()
+        public CellsMenuViewModel(
+            IMachineSetupStatusWebService machineSetupStatusWebService)
             : base()
         {
+            this.machineSetupStatusWebService = machineSetupStatusWebService ?? throw new ArgumentNullException(nameof(machineSetupStatusWebService));
+
+            this.SetupStatusCapabilities = new SetupStatusCapabilities();
         }
 
         #endregion
@@ -69,6 +75,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
                       (this.MachineService.IsHoming || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
                 ));
 
+        protected SetupStepStatus CellPanelsCheck => this.SetupStatusCapabilities?.CellPanelsCheck ?? new SetupStepStatus();
+
         public ICommand CellPanelsCheckCommand =>
             this.cellPanelsCheckCommand
             ??
@@ -76,7 +84,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.CellPanelsCheck),
                 () => this.CanExecuteCommand() &&
                       this.MachineModeService.MachineMode == MachineMode.Manual &&
-                      (this.MachineService.IsHoming || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
+                      (this.CellPanelsCheck.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
                 ));
 
         public ICommand CellsBlockTuningCommand =>
@@ -86,7 +94,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.CellsBlockTuning),
                 () => this.CanExecuteCommand() &&
                       this.MachineModeService.MachineMode == MachineMode.Manual &&
-                      (this.MachineService.IsHoming || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
+                      (this.CellsHeightCheck.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
                 ));
 
         public ICommand CellsCommand =>
@@ -96,6 +104,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.Cells),
                 this.CanExecuteCommand));
 
+        protected SetupStepStatus CellsHeightCheck => this.SetupStatusCapabilities?.CellsHeightCheck ?? new SetupStepStatus();
+
         public ICommand CellsHeightCheckCommand =>
             this.cellsHeightCheckCommand
             ??
@@ -103,8 +113,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.CellsHeightCheck),
                 () => this.CanExecuteCommand() &&
                       this.MachineModeService.MachineMode == MachineMode.Manual &&
-                      (this.MachineService.IsHoming || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
+                      (this.CellsHeightCheck.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
                ));
+
+        protected SetupStatusCapabilities SetupStatusCapabilities { get; private set; }
 
         #endregion
 
@@ -166,6 +178,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
                         trackCurrentView: true);
                     break;
             }
+        }
+
+        private async Task UpdateSetupStatusAsync()
+        {
+            this.SetupStatusCapabilities = await this.machineSetupStatusWebService.GetAsync();
+
+            this.RaiseCanExecuteChanged();
         }
 
         #endregion
