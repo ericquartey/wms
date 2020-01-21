@@ -125,7 +125,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                     var wmsCompartments = await this.loadingUnitsWmsWebService.GetCompartmentsAsync(loadingUnitId);
                     this.Compartments = MapCompartments(wmsCompartments);
                 }
-                catch (WMS.Data.WebAPI.Contracts.WmsWebApiException)
+                catch
                 {
                     // do nothing: details will not be shown
                 }

@@ -5,40 +5,51 @@
         xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:installer="clr-namespace:Ferretto.VW.Installer"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        Title="MainWindow"
+        Title="Ferretto Installer"
         Width="1024"
         Height="768"
-        Background="#282828"
-        ResizeMode="NoResize"
-        SnapsToDevicePixels="True"
-        UseLayoutRounding="True"
+        Style="{StaticResource MainWindowStyle}"
         WindowStartupLocation="Manual"
-        WindowStyle="None"
         mc:Ignorable="d">
-    <Grid Margin="10"
-          TextBlock.FontSize="16">
+    <Grid Margin="10">
         <Grid.Resources>
             <installer:StatusToIconNameConverter x:Key="STIC" />
             <installer:StatusToColorConverter x:Key="STCC" />
             <installer:TimespanConverter x:Key="TSC" />
         </Grid.Resources>
         <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="300" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <ListBox Grid.Column="0"
-                     Margin="0,0,10,0"
-                     HorizontalContentAlignment="Stretch"
-                     Background="#282828"
-                     BorderThickness="0"
-                     Foreground="White"
+            <StackPanel Grid.Column="1"
+                        Margin="0,10,0,20"
+                        Orientation="Horizontal">
+
+                <icon:PackIconMaterial Width="24"
+                                       Height="24"
+                                       VerticalAlignment="Center"
+                                       Foreground="{Binding SelectedStep.Status, Converter={StaticResource STCC}}"
+                                       Kind="{Binding SelectedStep.Status, Converter={StaticResource STIC}}" />
+
+                <TextBlock Style="{StaticResource HeadingTextBlockStyle}"
+                           Text="{Binding SelectedStep.Title}" />
+            </StackPanel>
+
+
+
+            <ListBox Grid.Row="1"
                      ItemsSource="{Binding Steps}"
-                     SelectedItem="{Binding SelectedStep, Mode=TwoWay}">
+                     SelectedItem="{Binding SelectedStep, Mode=TwoWay}"
+                     Style="{StaticResource SidePanelListBoxStyle}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
+                        <Grid Height="32">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
@@ -66,13 +77,9 @@
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <TextBox Grid.Column="1"
-                     Padding="5"
-                     Background="#202020"
-                     BorderThickness="0"
-                     FontFamily="Consolas"
-                     Foreground="White"
-                     IsReadOnly="True"
+            <TextBox Grid.Row="1"
+                     Grid.Column="1"
+                     Style="{StaticResource TextBoxConsoleStyle}"
                      Text="{Binding SelectedStep.Log, Mode=OneWay}" />
         </Grid>
     </Grid>

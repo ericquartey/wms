@@ -1,7 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Configuration;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using NLog;
@@ -96,7 +98,7 @@ namespace Ferretto.VW.Installer
                 throw new InvalidOperationException($"Step '{this.Title}' cannot be executed because its status is {this.Status}.");
             }
 
-            this.LogWriteLine($"Start step '{this.Title}'.");
+            this.LogWriteLine($"Avvio dello step '{this.Title}'.");
 
             this.StartTime = DateTime.Now;
             var timer = new Timer(this.OnTimerTick, null, 0, 500);
@@ -108,14 +110,31 @@ namespace Ferretto.VW.Installer
                 this.Status = await this.OnApplyAsync();
                 timer.Dispose();
                 this.EndTime = DateTime.Now;
-                this.LogWriteLine($"Step completed with status '{this.Status}'.");
+                this.LogWriteLine($"Step completato con stato '{this.Status}'.");
             }
             catch
             {
                 this.Status = StepStatus.Failed;
-                this.LogWriteLine("Step failed unexpectedly.");
+                this.LogWriteLine("Step fallito inaspettatamente.");
                 timer.Dispose();
             }
+        }
+
+        public string InterpolateVariables(string value)
+        {
+            var regex = new Regex(@"\$\((?<var_name>[^\)]+)\)");
+
+            var match = regex.Match(value);
+
+            while (match.Success)
+            {
+                var varName = match.Groups["var_name"].Value;
+                var varValue = ConfigurationManager.AppSettings.Get(varName);
+                value = value.Replace(match.Value, varValue);
+                match = match.NextMatch();
+            }
+
+            return value;
         }
 
         public async Task RollbackAsync()
@@ -125,7 +144,7 @@ namespace Ferretto.VW.Installer
                 throw new InvalidOperationException($"Step '{this.Title}' cannot be rolled back because its status is {this.Status}.");
             }
 
-            this.LogWriteLine("Starting rollback.");
+            this.LogWriteLine("Avvio rollback.");
 
             this.Status = StepStatus.RollingBack;
 
@@ -136,7 +155,7 @@ namespace Ferretto.VW.Installer
             }
             catch
             {
-                this.LogWriteLine("Rollback of step failed unexpectedly.");
+                this.LogWriteLine("Rollback dello step fallito inaspettatamente.");
 
                 this.Status = StepStatus.RollbackFailed;
             }

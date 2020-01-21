@@ -4,6 +4,7 @@ using System.Configuration;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using System.Xml;
@@ -45,6 +46,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private bool isInstallationReady;
 
+        private bool isRefresh;
+
         private bool isSystemConfigurationPathReady;
 
         private string path;
@@ -71,10 +74,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 if (!this.isDeviceReady)
                 {
-                    return "No device found";
+                    return $"No device '{DEFAULTDEVICENAME}' found";
                 }
 
-                return "Device is ready";
+                return $"Device '{DEFAULTDEVICENAME}' is ready";
             }
         }
 
@@ -90,14 +93,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             get
             {
-                if (!this.isDeviceReady)
+                if (!this.IsInstallationReady)
                 {
                     return "-";
                 }
 
-                if (!this.IsInstallationReady)
+                if (this.installations.Count == 0)
                 {
-                    return "No installation files found";
+                    return "No installation file found";
                 }
 
                 if (this.installations.Count == 1)
@@ -118,6 +121,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isBusy, value))
                 {
+                    this.IsEnabled = !this.isBusy;
                     this.RaisePropertyChanged();
                     this.IsBackNavigationAllowed = !this.isBusy;
                 }
@@ -138,7 +142,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public bool IsInstallationReadyFromSystemConfiguration => this.isSystemConfigurationPathReady && this.IsInstallationReady;
 
-        public string SystemInfo
+        public string SharedFolderInfo
         {
             get
             {
@@ -147,9 +151,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     return $"System path '{this.configurationUpdateRepositoryPath}' not found";
                 }
 
-                return "Valid system path found";
+                return $"System path '{this.configurationUpdateRepositoryPath}' is valid";
             }
         }
+
+        public string SystemInfo => Assembly.GetEntryAssembly().GetName()?.Version?.ToString();
 
         #endregion
 
@@ -164,30 +170,31 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         }
 
         public override async Task OnAppearedAsync()
-        {
-            await base.OnAppearedAsync();
+        {            
+            this.IsBusy = true;
 
             try
             {
-                this.IsBusy = true;
+                this.ClearNotifications();
 
-                this.Refresh();
+                await base.OnAppearedAsync();
 
-                this.StartMonitorDrive();
+                await this.RefreshAsync();
+
+                this.StartMonitoring();
+
+                this.IsBusy = false;
             }
             catch (Exception ex)
             {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
                 this.IsBusy = false;
+                this.ShowNotification(ex);
             }
         }
 
         public virtual void RaisePropertyChanged()
         {
-            this.RaisePropertyChanged(nameof(this.SystemInfo));
+            this.RaisePropertyChanged(nameof(this.SharedFolderInfo));
             this.RaisePropertyChanged(nameof(this.DeviceInfo));
             this.RaisePropertyChanged(nameof(this.InstallationFilesInfo));
         }
@@ -226,7 +233,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 }
                 catch
                 {
-                    // Not suppeorted file
+                    // Not supported file
                 }
             }
         }
@@ -265,19 +272,40 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private void Refresh()
         {
-            this.RefreshDefaultPath();
-
-            if (this.isSystemConfigurationPathReady
-                &&
-                this.IsInstallationReady)
+            try
             {
-                this.RaiseCanExecuteChanged();
-                return;
-            }
+                if (this.isRefresh)
+                {
+                    return;
+                }
 
-            this.RefreshDevicesStatus();
-            this.RaisePropertyChanged();
-            this.RaiseCanExecuteChanged();
+                this.isRefresh = true;
+
+                this.RefreshDefaultPath();
+
+                if (!(this.isSystemConfigurationPathReady
+                      &&
+                      this.IsInstallationReady))
+                {
+                    this.RefreshDevicesStatus();
+                   
+                }
+
+                this.RaiseCanExecuteChanged();
+                this.RaisePropertyChanged();
+
+                this.isRefresh = false;
+            }
+            catch (Exception ex)
+            {
+                this.isRefresh = false;
+                this.ShowNotification(ex);
+            }
+        }
+
+        private async Task RefreshAsync()
+        {
+            await Task.Run(() => this.Refresh());
         }
 
         private void RefreshDefaultPath()
@@ -320,17 +348,20 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
-        private void StartMonitorDrive()
+        private void StartMonitoring()
         {
             this.updateTimer = new System.Windows.Threading.DispatcherTimer();
-            this.updateTimer.Tick += new EventHandler(this.UpdateTimer_Tick);
+            this.updateTimer.Tick += async (sender, e) =>
+            {
+                await this.UpdateTimer_Tick();
+            };
             this.updateTimer.Interval = new TimeSpan(0, 0, SECSUPDATESINTERVAL);
             this.updateTimer.Start();
         }
 
-        private void UpdateTimer_Tick(object sender, EventArgs e)
+        private async Task UpdateTimer_Tick()
         {
-            this.Refresh();
+            await this.RefreshAsync();
         }
 
         #endregion

@@ -13,7 +13,6 @@ using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Microsoft.Win32;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
@@ -26,13 +25,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private const string EXEEXTENSION = ".exe";
 
-        private const int PollIntervalMilliseconds = 5000;
-
-        private const string REGSTARTUP = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
-
         private readonly IDialogService dialogService;
-
-        private readonly IMachineMissionsWebService machineMissionsWebService;
 
         private readonly string updateExchangeInstallerName;
 
@@ -62,13 +55,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Constructors
 
-        public UpdateStep2ViewModel(
-            IDialogService dialogService,
-            IMachineMissionsWebService machineMissionsWebService)
+        public UpdateStep2ViewModel(IDialogService dialogService)
             : base(PresentationMode.Operator)
         {
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
-            this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
 
             this.updateExchangeTemp = ConfigurationManager.AppSettings.GetUpdateExchangeTemp();
             this.updateExchangeInstallerPath = ConfigurationManager.AppSettings.GetUpdateExchangeInstallerPath();
@@ -237,16 +227,17 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 foreach (var csvFileCheck in csvFilesToCheck)
                 {
-                    //var fileCheck = csvFileCheck.Split(',');
-                    //string fileName = csvFileCheck[0];
-                    //var checksumFilePath = csvFileCheck[1];
-                    //if (this.GeMD5FromFile(fileName) != checksumFilePath)
-                    //{
-                    //    this.AppendLine($"Operation aborted.");
-                    //    this.AppendLine($"Error on checking file '{fileName}'");
-                    //    this.isCurrentOperationValid = false;
-                    //    break;
-                    //}
+                    var fileCheck = csvFileCheck.Split(',');
+                    var fileName = fileCheck[0].Trim('"').TrimStart('.');
+                    var absoluteFilePath = this.updateExchangeTemp + fileName;
+                    var checksumFilePath = fileCheck[1].Trim('"');
+                    if (this.GeMD5FromFile(absoluteFilePath) != checksumFilePath)
+                    {
+                        this.AppendLine($"Operation aborted.");
+                        this.AppendLine($"Error on checking file '{fileName}'");
+                        this.isCurrentOperationValid = false;
+                        break;
+                    }
                 }
 
                 if (this.isCurrentOperationValid)
@@ -281,7 +272,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 catch (Exception ex)
                 {
                     this.isCurrentOperationValid = false;
-                    this.AppendLine($"Error excracting files:");
+                    this.AppendLine($"Error on clear temp folder:");
                     var errMsg = (ex.InnerException is null) ? ex.Message : ex.InnerException.Message;
                     this.AppendLine(errMsg);
                 }
@@ -357,33 +348,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
-        private bool SetAppStartUpOnRegKey()
-        {
-            var isValid = false;
-            try
-            {
-                var resgistryApp = Registry.CurrentUser.OpenSubKey(REGSTARTUP, true);
-                var installerPath = $"{this.updateExchangeTemp}\\{this.updateExchangeInstallerPath}\\{this.updateExchangeInstallerName}";
-
-                this.AppendLine($"Change startup application with '{installerPath}'.");
-                resgistryApp.SetValue(this.updateExchangeInstallerName, installerPath);
-
-                resgistryApp.Close();
-
-                isValid = true;
-                this.AppendLine("Changes successfully completed.");
-            }
-            catch (Exception ex)
-            {
-                this.AppendLine($"Error on applying registry changes:");
-                var errMsg = (ex.InnerException is null) ? ex.Message : ex.InnerException.Message;
-                this.AppendLine(errMsg);
-                this.ShowNotification(ex);
-            }
-
-            return isValid;
-        }
-
         private void SetCurrentIndex(int? missionId)
         {
             if (missionId.HasValue
@@ -424,12 +388,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 process.Start();
                 process.WaitForExit();
 
-                this.AppendLine("Starting app successfully completed.");
+                this.AppendLine("Starting installer app successfully completed.");
             }
             catch (Exception ex)
             {
                 this.isCurrentOperationValid = false;
-                this.AppendLine($"Error on applying registry changes:");
+                this.AppendLine($"Error on starting:");
                 var errMsg = (ex.InnerException is null) ? ex.Message : ex.InnerException.Message;
                 this.AppendLine(errMsg);
                 this.ShowNotification(ex);
