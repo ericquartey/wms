@@ -4,11 +4,19 @@
     {
         #region Fields
 
+        private bool inProgress;
+
         private double step;
 
         #endregion
 
         #region Properties
+
+        public bool InProgress
+        {
+            get => this.inProgress;
+            set => this.inProgress = value;
+        }
 
         public double Step
         {

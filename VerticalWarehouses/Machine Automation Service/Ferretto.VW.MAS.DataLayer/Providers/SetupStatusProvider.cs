@@ -185,6 +185,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 CellPanelsCheck = new SetupStepStatus
                 {
                     IsCompleted = setup.CellPanelsCheck.IsCompleted,
+                    InProgress = setup.CellPanelsCheck.InProgress,
                     CanBePerformed = setup.VerticalOffsetCalibration.IsCompleted && verticalOrigin.IsCompleted,
                 },
                 VerticalOriginCalibration = new SetupStepStatus

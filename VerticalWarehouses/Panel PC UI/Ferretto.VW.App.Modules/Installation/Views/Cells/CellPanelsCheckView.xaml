@@ -5,7 +5,7 @@
             xmlns:convertes="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-            xmlns:local="clr-namespace:Ferretto.VW.App.Installation.Views"
+            xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
@@ -14,16 +14,16 @@
             prism:ViewModelLocator.AutoWireViewModel="True"
             UseLayoutRounding="True"
             mc:Ignorable="d">
+
     <Grid Margin="15,0,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -64,7 +64,7 @@
         <Border Grid.Row="2"
                 Grid.Column="0"
                 Grid.ColumnSpan="4"
-                Margin="3,30,15,0"
+                Margin="0,30,15,0"
                 Background="{DynamicResource PpcBackground}">
             <Border BorderBrush="{DynamicResource PpcBorderBrush}"
                     BorderThickness="{DynamicResource PpcBorderThickness}">
@@ -109,8 +109,15 @@
                                    VerticalAlignment="Top"
                                    FontSize="{StaticResource FontSize_Very_High}"
                                    Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding CurrentPanelNumber}"
-                                   TextWrapping="Wrap" />
+                                   TextWrapping="Wrap">
+                            <Run Text="{Binding CurrentPanelNumber, Mode=OneWay}" />
+                            <icon:PackIconMaterial Width="22"
+                                                   Height="22"
+                                                   BorderThickness="1"
+                                                   Foreground="Green"
+                                                   Kind="CheckboxMarkedCircle"
+                                                   Visibility="{Binding CurrentPanelIsChecked, Converter={StaticResource BTVC}}" />
+                        </TextBlock>
 
                         <Border Grid.RowSpan="2"
                                 Grid.Column="1"
@@ -148,7 +155,7 @@
                                    VerticalAlignment="Top"
                                    FontSize="{StaticResource FontSize_Very_High}"
                                    Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding CurrentCell.Position}"
+                                   Text="{Binding CurrentCell.Position, StringFormat={}{0:F2}}"
                                    TextWrapping="Wrap" />
 
                         <Border Grid.RowSpan="2"
@@ -233,19 +240,16 @@
 
         <controls:CardSensorAxisVertical Grid.Row="3"
                                          Grid.Column="0"
-                                         Width="230"
                                          Height="90"
                                          MinHeight="90"
                                          Margin="0,15,15,0" />
         <controls:CardSensorAxisHorizontal Grid.Row="3"
                                            Grid.Column="1"
-                                           Width="230"
                                            Height="90"
                                            MinHeight="90"
                                            Margin="0,15,15,0" />
         <controls:CardSensorDrawer Grid.Row="3"
                                    Grid.Column="2"
-                                   Width="230"
                                    Height="90"
                                    MinHeight="90"
                                    Margin="0,15,15,0" />
@@ -310,31 +314,6 @@
             </Border>
         </Border>
 
-        <TextBlock Grid.Row="4"
-                   Grid.ColumnSpan="3"
-                   Margin="0,15,0,15"
-                   FontSize="18"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="Correggere la posizione dell'elevatore fino al perfetto allineamento e premere Avanti."
-                   TextWrapping="Wrap" />
-
-        <TextBlock Grid.Row="4"
-                   Grid.Column="3"
-                   Margin="0,15,15,15"
-                   HorizontalAlignment="Right"
-                   FontSize="18"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   TextWrapping="Wrap">
-            <TextBlock.Text>
-                <MultiBinding StringFormat="Misurazione {0} di {1}">
-                    <Binding Path="PanelsCheck"
-                             TargetNullValue="{x:Static res:General.TargetNullValue}" />
-                    <Binding Path="Panels.Count"
-                             TargetNullValue="{x:Static res:General.TargetNullValue}" />
-                </MultiBinding>
-            </TextBlock.Text>
-        </TextBlock>
-
         <ctrls:PpcSpinEdit Grid.Row="5"
                            Grid.Column="0"
                            Height="90"
@@ -343,17 +322,16 @@
                            EditValue="{Binding CurrentCellId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                            IsEnabled="{Binding IsCanStartPosition}"
                            LabelText="Cella selezionata"
-                           MaxValue="999"
-                           MinValue="1" />
+                           MaxValue="{Binding CurrentPanelMaxValue}"
+                           MinValue="{Binding CurrentPanelMinValue}" />
 
         <controls:PpcButton Grid.Row="5"
                             Grid.Column="1"
                             Margin="0,15,15,0"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Command="{Binding MoveToCellCommand}"
-                            Content="Vai a quota"
-                            Style="{DynamicResource WizardIntoButton}" />
+                            Command="{Binding GoToCellHeightCommand}"
+                            Content="Vai a quota" />
 
         <ctrls:PpcSpinEdit Grid.Row="6"
                            Grid.Column="0"
@@ -375,121 +353,20 @@
                             Content="Sposta elevatore"
                             Style="{DynamicResource WizardIntoButton}" />
 
-        <!--#region Body-->
-
-        <Grid Grid.Row="6"
-              Grid.RowSpan="2"
-              Grid.ColumnSpan="4"
-              Visibility="Collapsed">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-
-
-            <StackPanel Grid.Row="2"
-                        Grid.Column="1"
-                        Grid.ColumnSpan="3"
-                        Orientation="Horizontal"
-                        Visibility="Collapsed">
-
-                <controls:PpcButton Width="110"
-                                    Margin="0,0,10,0"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    Command="{Binding GoToPreviousPanelCommand}"
-                                    Content="{x:Static res:InstallationApp.PreviousPanel}" />
-
-                <controls:PpcButton Width="110"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    Command="{Binding GoToNextPanelCommand}"
-                                    Content="{x:Static res:InstallationApp.NextPanel}" />
-            </StackPanel>
-
-            <ctrls:PpcSpinEdit Grid.Row="4"
-                               Grid.RowSpan="2"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Top"
-                               EditValue="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                               LabelText="{x:Static res:InstallationApp.StepValue}"
-                               Visibility="Collapsed" />
-
-            <controls:PpcLabeledText Grid.Row="4"
-                                     Grid.RowSpan="2"
-                                     Grid.Column="1"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Center"
-                                     ContentText="{Binding InitialPosition, StringFormat={}{0:F1}}"
-                                     LabelText="{x:Static res:InstallationApp.InitialPosition}"
-                                     Visibility="Collapsed" />
-
-            <controls:PpcLabeledText Grid.Row="4"
-                                     Grid.RowSpan="2"
-                                     Grid.Column="2"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Center"
-                                     ContentText="{Binding CurrentHeight, StringFormat={}{0:F1}}"
-                                     LabelText="{x:Static res:InstallationApp.CurrentHeight}"
-                                     Visibility="Collapsed" />
-
-            <controls:PpcButton Grid.Row="3"
-                                Grid.Column="3"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Top"
-                                Command="{Binding GoToCellHeightCommand}"
-                                Content="{x:Static res:InstallationApp.MoveToCellHeight}"
-                                IsBusy="{Binding IsElevatorMovingToCell}"
-                                Visibility="Collapsed" />
-
-            <controls:PpcButton Grid.Row="4"
-                                Grid.Column="3"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Top"
-                                Command="{Binding MoveUpCommand}"
-                                Content="{x:Static res:InstallationApp.Up}"
-                                IsBusy="{Binding IsElevatorMovingUp}"
-                                Visibility="Collapsed" />
-
-            <controls:PpcButton Grid.Row="5"
-                                Grid.Column="3"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Top"
-                                Command="{Binding MoveDownCommand}"
-                                Content="{x:Static res:InstallationApp.Down}"
-                                IsBusy="{Binding IsElevatorMovingDown}"
-                                Visibility="Collapsed" />
-
-            <controls:PpcButton Grid.Row="6"
-                                Grid.Column="3"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Top"
+        <StackPanel Grid.Row="5"
+                    Grid.RowSpan="2"
+                    Grid.Column="3"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom">
+            <controls:PpcButton Margin="0,15,15,0"
                                 Command="{Binding ApplyCorrectionCommand}"
                                 Content="{x:Static res:InstallationApp.ApplyCorrection}"
-                                Visibility="Collapsed" />
+                                Style="{StaticResource WizardConfirmButton}" />
 
-        </Grid>
-
-        <!--#endregion-->
-
-        <controls:PpcButton Grid.Row="6"
-                            Grid.Column="3"
-                            Margin="0,15,15,0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
-                            Command="{Binding StopCommand}"
-                            Content="{x:Static res:InstallationApp.Stop}" />
+            <controls:PpcButton Margin="0,15,15,0"
+                                Command="{Binding StopCommand}"
+                                Content="{x:Static res:InstallationApp.Stop}" />
+        </StackPanel>
         <!--#endregion-->
 
     </Grid>
