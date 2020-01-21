@@ -8,6 +8,7 @@
     <StartupObject>Ferretto.VW.Simulator.App</StartupObject>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <ApplicationManifest>properties/app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>
