@@ -176,6 +176,9 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitShutterOpen), 1)]
         LoadUnitShutterOpen,
 
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitShutterInvalid), 1)]
+        LoadUnitShutterInvalid,
+
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitShutterClosed), 1)]
         LoadUnitShutterClosed,
 

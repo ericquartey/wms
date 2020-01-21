@@ -351,7 +351,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 }
                 catch (InvalidOperationException ex)
                 {
-                    this.errorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, requestingBay);
+                    this.errorsProvider.RecordNew(MachineErrorCode.MoveBayChainNotAllowed, requestingBay);
                     throw new StateMachineException(ex.Message, requestingBay, sender);
                 }
             }
@@ -368,7 +368,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 }
                 catch (InvalidOperationException ex)
                 {
-                    this.errorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, requestingBay);
+                    this.errorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterInvalid, requestingBay);
                     throw new StateMachineException(ex.Message, requestingBay, sender);
                 }
             }
@@ -472,7 +472,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 }
                 catch (InvalidOperationException ex)
                 {
-                    this.errorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, requestingBay);
+                    this.errorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterClosed, requestingBay);
                     throw new StateMachineException(ex.Message, requestingBay, sender);
                 }
             }

@@ -244,7 +244,7 @@
     <value>Serranda non in posizione aperta. Verificare lo stato dei sensori.</value>
   </data>
   <data name="LoadUnitShutterOpen" xml:space="preserve">
-    <value>Serranda non in posizione chiusa nè aperta. Verificare lo stato dei sensori.</value>
+    <value>Serranda non in posizione chiusa. Verificare lo stato dei sensori.</value>
   </data>
   <data name="DestinationBelowLowerBound" xml:space="preserve">
     <value>Errore destinazione asse sotto livello minimo. Verificare i parametri della macchina.</value>
@@ -362,5 +362,8 @@
   </data>
   <data name="LoadUnitHeightExceeded" xml:space="preserve">
     <value>Try to lower the height of the load unit.</value>
+  </data>
+  <data name="LoadUnitShutterInvalid" xml:space="preserve">
+    <value>Serranda non in posizione chiusa nè aperta. Verificare lo stato dei sensori.</value>
   </data>
 </root>
