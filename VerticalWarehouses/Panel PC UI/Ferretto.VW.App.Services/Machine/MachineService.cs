@@ -480,7 +480,6 @@ namespace Ferretto.VW.App.Services
         private void OnDataChanged<TData>(NotificationMessageUI<TData> message)
             where TData : class, IMessageData
         {
-
             try
             {
                 if (message?.Data is HomingMessageData dataHoming)
@@ -527,6 +526,7 @@ namespace Ferretto.VW.App.Services
 
                                 ms.CurrentMissionId = messageData.MissionId;
 
+                                // TODO use messageData.MissionStep instead of message.Description
                                 this.Notification = $"Movimento in corso... ({this.MachineStatus?.CurrentMissionId} - {message.Description})";
                             }
 
@@ -625,6 +625,7 @@ namespace Ferretto.VW.App.Services
                             {
                                 this.logger.Debug($"OnMoveLoadingUnitMessageData:{moveLoadingUnitMessageData.MissionStep};");
 
+                                // TODO use messageData.MissionStep instead of message.Description
                                 this.Notification = $"Movimento in corso... ({this.MachineStatus?.CurrentMissionId} - {message.Description})";
                             }
 
