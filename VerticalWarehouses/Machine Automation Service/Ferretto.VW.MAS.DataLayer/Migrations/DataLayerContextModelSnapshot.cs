@@ -152,7 +152,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("BlockLevel");
 
-                    b.Property<bool>("IsFree");
+                    b.Property<bool>("IsFree")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
 
                     b.Property<int>("PanelId");
 
@@ -1093,7 +1095,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 3, 21, 12, 47, 50, 867, DateTimeKind.Local).AddTicks(4202),
+                            InstallationDate = new DateTime(2017, 3, 21, 15, 1, 26, 589, DateTimeKind.Local).AddTicks(1266),
                             ServiceStatus = 86
                         });
                 });
