@@ -143,6 +143,11 @@ namespace Ferretto.VW.App.Services
 
         #region Properties
 
+        public bool BayFirstPositionIsUpper
+        {
+            get => this.bay?.Positions?.FirstOrDefault()?.IsUpper ?? false;
+        }
+
         public Bay Bay
         {
             get => this.bay;
@@ -1109,10 +1114,10 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification("Homing non eseguito.", NotificationSeverity.Error);
                         }
-                        else if ((((this.MachineStatus.LoadingUnitPositionDownInBay != null && !this.sensorsService.IsLoadingUnitInMiddleBottomBay && this.Bay.IsDouble) ||
-                                   (this.MachineStatus.LoadingUnitPositionUpInBay != null && !this.sensorsService.IsLoadingUnitInBay)) ||
-                                  ((this.MachineStatus.LoadingUnitPositionDownInBay == null && this.sensorsService.IsLoadingUnitInMiddleBottomBay && this.Bay.IsDouble) ||
-                                   (this.MachineStatus.LoadingUnitPositionUpInBay == null && this.sensorsService.IsLoadingUnitInBay))))
+                        else if ((((this.MachineStatus.LoadingUnitPositionDownInBay != null && !this.sensorsService.IsLoadingUnitInMiddleBottomBay && (this.Bay.IsDouble || !this.BayFirstPositionIsUpper)) ||
+                                   (this.MachineStatus.LoadingUnitPositionUpInBay != null && !this.sensorsService.IsLoadingUnitInBay && (this.Bay.IsDouble || this.BayFirstPositionIsUpper))) ||
+                                  ((this.MachineStatus.LoadingUnitPositionDownInBay == null && this.sensorsService.IsLoadingUnitInMiddleBottomBay && (this.Bay.IsDouble || !this.BayFirstPositionIsUpper)) ||
+                                   (this.MachineStatus.LoadingUnitPositionUpInBay == null && this.sensorsService.IsLoadingUnitInBay && (this.Bay.IsDouble || this.BayFirstPositionIsUpper)))))
                         {
                             this.ShowNotification("Inconsistenza sensori di presenza cassetto in baia.", NotificationSeverity.Error);
                         }
