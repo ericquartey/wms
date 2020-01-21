@@ -71,7 +71,8 @@
                                                           TextBlock.FontSize="36" />
                                     </StackPanel>
 
-                                    <Border Grid.Row="1"
+                                    <Border x:Name="Grid_MenuButton_DrawingBrush"
+                                            Grid.Row="1"
                                             Grid.Column="2"
                                             Margin="5,25"
                                             HorizontalAlignment="Center"
@@ -99,7 +100,8 @@
                                     <Grid Grid.Row="1"
                                           Grid.Column="3"
                                           HorizontalAlignment="Left">
-                                        <Ellipse Width="56"
+                                        <Ellipse x:Name="Grid_MenuButton_Ellipse"
+                                                 Width="56"
                                                  Height="56"
                                                  HorizontalAlignment="Center"
                                                  VerticalAlignment="Center"
@@ -112,7 +114,8 @@
                                             </Ellipse.BitmapEffect>
                                         </Ellipse>
 
-                                        <icon:PackIconMaterial Width="28"
+                                        <icon:PackIconMaterial x:Name="Grid_MenuButton_Icon"
+                                                               Width="28"
                                                                Height="28"
                                                                HorizontalAlignment="Center"
                                                                VerticalAlignment="Center"
@@ -120,7 +123,8 @@
                                                                Kind="{Binding Path=Kind, RelativeSource={RelativeSource TemplatedParent}}" />
                                     </Grid>
                                 </Grid>
-                                <Grid Grid.Column="1"
+                                <Grid x:Name="Grid_MenuButton"
+                                      Grid.Column="1"
                                       Background="{DynamicResource FerrettoDarkGray}">
                                     <Grid.RowDefinitions>
                                         <!--  Margine Top  -->
@@ -142,14 +146,16 @@
                                         <ColumnDefinition Width="25" />
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock Grid.Row="1"
+                                    <TextBlock x:Name="Grid_MenuButton_Title"
+                                               Grid.Row="1"
                                                Grid.Column="1"
                                                FontSize="24"
                                                Foreground="{DynamicResource FerrettoPureWhite}"
                                                Text="{Binding ElementName=MenuButton, Path=Title, FallbackValue='TITOLO'}"
                                                TextWrapping="Wrap" />
 
-                                    <TextBlock Grid.Row="2"
+                                    <TextBlock x:Name="Grid_MenuButton_Description"
+                                               Grid.Row="2"
                                                Grid.Column="1"
                                                FontSize="{DynamicResource FontSize_Small}"
                                                Foreground="{DynamicResource FerrettoLightGray}"
@@ -167,6 +173,31 @@
                                 <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
                                 <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
                                 <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
+                                <Setter TargetName="Grid_MenuButton" Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
+                                <Setter TargetName="Grid_MenuButton_Title" Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
+                                <Setter TargetName="Grid_MenuButton_Description" Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
+                                <Setter TargetName="Grid_MenuButton_Icon" Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
+                                <Setter TargetName="Grid_MenuButton_Ellipse" Property="Stroke" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
+                                <Setter TargetName="Grid_MenuButton_DrawingBrush" Property="BorderBrush">
+                                    <Setter.Value>
+                                        <DrawingBrush TileMode="Tile"
+                                                      Viewport="0,0,8,8"
+                                                      ViewportUnits="Absolute">
+                                            <DrawingBrush.Drawing>
+                                                <DrawingGroup>
+                                                    <GeometryDrawing Brush="{DynamicResource PpcButtonForegroundDisabled}">
+                                                        <GeometryDrawing.Geometry>
+                                                            <GeometryGroup>
+                                                                <RectangleGeometry Rect="0,0,50,50" />
+                                                                <RectangleGeometry Rect="50,50,50,50" />
+                                                            </GeometryGroup>
+                                                        </GeometryDrawing.Geometry>
+                                                    </GeometryDrawing>
+                                                </DrawingGroup>
+                                            </DrawingBrush.Drawing>
+                                        </DrawingBrush>
+                                    </Setter.Value>
+                                </Setter>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
