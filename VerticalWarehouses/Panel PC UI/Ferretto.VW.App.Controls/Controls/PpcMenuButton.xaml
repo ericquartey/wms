@@ -99,7 +99,8 @@
                                     <Grid Grid.Row="1"
                                           Grid.Column="3"
                                           HorizontalAlignment="Left">
-                                        <Ellipse Width="56"
+                                        <Ellipse x:Name="Grid_MenuButton_Ellipse"
+                                                 Width="56"
                                                  Height="56"
                                                  HorizontalAlignment="Center"
                                                  VerticalAlignment="Center"
@@ -112,7 +113,8 @@
                                             </Ellipse.BitmapEffect>
                                         </Ellipse>
 
-                                        <icon:PackIconMaterial Width="28"
+                                        <icon:PackIconMaterial x:Name="Grid_MenuButton_Icon"
+                                                               Width="28"
                                                                Height="28"
                                                                HorizontalAlignment="Center"
                                                                VerticalAlignment="Center"
@@ -120,7 +122,8 @@
                                                                Kind="{Binding Path=Kind, RelativeSource={RelativeSource TemplatedParent}}" />
                                     </Grid>
                                 </Grid>
-                                <Grid Grid.Column="1"
+                                <Grid x:Name="Grid_MenuButton"
+                                      Grid.Column="1"
                                       Background="{DynamicResource FerrettoDarkGray}">
                                     <Grid.RowDefinitions>
                                         <!--  Margine Top  -->
@@ -142,14 +145,16 @@
                                         <ColumnDefinition Width="25" />
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock Grid.Row="1"
+                                    <TextBlock x:Name="Grid_MenuButton_Title"
+                                               Grid.Row="1"
                                                Grid.Column="1"
                                                FontSize="24"
                                                Foreground="{DynamicResource FerrettoPureWhite}"
                                                Text="{Binding ElementName=MenuButton, Path=Title, FallbackValue='TITOLO'}"
                                                TextWrapping="Wrap" />
 
-                                    <TextBlock Grid.Row="2"
+                                    <TextBlock x:Name="Grid_MenuButton_Description"
+                                               Grid.Row="2"
                                                Grid.Column="1"
                                                FontSize="{DynamicResource FontSize_Small}"
                                                Foreground="{DynamicResource FerrettoLightGray}"
@@ -167,6 +172,11 @@
                                 <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
                                 <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
                                 <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
+                                <Setter TargetName="Grid_MenuButton" Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
+                                <Setter TargetName="Grid_MenuButton_Title" Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
+                                <Setter TargetName="Grid_MenuButton_Description" Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
+                                <Setter TargetName="Grid_MenuButton_Icon" Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
+                                <Setter TargetName="Grid_MenuButton_Ellipse" Property="Stroke" Value="{DynamicResource PpcButtonForegroundDisabled}" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
