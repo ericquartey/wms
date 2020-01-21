@@ -1120,8 +1120,8 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="MissionTypeIn" xml:space="preserve">
     <value>Entrata</value>
   </data>
-  <data name="MissionTypeTest" xml:space="preserve">
-    <value>Test</value>
+  <data name="MissionTypeFullTest" xml:space="preserve">
+    <value>Test completo</value>
   </data>
   <data name="MissionTypeCompact" xml:space="preserve">
     <value>Compattazione</value>

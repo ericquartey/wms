@@ -1422,8 +1422,8 @@ Please put back any moved pieces in their original position.</value>
     <value>Out</value>
     <comment>enum MIssionType</comment>
   </data>
-  <data name="MissionTypeTest" xml:space="preserve">
-    <value>Test</value>
+  <data name="MissionTypeFullTest" xml:space="preserve">
+    <value>Full test</value>
     <comment>enum MIssionType</comment>
   </data>
   <data name="MissionTypeCompact" xml:space="preserve">
