@@ -304,7 +304,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogDebug("1:Stop Method Start");
+            this.Logger.LogDebug($"1:Stop Method Start. Reason {reason}");
 
             // stop timers
             this.delayTimer?.Change(Timeout.Infinite, Timeout.Infinite);
@@ -329,7 +329,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
             }
 
-            this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+            if (reason == StopRequestReason.Error)
+            {
+                this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
+            }
+            else
+            {
+                this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+            }
         }
 
         protected void Dispose(bool disposing)
@@ -573,7 +580,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InvalidPresenceSensors, this.machineData.RequestingBay);
 
                             this.stateData.FieldMessage = message;
-                            this.Stop(StopRequestReason.Stop);
+                            this.Stop(StopRequestReason.Error);
                         }
                         break;
                     }
@@ -588,7 +595,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InvalidPresenceSensors, this.machineData.RequestingBay);
 
                             this.stateData.FieldMessage = message;
-                            this.Stop(StopRequestReason.Stop);
+                            this.Stop(StopRequestReason.Error);
                         }
                         break;
                     }
@@ -635,7 +642,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InvalidPresenceSensors, this.machineData.RequestingBay);
 
                         this.stateData.FieldMessage = message;
-                        this.Stop(StopRequestReason.Stop);
+                        this.Stop(StopRequestReason.Error);
                     }
                     break;
             }

@@ -307,7 +307,7 @@
     <value>Corregge la quota della cella selezionata del valore indicato nel campo che riporta il valore totale richiesto.</value>
   </data>
   <data name="HelpVPPMDescription" xml:space="preserve">
-    <value>La procedura permette di verificare il corretto posizionamento dei vari pannelli porta mensola. L'eventuale correzione viene applicata a tutte le celle appartenenti al pannello in verifica. La cella di partenza viene impostata solo all'inizio per selezionare il lato della macchina su cui operare. Tutte le celle pari sono su un lato e le dispari sull'altro.</value>
+    <value>La procedura permette di verificare il corretto posizionamento dei vari pannelli porta mensola. L'eventuale correzione viene applicata a tutte le celle appartenenti al pannello in verifica.</value>
   </data>
   <data name="HelpVPPMTotalPanels" xml:space="preserve">
     <value>Indica il numero totale di pannelli presenti nel lato selezionato dalla cella di riferimento.</value>

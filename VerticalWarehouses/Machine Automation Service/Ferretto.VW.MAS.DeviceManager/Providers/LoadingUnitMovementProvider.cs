@@ -479,7 +479,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         /// <param name="closeShutter"></param>
         /// <param name="sender"></param>
         /// <param name="requestingBay"></param>
-        public void PositionElevatorToPosition(double targetHeight, BayNumber shutterBay, bool measure, MessageActor sender, BayNumber requestingBay, bool restore, int? targetBayPositionId, int? targetCellId)
+        public void PositionElevatorToPosition(double targetHeight,
+            BayNumber shutterBay,
+            bool measure,
+            MessageActor sender,
+            BayNumber requestingBay,
+            bool restore,
+            int? targetBayPositionId,
+            int? targetCellId,
+            bool waitContinue = false)
         {
             if (shutterBay != BayNumber.None)
             {
@@ -491,11 +499,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 this.elevatorProvider.MoveToAbsoluteVerticalPosition(
                     manualMovment: false,
                     targetHeight,
-                    true,
+                    computeElongation: true,
                     measure,
                     targetBayPositionId,
                     targetCellId,
                     checkHomingDone: false,
+                    waitContinue,
                     requestingBay,
                     MessageActor.MachineManager);
             }

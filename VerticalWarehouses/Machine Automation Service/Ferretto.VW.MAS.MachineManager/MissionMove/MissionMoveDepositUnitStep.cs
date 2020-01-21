@@ -80,7 +80,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
             }
 
-            if (!this.MachineProvider.IsHomingExecuted)
+            if (this.Mission.NeedHomingAxis == Axis.Horizontal)
             {
                 if (this.Mission.OpenShutterPosition != ShutterPosition.NotSpecified)
                 {
@@ -112,66 +112,48 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-                    if (notification.Type == MessageType.Homing)
+                    if (this.UpdateResponseList(notification.Type))
                     {
-                        this.Mission.NeedHomingAxis = Axis.None;
-                        this.DepositUnitEnd();
+                        this.MissionsDataProvider.Update(this.Mission);
+                        if (notification.Type == MessageType.Positioning)
+                        {
+                            this.DepositUnitChangePosition();
+                        }
                     }
-                    else
+
+                    if (notification.Type == MessageType.ShutterPositioning)
                     {
-                        if (this.UpdateResponseList(notification.Type))
+                        var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(notification.RequestingBay);
+                        var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
+                        if (shutterPosition == this.Mission.OpenShutterPosition)
                         {
-                            this.MissionsDataProvider.Update(this.Mission);
-                            if (notification.Type == MessageType.Positioning)
+                            if (this.Mission.NeedHomingAxis == Axis.Horizontal)
                             {
-                                this.DepositUnitChangePosition();
-                            }
-                        }
-
-                        if (notification.Type == MessageType.ShutterPositioning)
-                        {
-                            var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(notification.RequestingBay);
-                            var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
-                            if (shutterPosition == this.Mission.OpenShutterPosition)
-                            {
-                                if (!this.MachineProvider.IsHomingExecuted)
-                                {
-                                    this.Logger.LogDebug($"Manual Horizontal forward positioning start");
-                                    this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, true, false, this.Mission.LoadUnitId, MessageActor.MachineManager, this.Mission.TargetBay);
-                                }
-                                else
-                                {
-                                    this.Logger.LogDebug($"ContinuePositioning");
-                                    this.LoadingUnitMovementProvider.ContinuePositioning(MessageActor.MachineManager, notification.RequestingBay);
-                                }
+                                this.Logger.LogDebug($"Manual Horizontal forward positioning start");
+                                this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, true, false, this.Mission.LoadUnitId, MessageActor.MachineManager, this.Mission.TargetBay);
                             }
                             else
                             {
-                                this.Logger.LogError(ErrorDescriptions.LoadUnitShutterClosed);
-                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterClosed, notification.RequestingBay);
-
-                                this.OnStop(StopRequestReason.Error, !this.ErrorsProvider.IsErrorSmall());
-                                break;
+                                this.Logger.LogDebug($"ContinuePositioning");
+                                this.LoadingUnitMovementProvider.ContinuePositioning(MessageActor.MachineManager, notification.RequestingBay);
                             }
                         }
-
-                        if ((this.Mission.OpenShutterPosition != ShutterPosition.NotSpecified && (this.Mission.DeviceNotifications == (MissionDeviceNotifications.Positioning | MissionDeviceNotifications.Shutter)))
-                            || (this.Mission.OpenShutterPosition == ShutterPosition.NotSpecified && (this.Mission.DeviceNotifications == MissionDeviceNotifications.Positioning))
-                            )
+                        else
                         {
-                            this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
-                            if (this.Mission.NeedHomingAxis == Axis.Horizontal
-                                && this.Mission.OpenShutterPosition == ShutterPosition.NotSpecified
-                                )
-                            {
-                                this.Logger.LogDebug($"Homing elevator free start");
-                                this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, notification.RequestingBay, MessageActor.MachineManager);
-                            }
-                            else
-                            {
-                                this.DepositUnitEnd();
-                            }
+                            this.Logger.LogError(ErrorDescriptions.LoadUnitShutterClosed);
+                            this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterClosed, notification.RequestingBay);
+
+                            this.OnStop(StopRequestReason.Error, !this.ErrorsProvider.IsErrorSmall());
+                            break;
                         }
+                    }
+
+                    if ((this.Mission.OpenShutterPosition != ShutterPosition.NotSpecified && (this.Mission.DeviceNotifications == (MissionDeviceNotifications.Positioning | MissionDeviceNotifications.Shutter)))
+                        || (this.Mission.OpenShutterPosition == ShutterPosition.NotSpecified && (this.Mission.DeviceNotifications == MissionDeviceNotifications.Positioning))
+                        )
+                    {
+                        this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
+                        this.DepositUnitEnd();
                     }
 
                     break;
