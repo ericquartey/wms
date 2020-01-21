@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -135,8 +136,16 @@ namespace Ferretto.VW.App.Controls.Controls
             }
             else
             {
-                this.CardSensorLabel2 = "Baia";
-                this.CardSensorLabel3 = null;
+                if (this.machineService.BayFirstPositionIsUpper)
+                {
+                    this.CardSensorLabel2 = "Baia";
+                    this.CardSensorLabel3 = null;
+                }
+                else
+                {
+                    this.CardSensorLabel2 = null;
+                    this.CardSensorLabel3 = "Baia";
+                }
             }
         }
 
