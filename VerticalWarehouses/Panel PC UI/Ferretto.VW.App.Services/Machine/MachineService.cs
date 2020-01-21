@@ -527,7 +527,7 @@ namespace Ferretto.VW.App.Services
                                 ms.CurrentMissionId = messageData.MissionId;
 
                                 // TODO use messageData.MissionStep instead of message.Description
-                                this.Notification = $"Movimento in corso... ({this.MachineStatus?.CurrentMissionId} - {message.Description})";
+                                this.Notification = $"Movimento in corso... ({ms.CurrentMissionId} - {message.Description})";
                             }
 
                             if (message?.Data is PositioningMessageData dataPositioning)
