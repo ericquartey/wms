@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.Simulator.Services.Interfaces;
 using Ferretto.VW.Simulator.Services.Models;
@@ -33,18 +34,8 @@ namespace Ferretto.VW.Simulator
             IMachineService inverterService,
             IThemeService themeService)
         {
-            if (inverterService == null)
-            {
-                throw new ArgumentNullException(nameof(inverterService));
-            }
-
-            if (themeService == null)
-            {
-                throw new ArgumentNullException(nameof(themeService));
-            }
-
-            this.inverterService = inverterService;
-            this.themeService = themeService;
+            this.inverterService = inverterService ?? throw new ArgumentNullException(nameof(inverterService));
+            this.themeService = themeService ?? throw new ArgumentNullException(nameof(themeService));
         }
 
         #endregion
