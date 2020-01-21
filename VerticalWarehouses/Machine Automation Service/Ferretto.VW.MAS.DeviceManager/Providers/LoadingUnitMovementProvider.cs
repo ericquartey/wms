@@ -339,6 +339,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 }
                 catch (InvalidOperationException ex)
                 {
+                    // we don't want to show errors here. It is managed by MissionMoveBayChainStep
                     throw new StateMachineException(ex.Message, requestingBay, sender);
                 }
             }
@@ -367,6 +368,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 }
                 catch (InvalidOperationException ex)
                 {
+                    this.errorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, requestingBay);
                     throw new StateMachineException(ex.Message, requestingBay, sender);
                 }
             }
@@ -515,6 +517,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             catch (InvalidOperationException ex)
             {
+                this.errorsProvider.RecordNew(MachineErrorCode.ConditionsNotMetForPositioning, requestingBay);
                 throw new StateMachineException(ex.Message, requestingBay, sender);
             }
         }
