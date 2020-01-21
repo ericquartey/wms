@@ -1,14 +1,9 @@
 ﻿using System;
-using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Resources;
-using Ferretto.VW.App.Services;
-using Ferretto.VW.CommonUtils.Converters;
-using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
-using Newtonsoft.Json;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
@@ -51,8 +46,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             this.IsWaitingForResponse = true;
 
-            this.IsBusy = false;
-
             await base.OnAppearedAsync();
 
             this.IsBackNavigationAllowed = true;
@@ -71,7 +64,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private bool CanGoNextStep()
         {
-            return this.Installations.Count > 0;
+            return this.Installations.Count > 0
+                   &&
+                   this.IsInstallationReady;
         }
 
         private void GoNextStep()
