@@ -1632,7 +1632,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         CloseShutter = 8,
     
-        End = 9,
+        BackToTarget = 9,
+    
+        End = 10,
     
         Error = 101,
     

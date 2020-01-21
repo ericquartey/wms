@@ -173,8 +173,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 break;
                             }
                         }
-                        if ((this.Mission.OpenShutterPosition != ShutterPosition.NotSpecified && (this.Mission.DeviceNotifications == (MissionDeviceNotifications.Positioning | MissionDeviceNotifications.Shutter)))
-                            || (this.Mission.OpenShutterPosition == ShutterPosition.NotSpecified && (this.Mission.DeviceNotifications == MissionDeviceNotifications.Positioning))
+                        if (this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Positioning)
+                            && (this.Mission.OpenShutterPosition == ShutterPosition.NotSpecified
+                                || this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Shutter))
                             )
                         {
                             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;

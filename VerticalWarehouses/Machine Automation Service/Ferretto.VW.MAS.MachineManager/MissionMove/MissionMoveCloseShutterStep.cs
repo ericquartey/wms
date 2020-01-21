@@ -60,23 +60,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-                    if (notification.Type == MessageType.Homing)
-                    {
-                        this.Mission.NeedHomingAxis = Axis.None;
-                        this.CloseShutterEnd();
-                    }
-                    else
-                    {
-                        if (this.Mission.NeedHomingAxis == Axis.Horizontal)
-                        {
-                            this.Logger.LogDebug($"Homing elevator free start");
-                            this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, notification.RequestingBay, MessageActor.MachineManager);
-                        }
-                        else
-                        {
-                            this.CloseShutterEnd();
-                        }
-                    }
+                    this.CloseShutterEnd();
                     break;
 
                 case MessageStatus.OperationError:

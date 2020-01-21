@@ -181,8 +181,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             this.MissionsDataProvider.Update(this.Mission);
                         }
 
-                        if ((this.Mission.CloseShutterBayNumber != BayNumber.None && (this.Mission.DeviceNotifications == (MissionDeviceNotifications.Positioning | MissionDeviceNotifications.Shutter)))
-                            || (this.Mission.CloseShutterBayNumber == BayNumber.None && (this.Mission.DeviceNotifications == MissionDeviceNotifications.Positioning))
+                        if (this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Positioning)
+                            && (this.Mission.CloseShutterBayNumber == BayNumber.None
+                                || this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Shutter))
                             )
                         {
                             if (this.Mission.LoadUnitSource is LoadingUnitLocation.Elevator)
