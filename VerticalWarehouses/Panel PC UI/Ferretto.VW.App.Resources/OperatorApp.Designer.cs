@@ -70,6 +70,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adjustment.
+        /// </summary>
+        public static string Adjustment {
+            get {
+                return ResourceManager.GetString("Adjustment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Availability [units].
         /// </summary>
         public static string Availability {
@@ -2582,6 +2591,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pick.
+        /// </summary>
+        public static string Pick {
+            get {
+                return ResourceManager.GetString("Pick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Picked quantity.
         /// </summary>
         public static string PickedQuantity {
@@ -2623,6 +2641,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ProductionDate {
             get {
                 return ResourceManager.GetString("ProductionDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Put.
+        /// </summary>
+        public static string Put {
+            get {
+                return ResourceManager.GetString("Put", resourceCulture);
             }
         }
         

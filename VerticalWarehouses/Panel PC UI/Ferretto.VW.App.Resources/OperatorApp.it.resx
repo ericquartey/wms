@@ -1144,4 +1144,13 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="RecallDrawer" xml:space="preserve">
     <value>Richiama Cassetto</value>
   </data>
+  <data name="Pick" xml:space="preserve">
+    <value>Prelievo</value>
+  </data>
+  <data name="Put" xml:space="preserve">
+    <value>Versamento</value>
+  </data>
+  <data name="Adjustment" xml:space="preserve">
+    <value>Modifica</value>
+  </data>
 </root>
