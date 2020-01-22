@@ -129,8 +129,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.RestoreConditions = false;
             this.MissionsDataProvider.Update(this.Mission);
 
-            var notificationText = $"Load Unit {this.Mission.LoadUnitId} start movement to bay {this.Mission.LoadUnitDestination}";
-            this.SendMoveNotification(this.Mission.TargetBay, notificationText, MessageStatus.OperationStart);
+            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationStart);
 
             return true;
         }
@@ -181,8 +180,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             this.MissionsDataProvider.Update(this.Mission);
                         }
 
-                        if ((this.Mission.CloseShutterBayNumber != BayNumber.None && (this.Mission.DeviceNotifications == (MissionDeviceNotifications.Positioning | MissionDeviceNotifications.Shutter)))
-                            || (this.Mission.CloseShutterBayNumber == BayNumber.None && (this.Mission.DeviceNotifications == MissionDeviceNotifications.Positioning))
+                        if (this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Positioning)
+                            && (this.Mission.CloseShutterBayNumber == BayNumber.None
+                                || this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Shutter))
                             )
                         {
                             if (this.Mission.LoadUnitSource is LoadingUnitLocation.Elevator)

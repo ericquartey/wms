@@ -68,6 +68,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private ProfileCheckStep currentStep;
 
+        private DelegateCommand moveToElevatorPositionCommand;
+
         private SubscriptionToken stepChangedToken;
 
         private DelegateCommand stopCommand;
@@ -77,7 +79,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public ProfileHeightCheckViewModel()
-                            : base(PresentationMode.Installer)
+            : base(PresentationMode.Installer)
         {
             this.CurrentStep = ProfileCheckStep.Initialize;
         }
@@ -95,9 +97,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override EnableMask EnableMask => EnableMask.MachineManualMode | EnableMask.MachinePoweredOn;
 
         public string Error => string.Join(
-            //this[nameof(this.StartPosition)],
             Environment.NewLine,
-            Environment.NewLine);
+            this.GetType().GetProperties()
+                .Select(p => this[p.Name])
+                .Distinct()
+                .Where(s => !string.IsNullOrEmpty(s)));
 
         public bool HasStepDrawerPosition => this.currentStep is ProfileCheckStep.DrawerPosition;
 
@@ -110,6 +114,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool HasStepShapePosition => this.currentStep is ProfileCheckStep.ShapePosition;
 
         public bool HasStepTaraturaCatena => this.currentStep is ProfileCheckStep.TaraturaCatena;
+
+        public ICommand MoveToElevatorPositionCommand =>
+            this.moveToElevatorPositionCommand
+            ??
+            (this.moveToElevatorPositionCommand = new DelegateCommand(
+                () => this.CurrentStep = ProfileCheckStep.ElevatorPosition,
+                this.CanMoveToElevatorPosition));
 
         public ICommand StopCommand =>
             this.stopCommand
@@ -264,6 +275,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
+
+            this.moveToElevatorPositionCommand?.RaiseCanExecuteChanged();
         }
 
         private bool CanBaseExecute()
@@ -272,6 +285,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsKeyboardOpened
                 &&
                 !this.IsMoving;
+        }
+
+        private bool CanMoveToElevatorPosition()
+        {
+            return this.CanBaseExecute() &&
+                   this.SensorsService.IsLoadingUnitInBay;
         }
 
         private bool CanStop()

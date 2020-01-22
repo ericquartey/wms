@@ -98,7 +98,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 if (showErrors)
                 {
-                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, requestingBay);
+                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterInvalid, requestingBay);
                 }
                 returnValue = false;
             }
@@ -118,7 +118,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         {
                             if (showErrors)
                             {
-                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, requestingBay);
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterInvalid, requestingBay);
                             }
                             returnValue = false;
                         }

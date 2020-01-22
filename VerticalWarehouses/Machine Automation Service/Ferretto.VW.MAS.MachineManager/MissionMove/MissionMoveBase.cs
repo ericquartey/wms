@@ -1,4 +1,5 @@
 ﻿using System;
+using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -374,6 +375,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                 }
                 newStep.OnEnter(null);
+
+                var stopMachineData = new ChangeRunningStateMessageData(false, null, CommandAction.Start, StopRequestReason.Stop);
+                var stopMachineMessage = new CommandMessage(stopMachineData,
+                    "Positioning OperationError",
+                    MessageActor.MachineManager,
+                    MessageActor.DeviceManager,
+                    MessageType.ChangeRunningState,
+                    this.Mission.TargetBay);
+                this.EventAggregator.GetEvent<CommandEvent>().Publish(stopMachineMessage);
             }
         }
 
@@ -389,7 +399,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 (this.Mission.LoadUnitDestination == LoadingUnitLocation.Cell),
                 this.Mission.Id,
                 this.Mission.Action,
-                this.Mission.StopReason);
+                this.Mission.StopReason,
+                this.Mission.Step);
 
             var msg = new NotificationMessage(
                 messageData,

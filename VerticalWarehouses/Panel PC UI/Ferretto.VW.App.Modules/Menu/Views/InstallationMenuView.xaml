@@ -22,8 +22,8 @@
         <converters:EnumInstallationStatusToIconConverter x:Key="StatusToIconConverter" />
         <converters:EnumInstallationStatusToColorConverter x:Key="StatusToColorConverter"
                                                            CompleteColor="{StaticResource FerrettoPureWhite}"
-                                                           IncompleteColor="#E1323F"
-                                                           InprogressColor="{StaticResource FerrettoOrange}" />
+                                                           IncompleteColor="{StaticResource FerrettoOrange}"
+                                                           InprogressColor="{StaticResource FerrettoYellow}" />
     </ctrls:View.Resources>
 
     <Grid>

@@ -776,6 +776,10 @@
                                                  Value="">
                                         <Setter Property="Visibility" Value="Collapsed" />
                                     </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardSensorLabel2}"
+                                                 Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
                                     <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor2}"
                                                  Value="False">
                                         <Setter Property="Background" Value="{DynamicResource FerrettoMediumGray}" />

@@ -30,6 +30,8 @@ namespace Ferretto.VW.Simulator.Services
 
         private readonly static Random random = new Random();
 
+        private readonly int DELAY_HEARTBEAT = 800;
+
         private readonly TcpListener listenerInverter = new TcpListener(IPAddress.Any, 17221);
 
         private readonly TcpListener listenerIoDriver1 = new TcpListener(IPAddress.Any, 19550);
@@ -38,15 +40,13 @@ namespace Ferretto.VW.Simulator.Services
 
         private readonly TcpListener listenerIoDriver3 = new TcpListener(IPAddress.Any, 19552);
 
-        private readonly TcpListener listenerLaser1 = new TcpListener(IPAddress.Any, 2020);
+        private readonly TcpListener listenerLaser1 = new TcpListener(IPAddress.Any, 12020);
 
         private readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly ObservableCollection<IODeviceModel> remoteIOs = new ObservableCollection<IODeviceModel>();
 
         private CancellationTokenSource cts = new CancellationTokenSource();
-
-        private int DELAY_HEARTBEAT = 800;
 
         private DateTime heartBeatTime;
 
@@ -372,7 +372,7 @@ namespace Ferretto.VW.Simulator.Services
 
         private void ReplyLaser(TcpClient client, byte[] message, int index)
         {
-            string messageText = Encoding.ASCII.GetString(message).Trim();
+            var messageText = Encoding.ASCII.GetString(message).Trim();
             switch (messageText)
             {
                 case "LASER ON":

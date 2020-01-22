@@ -137,8 +137,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         private void SendNotification()
         {
-            var notificationText = $"Load Unit {this.Mission.LoadUnitId} end movement to bay {this.Mission.LoadUnitDestination}";
-            this.SendMoveNotification(this.Mission.TargetBay, notificationText, MessageStatus.OperationEnd);
+            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationEnd);
         }
 
         private bool UpdateStopList(BayNumber bay)

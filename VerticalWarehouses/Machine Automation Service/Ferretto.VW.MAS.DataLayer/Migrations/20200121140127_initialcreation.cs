@@ -225,9 +225,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     FeedRate = table.Column<double>(nullable: false),
                     IsCompleted = table.Column<bool>(nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
+                    InProgress = table.Column<bool>(nullable: true),
                     Step = table.Column<double>(nullable: true),
                     ReferenceCellId = table.Column<int>(nullable: true),
-                    InProgress = table.Column<bool>(nullable: true),
+                    RepeatedTestProcedure_InProgress = table.Column<bool>(nullable: true),
                     PerformedCycles = table.Column<int>(nullable: true),
                     RequiredCycles = table.Column<int>(nullable: true),
                     FinalPosition = table.Column<double>(nullable: true),
@@ -604,6 +605,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    IsChecked = table.Column<bool>(nullable: false),
                     Side = table.Column<int>(nullable: false),
                     MachineId = table.Column<int>(nullable: true)
                 },
@@ -625,7 +627,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     BlockLevel = table.Column<int>(nullable: false),
-                    IsFree = table.Column<bool>(nullable: false),
+                    IsFree = table.Column<bool>(nullable: false, defaultValue: true),
                     PanelId = table.Column<int>(nullable: false),
                     Position = table.Column<double>(nullable: false),
                     Priority = table.Column<int>(nullable: false)
@@ -1291,7 +1293,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 3, 17, 13, 43, 51, 379, DateTimeKind.Local).AddTicks(1429), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 3, 21, 15, 1, 26, 589, DateTimeKind.Local).AddTicks(1266), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",

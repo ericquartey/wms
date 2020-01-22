@@ -77,7 +77,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     Shutter = new SetupStepStatus
                     {
                         IsCompleted = setup.Bay1ShutterTest.IsCompleted,
-                        CanBePerformed = true,
+                        CanBePerformed = verticalOrigin.IsCompleted,
                         InProgress = setup.Bay1ShutterTest.InProgress,
                     },
                     FirstLoadingUnit = new SetupStepStatus
@@ -112,7 +112,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     Shutter = new SetupStepStatus
                     {
                         IsCompleted = setup.Bay2ShutterTest.IsCompleted,
-                        CanBePerformed = true,
+                        CanBePerformed = verticalOrigin.IsCompleted,
                         InProgress = setup.Bay2ShutterTest.InProgress,
                     },
                     FirstLoadingUnit = new SetupStepStatus
@@ -147,7 +147,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     Shutter = new SetupStepStatus
                     {
                         IsCompleted = setup.Bay3ShutterTest.IsCompleted,
-                        CanBePerformed = true,
+                        CanBePerformed = verticalOrigin.IsCompleted,
                         InProgress = setup.Bay3ShutterTest.InProgress,
                     },
                     FirstLoadingUnit = new SetupStepStatus
@@ -185,6 +185,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 CellPanelsCheck = new SetupStepStatus
                 {
                     IsCompleted = setup.CellPanelsCheck.IsCompleted,
+                    InProgress = setup.CellPanelsCheck.InProgress,
                     CanBePerformed = setup.VerticalOffsetCalibration.IsCompleted && verticalOrigin.IsCompleted,
                 },
                 VerticalOriginCalibration = new SetupStepStatus

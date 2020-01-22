@@ -313,9 +313,9 @@
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding MissionType}">
                                                 <DataTrigger.Value>
-                                                    <model:MissionType>Test</model:MissionType>
+                                                    <model:MissionType>FullTest</model:MissionType>
                                                 </DataTrigger.Value>
-                                                <Setter Property="Text" Value="{x:Static Res:OperatorApp.MissionTypeTest}" />
+                                                <Setter Property="Text" Value="{x:Static Res:OperatorApp.MissionTypeFullTest}" />
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding MissionType}">
                                                 <DataTrigger.Value>

@@ -126,27 +126,28 @@ namespace Ferretto.VW.App.Operator.ViewModels
                         ThreadOption.UIThread,
                         false);
 
-            if (this.isPerformingOperation
-                &&
-                this.machineModeService.MachineMode == MachineMode.Automatic
-                &&
-                this.lastActiveMissionId.HasValue
-                &&
-                this.lastActiveMissionId != this.missionOperationsService.CurrentMission?.Id)
+            if (this.isPerformingOperation)
             {
-                this.NavigationService.GoBack();
-                this.isPerformingOperation = false;
-                this.lastActiveMissionId = null;
-                return;
-            }
-            else
-            {
-                // needs to be a fresh bay instance
-                var bay = await this.bayManager.GetBayAsync();
-                var loadingUnit = bay.Positions.OrderByDescending(p => p.Height).Select(p => p.LoadingUnit).FirstOrDefault(l => l != null);
-                if (loadingUnit != null)
+                if (this.machineModeService.MachineMode == MachineMode.Automatic
+                   &&
+                   this.lastActiveMissionId.HasValue
+                   &&
+                   this.lastActiveMissionId != this.missionOperationsService.CurrentMission?.Id)
                 {
-                    this.NavigateToLoadingUnitDetails(loadingUnit.Id);
+                    this.NavigationService.GoBack();
+                    this.isPerformingOperation = false;
+                    this.lastActiveMissionId = null;
+                    return;
+                }
+                else
+                {
+                    // needs to be a fresh bay instance
+                    var bay = await this.bayManager.GetBayAsync();
+                    var loadingUnit = bay.Positions.OrderByDescending(p => p.Height).Select(p => p.LoadingUnit).FirstOrDefault(l => l != null);
+                    if (loadingUnit != null)
+                    {
+                        this.NavigateToLoadingUnitDetails(loadingUnit.Id);
+                    }
                 }
             }
 

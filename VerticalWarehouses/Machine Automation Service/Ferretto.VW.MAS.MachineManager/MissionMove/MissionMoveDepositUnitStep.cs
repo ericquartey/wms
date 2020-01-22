@@ -44,37 +44,59 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             switch (this.Mission.LoadUnitDestination)
             {
                 case LoadingUnitLocation.Cell:
-                    if (this.Mission.DestinationCellId != null)
+                    if (this.Mission.DestinationCellId is null)
                     {
-                        var cell = this.CellsProvider.GetById(this.Mission.DestinationCellId.Value);
-
-                        this.Mission.Direction = cell.Side == WarehouseSide.Front ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
+                        this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationCell, this.Mission.TargetBay);
+                        throw new StateMachineException(ErrorDescriptions.LoadUnitDestinationCell, this.Mission.TargetBay, MessageActor.MachineManager);
                     }
+
+                    if (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell
+                        && this.Mission.LoadUnitSource != LoadingUnitLocation.Elevator)
+                    {
+                        var baySource = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
+                        if (baySource != null
+                            && baySource.Shutter.Type != ShutterType.NotSpecified
+                            )
+                        {
+                            var shutterInverter = baySource.Shutter.Inverter.Index;
+                            if (this.SensorsProvider.GetShutterPosition(shutterInverter) != ShutterPosition.Closed)
+                            {
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, this.Mission.TargetBay);
+                                throw new StateMachineException(ErrorDescriptions.LoadUnitShutterOpen, this.Mission.TargetBay, MessageActor.MachineManager);
+                            }
+                        }
+                    }
+
+                    var cell = this.CellsProvider.GetById(this.Mission.DestinationCellId.Value);
+
+                    this.Mission.Direction = cell.Side == WarehouseSide.Front ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
 
                     break;
 
                 default:
-                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
-                    if (bay is null)
                     {
-                        this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
-                        throw new StateMachineException(ErrorDescriptions.LoadUnitDestinationBay, this.Mission.TargetBay, MessageActor.MachineManager);
-                    }
-                    this.Mission.Direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
-                    bayNumber = bay.Number;
-                    this.Mission.OpenShutterPosition = this.LoadingUnitMovementProvider.GetShutterOpenPosition(bay, this.Mission.LoadUnitDestination);
-                    var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(bay.Number);
-                    if (this.Mission.OpenShutterPosition == this.SensorsProvider.GetShutterPosition(shutterInverter))
-                    {
-                        this.Mission.OpenShutterPosition = ShutterPosition.NotSpecified;
-                    }
-                    if (bay.Carousel != null)
-                    {
-                        var result = this.LoadingUnitMovementProvider.CheckBaySensors(bay, this.Mission.LoadUnitDestination, deposit: true);
-                        if (result != MachineErrorCode.NoError)
+                        var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+                        if (bay is null)
                         {
-                            var error = this.ErrorsProvider.RecordNew(result, bayNumber);
-                            throw new StateMachineException(error.Reason, this.Mission.TargetBay, MessageActor.MachineManager);
+                            this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
+                            throw new StateMachineException(ErrorDescriptions.LoadUnitDestinationBay, this.Mission.TargetBay, MessageActor.MachineManager);
+                        }
+                        this.Mission.Direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
+                        bayNumber = bay.Number;
+                        this.Mission.OpenShutterPosition = this.LoadingUnitMovementProvider.GetShutterOpenPosition(bay, this.Mission.LoadUnitDestination);
+                        var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(bay.Number);
+                        if (this.Mission.OpenShutterPosition == this.SensorsProvider.GetShutterPosition(shutterInverter))
+                        {
+                            this.Mission.OpenShutterPosition = ShutterPosition.NotSpecified;
+                        }
+                        if (bay.Carousel != null)
+                        {
+                            var result = this.LoadingUnitMovementProvider.CheckBaySensors(bay, this.Mission.LoadUnitDestination, deposit: true);
+                            if (result != MachineErrorCode.NoError)
+                            {
+                                var error = this.ErrorsProvider.RecordNew(result, bayNumber);
+                                throw new StateMachineException(error.Reason, this.Mission.TargetBay, MessageActor.MachineManager);
+                            }
                         }
                     }
                     break;
@@ -148,8 +170,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                     }
 
-                    if ((this.Mission.OpenShutterPosition != ShutterPosition.NotSpecified && (this.Mission.DeviceNotifications == (MissionDeviceNotifications.Positioning | MissionDeviceNotifications.Shutter)))
-                        || (this.Mission.OpenShutterPosition == ShutterPosition.NotSpecified && (this.Mission.DeviceNotifications == MissionDeviceNotifications.Positioning))
+                    if (this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Positioning)
+                        && (this.Mission.OpenShutterPosition == ShutterPosition.NotSpecified
+                            || this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Shutter))
                         )
                     {
                         this.Mission.DeviceNotifications = MissionDeviceNotifications.None;

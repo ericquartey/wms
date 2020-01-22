@@ -29,6 +29,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Methods
 
+        public override bool CanStart()
+        {
+            return base.CanStart() &&
+                   !this.IsMoving &&
+                   ((this.SensorsService.IsLoadingUnitInBay && (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper)) ||
+                    (this.SensorsService.IsLoadingUnitInMiddleBottomBay && (this.MachineService.Bay.IsDouble || !this.MachineService.BayFirstPositionIsUpper)));
+        }
+
         public async Task GetLoadingUnits()
         {
             try

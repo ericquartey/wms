@@ -23,7 +23,7 @@
         <TextBlock HorizontalAlignment="Left"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static resources:OperatorApp.LoadingUnitCheck}" />
+                   Text="{x:Static resources:OperatorApp.LoadingUnitInBay}" />
 
         <localControls:LoadingUnitControlView Grid.Row="1"
                                               Margin="50,0,0,0" />
@@ -79,7 +79,7 @@
                                      VerticalAlignment="Top"
                                      ContentText="{Binding LoadingUnit.Tare}"
                                      LabelText="{x:Static resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderTare}" />
-            
+
             <controls:PpcLabeledText Grid.Row="2"
                                      Grid.Column="2"
                                      HorizontalAlignment="Left"
@@ -99,7 +99,7 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
                                     Command="{Binding ConfirmOperationCommand}"
-                                    Content="{x:Static resources:OperatorApp.CompleteCheck}"
+                                    Content="{x:Static resources:OperatorApp.RecallDrawer}"
                                     IsBusy="{Binding IsBusyConfirmingOperation}" />
 
             </StackPanel>

@@ -39,6 +39,7 @@ namespace Ferretto.VW.App.Services
         MachinePowerState MachinePower { get; }
 
         MachineStatus MachineStatus { get; }
+        bool BayFirstPositionIsUpper { get; }
 
         #endregion
 
