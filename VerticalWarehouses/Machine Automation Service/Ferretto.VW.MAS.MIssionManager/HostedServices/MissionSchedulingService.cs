@@ -333,17 +333,21 @@ namespace Ferretto.VW.MAS.MissionManager
                             var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
                             var machineModeDataProvider = scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
                             var missionsDataProvider = scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
+                            var activeMissions = missionsDataProvider.GetAllActiveMissions();
 
-                            if (!machineProvider.IsHomingExecuted
-                                && !missionsDataProvider.GetAllActiveMissions().Any(m => m.Step >= MissionStep.Error)
-                                )
+                            if (!activeMissions.Any(m => m.Status == MissionStatus.Executing && m.Step < MissionStep.Error && m.Step > MissionStep.New))
                             {
-                                this.GenerateHoming(bayProvider);
-                            }
-                            else
-                            {
-                                machineModeDataProvider.Mode = MachineMode.Automatic;
-                                this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
+                                if (!machineProvider.IsHomingExecuted
+                                    && !activeMissions.Any(m => m.Step >= MissionStep.Error)
+                                    )
+                                {
+                                    this.GenerateHoming(bayProvider);
+                                }
+                                else
+                                {
+                                    machineModeDataProvider.Mode = MachineMode.Automatic;
+                                    this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
+                                }
                             }
                         }
                         break;
@@ -391,6 +395,14 @@ namespace Ferretto.VW.MAS.MissionManager
                     case MachineMode.Compact:
                         {
                             await this.ScheduleCompactingMissionsAsync(scope.ServiceProvider);
+                        }
+                        break;
+
+                    case MachineMode.SwitchingToManual:
+                        {
+                            var machineModeDataProvider = scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
+                            machineModeDataProvider.Mode = MachineMode.Manual;
+                            this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
                         }
                         break;
 
@@ -452,22 +464,28 @@ namespace Ferretto.VW.MAS.MissionManager
             try
             {
                 var mission = missionsDataProvider.GetById(luData.MissionId.Value);
-                if (luData.Destination == LoadingUnitLocation.Elevator
-                    && !mission.WmsId.HasValue)
+                if ((mission.LoadUnitDestination == LoadingUnitLocation.Elevator
+                        || mission.LoadUnitDestination == LoadingUnitLocation.Cell
+                        )
+                    //&& !mission.WmsId.HasValue
+                    )
                 {
-                    if (luData.Source != LoadingUnitLocation.Cell)
+                    // load unit to elevator or to cell
+                    if (mission.LoadUnitSource != LoadingUnitLocation.Cell
+                        && mission.LoadUnitSource != LoadingUnitLocation.Elevator
+                        )
                     {
+                        // load from bay
                         var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
                         var bay = baysDataProvider.GetByLoadingUnitLocation(luData.Source);
-                        if (bay.CurrentMission != null)
+                        if ((bay.CurrentMission?.Id ?? 0) == mission.Id)
                         {
                             baysDataProvider.ClearMission(bay.Number);
-                            missionsDataProvider.Complete(bay.CurrentMission.Id);
                         }
                     }
                     missionsDataProvider.Complete(mission.Id);
                 }
-                else if (!luData.DestinationCellId.HasValue)
+                else if (mission.LoadUnitDestination != LoadingUnitLocation.Cell && mission.LoadUnitDestination != LoadingUnitLocation.Elevator)
                 // loading unit to bay mission
                 {
                     var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();

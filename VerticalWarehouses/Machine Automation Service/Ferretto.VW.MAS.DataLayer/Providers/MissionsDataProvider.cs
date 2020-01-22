@@ -254,6 +254,7 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Missions
+                    .AsNoTracking()
                     .OrderBy(o => o.Priority)
                     .ThenBy(o => o.CreationDate)
                     .ToList();

@@ -72,16 +72,6 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 MessageActor.MissionManager,
                 MessageType.MachineMode,
                 BayNumber.All);
-
-            // HACK: this is a mocked implementation of the mode switch
-            // HACK: begin
-            if (this.machineModeDataProvider.Mode is MachineMode.SwitchingToManual)
-            {
-                this.machineModeDataProvider.Mode = MachineMode.Manual;
-                this.logger.LogInformation($"Machine status switched to {this.machineModeDataProvider.Mode}");
-            }
-
-            // HACK: end
         }
 
         #endregion
