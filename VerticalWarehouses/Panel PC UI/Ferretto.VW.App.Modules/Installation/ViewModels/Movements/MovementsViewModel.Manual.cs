@@ -349,8 +349,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
                    this.CanBaseExecute() &&
-                   this.InputHeight != null &&
-                   Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition) != Convert.ToInt32(this.InputHeight ?? 0);
+                   this.InputHeight.HasValue &&
+                   Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.GetValueOrDefault()) != Convert.ToInt32(this.InputHeight.GetValueOrDefault());
         }
 
         private void CloseOperation()

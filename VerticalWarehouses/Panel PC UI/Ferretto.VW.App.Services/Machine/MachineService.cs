@@ -523,6 +523,7 @@ namespace Ferretto.VW.App.Services
                             var ms = (MachineStatus)this.MachineStatus.Clone();
 
                             ms.IsStopped = false;
+                            ms.MessageStatus = message.Status;
                             ms.IsError = false;
                             ms.IsMoving = true;
 
@@ -598,6 +599,7 @@ namespace Ferretto.VW.App.Services
                                     {
                                         var ms = (MachineStatus)this.MachineStatus.Clone();
 
+                                        ms.MessageStatus = message.Status;
                                         ms.VerticalSpeed = null;
                                         if (dataPositioningInfo.AxisMovement == Axis.Vertical)
                                         {
@@ -650,6 +652,8 @@ namespace Ferretto.VW.App.Services
 
                             var ms = (MachineStatus)this.MachineStatus.Clone();
 
+                            ms.MessageStatus = message.Status;
+
                             Task.Run(async () => ms = await this.GetElevatorAsync(ms)).GetAwaiter().GetResult();
 
                             this.MachineStatus = ms;
@@ -678,6 +682,8 @@ namespace Ferretto.VW.App.Services
                             }).GetAwaiter().GetResult();
 
                             var ms = (MachineStatus)this.MachineStatus.Clone();
+
+                            ms.MessageStatus = message.Status;
 
                             if (message.Status == MessageStatus.OperationStop ||
                                 message.Status == MessageStatus.OperationStepStop)
@@ -778,6 +784,7 @@ namespace Ferretto.VW.App.Services
 
                             var ms = (MachineStatus)this.MachineStatus.Clone();
 
+                            ms.MessageStatus = message.Status;
                             ms.IsMoving = false;
                             ms.IsError = true;
                             ms.ErrorDescription = message.Description;

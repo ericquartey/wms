@@ -63,6 +63,8 @@ namespace Ferretto.VW.App.Services.Models
 
         private int? logicalPositionId;
 
+        private MessageStatus messageStatus;
+
         private double? verticalSpeed;
 
         private double? verticalTargetPosition;
@@ -219,6 +221,12 @@ namespace Ferretto.VW.App.Services.Models
         {
             get => this.logicalPositionId;
             set => this.SetProperty(ref this.logicalPositionId, value);
+        }
+
+        public MessageStatus MessageStatus
+        {
+            get => this.messageStatus;
+            set => this.SetProperty(ref this.messageStatus, value);
         }
 
         public double? VerticalSpeed

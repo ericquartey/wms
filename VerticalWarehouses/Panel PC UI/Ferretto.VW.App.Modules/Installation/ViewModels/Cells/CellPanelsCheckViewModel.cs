@@ -60,8 +60,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private double? panelsCheckPercent;
 
-        private PositioningProcedure procedureParameters;
-
         private SubscriptionToken stepChangedToken;
 
         private double stepValue;
@@ -322,7 +320,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             // Se mi sono posizionato sulla cella richiesta attivo l'automazione che setto il pannello come controllato
             if (!this.IsMoving &&
-                !e.MachineStatus.IsStopped &&
+                this.MachineStatus.MessageStatus == CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd &&
                 this.CurrentPanel != null &&
                 !this.CurrentPanel.IsChecked &&
                 this.onGoToCell)
