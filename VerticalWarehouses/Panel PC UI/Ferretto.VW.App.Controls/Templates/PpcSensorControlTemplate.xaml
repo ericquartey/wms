@@ -11,7 +11,7 @@
                      VerticalAlignment="Center"
                      Fill="{TemplateBinding IndicatorFillBrush}"
                      Stroke="{TemplateBinding IndicatorBorderBrush}"
-                     StrokeThickness="2" />
+                     StrokeThickness="1" />
             <TextBlock Style="{DynamicResource PpcSensorControlLabelStyle}"
                        Text="{TemplateBinding Text}" />
         </StackPanel>
@@ -28,7 +28,7 @@
                      VerticalAlignment="Center"
                      Fill="{TemplateBinding IndicatorFillBrush}"
                      Stroke="{TemplateBinding IndicatorBorderBrush}"
-                     StrokeThickness="2" />
+                     StrokeThickness="1" />
             <TextBlock Style="{DynamicResource PpcSensorControlLabelStyle}"
                        Text="{TemplateBinding Text}"
                        Visibility="Collapsed" />

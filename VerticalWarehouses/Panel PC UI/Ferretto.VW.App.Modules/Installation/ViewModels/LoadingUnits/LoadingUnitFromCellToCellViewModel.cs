@@ -2,10 +2,13 @@
 using System.Threading.Tasks;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
-    public class LoadingUnitFromCellToCellViewModel : BaseCellMovementsViewModel
+    [Warning(WarningsArea.Installation)]
+    internal sealed class LoadingUnitFromCellToCellViewModel : BaseCellMovementsViewModel
     {
         #region Constructors
 
@@ -78,8 +81,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             await this.SensorsService.RefreshAsync(true);
 
             await this.RetrieveCellsAsync();
-
-            await this.RetrieveLoadingUnitsAsync();
         }
 
         #endregion
