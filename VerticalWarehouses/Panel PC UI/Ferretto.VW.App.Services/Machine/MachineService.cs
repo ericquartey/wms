@@ -522,6 +522,7 @@ namespace Ferretto.VW.App.Services
 
                             var ms = (MachineStatus)this.MachineStatus.Clone();
 
+                            ms.IsStopped = false;
                             ms.IsError = false;
                             ms.IsMoving = true;
 
