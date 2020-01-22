@@ -13,8 +13,8 @@
                          VerticalAlignment="Center"
                          Fill="{TemplateBinding IndicatorBorderBrush}" />
                 <Ellipse Name="SensorIndicatorEllipse"
-                         Width="19"
-                         Height="19"
+                         Width="18"
+                         Height="18"
                          HorizontalAlignment="Center"
                          VerticalAlignment="Center"
                          Fill="{TemplateBinding IndicatorFillBrush}" />
