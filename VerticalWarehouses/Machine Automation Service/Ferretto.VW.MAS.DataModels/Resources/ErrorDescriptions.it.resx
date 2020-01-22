@@ -252,4 +252,7 @@
   <data name="LoadUnitHeightExceeded" xml:space="preserve">
     <value>L'altezza del cassetto è eccessiva.</value>
   </data>
+  <data name="LoadUnitShutterInvalid" xml:space="preserve">
+    <value>Errore stato serranda</value>
+  </data>
 </root>

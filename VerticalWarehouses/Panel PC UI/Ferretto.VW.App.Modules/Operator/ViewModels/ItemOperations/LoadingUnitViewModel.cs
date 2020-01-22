@@ -89,7 +89,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
             return
                 !this.IsWaitingForResponse
                 &&
-                this.LoadingUnit != null;
+                this.LoadingUnit != null
+                &&
+                this.MachineModeService.MachineMode is MachineMode.Automatic;
         }
 
         public async Task ConfirmOperationAsync()
@@ -125,7 +127,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                     var wmsCompartments = await this.loadingUnitsWmsWebService.GetCompartmentsAsync(loadingUnitId);
                     this.Compartments = MapCompartments(wmsCompartments);
                 }
-                catch (WMS.Data.WebAPI.Contracts.WmsWebApiException)
+                catch
                 {
                     // do nothing: details will not be shown
                 }
@@ -139,6 +141,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             IEnumerable<WMS.Data.WebAPI.Contracts.CompartmentDetails> compartmentsFromMission)
         {
             return compartmentsFromMission
+                .GroupBy(c => c.Id)
+                .First()
                 .Select(c => new TrayControlCompartment
                 {
                     Depth = c.Depth,

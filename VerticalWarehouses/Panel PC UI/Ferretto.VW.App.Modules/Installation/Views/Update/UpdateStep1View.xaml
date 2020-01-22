@@ -4,11 +4,17 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:gif="http://wpfanimatedgif.codeplex.com"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:conv="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d" 
             d:DesignHeight="450" d:DesignWidth="800">
+
+    <ctrls:View.Resources>
+        <conv:BoolToOpacityConverter x:Key="BTOC" />
+    </ctrls:View.Resources>
 
     <Grid Margin="15,0">
         <Grid.ColumnDefinitions>
@@ -33,7 +39,9 @@
         <Border Grid.Row="1"               
                 Grid.ColumnSpan="2"
                 VerticalAlignment="Center"
-                HorizontalAlignment="Center"                
+                HorizontalAlignment="Center"
+                Width="900"
+                Opacity="{Binding IsBusy, Converter={StaticResource BTOC}, ConverterParameter='0,4'}"
                 Background="{DynamicResource PpcButtonBackground}"                 
                 Padding="15,20,15,0" 
                 BorderThickness="1"
@@ -44,32 +52,57 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
+                
+            <controls:PpcLabeledText Grid.Row="0"
+                                     Margin="0,0,0,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding SystemInfo}"
+                                     LabelText="Versione attuale PanelPc" />
 
-            <TextBlock Grid.Row="0"
-                   Grid.Column="1"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{Binding SystemInfo}" />
+            <controls:PpcLabeledText Grid.Row="1"
+                                     Margin="0,15,0,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding SharedFolderInfo}"
+                                     LabelText="Cartella condivisa" />
 
-            <TextBlock Grid.Row="1"
-                   Grid.Column="1"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{Binding DeviceInfo}" />
+            <controls:PpcLabeledText Grid.Row="2"
+                                     Margin="0,15,0,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding DeviceInfo}"
+                                     LabelText="Stato Dispositivo " />
 
-
-            <TextBlock Grid.Row="2"                   
-                   Grid.ColumnSpan="3"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{Binding InstallationFilesInfo}" />
+            <controls:PpcLabeledText Grid.Row="3"
+                                     Margin="0,15,0,15"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding InstallationFilesInfo}"
+                                     LabelText="Aggiornamenti" />
 
             </Grid>
         </Border>
+
+        <Grid Grid.Row="1"               
+              Grid.ColumnSpan="2"
+              VerticalAlignment="Center"
+              HorizontalAlignment="Center"
+              Visibility="{Binding IsBusy, Converter={StaticResource BTVC}}">
+            <StackPanel VerticalAlignment="Center">
+                <Image Width="60"
+                   Margin="30"
+                   gif:ImageBehavior.AnimatedSource="{DynamicResource SpinnerImageSource}"
+                   gif:ImageBehavior.AutoStart="true" />
+                <TextBlock HorizontalAlignment="Center"
+                       Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
+                       Text="Wait..." />
+
+            </StackPanel>
+        </Grid>
 
         <controls:PpcButton Grid.Row="2" Grid.Column="1"                                
                                 HorizontalAlignment="Right"

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
@@ -19,13 +20,11 @@ using Prism.Events;
 namespace Ferretto.VW.App.Installation.ViewModels
 {
     [Warning(WarningsArea.Installation)]
-    internal sealed class CellPanelsCheckViewModel : BaseMainViewModel
+    internal sealed class CellPanelsCheckViewModel : BaseMainViewModel, IDataErrorInfo
     {
         #region Fields
 
         private readonly IMachineCellPanelsWebService machineCellPanelsWebService;
-
-        private readonly IMachineElevatorService machineElevatorService;
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
@@ -33,35 +32,27 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private Cell currentCell;
 
+        private int currentCellId;
+
+        private string currentError;
+
         private double? currentHeight;
 
         private CellPanel currentPanel;
 
+        private int currentPanelMaxValue;
+
+        private int currentPanelMinValue;
+
         private int currentPanelNumber;
 
-        private SubscriptionToken elevatorPositionChangedToken;
+        private double displacement;
+
+        private DelegateCommand displacementCommand;
 
         private DelegateCommand goToCellHeightCommand;
 
-        private DelegateCommand goToNextPanelCommand;
-
-        private DelegateCommand goToPreviousPanelCommand;
-
-        private bool hasReachedCellPosition;
-
-        private double? initialPosition;
-
-        private bool isElevatorMovingDown;
-
-        private bool isElevatorMovingToCell;
-
-        private bool isElevatorMovingUp;
-
-        private DelegateCommand moveDownCommand;
-
-        private DelegateCommand moveUpCommand;
-
-        private double? panelCorrection;
+        private bool onGoToCell;
 
         private IEnumerable<CellPanel> panels;
 
@@ -73,11 +64,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken stepChangedToken;
 
-        private double? stepValue;
+        private double stepValue;
 
         private DelegateCommand stopCommand;
-
-        private SubscriptionToken subscriptionToken;
 
         #endregion
 
@@ -85,13 +74,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public CellPanelsCheckViewModel(
             IMachineCellPanelsWebService machineCellPanelsWebService,
-            IMachineElevatorWebService machineElevatorWebService,
-            IMachineElevatorService machineElevatorService)
+            IMachineElevatorWebService machineElevatorWebService)
             : base(PresentationMode.Installer)
         {
             this.machineCellPanelsWebService = machineCellPanelsWebService ?? throw new ArgumentNullException(nameof(machineCellPanelsWebService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
-            this.machineElevatorService = machineElevatorService ?? throw new ArgumentNullException(nameof(machineElevatorService));
         }
 
         #endregion
@@ -108,14 +95,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public Cell CurrentCell
         {
             get => this.currentCell;
-            private
-            set
-            {
-                if (this.SetProperty(ref this.currentCell, value))
-                {
-                    this.HasReachedCellPosition = false;
-                }
-            }
+            set => this.SetProperty(ref this.currentCell, value);
+        }
+
+        public int CurrentCellId
+        {
+            get => this.currentCellId;
+            set => this.SetProperty(ref this.currentCellId, value, this.OnCurrentCellIdChanged);
         }
 
         public double? CurrentHeight
@@ -138,6 +124,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public int CurrentPanelMaxValue
+        {
+            get => this.currentPanelMaxValue;
+            set => this.SetProperty(ref this.currentPanelMaxValue, value);
+        }
+
+        public int CurrentPanelMinValue
+        {
+            get => this.currentPanelMinValue;
+            set => this.SetProperty(ref this.currentPanelMinValue, value);
+        }
+
         public int CurrentPanelNumber
         {
             get => this.currentPanelNumber;
@@ -146,74 +144,47 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (this.SetProperty(ref this.currentPanelNumber, value))
                 {
                     this.CurrentPanel = this.Panels?.ElementAtOrDefault(value - 1);
+
+                    this.CurrentPanelMinValue = this.CurrentPanel.Cells.Min(m => m.Id);
+                    this.CurrentPanelMaxValue = this.CurrentPanel.Cells.Max(m => m.Id);
+
+                    this.CurrentCellId = this.CurrentPanelMinValue;
                 }
             }
         }
 
-        public double? Displacement
+        public double Displacement
         {
-            get => this.panelCorrection;
-            private set => this.SetProperty(ref this.panelCorrection, value);
+            get => this.displacement;
+            private set => this.SetProperty(ref this.displacement, value);
         }
+
+        public ICommand DisplacementCommand =>
+            this.displacementCommand
+            ??
+            (this.displacementCommand = new DelegateCommand(
+                async () => await this.DisplacementCommandAsync(),
+                this.CanDisplacementCommand));
+
+        public string Error => string.Join(
+            Environment.NewLine,
+            this.GetType().GetProperties()
+                .Select(p => this[p.Name])
+                .Distinct()
+                .Where(s => !string.IsNullOrEmpty(s)));
 
         public ICommand GoToCellHeightCommand =>
            this.goToCellHeightCommand
            ??
-           (this.goToCellHeightCommand = new DelegateCommand(async () => await this.GoToCellHeightAsync(), this.CanGoToCellHeight));
+           (this.goToCellHeightCommand = new DelegateCommand(
+               async () => await this.GoToCellHeightAsync(),
+               this.CanGoToCellHeight));
 
-        public ICommand GoToNextPanelCommand =>
-           this.goToNextPanelCommand
-           ??
-           (this.goToNextPanelCommand = new DelegateCommand(
-               this.GoToNextPanel,
-               this.CanGoToNextPanel));
+        public bool IsCanStartPosition => this.CanBaseExecute();
 
-        public ICommand GoToPreviousPanelCommand =>
-          this.goToPreviousPanelCommand
-          ??
-          (this.goToPreviousPanelCommand = new DelegateCommand(
-              this.GoToPreviousPanel,
-              this.CanGoToPreviousPanel));
+        public bool IsCanStepValue => this.CanBaseExecute();
 
-        public bool HasReachedCellPosition
-        {
-            get => this.hasReachedCellPosition;
-            private set => this.SetProperty(ref this.hasReachedCellPosition, value);
-        }
-
-        public double? InitialPosition
-        {
-            get => this.initialPosition;
-            private set => this.SetProperty(ref this.initialPosition, value);
-        }
-
-        public bool IsElevatorMovingDown
-        {
-            get => this.isElevatorMovingDown;
-            private set => this.SetProperty(ref this.isElevatorMovingDown, value);
-        }
-
-        public bool IsElevatorMovingToCell
-        {
-            get => this.isElevatorMovingToCell;
-            private set => this.SetProperty(ref this.isElevatorMovingToCell, value);
-        }
-
-        public bool IsElevatorMovingUp
-        {
-            get => this.isElevatorMovingUp;
-            private set => this.SetProperty(ref this.isElevatorMovingUp, value);
-        }
-
-        public ICommand MoveDownCommand =>
-           this.moveDownCommand
-           ??
-           (this.moveDownCommand = new DelegateCommand(async () => await this.MoveDown(), this.CanMoveUpOrDown));
-
-        public ICommand MoveUpCommand =>
-           this.moveUpCommand
-           ??
-           (this.moveUpCommand = new DelegateCommand(async () => await this.MoveUp(), this.CanMoveUpOrDown));
+        public override bool KeepAlive => false;
 
         public IEnumerable<CellPanel> Panels
         {
@@ -228,6 +199,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (this.SetProperty(ref this.panels, panels))
                 {
                     this.CurrentPanelNumber = 1;
+                    this.PanelsCheck = this.panels.Count(c => c.IsChecked);
+                    this.PanelsCheckPercent = (double)this.panels.Count(c => c.IsChecked) / (double)this.panels.Count() * 100.0;
+
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -244,10 +219,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.panelsCheckPercent, value);
         }
 
-        public double? StepValue
+        public double StepValue
         {
             get => this.stepValue;
-            set => this.SetProperty(ref this.stepValue, value);
+            set => this.SetProperty(ref this.stepValue, value, this.RaiseCanExecuteChanged);
         }
 
         public ICommand StopCommand =>
@@ -255,14 +230,42 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.stopCommand = new DelegateCommand(async () => await this.Stop(), this.CanStop));
 
-        private bool IsElevatorMoving
+        #endregion
+
+        #region Indexers
+
+        public string this[string columnName]
         {
-            get => this.isElevatorMovingUp || this.isElevatorMovingDown || this.isElevatorMovingToCell;
-            set
+            get
             {
-                this.IsElevatorMovingUp = false;
-                this.IsElevatorMovingDown = false;
-                this.IsElevatorMovingToCell = false;
+                this.currentError = null;
+
+                if (this.IsWaitingForResponse)
+                {
+                    return null;
+                }
+
+                switch (columnName)
+                {
+                    case nameof(this.CurrentCellId):
+                        if (this.CurrentPanel == null ||
+                            !this.CurrentPanel.Cells.Any(a => a.Id == this.CurrentCellId))
+                        {
+                            return "Cella non valida";
+                        }
+
+                        break;
+
+                    case nameof(this.StepValue):
+                        break;
+                }
+
+                if (this.IsVisible && string.IsNullOrEmpty(this.currentError))
+                {
+                    //this.ClearNotifications();
+                }
+
+                return null;
             }
         }
 
@@ -273,25 +276,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override void Disappear()
         {
             base.Disappear();
+
             if (this.stepChangedToken != null)
             {
                 this.EventAggregator.GetEvent<StepChangedPubSubEvent>().Unsubscribe(this.stepChangedToken);
                 this.stepChangedToken?.Dispose();
                 this.stepChangedToken = null;
-            }
-
-            if (this.elevatorPositionChangedToken != null)
-            {
-                this.EventAggregator.GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>().Unsubscribe(this.elevatorPositionChangedToken);
-                this.elevatorPositionChangedToken?.Dispose();
-                this.elevatorPositionChangedToken = null;
-            }
-
-            if (this.subscriptionToken != null)
-            {
-                this.EventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>().Unsubscribe(this.subscriptionToken);
-                this.subscriptionToken?.Dispose();
-                this.subscriptionToken = null;
             }
         }
 
@@ -312,13 +302,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.Panels = await this.machineCellPanelsWebService.GetAllAsync();
 
-                this.CurrentHeight = this.machineElevatorService.Position.Vertical;
+                this.CurrentHeight = this.MachineStatus.ElevatorVerticalPosition;
 
                 this.procedureParameters = await this.machineCellPanelsWebService.GetProcedureParametersAsync();
 
                 this.StepValue = this.procedureParameters.Step;
-
-                this.InitialPosition = (this.initialPosition is null) ? this.currentHeight : this.initialPosition;
             }
             catch (HttpRequestException ex)
             {
@@ -330,59 +318,84 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        protected override async Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
+        {
+            await base.OnMachineStatusChangedAsync(e);
+
+            // Se mi sono posizionato sulla cella richiesta attivo l'automazione che setto il pannello come controllato
+            if (!this.IsMoving &&
+                this.CurrentPanel != null &&
+                !this.CurrentPanel.IsChecked &&
+                this.onGoToCell)
+            {
+                try
+                {
+                    await this.machineCellPanelsWebService.UpdateHeightAsync(this.CurrentPanel.Id, this.Displacement);
+
+                    var currentPanelNumber = this.CurrentPanelNumber;
+                    this.Panels = await this.machineCellPanelsWebService.GetAllAsync();
+                    this.CurrentPanelNumber = currentPanelNumber;
+
+                }
+                catch (Exception ex)
+                {
+                    this.ShowNotification(ex);
+                }
+                finally
+                {
+                    this.onGoToCell = false;
+                }
+            }
+        }
+
         protected void OnStepChanged(StepChangedMessage e)
         {
-            if (e.Next)
+            if (e.Next && this.CurrentPanelNumber < this.Panels.Count())
             {
                 this.CurrentPanelNumber++;
+
+                this.RaiseCanExecuteChanged();
             }
-            else
+            else if (e.Back && this.CurrentPanelNumber > 1)
             {
                 this.CurrentPanelNumber--;
+
+                this.RaiseCanExecuteChanged();
             }
 
-            this.RaiseCanExecuteChanged();
+            this.Displacement = 0;
         }
 
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
 
+            this.RaisePropertyChanged(nameof(this.IsCanStartPosition));
+            this.RaisePropertyChanged(nameof(this.IsCanStepValue));
+            this.RaisePropertyChanged(nameof(this.CurrentPanel));
+            this.RaisePropertyChanged(nameof(this.CurrentPanelIsChecked));
+            
+            this.displacementCommand?.RaiseCanExecuteChanged();
             this.applyCorrectionCommand?.RaiseCanExecuteChanged();
             this.goToCellHeightCommand?.RaiseCanExecuteChanged();
-            this.goToNextPanelCommand?.RaiseCanExecuteChanged();
-            this.goToPreviousPanelCommand?.RaiseCanExecuteChanged();
-            this.moveDownCommand?.RaiseCanExecuteChanged();
-            this.moveUpCommand?.RaiseCanExecuteChanged();
             this.stopCommand?.RaiseCanExecuteChanged();
         }
 
-        protected override bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
-        {
-            var hasChanged = base.SetProperty(ref storage, value, propertyName);
-            if (hasChanged)
-            {
-                this.RaiseCanExecuteChanged();
-            }
-
-            return hasChanged;
-        }
+        public bool CurrentPanelIsChecked => this.CurrentPanel?.IsChecked ?? false;
 
         private async Task ApplyCorrectionAsync()
         {
             try
             {
                 this.IsWaitingForResponse = true;
-                await this.machineCellPanelsWebService.UpdateHeightAsync(
-                    this.CurrentCell.Id,
-                    this.CurrentCell.Position + this.Displacement.Value);
+
+                await this.machineCellPanelsWebService.UpdateHeightAsync(this.CurrentPanel.Id, this.Displacement);
 
                 var currentPanelNumber = this.CurrentPanelNumber;
                 this.Panels = await this.machineCellPanelsWebService.GetAllAsync();
                 this.CurrentPanelNumber = currentPanelNumber;
 
-                this.Displacement = null;
-                this.HasReachedCellPosition = true;
+                this.Displacement = 0;
 
                 this.ShowNotification(
                     VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated,
@@ -400,66 +413,54 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanApplyCorrection()
         {
-            return !this.IsWaitingForResponse
-                &&
-                this.HasReachedCellPosition
-                &&
-                this.Displacement.HasValue
-                &&
-                this.Displacement != 0;
+            return !this.IsMoving;
+        }
+
+        private bool CanBaseExecute()
+        {
+            return !this.IsKeyboardOpened &&
+                   !this.IsMoving &&
+                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh &&
+                   !this.SensorsService.IsLoadingUnitOnElevator;
+        }
+
+        private bool CanDisplacementCommand()
+        {
+            return this.CanBaseExecute() &&
+                   this.StepValue != 0;
         }
 
         private bool CanGoToCellHeight()
         {
-            return
-                this.CurrentCell != null
-                &&
-                !this.IsWaitingForResponse
-                &&
-                !this.IsElevatorMoving;
-        }
-
-        private bool CanGoToNextPanel()
-        {
-            return
-                this.Panels != null
-                &&
-                this.CurrentPanelNumber < this.Panels.Count()
-                &&
-                !this.IsWaitingForResponse
-                &&
-                !this.IsElevatorMoving;
-        }
-
-        private bool CanGoToPreviousPanel()
-        {
-            return
-                this.Panels != null
-                &&
-                this.CurrentPanelNumber > 1
-                &&
-                !this.IsWaitingForResponse
-                &&
-                !this.IsElevatorMoving;
-        }
-
-        private bool CanMoveUpOrDown()
-        {
-            return
-                this.StepValue.HasValue
-                &&
-                !this.IsWaitingForResponse
-                &&
-                this.HasReachedCellPosition
-                &&
-                !this.IsElevatorMoving;
+            return this.CurrentCell != null &&
+                   !this.IsMoving &&
+                   Convert.ToInt32(this.CurrentCell.Position) != Convert.ToInt32(this.MachineStatus?.ElevatorVerticalPosition ?? 0D);
         }
 
         private bool CanStop()
         {
-            return this.IsElevatorMoving
-                &&
-                !this.IsWaitingForResponse;
+            return this.IsMoving;
+        }
+
+        private async Task DisplacementCommandAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                await this.machineElevatorWebService.MoveVerticalOfDistanceAsync(this.StepValue);
+
+                this.Displacement += this.StepValue;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
         private async Task GoToCellHeightAsync()
@@ -467,21 +468,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                this.IsElevatorMovingToCell = true;
-                this.HasReachedCellPosition = false;
 
                 await this.machineElevatorWebService.MoveToCellAsync(
                     this.CurrentCell.Id,
-                    computeElongation: true,
+                    computeElongation: false,
                     performWeighting: false);
 
-                this.HasReachedCellPosition = true;
-                this.InitialPosition = this.CurrentHeight;
+                this.Displacement = 0;
+
+                this.onGoToCell = true;
             }
             catch (Exception ex)
             {
-                this.IsElevatorMovingToCell = false;
-
                 this.ShowNotification(ex);
             }
             finally
@@ -490,118 +488,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private void GoToNextPanel()
+        private void OnCurrentCellIdChanged()
         {
-            try
-            {
-                this.CurrentPanelNumber++;
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-        }
-
-        private void GoToPreviousPanel()
-        {
-            try
-            {
-                this.CurrentPanelNumber--;
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-        }
-
-        private async Task MoveDown()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-                this.IsElevatorMovingDown = true;
-
-                await this.machineElevatorWebService.MoveVerticalOfDistanceAsync(-this.StepValue.Value);
-
-                this.Displacement = this.currentHeight - this.initialPosition;
-            }
-            catch (Exception ex)
-            {
-                this.IsElevatorMovingDown = false;
-
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-        }
-
-        private async Task MoveUp()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-                this.IsElevatorMovingUp = true;
-
-                await this.machineElevatorWebService.MoveVerticalOfDistanceAsync(this.StepValue.Value);
-
-                this.Displacement = this.currentHeight - this.initialPosition;
-            }
-            catch (Exception ex)
-            {
-                this.IsElevatorMovingUp = false;
-
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-        }
-
-        private void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)
-        {
-            if (message.IsErrored())
-            {
-                this.IsElevatorMoving = false;
-
-                this.ShowNotification(
-                    VW.App.Resources.InstallationApp.ProcedureWasStopped,
-                    Services.Models.NotificationSeverity.Warning);
-            }
-            else if (message.IsNotRunning())
-            {
-                this.IsElevatorMoving = false;
-
-                if (message.Data.MovementType == CommonUtils.Messages.Enumerations.MovementType.Absolute
-                    &&
-                    message.Status != CommonUtils.Messages.Enumerations.MessageStatus.OperationStop
-                    &&
-                    message.Status != CommonUtils.Messages.Enumerations.MessageStatus.OperationRunningStop)
-                {
-                    this.HasReachedCellPosition = true;
-
-                    this.ShowNotification(VW.App.Resources.InstallationApp.ElevatorIsCellPosition);
-                }
-            }
-        }
-
-        private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
-        {
-            this.CurrentHeight = e.VerticalPosition;
-
-            if (this.isElevatorMovingToCell)
-            {
-                this.InitialPosition = this.CurrentHeight;
-            }
-
-            if (this.isElevatorMovingUp
-                ||
-                this.isElevatorMovingDown)
-            {
-                this.Displacement = this.currentHeight - this.initialPosition;
-            }
+            this.CurrentCell = this.CurrentPanel?.Cells.FirstOrDefault(f => f.Id == this.currentCellId);
+            this.RaiseCanExecuteChanged();
         }
 
         private async Task Stop()
@@ -609,7 +499,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                await this.machineElevatorWebService.StopAsync();
+                await this.MachineService.StopMovingByAllAsync();
             }
             catch (Exception ex)
             {
@@ -628,24 +518,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     .GetEvent<StepChangedPubSubEvent>()
                     .Subscribe(
                         (m) => this.OnStepChanged(m),
-                        ThreadOption.UIThread,
-                        false);
-
-            this.elevatorPositionChangedToken = this.elevatorPositionChangedToken
-              ??
-              this.EventAggregator
-                  .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
-                  .Subscribe(
-                      this.OnElevatorPositionChanged,
-                      ThreadOption.UIThread,
-                      false);
-
-            this.subscriptionToken = this.subscriptionToken
-                ??
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                    .Subscribe(
-                        this.OnCurrentPositionChanged,
                         ThreadOption.UIThread,
                         false);
         }

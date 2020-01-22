@@ -126,21 +126,30 @@ namespace Ferretto.VW.App.Operator.ViewModels
                         ThreadOption.UIThread,
                         false);
 
-            if (this.isPerformingOperation
-                &&
-                this.machineModeService.MachineMode == MachineMode.Automatic
-                &&
-                this.lastActiveMissionId.HasValue
-                &&
-                this.lastActiveMissionId != this.missionOperationsService.CurrentMission?.Id)
+            if (this.isPerformingOperation)
             {
-                this.NavigationService.GoBack();
-                this.isPerformingOperation = false;
-                this.lastActiveMissionId = null;
-                return;
+                if (this.machineModeService.MachineMode == MachineMode.Automatic
+                   &&
+                   this.lastActiveMissionId.HasValue
+                   &&
+                   this.lastActiveMissionId != this.missionOperationsService.CurrentMission?.Id)
+                {
+                    this.NavigationService.GoBack();
+                    this.isPerformingOperation = false;
+                    this.lastActiveMissionId = null;
+                    return;
+                }
+                else
+                {
+                    // needs to be a fresh bay instance
+                    var bay = await this.bayManager.GetBayAsync();
+                    var loadingUnit = bay.Positions.OrderByDescending(p => p.Height).Select(p => p.LoadingUnit).FirstOrDefault(l => l != null);
+                    if (loadingUnit != null)
+                    {
+                        this.NavigateToLoadingUnitDetails(loadingUnit.Id);
+                    }
+                }
             }
-
-            await this.CheckForNewOperationAsync();
 
             await Task.Run(async () =>
             {
@@ -151,6 +160,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 }
                 while (this.IsVisible);
             });
+
+            await this.CheckForNewOperationAsync();
         }
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)
@@ -241,6 +252,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.RaisePropertyChanged(nameof(this.LoadingUnitsInfo));
         }
 
+        private void NavigateToLoadingUnitDetails(int loadingUnitId)
+        {
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Operator),
+                Utils.Modules.Operator.ItemOperations.LOADING_UNIT,
+                loadingUnitId,
+                trackCurrentView: true);
+        }
+
         private async Task OnAssignedMissionOperationChangedAsync(AssignedMissionOperationChangedEventArgs e)
         {
             await this.CheckForNewOperationAsync();
@@ -253,12 +273,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 message.Status is CommonUtils.Messages.Enumerations.MessageStatus.OperationWaitResume)
             {
                 var bay = await this.bayManager.GetBayAsync();
+                var loadingUnit = this.MachineService.Loadunits.SingleOrDefault(l => l.Id == message.Data.LoadUnitId);
 
-                this.NavigationService.Appear(
-                    nameof(Utils.Modules.Operator),
-                    Utils.Modules.Operator.ItemOperations.LOADING_UNIT,
-                    message.Data.LoadUnitId,
-                    trackCurrentView: true);
+                if (loadingUnit is null)
+                {
+                    return;
+                }
+
+                this.NavigateToLoadingUnitDetails(loadingUnit.Id);
 
                 this.lastActiveMissionId = bay.CurrentMission?.Id;
                 this.isPerformingOperation = true;

@@ -531,6 +531,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Errore stato serranda.
         /// </summary>
+        public static string LoadUnitShutterInvalid {
+            get {
+                return ResourceManager.GetString("LoadUnitShutterInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errore stato serranda.
+        /// </summary>
         public static string LoadUnitShutterOpen {
             get {
                 return ResourceManager.GetString("LoadUnitShutterOpen", resourceCulture);

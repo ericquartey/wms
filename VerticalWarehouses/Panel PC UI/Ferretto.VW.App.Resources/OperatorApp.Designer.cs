@@ -1727,6 +1727,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading unit in bay.
+        /// </summary>
+        public static string LoadingUnitInBay {
+            get {
+                return ResourceManager.GetString("LoadingUnitInBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There is 1 loading unit send to bay.
         /// </summary>
         public static string LoadingUnitSendToBay {
@@ -2330,6 +2339,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Full test.
+        /// </summary>
+        public static string MissionTypeFullTest {
+            get {
+                return ResourceManager.GetString("MissionTypeFullTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to In.
         /// </summary>
         public static string MissionTypeIn {
@@ -2362,15 +2380,6 @@ namespace Ferretto.VW.App.Resources {
         public static string MissionTypeOut {
             get {
                 return ResourceManager.GetString("MissionTypeOut", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Test.
-        /// </summary>
-        public static string MissionTypeTest {
-            get {
-                return ResourceManager.GetString("MissionTypeTest", resourceCulture);
             }
         }
         
@@ -2632,6 +2641,15 @@ namespace Ferretto.VW.App.Resources {
         public static string QuantityToPick {
             get {
                 return ResourceManager.GetString("QuantityToPick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recall Drawer.
+        /// </summary>
+        public static string RecallDrawer {
+            get {
+                return ResourceManager.GetString("RecallDrawer", resourceCulture);
             }
         }
         

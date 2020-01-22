@@ -67,9 +67,9 @@ namespace Ferretto.VW.App.Installation.Resources
         [Display(Description = "Analisi profilo peso")]
         WeightAnalysis,
 
-        [View(Utils.Modules.Installation.CellsHeightCheck.STEP1, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
-        [Display(Description = "Controllo quote celle")]
-        CellsHeightCheck,
+        //[View(Utils.Modules.Installation.CellsHeightCheck.STEP1, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
+        //[Display(Description = "Controllo quote celle")]
+        //CellsHeightCheck,
 
         [View(Utils.Modules.Installation.CELLSSIDECONTROL, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
         [Display(Description = "Modifica blocco celle")]

@@ -41,15 +41,50 @@
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Initialize:"
+                               Text="Cassetto in Baia:"
                                TextWrapping="Wrap" />
 
                     <TextBlock Grid.ColumnSpan="2"
                                FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                               Text="Caricare un cassetto in baia o richiamarne uno per iniziziare la procedura guidata della taratura baia."
                                TextWrapping="Wrap" />
                 </StackPanel>
+
+                <StackPanel Grid.Row="1"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="3"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+
+                    <ctrls:PpcSpinEdit Margin="15,5"
+                                       HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Top"
+                                       EditValue="{Binding Path=InputLoadingUnitId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                       IsEnabled="{Binding CanInputLoadingUnitId}"
+                                       LabelText="{x:Static res:InstallationApp.DrawerNumber}"
+                                       Mask="#0" />
+
+                    <controls:PpcButton Grid.Row="4"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="3"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Bottom"
+                                        Command="{Binding StartCommand}"
+                                        Content="{x:Static res:InstallationApp.Start}" />
+                </StackPanel>
+
+
+                <controls:PpcButton Grid.Row="3"
+                                    Grid.Column="1"
+                                    Margin="15,15,0,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    Command="{Binding MoveToElevatorPositionCommand}"
+                                    Content="Avanti"
+                                    Style="{StaticResource WizardConfirmButton}" />
+
             </Grid>
         </DataTemplate>
 
@@ -275,47 +310,13 @@
                                     Height="90"
                                     MinHeight="90"
                                     Margin="0,15,15,0" />
-        <Border Grid.Row="5"
-                Grid.Column="3"
-                Height="90"
-                MinHeight="90"
-                Margin="0,15,15,0"
-                Background="{DynamicResource PpcBackground}">
-            <Border BorderBrush="{DynamicResource PpcBorderBrush}"
-                    BorderThickness="{DynamicResource PpcBorderThickness}">
 
-                <Grid Grid.Column="8"
-                      Grid.ColumnSpan="4">
-
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Margin="8,4"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Normal}"
-                               FontWeight="Normal"
-                               Foreground="{DynamicResource FerrettoLightGray}"
-                               Text="" />
-
-                    <TextBlock Grid.Row="1"
-                               Margin="4,0,4,4"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Very_High}"
-                               Foreground="{DynamicResource PpcForeground}"
-                               Text=""
-                               TextWrapping="Wrap" />
-
-                </Grid>
-            </Border>
-        </Border>
+        <controls:CardSensorDrawer Grid.Row="5"
+                                   Grid.Column="3"
+                                   Width="230"
+                                   Height="90"
+                                   MinHeight="90"
+                                   Margin="0,15,15,0" />
 
         <controls:PpcButton Grid.Row="6"
                             Grid.Column="3"

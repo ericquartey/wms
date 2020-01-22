@@ -143,6 +143,11 @@ namespace Ferretto.VW.App.Services
 
         #region Properties
 
+        public bool BayFirstPositionIsUpper
+        {
+            get => this.bay?.Positions?.FirstOrDefault()?.IsUpper ?? false;
+        }
+
         public Bay Bay
         {
             get => this.bay;
@@ -526,7 +531,8 @@ namespace Ferretto.VW.App.Services
 
                                 ms.CurrentMissionId = messageData.MissionId;
 
-                                this.Notification = "Movimento in corso...";
+                                // TODO use messageData.MissionStep instead of message.Description
+                                this.Notification = $"Movimento in corso... ({ms.CurrentMissionId} - {message.Description})";
                             }
 
                             if (message?.Data is PositioningMessageData dataPositioning)
@@ -568,6 +574,15 @@ namespace Ferretto.VW.App.Services
 
                     case MessageStatus.OperationExecuting:
                         {
+                            if (message?.Data is PositioningMessageData dataLog)
+                            {
+                                this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status}; {dataLog?.AxisMovement};");
+                            }
+                            else
+                            {
+                                this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status};");
+                            }
+
                             if (this.MachineStatus.IsMoving)
                             {
                                 if (message?.Data is PositioningMessageData dataPositioningInfo
@@ -609,15 +624,14 @@ namespace Ferretto.VW.App.Services
                                 {
                                     this.WriteInfo(null);
                                 }
+                            }
 
-                                if (message?.Data is MoveLoadingUnitMessageData moveLoadingUnitMessageData)
-                                {
-#if DEBUG
-                                    this.Notification = $"Movimento in corso... ({moveLoadingUnitMessageData.MissionStep})";
-#else
-                                    this.Notification = $"Movimento in corso...";
-#endif
-                                }
+                            if (message?.Data is MoveLoadingUnitMessageData moveLoadingUnitMessageData)
+                            {
+                                this.logger.Debug($"OnMoveLoadingUnitMessageData:{moveLoadingUnitMessageData.MissionStep};");
+
+                                // TODO use messageData.MissionStep instead of message.Description
+                                this.Notification = $"Movimento in corso... ({this.MachineStatus?.CurrentMissionId} - {message.Description})";
                             }
 
                             break;
@@ -1109,10 +1123,10 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification("Homing non eseguito.", NotificationSeverity.Error);
                         }
-                        else if ((((this.MachineStatus.LoadingUnitPositionDownInBay != null && !this.sensorsService.IsLoadingUnitInMiddleBottomBay) ||
-                                   (this.MachineStatus.LoadingUnitPositionUpInBay != null && !this.sensorsService.IsLoadingUnitInBay)) ||
-                                  ((this.MachineStatus.LoadingUnitPositionDownInBay == null && this.sensorsService.IsLoadingUnitInMiddleBottomBay) ||
-                                   (this.MachineStatus.LoadingUnitPositionUpInBay == null && this.sensorsService.IsLoadingUnitInBay))))
+                        else if ((((this.MachineStatus.LoadingUnitPositionDownInBay != null && !this.sensorsService.IsLoadingUnitInMiddleBottomBay && (this.Bay.IsDouble || !this.BayFirstPositionIsUpper)) ||
+                                   (this.MachineStatus.LoadingUnitPositionUpInBay != null && !this.sensorsService.IsLoadingUnitInBay && (this.Bay.IsDouble || this.BayFirstPositionIsUpper))) ||
+                                  ((this.MachineStatus.LoadingUnitPositionDownInBay == null && this.sensorsService.IsLoadingUnitInMiddleBottomBay && (this.Bay.IsDouble || !this.BayFirstPositionIsUpper)) ||
+                                   (this.MachineStatus.LoadingUnitPositionUpInBay == null && this.sensorsService.IsLoadingUnitInBay && (this.Bay.IsDouble || this.BayFirstPositionIsUpper)))))
                         {
                             this.ShowNotification("Inconsistenza sensori di presenza cassetto in baia.", NotificationSeverity.Error);
                         }

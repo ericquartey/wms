@@ -21,6 +21,8 @@
 
         CloseShutter,
 
+        BackToTarget,
+
         End,
 
         Error = 101,

@@ -49,34 +49,52 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                         this.Mission.Direction = cell.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
                     }
+                    if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
+                        && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator)
+                    {
+                        var bayDestination = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+                        if (bayDestination != null
+                            && bayDestination.Shutter.Type != ShutterType.NotSpecified
+                            )
+                        {
+                            var shutterInverter = bayDestination.Shutter.Inverter.Index;
+                            if (this.SensorsProvider.GetShutterPosition(shutterInverter) != ShutterPosition.Closed)
+                            {
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, this.Mission.TargetBay);
+                                throw new StateMachineException(ErrorDescriptions.LoadUnitShutterOpen, this.Mission.TargetBay, MessageActor.MachineManager);
+                            }
+                        }
+                    }
 
                     break;
 
                 default:
-                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
-                    if (bay is null)
                     {
-                        this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceBay, this.Mission.TargetBay);
-                        throw new StateMachineException(ErrorDescriptions.LoadUnitSourceBay, this.Mission.TargetBay, MessageActor.MachineManager);
-                    }
-                    this.Mission.Direction = (bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards);
-                    this.Mission.OpenShutterPosition = this.LoadingUnitMovementProvider.GetShutterOpenPosition(bay, this.Mission.LoadUnitSource);
-                    var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(bay.Number);
-                    if (this.Mission.OpenShutterPosition == this.SensorsProvider.GetShutterPosition(shutterInverter))
-                    {
-                        this.Mission.OpenShutterPosition = ShutterPosition.NotSpecified;
-                    }
-#if CHECK_BAY_SENSOR
-                    if (bay.Carousel != null)
-                    {
-                        var result = this.LoadingUnitMovementProvider.CheckBaySensors(bay, this.Mission.LoadUnitSource, deposit: false);
-                        if (result != MachineErrorCode.NoError)
+                        var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
+                        if (bay is null)
                         {
-                            var error = this.ErrorsProvider.RecordNew(result, bay.Number);
-                            throw new StateMachineException(error.Reason, bay.Number, MessageActor.MachineManager);
+                            this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceBay, this.Mission.TargetBay);
+                            throw new StateMachineException(ErrorDescriptions.LoadUnitSourceBay, this.Mission.TargetBay, MessageActor.MachineManager);
                         }
-                    }
+                        this.Mission.Direction = (bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards);
+                        this.Mission.OpenShutterPosition = this.LoadingUnitMovementProvider.GetShutterOpenPosition(bay, this.Mission.LoadUnitSource);
+                        var shutterInverter = bay.Shutter.Inverter.Index;
+                        if (this.Mission.OpenShutterPosition == this.SensorsProvider.GetShutterPosition(shutterInverter))
+                        {
+                            this.Mission.OpenShutterPosition = ShutterPosition.NotSpecified;
+                        }
+#if CHECK_BAY_SENSOR
+                        if (bay.Carousel != null)
+                        {
+                            var result = this.LoadingUnitMovementProvider.CheckBaySensors(bay, this.Mission.LoadUnitSource, deposit: false);
+                            if (result != MachineErrorCode.NoError)
+                            {
+                                var error = this.ErrorsProvider.RecordNew(result, bay.Number);
+                                throw new StateMachineException(error.Reason, bay.Number, MessageActor.MachineManager);
+                            }
+                        }
 #endif
+                    }
                     break;
             }
             if (this.Mission.NeedHomingAxis == Axis.Horizontal)
@@ -173,8 +191,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 break;
                             }
                         }
-                        if ((this.Mission.OpenShutterPosition != ShutterPosition.NotSpecified && (this.Mission.DeviceNotifications == (MissionDeviceNotifications.Positioning | MissionDeviceNotifications.Shutter)))
-                            || (this.Mission.OpenShutterPosition == ShutterPosition.NotSpecified && (this.Mission.DeviceNotifications == MissionDeviceNotifications.Positioning))
+                        if (this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Positioning)
+                            && (this.Mission.OpenShutterPosition == ShutterPosition.NotSpecified
+                                || this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Shutter))
                             )
                         {
                             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;

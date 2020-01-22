@@ -96,6 +96,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
                       (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Test) &&
                       (this.BayShutter.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
+        protected SetupStepStatus VerticalOriginCalibration => this.SetupStatusCapabilities?.VerticalOriginCalibration ?? new SetupStepStatus();
+
         protected SetupStepStatus BayControl => this.BaySetupStatus?.Check ?? new SetupStepStatus();
 
         protected BaySetupStatus BaySetupStatus
