@@ -1,6 +1,7 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Messages;
 
@@ -23,6 +24,8 @@ namespace Ferretto.VW.MAS.MachineManager.Providers.Interfaces
         bool TestMission(int missionId, CommandMessage command, IServiceProvider serviceProvider);
 
         bool TryCreateMachineMission(CommandMessage command, IServiceProvider serviceProvider, out Mission mission);
+
+        bool UpdateWaitingMission(IMissionsDataProvider missionsDataProvider, IBaysDataProvider baysDataProvider, Mission mission);
 
         #endregion
     }

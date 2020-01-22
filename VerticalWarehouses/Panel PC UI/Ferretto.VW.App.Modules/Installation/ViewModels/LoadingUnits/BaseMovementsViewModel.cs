@@ -35,12 +35,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private bool isPositionUpSelected;
 
-        private bool isStopping;
+        //private bool isStopping;
 
         private int? loadingUnitId;
-
-        private IEnumerable<LoadingUnit> loadingUnits;
-
+        
         private SubscriptionToken moveLoadingUnitToken;
 
         private DelegateCommand selectBayPositionDownCommand;
@@ -68,6 +66,19 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Properties
 
+        private DelegateCommand loadingUnitsCommand;
+
+        public ICommand LoadingUnitsCommand =>
+            this.loadingUnitsCommand
+            ??
+            (this.loadingUnitsCommand = new DelegateCommand(
+                () => this.NavigationService.Appear(
+                          nameof(Utils.Modules.Installation),
+                          Utils.Modules.Installation.CellsLoadingUnitsMenu.LOADINGUNITS,
+                          data: null,
+                          trackCurrentView: true),
+                () => !this.IsMoving));
+
         public int? CurrentMissionId { get; private set; }
 
         public bool IsExecutingProcedure
@@ -91,7 +102,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     return false;
                 }
 
-                return this.loadingUnits.Any(l => l.Id == this.loadingUnitId.Value);
+                return this.MachineService.Loadunits.Any(l => l.Id == this.loadingUnitId.Value);
             }
         }
 
@@ -119,28 +130,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
-        public bool IsStopping
-        {
-            get => this.isStopping;
-            set => this.SetProperty(ref this.isStopping, value);
-        }
-
-        public override bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            protected set
-            {
-                if (this.SetProperty(ref this.isWaitingForResponse, value))
-                {
-                    if (this.isWaitingForResponse)
-                    {
-                        this.ClearNotifications();
-                    }
-
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
+        //public bool IsStopping
+        //{
+        //    get => this.isStopping;
+        //    set => this.SetProperty(ref this.isStopping, value);
+        //}
 
         public virtual bool KeepAlive => true;
 
@@ -153,7 +147,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     return null;
                 }
 
-                return this.loadingUnits.FirstOrDefault(l => l.Id == this.loadingUnitId.Value)?.CellId;
+                return this.MachineService.Loadunits.FirstOrDefault(l => l.Id == this.loadingUnitId.Value)?.CellId;
             }
         }
 
@@ -295,21 +289,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             await base.OnAppearedAsync();
         }
 
-        public async Task RetrieveLoadingUnitsAsync()
-        {
-            try
-            {
-                this.loadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-            }
-        }
-
         public virtual void SelectBayPositionDown()
         {
             this.IsPositionDownSelected = true;
@@ -342,7 +321,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 await this.machineLoadingUnitsWebService.StopAsync(null, this.MachineService.BayNumber);
 
-                this.IsStopping = true;
+                //this.IsStopping = true;
             }
             catch (Exception ex)
             {
@@ -368,7 +347,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         protected virtual void Error(Exception ex, string errorMessage)
         {
             this.IsBackNavigationAllowed = true;
-            this.IsStopping = false;
+            //this.IsStopping = false;
 
             this.RestoreStates();
             if (!string.IsNullOrEmpty(errorMessage))
@@ -379,13 +358,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.ShowNotification(ex);
             }
-        }
-
-        protected override async Task OnDataRefreshAsync()
-        {
-            await this.RetrieveLoadingUnitsAsync();
-
-            this.RaiseCanExecuteChanged();
         }
 
         protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
@@ -409,6 +381,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.startCommand?.RaiseCanExecuteChanged();
             this.stopCommand?.RaiseCanExecuteChanged();
 
+            this.loadingUnitsCommand?.RaiseCanExecuteChanged();
+
             this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
             this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
         }
@@ -419,8 +393,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 this.IsExecutingProcedure
                 &&
                 !this.IsWaitingForResponse
-                &&
-                !this.IsStopping;
+                //&&
+                //!this.IsStopping
+                ;
         }
 
         private void OnFsmException(NotificationMessageUI<FsmExceptionMessageData> message)
@@ -488,7 +463,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private void Stopped()
         {
-            this.IsStopping = false;
+            //this.IsStopping = false;
             this.RestoreStates();
 
             this.ShowNotification(

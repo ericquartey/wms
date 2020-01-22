@@ -163,7 +163,7 @@
     <value>Quantità</value>
   </data>
   <data name="RequestedQuantity" xml:space="preserve">
-    <value>Quantità Richiesta</value>
+    <value>Quantità richiesta [{0}]</value>
   </data>
   <data name="SearchCode" xml:space="preserve">
     <value>Cerca per Codice</value>
@@ -252,11 +252,8 @@
   <data name="ItemSearchSearch" xml:space="preserve">
     <value>Cerca articolo</value>
   </data>
-  <data name="ItemSearchQtyAvailable" xml:space="preserve">
-    <value>Quantità disponibile</value>
-  </data>
-  <data name="ItemSearchQtyRequest" xml:space="preserve">
-    <value>Quantità richiesta</value>
+  <data name="AvailableQuantity" xml:space="preserve">
+    <value>Quantità disponibile [{0}]</value>
   </data>
   <data name="ItemSearchDetail" xml:space="preserve">
     <value>Dettaglio articolo</value>
@@ -511,10 +508,10 @@
     <value>Operazione di versamento.</value>
   </data>
   <data name="DrawerActivityRefillingQtyToRefill" xml:space="preserve">
-    <value>Q.tà da versare [pz.]</value>
+    <value>Q.tà da versare  [{0}]</value>
   </data>
   <data name="DrawerActivityRefillingQtyRefilled" xml:space="preserve">
-    <value>Q.tà versata [pz.]</value>
+    <value>Q.tà versata  [{0}]</value>
   </data>
   <data name="DrawerActivityRefillingCapacityMaxAdjust" xml:space="preserve">
     <value>Aggiorna capacità massima</value>
@@ -928,7 +925,7 @@
     <value>Quantità da prelevare</value>
   </data>
   <data name="PickedQuantity" xml:space="preserve">
-    <value>Quantità prelevata</value>
+    <value>Quantità prelevata [{0}]</value>
   </data>
   <data name="MaterialStatus" xml:space="preserve">
     <value>Stato merce</value>
@@ -937,7 +934,7 @@
     <value>Operazione di inventario.</value>
   </data>
   <data name="InventoryQuantityDetected" xml:space="preserve">
-    <value>Quantità rilevata.</value>
+    <value>Quantità rilevata [{0}]</value>
   </data>
   <data name="PickRequestWasAccepted" xml:space="preserve">
     <value>La richiesta di prelievo per l'articolo {0} (quantità {1}) è stata accettata.</value>
@@ -1143,5 +1140,8 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   </data>
   <data name="RecallDrawer" xml:space="preserve">
     <value>Richiama Cassetto</value>
+  </data>
+  <data name="Pieces" xml:space="preserve">
+    <value>pezzi</value>
   </data>
 </root>

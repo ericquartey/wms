@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -83,9 +84,11 @@ namespace Ferretto.VW.Installer
                 throw new InvalidOperationException("Unable to continue with setup because execution was interrupted while one step was being rolled back.");
             }
 
+            await this.LoadSoftwareVersionAsync();
+
             try
             {
-                while (this.Steps.Any(s => s.Status != StepStatus.Done) || this.Steps.FirstOrDefault(s => s.MustRollback)?.Status is StepStatus.RolledBack)
+                while (this.Steps.Any(s => s.Status != StepStatus.Done) || this.Steps.FirstOrDefault(s => !s.SkipRollback)?.Status is StepStatus.RolledBack)
                 // stop when all steps are done or when the first step was rolled back
                 {
                     var hasRolledbackSteps = this.Steps.Any(s => s.Status == StepStatus.RolledBack);
@@ -114,7 +117,7 @@ namespace Ferretto.VW.Installer
                         this.Dump();
                         if (this.ActiveStep.Status is StepStatus.Failed)
                         {
-                            if (this.ActiveStep.MustRollback)
+                            if (!this.ActiveStep.SkipRollback)
                             {
                                 await this.RollbackStep(this.ActiveStep);
                             }
@@ -133,6 +136,11 @@ namespace Ferretto.VW.Installer
             var objectString = JsonConvert.SerializeObject(this, SerializerSettings);
 
             System.IO.File.WriteAllText("steps-snapshot.json", objectString);
+        }
+
+        private async Task LoadSoftwareVersionAsync()
+        {
+            var updateFile = ConfigurationManager.AppSettings.Get("UpdateFilePath");
         }
 
         private async Task RollbackStep(Step stepToRollback)

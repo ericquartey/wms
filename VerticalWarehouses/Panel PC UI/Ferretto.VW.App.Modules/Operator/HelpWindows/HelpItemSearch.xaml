@@ -54,11 +54,11 @@
                                                     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,570,0,0"
                                                     Highlighted="True" IsEnabled="True" Width="180"
                                                     InputText="12"
-                                                    LabelText="{x:Static res:OperatorApp.ItemSearchQtyRequest}" />
+                                                    LabelText="{x:Static res:OperatorApp.RequestedQuantity}" />
 
         <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,500,0,0" Width="180"
                                                ContentText="14"
-                                               LabelText="{x:Static res:OperatorApp.ItemSearchQtyAvailable}"/>
+                                               LabelText="{x:Static res:OperatorApp.AvailableQuantity}"/>
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0"
                   Content="{x:Static res:OperatorApp.CommonDown}"

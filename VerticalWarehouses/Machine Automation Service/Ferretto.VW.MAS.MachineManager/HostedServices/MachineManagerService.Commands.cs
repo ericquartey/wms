@@ -3,8 +3,10 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
@@ -170,7 +172,10 @@ namespace Ferretto.VW.MAS.MachineManager
                         try
                         {
                             var mission = this.missionsDataProvider.GetById(messageData.MissionId.Value);
-                            if (!this.missionMoveProvider.StartMission(mission, command, serviceProvider, false))
+                            var baysDataProvider = this.serviceScope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+                            if (!this.missionMoveProvider.UpdateWaitingMission(this.missionsDataProvider, baysDataProvider, mission)
+                                || !this.missionMoveProvider.StartMission(mission, command, serviceProvider, false)
+                                )
                             {
                                 this.Logger.LogWarning($"Conditions not met to activate Mission {mission.Id}, Load Unit {mission.LoadUnitId} .");
                             }

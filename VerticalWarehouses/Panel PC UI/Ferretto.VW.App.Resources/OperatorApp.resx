@@ -198,7 +198,7 @@
     <comment>Grid label</comment>
   </data>
   <data name="RequestedQuantity" xml:space="preserve">
-    <value>Requested quantity</value>
+    <value>Requested quantity  [{0}]</value>
     <comment>Label text</comment>
   </data>
   <data name="SearchCode" xml:space="preserve">
@@ -297,12 +297,8 @@
     <value>Search item</value>
     <comment>Button text</comment>
   </data>
-  <data name="ItemSearchQtyAvailable" xml:space="preserve">
-    <value>Available quantity</value>
-    <comment>Label text</comment>
-  </data>
-  <data name="ItemSearchQtyRequest" xml:space="preserve">
-    <value>Requested quantity</value>
+  <data name="AvailableQuantity" xml:space="preserve">
+    <value>Available quantity  [{0}]</value>
     <comment>Label text</comment>
   </data>
   <data name="ItemSearchDetail" xml:space="preserve">
@@ -641,11 +637,11 @@
     <comment>Page header</comment>
   </data>
   <data name="DrawerActivityRefillingQtyToRefill" xml:space="preserve">
-    <value>Requested quantity</value>
+    <value>Requested quantity  [{0}]</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityRefillingQtyRefilled" xml:space="preserve">
-    <value>Refilled quantity</value>
+    <value>Refilled quantity [{0}]</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityRefillingCapacityMaxAdjust" xml:space="preserve">
@@ -1177,7 +1173,7 @@
     <value>Quantity to pick</value>
   </data>
   <data name="PickedQuantity" xml:space="preserve">
-    <value>Picked quantity</value>
+    <value>Picked quantity [{0}]</value>
   </data>
   <data name="MaterialStatus" xml:space="preserve">
     <value>Material status</value>
@@ -1187,7 +1183,7 @@
     <comment>Header txt</comment>
   </data>
   <data name="InventoryQuantityDetected" xml:space="preserve">
-    <value>Quantity detected</value>
+    <value>Detected quantity [{0}]</value>
     <comment>Label text</comment>
   </data>
   <data name="PickRequestWasAccepted" xml:space="preserve">
@@ -1438,5 +1434,8 @@ Please put back any moved pieces in their original position.</value>
   </data>
   <data name="RecallDrawer" xml:space="preserve">
     <value>Recall Drawer</value>
+  </data>
+  <data name="Pieces" xml:space="preserve">
+    <value>pcs</value>
   </data>
 </root>

@@ -3,13 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using DevExpress.Mvvm;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
+    [Warning(WarningsArea.Installation)]
     internal sealed class LoadingUnitFromBayToCellViewModel : BaseCellMovementsViewModel
     {
+        #region Fields
+
+
+        #endregion
+
         #region Constructors
 
         public LoadingUnitFromBayToCellViewModel(
@@ -27,6 +37,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #endregion
 
+        #region Properties
+
+        #endregion
+
         #region Methods
 
         public override bool CanStart()
@@ -34,7 +48,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             return base.CanStart() &&
                    !this.IsMoving &&
                    ((this.SensorsService.IsLoadingUnitInBay && (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper)) ||
-                    (this.SensorsService.IsLoadingUnitInMiddleBottomBay && (this.MachineService.Bay.IsDouble || !this.MachineService.BayFirstPositionIsUpper)));
+                    (this.SensorsService.IsLoadingUnitInMiddleBottomBay && (this.MachineService.Bay.IsDouble || !this.MachineService.BayFirstPositionIsUpper))) &&
+                   this.LoadingUnitId.HasValue &&
+                   !this.MachineService.Loadunits.Any(f => f.Id == this.LoadingUnitId && f.Status == LoadingUnitStatus.InLocation);
         }
 
         public async Task GetLoadingUnits()
@@ -117,11 +133,29 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             await this.InitializingData();
         }
 
+
         private async Task InitializingData()
         {
             await this.GetLoadingUnits();
 
-            this.SelectBayPositionDown();
+            if (this.MachineService.Bay.IsDouble || !this.MachineService.BayFirstPositionIsUpper)
+            {
+                this.SelectBayPositionDown();
+            }
+            else
+            {
+                this.SelectBayPositionDown();
+            }
+
+            if (this.MachineStatus.LoadingUnitPositionDownInBay != null)
+            {
+                this.LoadingUnitId = this.MachineStatus.LoadingUnitPositionDownInBay.Id;
+            }
+
+            if (this.MachineStatus.LoadingUnitPositionUpInBay != null)
+            {
+                this.LoadingUnitId = this.MachineStatus.LoadingUnitPositionUpInBay.Id;
+            }
         }
 
         #endregion
