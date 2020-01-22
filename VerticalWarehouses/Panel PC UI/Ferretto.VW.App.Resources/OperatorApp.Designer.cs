@@ -79,6 +79,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Available quantity  [{0}].
+        /// </summary>
+        public static string AvailableQuantity {
+            get {
+                return ResourceManager.GetString("AvailableQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
         public static string Back {
@@ -755,7 +764,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Refilled quantity.
+        ///   Looks up a localized string similar to Refilled quantity [{0}].
         /// </summary>
         public static string DrawerActivityRefillingQtyRefilled {
             get {
@@ -764,7 +773,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Requested quantity.
+        ///   Looks up a localized string similar to Requested quantity  [{0}].
         /// </summary>
         public static string DrawerActivityRefillingQtyToRefill {
             get {
@@ -1385,7 +1394,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Quantity detected.
+        ///   Looks up a localized string similar to Detected quantity [{0}].
         /// </summary>
         public static string InventoryQuantityDetected {
             get {
@@ -1588,24 +1597,6 @@ namespace Ferretto.VW.App.Resources {
         public static string ItemSearchKeySearch {
             get {
                 return ResourceManager.GetString("ItemSearchKeySearch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Available quantity.
-        /// </summary>
-        public static string ItemSearchQtyAvailable {
-            get {
-                return ResourceManager.GetString("ItemSearchQtyAvailable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Requested quantity.
-        /// </summary>
-        public static string ItemSearchQtyRequest {
-            get {
-                return ResourceManager.GetString("ItemSearchQtyRequest", resourceCulture);
             }
         }
         
@@ -2582,7 +2573,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Picked quantity.
+        ///   Looks up a localized string similar to Picked quantity [{0}].
         /// </summary>
         public static string PickedQuantity {
             get {
@@ -2605,6 +2596,15 @@ namespace Ferretto.VW.App.Resources {
         public static string PickRequestWasAccepted {
             get {
                 return ResourceManager.GetString("PickRequestWasAccepted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pcs.
+        /// </summary>
+        public static string Pieces {
+            get {
+                return ResourceManager.GetString("Pieces", resourceCulture);
             }
         }
         
@@ -2663,7 +2663,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Requested quantity.
+        ///   Looks up a localized string similar to Requested quantity  [{0}].
         /// </summary>
         public static string RequestedQuantity {
             get {

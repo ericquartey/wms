@@ -19,11 +19,11 @@ namespace Ferretto.VW.Installer
 
             switch ((StepStatus)value)
             {
-                case StepStatus.Done: return "DarkGreen";
+                case StepStatus.Done: return "#008b00";
                 case StepStatus.Failed: return "Firebrick";
                 case StepStatus.ToDo: return "Gray";
                 case StepStatus.InProgress: return nameof(Colors.CornflowerBlue);
-                case StepStatus.RolledBack: return "DarkGreen";
+                case StepStatus.RolledBack: return "#008b00";
                 case StepStatus.RollingBack: return "Gold";
                 case StepStatus.RollbackFailed: return "Firebrick";
                 default: return nameof(Colors.White);

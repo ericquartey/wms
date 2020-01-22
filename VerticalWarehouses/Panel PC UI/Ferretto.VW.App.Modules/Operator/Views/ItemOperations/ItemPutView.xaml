@@ -65,9 +65,11 @@
                                Margin="0,0,10,0"
                                HorizontalAlignment="Right"
                                VerticalAlignment="Top"
+                               Increment="{Binding QuantityIncrement}"
+                               Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
                                EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                IsEnabled="{Binding CanInputQuantity}"
-                               LabelText="{x:Static resources:OperatorApp.DrawerActivityRefillingQtyRefilled}" />
+                               LabelText="{Binding MeasureUnit, StringFormat={x:Static resources:OperatorApp.DrawerActivityRefillingQtyRefilled}}" />
 
             <StackPanel Grid.Row="4"
                         Grid.ColumnSpan="4"

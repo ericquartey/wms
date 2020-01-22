@@ -123,7 +123,17 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     var state = GetStateByClassName(serviceProvider, mission, this.eventAggregator);
                     if (state != null)
                     {
-                        state.OnResume(command);
+                        try
+                        {
+                            state.OnResume(command);
+                        }
+                        catch (StateMachineException ex)
+                        {
+                            this.Logger.LogError(ex.NotificationMessage.Description, "Error while resuming a State.");
+                            //this.eventAggregator.GetEvent<NotificationEvent>().Publish(ex.NotificationMessage);
+
+                            state.OnStop(StopRequestReason.Error);
+                        }
                     }
                 }
 
@@ -252,9 +262,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     }
                     catch (Exception ex)
                     {
-                        // TODO why sometimes the Delete fails?
-                        //return false;
-                        return true;
+                        return false;
                     }
                     //transaction.Commit();
                 }

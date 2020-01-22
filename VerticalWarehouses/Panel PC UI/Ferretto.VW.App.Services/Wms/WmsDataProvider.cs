@@ -45,7 +45,7 @@ namespace Ferretto.VW.App.Services
             }
         }
 
-        public async Task PickAsync(int itemId, int requestedQuantity)
+        public async Task PickAsync(int itemId, double requestedQuantity)
         {
             if (!this.bayManager.Identity.AreaId.HasValue)
             {

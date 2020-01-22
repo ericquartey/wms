@@ -13,12 +13,13 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public ItemInventoryViewModel(
             IWmsImagesProvider wmsImagesProvider,
+            IItemsWmsWebService itemsWmsWebService,
             IMissionsWmsWebService missionsWmsWebService,
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
             IBayManager bayManager,
             IDialogService dialogService)
-            : base(wmsImagesProvider, missionsWmsWebService, bayManager, eventAggregator, missionOperationsService, dialogService)
+            : base(wmsImagesProvider, missionsWmsWebService, itemsWmsWebService, bayManager, eventAggregator, missionOperationsService, dialogService)
         {
         }
 

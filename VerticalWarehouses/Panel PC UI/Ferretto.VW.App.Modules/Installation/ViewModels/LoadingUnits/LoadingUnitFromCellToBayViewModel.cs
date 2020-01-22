@@ -55,16 +55,16 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             return !this.IsExecutingProcedure &&
                    this.IsPositionUpSelected &&
-                   this.MachineStatus.LoadingUnitPositionUpInBay is null &&
-                   this.MachineStatus.LoadingUnitPositionDownInBay is null;
+                   (this.MachineStatus.LoadingUnitPositionUpInBay is null ||
+                    this.MachineStatus.LoadingUnitPositionDownInBay is null);
         }
 
         public override bool CanSelectBayPositionUp()
         {
             return !this.IsExecutingProcedure &&
                    !this.IsPositionUpSelected &&
-                   this.MachineStatus.LoadingUnitPositionUpInBay is null &&
-                   this.MachineStatus.LoadingUnitPositionDownInBay is null;
+                   (this.MachineStatus.LoadingUnitPositionUpInBay is null ||
+                    this.MachineStatus.LoadingUnitPositionDownInBay is null);
         }
 
         public override bool CanStart()
@@ -72,8 +72,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             return base.CanStart() &&
                    this.LoadingUnitId.HasValue &&
                    this.MachineService.Loadunits.Any(f => f.Id == this.LoadingUnitId && f.Status == LoadingUnitStatus.InLocation) &&
-                   this.MachineStatus.LoadingUnitPositionUpInBay is null &&
-                   this.MachineStatus.LoadingUnitPositionDownInBay is null;
+                   (this.MachineStatus.LoadingUnitPositionUpInBay is null ||
+                    this.MachineStatus.LoadingUnitPositionDownInBay is null);
         }
 
         public override async Task OnAppearedAsync()

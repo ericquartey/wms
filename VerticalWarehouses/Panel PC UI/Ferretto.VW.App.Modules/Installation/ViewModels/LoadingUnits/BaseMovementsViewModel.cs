@@ -35,7 +35,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private bool isPositionUpSelected;
 
-        private bool isStopping;
+        //private bool isStopping;
 
         private int? loadingUnitId;
         
@@ -130,11 +130,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
-        public bool IsStopping
-        {
-            get => this.isStopping;
-            set => this.SetProperty(ref this.isStopping, value);
-        }
+        //public bool IsStopping
+        //{
+        //    get => this.isStopping;
+        //    set => this.SetProperty(ref this.isStopping, value);
+        //}
 
         public virtual bool KeepAlive => true;
 
@@ -321,7 +321,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 await this.machineLoadingUnitsWebService.StopAsync(null, this.MachineService.BayNumber);
 
-                this.IsStopping = true;
+                //this.IsStopping = true;
             }
             catch (Exception ex)
             {
@@ -347,7 +347,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         protected virtual void Error(Exception ex, string errorMessage)
         {
             this.IsBackNavigationAllowed = true;
-            this.IsStopping = false;
+            //this.IsStopping = false;
 
             this.RestoreStates();
             if (!string.IsNullOrEmpty(errorMessage))
@@ -393,8 +393,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 this.IsExecutingProcedure
                 &&
                 !this.IsWaitingForResponse
-                &&
-                !this.IsStopping;
+                //&&
+                //!this.IsStopping
+                ;
         }
 
         private void OnFsmException(NotificationMessageUI<FsmExceptionMessageData> message)
@@ -462,7 +463,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private void Stopped()
         {
-            this.IsStopping = false;
+            //this.IsStopping = false;
             this.RestoreStates();
 
             this.ShowNotification(

@@ -1,59 +1,52 @@
 ﻿using System;
 using System.IO;
-using System.ServiceModel.Channels;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Ferretto.VW.Installer
 {
-    internal class CommandlineStep : Step
+    internal class CommandlineStep : ShellStep
     {
         #region Constructors
 
-        public CommandlineStep(int number, string title, string rollbackScript, string script)
-            : base(number, title)
+        public CommandlineStep(int number, string title, string description, string rollbackScript, string script)
+            : base(number, title, description, rollbackScript, script)
         {
-            if (script is null)
-            {
-                throw new ArgumentNullException(nameof(script));
-            }
-
-            this.Script = script;
-            this.RollbackScript = rollbackScript;
         }
-
-        #endregion
-
-        #region Properties
-
-        public string RollbackScript { get; }
-
-        public string Script { get; }
-
-        public bool UsePowerShell { get; set; }
 
         #endregion
 
         #region Methods
 
-        protected override Task<StepStatus> OnApplyAsync()
+        protected override bool TryRunCommandline(string command)
         {
-            var success = this.TryRunCommandline(this.Script);
+            if (string.IsNullOrWhiteSpace(command))
+            {
+                throw new ArgumentException("Unable to run the commandline command.", nameof(command));
+            }
 
-            return Task.FromResult(
-                success
-                    ? StepStatus.Done
-                    : StepStatus.Failed);
-        }
+            command = this.InterpolateVariables(command);
 
-        protected override Task<StepStatus> OnRollbackAsync()
-        {
-            var success = this.TryRunCommandline(this.RollbackScript);
+            using (var process = new System.Diagnostics.Process())
+            {
+                process.StartInfo.FileName = "cmd.exe";
+                process.StartInfo.Arguments = $"/C {command}";
+                process.StartInfo.CreateNoWindow = true;
+                process.StartInfo.ErrorDialog = false;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.RedirectStandardError = true;
 
-            return Task.FromResult(
-                success
-                    ? StepStatus.RolledBack
-                    : StepStatus.RollbackFailed);
+                this.LogInformation($"cmd> {command}");
+
+                process.Start();
+                var thread = new Thread(new ParameterizedThreadStart(this.ReadStandardOutput));
+                thread.Start(process.StandardOutput);
+                process.WaitForExit();
+                thread.Join();
+
+                return process.ExitCode >= 0;
+            }
         }
 
         private void ReadStandardOutput(object obj)
@@ -69,44 +62,12 @@ namespace Ferretto.VW.Installer
             {
                 while (!inputStream.EndOfStream)
                 {
-                    this.LogWrite((char)inputStream.Read());
+                    this.LogChar((char)inputStream.Read());
                 }
             }
             catch
             {
                 // do nothing
-            }
-        }
-
-        private bool TryRunCommandline(string command)
-        {
-            if (string.IsNullOrWhiteSpace(command))
-            {
-                throw new ArgumentException("Unable to run the commandline command.", nameof(command));
-            }
-
-            command = this.InterpolateVariables(command);
-
-            using (var process = new System.Diagnostics.Process())
-            {
-                process.StartInfo.FileName = this.UsePowerShell ? "powershell.exe" : "cmd.exe";
-                process.StartInfo.Arguments = this.UsePowerShell ? $"-Version 2.0 -NoLogo -NonInteractive -Command \"{command}\"" : $"/C {command}";
-                process.StartInfo.CreateNoWindow = true;
-                process.StartInfo.ErrorDialog = false;
-                process.StartInfo.UseShellExecute = false;
-                process.StartInfo.RedirectStandardOutput = true;
-                process.StartInfo.RedirectStandardError = true;
-
-                var shellType = this.UsePowerShell ? "ps" : "cmd";
-                this.LogWriteLine($"{shellType}> {command}");
-
-                process.Start();
-                var thread = new Thread(new ParameterizedThreadStart(this.ReadStandardOutput));
-                thread.Start(process.StandardOutput);
-                process.WaitForExit();
-                thread.Join();
-
-                return process.ExitCode >= 0;
             }
         }
 
