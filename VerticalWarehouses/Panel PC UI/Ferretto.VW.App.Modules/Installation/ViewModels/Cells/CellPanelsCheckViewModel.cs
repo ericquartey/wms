@@ -305,10 +305,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.Panels = await this.machineCellPanelsWebService.GetAllAsync();
 
                 this.CurrentHeight = this.MachineStatus.ElevatorVerticalPosition;
-
-                this.procedureParameters = await this.machineCellPanelsWebService.GetProcedureParametersAsync();
-
-                this.StepValue = this.procedureParameters.Step;
             }
             catch (HttpRequestException ex)
             {
