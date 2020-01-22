@@ -1,13 +1,17 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
-    public class LoadingUnitFromCellToBayViewModel : BaseMovementsViewModel
+    [Warning(WarningsArea.Installation)]
+    internal sealed class LoadingUnitFromCellToBayViewModel : BaseMovementsViewModel
     {
         #region Fields
 
@@ -22,12 +26,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Constructors
 
         public LoadingUnitFromCellToBayViewModel(
-                    IMachineBaysWebService machineBaysWebService,
-                    IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-                    IBayManager bayManagerService)
-            : base(
-                machineLoadingUnitsWebService,
-                bayManagerService)
+                IMachineBaysWebService machineBaysWebService,
+                IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+                IBayManager bayManagerService)
+        : base(
+            machineLoadingUnitsWebService,
+            bayManagerService)
         {
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
         }
@@ -37,11 +41,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Properties
 
         public ICommand ConfirmEjectLoadingUnitCommand =>
-            this.confirmEjectLoadingUnitCommand
-            ??
-            (this.confirmEjectLoadingUnitCommand = new DelegateCommand(
-                async () => await this.ConfirmEjectLoadingUnit(),
-                            this.CanConfirmEjectLoadingUnit));
+        this.confirmEjectLoadingUnitCommand
+        ??
+        (this.confirmEjectLoadingUnitCommand = new DelegateCommand(
+            async () => await this.ConfirmEjectLoadingUnit(),
+                        this.CanConfirmEjectLoadingUnit));
 
         #endregion
 
@@ -50,17 +54,26 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public override bool CanSelectBayPositionDown()
         {
             return !this.IsExecutingProcedure &&
-                      this.IsPositionUpSelected &&
-                      this.MachineStatus.LoadingUnitPositionUpInBay is null &&
-                      this.MachineStatus.LoadingUnitPositionDownInBay is null;
+                   this.IsPositionUpSelected &&
+                   (this.MachineStatus.LoadingUnitPositionUpInBay is null ||
+                    this.MachineStatus.LoadingUnitPositionDownInBay is null);
         }
 
         public override bool CanSelectBayPositionUp()
         {
             return !this.IsExecutingProcedure &&
-                      !this.IsPositionUpSelected &&
-                      this.MachineStatus.LoadingUnitPositionUpInBay is null &&
-                      this.MachineStatus.LoadingUnitPositionDownInBay is null;
+                   !this.IsPositionUpSelected &&
+                   (this.MachineStatus.LoadingUnitPositionUpInBay is null ||
+                    this.MachineStatus.LoadingUnitPositionDownInBay is null);
+        }
+
+        public override bool CanStart()
+        {
+            return base.CanStart() &&
+                   this.LoadingUnitId.HasValue &&
+                   this.MachineService.Loadunits.Any(f => f.Id == this.LoadingUnitId && f.Status == LoadingUnitStatus.InLocation) &&
+                   (this.MachineStatus.LoadingUnitPositionUpInBay is null ||
+                    this.MachineStatus.LoadingUnitPositionDownInBay is null);
         }
 
         public override async Task OnAppearedAsync()
@@ -114,8 +127,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         protected override async Task OnDataRefreshAsync()
         {
             await this.SensorsService.RefreshAsync(true);
-
-            await this.RetrieveLoadingUnitsAsync();
 
             this.SelectBayPositionDown();
         }

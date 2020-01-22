@@ -60,8 +60,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private double? panelsCheckPercent;
 
-        private PositioningProcedure procedureParameters;
-
         private SubscriptionToken stepChangedToken;
 
         private double stepValue;
@@ -123,6 +121,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
             }
         }
+
+        public bool CurrentPanelIsChecked => this.CurrentPanel?.IsChecked ?? false;
 
         public int CurrentPanelMaxValue
         {
@@ -303,10 +303,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.Panels = await this.machineCellPanelsWebService.GetAllAsync();
 
                 this.CurrentHeight = this.MachineStatus.ElevatorVerticalPosition;
-
-                this.procedureParameters = await this.machineCellPanelsWebService.GetProcedureParametersAsync();
-
-                this.StepValue = this.procedureParameters.Step;
             }
             catch (HttpRequestException ex)
             {
@@ -324,6 +320,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             // Se mi sono posizionato sulla cella richiesta attivo l'automazione che setto il pannello come controllato
             if (!this.IsMoving &&
+                this.MachineStatus.MessageStatus == CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd &&
                 this.CurrentPanel != null &&
                 !this.CurrentPanel.IsChecked &&
                 this.onGoToCell)
@@ -335,7 +332,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     var currentPanelNumber = this.CurrentPanelNumber;
                     this.Panels = await this.machineCellPanelsWebService.GetAllAsync();
                     this.CurrentPanelNumber = currentPanelNumber;
-
                 }
                 catch (Exception ex)
                 {
@@ -374,14 +370,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.IsCanStepValue));
             this.RaisePropertyChanged(nameof(this.CurrentPanel));
             this.RaisePropertyChanged(nameof(this.CurrentPanelIsChecked));
-            
+
             this.displacementCommand?.RaiseCanExecuteChanged();
             this.applyCorrectionCommand?.RaiseCanExecuteChanged();
             this.goToCellHeightCommand?.RaiseCanExecuteChanged();
             this.stopCommand?.RaiseCanExecuteChanged();
         }
-
-        public bool CurrentPanelIsChecked => this.CurrentPanel?.IsChecked ?? false;
 
         private async Task ApplyCorrectionAsync()
         {

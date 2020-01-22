@@ -4,6 +4,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
+using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -73,6 +74,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         private void CloseShutterEnd()
         {
+            IMissionMoveBase newStep;
             if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
                 && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator
                 && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadUnit
@@ -82,32 +84,29 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 var description = $"Load Unit {this.Mission.LoadUnitId} placed on bay {bay.Number}";
                 this.SendMoveNotification(bay.Number, description, MessageStatus.OperationWaitResume);
 
-                if (this.Mission.WmsId.HasValue)
+                if (bay.Positions.Count() == 1
+                    || bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitDestination).IsUpper
+                    || bay.Carousel is null)
                 {
-                    if (bay.Positions.Count() == 1
-                        || bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitDestination).IsUpper
-                        || bay.Carousel is null)
+                    if (this.Mission.WmsId.HasValue)
                     {
-                        var newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                        newStep.OnEnter(null);
+                        newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     }
                     else
                     {
-                        var newStep = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                        newStep.OnEnter(null);
+                        newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     }
                 }
                 else
                 {
-                    var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                    newStep.OnEnter(null);
+                    newStep = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 }
             }
             else
             {
-                var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                newStep.OnEnter(null);
+                newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
             }
+            newStep.OnEnter(null);
         }
 
         #endregion

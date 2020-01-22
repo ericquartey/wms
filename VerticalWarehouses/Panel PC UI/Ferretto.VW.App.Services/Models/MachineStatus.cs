@@ -53,6 +53,8 @@ namespace Ferretto.VW.App.Services.Models
 
         private bool isMovingShutter;
 
+        private bool isStopped;
+
         private LoadingUnit loadingUnitPositionDownInBay;
 
         private LoadingUnit loadingUnitPositionUpInBay;
@@ -60,6 +62,8 @@ namespace Ferretto.VW.App.Services.Models
         private string logicalPosition;
 
         private int? logicalPositionId;
+
+        private MessageStatus messageStatus;
 
         private double? verticalSpeed;
 
@@ -189,6 +193,12 @@ namespace Ferretto.VW.App.Services.Models
             set => this.SetProperty(ref this.isMovingShutter, value);
         }
 
+        public bool IsStopped
+        {
+            get => this.isStopped;
+            set => this.SetProperty(ref this.isStopped, value);
+        }
+
         public LoadingUnit LoadingUnitPositionDownInBay
         {
             get => this.loadingUnitPositionDownInBay;
@@ -211,6 +221,12 @@ namespace Ferretto.VW.App.Services.Models
         {
             get => this.logicalPositionId;
             set => this.SetProperty(ref this.logicalPositionId, value);
+        }
+
+        public MessageStatus MessageStatus
+        {
+            get => this.messageStatus;
+            set => this.SetProperty(ref this.messageStatus, value);
         }
 
         public double? VerticalSpeed

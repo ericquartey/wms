@@ -149,6 +149,11 @@ namespace Ferretto.VW.App.Services
             private set => this.SetProperty(ref this.bay, value);
         }
 
+        public bool BayFirstPositionIsUpper
+        {
+            get => this.bay?.Positions?.FirstOrDefault()?.IsUpper ?? false;
+        }
+
         public MAS.AutomationService.Contracts.BayNumber BayNumber
         {
             get => this.bayNumber;
@@ -517,6 +522,8 @@ namespace Ferretto.VW.App.Services
 
                             var ms = (MachineStatus)this.MachineStatus.Clone();
 
+                            ms.IsStopped = false;
+                            ms.MessageStatus = message.Status;
                             ms.IsError = false;
                             ms.IsMoving = true;
 
@@ -526,7 +533,8 @@ namespace Ferretto.VW.App.Services
 
                                 ms.CurrentMissionId = messageData.MissionId;
 
-                                this.Notification = "Movimento in corso...";
+                                // TODO use messageData.MissionStep instead of message.Description
+                                this.Notification = $"Movimento in corso... ({ms.CurrentMissionId} - {message.Description})";
                             }
 
                             if (message?.Data is PositioningMessageData dataPositioning)
@@ -568,6 +576,15 @@ namespace Ferretto.VW.App.Services
 
                     case MessageStatus.OperationExecuting:
                         {
+                            if (message?.Data is PositioningMessageData dataLog)
+                            {
+                                this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status}; {dataLog?.AxisMovement};");
+                            }
+                            else
+                            {
+                                this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status};");
+                            }
+
                             if (this.MachineStatus.IsMoving)
                             {
                                 if (message?.Data is PositioningMessageData dataPositioningInfo
@@ -582,6 +599,7 @@ namespace Ferretto.VW.App.Services
                                     {
                                         var ms = (MachineStatus)this.MachineStatus.Clone();
 
+                                        ms.MessageStatus = message.Status;
                                         ms.VerticalSpeed = null;
                                         if (dataPositioningInfo.AxisMovement == Axis.Vertical)
                                         {
@@ -609,15 +627,14 @@ namespace Ferretto.VW.App.Services
                                 {
                                     this.WriteInfo(null);
                                 }
+                            }
 
-                                if (message?.Data is MoveLoadingUnitMessageData moveLoadingUnitMessageData)
-                                {
-#if DEBUG
-                                    this.Notification = $"Movimento in corso... ({moveLoadingUnitMessageData.MissionStep})";
-#else
-                                    this.Notification = $"Movimento in corso...";
-#endif
-                                }
+                            if (message?.Data is MoveLoadingUnitMessageData moveLoadingUnitMessageData)
+                            {
+                                this.logger.Debug($"OnMoveLoadingUnitMessageData:{moveLoadingUnitMessageData.MissionStep};");
+
+                                // TODO use messageData.MissionStep instead of message.Description
+                                this.Notification = $"Movimento in corso... ({this.MachineStatus?.CurrentMissionId} - {message.Description})";
                             }
 
                             break;
@@ -634,6 +651,8 @@ namespace Ferretto.VW.App.Services
                             }).GetAwaiter().GetResult();
 
                             var ms = (MachineStatus)this.MachineStatus.Clone();
+
+                            ms.MessageStatus = message.Status;
 
                             Task.Run(async () => ms = await this.GetElevatorAsync(ms)).GetAwaiter().GetResult();
 
@@ -663,6 +682,14 @@ namespace Ferretto.VW.App.Services
                             }).GetAwaiter().GetResult();
 
                             var ms = (MachineStatus)this.MachineStatus.Clone();
+
+                            ms.MessageStatus = message.Status;
+
+                            if (message.Status == MessageStatus.OperationStop ||
+                                message.Status == MessageStatus.OperationStepStop)
+                            {
+                                ms.IsStopped = true;
+                            }
 
                             if (message?.Data is PositioningMessageData dataPositioning)
                             {
@@ -701,22 +728,27 @@ namespace Ferretto.VW.App.Services
                                 this.ClearNotifications();
                             }
 
-                            if (this.Bay.Positions?.OrderBy(o => o.Height).LastOrDefault() is BayPosition bayPositionUp)
+                            if (this.Bay.IsDouble || this.BayFirstPositionIsUpper)
                             {
-                                ms.LoadingUnitPositionUpInBay = bayPositionUp.LoadingUnit;
-                                if (bayPositionUp.LoadingUnit != null)
+                                if (this.Bay.Positions?.OrderBy(o => o.Height).LastOrDefault() is BayPosition bayPositionUp)
                                 {
-                                    ms.ElevatorPositionLoadingUnit = bayPositionUp.LoadingUnit;
+                                    ms.LoadingUnitPositionUpInBay = bayPositionUp.LoadingUnit;
+                                    if (bayPositionUp.LoadingUnit != null)
+                                    {
+                                        ms.ElevatorPositionLoadingUnit = bayPositionUp.LoadingUnit;
+                                    }
                                 }
                             }
 
-                            if (this.Bay.IsDouble &&
-                                this.Bay.Positions?.OrderBy(o => o.Height).FirstOrDefault() is BayPosition bayPositionDown)
+                            if (this.Bay.IsDouble || !this.BayFirstPositionIsUpper)
                             {
-                                ms.LoadingUnitPositionDownInBay = bayPositionDown.LoadingUnit;
-                                if (bayPositionDown.LoadingUnit != null)
+                                if (this.Bay.Positions?.OrderBy(o => o.Height).FirstOrDefault() is BayPosition bayPositionDown)
                                 {
-                                    ms.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
+                                    ms.LoadingUnitPositionDownInBay = bayPositionDown.LoadingUnit;
+                                    if (bayPositionDown.LoadingUnit != null)
+                                    {
+                                        ms.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
+                                    }
                                 }
                             }
 
@@ -752,6 +784,7 @@ namespace Ferretto.VW.App.Services
 
                             var ms = (MachineStatus)this.MachineStatus.Clone();
 
+                            ms.MessageStatus = message.Status;
                             ms.IsMoving = false;
                             ms.IsError = true;
                             ms.ErrorDescription = message.Description;
@@ -951,22 +984,27 @@ namespace Ferretto.VW.App.Services
 
             ms.BayChainPosition = await this.machineCarouselWebService.GetPositionAsync();
 
-            if (this.Bay.Positions?.OrderBy(o => o.Height).LastOrDefault() is BayPosition bayPositionUp)
+            if (this.Bay.IsDouble || this.BayFirstPositionIsUpper)
             {
-                ms.LoadingUnitPositionUpInBay = bayPositionUp.LoadingUnit;
-                if (bayPositionUp.LoadingUnit != null)
+                if (this.Bay.Positions?.OrderBy(o => o.Height).LastOrDefault() is BayPosition bayPositionUp)
                 {
-                    ms.ElevatorPositionLoadingUnit = bayPositionUp.LoadingUnit;
+                    ms.LoadingUnitPositionUpInBay = bayPositionUp.LoadingUnit;
+                    if (bayPositionUp.LoadingUnit != null)
+                    {
+                        ms.ElevatorPositionLoadingUnit = bayPositionUp.LoadingUnit;
+                    }
                 }
             }
 
-            if (this.Bay.IsDouble &&
-                this.Bay.Positions?.OrderBy(o => o.Height).FirstOrDefault() is BayPosition bayPositionDown)
+            if (this.Bay.IsDouble || !this.BayFirstPositionIsUpper)
             {
-                ms.LoadingUnitPositionDownInBay = bayPositionDown.LoadingUnit;
-                if (bayPositionDown.LoadingUnit != null)
+                if (this.Bay.Positions?.OrderBy(o => o.Height).FirstOrDefault() is BayPosition bayPositionDown)
                 {
-                    ms.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
+                    ms.LoadingUnitPositionDownInBay = bayPositionDown.LoadingUnit;
+                    if (bayPositionDown.LoadingUnit != null)
+                    {
+                        ms.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
+                    }
                 }
             }
 
@@ -1109,10 +1147,10 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification("Homing non eseguito.", NotificationSeverity.Error);
                         }
-                        else if ((((this.MachineStatus.LoadingUnitPositionDownInBay != null && !this.sensorsService.IsLoadingUnitInMiddleBottomBay && this.Bay.IsDouble) ||
-                                   (this.MachineStatus.LoadingUnitPositionUpInBay != null && !this.sensorsService.IsLoadingUnitInBay)) ||
-                                  ((this.MachineStatus.LoadingUnitPositionDownInBay == null && this.sensorsService.IsLoadingUnitInMiddleBottomBay && this.Bay.IsDouble) ||
-                                   (this.MachineStatus.LoadingUnitPositionUpInBay == null && this.sensorsService.IsLoadingUnitInBay))))
+                        else if ((((this.MachineStatus.LoadingUnitPositionDownInBay != null && !this.sensorsService.IsLoadingUnitInMiddleBottomBay && (this.Bay.IsDouble || !this.BayFirstPositionIsUpper)) ||
+                                   (this.MachineStatus.LoadingUnitPositionUpInBay != null && !this.sensorsService.IsLoadingUnitInBay && (this.Bay.IsDouble || this.BayFirstPositionIsUpper))) ||
+                                  ((this.MachineStatus.LoadingUnitPositionDownInBay == null && this.sensorsService.IsLoadingUnitInMiddleBottomBay && (this.Bay.IsDouble || !this.BayFirstPositionIsUpper)) ||
+                                   (this.MachineStatus.LoadingUnitPositionUpInBay == null && this.sensorsService.IsLoadingUnitInBay && (this.Bay.IsDouble || this.BayFirstPositionIsUpper)))))
                         {
                             this.ShowNotification("Inconsistenza sensori di presenza cassetto in baia.", NotificationSeverity.Error);
                         }

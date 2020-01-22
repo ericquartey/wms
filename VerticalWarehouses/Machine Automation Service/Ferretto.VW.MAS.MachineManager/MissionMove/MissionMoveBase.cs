@@ -399,7 +399,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 (this.Mission.LoadUnitDestination == LoadingUnitLocation.Cell),
                 this.Mission.Id,
                 this.Mission.Action,
-                this.Mission.StopReason);
+                this.Mission.StopReason,
+                this.Mission.Step);
 
             var msg = new NotificationMessage(
                 messageData,

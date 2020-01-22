@@ -18,6 +18,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
     {
         #region Fields
 
+        private readonly IMachineSetupStatusWebService machineSetupStatusWebService;
+
         private DelegateCommand extractionLoadingUnitsCommand;
 
         private DelegateCommand insertionLoadingUnitsCommand;
@@ -34,9 +36,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Constructors
 
-        public LoadingUnitsMenuViewModel()
+        public LoadingUnitsMenuViewModel(
+            IMachineSetupStatusWebService machineSetupStatusWebService)
             : base()
         {
+            this.machineSetupStatusWebService = machineSetupStatusWebService ?? throw new ArgumentNullException(nameof(machineSetupStatusWebService));
+
+            this.SetupStatusCapabilities = new SetupStatusCapabilities();
         }
 
         #endregion
@@ -68,7 +74,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.extractionLoadingUnitsCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.ExtractionLoadingUnits),
                 () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual && this.MachineService.IsHoming));
+                      this.MachineModeService.MachineMode == MachineMode.Manual && this.VerticalOriginCalibration.IsCompleted));
 
         public ICommand InsertionLoadingUnitsCommand =>
             this.insertionLoadingUnitsCommand
@@ -76,7 +82,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.insertionLoadingUnitsCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.InsertionLoadingUnits),
                 () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual && this.MachineService.IsHoming));
+                      this.MachineModeService.MachineMode == MachineMode.Manual && this.VerticalOriginCalibration.IsCompleted));
 
         public ICommand LoadingUnitsBayToBayCommand =>
             this.loadingUnitsBayToBayCommand
@@ -84,7 +90,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.loadingUnitsBayToBayCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.LoadingUnitsBayToBay),
                 () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual && this.MachineService.IsHoming));
+                      this.MachineModeService.MachineMode == MachineMode.Manual && this.VerticalOriginCalibration.IsCompleted));
 
         public ICommand LoadingUnitsCommand =>
             this.loadingUnitsCommand
@@ -99,7 +105,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.moveLoadingUnitsCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.MoveLoadingUnits),
                 () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual && this.MachineService.IsHoming));
+                      this.MachineModeService.MachineMode == MachineMode.Manual && this.VerticalOriginCalibration.IsCompleted));
 
         public ICommand TestCompleteCommand =>
             this.testCompleteCommand
@@ -109,9 +115,18 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.CanExecuteCommand() &&
                       this.MachineService.IsHoming));
 
+        protected SetupStepStatus VerticalOriginCalibration => this.SetupStatusCapabilities?.VerticalOriginCalibration ?? new SetupStepStatus();
+
+        protected SetupStatusCapabilities SetupStatusCapabilities { get; private set; }
+
         #endregion
 
         #region Methods
+
+        protected override async Task OnDataRefreshAsync()
+        {
+            await this.UpdateSetupStatusAsync();
+        }
 
         protected override void RaiseCanExecuteChanged()
         {
@@ -177,6 +192,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
                        trackCurrentView: true);
                     break;
             }
+        }
+
+        private async Task UpdateSetupStatusAsync()
+        {
+            this.SetupStatusCapabilities = await this.machineSetupStatusWebService.GetAsync();
+
+            this.RaiseCanExecuteChanged();
         }
 
         #endregion
