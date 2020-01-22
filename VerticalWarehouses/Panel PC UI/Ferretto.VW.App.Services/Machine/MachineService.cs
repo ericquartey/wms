@@ -678,6 +678,12 @@ namespace Ferretto.VW.App.Services
 
                             var ms = (MachineStatus)this.MachineStatus.Clone();
 
+                            if (message.Status == MessageStatus.OperationStop ||
+                                message.Status == MessageStatus.OperationStepStop)
+                            {
+                                ms.IsStopped = true;
+                            }
+
                             if (message?.Data is PositioningMessageData dataPositioning)
                             {
                                 Task.Run(async () => ms = await this.GetElevatorAsync(ms)).GetAwaiter().GetResult();
