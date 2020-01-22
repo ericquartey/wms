@@ -5,20 +5,13 @@
     <ControlTemplate x:Key="PpcSensorControlTemplate"
                      TargetType="{x:Type controls:PpcSensorControl}">
         <StackPanel Orientation="Horizontal">
-            <Grid Width="22"
-                  Height="22">
-                <Ellipse Width="22"
-                         Height="22"
-                         HorizontalAlignment="Center"
-                         VerticalAlignment="Center"
-                         Fill="{TemplateBinding IndicatorBorderBrush}" />
-                <Ellipse Name="SensorIndicatorEllipse"
-                         Width="19"
-                         Height="19"
-                         HorizontalAlignment="Center"
-                         VerticalAlignment="Center"
-                         Fill="{TemplateBinding IndicatorFillBrush}" />
-            </Grid>
+            <Ellipse Width="22"
+                     Height="22"
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Center"
+                     Fill="{TemplateBinding IndicatorFillBrush}"
+                     Stroke="{TemplateBinding IndicatorBorderBrush}"
+                     StrokeThickness="1" />
             <TextBlock Style="{DynamicResource PpcSensorControlLabelStyle}"
                        Text="{TemplateBinding Text}" />
         </StackPanel>
@@ -29,20 +22,13 @@
         <StackPanel Height="13"
                     Margin="0,0,0,0"
                     Orientation="Horizontal">
-            <Grid Width="13"
-                  Height="13">
-                <Ellipse Width="13"
-                         Height="13"
-                         HorizontalAlignment="Center"
-                         VerticalAlignment="Center"
-                         Fill="{TemplateBinding IndicatorBorderBrush}" />
-                <Ellipse Name="SensorIndicatorEllipse"
-                         Width="11"
-                         Height="11"
-                         HorizontalAlignment="Center"
-                         VerticalAlignment="Center"
-                         Fill="{TemplateBinding IndicatorFillBrush}" />
-            </Grid>
+            <Ellipse Width="13"
+                     Height="13"
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Center"
+                     Fill="{TemplateBinding IndicatorFillBrush}"
+                     Stroke="{TemplateBinding IndicatorBorderBrush}"
+                     StrokeThickness="1" />
             <TextBlock Style="{DynamicResource PpcSensorControlLabelStyle}"
                        Text="{TemplateBinding Text}"
                        Visibility="Collapsed" />

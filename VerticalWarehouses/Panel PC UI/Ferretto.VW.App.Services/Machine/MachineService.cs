@@ -143,15 +143,15 @@ namespace Ferretto.VW.App.Services
 
         #region Properties
 
-        public bool BayFirstPositionIsUpper
-        {
-            get => this.bay?.Positions?.FirstOrDefault()?.IsUpper ?? false;
-        }
-
         public Bay Bay
         {
             get => this.bay;
             private set => this.SetProperty(ref this.bay, value);
+        }
+
+        public bool BayFirstPositionIsUpper
+        {
+            get => this.bay?.Positions?.FirstOrDefault()?.IsUpper ?? false;
         }
 
         public MAS.AutomationService.Contracts.BayNumber BayNumber
@@ -678,6 +678,12 @@ namespace Ferretto.VW.App.Services
 
                             var ms = (MachineStatus)this.MachineStatus.Clone();
 
+                            if (message.Status == MessageStatus.OperationStop ||
+                                message.Status == MessageStatus.OperationStepStop)
+                            {
+                                ms.IsStopped = true;
+                            }
+
                             if (message?.Data is PositioningMessageData dataPositioning)
                             {
                                 Task.Run(async () => ms = await this.GetElevatorAsync(ms)).GetAwaiter().GetResult();
@@ -715,22 +721,27 @@ namespace Ferretto.VW.App.Services
                                 this.ClearNotifications();
                             }
 
-                            if (this.Bay.Positions?.OrderBy(o => o.Height).LastOrDefault() is BayPosition bayPositionUp)
+                            if (this.Bay.IsDouble || this.BayFirstPositionIsUpper)
                             {
-                                ms.LoadingUnitPositionUpInBay = bayPositionUp.LoadingUnit;
-                                if (bayPositionUp.LoadingUnit != null)
+                                if (this.Bay.Positions?.OrderBy(o => o.Height).LastOrDefault() is BayPosition bayPositionUp)
                                 {
-                                    ms.ElevatorPositionLoadingUnit = bayPositionUp.LoadingUnit;
+                                    ms.LoadingUnitPositionUpInBay = bayPositionUp.LoadingUnit;
+                                    if (bayPositionUp.LoadingUnit != null)
+                                    {
+                                        ms.ElevatorPositionLoadingUnit = bayPositionUp.LoadingUnit;
+                                    }
                                 }
                             }
 
-                            if (this.Bay.IsDouble &&
-                                this.Bay.Positions?.OrderBy(o => o.Height).FirstOrDefault() is BayPosition bayPositionDown)
+                            if (this.Bay.IsDouble || !this.BayFirstPositionIsUpper)
                             {
-                                ms.LoadingUnitPositionDownInBay = bayPositionDown.LoadingUnit;
-                                if (bayPositionDown.LoadingUnit != null)
+                                if (this.Bay.Positions?.OrderBy(o => o.Height).FirstOrDefault() is BayPosition bayPositionDown)
                                 {
-                                    ms.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
+                                    ms.LoadingUnitPositionDownInBay = bayPositionDown.LoadingUnit;
+                                    if (bayPositionDown.LoadingUnit != null)
+                                    {
+                                        ms.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
+                                    }
                                 }
                             }
 
@@ -965,22 +976,27 @@ namespace Ferretto.VW.App.Services
 
             ms.BayChainPosition = await this.machineCarouselWebService.GetPositionAsync();
 
-            if (this.Bay.Positions?.OrderBy(o => o.Height).LastOrDefault() is BayPosition bayPositionUp)
+            if (this.Bay.IsDouble || this.BayFirstPositionIsUpper)
             {
-                ms.LoadingUnitPositionUpInBay = bayPositionUp.LoadingUnit;
-                if (bayPositionUp.LoadingUnit != null)
+                if (this.Bay.Positions?.OrderBy(o => o.Height).LastOrDefault() is BayPosition bayPositionUp)
                 {
-                    ms.ElevatorPositionLoadingUnit = bayPositionUp.LoadingUnit;
+                    ms.LoadingUnitPositionUpInBay = bayPositionUp.LoadingUnit;
+                    if (bayPositionUp.LoadingUnit != null)
+                    {
+                        ms.ElevatorPositionLoadingUnit = bayPositionUp.LoadingUnit;
+                    }
                 }
             }
 
-            if (this.Bay.IsDouble &&
-                this.Bay.Positions?.OrderBy(o => o.Height).FirstOrDefault() is BayPosition bayPositionDown)
+            if (this.Bay.IsDouble || !this.BayFirstPositionIsUpper)
             {
-                ms.LoadingUnitPositionDownInBay = bayPositionDown.LoadingUnit;
-                if (bayPositionDown.LoadingUnit != null)
+                if (this.Bay.Positions?.OrderBy(o => o.Height).FirstOrDefault() is BayPosition bayPositionDown)
                 {
-                    ms.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
+                    ms.LoadingUnitPositionDownInBay = bayPositionDown.LoadingUnit;
+                    if (bayPositionDown.LoadingUnit != null)
+                    {
+                        ms.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
+                    }
                 }
             }
 

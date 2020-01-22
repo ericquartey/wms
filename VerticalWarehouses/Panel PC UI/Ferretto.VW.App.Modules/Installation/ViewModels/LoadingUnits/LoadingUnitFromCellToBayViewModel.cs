@@ -4,10 +4,13 @@ using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
-    public class LoadingUnitFromCellToBayViewModel : BaseMovementsViewModel
+    [Warning(WarningsArea.Installation)]
+    internal sealed class LoadingUnitFromCellToBayViewModel : BaseMovementsViewModel
     {
         #region Fields
 
@@ -22,12 +25,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Constructors
 
         public LoadingUnitFromCellToBayViewModel(
-                    IMachineBaysWebService machineBaysWebService,
-                    IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-                    IBayManager bayManagerService)
-            : base(
-                machineLoadingUnitsWebService,
-                bayManagerService)
+                IMachineBaysWebService machineBaysWebService,
+                IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+                IBayManager bayManagerService)
+        : base(
+            machineLoadingUnitsWebService,
+            bayManagerService)
         {
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
         }
@@ -37,11 +40,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Properties
 
         public ICommand ConfirmEjectLoadingUnitCommand =>
-            this.confirmEjectLoadingUnitCommand
-            ??
-            (this.confirmEjectLoadingUnitCommand = new DelegateCommand(
-                async () => await this.ConfirmEjectLoadingUnit(),
-                            this.CanConfirmEjectLoadingUnit));
+        this.confirmEjectLoadingUnitCommand
+        ??
+        (this.confirmEjectLoadingUnitCommand = new DelegateCommand(
+            async () => await this.ConfirmEjectLoadingUnit(),
+                        this.CanConfirmEjectLoadingUnit));
 
         #endregion
 
@@ -114,8 +117,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         protected override async Task OnDataRefreshAsync()
         {
             await this.SensorsService.RefreshAsync(true);
-
-            await this.RetrieveLoadingUnitsAsync();
 
             this.SelectBayPositionDown();
         }

@@ -38,9 +38,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         private bool isStopping;
 
         private int? loadingUnitId;
-
-        private IEnumerable<LoadingUnit> loadingUnits;
-
+        
         private SubscriptionToken moveLoadingUnitToken;
 
         private DelegateCommand selectBayPositionDownCommand;
@@ -91,7 +89,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     return false;
                 }
 
-                return this.loadingUnits.Any(l => l.Id == this.loadingUnitId.Value);
+                return this.MachineService.Loadunits.Any(l => l.Id == this.loadingUnitId.Value);
             }
         }
 
@@ -125,23 +123,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             set => this.SetProperty(ref this.isStopping, value);
         }
 
-        public override bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            protected set
-            {
-                if (this.SetProperty(ref this.isWaitingForResponse, value))
-                {
-                    if (this.isWaitingForResponse)
-                    {
-                        this.ClearNotifications();
-                    }
-
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
         public virtual bool KeepAlive => true;
 
         public int? LoadingUnitCellId
@@ -153,7 +134,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     return null;
                 }
 
-                return this.loadingUnits.FirstOrDefault(l => l.Id == this.loadingUnitId.Value)?.CellId;
+                return this.MachineService.Loadunits.FirstOrDefault(l => l.Id == this.loadingUnitId.Value)?.CellId;
             }
         }
 
@@ -295,21 +276,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             await base.OnAppearedAsync();
         }
 
-        public async Task RetrieveLoadingUnitsAsync()
-        {
-            try
-            {
-                this.loadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-            }
-        }
-
         public virtual void SelectBayPositionDown()
         {
             this.IsPositionDownSelected = true;
@@ -379,13 +345,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.ShowNotification(ex);
             }
-        }
-
-        protected override async Task OnDataRefreshAsync()
-        {
-            await this.RetrieveLoadingUnitsAsync();
-
-            this.RaiseCanExecuteChanged();
         }
 
         protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)

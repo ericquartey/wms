@@ -124,6 +124,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public bool CurrentPanelIsChecked => this.CurrentPanel?.IsChecked ?? false;
+
         public int CurrentPanelMaxValue
         {
             get => this.currentPanelMaxValue;
@@ -324,6 +326,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             // Se mi sono posizionato sulla cella richiesta attivo l'automazione che setto il pannello come controllato
             if (!this.IsMoving &&
+                !e.MachineStatus.IsStopped &&
                 this.CurrentPanel != null &&
                 !this.CurrentPanel.IsChecked &&
                 this.onGoToCell)
@@ -335,7 +338,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     var currentPanelNumber = this.CurrentPanelNumber;
                     this.Panels = await this.machineCellPanelsWebService.GetAllAsync();
                     this.CurrentPanelNumber = currentPanelNumber;
-
                 }
                 catch (Exception ex)
                 {
@@ -374,14 +376,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.IsCanStepValue));
             this.RaisePropertyChanged(nameof(this.CurrentPanel));
             this.RaisePropertyChanged(nameof(this.CurrentPanelIsChecked));
-            
+
             this.displacementCommand?.RaiseCanExecuteChanged();
             this.applyCorrectionCommand?.RaiseCanExecuteChanged();
             this.goToCellHeightCommand?.RaiseCanExecuteChanged();
             this.stopCommand?.RaiseCanExecuteChanged();
         }
-
-        public bool CurrentPanelIsChecked => this.CurrentPanel?.IsChecked ?? false;
 
         private async Task ApplyCorrectionAsync()
         {
