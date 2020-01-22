@@ -368,7 +368,7 @@
         "MaxGrossWeight": 50000,
         "ModelName": "Vertimag 1000kg",
         "LoadUnitTare": 120,
-        "LoadUnitMaxNetWeight": 930,
+        "LoadUnitMaxNetWeight": 1100,
         "LoadUnitMaxHeight": 750,
         "Panels": [
             {
@@ -448,63 +448,63 @@
                         "Id": 21,
                         "Position": 1688.0,
                         "Priority": 21,
-                        "IsFree": false,
+                        "IsFree": true,
                         "BlockLevel": "None"
                     },
                     {
                         "Id": 23,
                         "Position": 1713.0,
                         "Priority": 23,
-                        "IsFree": false,
+                        "IsFree": true,
                         "BlockLevel": "None"
                     },
                     {
                         "Id": 25,
                         "Position": 1738.0,
                         "Priority": 25,
-                        "IsFree": false,
+                        "IsFree": true,
                         "BlockLevel": "None"
                     },
                     {
                         "Id": 27,
                         "Position": 1763.0,
                         "Priority": 27,
-                        "IsFree": false,
+                        "IsFree": true,
                         "BlockLevel": "None"
                     },
                     {
                         "Id": 29,
                         "Position": 1788.0,
                         "Priority": 29,
-                        "IsFree": false,
+                        "IsFree": true,
                         "BlockLevel": "None"
                     },
                     {
                         "Id": 31,
                         "Position": 1813.0,
                         "Priority": 31,
-                        "IsFree": false,
+                        "IsFree": true,
                         "BlockLevel": "None"
                     },
                     {
                         "Id": 33,
                         "Position": 1838.0,
                         "Priority": 33,
-                        "IsFree": false,
+                        "IsFree": true,
                         "BlockLevel": "None"
                     },
                     {
                         "Id": 35,
                         "Position": 1863.0,
                         "Priority": 35,
-                        "IsFree": false,
+                        "IsFree": true,
                         "BlockLevel": "None"
                     },
                     {
                         "Id": 37,
                         "Position": 1888.0,
                         "Priority": 37,
-                        "IsFree": false,
+                        "IsFree": true,
                         "BlockLevel": "None"
                     },
                     {
@@ -2491,133 +2491,133 @@
                         "Id": 2,
                         "Position": 1439.0,
                         "Priority": 2,
-                        "IsFree": true,
+                        "IsFree": false,
                         "BlockLevel": "None"
                     },
                     {
                         "Id": 4,
                         "Position": 1464.0,
                         "Priority": 4,
-                        "IsFree": true,
+                        "IsFree": false,
                         "BlockLevel": "None"
                     },
                     {
                         "Id": 6,
                         "Position": 1489.0,
                         "Priority": 6,
-                        "IsFree": true,
+                        "IsFree": false,
                         "BlockLevel": "None"
                     },
                     {
                         "Id": 8,
                         "Position": 1514.0,
                         "Priority": 8,
-                        "IsFree": true,
+                        "IsFree": false,
                         "BlockLevel": "None"
                     },
                     {
                         "Id": 10,
                         "Position": 1539.0,
                         "Priority": 10,
-                        "IsFree": true,
+                        "IsFree": false,
                         "BlockLevel": "None"
                     },
                     {
                         "Id": 12,
                         "Position": 1564.0,
                         "Priority": 12,
-                        "IsFree": true,
+                        "IsFree": false,
                         "BlockLevel": "None"
                     },
                     {
                         "Id": 14,
                         "Position": 1589.0,
                         "Priority": 14,
-                        "IsFree": true,
+                        "IsFree": false,
                         "BlockLevel": "None"
                     },
                     {
                         "Id": 16,
                         "Position": 1614.0,
                         "Priority": 16,
-                        "IsFree": true,
+                        "IsFree": false,
                         "BlockLevel": "None"
                     },
                     {
                         "Id": 18,
                         "Position": 1639.0,
                         "Priority": 18,
-                        "IsFree": true,
+                        "IsFree": false,
                         "BlockLevel": "None"
                     },
                     {
                         "Id": 20,
                         "Position": 1664.0,
                         "Priority": 20,
-                        "IsFree": true,
+                        "IsFree": false,
                         "BlockLevel": "None"
                     },
                     {
                         "Id": 22,
                         "Position": 1689.0,
                         "Priority": 22,
-                        "IsFree": true,
+                        "IsFree": false,
                         "BlockLevel": "None"
                     },
                     {
                         "Id": 24,
                         "Position": 1714.0,
                         "Priority": 24,
-                        "IsFree": true,
+                        "IsFree": false,
                         "BlockLevel": "None"
                     },
                     {
                         "Id": 26,
                         "Position": 1739.0,
                         "Priority": 26,
-                        "IsFree": true,
+                        "IsFree": false,
                         "BlockLevel": "None"
                     },
                     {
                         "Id": 28,
                         "Position": 1764.0,
                         "Priority": 28,
-                        "IsFree": true,
+                        "IsFree": false,
                         "BlockLevel": "None"
                     },
                     {
                         "Id": 30,
                         "Position": 1789.0,
                         "Priority": 30,
-                        "IsFree": true,
+                        "IsFree": false,
                         "BlockLevel": "None"
                     },
                     {
                         "Id": 32,
                         "Position": 1814.0,
                         "Priority": 32,
-                        "IsFree": true,
+                        "IsFree": false,
                         "BlockLevel": "None"
                     },
                     {
                         "Id": 34,
                         "Position": 1839.0,
                         "Priority": 34,
-                        "IsFree": true,
+                        "IsFree": false,
                         "BlockLevel": "None"
                     },
                     {
                         "Id": 36,
                         "Position": 1864.0,
                         "Priority": 36,
-                        "IsFree": true,
+                        "IsFree": false,
                         "BlockLevel": "None"
                     },
                     {
                         "Id": 38,
                         "Position": 1889.0,
                         "Priority": 38,
-                        "IsFree": true,
+                        "IsFree": false,
                         "BlockLevel": "None"
                     },
                     {
