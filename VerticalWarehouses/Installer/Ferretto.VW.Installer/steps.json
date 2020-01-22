@@ -1,53 +1,117 @@
 ﻿{
   "steps": [
     {
-      "$type": "Ferretto.VW.Installer.CommandlineStep, Ferretto.VW.Installer",
+      "$type": "Ferretto.VW.Installer.PowershellStep, Ferretto.VW.Installer",
       "number": 1,
-      "title": "Disabilita UWF",
-      "script": "uwfmgr filter disable",
-      "rollbackScript": "uwfmgr filter enable",
-      "mustRollBack": true
+      "title": "Verifica nuova versione",
+      "description": "Verifica la presenza del pacchetto di installazione per la nuova versione da installare.",
+      "script": "if ( -not (Test-Path $(UpdateFilePath) -PathType Leaf)){throw \"Archivio di installazione non trovato.\"}"
     },
-    /*{
+    {
       "$type": "Ferretto.VW.Installer.CommandlineStep, Ferretto.VW.Installer",
       "number": 2,
-      "title": "Restart system",
-      "script": "shutdown /r /t 0 /f /d p:4:2 /c \"Vertimag Software Setup\"",
-      "mustRollBack": false
-    },*/
+      "title": "Disabilita UWF",
+      "description": "Disabilita la protezione del disco fisso (Unified Write Filter) per permettere l'aggiornamento.",
+      //"script": "uwfmgr filter disable",
+      //"rollbackScript": "uwfmgr filter enable",
+      "script": "timeout /T 2", // ** fake
+      "rollbackScript": "timeout /T 2" // ** fake
+    },
     {
       "$type": "Ferretto.VW.Installer.CommandlineStep, Ferretto.VW.Installer",
       "number": 3,
-      "title": "Ferma il MAS",
-      "script": "Stop-Service \"$(MAS:ServiceName)\"",
-      "rollbackScript": "Start-Service \"$(MAS:ServiceName)\"",
-      "mustRollBack": true,
-      "usePowerShell": true
+      "title": "Riavvia il sistema",
+      "description": "Riavvia il sistema operativo per completare la disabilitazione della protezione.",
+      // "script": "shutdown /r /t 0 /f /d p:4:2 /c \"Vertimag Software Setup\"",
+      "script": "timeout /T 2" // ** fake
     },
     {
-      "$type": "Ferretto.VW.Installer.CommandlineStep, Ferretto.VW.Installer",
+      "$type": "Ferretto.VW.Installer.PowershellStep, Ferretto.VW.Installer",
       "number": 4,
-      "title": "Riavvia il MAS",
+      "title": "Ferma il MAS",
+      "description": "Ferma il servizio di automazione, in modo da poterlo aggiornare.",
+      "script": "Stop-Service \"$(MAS:ServiceName)\"",
+      "rollbackScript": "Start-Service \"$(MAS:ServiceName)\""
+    },
+    {
+      "$type": "Ferretto.VW.Installer.PowershellStep, Ferretto.VW.Installer",
+      "number": 5,
+      "title": "Crea cartella di bakcup",
+      "description": "Crea, se non esiste, la cartella dove sarà salvato il backup con la versione corrente.",
+      "script": "if(-not(Test-Path $(Backup:Root:Path) -PathType Container)){mkdir $(Backup:Root:Path)}"
+    },
+    {
+      "$type": "Ferretto.VW.Installer.PowershellStep, Ferretto.VW.Installer",
+      "number": 6,
+      "title": "Backup versione corrente",
+      "description": "Crea un archivio zip con il backup della versione corrente.",
+      "script": "Compress-Archive $(Installation:Root:Path) -DestinationPath $(Backup:Root:Path)\\Current_Version_Backup.zip -CompressionLevel Optimal",
+      "rollbackScript": "if (Test-Path $(Backup:Root:Path)\\Current_Version_Backup.zip -PathType Leaf){Remove-Item $(Backup:Root:Path)\\Current_Version_Backup.zip}"
+    },
+    {
+      "$type": "Ferretto.VW.Installer.PowershellStep, Ferretto.VW.Installer",
+      "number": 7,
+      "title": "Rinomina cartella corrente",
+      "description": "Rinomina la cartella contenente l'installazione corrente.",
+      "script": "if(Test-Path $(Installation:Root:Path)_old -PathType Container){del $(Installation:Root:Path)_old}; Move-Item $(Installation:Root:Path) $(Installation:Root:Path)_old",
+      "rollbackScript": "Rename-Item $(Installation:Root:Path)_old $(Installation:Root:Path)"
+    },
+    {
+      "$type": "Ferretto.VW.Installer.PowershellStep, Ferretto.VW.Installer",
+      "number": 8,
+      "title": "Estrai nuova versione",
+      "description": "Estrae la nuova versione nella cartella di destinazione dell'installazione.",
+      "script": "Copy-Item $(UpdateFilePath) $(UpdateFilePath).zip; Expand-Archive $(UpdateFilePath).zip $(Installation:Root:Path); Remove-Item $(UpdateFilePath).zip",
+      "rollbackScript": "Remove-Item $(Installation:Root:Path) -Recurse"
+    },
+    {
+      "$type": "Ferretto.VW.Installer.PowershellStep, Ferretto.VW.Installer",
+      "number": 9,
+      "title": "Avvia il MAS",
+      "description": "Avvia il servizio di automazione aggiornato così che il database venga aggiornato.",
       "script": "Start-Service \"$(MAS:ServiceName)\"",
-      "rollbackScript": "Stop-Service \"$(MAS:ServiceName)\"",
-      "mustRollBack": true,
-      "usePowerShell": true
+      "rollbackScript": "Stop-Service \"$(MAS:ServiceName)\""
     },
     {
       "$type": "Ferretto.VW.Installer.MasHealthCheckStep, Ferretto.VW.Installer",
-      "number": 5,
+      "number": 10,
       "title": "Verifica stato del MAS",
+      "description": "Verifica che il servizio di automazione dichiari di essere operativo.",
       "url": "$(MAS:BaseUrl)/health/live",
-      "timeout": "10000",
-      "mustRollBack": true
+      "timeout": "10000"
     },
     {
       "$type": "Ferretto.VW.Installer.CommandlineStep, Ferretto.VW.Installer",
-      "number": 6,
+      "number": 11,
+      "title": "Cancella backup precedente",
+      "description": "Elimina, se esiste, l'archivio contenente il backup della versione precedente a quella installata prima dell'aggiornamento.",
+      "script": "Remove-Item $(Backup:Root:Path)\\Backup.zip",
+      "skipRollback": true
+    },
+    {
+      "$type": "Ferretto.VW.Installer.CommandlineStep, Ferretto.VW.Installer",
+      "number": 12,
+      "title": "Cancella file temporanei",
+      "description": "Elimina i file temporanei creati durante la fase di aggiornamento.",
+      "script": "Remove-Item $(Installation:Root:Path)_old",
+      "skipRollback": true
+    },
+    {
+      "$type": "Ferretto.VW.Installer.CommandlineStep, Ferretto.VW.Installer",
+      "number": 13,
       "title": "Riabilita UWF",
+      "description": "Riabilita la protezione del disco fisso per sigillare il PanelPC.",
       "script": "uwfmgr filter enable",
       "rollbackScript": "uwfmgr filter disable",
-      "mustRollBack": true
+      "skipRollback": true
+    },
+    {
+      "$type": "Ferretto.VW.Installer.CommandlineStep, Ferretto.VW.Installer",
+      "number": 14,
+      "title": "Riavvia il sistema",
+      "description": "Riavvia il sistema operativo per completare l'abilitazione della protezione.",
+      // "script": "shutdown /r /t 0 /f /d p:4:2 /c \"Vertimag Software Setup\"",
+      "script": "timeout /T 2" // ** fake
     }
   ]
 }

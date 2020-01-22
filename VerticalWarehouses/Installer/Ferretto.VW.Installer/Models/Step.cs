@@ -30,10 +30,11 @@ namespace Ferretto.VW.Installer
 
         #region Constructors
 
-        public Step(int number, string title)
+        public Step(int number, string title, string description)
         {
             this.Title = title;
             this.Number = number;
+            this.Description = description;
         }
 
         #endregion
@@ -69,9 +70,10 @@ namespace Ferretto.VW.Installer
             }
         }
 
-        public bool MustRollback { get; set; }
-
         public int Number { get; }
+        public string Description { get; }
+
+        public bool SkipRollback { get; set; }
 
         public DateTime? StartTime
         {
@@ -98,7 +100,7 @@ namespace Ferretto.VW.Installer
                 throw new InvalidOperationException($"Step '{this.Title}' cannot be executed because its status is {this.Status}.");
             }
 
-            this.LogWriteLine($"Avvio dello step '{this.Title}'.");
+            this.LogInformation($"Avvio dello step '{this.Title}'.");
 
             this.StartTime = DateTime.Now;
             var timer = new Timer(this.OnTimerTick, null, 0, 500);
@@ -110,12 +112,12 @@ namespace Ferretto.VW.Installer
                 this.Status = await this.OnApplyAsync();
                 timer.Dispose();
                 this.EndTime = DateTime.Now;
-                this.LogWriteLine($"Step completato con stato '{this.Status}'.");
+                this.LogInformation($"Step completato con stato '{this.Status}'.");
             }
-            catch
+            catch (Exception ex)
             {
                 this.Status = StepStatus.Failed;
-                this.LogWriteLine("Step fallito inaspettatamente.");
+                this.LogError($"Step fallito inaspettatamente: {ex.Message}");
                 timer.Dispose();
             }
         }
@@ -130,6 +132,11 @@ namespace Ferretto.VW.Installer
             {
                 var varName = match.Groups["var_name"].Value;
                 var varValue = ConfigurationManager.AppSettings.Get(varName);
+                if (varValue is null)
+                {
+                    throw new Exception($"La chiave di configurazione '{varName}' non esiste.");
+                }
+
                 value = value.Replace(match.Value, varValue);
                 match = match.NextMatch();
             }
@@ -144,18 +151,18 @@ namespace Ferretto.VW.Installer
                 throw new InvalidOperationException($"Step '{this.Title}' cannot be rolled back because its status is {this.Status}.");
             }
 
-            this.LogWriteLine("Avvio rollback.");
+            this.LogInformation("Avvio rollback.");
 
             this.Status = StepStatus.RollingBack;
 
             try
             {
                 this.Status = await this.OnRollbackAsync();
-                this.LogWriteLine($"Rollback of step completed with status {this.Status}.");
+                this.LogInformation($"Rollback of step completed with status {this.Status}.");
             }
             catch
             {
-                this.LogWriteLine("Rollback dello step fallito inaspettatamente.");
+                this.LogInformation("Rollback dello step fallito inaspettatamente.");
 
                 this.Status = StepStatus.RollbackFailed;
             }
@@ -166,7 +173,7 @@ namespace Ferretto.VW.Installer
             return $"{this.Number}: {this.Title} ({this.Status})" ?? base.ToString();
         }
 
-        protected void LogWrite(char message)
+        protected void LogChar(char message)
         {
             if (message == '\0')
             {
@@ -177,14 +184,33 @@ namespace Ferretto.VW.Installer
             this.RaisePropertyChanged(nameof(this.Log));
         }
 
-        protected void LogWriteLine(string message)
+        protected void LogError(string message)
         {
             if (!this.stringBuilder.ToString().EndsWith(Environment.NewLine, StringComparison.OrdinalIgnoreCase))
             {
                 this.stringBuilder.Append(Environment.NewLine);
             }
 
-            this.stringBuilder.Append(message).Append(Environment.NewLine);
+            this.stringBuilder
+                .Append($@"{message}")
+
+                .Append(Environment.NewLine);
+
+            this.logger.Error(message);
+
+            this.RaisePropertyChanged(nameof(this.Log));
+        }
+
+        protected void LogInformation(string message)
+        {
+            if (!this.stringBuilder.ToString().EndsWith(Environment.NewLine, StringComparison.OrdinalIgnoreCase))
+            {
+                this.stringBuilder.Append(Environment.NewLine);
+            }
+
+            this.stringBuilder
+              .Append($"{message}")
+              .Append(Environment.NewLine);
 
             this.logger.Debug(message);
 

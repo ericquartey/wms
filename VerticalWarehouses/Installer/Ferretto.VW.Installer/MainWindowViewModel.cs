@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using System.IO;
 using System.Threading;
+using System.Windows.Controls;
+using System.Windows.Documents;
 
 namespace Ferretto.VW.Installer
 {
@@ -12,6 +14,8 @@ namespace Ferretto.VW.Installer
         private readonly InstallationService installationService;
 
         private Step selectedStep;
+
+        private FlowDocument selectedStepLog = new FlowDocument();
 
         #endregion
 
@@ -46,6 +50,12 @@ namespace Ferretto.VW.Installer
         {
             get => this.selectedStep;
             set => this.SetProperty(ref this.selectedStep, value);
+        }
+
+        public FlowDocument SelectedStepLog
+        {
+            get => this.selectedStepLog;
+            set => this.SetProperty(ref this.selectedStepLog, value);
         }
 
         public IEnumerable<Step> Steps => this.installationService.Steps;
