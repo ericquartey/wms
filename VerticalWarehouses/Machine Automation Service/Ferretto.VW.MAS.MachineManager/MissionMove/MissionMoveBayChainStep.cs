@@ -87,8 +87,19 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
                             if (destination is null)
                             {
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedUpper, this.Mission.TargetBay);
+                                throw new StateMachineException(ErrorDescriptions.LoadUnitUndefinedUpper, this.Mission.TargetBay, MessageActor.MachineManager);
+                            }
+                            var origin = bay.Positions.FirstOrDefault(p => !p.IsUpper);
+                            if (origin is null)
+                            {
                                 this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedBottom, this.Mission.TargetBay);
                                 throw new StateMachineException(ErrorDescriptions.LoadUnitUndefinedBottom, this.Mission.TargetBay, MessageActor.MachineManager);
+                            }
+                            using (var transaction = this.ElevatorDataProvider.GetContextTransaction())
+                            {
+                                this.BaysDataProvider.SetLoadingUnit(origin.Id, null);
+                                this.BaysDataProvider.SetLoadingUnit(destination.Id, this.Mission.LoadUnitId);
                             }
                             this.Mission.LoadUnitDestination = destination.Location;
 
