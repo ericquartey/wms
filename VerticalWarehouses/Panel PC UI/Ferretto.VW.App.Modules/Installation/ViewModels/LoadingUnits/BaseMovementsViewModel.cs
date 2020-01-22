@@ -66,6 +66,19 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Properties
 
+        private DelegateCommand loadingUnitsCommand;
+
+        public ICommand LoadingUnitsCommand =>
+            this.loadingUnitsCommand
+            ??
+            (this.loadingUnitsCommand = new DelegateCommand(
+                () => this.NavigationService.Appear(
+                          nameof(Utils.Modules.Installation),
+                          Utils.Modules.Installation.CellsLoadingUnitsMenu.LOADINGUNITS,
+                          data: null,
+                          trackCurrentView: true),
+                () => !this.IsMoving));
+
         public int? CurrentMissionId { get; private set; }
 
         public bool IsExecutingProcedure
@@ -367,6 +380,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             this.startCommand?.RaiseCanExecuteChanged();
             this.stopCommand?.RaiseCanExecuteChanged();
+
+            this.loadingUnitsCommand?.RaiseCanExecuteChanged();
 
             this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
             this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();

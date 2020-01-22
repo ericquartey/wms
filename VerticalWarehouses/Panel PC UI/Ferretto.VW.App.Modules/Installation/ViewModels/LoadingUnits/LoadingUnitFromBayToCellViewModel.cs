@@ -17,7 +17,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
     {
         #region Fields
 
-        private DelegateCommand loadingUnitsCommand;
 
         #endregion
 
@@ -40,17 +39,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Properties
 
-        public ICommand LoadingUnitsCommand =>
-            this.loadingUnitsCommand
-            ??
-            (this.loadingUnitsCommand = new DelegateCommand(
-                () => this.NavigationService.Appear(
-                          nameof(Utils.Modules.Installation),
-                          Utils.Modules.Installation.CellsLoadingUnitsMenu.LOADINGUNITS,
-                          data: null,
-                          trackCurrentView: true),
-                () => !this.IsMoving));
-
         #endregion
 
         #region Methods
@@ -60,7 +48,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             return base.CanStart() &&
                    !this.IsMoving &&
                    ((this.SensorsService.IsLoadingUnitInBay && (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper)) ||
-                    (this.SensorsService.IsLoadingUnitInMiddleBottomBay && (this.MachineService.Bay.IsDouble || !this.MachineService.BayFirstPositionIsUpper)));
+                    (this.SensorsService.IsLoadingUnitInMiddleBottomBay && (this.MachineService.Bay.IsDouble || !this.MachineService.BayFirstPositionIsUpper))) &&
+                   this.LoadingUnitId.HasValue &&
+                   !this.MachineService.Loadunits.Any(f => f.Id == this.LoadingUnitId && f.Status == LoadingUnitStatus.InLocation);
         }
 
         public async Task GetLoadingUnits()
@@ -143,12 +133,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             await this.InitializingData();
         }
 
-        protected override void RaiseCanExecuteChanged()
-        {
-            base.RaiseCanExecuteChanged();
-
-            this.loadingUnitsCommand?.RaiseCanExecuteChanged();
-        }
 
         private async Task InitializingData()
         {
