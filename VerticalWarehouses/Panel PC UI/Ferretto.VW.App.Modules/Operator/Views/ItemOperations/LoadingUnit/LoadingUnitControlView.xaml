@@ -16,7 +16,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <StackPanel Orientation="Horizontal">
+            <Grid>
                 <controls:PpcButton                                
                                 Height="50"
                                 Width="180"
@@ -26,23 +26,24 @@
                                 Content="Loading unit"
                                 Command="{Binding ChangeModeLoadingUnitCommand}"
                                 CommandParameter="{x:Static res:OperatorApp.LoadingUnit}"
-                                Foreground="{DynamicResource FerrettoPureWhite}"            
+                                Foreground="{DynamicResource FerrettoPureWhite}"
+                                Visibility="{Binding IsListVisibile, Converter={StaticResource BTVC}}"
                                 Kind="Grid">
                 </controls:PpcButton>
 
-                <controls:PpcButton Grid.Column="2"
+                <controls:PpcButton
                                 Width="180"
-                                Height="50"
-                                Margin="15 0 0 0"                                
-                                HorizontalAlignment="Right"
+                                Height="50"                              
+                                HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
                                 Content="Griglia"
                                 Command="{Binding ChangeModeListCommand}"
                                 CommandParameter="Grid"
-                                Foreground="{DynamicResource FerrettoPureWhite}"                            
+                                Foreground="{DynamicResource FerrettoPureWhite}"
+                                Visibility="{Binding IsListVisibile, Converter={StaticResource BTVIC}}"
                                 Kind="Table" />
 
-            </StackPanel>
+            </Grid>
 
 
             <Grid Name="TrayControlGrid"

@@ -59,6 +59,7 @@
                                     Content="{x:Static res:OperatorApp.Put}"
                                     IsBusy="{Binding IsBusyConfirmingOperation}" />
 
+
             <controls:PpcButton 
                                     Margin="15 0 0 0"
                                     HorizontalAlignment="Right"
