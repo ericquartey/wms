@@ -190,6 +190,7 @@
                                     Margin="15,15,0,0"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Bottom"
+                                    Command="{Binding MensurationDxCommand}"
                                     Content="Misurazione lato destro"
                                     Style="{StaticResource WizardConfirmButton}" />
 
@@ -459,6 +460,7 @@
                                     Margin="15,15,0,0"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Bottom"
+                                    Command="{Binding MensurationSxCommand}"
                                     Content="Misurazione lato sinistro"
                                     Style="{StaticResource WizardConfirmButton}" />
 

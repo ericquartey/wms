@@ -15,6 +15,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
@@ -299,6 +300,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
+        {
+            await base.OnMachinePowerChangedAsync(e);
+
+            if (e.MachinePowerState == MAS.AutomationService.Contracts.MachinePowerState.Unpowered &&
+                this.MachineError is null)
+            {
+                this.CurrentStep = ProfileCheckStep.Initialize;
+            }
+        }
+
         protected void OnStepChanged(StepChangedMessage e)
         {
             switch (this.CurrentStep)
@@ -398,6 +410,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.closeShutterCommand?.RaiseCanExecuteChanged();
             this.goToBayCommand?.RaiseCanExecuteChanged();
             this.moveToShapePositionDxCommand?.RaiseCanExecuteChanged();
+            this.stopCommand?.RaiseCanExecuteChanged();
+            this.mensurationSxCommand?.RaiseCanExecuteChanged();
+            this.mensurationDxCommand?.RaiseCanExecuteChanged();
 
             this.UpdateStatusButtonFooter();
         }
@@ -465,8 +480,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanMoveToShapePositionDx()
         {
-            return this.CanBaseExecute() &&
-                   Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.GetValueOrDefault()) == Convert.ToInt32(this.BayPosition.Height);
+            var res = this.CanBaseExecute() &&
+                      Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.GetValueOrDefault()) == Convert.ToInt32(this.BayPosition.Height);
+
+            this.ShowNextStepSinglePage(true, res);
+
+            return res;
         }
 
         private bool CanStop()
@@ -520,6 +539,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 await this.machineProfileProcedureWeb.CalibrationAsync(MAS.AutomationService.Contracts.HorizontalMovementDirection.Forwards);
+
+                this.CurrentStep = ProfileCheckStep.TuningChainDx;
             }
             catch (Exception ex)
             {
@@ -538,6 +559,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 await this.machineProfileProcedureWeb.CalibrationAsync(MAS.AutomationService.Contracts.HorizontalMovementDirection.Forwards);
+
+                this.CurrentStep = ProfileCheckStep.TuningChainSx;
             }
             catch (Exception ex)
             {
@@ -592,6 +615,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.ShowNextStepSinglePage(true, this.moveToShapePositionDxCommand?.CanExecute() ?? false);
                     break;
 
+                case ProfileCheckStep.TuningChainSx:
+                case ProfileCheckStep.TuningChainDx:
+                    this.ShowPrevStepSinglePage(true, false);
+                    this.ShowNextStepSinglePage(true, false);
+                    break;
+
                 case ProfileCheckStep.ResultCheck:
                     this.ShowPrevStepSinglePage(true, true);
                     this.ShowNextStepSinglePage(true, false);
@@ -599,7 +628,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 default:
                     this.ShowPrevStepSinglePage(true, true);
-                    this.ShowNextStepSinglePage(true, true);
+                    this.ShowNextStepSinglePage(true, false);
                     break;
             }
 
