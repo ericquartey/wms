@@ -43,7 +43,7 @@ namespace Ferretto.VW.Installer.Controls
                 using (var stream = new MemoryStream(Encoding.Default.GetBytes(e.NewValue as string)))
                 {
                     var textRange = new TextRange(rtf.Document.ContentStart, rtf.Document.ContentEnd);
-                    textRange.Load(stream, e.NewValue == string.Empty ? DataFormats.Text : DataFormats.Rtf);
+                    textRange.Load(stream, string.IsNullOrEmpty(e.NewValue as string) ? DataFormats.Text : DataFormats.Rtf);
                 }
             }
         }
