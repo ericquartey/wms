@@ -1451,4 +1451,28 @@ Please put back any moved pieces in their original position.</value>
     <value>Adjustment</value>
     <comment>Button content</comment>
   </data>
+  <data name="CompartmentWidth" xml:space="preserve">
+    <value>Width</value>
+    <comment>Headet text</comment>
+  </data>
+  <data name="CompartmentDepth" xml:space="preserve">
+    <value>Depth</value>
+    <comment>Header text</comment>
+  </data>
+  <data name="CompartmentStock" xml:space="preserve">
+    <value>Stock</value>
+    <comment>Header text</comment>
+  </data>
+  <data name="ItemDescription" xml:space="preserve">
+    <value>Item description</value>
+    <comment>Header text</comment>
+  </data>
+  <data name="ItemCode" xml:space="preserve">
+    <value>Item code</value>
+    <comment>Header text</comment>
+  </data>
+  <data name="CompartmentId" xml:space="preserve">
+    <value>Comp. Id</value>
+    <comment>Header text</comment>
+  </data>
 </root>

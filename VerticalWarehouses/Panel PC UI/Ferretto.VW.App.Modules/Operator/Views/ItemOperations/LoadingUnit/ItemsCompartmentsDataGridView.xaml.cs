@@ -5,11 +5,11 @@ namespace Ferretto.VW.App.Operator.Views
     /// <summary>
     /// Interaction logic for CustomControlArticleDataGrid.xaml
     /// </summary>
-    public partial class CompartmentsDataGridView : UserControl
+    public partial class ItemsCompartmentsDataGridView : UserControl
     {
         #region Constructors
 
-        public CompartmentsDataGridView()
+        public ItemsCompartmentsDataGridView()
         {
             this.InitializeComponent();
         }

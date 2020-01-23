@@ -1153,4 +1153,22 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="Adjustment" xml:space="preserve">
     <value>Modifica</value>
   </data>
+  <data name="CompartmentWidth" xml:space="preserve">
+    <value>Larghezza</value>
+  </data>
+  <data name="CompartmentDepth" xml:space="preserve">
+    <value>Prof.</value>
+  </data>
+  <data name="CompartmentStock" xml:space="preserve">
+    <value>Giacenza</value>
+  </data>
+  <data name="ItemDescription" xml:space="preserve">
+    <value>Descrizione articolo</value>
+  </data>
+  <data name="ItemCode" xml:space="preserve">
+    <value>Codice articolo</value>
+  </data>
+  <data name="CompartmentId" xml:space="preserve">
+    <value>Id Scomp.</value>
+  </data>
 </root>

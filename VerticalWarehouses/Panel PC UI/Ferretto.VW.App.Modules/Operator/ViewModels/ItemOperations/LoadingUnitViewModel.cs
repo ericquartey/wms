@@ -23,36 +23,43 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private MAS.AutomationService.Contracts.Bay bay;
 
+        private DelegateCommand changeModeListCommand;
+
+        private DelegateCommand changeModeLoadingUnitCommand;
+
         private IEnumerable<TrayControlCompartment> compartments;
 
-        private DelegateCommand confirmOperationCommand;
+        private int currentItemCompartmentIndex;
 
         private int currentItemIndex;
 
-        private DelegateCommand downCommand;
-
-        private DelegateCommand changeModeCommand;
-
         private bool isListVisibile;
+
+        private DelegateCommand itemCompartmentDownCommand;
+
+        private DelegateCommand itemCompartmentUpCommand;
+
+        private DelegateCommand itemDownCommand;
 
         private IEnumerable<CompartmentDetails> items;
 
         private IEnumerable<CompartmentDetails> itemsCompartments;
 
+        private DelegateCommand itemUpCommand;
+
         private double loadingUnitDepth;
 
         private double loadingUnitWidth;
 
+        private DelegateCommand<string> operationCommand;
+
+        private DelegateCommand recallLoadingUnitCommand;
+
+        private TrayControlCompartment selectedCompartment;
+
         private CompartmentDetails selectedItem;
 
         private CompartmentDetails selectedItemCompartment;
-
-        private DelegateCommand upCommand;
-
-        private DelegateCommand itemCompartmentDownCommand;
-
-        private DelegateCommand itemCompartmentUpCommand;
-        private int currentItemCompartmentIndex;
 
         #endregion
 
@@ -73,36 +80,24 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Properties
 
+        public ICommand ChangeModeListCommand =>
+                        this.changeModeListCommand
+                        ??
+                        (this.changeModeListCommand = new DelegateCommand(() => this.ChangeMode(), this.CanChangeListMode));
+
+        public ICommand ChangeModeLoadingUnitCommand =>
+               this.changeModeLoadingUnitCommand
+               ??
+               (this.changeModeLoadingUnitCommand = new DelegateCommand(() => this.ChangeMode(), this.CanChangeLoadingUnitMode));
+
         public IEnumerable<TrayControlCompartment> Compartments
         {
             get => this.compartments;
             set => this.SetProperty(ref this.compartments, value);
         }
 
-        public ICommand ConfirmOperationCommand =>
-            this.confirmOperationCommand
-            ??
-            (this.confirmOperationCommand = new DelegateCommand(
-                async () => await this.ConfirmOperationAsync(),
-                this.CanConfirmOperation));
-        
-        public ICommand DownCommand =>
-                this.downCommand
-                ??
-                (this.downCommand = new DelegateCommand(() => this.ChangeSelectedItem(true), this.CanDown));
-
-        public ICommand ChangeModeCommand =>
-                this.changeModeCommand
-                ??
-                (this.changeModeCommand = new DelegateCommand(() => this.ChangeMode(), this.CanDown));
-
-        private void ChangeMode()
-        {
-            this.IsListVisibile = !this.IsListVisibile;           
-        }
-
         public override EnableMask EnableMask => EnableMask.Any;
-         
+
         public bool IsBaySideBack => this.bay?.Side is WarehouseSide.Back;
 
         public bool IsListVisibile
@@ -110,6 +105,21 @@ namespace Ferretto.VW.App.Operator.ViewModels
             get => this.isListVisibile;
             set => this.SetProperty(ref this.isListVisibile, value, this.RaiseCanExecuteChanged);
         }
+
+        public ICommand ItemCompartmentDownCommand =>
+              this.itemCompartmentDownCommand
+              ??
+              (this.itemCompartmentDownCommand = new DelegateCommand(() => this.ChangeSelectedItemCompartment(false), this.ItemCompartmentCanDown));
+
+        public ICommand ItemCompartmentUpCommand =>
+              this.itemCompartmentUpCommand
+              ??
+              (this.itemCompartmentUpCommand = new DelegateCommand(() => this.ChangeSelectedItemCompartment(true), this.ItemCompartmentCanUp));
+
+        public ICommand ItemDownCommand =>
+                this.itemDownCommand
+                ??
+                (this.itemDownCommand = new DelegateCommand(() => this.ChangeSelectedItem(false), this.ItemCanDown));
 
         public IEnumerable<CompartmentDetails> Items
         {
@@ -121,7 +131,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             get => this.itemsCompartments;
             set => this.SetProperty(ref this.itemsCompartments, value);
-        }        
+        }
+
+        public ICommand ItemUpCommand =>
+               this.itemUpCommand
+               ??
+               (this.itemUpCommand = new DelegateCommand(() => this.ChangeSelectedItem(true), this.ItemCanUp));
 
         public MAS.AutomationService.Contracts.LoadingUnit LoadingUnit { get; set; }
 
@@ -137,39 +152,41 @@ namespace Ferretto.VW.App.Operator.ViewModels
             set => this.SetProperty(ref this.loadingUnitWidth, value, this.RaiseCanExecuteChanged);
         }
 
+        public ICommand OperationCommand =>
+               this.operationCommand
+                ??
+                (this.operationCommand = new DelegateCommand<string>((param) => this.DoOperation(param), this.CanDoOperation));
+
+        public ICommand RecallLoadingUnitCommand =>
+            this.recallLoadingUnitCommand
+            ??
+            (this.recallLoadingUnitCommand = new DelegateCommand(
+                async () => await this.ConfirmOperationAsync(),
+                this.CanRecallLoadingUnit));
+
+        public TrayControlCompartment SelectedCompartment
+        {
+            get => this.selectedCompartment;
+            set => this.SetProperty(ref this.selectedCompartment, value, this.SetItemsAndCompartment);
+        }
+
         public CompartmentDetails SelectedItem
         {
             get => this.selectedItem;
-            set => this.SetProperty(ref this.selectedItem, value);
+            set => this.SetProperty(ref this.selectedItem, value, this.SetSelectedItemCompartment);
         }
 
         public CompartmentDetails SelectedItemCompartment
         {
             get => this.selectedItemCompartment;
-            set => this.SetProperty(ref this.selectedItemCompartment, value);
+            set => this.SetProperty(ref this.selectedItemCompartment, value, this.SetSelectedItemAndCompartment);
         }
-        
 
-        public ICommand UpCommand =>
-               this.upCommand
-               ??
-               (this.upCommand = new DelegateCommand(() => this.ChangeSelectedItem(true), this.CanUp));
-
-        public ICommand ItemCompartmentUpCommand =>
-              this.itemCompartmentUpCommand
-              ??
-              (this.itemCompartmentUpCommand = new DelegateCommand(() => this.ChangeSelectedCompartment(true), this.CanUp));
-
-        public ICommand ItemCompartmentDownCommand =>
-              this.itemCompartmentDownCommand
-              ??
-              (this.itemCompartmentDownCommand = new DelegateCommand(() => this.ChangeSelectedCompartment(true), this.CanUp));
-        
         #endregion
 
         #region Methods
 
-        public virtual bool CanConfirmOperation()
+        public virtual bool CanRecallLoadingUnit()
         {
             return
                 !this.IsWaitingForResponse
@@ -193,10 +210,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.currentItemIndex = Math.Max(0, Math.Min(newIndex, this.items.Count() - 1));
             }
 
-            this.SelectItem();
+            this.SetSelectItem();
         }
 
-        public void ChangeSelectedCompartment(bool isUp)
+        public void ChangeSelectedItemCompartment(bool isUp)
         {
             if (this.itemsCompartments is null)
             {
@@ -210,7 +227,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.currentItemCompartmentIndex = Math.Max(0, Math.Min(newIndex, this.itemsCompartments.Count() - 1));
             }
 
-            this.SelectCompartment();
+            this.SelectItemCompartment();
         }
 
         public async Task ConfirmOperationAsync()
@@ -230,6 +247,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public async override Task OnAppearedAsync()
         {
+            this.Reset();
+
             await base.OnAppearedAsync();
 
             this.bay = await this.bayManager.GetBayAsync();
@@ -239,28 +258,40 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.LoadingUnit = this.MachineService.Loadunits.SingleOrDefault(l => l.Id == loadingUnitId);
                 try
                 {
-                    this.SelectedItem = null;
-
                     var wmsLoadingUnit = await this.loadingUnitsWmsWebService.GetByIdAsync(loadingUnitId);
                     this.LoadingUnitWidth = wmsLoadingUnit.Width;
                     this.LoadingUnitDepth = wmsLoadingUnit.Depth;
 
-                    this.Items = await this.loadingUnitsWmsWebService.GetCompartmentsAsync(loadingUnitId);
-                    this.ItemsCompartments = this.Items;
-                    this.Compartments = MapCompartments(this.items);
+                    this.ItemsCompartments = await this.loadingUnitsWmsWebService.GetCompartmentsAsync(loadingUnitId);
+
+                    this.Compartments = MapCompartments(this.ItemsCompartments);
                 }
                 catch
                 {
                     // do nothing: details will not be shown
                 }
 
+                this.RaiseCanExecuteChanged();
                 this.RaisePropertyChanged(nameof(this.LoadingUnit));
-                this.confirmOperationCommand?.RaiseCanExecuteChanged();
+                this.recallLoadingUnitCommand?.RaiseCanExecuteChanged();
             }
         }
 
+        protected override void RaiseCanExecuteChanged()
+        {
+            this.changeModeLoadingUnitCommand.RaiseCanExecuteChanged();
+            this.changeModeListCommand.RaiseCanExecuteChanged();
+            this.itemCompartmentDownCommand.RaiseCanExecuteChanged();
+            this.itemCompartmentUpCommand.RaiseCanExecuteChanged();
+            this.itemDownCommand.RaiseCanExecuteChanged();
+            this.itemUpCommand.RaiseCanExecuteChanged();
+            this.operationCommand.RaiseCanExecuteChanged();
+
+            base.RaiseCanExecuteChanged();
+        }
+
         private static IEnumerable<TrayControlCompartment> MapCompartments(
-            IEnumerable<WMS.Data.WebAPI.Contracts.CompartmentDetails> compartmentsFromMission)
+                    IEnumerable<WMS.Data.WebAPI.Contracts.CompartmentDetails> compartmentsFromMission)
         {
             return compartmentsFromMission
                 .GroupBy(c => c.Id)
@@ -275,46 +306,181 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 });
         }
 
-        private bool CanDown()
+        private bool CanChangeListMode()
+        {
+            if (this.itemsCompartments is null)
+            {
+                return false;
+            }
+
+            return this.itemsCompartments.Any()
+                   &&
+                   !this.isListVisibile;
+        }
+
+        private bool CanChangeLoadingUnitMode()
+        {
+            if (this.itemsCompartments is null)
+            {
+                return false;
+            }
+
+            return this.itemsCompartments.Any()
+                   &&
+                   this.isListVisibile;
+        }
+
+        private bool CanDoOperation(string param)
+        {
+            return !(this.selectedItem is null)
+                &&
+                this.MachineModeService.MachineMode is MachineMode.Automatic;
+        }
+
+        private void ChangeMode()
+        {
+            if (!this.isListVisibile
+                &&
+                this.selectedItemCompartment is null)
+            {
+                this.SelectedItemCompartment = this.itemsCompartments?.FirstOrDefault();
+            }
+
+            this.IsListVisibile = !this.IsListVisibile;
+        }
+
+        private void DoOperation(string param)
+        {
+            var dataSend = (param, this.selectedItemCompartment);
+            // TODO implement specific operation
+        }
+
+        private bool ItemCanDown()
         {
             if (this.items is null)
             {
                 return false;
             }
 
-            return
-              this.currentItemIndex < this.items.Count() - 1;
+            return (this.currentItemIndex < this.items.Count() - 1);
         }
 
-        private bool CanUp()
+        private bool ItemCanUp()
         {
             return
                 this.currentItemIndex > 0;
         }
 
-        private void SelectItem()
+        private bool ItemCompartmentCanDown()
         {
-            if (this.items.Any())
+            if (this.itemsCompartments is null)
+            {
+                return false;
+            }
+
+            return
+              this.currentItemCompartmentIndex < this.itemsCompartments.Count() - 1;
+        }
+
+        private bool ItemCompartmentCanUp()
+        {
+            return
+                this.currentItemCompartmentIndex > 0;
+        }
+
+        private void Reset()
+        {
+            this.SelectedItemCompartment = null;
+            this.SelectedCompartment = null;
+            this.SelectedItem = null;
+        }
+
+        private void SelectItemCompartment()
+        {
+            if (this.itemsCompartments.Any())
+            {
+                this.SelectedItemCompartment = this.itemsCompartments.ElementAt(this.currentItemCompartmentIndex);
+            }
+            else
+            {
+                this.SelectedItemCompartment = null;
+            }
+
+            this.RaiseCanExecuteChanged();
+        }
+
+        private void SetItemsAndCompartment()
+        {
+            if (this.selectedCompartment is null)
+            {
+                this.Items = null;
+                this.selectedItem = null;
+                return;
+            }
+
+            this.Items = this.ItemsCompartments.Where(ic => ic.Id == this.selectedCompartment.Id);
+            if (!(this.Items is null)
+                &&
+                this.Items.Count() == 1)
+            {
+                this.SelectedItem = this.Items.First();
+            }
+
+            this.RaiseCanExecuteChanged();
+        }
+
+        private void SetSelectedItemAndCompartment()
+        {
+            if (this.selectedItemCompartment is null)
+            {
+                return;
+            }
+
+            this.SelectedCompartment = this.Compartments.FirstOrDefault(c => c.Id == this.selectedItemCompartment.Id);
+            if (!(this.Items is null)
+                &&
+                this.items.Any())
+            {
+                if (this.items.FirstOrDefault(ic => ic.ItemId == this.selectedItemCompartment.ItemId) is CompartmentDetails newSelectedItem)
+                {
+                    this.SelectedItem = newSelectedItem;
+                    this.currentItemIndex = this.items.ToList().IndexOf(newSelectedItem);
+                }
+            }
+
+            this.RaiseCanExecuteChanged();
+        }
+
+        private void SetSelectedItemCompartment()
+        {
+            if (this.selectedItem is null)
+            {
+                this.SelectedItemCompartment = null;
+                return;
+            }
+
+            if (this.itemsCompartments.FirstOrDefault(ic => ic.Id == this.selectedCompartment.Id
+                                                            &&
+                                                            ic.ItemId == this.selectedItem.ItemId) is CompartmentDetails newSelectedItemCompartment)
+            {
+                this.SelectedItemCompartment = newSelectedItemCompartment;
+                this.currentItemCompartmentIndex = this.itemsCompartments.ToList().IndexOf(newSelectedItemCompartment);
+            }
+
+            this.RaiseCanExecuteChanged();
+        }
+
+        private void SetSelectItem()
+        {
+            if (!(this.items is null)
+                &&
+                this.items.Any())
             {
                 this.SelectedItem = this.items.ElementAt(this.currentItemIndex);
             }
             else
             {
                 this.SelectedItem = null;
-            }
-
-            this.RaiseCanExecuteChanged();
-        }
-
-        private void SelectCompartment()
-        {
-            if (this.itemsCompartments.Any())
-            {
-                this.SelectedItemCompartment = this.items.ElementAt(this.currentItemCompartmentIndex);
-            }
-            else
-            {
-                this.SelectedItemCompartment = null;
             }
 
             this.RaiseCanExecuteChanged();

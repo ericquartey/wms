@@ -36,7 +36,8 @@
             <controls:PpcButton                                 
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
-                                    Command="{Binding ConfirmOperationCommand}"
+                                    Command="{Binding OperationCommand}"
+                                    CommandParameter="{x:Static res:OperatorApp.Adjustment}"
                                     Content="{x:Static res:OperatorApp.Adjustment}"
                                     IsBusy="{Binding IsBusyConfirmingOperation}" />
 
@@ -45,14 +46,16 @@
                                     Margin="15 0 0 0"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
-                                    Command="{Binding ConfirmOperationCommand}"
+                                    Command="{Binding OperationCommand}"
+                                    CommandParameter="{x:Static res:OperatorApp.Pick}"
                                     Content="{x:Static res:OperatorApp.Pick}"
                                     IsBusy="{Binding IsBusyConfirmingOperation}" />
             <controls:PpcButton
                                     Margin="15 0 0 0"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
-                                    Command="{Binding ConfirmOperationCommand}"
+                                    Command="{Binding OperationCommand}"
+                                    CommandParameter="{x:Static res:OperatorApp.Put}"
                                     Content="{x:Static res:OperatorApp.Put}"
                                     IsBusy="{Binding IsBusyConfirmingOperation}" />
 
@@ -60,7 +63,7 @@
                                     Margin="15 0 0 0"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
-                                    Command="{Binding ConfirmOperationCommand}"
+                                    Command="{Binding RecallLoadingUnitCommand}"                                    
                                     Content="{x:Static res:OperatorApp.RecallDrawer}"
                                     IsBusy="{Binding IsBusyConfirmingOperation}" />
 

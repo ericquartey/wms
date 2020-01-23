@@ -403,6 +403,42 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Depth.
+        /// </summary>
+        public static string CompartmentDepth {
+            get {
+                return ResourceManager.GetString("CompartmentDepth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comp. Id.
+        /// </summary>
+        public static string CompartmentId {
+            get {
+                return ResourceManager.GetString("CompartmentId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stock.
+        /// </summary>
+        public static string CompartmentStock {
+            get {
+                return ResourceManager.GetString("CompartmentStock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Width.
+        /// </summary>
+        public static string CompartmentWidth {
+            get {
+                return ResourceManager.GetString("CompartmentWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Complete Check.
         /// </summary>
         public static string CompleteCheck {
@@ -1399,6 +1435,24 @@ namespace Ferretto.VW.App.Resources {
         public static string InventoryQuantityDetected {
             get {
                 return ResourceManager.GetString("InventoryQuantityDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item code.
+        /// </summary>
+        public static string ItemCode {
+            get {
+                return ResourceManager.GetString("ItemCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item description.
+        /// </summary>
+        public static string ItemDescription {
+            get {
+                return ResourceManager.GetString("ItemDescription", resourceCulture);
             }
         }
         
