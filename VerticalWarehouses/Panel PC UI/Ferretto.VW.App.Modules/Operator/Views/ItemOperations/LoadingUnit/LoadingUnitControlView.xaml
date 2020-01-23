@@ -12,12 +12,12 @@
              mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-            <Grid>
-                <controls:PpcButton                                
+        <Grid>
+            <controls:PpcButton                                
                                 Height="50"
                                 Width="180"
                                 VerticalAlignment="Top"
@@ -29,9 +29,9 @@
                                 Foreground="{DynamicResource FerrettoPureWhite}"
                                 Visibility="{Binding IsListVisibile, Converter={StaticResource BTVC}}"
                                 Kind="Grid">
-                </controls:PpcButton>
+            </controls:PpcButton>
 
-                <controls:PpcButton
+            <controls:PpcButton
                                 Width="180"
                                 Height="50"                              
                                 HorizontalAlignment="Left"
@@ -43,23 +43,23 @@
                                 Visibility="{Binding IsListVisibile, Converter={StaticResource BTVIC}}"
                                 Kind="Table" />
 
-            </Grid>
+        </Grid>
 
 
-            <Grid Name="TrayControlGrid"
+        <Grid Name="TrayControlGrid"
                   Grid.Row="1"
                   Visibility="{Binding IsListVisibile, Converter={StaticResource BTVIC}}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="720"/>
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" MaxHeight="300"/>
-                    <RowDefinition Height="*" MinHeight="220"/>
-                </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="720"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" MaxHeight="300"/>
+                <RowDefinition Height="*" MinHeight="220"/>
+            </Grid.RowDefinitions>
 
 
-                <WmsControls:TrayControl Name="TrayControl"
+            <WmsControls:TrayControl Name="TrayControl"
                                         Grid.Row="0"
                                         Grid.ColumnSpan="2"
                                         Margin="0"
@@ -75,45 +75,42 @@
                                         SelectedColorFilterFunc="{Binding CompartmentColoringFunction}"
                                         SelectedItem="{Binding SelectedCompartment, Mode=TwoWay}"
                                         ShowBackground="False"
-                                        ShowRuler="False"
-                                         />
+                                        ShowRuler="False" />
 
-                <views:ItemsDataGridView Grid.Row="1"
-                                     Visibility="{Binding IsListVisibile, Converter={StaticResource BTVIC}}"                                         
-                                        />
+            <views:ItemsDataGridView Grid.Row="1"
+                                         Visibility="{Binding IsListVisibile, Converter={StaticResource BTVIC}}" />
 
-                <Grid Grid.Row="1"
+            <Grid Grid.Row="1"
                     Grid.Column="1"
                     Margin="0 0 0 0"
                     VerticalAlignment="Top">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-                    <controls:PpcButton Grid.Row="0"                                                               
+                <controls:PpcButton Grid.Row="0"                                                               
                                     VerticalAlignment="Top"
                                     Command="{Binding ItemUpCommand}"
                                     Content="{x:Static res:OperatorApp.CommonUp}" />
 
-                    <controls:PpcButton Grid.Row="1"
+                <controls:PpcButton Grid.Row="1"
                                     Margin="0,15,0,0"                                
                                     Command="{Binding ItemDownCommand}"
                                     Content="{x:Static res:OperatorApp.CommonDown}" />
 
-                </Grid>
             </Grid>
+        </Grid>
 
-            <Grid Name="ListGrid"
+        <Grid Name="ListGrid"
                   Grid.Row="1"
-                  Visibility="{Binding IsListVisibile, Converter={StaticResource BTVC}}"  >
+                  Visibility="{Binding IsListVisibile, Converter={StaticResource BTVC}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="720"/>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <views:ItemsCompartmentsDataGridView                                           
-                                            Width="{Binding LoadingUnitWidth}"/>
+            <views:ItemsCompartmentsDataGridView />
 
             <Grid Grid.Row="0"
                     Grid.Column="1"                    

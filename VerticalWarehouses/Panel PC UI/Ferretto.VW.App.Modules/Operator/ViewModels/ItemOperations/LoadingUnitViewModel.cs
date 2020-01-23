@@ -420,7 +420,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.Items = this.ItemsCompartments.Where(ic => ic.Id == this.selectedCompartment.Id);
             if (!(this.Items is null)
                 &&
-                this.Items.Count() == 1)
+                this.Items.Any())
             {
                 this.SelectedItem = this.Items.First();
             }
@@ -436,14 +436,13 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
 
             this.SelectedCompartment = this.Compartments.FirstOrDefault(c => c.Id == this.selectedItemCompartment.Id);
-            if (!(this.Items is null)
-                &&
-                this.items.Any())
+            if (this.items?.Any() == true)
             {
                 if (this.items.FirstOrDefault(ic => ic.ItemId == this.selectedItemCompartment.ItemId) is CompartmentDetails newSelectedItem)
                 {
-                    this.SelectedItem = newSelectedItem;
                     this.currentItemIndex = this.items.ToList().IndexOf(newSelectedItem);
+                    this.selectedItem = newSelectedItem;
+                    this.RaisePropertyChanged(nameof(this.SelectedItem));
                 }
             }
 
@@ -462,8 +461,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
                                                             &&
                                                             ic.ItemId == this.selectedItem.ItemId) is CompartmentDetails newSelectedItemCompartment)
             {
-                this.SelectedItemCompartment = newSelectedItemCompartment;
                 this.currentItemCompartmentIndex = this.itemsCompartments.ToList().IndexOf(newSelectedItemCompartment);
+                this.selectedItemCompartment = newSelectedItemCompartment;
+                this.RaisePropertyChanged(nameof(this.SelectedItemCompartment));
             }
 
             this.RaiseCanExecuteChanged();
@@ -471,9 +471,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private void SetSelectItem()
         {
-            if (!(this.items is null)
-                &&
-                this.items.Any())
+            if (this.items?.Any() == true)
             {
                 this.SelectedItem = this.items.ElementAt(this.currentItemIndex);
             }
