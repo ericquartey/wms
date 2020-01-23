@@ -74,7 +74,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
             var activeMissions = missionsDataProvider.GetAllActiveMissionsByBay(bayNumber);
 
-            var missionToRestore = activeMissions.SingleOrDefault(x => (x.Status == MissionStatus.Executing || x.Status == MissionStatus.Waiting)
+            var missionToRestore = activeMissions.FirstOrDefault(x => (x.Status == MissionStatus.Executing || x.Status == MissionStatus.Waiting)
                 && x.IsMissionToRestore());
             if (missionToRestore != null)
             {
@@ -335,7 +335,10 @@ namespace Ferretto.VW.MAS.MissionManager
                             var missionsDataProvider = scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
                             var activeMissions = missionsDataProvider.GetAllActiveMissions();
 
-                            if (!activeMissions.Any(m => m.Status == MissionStatus.Executing && m.Step < MissionStep.Error && m.Step > MissionStep.New))
+                            if (!activeMissions.Any(m => m.Status == MissionStatus.Executing
+                                && m.Step > MissionStep.New
+                                && m.Step < MissionStep.Error)
+                                )
                             {
                                 if (!machineProvider.IsHomingExecuted
                                     && !activeMissions.Any(m => m.Step >= MissionStep.Error)
@@ -400,9 +403,15 @@ namespace Ferretto.VW.MAS.MissionManager
 
                     case MachineMode.SwitchingToManual:
                         {
-                            var machineModeDataProvider = scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
-                            machineModeDataProvider.Mode = MachineMode.Manual;
-                            this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
+                            var missionsDataProvider = scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
+                            if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status == MissionStatus.Executing
+                                && m.Step > MissionStep.New)
+                                )
+                            {
+                                var machineModeDataProvider = scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
+                                machineModeDataProvider.Mode = MachineMode.Manual;
+                                this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
+                            }
                         }
                         break;
 

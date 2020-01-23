@@ -136,10 +136,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                 }
             }
-            if (returnValue)
-            {
-                mission.LoadUnitDestination = destination;
-            }
 
             return returnValue;
         }
@@ -234,11 +230,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     if (bay.Positions.Count() == 1)
                     {
                         returnValue = this.CheckBayDestination(messageData, requestingBay, bay.Positions.First().Location, mission, showErrors);
+                        if (returnValue)
+                        {
+                            mission.LoadUnitDestination = bay.Positions.First().Location;
+                        }
                     }
                     else
                     {
-                        var destination = bay.Positions.FirstOrDefault(p => p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
-                        if (destination is LoadingUnitLocation.NoLocation)
+                        var upper = bay.Positions.FirstOrDefault(p => p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
+                        if (upper is LoadingUnitLocation.NoLocation)
                         {
                             if (showErrors)
                             {
@@ -250,37 +250,38 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 return false;
                             }
                         }
-                        returnValue = this.CheckBayDestination(messageData, requestingBay, destination, mission, false);
-                        if (!returnValue)
+                        var bottom = bay.Positions.FirstOrDefault(p => !p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
+                        if (bottom is LoadingUnitLocation.NoLocation)
                         {
-                            // if upper position is not empty we can try lower position
-                            destination = bay.Positions.FirstOrDefault(p => !p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
-                            if (destination is LoadingUnitLocation.NoLocation)
+                            if (showErrors)
                             {
-                                if (showErrors)
-                                {
-                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedBottom, this.Mission.TargetBay);
-                                    throw new StateMachineException(ErrorDescriptions.LoadUnitUndefinedBottom, this.Mission.TargetBay, MessageActor.MachineManager);
-                                }
-                                else
-                                {
-                                    return false;
-                                }
-                            }
-                            // the other mission must be in waiting state
-                            var activeMission = this.MissionsDataProvider.GetAllActiveMissionsByBay(requestingBay)
-                                .FirstOrDefault(x => (x.Status == MissionStatus.Executing || x.Status == MissionStatus.Waiting)
-                                    && x.NeedHomingAxis != Axis.BayChain);
-
-                            if (activeMission != null
-                                && activeMission.Status != MissionStatus.Waiting
-                                )
-                            {
-                                this.Logger.LogTrace($"IsDestinationOk: waiting for mission in upper position {activeMission.Id}, LoadUnit {activeMission.LoadUnitId}; bay {requestingBay}");
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedBottom, this.Mission.TargetBay);
+                                throw new StateMachineException(ErrorDescriptions.LoadUnitUndefinedBottom, this.Mission.TargetBay, MessageActor.MachineManager);
                             }
                             else
                             {
-                                returnValue = this.CheckBayDestination(messageData, requestingBay, destination, mission, showErrors);
+                                return false;
+                            }
+                        }
+                        returnValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, false);
+                        if (returnValue)
+                        {
+                            // upper position is empty. we can use it only if bottom is also free
+                            returnValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, showErrors);
+                            if (returnValue)
+                            {
+                                // both positions are free: choose upper
+                                mission.LoadUnitDestination = upper;
+                            }
+                        }
+                        else
+                        {
+                            // if upper position is not empty we can try lower position
+                            returnValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, showErrors);
+                            if (returnValue)
+                            {
+                                // upper is occupied and bottom is free: choose bottom
+                                mission.LoadUnitDestination = bottom;
                             }
                         }
                     }
@@ -288,6 +289,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 default:
                     returnValue = this.CheckBayDestination(messageData, requestingBay, messageData.Destination, mission, showErrors);
+                    if (returnValue)
+                    {
+                        mission.LoadUnitDestination = messageData.Destination;
+                    }
 
                     break;
             }
@@ -395,6 +400,23 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 this.ErrorsProvider.RecordNew(MachineErrorCode.MachineModeNotValid, this.Mission.TargetBay);
                 return false;
+            }
+
+            var activeMission = this.MissionsDataProvider.GetAllActiveMissionsByBay(this.Mission.TargetBay)
+                .FirstOrDefault(x => x.Status == MissionStatus.Executing);
+
+            if (activeMission != null)
+            {
+                this.Logger.LogTrace($"IsDestinationOk: waiting for active mission {activeMission.Id}, LoadUnit {activeMission.LoadUnitId}; bay {this.Mission.TargetBay}");
+                if (showErrors)
+                {
+                    this.ErrorsProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisBay, this.Mission.TargetBay);
+                    throw new StateMachineException(ErrorDescriptions.AnotherMissionIsActiveForThisBay, this.Mission.TargetBay, MessageActor.MachineManager);
+                }
+                else
+                {
+                    return false;
+                }
             }
 
 #if !CHECK_BAY_SENSOR

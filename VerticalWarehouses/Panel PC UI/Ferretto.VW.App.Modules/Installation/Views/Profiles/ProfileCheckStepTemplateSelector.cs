@@ -13,17 +13,19 @@ namespace Ferretto.VW.App.Installation.Views
     {
         #region Properties
 
-        public DataTemplate EnumDrawerPosition { get; set; }
-
         public DataTemplate EnumElevatorPosition { get; set; }
 
         public DataTemplate EnumInitialize { get; set; }
 
         public DataTemplate EnumResultCheck { get; set; }
 
-        public DataTemplate EnumShapePosition { get; set; }
+        public DataTemplate EnumShapePositionDx { get; set; }
 
-        public DataTemplate EnumTaraturaCatena { get; set; }
+        public DataTemplate EnumShapePositionSx { get; set; }
+
+        public DataTemplate EnumTuningChainDx { get; set; }
+
+        public DataTemplate EnumTuningChainSx { get; set; }
 
         #endregion
 
@@ -40,14 +42,17 @@ namespace Ferretto.VW.App.Installation.Views
                 case ProfileCheckStep.ElevatorPosition:
                     return this.EnumElevatorPosition;
 
-                case ProfileCheckStep.DrawerPosition:
-                    return this.EnumDrawerPosition;
+                case ProfileCheckStep.ShapePositionDx:
+                    return this.EnumShapePositionDx;
 
-                case ProfileCheckStep.ShapePosition:
-                    return this.EnumShapePosition;
+                case ProfileCheckStep.TuningChainDx:
+                    return this.EnumTuningChainDx;
 
-                case ProfileCheckStep.TaraturaCatena:
-                    return this.EnumTaraturaCatena;
+                case ProfileCheckStep.ShapePositionSx:
+                    return this.EnumShapePositionSx;
+
+                case ProfileCheckStep.TuningChainSx:
+                    return this.EnumTuningChainSx;
 
                 case ProfileCheckStep.ResultCheck:
                     return this.EnumResultCheck;
