@@ -10,8 +10,8 @@
 
 namespace Ferretto.VW.App.Resources {
     using System;
-    
-    
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -23,15 +23,15 @@ namespace Ferretto.VW.App.Resources {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class OperatorApp {
-        
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal OperatorApp() {
         }
-        
+
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
@@ -45,7 +45,7 @@ namespace Ferretto.VW.App.Resources {
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
@@ -59,7 +59,7 @@ namespace Ferretto.VW.App.Resources {
                 resourceCulture = value;
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Abort.
         /// </summary>
@@ -68,7 +68,16 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("Abort", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Adjustment.
+        /// </summary>
+        public static string Adjustment {
+            get {
+                return ResourceManager.GetString("Adjustment", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Availability [units].
         /// </summary>
@@ -77,7 +86,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("Availability", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Available quantity  [{0}].
         /// </summary>
@@ -86,7 +95,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("AvailableQuantity", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
@@ -95,7 +104,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("Back", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Bay.
         /// </summary>
@@ -104,7 +113,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("Bay", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
@@ -113,7 +122,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("BayNumberAll", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to No bay.
         /// </summary>
@@ -122,7 +131,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("BayNumberBayNone", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Bay one.
         /// </summary>
@@ -131,7 +140,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("BayNumberBayOne", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Bay three.
         /// </summary>
@@ -140,7 +149,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("BayNumberBayThree", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Bay two.
         /// </summary>
@@ -149,7 +158,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("BayNumberBayTwo", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Elevator bay.
         /// </summary>
@@ -158,7 +167,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("BayNumberElevatorBay", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Bay.
         /// </summary>
@@ -167,7 +176,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("BayTarget", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Blocked.
         /// </summary>
@@ -176,7 +185,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("BlockLevelBlocked", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to None.
         /// </summary>
@@ -185,7 +194,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("BlockLevelNone", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to SpaceOnly.
         /// </summary>
@@ -194,7 +203,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("BlockLevelSpaceOnly", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Undefined.
         /// </summary>
@@ -203,7 +212,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("BlockLevelUndefined", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Cancel pick.
         /// </summary>
@@ -212,7 +221,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("CancelPick", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Cancel put.
         /// </summary>
@@ -221,7 +230,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("CancelPut", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to CellsStatisticsCellsTotal.
         /// </summary>
@@ -230,7 +239,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("CellsStatisticsCellsTotal", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to CellsStatisticsFrontCellsTotal.
         /// </summary>
@@ -239,7 +248,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("CellsStatisticsFrontCellsTotal", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to CellsStatisticsHeader.
         /// </summary>
@@ -248,7 +257,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("CellsStatisticsHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to CellsStatisticsOther.
         /// </summary>
@@ -257,7 +266,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("CellsStatisticsOther", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to CellsStatisticsRearCellsTotal.
         /// </summary>
@@ -266,7 +275,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("CellsStatisticsRearCellsTotal", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to CellsStatisticsTotalUsedCells.
         /// </summary>
@@ -275,7 +284,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("CellsStatisticsTotalUsedCells", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Confirm.
         /// </summary>
@@ -284,7 +293,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("CommonButtonConfirm", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Detail.
         /// </summary>
@@ -293,7 +302,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("CommonButtonDetail", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Position:.
         /// </summary>
@@ -302,7 +311,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("CommonCompartmentPosition", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Down.
         /// </summary>
@@ -311,7 +320,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("CommonDown", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Item code.
         /// </summary>
@@ -320,7 +329,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("CommonItemCode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Item description.
         /// </summary>
@@ -329,7 +338,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("CommonItemDescription", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to List code.
         /// </summary>
@@ -338,7 +347,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("CommonListCode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to List description.
         /// </summary>
@@ -347,7 +356,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("CommonListDescription", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to List row.
         /// </summary>
@@ -356,7 +365,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("CommonListRow", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to CommonListType.
         /// </summary>
@@ -365,7 +374,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("CommonListType", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Note:.
         /// </summary>
@@ -374,7 +383,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("CommonNote", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Packing list code.
         /// </summary>
@@ -383,7 +392,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("CommonPackingListCode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Packing list description.
         /// </summary>
@@ -392,7 +401,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("CommonPackingListDescription", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Up.
         /// </summary>
@@ -401,7 +410,43 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("CommonUp", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Depth.
+        /// </summary>
+        public static string CompartmentDepth {
+            get {
+                return ResourceManager.GetString("CompartmentDepth", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Comp. Id.
+        /// </summary>
+        public static string CompartmentId {
+            get {
+                return ResourceManager.GetString("CompartmentId", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Stock.
+        /// </summary>
+        public static string CompartmentStock {
+            get {
+                return ResourceManager.GetString("CompartmentStock", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Width.
+        /// </summary>
+        public static string CompartmentWidth {
+            get {
+                return ResourceManager.GetString("CompartmentWidth", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Complete Check.
         /// </summary>
@@ -410,7 +455,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("CompleteCheck", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Confirm.
         /// </summary>
@@ -419,7 +464,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("Confirm", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Confirm on empty.
         /// </summary>
@@ -428,7 +473,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ConfirmOnEmpty", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Confirm on full.
         /// </summary>
@@ -437,7 +482,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ConfirmOnFull", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Date.
         /// </summary>
@@ -446,7 +491,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("CreationDate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The current operation was remotely cancelled.
         ///Please put back any moved pieces in their original position..
@@ -456,7 +501,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("CurrentOperationIsNoLongerAvailable", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
@@ -465,7 +510,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("Description", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DetailListInWaitHeader.
         /// </summary>
@@ -474,7 +519,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DetailListInWaitHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Details.
         /// </summary>
@@ -483,7 +528,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("Details", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Dispatched quantity.
         /// </summary>
@@ -492,7 +537,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DispatchedQuantity", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Inventory operation detail.
         /// </summary>
@@ -501,7 +546,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityInventoryDetailHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Inventory operation.
         /// </summary>
@@ -510,7 +555,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityInventoryHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Stored quantity.
         /// </summary>
@@ -519,7 +564,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityInventoryQtyStored", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerActivityLocalCallActualWeight.
         /// </summary>
@@ -528,7 +573,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityLocalCallActualWeight", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerActivityLocalCallDrawer.
         /// </summary>
@@ -537,7 +582,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityLocalCallDrawer", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerActivityLocalCallGoBack.
         /// </summary>
@@ -546,7 +591,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityLocalCallGoBack", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Gross Weight [kg].
         /// </summary>
@@ -555,7 +600,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityLocalCallGrossWeight", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerActivityLocalCallHeader.
         /// </summary>
@@ -564,7 +609,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityLocalCallHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Height [mm].
         /// </summary>
@@ -573,7 +618,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityLocalCallHeight", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerActivityLocalCallMaxCapacity.
         /// </summary>
@@ -582,7 +627,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityLocalCallMaxCapacity", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerActivityLocalCallMissions.
         /// </summary>
@@ -591,7 +636,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityLocalCallMissions", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Picking item detail.
         /// </summary>
@@ -600,7 +645,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityPickingDetailHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Batch.
         /// </summary>
@@ -609,7 +654,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityPickingDetailLotto", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Material status.
         /// </summary>
@@ -618,7 +663,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityPickingDetailMaterialStatus", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Packaging type.
         /// </summary>
@@ -627,7 +672,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityPickingDetailPackagingType", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Production date.
         /// </summary>
@@ -636,7 +681,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityPickingDetailProductionDate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Requested quantity.
         /// </summary>
@@ -645,7 +690,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityPickingDetailQtyRequest", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to List&apos;s row.
         /// </summary>
@@ -654,7 +699,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityPickingDetailRowList", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Picking operations.
         /// </summary>
@@ -663,7 +708,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityPickingPageHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Picked quantity.
         /// </summary>
@@ -672,7 +717,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityPickingQtyPick", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Requested quantity.
         /// </summary>
@@ -681,7 +726,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityPickingQtyReq", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to List row.
         /// </summary>
@@ -690,7 +735,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityPickingRowList", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Update max capacity.
         /// </summary>
@@ -699,7 +744,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityRefillingCapacityMaxAdjust", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Refilling operation detail.
         /// </summary>
@@ -708,7 +753,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityRefillingDetailHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to List&apos;s row.
         /// </summary>
@@ -717,7 +762,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityRefillingDetailListRow", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Material status.
         /// </summary>
@@ -726,7 +771,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityRefillingDetailMaterialStatus", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Packaging type.
         /// </summary>
@@ -735,7 +780,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityRefillingDetailPackagingType", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Production date.
         /// </summary>
@@ -744,7 +789,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityRefillingDetailProductionDate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Requested quantity.
         /// </summary>
@@ -753,7 +798,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityRefillingDetailQtyRequest", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Refilling operation.
         /// </summary>
@@ -762,7 +807,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityRefillingHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Refilled quantity [{0}].
         /// </summary>
@@ -771,7 +816,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityRefillingQtyRefilled", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Requested quantity  [{0}].
         /// </summary>
@@ -780,7 +825,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerActivityRefillingQtyToRefill", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Compact front side.
         /// </summary>
@@ -789,7 +834,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerCompactingAntCompact", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerCompactingAntStop.
         /// </summary>
@@ -798,7 +843,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerCompactingAntStop", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerCompactingDetailAbort.
         /// </summary>
@@ -807,7 +852,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerCompactingDetailAbort", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerCompactingDetailActualStep.
         /// </summary>
@@ -816,7 +861,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerCompactingDetailActualStep", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerCompactingDetailDestinationCell.
         /// </summary>
@@ -825,7 +870,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerCompactingDetailDestinationCell", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerCompactingDetailDrawer.
         /// </summary>
@@ -834,7 +879,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerCompactingDetailDrawer", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerCompactingDetailHeader.
         /// </summary>
@@ -843,7 +888,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerCompactingDetailHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerCompactingDetailOrizzontalPosition.
         /// </summary>
@@ -852,7 +897,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerCompactingDetailOrizzontalPosition", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerCompactingDetailRecoveredSpace.
         /// </summary>
@@ -861,7 +906,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerCompactingDetailRecoveredSpace", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerCompactingDetailRemainingFragment.
         /// </summary>
@@ -870,7 +915,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerCompactingDetailRemainingFragment", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerCompactingDetailSourceCell.
         /// </summary>
@@ -879,7 +924,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerCompactingDetailSourceCell", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerCompactingDetailSpaceToRecover.
         /// </summary>
@@ -888,7 +933,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerCompactingDetailSpaceToRecover", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerCompactingDetailVerticalPosition.
         /// </summary>
@@ -897,7 +942,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerCompactingDetailVerticalPosition", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Fragments quantity.
         /// </summary>
@@ -906,7 +951,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerCompactingFragmentNumber", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerCompactingFront.
         /// </summary>
@@ -915,7 +960,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerCompactingFront", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Compaction drawer procedure.
         /// </summary>
@@ -924,7 +969,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerCompactingHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Max recoverable space.
         /// </summary>
@@ -933,7 +978,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerCompactingMaxSpaceRecoverable", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerCompactingProcedureStatus.
         /// </summary>
@@ -942,7 +987,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerCompactingProcedureStatus", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerCompactingFront.
         /// </summary>
@@ -951,7 +996,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerCompactingRear", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Compact back side.
         /// </summary>
@@ -960,7 +1005,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerCompactingRearCompact", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Space to recover.
         /// </summary>
@@ -969,7 +1014,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerCompactingSpaceToRecover", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Compartments.
         /// </summary>
@@ -978,7 +1023,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerSaturationDataGridHeaderCompartments", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Drawer Id.
         /// </summary>
@@ -987,7 +1032,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerSaturationDataGridHeaderDrawerId", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Filling.
         /// </summary>
@@ -996,7 +1041,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerSaturationDataGridHeaderFilling", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Filling %.
         /// </summary>
@@ -1005,7 +1050,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerSaturationDataGridHeaderFillingPercentage", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Missions.
         /// </summary>
@@ -1014,7 +1059,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerSaturationDataGridHeaderMissions", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerSpaceSaturazionWeightAnalisys.
         /// </summary>
@@ -1023,7 +1068,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerSpaceSaturazionAnalisys", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerSpaceSaturazionDrawerMeasure.
         /// </summary>
@@ -1032,7 +1077,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerSpaceSaturazionDrawerMeasure", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerSpaceSaturazionFillingMachine.
         /// </summary>
@@ -1041,7 +1086,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerSpaceSaturazionFillingMachine", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerSpaceSaturazionHeader.
         /// </summary>
@@ -1050,7 +1095,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerSpaceSaturazionHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerSpaceSaturazionTotalDrawers.
         /// </summary>
@@ -1059,7 +1104,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerSpaceSaturazionTotalDrawers", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerSpaceSaturazionWeightAnalisys.
         /// </summary>
@@ -1068,7 +1113,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerSpaceSaturazionWeightAnalisys", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Scheduled operations:.
         /// </summary>
@@ -1077,7 +1122,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerWaitOperation", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Waiting for new drawer.
         /// </summary>
@@ -1086,7 +1131,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerWaitPageHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerWeightSaturationHeader.
         /// </summary>
@@ -1095,7 +1140,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerWeightSaturationHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerWeightSaturationMaxGrossRange.
         /// </summary>
@@ -1104,7 +1149,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerWeightSaturationMaxGrossRange", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerWeightSaturationMaxNetRange.
         /// </summary>
@@ -1113,7 +1158,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerWeightSaturationMaxNetRange", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerWeightSaturationNetLoadedWeight.
         /// </summary>
@@ -1122,7 +1167,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerWeightSaturationNetLoadedWeight", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerWeightSaturationTotalDrawers.
         /// </summary>
@@ -1131,7 +1176,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerWeightSaturationTotalDrawers", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerWeightSaturationWeightGrossLoaded.
         /// </summary>
@@ -1140,7 +1185,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerWeightSaturationWeightGrossLoaded", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to DrawerWeightSaturationWeightNetLoaded.
         /// </summary>
@@ -1149,7 +1194,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("DrawerWeightSaturationWeightNetLoaded", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Empty.
         /// </summary>
@@ -1158,7 +1203,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("Empty", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to ErrorsStatisticsDrawersMovedWithoutError.
         /// </summary>
@@ -1167,7 +1212,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ErrorsStatisticsDrawersMovedWithoutError", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to ErrorsStatisticsErrorDescription.
         /// </summary>
@@ -1176,7 +1221,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ErrorsStatisticsErrorDescription", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to ErrorsStatisticsHeader.
         /// </summary>
@@ -1185,7 +1230,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ErrorsStatisticsHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to ErrorsStatisticsReliabilityIndex.
         /// </summary>
@@ -1194,7 +1239,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ErrorsStatisticsReliabilityIndex", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to ErrorsStatisticsTotDrawersMoved.
         /// </summary>
@@ -1203,7 +1248,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ErrorsStatisticsTotDrawersMoved", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to ErrorsStatisticsTotErrors.
         /// </summary>
@@ -1212,7 +1257,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ErrorsStatisticsTotErrors", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Executable Lists&apos; Rows.
         /// </summary>
@@ -1221,7 +1266,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ExecutableListsRows", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to FIFO time span.
         /// </summary>
@@ -1230,7 +1275,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("FIFOPeriod", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Full.
         /// </summary>
@@ -1239,7 +1284,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("Full", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to General informations.
         /// </summary>
@@ -1248,7 +1293,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("GeneralInfoHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Acceptance date.
         /// </summary>
@@ -1257,7 +1302,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("GeneralInfoInstallationDate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Last service.
         /// </summary>
@@ -1266,7 +1311,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("GeneralInfoLastMaintenanceDate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Model.
         /// </summary>
@@ -1275,7 +1320,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("GeneralInfoModel", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Next service.
         /// </summary>
@@ -1284,7 +1329,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("GeneralInfoNextMaintenanceDate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Operative machine&apos;s state.
         /// </summary>
@@ -1293,7 +1338,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("GeneralInfoOperativeStatus", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Serial number.
         /// </summary>
@@ -1302,7 +1347,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("GeneralInfoSerial", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Software version.
         /// </summary>
@@ -1311,7 +1356,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("GeneralInfoSwRelease", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Drawer quantity.
         /// </summary>
@@ -1320,7 +1365,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("GeneralInfoTotDrawers", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to GeneralInfoWmsStatus.
         /// </summary>
@@ -1329,7 +1374,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("GeneralInfoWmsStatus", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to If you have picked up items, put them back in the original compartment..
         /// </summary>
@@ -1338,7 +1383,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("IfPickedItemsPutThemBackInTheOriginalCompartment", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Drawer call.
         /// </summary>
@@ -1347,7 +1392,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ImmediateDrawerCallDrawerCall", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Immediate drawer call.
         /// </summary>
@@ -1356,7 +1401,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ImmediateDrawerCallHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Requested tray.
         /// </summary>
@@ -1365,7 +1410,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ImmediateDrawerCallRequiredDrawer", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Instant Article.
         /// </summary>
@@ -1374,7 +1419,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("InstantArticle", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Inventory Operation..
         /// </summary>
@@ -1383,7 +1428,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("InventoryOperation", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Inventory operation cancelled..
         /// </summary>
@@ -1392,7 +1437,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("InventoryOperationCancelled", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Detected quantity [{0}].
         /// </summary>
@@ -1401,7 +1446,25 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("InventoryQuantityDetected", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Item code.
+        /// </summary>
+        public static string ItemCode {
+            get {
+                return ResourceManager.GetString("ItemCode", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Item description.
+        /// </summary>
+        public static string ItemDescription {
+            get {
+                return ResourceManager.GetString("ItemDescription", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to ItemDetailCategory.
         /// </summary>
@@ -1410,7 +1473,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemDetailCategory", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to ItemDetailClasse.
         /// </summary>
@@ -1419,7 +1482,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemDetailClasse", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Item detail.
         /// </summary>
@@ -1428,7 +1491,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemDetailHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Managing type:.
         /// </summary>
@@ -1437,7 +1500,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemDetailManagement", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to ItemDetailMeasurementUnity.
         /// </summary>
@@ -1446,7 +1509,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemDetailMeasurementUnity", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to FIFO time span.
         /// </summary>
@@ -1455,7 +1518,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemDetailPeriod", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to ItemDetailWeight.
         /// </summary>
@@ -1464,7 +1527,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemDetailWeight", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Inventory.
         /// </summary>
@@ -1473,7 +1536,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemListType_Inventory", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to NotSpecified.
         /// </summary>
@@ -1482,7 +1545,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemListType_NotSpecified", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Pick.
         /// </summary>
@@ -1491,7 +1554,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemListType_Pick", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Put.
         /// </summary>
@@ -1500,7 +1563,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemListType_Put", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Machines availabiility.
         /// </summary>
@@ -1509,7 +1572,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemMachinesAvailability", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to FIFO.
         /// </summary>
@@ -1518,7 +1581,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemManagementType_FIFO", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Not specified.
         /// </summary>
@@ -1527,7 +1590,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemManagementType_NotSpecified", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Volume.
         /// </summary>
@@ -1536,7 +1599,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemManagementType_Volume", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Item call.
         /// </summary>
@@ -1545,7 +1608,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemSearchCall", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Item detail.
         /// </summary>
@@ -1554,7 +1617,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemSearchDetail", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to ItemSearchGridDescription.
         /// </summary>
@@ -1563,7 +1626,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemSearchGridDescription", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Item.
         /// </summary>
@@ -1572,7 +1635,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemSearchGridItem", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to ItemSearchGridMachine.
         /// </summary>
@@ -1581,7 +1644,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemSearchGridMachine", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Search item by code or description.
         /// </summary>
@@ -1590,7 +1653,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemSearchHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Search.
         /// </summary>
@@ -1599,7 +1662,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemSearchKeySearch", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Search item.
         /// </summary>
@@ -1608,7 +1671,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemSearchSearch", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to LIFO time span.
         /// </summary>
@@ -1617,7 +1680,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("LIFOPeriod", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to List.
         /// </summary>
@@ -1626,7 +1689,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("List", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to List description.
         /// </summary>
@@ -1635,7 +1698,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ListDescription", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Lists.
         /// </summary>
@@ -1644,7 +1707,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("Lists", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to List details.
         /// </summary>
@@ -1653,7 +1716,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ListsInWaitDetail", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Execute list.
         /// </summary>
@@ -1662,7 +1725,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ListsInWaitExecute", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Waiting for execution lists.
         /// </summary>
@@ -1671,7 +1734,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ListsInWaitHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Note.
         /// </summary>
@@ -1680,7 +1743,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ListsInWaitNote", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Loading unit.
         /// </summary>
@@ -1689,7 +1752,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("LoadingUnit", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Loading unit check.
         /// </summary>
@@ -1698,7 +1761,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("LoadingUnitCheck", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Depth.
         /// </summary>
@@ -1707,7 +1770,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("LoadingUnitDepth", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Loading unit Id.
         /// </summary>
@@ -1716,7 +1779,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("LoadingUnitId", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Loading unit in bay.
         /// </summary>
@@ -1725,7 +1788,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("LoadingUnitInBay", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to There is 1 loading unit send to bay.
         /// </summary>
@@ -1734,7 +1797,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("LoadingUnitSendToBay", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to There are {0} loading units send to bay.
         /// </summary>
@@ -1743,7 +1806,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("LoadingUnitsSendToBay", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Width.
         /// </summary>
@@ -1752,7 +1815,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("LoadingUnitWidth", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Lot.
         /// </summary>
@@ -1761,7 +1824,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("Lot", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Machine.
         /// </summary>
@@ -1770,7 +1833,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("Machine", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Machines.
         /// </summary>
@@ -1779,7 +1842,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("Machines", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Expired.
         /// </summary>
@@ -1788,7 +1851,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MachineServiceStatus_Expired", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Expiring.
         /// </summary>
@@ -1797,7 +1860,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MachineServiceStatus_Expiring", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Unknown.
         /// </summary>
@@ -1806,7 +1869,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MachineServiceStatus_Unknown", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Valid.
         /// </summary>
@@ -1815,7 +1878,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MachineServiceStatus_Valid", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MachineStatistics_AreaFillPercentage.
         /// </summary>
@@ -1824,7 +1887,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MachineStatistics_AreaFillPercentage", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MachineStatistics_AutomaticTimePercentage.
         /// </summary>
@@ -1833,7 +1896,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MachineStatistics_AutomaticTimePercentage", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MachineStatistics_TotalMovedTrays.
         /// </summary>
@@ -1842,7 +1905,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MachineStatistics_TotalMovedTrays", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MachineStatistics_TotalPowerOnTime.
         /// </summary>
@@ -1851,7 +1914,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MachineStatistics_TotalPowerOnTime", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MachineStatistics_TotalShutter1Cycles.
         /// </summary>
@@ -1860,7 +1923,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MachineStatistics_TotalShutter1Cycles", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MachineStatistics_TotalShutter2Cycles.
         /// </summary>
@@ -1869,7 +1932,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MachineStatistics_TotalShutter2Cycles", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MachineStatistics_TotalShutter3Cycles.
         /// </summary>
@@ -1878,7 +1941,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MachineStatistics_TotalShutter3Cycles", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MachineStatistics_TotalVerticalAxisCycles.
         /// </summary>
@@ -1887,7 +1950,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MachineStatistics_TotalVerticalAxisCycles", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MachineStatistics_TotalVerticalAxisKilometers.
         /// </summary>
@@ -1896,7 +1959,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MachineStatistics_TotalVerticalAxisKilometers", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MachineStatistics_UsageTimePercentage.
         /// </summary>
@@ -1905,7 +1968,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MachineStatistics_UsageTimePercentage", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MachineStatistics_WeightCapacityPercentage.
         /// </summary>
@@ -1914,7 +1977,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MachineStatistics_WeightCapacityPercentage", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MachineStatisticsHeader.
         /// </summary>
@@ -1923,7 +1986,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MachineStatisticsHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MachineStatisticsSectionBays.
         /// </summary>
@@ -1932,7 +1995,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MachineStatisticsSectionBays", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MachineStatisticsSectionBaysBay1.
         /// </summary>
@@ -1941,7 +2004,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MachineStatisticsSectionBaysBay1", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MachineStatisticsSectionBaysBay2.
         /// </summary>
@@ -1950,7 +2013,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MachineStatisticsSectionBaysBay2", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MachineStatisticsSectionBaysBay3.
         /// </summary>
@@ -1959,7 +2022,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MachineStatisticsSectionBaysBay3", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MachineStatisticsSectionHorizontal.
         /// </summary>
@@ -1968,7 +2031,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MachineStatisticsSectionHorizontal", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MachineStatisticsSectionHorizontalTotalCycles.
         /// </summary>
@@ -1977,7 +2040,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MachineStatisticsSectionHorizontalTotalCycles", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MachineStatisticsSectionShutters.
         /// </summary>
@@ -1986,7 +2049,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MachineStatisticsSectionShutters", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MachineStatisticsSectionVertical.
         /// </summary>
@@ -1995,7 +2058,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MachineStatisticsSectionVertical", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MaintenanceDetailContactRequired.
         /// </summary>
@@ -2004,7 +2067,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MaintenanceDetailContactRequired", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MaintenanceDetailCyclesBetweenTwoMaintenance.
         /// </summary>
@@ -2013,7 +2076,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MaintenanceDetailCyclesBetweenTwoMaintenance", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MaintenanceDetailCyclesFromLastMaintenance.
         /// </summary>
@@ -2022,7 +2085,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MaintenanceDetailCyclesFromLastMaintenance", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MaintenanceDetailElementStatus.
         /// </summary>
@@ -2031,7 +2094,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MaintenanceDetailElementStatus", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MaintenanceDetailHeader.
         /// </summary>
@@ -2040,7 +2103,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MaintenanceDetailHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MaintenanceDetailHeaderKit.
         /// </summary>
@@ -2049,7 +2112,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MaintenanceDetailHeaderKit", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MaintenanceDetailPlatformRequired.
         /// </summary>
@@ -2058,7 +2121,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MaintenanceDetailPlatformRequired", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MaintenanceDetailStopRequired.
         /// </summary>
@@ -2067,7 +2130,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MaintenanceDetailStopRequired", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MaintenanceDetailTotalCycles.
         /// </summary>
@@ -2076,7 +2139,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MaintenanceDetailTotalCycles", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MaintenanceMainPageDetail.
         /// </summary>
@@ -2085,7 +2148,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MaintenanceMainPageDetail", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MaintenanceMainPageHeader.
         /// </summary>
@@ -2094,7 +2157,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MaintenanceMainPageHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MaintenanceMainPageInstallationDate.
         /// </summary>
@@ -2103,7 +2166,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MaintenanceMainPageInstallationDate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MaintenanceMainPageLastMaintenanceDate.
         /// </summary>
@@ -2112,7 +2175,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MaintenanceMainPageLastMaintenanceDate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MaintenanceMainPageModel.
         /// </summary>
@@ -2121,7 +2184,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MaintenanceMainPageModel", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MaintenanceNextMaintenanceDate.
         /// </summary>
@@ -2130,7 +2193,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MaintenanceMainPageNextMaintenanceDate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MaintenanceMainPageSerial.
         /// </summary>
@@ -2139,7 +2202,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MaintenanceMainPageSerial", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MaintenanceMainPageStateMachine.
         /// </summary>
@@ -2148,7 +2211,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MaintenanceMainPageStateMachine", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Management.
         /// </summary>
@@ -2157,7 +2220,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("Management", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Material status.
         /// </summary>
@@ -2166,7 +2229,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MaterialStatus", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Not defined.
         /// </summary>
@@ -2175,7 +2238,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MisionStateNotDefined", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Missions.
         /// </summary>
@@ -2184,7 +2247,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("Missions", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Missions list.
         /// </summary>
@@ -2193,7 +2256,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MissionsList", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Bay chain.
         /// </summary>
@@ -2202,7 +2265,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MissionStateBayChain", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Close shutter.
         /// </summary>
@@ -2211,7 +2274,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MissionStateCloseShutter", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Deposit unit.
         /// </summary>
@@ -2220,7 +2283,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MissionStateDepositUnit", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to End.
         /// </summary>
@@ -2229,7 +2292,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MissionStateEnd", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
@@ -2238,7 +2301,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MissionStateError", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Load elevator.
         /// </summary>
@@ -2247,7 +2310,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MissionStateLoadElevator", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to New.
         /// </summary>
@@ -2256,7 +2319,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MissionStateNew", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Not defined.
         /// </summary>
@@ -2265,7 +2328,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MissionStateNotDefined", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Start.
         /// </summary>
@@ -2274,7 +2337,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MissionStateStart", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to To target.
         /// </summary>
@@ -2283,7 +2346,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MissionStateToTarget", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Wait operator action.
         /// </summary>
@@ -2292,7 +2355,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MissionStateWaitPick", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Status.
         /// </summary>
@@ -2301,7 +2364,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MissionStatus", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Step.
         /// </summary>
@@ -2310,7 +2373,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MissionStep", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Mission type.
         /// </summary>
@@ -2319,7 +2382,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MissionType", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Compact.
         /// </summary>
@@ -2328,7 +2391,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MissionTypeCompact", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Full test.
         /// </summary>
@@ -2337,7 +2400,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MissionTypeFullTest", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to In.
         /// </summary>
@@ -2346,7 +2409,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MissionTypeIn", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Manual.
         /// </summary>
@@ -2355,7 +2418,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MissionTypeManual", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to No type.
         /// </summary>
@@ -2364,7 +2427,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MissionTypeNoType", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Out.
         /// </summary>
@@ -2373,7 +2436,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MissionTypeOut", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Wms.
         /// </summary>
@@ -2382,7 +2445,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("MissionTypeWms", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Drawer operations.
         /// </summary>
@@ -2391,7 +2454,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("NavigationMainMenuDrawerOperation", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Search item.
         /// </summary>
@@ -2400,7 +2463,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("NavigationMainMenuItems", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Waiting lists.
         /// </summary>
@@ -2409,7 +2472,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("NavigationMainMenuLists", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Other.
         /// </summary>
@@ -2418,7 +2481,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("NavigationMainMenuOther", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to No loading units to move.
         /// </summary>
@@ -2427,7 +2490,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("NoLoadingUnitsToMove", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Notes.
         /// </summary>
@@ -2436,7 +2499,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("Notes", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Operation cancelled.
         /// </summary>
@@ -2445,7 +2508,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("OperationCancelled", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Operation cancelled confirmed.
         /// </summary>
@@ -2454,7 +2517,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("OperationCancelledConfirmed", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Operation confirmed..
         /// </summary>
@@ -2463,7 +2526,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("OperationConfirmed", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Cell.
         /// </summary>
@@ -2472,7 +2535,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("OtherDrawerDataGridHeaderCell", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Drawer.
         /// </summary>
@@ -2481,7 +2544,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("OtherDrawerDataGridHeaderDrawer", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Height.
         /// </summary>
@@ -2490,7 +2553,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("OtherDrawerDataGridHeaderHeight", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Side.
         /// </summary>
@@ -2499,7 +2562,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("OtherDrawerDataGridHeaderSide", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to State.
         /// </summary>
@@ -2508,7 +2571,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("OtherDrawerDataGridHeaderState", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Weight.
         /// </summary>
@@ -2517,7 +2580,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("OtherDrawerDataGridHeaderWeight", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Compaction.
         /// </summary>
@@ -2526,7 +2589,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("OtherNavigationCompaction", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Error Simulation.
         /// </summary>
@@ -2535,7 +2598,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("OtherNavigationErrorSimulation", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to OtherNavigationImmediateDrawerCall.
         /// </summary>
@@ -2544,7 +2607,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("OtherNavigationImmediateDrawerCall", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Maintenance.
         /// </summary>
@@ -2553,7 +2616,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("OtherNavigationMaintenance", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Statistics.
         /// </summary>
@@ -2562,7 +2625,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("OtherNavigationStatistics", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Packaging type.
         /// </summary>
@@ -2571,7 +2634,16 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("PackagingType", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Pick.
+        /// </summary>
+        public static string Pick {
+            get {
+                return ResourceManager.GetString("Pick", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Picked quantity [{0}].
         /// </summary>
@@ -2580,7 +2652,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("PickedQuantity", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Picking.
         /// </summary>
@@ -2589,7 +2661,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("Picking", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Pick request for item {0} (q.ty {1}) was accepted..
         /// </summary>
@@ -2598,7 +2670,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("PickRequestWasAccepted", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to pcs.
         /// </summary>
@@ -2607,7 +2679,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("Pieces", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Position.
         /// </summary>
@@ -2616,7 +2688,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("Position", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Production date.
         /// </summary>
@@ -2625,7 +2697,16 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ProductionDate", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Put.
+        /// </summary>
+        public static string Put {
+            get {
+                return ResourceManager.GetString("Put", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Quantity.
         /// </summary>
@@ -2634,7 +2715,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("Quantity", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Quantity to pick.
         /// </summary>
@@ -2643,7 +2724,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("QuantityToPick", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Recall Drawer.
         /// </summary>
@@ -2652,7 +2733,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("RecallDrawer", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Remove any spilled items from the compartment..
         /// </summary>
@@ -2661,7 +2742,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("RemoveAnySpilledItemsFromCompartment", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Requested quantity  [{0}].
         /// </summary>
@@ -2670,7 +2751,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("RequestedQuantity", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Search.
         /// </summary>
@@ -2679,7 +2760,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("Search", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Search by code.
         /// </summary>
@@ -2688,7 +2769,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("SearchCode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Tot Back.
         /// </summary>
@@ -2697,7 +2778,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatisticsCellsDataGridHeaderBack", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Tot Back %.
         /// </summary>
@@ -2706,7 +2787,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatisticsCellsDataGridHeaderBackPercentage", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Tot Front.
         /// </summary>
@@ -2715,7 +2796,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatisticsCellsDataGridHeaderFront", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Tot Front %.
         /// </summary>
@@ -2724,7 +2805,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatisticsCellsDataGridHeaderFrontPercentage", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to State.
         /// </summary>
@@ -2733,7 +2814,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatisticsCellsDataGridHeaderState", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Current weight.
         /// </summary>
@@ -2742,7 +2823,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatisticsDrawerWeightSaturationDataGridHeaderCurrentGrossWeight", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Drawer.
         /// </summary>
@@ -2751,7 +2832,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatisticsDrawerWeightSaturationDataGridHeaderDrawer", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Height.
         /// </summary>
@@ -2760,7 +2841,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatisticsDrawerWeightSaturationDataGridHeaderHeight", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Max %.
         /// </summary>
@@ -2769,7 +2850,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatisticsDrawerWeightSaturationDataGridHeaderMaxPercentage", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Max weight.
         /// </summary>
@@ -2778,7 +2859,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatisticsDrawerWeightSaturationDataGridHeaderMaxWeight", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Tare.
         /// </summary>
@@ -2787,7 +2868,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatisticsDrawerWeightSaturationDataGridHeaderTare", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
@@ -2796,7 +2877,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatisticsErrorDataGridHeaderError", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Total.
         /// </summary>
@@ -2805,7 +2886,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatisticsErrorDataGridHeaderTotal", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Total %.
         /// </summary>
@@ -2814,7 +2895,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatisticsErrorDataGridHeaderTotalPercentage", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to StatisticsGeneralDataHeader.
         /// </summary>
@@ -2823,7 +2904,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatisticsGeneralDataHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Class.
         /// </summary>
@@ -2832,7 +2913,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatisticsItemDataGridHeaderClass", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
@@ -2841,7 +2922,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatisticsMaintenanceDataGridHeaderDescription", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Kit.
         /// </summary>
@@ -2850,7 +2931,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatisticsMaintenanceDataGridHeaderKit", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Request.
         /// </summary>
@@ -2859,7 +2940,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatisticsMaintenanceDataGridHeaderRequest", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to State.
         /// </summary>
@@ -2868,7 +2949,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatisticsMaintenanceDataGridHeaderState", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
@@ -2877,7 +2958,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatisticsMaintenanceDetailDataGridHeaderDescription", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Element.
         /// </summary>
@@ -2886,7 +2967,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatisticsMaintenanceDetailDataGridHeaderElement", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Quantity.
         /// </summary>
@@ -2895,7 +2976,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatisticsMaintenanceDetailDataGridHeaderQuantity", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to StatisticsNavigationCells.
         /// </summary>
@@ -2904,7 +2985,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatisticsNavigationCells", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to StatisticsNavigationDrawers.
         /// </summary>
@@ -2913,7 +2994,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatisticsNavigationDrawers", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to StatisticsNavigationErrors.
         /// </summary>
@@ -2922,7 +3003,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatisticsNavigationErrors", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to StatisticsNavigationItems.
         /// </summary>
@@ -2931,7 +3012,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatisticsNavigationItems", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to StatisticsNavigationMachine.
         /// </summary>
@@ -2940,7 +3021,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatisticsNavigationMachine", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Aborted.
         /// </summary>
@@ -2949,7 +3030,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatusAborted", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Completed.
         /// </summary>
@@ -2958,7 +3039,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatusCompleted", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Completing.
         /// </summary>
@@ -2967,7 +3048,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatusCompleting", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Executing.
         /// </summary>
@@ -2976,7 +3057,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatusExecuting", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to New.
         /// </summary>
@@ -2985,7 +3066,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatusNew", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Waiting.
         /// </summary>
@@ -2994,7 +3075,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("StatusWaiting", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
@@ -3003,7 +3084,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("WaitingListDataGridHeaderDescription", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Executable.
         /// </summary>
@@ -3012,7 +3093,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("WaitingListDataGridHeaderExecutable", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to List.
         /// </summary>
@@ -3021,7 +3102,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("WaitingListDataGridHeaderList", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Machines.
         /// </summary>
@@ -3030,7 +3111,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("WaitingListDataGridHeaderMachines", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Type.
         /// </summary>
@@ -3039,7 +3120,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("WaitingListDataGridHeaderType", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
@@ -3048,7 +3129,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("WaitingListDetailDataGridHeaderDescription", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Item.
         /// </summary>
@@ -3057,7 +3138,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("WaitingListDetailDataGridHeaderItem", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Machine.
         /// </summary>
@@ -3066,7 +3147,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("WaitingListDetailDataGridHeaderMachine", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Quantity.
         /// </summary>
@@ -3075,7 +3156,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("WaitingListDetailDataGridHeaderQuantity", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Row.
         /// </summary>
@@ -3084,7 +3165,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("WaitingListDetailDataGridHeaderRow", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to WMS Services offline.
         /// </summary>
@@ -3093,7 +3174,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("WmsServicesOffline", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to WMS Services online.
         /// </summary>

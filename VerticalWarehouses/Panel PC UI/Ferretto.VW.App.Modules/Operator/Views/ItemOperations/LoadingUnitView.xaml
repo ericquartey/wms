@@ -7,102 +7,66 @@
             xmlns:localControls="clr-namespace:Ferretto.VW.App.Operator.Views"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
-            xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             d:DesignHeight="450"
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
-    <Grid Margin="50,30,50,0">
+    <Grid Margin="50,0,15,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="2*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
+                   VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static resources:OperatorApp.LoadingUnitInBay}" />
+                   Text="{x:Static res:OperatorApp.LoadingUnitInBay}" />
 
         <localControls:LoadingUnitControlView Grid.Row="1"
-                                              Margin="50,0,0,0" />
+                                              Margin="0,0,35,0" />
 
-        <Grid Grid.Row="2"
-              Margin="0,15,0,0">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
+        <StackPanel Grid.Row="2"
+                    Margin="0 10 0 0"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-
-            <controls:PpcLabeledText Grid.Row="1"
-                                     Grid.Column="0"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding LoadingUnit.Id}"
-                                     LabelText="{x:Static resources:OperatorApp.LoadingUnitId}" />
-
-            <controls:PpcLabeledText Grid.Row="1"
-                                     Grid.Column="1"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding LoadingUnit.Width}"
-                                     LabelText="{x:Static resources:OperatorApp.LoadingUnitWidth}" />
-
-            <controls:PpcLabeledText Grid.Row="1"
-                                     Grid.Column="2"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding LoadingUnit.Depth}"
-                                     LabelText="{x:Static resources:OperatorApp.LoadingUnitDepth}" />
-
-            <controls:PpcLabeledText Grid.Row="2"
-                                     Grid.Column="0"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding LoadingUnit.GrossWeight}"
-                                     LabelText="{x:Static resources:OperatorApp.DrawerActivityLocalCallGrossWeight}" />
-
-            <controls:PpcLabeledText Grid.Row="2"
-                                     Grid.Column="1"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding LoadingUnit.Tare}"
-                                     LabelText="{x:Static resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderTare}" />
-
-            <controls:PpcLabeledText Grid.Row="2"
-                                     Grid.Column="2"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding LoadingUnit.Height}"
-                                     LabelText="{x:Static resources:OperatorApp.DrawerActivityLocalCallHeight}" />
-
-
-            <StackPanel Grid.Row="4"
-                        Grid.ColumnSpan="4"
-                        HorizontalAlignment="Right"
-                        Orientation="Horizontal">
-
-                <controls:PpcButton Grid.Row="4"
-                                    Grid.Column="3"
-                                    Margin="40,0,60,0"
+            <controls:PpcButton                                 
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
-                                    Command="{Binding ConfirmOperationCommand}"
-                                    Content="{x:Static resources:OperatorApp.RecallDrawer}"
+                                    Command="{Binding OperationCommand}"
+                                    CommandParameter="{x:Static res:OperatorApp.Adjustment}"
+                                    Content="{x:Static res:OperatorApp.Adjustment}"
                                     IsBusy="{Binding IsBusyConfirmingOperation}" />
 
-            </StackPanel>
-        </Grid>
+
+            <controls:PpcButton
+                                    Margin="15 0 0 0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding OperationCommand}"
+                                    CommandParameter="{x:Static res:OperatorApp.Pick}"
+                                    Content="{x:Static res:OperatorApp.Pick}"
+                                    IsBusy="{Binding IsBusyConfirmingOperation}" />
+            <controls:PpcButton
+                                    Margin="15 0 0 0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding OperationCommand}"
+                                    CommandParameter="{x:Static res:OperatorApp.Put}"
+                                    Content="{x:Static res:OperatorApp.Put}"
+                                    IsBusy="{Binding IsBusyConfirmingOperation}" />
+
+            <controls:PpcButton 
+                                    Margin="15 0 0 0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding RecallLoadingUnitCommand}"                                    
+                                    Content="{x:Static res:OperatorApp.RecallDrawer}"
+                                    IsBusy="{Binding IsBusyConfirmingOperation}" />
+
+        </StackPanel>
     </Grid>
 </ctrls:View>

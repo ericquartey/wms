@@ -132,7 +132,7 @@ namespace Ferretto.VW.Simulator.Services
             {
                 this.listenerIoDriver3.Start();
             }
-            this.listenerLaser1.Start();
+            //this.listenerLaser1.Start();
 
             _ = Task.Run(() => this.AcceptClient(this.listenerInverter, this.cts.Token, (client, message) => this.ReplyInverter(client, message)));
             if (this.RemoteIOs01.Enabled)
@@ -150,7 +150,7 @@ namespace Ferretto.VW.Simulator.Services
                 _ = Task.Run(() => this.AcceptClient(this.listenerIoDriver3, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message, 2)));
             }
 
-            _ = Task.Run(() => this.AcceptClient(this.listenerLaser1, this.cts.Token, (client, message) => this.ReplyLaser(client, message, 1)));
+            //_ = Task.Run(() => this.AcceptClient(this.listenerLaser1, this.cts.Token, (client, message) => this.ReplyLaser(client, message, 1)));
 
             await Task.Delay(100);
             this.IsStartedSimulator = true;
