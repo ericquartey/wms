@@ -117,6 +117,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public override Task OnAppearedAsync()
         {
+            // reset selected file to null, just in case
+            this.SelectedFile = null;
+
             this._usbWatcher.DrivesChange += this.UsbWatcher_DrivesChange;
             this._usbWatcher.Start();
 
@@ -136,14 +139,16 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private void UsbWatcher_DrivesChange(object sender, DrivesChangeEventArgs e)
         {
+            this.IsBusy = true;
             UsbWatcherService usb = (UsbWatcherService)sender;
             var configurationFiles = this.configurationFiles = usb.Drives.FindConfigurationFiles();
             this.RaisePropertyChanged(nameof(this.ConfigurationFiles));
             if (!configurationFiles.Any())
             {
                 this.ShowNotification(Resources.InstallationApp.NoDevicesAvailableAnymore, Services.Models.NotificationSeverity.Warning);
-                this.NavigationService.GoBack();
+                this.NavigationService.GoBackSafelyAsync(); //.ConfigureAwait(false).GetAwaiter().GetResult();
             }
+            this.IsBusy = false;
         }
 
         #endregion
