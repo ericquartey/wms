@@ -350,7 +350,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private void DoOperation(string param)
         {
-            var dataSend = (param, this.selectedItemCompartment);
+           (string operationType, CompartmentDetails selectedItemCompartment) dataSend = (param, this.selectedItemCompartment);
             // TODO implement specific operation
         }
 
@@ -408,6 +408,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
+        private void SetItems()
+        {
+            this.Items = this.ItemsCompartments.Where(ic => ic.Id == this.selectedCompartment.Id);
+        }
+
         private void SetItemsAndCompartment()
         {
             if (this.selectedCompartment is null)
@@ -417,10 +422,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 return;
             }
 
-            this.Items = this.ItemsCompartments.Where(ic => ic.Id == this.selectedCompartment.Id);
-            if (!(this.Items is null)
-                &&
-                this.Items.Any())
+            this.SetItems();
+            if (this.Items.Any() == true)
             {
                 this.SelectedItem = this.Items.First();
             }
@@ -435,7 +438,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 return;
             }
 
-            this.SelectedCompartment = this.Compartments.FirstOrDefault(c => c.Id == this.selectedItemCompartment.Id);
+            this.selectedCompartment = this.Compartments.FirstOrDefault(c => c.Id == this.selectedItemCompartment.Id);
+            this.SetItems();
+            this.RaisePropertyChanged(nameof(this.SelectedCompartment));
             if (this.items?.Any() == true)
             {
                 if (this.items.FirstOrDefault(ic => ic.ItemId == this.selectedItemCompartment.ItemId) is CompartmentDetails newSelectedItem)
