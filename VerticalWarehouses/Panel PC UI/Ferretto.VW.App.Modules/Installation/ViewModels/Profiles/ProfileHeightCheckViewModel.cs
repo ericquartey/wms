@@ -28,34 +28,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
 {
     public enum ProfileCheckStep
     {
-        /// <summary>
-        /// Step 1
-        /// </summary>
         Initialize,
 
-        /// <summary>
-        /// Step 2
-        /// </summary>
         ElevatorPosition,
 
-        /// <summary>
-        /// Step 3
-        /// </summary>
-        DrawerPosition,
+        ShapePositionDx,
 
-        /// <summary>
-        /// Step 4
-        /// </summary>
-        ShapePosition,
+        TuningChainDx,
 
-        /// <summary>
-        /// Step 5
-        /// </summary>
-        TaraturaCatena,
+        ShapePositionSx,
 
-        /// <summary>
-        /// Step 6
-        /// </summary>
+        TuningChainSx,
+
         ResultCheck,
     }
 
@@ -103,17 +87,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 .Distinct()
                 .Where(s => !string.IsNullOrEmpty(s)));
 
-        public bool HasStepDrawerPosition => this.currentStep is ProfileCheckStep.DrawerPosition;
-
         public bool HasStepElevatorPosition => this.currentStep is ProfileCheckStep.ElevatorPosition;
 
         public bool HasStepInitialize => this.currentStep is ProfileCheckStep.Initialize;
 
         public bool HasStepResultCheck => this.currentStep is ProfileCheckStep.ResultCheck;
 
-        public bool HasStepShapePosition => this.currentStep is ProfileCheckStep.ShapePosition;
+        public bool HasStepShapePositionDx => this.currentStep is ProfileCheckStep.ShapePositionDx;
 
-        public bool HasStepTaraturaCatena => this.currentStep is ProfileCheckStep.TaraturaCatena;
+        public bool HasStepShapePositionSx => this.currentStep is ProfileCheckStep.ShapePositionSx;
+
+        public bool HasStepTuningChainDx => this.currentStep is ProfileCheckStep.TuningChainDx;
+
+        public bool HasStepTuningChainSx => this.currentStep is ProfileCheckStep.TuningChainSx;
 
         public ICommand MoveToElevatorPositionCommand =>
             this.moveToElevatorPositionCommand
@@ -212,7 +198,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case ProfileCheckStep.ElevatorPosition:
                     if (e.Next)
                     {
-                        this.CurrentStep = ProfileCheckStep.DrawerPosition;
+                        this.CurrentStep = ProfileCheckStep.ShapePositionDx;
                     }
                     else
                     {
@@ -221,10 +207,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     break;
 
-                case ProfileCheckStep.DrawerPosition:
+                case ProfileCheckStep.ShapePositionDx:
                     if (e.Next)
                     {
-                        this.CurrentStep = ProfileCheckStep.ShapePosition;
+                        this.CurrentStep = ProfileCheckStep.TuningChainDx;
                     }
                     else
                     {
@@ -233,26 +219,38 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     break;
 
-                case ProfileCheckStep.ShapePosition:
+                case ProfileCheckStep.TuningChainDx:
                     if (e.Next)
                     {
-                        this.CurrentStep = ProfileCheckStep.TaraturaCatena;
+                        this.CurrentStep = ProfileCheckStep.ShapePositionSx;
                     }
                     else
                     {
-                        this.CurrentStep = ProfileCheckStep.DrawerPosition;
+                        this.CurrentStep = ProfileCheckStep.ShapePositionDx;
                     }
 
                     break;
 
-                case ProfileCheckStep.TaraturaCatena:
+                case ProfileCheckStep.ShapePositionSx:
+                    if (e.Next)
+                    {
+                        this.CurrentStep = ProfileCheckStep.TuningChainSx;
+                    }
+                    else
+                    {
+                        this.CurrentStep = ProfileCheckStep.TuningChainDx;
+                    }
+
+                    break;
+
+                case ProfileCheckStep.TuningChainSx:
                     if (e.Next)
                     {
                         this.CurrentStep = ProfileCheckStep.ResultCheck;
                     }
                     else
                     {
-                        this.CurrentStep = ProfileCheckStep.ShapePosition;
+                        this.CurrentStep = ProfileCheckStep.ShapePositionSx;
                     }
 
                     break;
@@ -260,7 +258,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case ProfileCheckStep.ResultCheck:
                     if (!e.Next)
                     {
-                        this.CurrentStep = ProfileCheckStep.TaraturaCatena;
+                        this.CurrentStep = ProfileCheckStep.TuningChainSx;
                     }
 
                     break;
@@ -339,29 +337,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.ShowNextStepSinglePage(true, true);
                     break;
 
-                case ProfileCheckStep.ElevatorPosition:
-                    this.ShowPrevStepSinglePage(true, true);
-                    this.ShowNextStepSinglePage(true, true);
-                    break;
-
-                case ProfileCheckStep.DrawerPosition:
-                    this.ShowPrevStepSinglePage(true, true);
-                    this.ShowNextStepSinglePage(true, true);
-                    break;
-
-                case ProfileCheckStep.ShapePosition:
-                    this.ShowPrevStepSinglePage(true, true);
-                    this.ShowNextStepSinglePage(true, true);
-                    break;
-
-                case ProfileCheckStep.TaraturaCatena:
-                    this.ShowPrevStepSinglePage(true, true);
-                    this.ShowNextStepSinglePage(true, true);
-                    break;
-
                 case ProfileCheckStep.ResultCheck:
                     this.ShowPrevStepSinglePage(true, true);
                     this.ShowNextStepSinglePage(true, false);
+                    break;
+
+                default:
+                    this.ShowPrevStepSinglePage(true, true);
+                    this.ShowNextStepSinglePage(true, true);
                     break;
             }
 
@@ -369,9 +352,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.RaisePropertyChanged(nameof(this.HasStepInitialize));
             this.RaisePropertyChanged(nameof(this.HasStepElevatorPosition));
-            this.RaisePropertyChanged(nameof(this.HasStepDrawerPosition));
-            this.RaisePropertyChanged(nameof(this.HasStepShapePosition));
-            this.RaisePropertyChanged(nameof(this.HasStepTaraturaCatena));
+            this.RaisePropertyChanged(nameof(this.HasStepShapePositionDx));
+            this.RaisePropertyChanged(nameof(this.HasStepTuningChainDx));
+            this.RaisePropertyChanged(nameof(this.HasStepShapePositionSx));
+            this.RaisePropertyChanged(nameof(this.HasStepTuningChainSx));
             this.RaisePropertyChanged(nameof(this.HasStepResultCheck));
         }
 

@@ -254,7 +254,6 @@
                                TextWrapping="Wrap" />
                 </StackPanel>
 
-
                 <ctrls:PpcSpinEdit Grid.Row="1"
                                    Width="250"
                                    Height="90"
