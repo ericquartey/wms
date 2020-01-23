@@ -9,8 +9,8 @@ namespace Ferretto.VW.Installer
     {
         #region Constructors
 
-        public MasHealthCheckStep(int number, string title, int timeout)
-            : base(number, title)
+        public MasHealthCheckStep(int number, string title, string description, int timeout)
+            : base(number, title, description)
         {
             this.Timeout = timeout;
         }
@@ -39,22 +39,22 @@ namespace Ferretto.VW.Installer
                 {
                     try
                     {
-                        this.LogWriteLine($"HTTP GET {requestUri}");
+                        this.LogInformation($"HTTP GET {requestUri}");
                         var message = await httpClient.GetAsync(requestUri);
                         status = await message.Content.ReadAsStringAsync();
 
-                        this.LogWriteLine($"HTTP response: '{status}'");
+                        this.LogInformation($"HTTP response: '{status}'");
                     }
                     catch
                     {
-                        this.LogWriteLine("HTTP request failed.");
+                        this.LogInformation("HTTP request failed.");
                     }
 
                     isHealthy = status?.Equals("healthy", StringComparison.OrdinalIgnoreCase) == true;
                 }
                 while (!isHealthy && (DateTime.Now - startTime).TotalMilliseconds < this.Timeout);
 
-                this.LogWriteLine(isHealthy
+                this.LogInformation(isHealthy
                     ? "Service is healthy."
                     : $"Service was not healthy after {this.Timeout}ms.");
 
@@ -66,6 +66,8 @@ namespace Ferretto.VW.Installer
 
         protected override Task<StepStatus> OnRollbackAsync()
         {
+            this.LogInformation("Nulla da annullare in questo step.");
+
             return Task.FromResult(StepStatus.RolledBack);
         }
 

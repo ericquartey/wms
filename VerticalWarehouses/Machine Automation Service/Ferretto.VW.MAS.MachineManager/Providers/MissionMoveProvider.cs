@@ -123,7 +123,17 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     var state = GetStateByClassName(serviceProvider, mission, this.eventAggregator);
                     if (state != null)
                     {
-                        state.OnResume(command);
+                        try
+                        {
+                            state.OnResume(command);
+                        }
+                        catch (StateMachineException ex)
+                        {
+                            this.Logger.LogError(ex.NotificationMessage.Description, "Error while resuming a State.");
+                            //this.eventAggregator.GetEvent<NotificationEvent>().Publish(ex.NotificationMessage);
+
+                            state.OnStop(StopRequestReason.Error);
+                        }
                     }
                 }
 
@@ -216,46 +226,48 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     if (missionsDataProvider.CanCreateMission(messageData.LoadUnitId.Value, command.RequestingBay))
                     {
                         var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-                        bool updateBay = false;
-                        using (var transaction = missionsDataProvider.GetContextTransaction())
+                        mission = missionsDataProvider.CreateBayMission(messageData.LoadUnitId.Value, command.RequestingBay, MissionType.Manual);
+                        if (this.UpdateWaitingMission(missionsDataProvider, baysDataProvider, mission))
                         {
-                            // if there is a new or waiting mission we have to take her place
-                            var waitMission = missionsDataProvider.GetAllMissions()
-                            .FirstOrDefault(m => m.LoadUnitId == messageData.LoadUnitId.Value
-                                && !m.WmsId.HasValue
-                                && (m.Status == MissionStatus.Waiting || m.Status == MissionStatus.New || m.Status == MissionStatus.Completed)
-                            );
-                            if (waitMission != null
-                                && baysDataProvider.IsMissionInBay(waitMission)
-                                )
-                            {
-                                updateBay = true;
-                            }
-
-                            mission = missionsDataProvider.CreateBayMission(messageData.LoadUnitId.Value, command.RequestingBay, MissionType.Manual);
-                            if (updateBay)
-                            {
-                                baysDataProvider.AssignMission(command.RequestingBay, mission);
-                            }
-                            if (waitMission != null)
-                            {
-                                try
-                                {
-                                    missionsDataProvider.Delete(waitMission.Id);
-                                    this.Logger.LogDebug($"{this.GetType().Name}: Delete {waitMission}");
-                                }
-                                catch (Exception)
-                                {
-                                    return false;
-                                }
-                            }
-                            transaction.Commit();
                             return true;
                         }
                     }
                 }
             }
             return false;
+        }
+
+        public bool UpdateWaitingMission(IMissionsDataProvider missionsDataProvider, IBaysDataProvider baysDataProvider, Mission mission)
+        {
+            // if there is a new or waiting mission we have to take her place
+            var waitMission = missionsDataProvider.GetAllMissions()
+                .FirstOrDefault(m => m.LoadUnitId == mission.LoadUnitId
+                    && m.Id != mission.Id
+                    && !m.WmsId.HasValue
+                    && (m.Status == MissionStatus.Waiting || m.Status == MissionStatus.New || m.Status == MissionStatus.Completed)
+                );
+            if (waitMission != null)
+            {
+                //using (var transaction = missionsDataProvider.GetContextTransaction())
+                {
+                    try
+                    {
+                        if (baysDataProvider.IsMissionInBay(waitMission))
+                        {
+                            baysDataProvider.AssignMission(mission.TargetBay, mission);
+                        }
+
+                        missionsDataProvider.Delete(waitMission.Id);
+                        this.Logger.LogDebug($"{this.GetType().Name}: Delete {waitMission}");
+                    }
+                    catch (Exception ex)
+                    {
+                        return false;
+                    }
+                    //transaction.Commit();
+                }
+            }
+            return true;
         }
 
         private static IMissionMoveBase GetStateByClassName(IServiceProvider serviceProvider, Mission mission, IEventAggregator eventAggregator)

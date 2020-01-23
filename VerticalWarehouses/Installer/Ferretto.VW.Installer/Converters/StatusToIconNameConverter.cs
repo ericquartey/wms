@@ -17,9 +17,9 @@ namespace Ferretto.VW.Installer
                 case StepStatus.Failed: return "AlertCircle";
                 case StepStatus.ToDo: return "Clock";
                 case StepStatus.InProgress: return "PlayCircle";
-                case StepStatus.RollingBack: return "BackupRestore";
-                case StepStatus.RolledBack: return "BackupRestore";
-                case StepStatus.RollbackFailed: return "BackupRestore";
+                case StepStatus.RollingBack: return "ArrowLeftDropCircle";
+                case StepStatus.RolledBack: return "SkipPreviousCircle";
+                case StepStatus.RollbackFailed: return "CloseCircle";
                 default: return "CircleOutline";
             }
         }

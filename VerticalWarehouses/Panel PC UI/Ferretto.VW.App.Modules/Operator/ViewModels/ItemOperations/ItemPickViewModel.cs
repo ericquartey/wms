@@ -24,11 +24,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public ItemPickViewModel(
             IWmsImagesProvider wmsImagesProvider,
             IMissionsWmsWebService missionsWmsWebService,
+            IItemsWmsWebService itemsWmsWebService,
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
             IBayManager bayManager,
             IDialogService dialogService)
-            : base(wmsImagesProvider, missionsWmsWebService, bayManager, eventAggregator, missionOperationsService, dialogService)
+            : base(wmsImagesProvider, missionsWmsWebService, itemsWmsWebService, bayManager, eventAggregator, missionOperationsService, dialogService)
         {
         }
 

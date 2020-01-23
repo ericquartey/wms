@@ -1451,4 +1451,16 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="ErrorOnInitialPhaseUpdate" xml:space="preserve">
     <value>Error during initial update phase.</value>
   </data>
+  <data name="ConfigurationDetected" xml:space="preserve">
+    <value>Importable "{0}" configuration detected.</value>
+  </data>
+  <data name="ExportableDeviceDetected" xml:space="preserve">
+    <value>Detected device for configuration export.</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="MultipleConfigurationsDetected" xml:space="preserve">
+    <value>Detected {0} importable configurations.</value>
+  </data>
 </root>

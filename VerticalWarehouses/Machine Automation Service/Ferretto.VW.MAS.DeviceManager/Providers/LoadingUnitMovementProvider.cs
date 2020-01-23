@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -548,6 +549,29 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             return MessageStatus.NotSpecified;
+        }
+
+        public void ResumeOperation(int missionId, LoadingUnitLocation loadUnitSource, LoadingUnitLocation loadUnitDestination, int? wmsId, BayNumber targetBay, MessageActor sender)
+        {
+            var data = new MoveLoadingUnitMessageData(
+                    (wmsId.HasValue ? MissionType.WMS : MissionType.Manual),
+                    loadUnitSource,
+                    loadUnitDestination,
+                    sourceCellId: null,
+                    destinationCellId: null,
+                    loadUnitId: null,
+                    insertLoadUnit: false,
+                    missionId,
+                    CommandAction.Resume);
+            data.WmsId = wmsId;
+            this.PublishCommand(
+                data,
+                $"Requesting operation resume from position {loadUnitDestination}",
+                MessageActor.MachineManager,
+                sender,
+                MessageType.MoveLoadingUnit,
+                targetBay,
+                targetBay);
         }
 
         public MessageStatus ShutterStatus(NotificationMessage message)

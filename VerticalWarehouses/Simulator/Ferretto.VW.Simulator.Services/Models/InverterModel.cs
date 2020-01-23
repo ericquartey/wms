@@ -1158,6 +1158,17 @@ namespace Ferretto.VW.Simulator.Services.Models
                         }
                     }
                 }
+                else if (this.InverterType == InverterType.Acu
+                    && this.OperationMode == InverterOperationMode.Position
+                    && this.Id > 1)
+                {
+                    // bay chain. simulate the lift process
+                    if (target - this.AxisPosition < 20)
+                    {
+                        this.ioDevice[(int)IoPorts.LoadingUnitInLowerBay].Value = false;
+                        this.ioDevice[(int)IoPorts.LoadingUnitInBay].Value = false;
+                    }
+                }
             }
             else
             {

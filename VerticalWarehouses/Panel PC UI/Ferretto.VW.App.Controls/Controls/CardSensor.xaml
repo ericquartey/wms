@@ -452,11 +452,20 @@
                                 <Setter Property="StackPanel.Visibility" Value="Visible" />
                                 <Setter Property="Grid.RowSpan" Value="1" />
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=MachineService.Bay.IsDouble}"
-                                                 Value="false">
-                                        <Setter Property="Grid.RowSpan" Value="2" />
-                                    </DataTrigger>
                                     <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding ElementName=Card, Path=MachineService.BayFirstPositionIsUpper}" Value="true" />
+                                            <Condition Binding="{Binding ElementName=Card, Path=MachineService.Bay.IsDouble}" Value="false" />
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Grid.RowSpan" Value="2" />
+                                    </MultiDataTrigger>
+
+                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardLuUp}"
+                                                 Value="{x:Null}">
+                                        <Setter Property="StackPanel.Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+
+                                    <!--<MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
                                             <Condition Binding="{Binding ElementName=Card, Path=CardLuUp}" Value="{x:Null}" />
                                             <Condition Binding="{Binding ElementName=Card, Path=MachineService.Bay.IsDouble}" Value="false" />
@@ -470,7 +479,9 @@
                                             <Condition Binding="{Binding ElementName=Card, Path=MachineService.Bay.IsDouble}" Value="true" />
                                         </MultiDataTrigger.Conditions>
                                         <Setter Property="StackPanel.Visibility" Value="Collapsed" />
-                                    </MultiDataTrigger>
+                                    </MultiDataTrigger>-->
+
+
                                 </Style.Triggers>
                             </Style>
                         </StackPanel.Style>
@@ -592,25 +603,31 @@
 
                     </StackPanel>
 
-                    <StackPanel Grid.Row="1"
-                                Margin="0"
+                    <StackPanel Margin="0"
                                 VerticalAlignment="Center">
                         <StackPanel.Style>
                             <Style>
                                 <Setter Property="StackPanel.Visibility" Value="Visible" />
+                                <Setter Property="Grid.Row" Value="1" />
+                                <Setter Property="Grid.RowSpan" Value="1" />
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=MachineService.Bay.IsDouble}"
-                                                 Value="false">
-                                        <Setter Property="StackPanel.Visibility" Value="Collapsed" />
-                                    </DataTrigger>
+
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding ElementName=Card, Path=CardLuUp}" Value="{x:Null}" />
-                                            <Condition Binding="{Binding ElementName=Card, Path=CardLuDown}" Value="{x:Null}" />
-                                            <Condition Binding="{Binding ElementName=Card, Path=MachineService.Bay.IsDouble}" Value="true" />
+                                            <Condition Binding="{Binding ElementName=Card, Path=MachineService.BayFirstPositionIsUpper}" Value="false" />
+                                            <Condition Binding="{Binding ElementName=Card, Path=MachineService.Bay.IsDouble}" Value="false" />
                                         </MultiDataTrigger.Conditions>
-                                        <Setter Property="StackPanel.Visibility" Value="Collapsed" />
+                                        <Setter Property="Grid.RowSpan" Value="2" />
+                                        <Setter Property="Grid.Row" Value="0" />
                                     </MultiDataTrigger>
+
+
+                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardLuDown}"
+                                                 Value="{x:Null}">
+                                        <Setter Property="StackPanel.Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+
+
                                 </Style.Triggers>
                             </Style>
                         </StackPanel.Style>
@@ -774,6 +791,10 @@
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding ElementName=Card, Path=CardSensorLabel2}"
                                                  Value="">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardSensorLabel2}"
+                                                 Value="{x:Null}">
                                         <Setter Property="Visibility" Value="Collapsed" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor2}"

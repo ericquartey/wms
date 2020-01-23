@@ -47,6 +47,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
                 throw new StateMachineException(ErrorDescriptions.LoadUnitDestinationBay, this.Mission.TargetBay, MessageActor.MachineManager);
             }
+            var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
+            if (destination is null)
+            {
+                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedUpper, this.Mission.TargetBay);
+                throw new StateMachineException(ErrorDescriptions.LoadUnitUndefinedUpper, this.Mission.TargetBay, MessageActor.MachineManager);
+            }
+            this.Mission.LoadUnitDestination = destination.Location;
             if (this.LoadingUnitMovementProvider.IsOnlyBottomPositionOccupied(bay.Number))
             {
                 this.Mission.RestoreConditions = false;
@@ -57,12 +64,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             catch (StateMachineException ex)
             {
-                var description = $"Move Bay chain not possible in bay {bay.Number}. Reason {ex.Message}. Wait for resume";
+                var description = $"Move Bay chain not possible in bay {bay.Number}. Reason {ex.NotificationMessage.Description}. Wait for resume";
                 // we don't want any exception here because this is the normal procedure:
                 // send a second LU in lower position while operator is working on upper position
-                this.Logger.LogDebug(description);
+                this.Logger.LogInformation(description);
+                this.Mission.Status = MissionStatus.Waiting;
             }
-            this.Mission.Status = MissionStatus.Waiting;
 
             this.Mission.RestoreConditions = false;
             this.MissionsDataProvider.Update(this.Mission);
@@ -81,16 +88,28 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MessageStatus.OperationEnd:
                     if (notification.RequestingBay == this.Mission.TargetBay)
                     {
-                        if (notification.Type == MessageType.Positioning)
+                        if (notification.Type == MessageType.Positioning
+                            && notification.TargetBay == notification.RequestingBay
+                            )
                         {
                             var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
                             var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
                             if (destination is null)
                             {
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedUpper, this.Mission.TargetBay);
+                                throw new StateMachineException(ErrorDescriptions.LoadUnitUndefinedUpper, this.Mission.TargetBay, MessageActor.MachineManager);
+                            }
+                            var origin = bay.Positions.FirstOrDefault(p => !p.IsUpper);
+                            if (origin is null)
+                            {
                                 this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedBottom, this.Mission.TargetBay);
                                 throw new StateMachineException(ErrorDescriptions.LoadUnitUndefinedBottom, this.Mission.TargetBay, MessageActor.MachineManager);
                             }
-                            this.Mission.LoadUnitDestination = destination.Location;
+                            using (var transaction = this.ElevatorDataProvider.GetContextTransaction())
+                            {
+                                this.BaysDataProvider.SetLoadingUnit(origin.Id, null);
+                                this.BaysDataProvider.SetLoadingUnit(destination.Id, this.Mission.LoadUnitId);
+                            }
 
                             var notificationText = $"Load Unit {this.Mission.LoadUnitId} placed on bay {bay.Number}";
                             this.SendMoveNotification(bay.Number, notificationText, MessageStatus.OperationWaitResume);
@@ -136,9 +155,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         private void BayChainEnd()
         {
-            this.MissionsDataProvider.Update(this.Mission);
             if (this.Mission.WmsId.HasValue)
             {
+                this.Mission.Status = MissionStatus.Waiting;
                 var newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 newStep.OnEnter(null);
             }

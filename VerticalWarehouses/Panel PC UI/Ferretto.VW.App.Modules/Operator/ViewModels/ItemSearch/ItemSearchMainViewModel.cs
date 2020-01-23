@@ -47,7 +47,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private int currentItemIndex;
 
-        private int? inputQuantity;
+        private double? inputQuantity;
 
         private bool isBusyLoadingNextPage;
 
@@ -115,7 +115,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public int? InputQuantity
+        public double? InputQuantity
         {
             get => this.inputQuantity;
             set => this.SetProperty(ref this.inputQuantity, value, this.RaiseCanExecuteChanged);
@@ -298,19 +298,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
             try
             {
                 var newItems = await this.areasWmsWebService.GetItemsAsync(
-                this.areaId.Value,
-                skip,
-                DefaultPageSize,
-                null,
-                null,
-                this.searchItem,
-                cancellationToken);
+                    this.areaId.Value,
+                    skip,
+                    DefaultPageSize,
+                    null,
+                    null,
+                    this.searchItem,
+                    cancellationToken);
 
-                foreach (var item in newItems)
-                {
-                    var itemInfo = new ItemInfo(item, this.bayManager.Identity.Id);
-                    this.items.Add(itemInfo);
-                }
+                this.items.AddRange(newItems.Select(i => new ItemInfo(i, this.bayManager.Identity.Id)));
             }
             catch (Exception ex)
             {
