@@ -29,7 +29,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
@@ -47,34 +47,29 @@
                     <TextBlock Grid.ColumnSpan="2"
                                FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Caricare un cassetto in baia o richiamarne uno per iniziziare la procedura guidata della taratura baia."
+                               Text="Caricare un cassetto in baia o richiamarne uno per iniziare la procedura guidata della taratura baia."
                                TextWrapping="Wrap" />
                 </StackPanel>
 
-                <StackPanel Grid.Row="1"
-                            Grid.Column="0"
-                            Grid.ColumnSpan="3"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Orientation="Horizontal">
+                <ctrls:PpcSpinEdit Grid.Row="1"
+                                   Grid.Column="0"
+                                   Margin="15,5"
+                                   HorizontalAlignment="Stretch"
+                                   VerticalAlignment="Center"
+                                   EditValue="{Binding Path=InputLoadingUnitId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                   IsEnabled="{Binding CanInputLoadingUnitId}"
+                                   LabelText="{x:Static res:InstallationApp.DrawerNumber}"
+                                   Mask="#0" />
 
-                    <ctrls:PpcSpinEdit Margin="15,5"
-                                       HorizontalAlignment="Stretch"
-                                       VerticalAlignment="Top"
-                                       EditValue="{Binding Path=InputLoadingUnitId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                       IsEnabled="{Binding CanInputLoadingUnitId}"
-                                       LabelText="{x:Static res:InstallationApp.DrawerNumber}"
-                                       Mask="#0" />
+                <controls:PpcButton Grid.Row="1"
+                                    Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    Content="Chiamata cassetto" />
 
-                    <controls:PpcButton Grid.Row="4"
-                                        Grid.Column="0"
-                                        Grid.ColumnSpan="3"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Bottom"
-                                        Command="{Binding StartCommand}"
-                                        Content="{x:Static res:InstallationApp.Start}" />
-                </StackPanel>
-
+                <controls:PpcButton Grid.Row="2"
+                                    Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    Content="Chiudi serranda" />
 
                 <controls:PpcButton Grid.Row="3"
                                     Grid.Column="1"
@@ -94,7 +89,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
@@ -106,105 +101,575 @@
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="ElevatorPosition:"
+                               Text="Elevatore in posizione:"
                                TextWrapping="Wrap" />
 
                     <TextBlock Grid.ColumnSpan="2"
                                FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                               Text="Posizionare l'elevatore all'altezza della baia."
                                TextWrapping="Wrap" />
                 </StackPanel>
+
+                <controls:PpcButton Grid.Row="1"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Content="Vai a baia" />
+
+                <controls:PpcButton Grid.Row="2"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Content="Chiudi serranda" />
+
+                <controls:PpcButton Grid.Row="3"
+                                    Grid.Column="1"
+                                    Margin="15,15,0,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    Content="Avanti"
+                                    Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
 
-        <DataTemplate x:Key="DataTemplateDrawerPosition">
+        <DataTemplate x:Key="DataTemplateShapePositionDx">
             <Grid Margin="20"
                   DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="DrawerPosition:"
-                               TextWrapping="Wrap" />
+                               TextWrapping="Wrap">
+                        <Run Text="Posizionare la sagoma a" />
+                        <Run FontWeight="Bold"
+                             Text="destra" />
+                        <Run Text=":" />
+                    </TextBlock>
 
-                    <TextBlock Grid.ColumnSpan="2"
-                               FontSize="18"
+                    <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                               Text="Posizionare la sagoma di regolazione nell'angolo superiore a destra del cassetto in baia, assicurarsi di posizionare le calamite in modo date che la stessa rimanga ben salda al cassetto."
+                               TextWrapping="Wrap" />
+                    <TextBlock FontSize="18"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               Text="Una volta posizionata la sagoma, premere il tasto MISURAZIONE che avvierà la procedura."
                                TextWrapping="Wrap" />
                 </StackPanel>
+
+                <Image Grid.Row="1"
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Stretch"
+                       Source="{DynamicResource PHCSagoma1}"
+                       Stretch="Uniform" />
+
+                <controls:PpcButton Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="15,15,0,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    Content="Misurazione lato destro"
+                                    Style="{StaticResource WizardConfirmButton}" />
+
             </Grid>
         </DataTemplate>
 
-        <DataTemplate x:Key="DataTemplateShapePosition">
+        <DataTemplate x:Key="DataTemplateTuningChainDx">
             <Grid Margin="20"
                   DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition />
+                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.ColumnSpan="2">
+                <StackPanel Grid.ColumnSpan="3">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="ShapePosition:"
-                               TextWrapping="Wrap" />
+                               TextWrapping="Wrap">
+                        <Run Text="Misurazione baia" />
+                        <Run FontWeight="Bold"
+                             Text="destra" />
+                        <Run Text=":" />
+                    </TextBlock>
 
-                    <TextBlock Grid.ColumnSpan="2"
-                               FontSize="18"
+                    <TextBlock FontSize="18"
+                               FontWeight="Bold"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                               Text="Attendare il termine della procedura automatica."
                                TextWrapping="Wrap" />
                 </StackPanel>
+
+                <Border Grid.Row="1"
+                        Grid.ColumnSpan="3"
+                        Background="{DynamicResource PpcBackground}">
+                    <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                            BorderThickness="{DynamicResource PpcBorderThickness}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Grid Grid.ColumnSpan="3">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Margin="0,20,0,0"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="{StaticResource FontSize_Normal}"
+                                           FontWeight="Normal"
+                                           Foreground="{DynamicResource FerrettoLightGray}"
+                                           Text="Tolleranza richiesta"
+                                           TextAlignment="Left" />
+
+                                <TextBlock Grid.Row="1"
+                                           Margin="0"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Top"
+                                           FontSize="{StaticResource FontSize_High}"
+                                           Foreground="{DynamicResource PpcForeground}"
+                                           Text="{Binding Tolerance, StringFormat={}{0:F1} (+/-), TargetNullValue=''}"
+                                           TextWrapping="Wrap" />
+
+                                <Border Grid.RowSpan="2"
+                                        Grid.Column="1"
+                                        Margin="0,25"
+                                        VerticalAlignment="Stretch"
+                                        BorderBrush="{DynamicResource FerrettoMediumGray}"
+                                        BorderThickness="1" />
+
+                            </Grid>
+
+                            <Grid Grid.Column="3"
+                                  Grid.ColumnSpan="3">
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Margin="0,20,0,0"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="{StaticResource FontSize_Normal}"
+                                           FontWeight="Normal"
+                                           Foreground="{DynamicResource FerrettoLightGray}"
+                                           Text="Correzione barriera"
+                                           TextAlignment="Left" />
+
+                                <TextBlock Grid.Row="1"
+                                           Margin="0"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Top"
+                                           FontSize="{StaticResource FontSize_High}"
+                                           Foreground="{DynamicResource PpcForeground}"
+                                           Text="{Binding GateCorrection, StringFormat={}{0:F1} (mm), TargetNullValue=''}"
+                                           TextWrapping="Wrap" />
+
+                                <Border Grid.RowSpan="2"
+                                        Grid.Column="1"
+                                        Margin="0,25"
+                                        VerticalAlignment="Stretch"
+                                        BorderBrush="{DynamicResource FerrettoMediumGray}"
+                                        BorderThickness="1" />
+
+                            </Grid>
+
+                            <Grid Grid.Column="6"
+                                  Grid.ColumnSpan="3">
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Margin="0,20,0,0"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="{StaticResource FontSize_Normal}"
+                                           FontWeight="Normal"
+                                           Foreground="{DynamicResource FerrettoLightGray}"
+                                           Text="Errore di sistema" />
+
+                                <TextBlock Grid.Row="1"
+                                           Margin="0"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Top"
+                                           FontSize="{StaticResource FontSize_High}"
+                                           Foreground="{DynamicResource PpcForeground}"
+                                           Text="{Binding SystemError, StringFormat={}{0:F1} (mm), TargetNullValue=''}"
+                                           TextWrapping="Wrap" />
+
+                                <Border Grid.RowSpan="2"
+                                        Grid.Column="1"
+                                        Margin="0,25"
+                                        VerticalAlignment="Stretch"
+                                        BorderBrush="{DynamicResource FerrettoMediumGray}"
+                                        BorderThickness="1" />
+
+                            </Grid>
+
+                            <Grid Grid.Column="9"
+                                  Grid.ColumnSpan="3"
+                                  Margin="0,0,15,0">
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Margin="0,20,0,0"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="{StaticResource FontSize_Normal}"
+                                           FontWeight="Normal"
+                                           Foreground="{DynamicResource FerrettoLightGray}"
+                                           Text="{x:Static res:InstallationApp.Output}"
+                                           TextAlignment="Left" />
+
+                                <TextBlock Grid.Row="1"
+                                           Margin="0"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Top"
+                                           FontSize="{StaticResource FontSize_High}"
+                                           Foreground="{DynamicResource PpcForeground}"
+                                           Text="{Binding NoteText}"
+                                           TextWrapping="Wrap" />
+
+                            </Grid>
+
+                        </Grid>
+                    </Border>
+                </Border>
+
+                <controls:PpcSensorControl Grid.Row="2"
+                                           Grid.Column="1"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           SensorState="{Binding LuPresentInBay}"
+                                           Text="{x:Static res:InstallationApp.HeightReaced}" />
+
+                <TextBlock Grid.Row="3"
+                           Grid.ColumnSpan="3"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Bottom"
+                           FontSize="18"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="Al termine della procedure la pagina cambiera automaticamente."
+                           TextWrapping="Wrap" />
             </Grid>
         </DataTemplate>
 
-        <DataTemplate x:Key="DataTemplateTaraturaCatena">
+        <DataTemplate x:Key="DataTemplateShapePositionSx">
             <Grid Margin="20"
                   DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.ColumnSpan="2">
+                    <TextBlock FontSize="24"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               TextWrapping="Wrap">
+                        <Run Text="Posizionare la sagoma a" />
+                        <Run FontWeight="Bold"
+                             Text="sinistra:" />
+                        <Run Text=":" />
+                    </TextBlock>
+
+                    <TextBlock FontSize="18"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               Text="Posizionare la sagoma di regolazione nell'angolo superiore a sinistra del cassetto in baia, assicurarsi di posizionare le calamite in modo date che la stessa rimanga ben salda al cassetto."
+                               TextWrapping="Wrap" />
+                    <TextBlock FontSize="18"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               Text="Una volta posizionata la sagoma, premere il tasto MISURAZIONE che avvierà la procedura."
+                               TextWrapping="Wrap" />
+                </StackPanel>
+
+                <Image Grid.Row="1"
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Stretch"
+                       Source="{DynamicResource PHCSagoma1}"
+                       Stretch="Uniform" />
+
+                <controls:PpcButton Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="15,15,0,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    Content="Misurazione lato sinistro"
+                                    Style="{StaticResource WizardConfirmButton}" />
+
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="DataTemplateTuningChainSx">
+            <Grid Margin="20"
+                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
+                <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                    <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition />
+                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.ColumnSpan="2">
+                <StackPanel Grid.ColumnSpan="3">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="TaraturaCatena:"
-                               TextWrapping="Wrap" />
+                               TextWrapping="Wrap">
+                        <Run Text="Misurazione baia" />
+                        <Run FontWeight="Bold"
+                             Text="sinistra" />
+                        <Run Text=":" />
+                    </TextBlock>
 
-                    <TextBlock Grid.ColumnSpan="2"
-                               FontSize="18"
+                    <TextBlock FontSize="18"
+                               FontWeight="Bold"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                               Text="Attendare il termine della procedura automatica."
                                TextWrapping="Wrap" />
                 </StackPanel>
+
+                <Border Grid.Row="1"
+                        Grid.ColumnSpan="3"
+                        Background="{DynamicResource PpcBackground}">
+                    <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                            BorderThickness="{DynamicResource PpcBorderThickness}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Grid Grid.ColumnSpan="3">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Margin="0,20,0,0"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="{StaticResource FontSize_Normal}"
+                                           FontWeight="Normal"
+                                           Foreground="{DynamicResource FerrettoLightGray}"
+                                           Text="Tolleranza richiesta"
+                                           TextAlignment="Left" />
+
+                                <TextBlock Grid.Row="1"
+                                           Margin="0"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Top"
+                                           FontSize="{StaticResource FontSize_High}"
+                                           Foreground="{DynamicResource PpcForeground}"
+                                           Text="{Binding Tolerance, StringFormat={}{0:F1} (+/-), TargetNullValue=''}"
+                                           TextWrapping="Wrap" />
+
+                                <Border Grid.RowSpan="2"
+                                        Grid.Column="1"
+                                        Margin="0,25"
+                                        VerticalAlignment="Stretch"
+                                        BorderBrush="{DynamicResource FerrettoMediumGray}"
+                                        BorderThickness="1" />
+
+                            </Grid>
+
+                            <Grid Grid.Column="3"
+                                  Grid.ColumnSpan="3">
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Margin="0,20,0,0"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="{StaticResource FontSize_Normal}"
+                                           FontWeight="Normal"
+                                           Foreground="{DynamicResource FerrettoLightGray}"
+                                           Text="Correzione barriera"
+                                           TextAlignment="Left" />
+
+                                <TextBlock Grid.Row="1"
+                                           Margin="0"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Top"
+                                           FontSize="{StaticResource FontSize_High}"
+                                           Foreground="{DynamicResource PpcForeground}"
+                                           Text="{Binding GateCorrection, StringFormat={}{0:F1} (mm), TargetNullValue=''}"
+                                           TextWrapping="Wrap" />
+
+                                <Border Grid.RowSpan="2"
+                                        Grid.Column="1"
+                                        Margin="0,25"
+                                        VerticalAlignment="Stretch"
+                                        BorderBrush="{DynamicResource FerrettoMediumGray}"
+                                        BorderThickness="1" />
+
+                            </Grid>
+
+                            <Grid Grid.Column="6"
+                                  Grid.ColumnSpan="3">
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Margin="0,20,0,0"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="{StaticResource FontSize_Normal}"
+                                           FontWeight="Normal"
+                                           Foreground="{DynamicResource FerrettoLightGray}"
+                                           Text="Errore di sistema" />
+
+                                <TextBlock Grid.Row="1"
+                                           Margin="0"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Top"
+                                           FontSize="{StaticResource FontSize_High}"
+                                           Foreground="{DynamicResource PpcForeground}"
+                                           Text="{Binding SystemError, StringFormat={}{0:F1} (mm), TargetNullValue=''}"
+                                           TextWrapping="Wrap" />
+
+                                <Border Grid.RowSpan="2"
+                                        Grid.Column="1"
+                                        Margin="0,25"
+                                        VerticalAlignment="Stretch"
+                                        BorderBrush="{DynamicResource FerrettoMediumGray}"
+                                        BorderThickness="1" />
+
+                            </Grid>
+
+                            <Grid Grid.Column="9"
+                                  Grid.ColumnSpan="3"
+                                  Margin="0,0,15,0">
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Margin="0,20,0,0"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="{StaticResource FontSize_Normal}"
+                                           FontWeight="Normal"
+                                           Foreground="{DynamicResource FerrettoLightGray}"
+                                           Text="{x:Static res:InstallationApp.Output}"
+                                           TextAlignment="Left" />
+
+                                <TextBlock Grid.Row="1"
+                                           Margin="0"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Top"
+                                           FontSize="{StaticResource FontSize_High}"
+                                           Foreground="{DynamicResource PpcForeground}"
+                                           Text="{Binding NoteText}"
+                                           TextWrapping="Wrap" />
+
+                            </Grid>
+
+                        </Grid>
+                    </Border>
+                </Border>
+
+                <controls:PpcSensorControl Grid.Row="2"
+                                           Grid.Column="1"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           SensorState="{Binding LuPresentInBay}"
+                                           Text="{x:Static res:InstallationApp.HeightReaced}" />
+
+                <TextBlock Grid.Row="3"
+                           Grid.ColumnSpan="3"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Bottom"
+                           FontSize="18"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="Al termine della procedure la pagina cambiera automaticamente."
+                           TextWrapping="Wrap" />
             </Grid>
         </DataTemplate>
 
@@ -213,9 +678,9 @@
                   DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
@@ -226,25 +691,59 @@
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="ResultCheck:"
+                               Text="Risultato misurazione:"
                                TextWrapping="Wrap" />
 
-                    <TextBlock Grid.ColumnSpan="2"
-                               FontSize="18"
+                    <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                               Text="In base al risultato della misurazione puoi decidere se completare l'operazione, avendo un risutato inferiore a 1 mm."
+                               TextWrapping="Wrap" />
+                    <TextBlock FontSize="18"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               Text="Se il risultato della misurazione supera 1 mm bisogna applicare le modifiche suggerite e ripetere la misurazione."
                                TextWrapping="Wrap" />
                 </StackPanel>
+
+                <ctrls:PpcSpinEdit Grid.Row="2"
+                                   Width="250"
+                                   Height="90"
+                                   Margin="0,0,15,0"
+                                   EditValue="{Binding MeasuredSx, StringFormat={}{0:F1}}"
+                                   IsEnabled="False"
+                                   LabelText="Misurazione lato sinistro"
+                                   Mask="###0.0" />
+
+                <ctrls:PpcSpinEdit Grid.Row="2"
+                                   Grid.Column="1"
+                                   Width="250"
+                                   Height="90"
+                                   Margin="0,0,15,0"
+                                   EditValue="{Binding MeasuredDx, StringFormat={}{0:F1}}"
+                                   IsEnabled="False"
+                                   LabelText="Misurazione lato destro"
+                                   Mask="###0.0" />
+
+                <controls:PpcButton Grid.Row="3"
+                                    Grid.Column="0"
+                                    Command="{Binding ApplyCorrectionCommand}"
+                                    Content="Ripeti misurazione"
+                                    Style="{StaticResource WizardConfirmButton}" />
+                <controls:PpcButton Grid.Row="3"
+                                    Grid.Column="1"
+                                    Command="{Binding ApplyCorrectionCommand}"
+                                    Content="Completa"
+                                    Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
 
         <local:ProfileCheckStepTemplateSelector x:Key="selector"
-                                                EnumDrawerPosition="{StaticResource DataTemplateDrawerPosition}"
                                                 EnumElevatorPosition="{StaticResource DataTemplateElevatorPosition}"
                                                 EnumInitialize="{StaticResource DataTemplateInitialize}"
                                                 EnumResultCheck="{StaticResource DataTemplateResultCheck}"
-                                                EnumShapePosition="{StaticResource DataTemplateShapePosition}"
-                                                EnumTaraturaCatena="{StaticResource DataTemplateTaraturaCatena}" />
+                                                EnumShapePositionDx="{StaticResource DataTemplateShapePositionDx}"
+                                                EnumShapePositionSx="{StaticResource DataTemplateShapePositionSx}"
+                                                EnumTuningChainDx="{StaticResource DataTemplateTuningChainDx}"
+                                                EnumTuningChainSx="{StaticResource DataTemplateTuningChainSx}" />
         <!--#endregion-->
     </ctrls:View.Resources>
 
@@ -304,19 +803,20 @@
                                            Height="90"
                                            MinHeight="90"
                                            Margin="0,15,15,0" />
-        <controls:CardSensorShutter Grid.Row="4"
+
+        <controls:CardSensorBay Grid.Row="4"
+                                Grid.Column="3"
+                                Width="230"
+                                Height="90"
+                                MinHeight="90"
+                                Margin="0,15,15,0" />
+
+        <controls:CardSensorShutter Grid.Row="5"
                                     Grid.Column="3"
                                     Width="230"
                                     Height="90"
                                     MinHeight="90"
                                     Margin="0,15,15,0" />
-
-        <controls:CardSensorDrawer Grid.Row="5"
-                                   Grid.Column="3"
-                                   Width="230"
-                                   Height="90"
-                                   MinHeight="90"
-                                   Margin="0,15,15,0" />
 
         <controls:PpcButton Grid.Row="6"
                             Grid.Column="3"
@@ -348,11 +848,12 @@
                 <RowDefinition Height="4*" />
                 <RowDefinition Height="4*" />
                 <RowDefinition Height="4*" />
+                <RowDefinition Height="4*" />
                 <RowDefinition Height="1" />
             </Grid.RowDefinitions>
             <!--#region Body-->
             <Border Grid.Row="0"
-                    Grid.RowSpan="7"
+                    Grid.RowSpan="8"
                     Grid.Column="2"
                     Grid.ColumnSpan="2"
                     Margin="8,0,0,0"
@@ -366,7 +867,7 @@
             <!--#endregion-->
             <!--#region TimeLine-->
             <Border Grid.Row="0"
-                    Grid.RowSpan="7"
+                    Grid.RowSpan="8"
                     Style="{DynamicResource BorderTimeLine}" />
 
             <Grid Grid.Row="1">
@@ -404,7 +905,7 @@
             </Grid>
 
             <Grid Grid.Row="3">
-                <Border Background="{Binding HasStepDrawerPosition, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                <Border Background="{Binding HasStepShapePositionDx, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                         Style="{DynamicResource BorderTimeLineCirle}" />
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                            Text="3" />
@@ -412,7 +913,7 @@
             <Grid Grid.Row="3"
                   Grid.Column="1"
                   Grid.ColumnSpan="2"
-                  Visibility="{Binding HasStepDrawerPosition, Converter={StaticResource BTVC}, Mode=OneWay}">
+                  Visibility="{Binding HasStepShapePositionDx, Converter={StaticResource BTVC}, Mode=OneWay}">
                 <Path Height="24"
                       VerticalAlignment="Center"
                       StrokeThickness="0"
@@ -421,7 +922,7 @@
             </Grid>
 
             <Grid Grid.Row="4">
-                <Border Background="{Binding HasStepShapePosition, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                <Border Background="{Binding HasStepTuningChainDx, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                         Style="{DynamicResource BorderTimeLineCirle}" />
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                            Text="4" />
@@ -429,7 +930,7 @@
             <Grid Grid.Row="4"
                   Grid.Column="1"
                   Grid.ColumnSpan="2"
-                  Visibility="{Binding HasStepShapePosition, Converter={StaticResource BTVC}, Mode=OneWay}">
+                  Visibility="{Binding HasStepTuningChainDx, Converter={StaticResource BTVC}, Mode=OneWay}">
                 <Path Height="24"
                       VerticalAlignment="Center"
                       StrokeThickness="0"
@@ -438,7 +939,7 @@
             </Grid>
 
             <Grid Grid.Row="5">
-                <Border Background="{Binding HasStepTaraturaCatena, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                <Border Background="{Binding HasStepShapePositionSx, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                         Style="{DynamicResource BorderTimeLineCirle}" />
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                            Text="5" />
@@ -446,7 +947,7 @@
             <Grid Grid.Row="5"
                   Grid.Column="1"
                   Grid.ColumnSpan="2"
-                  Visibility="{Binding HasStepTaraturaCatena, Converter={StaticResource BTVC}, Mode=OneWay}">
+                  Visibility="{Binding HasStepShapePositionSx, Converter={StaticResource BTVC}, Mode=OneWay}">
                 <Path Height="24"
                       VerticalAlignment="Center"
                       StrokeThickness="0"
@@ -455,12 +956,29 @@
             </Grid>
 
             <Grid Grid.Row="6">
-                <Border Background="{Binding HasStepResultCheck, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                <Border Background="{Binding HasStepTuningChainSx, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                         Style="{DynamicResource BorderTimeLineCirle}" />
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                            Text="6" />
             </Grid>
             <Grid Grid.Row="6"
+                  Grid.Column="1"
+                  Grid.ColumnSpan="2"
+                  Visibility="{Binding HasStepTuningChainSx, Converter={StaticResource BTVC}, Mode=OneWay}">
+                <Path Height="24"
+                      VerticalAlignment="Center"
+                      StrokeThickness="0"
+                      Style="{DynamicResource BorderTimeLinePath}" />
+                <Path Style="{DynamicResource BorderTimeLinePath}" />
+            </Grid>
+
+            <Grid Grid.Row="7">
+                <Border Background="{Binding HasStepResultCheck, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                        Style="{DynamicResource BorderTimeLineCirle}" />
+                <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                           Text="7" />
+            </Grid>
+            <Grid Grid.Row="7"
                   Grid.Column="1"
                   Grid.ColumnSpan="2"
                   Visibility="{Binding HasStepResultCheck, Converter={StaticResource BTVC}, Mode=OneWay}">
