@@ -295,14 +295,13 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             return compartmentsFromMission
                 .GroupBy(c => c.Id)
-                .First()
                 .Select(c => new TrayControlCompartment
                 {
-                    Depth = c.Depth,
-                    Id = c.Id,
-                    Width = c.Width,
-                    XPosition = c.XPosition,
-                    YPosition = c.YPosition,
+                    Depth = c.First().Depth,
+                    Id = c.First().Id,
+                    Width = c.First().Width,
+                    XPosition = c.First().XPosition,
+                    YPosition = c.First().YPosition,
                 });
         }
 
