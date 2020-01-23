@@ -10,11 +10,27 @@ namespace Ferretto.VW.Installer
 {
     internal class PowershellStep : ShellStep
     {
+        #region Fields
+
+        private int? progressPercentage;
+
+        #endregion
+
         #region Constructors
 
         public PowershellStep(int number, string title, string description, string rollbackScript, string script)
             : base(number, title, description, rollbackScript, script)
         {
+        }
+
+        #endregion
+
+        #region Properties
+
+        public int? ProgressPercentage
+        {
+            get => this.progressPercentage;
+            set => this.SetProperty(ref this.progressPercentage, value);
         }
 
         #endregion
@@ -30,17 +46,28 @@ namespace Ferretto.VW.Installer
 
             command = this.InterpolateVariables(command);
 
-            this.LogInformation($"ps>{command}");
+            this.LogInformation("");
+            this.LogInformation($"ps> {command}");
 
             try
             {
                 using (var shell = PowerShell.Create())
                 {
                     shell.AddScript(command);
-                    var result = shell.Invoke();
+                    var result = shell.BeginInvoke();
 
-                    var logs = result.Select(r => r.Properties["Message"]?.ToString()).ToList();
-                    logs.ForEach(l => this.LogInformation(l));
+                    while (!result.IsCompleted)
+                    {
+                        var p = shell.Streams.Progress.LastOrDefault();
+                        System.Diagnostics.Debug.WriteLine(">>>" + p?.SecondsRemaining + " secs;  " + p?.PercentComplete + "%");
+                        this.ProgressPercentage = p?.PercentComplete;
+                        //    System.Diagnostics.Debug.WriteLine(p?.PercentComplete + "%");
+                        Thread.Sleep(100);
+                    }
+
+                    // result.Select(r => r.Properties["Message"]?.ToString()).ToList().ForEach(l => this.LogInformation(l));
+
+                    //shell.Streams.Information.Select(i => i.MessageData.ToString()).ToList().ForEach(l => this.LogInformation(l));
 
                     if (shell.HadErrors)
                     {

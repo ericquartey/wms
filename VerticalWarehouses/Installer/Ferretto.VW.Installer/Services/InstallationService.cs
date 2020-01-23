@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using System.Xml;
 using Newtonsoft.Json;
 using NLog;
 
@@ -16,12 +19,16 @@ namespace Ferretto.VW.Installer
         private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings()
         {
             TypeNameHandling = TypeNameHandling.Auto,
-            Formatting = Formatting.Indented,
+            Formatting = Newtonsoft.Json.Formatting.Indented,
         };
 
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private Step activeStep;
+
+        private bool isRollbackInProgress;
+
+        private string softwareVersion;
 
         #endregion
 
@@ -31,6 +38,18 @@ namespace Ferretto.VW.Installer
         {
             get => this.activeStep;
             private set => this.SetProperty(ref this.activeStep, value);
+        }
+
+        public bool IsRollbackInProgress
+        {
+            get => this.isRollbackInProgress;
+            private set => this.SetProperty(ref this.isRollbackInProgress, value);
+        }
+
+        public string SoftwareVersion
+        {
+            get => this.softwareVersion;
+            private set => this.SetProperty(ref this.softwareVersion, value);
         }
 
         public IEnumerable<Step> Steps { get; private set; }
@@ -57,6 +76,11 @@ namespace Ferretto.VW.Installer
             };
         }
 
+        public void Abort()
+        {
+            this.IsRollbackInProgress = true;
+        }
+
         public Step GetNextStepToExecute()
         {
             return this.Steps.FirstOrDefault(s => s.Status == StepStatus.ToDo);
@@ -71,16 +95,19 @@ namespace Ferretto.VW.Installer
 
             if (this.Steps.Any(s => s.Status == StepStatus.RollbackFailed))
             {
+                this.IsRollbackInProgress = true;
                 throw new InvalidOperationException("Unable to continue with setup because rollback failed.");
             }
 
             if (this.Steps.Any(s => s.Status == StepStatus.InProgress))
             {
+                this.IsRollbackInProgress = true;
                 throw new InvalidOperationException("Unable to continue with setup because execution was interrupted while one step was in progress.");
             }
 
             if (this.Steps.Any(s => s.Status == StepStatus.RollingBack))
             {
+                this.IsRollbackInProgress = true;
                 throw new InvalidOperationException("Unable to continue with setup because execution was interrupted while one step was being rolled back.");
             }
 
@@ -88,22 +115,21 @@ namespace Ferretto.VW.Installer
 
             try
             {
-                while (this.Steps.Any(s => s.Status != StepStatus.Done) || this.Steps.FirstOrDefault(s => !s.SkipRollback)?.Status is StepStatus.RolledBack)
+                while (this.Steps.Any(s => s.Status != StepStatus.Done) || this.IsRollbackInProgress)
                 // stop when all steps are done or when the first step was rolled back
                 {
-                    var hasRolledbackSteps = this.Steps.Any(s => s.Status == StepStatus.RolledBack);
-
-                    if (hasRolledbackSteps)
+                    if (this.IsRollbackInProgress)
                     {
-                        var stepToRollback = this.Steps.TakeWhile(s => s.Status != StepStatus.RolledBack).LastOrDefault();
+                        this.ActiveStep = this.Steps.TakeWhile(s => s.Status != StepStatus.RolledBack).LastOrDefault();
 
-                        if (stepToRollback != null)
+                        if (this.ActiveStep != null)
                         {
-                            await this.RollbackStep(stepToRollback);
+                            await this.RollbackStep(this.ActiveStep);
                         }
                         else
                         {
                             this.logger.Debug("Installation rollback completed.");
+                            this.IsRollbackInProgress = false;
                             return;
                         }
                     }
@@ -115,10 +141,11 @@ namespace Ferretto.VW.Installer
 
                         await this.ActiveStep.ApplyAsync();
                         this.Dump();
-                        if (this.ActiveStep.Status is StepStatus.Failed)
+                        if (this.ActiveStep.Status is StepStatus.Failed || this.IsRollbackInProgress)
                         {
                             if (!this.ActiveStep.SkipRollback)
                             {
+                                this.IsRollbackInProgress = true;
                                 await this.RollbackStep(this.ActiveStep);
                             }
                         }
@@ -140,7 +167,37 @@ namespace Ferretto.VW.Installer
 
         private async Task LoadSoftwareVersionAsync()
         {
-            var updateFile = ConfigurationManager.AppSettings.Get("UpdateFilePath");
+            var packagePath = ConfigurationManager.AppSettings.Get("Install:Package:Path");
+
+            try
+            {
+                using (var package = System.IO.Compression.ZipFile.OpenRead(packagePath))
+                {
+                    var manifestEntry = package.Entries.FirstOrDefault(e => e.FullName.Contains("app.manifest"));
+
+                    using (var stream = manifestEntry.Open())
+                    {
+                        using (var xmlReader = XmlReader.Create(stream))
+                        {
+                            while (xmlReader.Read())
+                            {
+                                if (xmlReader.NodeType == XmlNodeType.Element
+                                    &&
+                                    xmlReader.Name == "assemblyIdentity")
+                                {
+                                    if (xmlReader.HasAttributes)
+                                    {
+                                        this.SoftwareVersion = xmlReader.GetAttribute("version");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch
+            {
+            }
         }
 
         private async Task RollbackStep(Step stepToRollback)
