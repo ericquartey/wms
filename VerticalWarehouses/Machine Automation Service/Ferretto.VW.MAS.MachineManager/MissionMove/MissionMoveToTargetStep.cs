@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -45,6 +46,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.Step = MissionStep.ToTarget;
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.Mission.StopReason = StopRequestReason.NoReason;
+            this.Mission.CloseShutterBayNumber = BayNumber.None;
             this.MissionsDataProvider.Update(this.Mission);
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
@@ -114,46 +116,53 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-                    if (notification.Type == MessageType.Homing)
+                    if (notification.RequestingBay == this.Mission.TargetBay)
                     {
-                        if (!this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
+                        if (notification.Type == MessageType.Homing
+                            && notification.Data is HomingMessageData messageData
+                            && messageData.AxisToCalibrate != Axis.BayChain
+                            )
                         {
-                            this.Mission.NeedHomingAxis = Axis.None;
-                            this.MissionsDataProvider.Update(this.Mission);
-                        }
-
-                        var destinationHeight = this.LoadingUnitMovementProvider.GetDestinationHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
-
-                        this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value,
-                            BayNumber.None,
-                            measure,
-                            MessageActor.MachineManager,
-                            notification.RequestingBay,
-                            this.Mission.RestoreConditions,
-                            targetBayPositionId,
-                            targetCellId);
-                    }
-                    else
-                    {
-                        if (this.UpdateResponseList(notification.Type))
-                        {
-                            this.MissionsDataProvider.Update(this.Mission);
-                            if (notification.Type == MessageType.ShutterPositioning)
+                            if (!this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
                             {
-                                if (this.Mission.NeedHomingAxis == Axis.Horizontal)
+                                this.Mission.NeedHomingAxis = Axis.None;
+                                this.MissionsDataProvider.Update(this.Mission);
+                            }
+
+                            var destinationHeight = this.LoadingUnitMovementProvider.GetDestinationHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
+
+                            this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value,
+                                BayNumber.None,
+                                measure,
+                                MessageActor.MachineManager,
+                                notification.RequestingBay,
+                                this.Mission.RestoreConditions,
+                                targetBayPositionId,
+                                targetCellId);
+                        }
+                        else if (notification.Type == MessageType.ShutterPositioning
+                            || notification.TargetBay == BayNumber.ElevatorBay
+                            )
+                        {
+                            if (this.UpdateResponseList(notification.Type))
+                            {
+                                this.MissionsDataProvider.Update(this.Mission);
+                                if (notification.Type == MessageType.ShutterPositioning)
                                 {
-                                    this.Logger.LogDebug($"Homing elevator occupied start");
-                                    this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
-                                }
-                                else
-                                {
-                                    this.Logger.LogDebug($"ContinuePositioning");
-                                    this.LoadingUnitMovementProvider.ContinuePositioning(MessageActor.MachineManager, notification.RequestingBay);
+                                    if (this.Mission.NeedHomingAxis == Axis.Horizontal)
+                                    {
+                                        this.Logger.LogDebug($"Homing elevator occupied start");
+                                        this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
+                                    }
+                                    else
+                                    {
+                                        this.Logger.LogDebug($"ContinuePositioning");
+                                        this.LoadingUnitMovementProvider.ContinuePositioning(MessageActor.MachineManager, notification.RequestingBay);
+                                    }
                                 }
                             }
                         }
                     }
-
                     break;
 
                 case MessageStatus.OperationError:
@@ -185,6 +194,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         if (check == MachineErrorCode.NoError)
                         {
                             this.BaysDataProvider.Light(this.Mission.TargetBay, false);
+
+                            // wake up the bottom bay position
+                            var activeMission = this.MissionsDataProvider.GetAllActiveMissionsByBay(this.Mission.TargetBay)
+                                .FirstOrDefault(x => x.Status == MissionStatus.Waiting);
+                            if (activeMission != null)
+                            {
+                                this.LoadingUnitMovementProvider.ResumeOperation(activeMission.Id, activeMission.LoadUnitSource, activeMission.LoadUnitDestination, activeMission.WmsId, activeMission.TargetBay, MessageActor.MachineManager);
+                            }
                         }
                         else
                         {

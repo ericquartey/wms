@@ -619,6 +619,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Importable &quot;{0}&quot; configuration detected..
+        /// </summary>
+        public static string ConfigurationDetected {
+            get {
+                return ResourceManager.GetString("ConfigurationDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirmation operation?.
         /// </summary>
         public static string ConfirmationOperation {
@@ -1168,6 +1177,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Detected device for configuration export..
+        /// </summary>
+        public static string ExportableDeviceDetected {
+            get {
+                return ResourceManager.GetString("ExportableDeviceDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Export successful.
         /// </summary>
         public static string ExportSuccessful {
@@ -1578,6 +1596,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Hour {
             get {
                 return ResourceManager.GetString("Hour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import.
+        /// </summary>
+        public static string Import {
+            get {
+                return ResourceManager.GetString("Import", resourceCulture);
             }
         }
         
@@ -2370,6 +2397,15 @@ namespace Ferretto.VW.App.Resources {
         public static string MovingToDesiredPosition {
             get {
                 return ResourceManager.GetString("MovingToDesiredPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detected {0} importable configurations..
+        /// </summary>
+        public static string MultipleConfigurationsDetected {
+            get {
+                return ResourceManager.GetString("MultipleConfigurationsDetected", resourceCulture);
             }
         }
         
