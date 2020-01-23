@@ -76,6 +76,7 @@
     <None Remove="Views\LoadingUnits\FullTestView.xaml" />
     <None Remove="Views\LoadingUnits\LoadingUnitFromBayToBayView.xaml" />
     <None Remove="Views\Movements\MovementsView.xaml" />
+    <None Remove="Views\Parameters\ParametersImportView.xaml" />
     <None Remove="Views\Profiles\ProfileHeightCheckView.xaml" />
   </ItemGroup>
 
@@ -124,6 +125,9 @@
     </Compile>
     <Compile Update="Views\Elevator\VerticalResolutionCalibrationView.xaml.cs">
       <DependentUpon>VerticalResolutionCalibrationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Parameters\ParametersImportView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Views\Profiles\ProfileHeightCheckView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>

@@ -1463,4 +1463,8 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="MultipleConfigurationsDetected" xml:space="preserve">
     <value>Detected {0} importable configurations.</value>
   </data>
+  <data name="NoDevicesAvailableAnymore" xml:space="preserve">
+    <value>Device is not available anymore.</value>
+    <comment>Warning</comment>
+  </data>
 </root>

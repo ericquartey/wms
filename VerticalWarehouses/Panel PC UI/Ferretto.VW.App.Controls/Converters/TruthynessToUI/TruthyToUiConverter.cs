@@ -3,14 +3,15 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows;
 
-namespace Ferretto.VW.App.Scaffolding.Converters
+namespace Ferretto.VW.App.Controls.Converters
 {
-
     /// <summary>
     /// Assumes true or false based on javascript-like truthiness and translates it into <see cref="Visibility"/>, <see cref="GridLength"/>, bool, etc. Should be convenient enough.
     /// </summary>
-    public class TruthyToVisibilityConverter : IValueConverter
+    public class TruthyToUiConverter : IValueConverter
     {
+        #region Methods
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             bool invert = TruthyAssertor.IsInverting(parameter);
@@ -23,5 +24,7 @@ namespace Ferretto.VW.App.Scaffolding.Converters
         {
             throw new NotSupportedException();
         }
+
+        #endregion
     }
 }
