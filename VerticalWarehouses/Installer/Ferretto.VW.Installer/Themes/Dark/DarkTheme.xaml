@@ -4,7 +4,10 @@
     <Color x:Key="LightGrayColor">#909090</Color>
     <Color x:Key="DarkGrayColor">#202020</Color>
     <Color x:Key="MediumGrayColor">#282828</Color>
+    <Color x:Key="SuccessColor">#008b00</Color>
 
+    <SolidColorBrush x:Key="SuccessBrush"
+                     Color="{StaticResource SuccessColor}" />
     <SolidColorBrush x:Key="DarkGrayBrush"
                      Color="{StaticResource DarkGrayColor}" />
     <SolidColorBrush x:Key="BackgroundBrush"
@@ -52,7 +55,7 @@
 
     <Style x:Key="HeadingTextBlockStyle"
            TargetType="TextBlock">
-        <Setter Property="FontSize" Value="24" />
+        <Setter Property="FontSize" Value="18" />
         <Setter Property="Margin" Value="10,0,0,0" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
@@ -61,7 +64,7 @@
 
     <Style x:Key="SubHeadingTextBlockStyle"
            TargetType="TextBlock">
-        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontSize" Value="14" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundHighlightBrush}" />
 
     </Style>
