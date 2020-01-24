@@ -11,6 +11,7 @@ using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -32,6 +33,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly IMachineProvider machineProvider;
 
+        private readonly IServiceScopeFactory serviceScopeFactory;
+
         private IEnumerable<IInverterStatusBase> inverters;
 
         #endregion
@@ -45,6 +48,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             IBaysDataProvider baysDataProvider,
             IDigitalDevicesDataProvider digitalDevicesDataProvider,
             IErrorsProvider errorsProvider,
+            IServiceScopeFactory serviceScopeFactory,
             ILogger<InverterDriverService> logger
             )
         {
@@ -60,6 +64,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.digitalDevicesDataProvider = digitalDevicesDataProvider ?? throw new ArgumentNullException(nameof(digitalDevicesDataProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
+            this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
 
             eventAggregator
                 .GetEvent<NotificationEvent>()
@@ -362,7 +367,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                          return new AngInverterStatus(i.Index);
 
                      case InverterType.Agl:
-                         return new AglInverterStatus(i.Index);
+                         return new AglInverterStatus(i.Index, this.serviceScopeFactory);
 
                      default:
                          throw new Exception();

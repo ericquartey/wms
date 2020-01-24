@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
@@ -63,6 +64,9 @@ namespace Ferretto.VW.App.Services
                 return;
             }
 
+            // Workaround: handle shutters with old true table (IO mapping rev3) via
+            var useOldTrueTable = ConfigurationManager.AppSettings.UseOldTrueTableForShutter();
+
             switch (this.bayNumber)
             {
                 case 1:
@@ -73,7 +77,9 @@ namespace Ferretto.VW.App.Services
 
                         if (sensorStates.Length > maxArrayIndex)
                         {
-                            this.Open = !sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay1] && sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay1];
+                            this.Open = (useOldTrueTable) ?
+                                sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay1] && sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay1] :
+                                !sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay1] && sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay1];
                             this.Closed = !sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay1] && !sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay1];
                             this.MidWay = sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay1] && !sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay1];
                         }
@@ -89,7 +95,9 @@ namespace Ferretto.VW.App.Services
 
                         if (sensorStates.Length > maxArrayIndex)
                         {
-                            this.Open = !sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay2] && sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay2];
+                            this.Open = (useOldTrueTable) ?
+                                sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay2] && sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay2] :
+                                !sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay2] && sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay2];
                             this.Closed = !sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay2] && !sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay2];
                             this.MidWay = sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay2] && !sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay2];
                         }
@@ -105,7 +113,9 @@ namespace Ferretto.VW.App.Services
 
                         if (sensorStates.Length > maxArrayIndex)
                         {
-                            this.Open = !sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay3] && sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay3];
+                            this.Open = (useOldTrueTable) ?
+                                sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay3] && sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay3] :
+                                !sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay3] && sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay3];
                             this.Closed = !sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay3] && !sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay3];
                             this.MidWay = sensorStates[(int)IOMachineSensors.AGLSensorAShutterBay3] && !sensorStates[(int)IOMachineSensors.AGLSensorBShutterBay3];
                         }
