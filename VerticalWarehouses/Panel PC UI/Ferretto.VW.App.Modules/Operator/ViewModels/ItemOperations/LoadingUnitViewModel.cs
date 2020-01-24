@@ -161,7 +161,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.recallLoadingUnitCommand
             ??
             (this.recallLoadingUnitCommand = new DelegateCommand(
-                async () => await this.ConfirmOperationAsync(),
+                async () => await this.RecallLoadingUnitAsync(),
                 this.CanRecallLoadingUnit));
 
         public TrayControlCompartment SelectedCompartment
@@ -230,21 +230,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.SelectItemCompartment();
         }
 
-        public async Task ConfirmOperationAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-                await this.machineLoadingUnitsWebService.RemoveFromBayAsync(this.LoadingUnit.Id);
-
-                this.NavigationService.GoBack();
-            }
-            catch (MasWebApiException ex)
-            {
-                this.ShowNotification(ex);
-            }
-        }
-
         public async override Task OnAppearedAsync()
         {
             this.Reset();
@@ -277,6 +262,29 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
         }
 
+        public async Task RecallLoadingUnitAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+                await this.machineLoadingUnitsWebService.RemoveFromBayAsync(this.LoadingUnit.Id);
+
+                this.NavigationService.GoBack();
+            }
+            catch (MasWebApiException ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
+        protected async override Task OnMachineModeChangedAsync(
+                                                                                                                                                                                            MAS.AutomationService.Contracts.Hubs.MachineModeChangedEventArgs e)
+        {
+            await base.OnMachineModeChangedAsync(e);
+
+            this.RaiseCanExecuteChanged();
+        }
+
         protected override void RaiseCanExecuteChanged()
         {
             this.changeModeLoadingUnitCommand.RaiseCanExecuteChanged();
@@ -286,6 +294,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.itemDownCommand.RaiseCanExecuteChanged();
             this.itemUpCommand.RaiseCanExecuteChanged();
             this.operationCommand.RaiseCanExecuteChanged();
+            this.recallLoadingUnitCommand.RaiseCanExecuteChanged();
 
             base.RaiseCanExecuteChanged();
         }
@@ -350,7 +359,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private void DoOperation(string param)
         {
-           (string operationType, CompartmentDetails selectedItemCompartment) dataSend = (param, this.selectedItemCompartment);
+            (string operationType, CompartmentDetails selectedItemCompartment) dataSend = (param, this.selectedItemCompartment);
             // TODO implement specific operation
         }
 

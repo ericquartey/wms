@@ -27,7 +27,7 @@
     }
   ],
   "Machine": {
-    "Id": 2, / same ID as on EjLog
+    "Id": 2, // same ID as on EjLog
     "Bays": [
       {
         "Inverter": {
