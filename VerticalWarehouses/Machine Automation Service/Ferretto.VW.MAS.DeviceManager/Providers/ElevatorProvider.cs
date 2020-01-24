@@ -761,16 +761,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         }
 
         public void MoveToAbsoluteVerticalPosition(
-                    bool manualMovment,
-                    double targetPosition,
-                    bool computeElongation,
-                    bool performWeighting,
-                    int? targetBayPositionId,
-                    int? targetCellId,
-                    bool checkHomingDone,
-                    bool waitContinue,
-                    BayNumber requestingBay,
-                    MessageActor sender)
+            bool manualMovment,
+            double targetPosition,
+            bool computeElongation,
+            bool performWeighting,
+            int? targetBayPositionId,
+            int? targetCellId,
+            bool checkHomingDone,
+            bool waitContinue,
+            BayNumber requestingBay,
+            MessageActor sender)
         {
             this.MoveToVerticalPosition(
                 performWeighting ? MovementMode.PositionAndMeasureWeight : MovementMode.Position,

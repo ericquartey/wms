@@ -14,22 +14,12 @@ namespace Ferretto.VW.App
         private const string UpdateExchangeTemp = "Update:Exchange:Temp";
 
         private const string UpdateRepositoryPath = "Update:Repository:Path";
+
         private const string UpdateZipChecksumFileName = "Update:Zip:Checksum:FileName";
 
         #endregion
 
         #region Methods
-        
-        public static string GetUpdateZipChecksumFileName(this NameValueCollection appSettings)
-        {
-            if (appSettings is null)
-            {
-                throw new ArgumentNullException(nameof(appSettings));
-            }
-
-            return appSettings.Get(UpdateZipChecksumFileName);
-        }
-
 
         public static string GetUpdateExchangeInstallerName(this NameValueCollection appSettings)
         {
@@ -69,6 +59,16 @@ namespace Ferretto.VW.App
             }
 
             return appSettings.Get(UpdateRepositoryPath);
+        }
+
+        public static string GetUpdateZipChecksumFileName(this NameValueCollection appSettings)
+        {
+            if (appSettings is null)
+            {
+                throw new ArgumentNullException(nameof(appSettings));
+            }
+
+            return appSettings.Get(UpdateZipChecksumFileName);
         }
 
         #endregion

@@ -82,6 +82,7 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<CellPanelsCheckView>();
 
             containerRegistry.RegisterForNavigation<ParametersView>();
+            containerRegistry.RegisterForNavigation<ParametersImportView>();
             containerRegistry.RegisterForNavigation<ParametersExportView>();
             containerRegistry.RegisterForNavigation<ParametersImportStep1View>();
             containerRegistry.RegisterForNavigation<ParametersImportStep2View>();

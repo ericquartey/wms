@@ -1394,4 +1394,8 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="MultipleConfigurationsDetected" xml:space="preserve">
     <value>{0} configurazioni disponibili per importazione.</value>
   </data>
+  <data name="NoDevicesAvailableAnymore" xml:space="preserve">
+    <value>Unità di archiviazione non più disponibile.</value>
+    <comment>Warning</comment>
+  </data>
 </root>

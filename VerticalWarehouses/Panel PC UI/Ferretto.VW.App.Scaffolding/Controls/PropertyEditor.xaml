@@ -25,11 +25,9 @@
             </ResourceDictionary.MergedDictionaries>
 
             <converters:DisplayNameConverter x:Key="DisplayNameConverter" />
-            <converters:MultiBooleanToVisibilityConverter x:Key="MultiBooleanToVisibilityConverter" />
             <converters:ScaffoldTypeConverter x:Key="ScaffoldTypeConverter" />
             <converters:IsReadOnlyConverter x:Key="IsReadOnlyConverter" />
             <converters:IsEditableConverter x:Key="IsEditableConverter" />
-            <converters:TruthyToVisibilityConverter x:Key="TruthyToVisibilityConverter" />
             <converters:ValidationRuleConverter x:Key="ValidationRuleConverter" />
             <converters:DefaultValueConverter x:Key="DefaultValueConverter" />
             <converters:TwoWayConverter x:Key="TwoWayConverter" />
@@ -225,7 +223,7 @@
                     <ctrls:PpcButton Content="{x:Static resx:UI.Save}" Click="Confirm_Click"
                                      Margin="0,0,15,0">
                         <ctrls:PpcButton.IsEnabled>
-                            <MultiBinding Converter="{StaticResource MultiBooleanToVisibilityConverter}">
+                            <MultiBinding Converter="{StaticResource MBTUI}">
                                 <Binding Path="IsValid" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=UserControl}" />
                                 <Binding Path="IsDirty" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=UserControl}" />
                             </MultiBinding>
@@ -238,8 +236,8 @@
                 <Border Background="{DynamicResource FerrettoRed}" Padding="10,5"
                         Grid.Row="2">
                     <Border.Visibility>
-                        <MultiBinding Converter="{StaticResource MultiBooleanToVisibilityConverter}">
-                            <Binding Path="IsValid" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=controls:PropertyEditor}" Converter="{StaticResource TruthyToVisibilityConverter}" ConverterParameter="Invert" />
+                        <MultiBinding Converter="{StaticResource MBTUI}">
+                            <Binding Path="IsValid" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=controls:PropertyEditor}" Converter="{StaticResource TTUI}" ConverterParameter="Invert" />
                             <!--<Binding Path="IsDirty" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=controls:PropertyEditor}" />-->
                         </MultiBinding>
                     </Border.Visibility>

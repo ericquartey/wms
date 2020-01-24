@@ -15,11 +15,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
     [Warning(WarningsArea.Installation)]
     internal sealed class LoadingUnitFromBayToCellViewModel : BaseCellMovementsViewModel
     {
-        #region Fields
-
-
-        #endregion
-
         #region Constructors
 
         public LoadingUnitFromBayToCellViewModel(
@@ -37,10 +32,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #endregion
 
-        #region Properties
-
-        #endregion
-
         #region Methods
 
         public override bool CanStart()
@@ -50,7 +41,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                    ((this.SensorsService.IsLoadingUnitInBay && (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper)) ||
                     (this.SensorsService.IsLoadingUnitInMiddleBottomBay && (this.MachineService.Bay.IsDouble || !this.MachineService.BayFirstPositionIsUpper))) &&
                    this.LoadingUnitId.HasValue &&
-                   !this.MachineService.Loadunits.Any(f => f.Id == this.LoadingUnitId && f.Status == LoadingUnitStatus.InLocation);
+                   !this.MachineService.Loadunits.DrawerInLocationById(this.LoadingUnitId.Value);
         }
 
         public async Task GetLoadingUnits()
@@ -132,7 +123,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             await this.InitializingData();
         }
-
 
         private async Task InitializingData()
         {
