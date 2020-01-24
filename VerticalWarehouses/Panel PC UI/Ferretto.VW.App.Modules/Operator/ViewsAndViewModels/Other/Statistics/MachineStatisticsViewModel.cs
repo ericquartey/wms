@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.App.Operator.ViewModels;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
@@ -17,7 +18,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
         #region Constructors
 
         public MachineStatisticsViewModel(IMachineIdentityWebService identityService)
-            : base(Services.PresentationMode.Operator)
+            : base(PresentationMode.Operator)
         {
             this.identityService = identityService ?? throw new System.ArgumentNullException(nameof(identityService));
         }

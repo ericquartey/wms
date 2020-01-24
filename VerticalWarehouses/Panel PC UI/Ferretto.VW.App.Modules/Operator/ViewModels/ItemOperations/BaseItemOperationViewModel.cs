@@ -144,6 +144,16 @@ namespace Ferretto.VW.App.Operator.ViewModels
         protected async Task RetrieveMissionOperationAsync()
         {
             var newMissionOperation = this.MissionOperationsService.CurrentMissionOperation;
+            if (this.MissionOperation.Type != newMissionOperation?.Type)
+            {
+                this.Logger.Debug("A new mission operation is available but its type is different from the current one ...");
+                return;
+            }
+
+            /* handled by navigation service
+             *
+             *
+             *
             if (newMissionOperation is null)
             {
                 this.Logger.Debug("No new mission operation available, leaving the operation view ...");
@@ -157,6 +167,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.NavigationService.GoBack();
                 return;
             }
+            */
 
             try
             {

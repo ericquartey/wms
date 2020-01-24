@@ -1,10 +1,10 @@
 ﻿namespace Ferretto.VW.App.Services
 {
-    public class NavigationCompletedPubSubEventArgs
+    public class NavigationCompletedEventArgs
     {
         #region Constructors
 
-        public NavigationCompletedPubSubEventArgs(string moduleName, string viewModelName)
+        public NavigationCompletedEventArgs(string moduleName, string viewModelName)
         {
             if (string.IsNullOrEmpty(viewModelName))
             {

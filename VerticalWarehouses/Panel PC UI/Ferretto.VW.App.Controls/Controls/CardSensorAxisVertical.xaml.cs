@@ -103,7 +103,7 @@ namespace Ferretto.VW.App.Controls.Controls
             if (this.machineStatusChangesToken != null)
             {
                 this.eventAggregator
-                    .GetEvent<NavigationCompleted>()
+                    .GetEvent<PubSubEvent<NavigationCompletedEventArgs>>()
                     .Unsubscribe(this.machineStatusChangesToken);
 
                 this.machineStatusChangesToken.Dispose();
