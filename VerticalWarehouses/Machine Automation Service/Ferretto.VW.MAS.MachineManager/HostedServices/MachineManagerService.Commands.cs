@@ -33,7 +33,10 @@ namespace Ferretto.VW.MAS.MachineManager
                     break;
 
                 case MessageType.MoveLoadingUnit:
-                    this.OnMoveLoadingUnit(command, serviceProvider);
+                    lock (this.syncObject)
+                    {
+                        this.OnMoveLoadingUnit(command, serviceProvider);
+                    }
                     break;
 
                 case MessageType.FullTest:
