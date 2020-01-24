@@ -187,7 +187,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Mission.RestoreStep = MissionStep.NotDefined;
                 this.Mission.RestoreConditions = false;
                 this.Mission.NeedMovingBackward = false;
-                if (this.Mission.WmsId.HasValue)
+                if (this.Mission.MissionType == MissionType.OUT
+                    || this.Mission.MissionType == MissionType.WMS
+                    )
                 {
                     var newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     newStep.OnEnter(null);

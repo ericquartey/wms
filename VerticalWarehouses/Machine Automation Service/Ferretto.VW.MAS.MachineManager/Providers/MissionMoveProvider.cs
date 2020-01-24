@@ -29,8 +29,6 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
 
-        private readonly object syncObject = new object();
-
         #endregion
 
         #region Constructors
@@ -83,8 +81,6 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             {
                 return;
             }
-            lock (this.syncObject)
-            {
                 var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
                 var missions = missionsDataProvider.GetAllActiveMissions().Where(x => x.Status != MissionStatus.New);
                 if (missions.Any())
@@ -109,13 +105,11 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                         }
                     }
                 }
-            }
+            
         }
 
         public bool ResumeMission(int missionId, CommandMessage command, IServiceProvider serviceProvider)
         {
-            lock (this.syncObject)
-            {
                 var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
                 var mission = missionsDataProvider.GetById(missionId);
                 if (mission != null)
@@ -138,13 +132,10 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 }
 
                 return true;
-            }
         }
 
         public bool StartMission(Mission mission, CommandMessage command, IServiceProvider serviceProvider, bool showErrors)
         {
-            lock (this.syncObject)
-            {
                 var newState = new MissionMoveNewStep(mission, serviceProvider, this.eventAggregator);
 
                 try
@@ -159,13 +150,10 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     newState.OnStop(StopRequestReason.Error);
                     return false;
                 }
-            }
         }
 
         public bool StopMission(int missionId, StopRequestReason stopRequest, IServiceProvider serviceProvider)
         {
-            lock (this.syncObject)
-            {
                 var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
                 var mission = missionsDataProvider.GetById(missionId);
                 if (mission != null)
@@ -185,13 +173,10 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 }
 
                 return true;
-            }
         }
 
         public bool TestMission(int missionId, CommandMessage command, IServiceProvider serviceProvider)
         {
-            lock (this.syncObject)
-            {
                 var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
                 var mission = missionsDataProvider.GetById(missionId);
                 if (mission != null)
@@ -204,7 +189,6 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 }
 
                 return true;
-            }
         }
 
         public bool TryCreateMachineMission(CommandMessage command, IServiceProvider serviceProvider, out Mission mission)
@@ -214,8 +198,6 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 throw new ArgumentNullException(nameof(command));
             }
 
-            lock (this.syncObject)
-            {
                 mission = null;
 
                 if (command.Data is IMoveLoadingUnitMessageData messageData
@@ -233,7 +215,6 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                         }
                     }
                 }
-            }
             return false;
         }
 

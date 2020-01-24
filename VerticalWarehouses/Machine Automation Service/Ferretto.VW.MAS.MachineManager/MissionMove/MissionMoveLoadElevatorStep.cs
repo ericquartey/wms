@@ -130,6 +130,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         public override void OnNotification(NotificationMessage notification)
         {
             var notificationStatus = this.LoadingUnitMovementProvider.MoveLoadingUnitStatus(notification);
+            this.Logger.LogTrace($"OnNotification: type {notification.Type}, status {notification.Status}, result {notificationStatus}");
 
             switch (notificationStatus)
             {
@@ -160,7 +161,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         if (this.UpdateResponseList(notification.Type))
                         {
                             this.MissionsDataProvider.Update(this.Mission);
-                            this.Logger.LogTrace($"UpdateResponseList: {notification.Type}");
+                            this.Logger.LogDebug($"UpdateResponseList: {notification.Type}");
                             if (notification.Type == MessageType.Positioning)
                             {
                                 this.LoadUnitChangePosition();
