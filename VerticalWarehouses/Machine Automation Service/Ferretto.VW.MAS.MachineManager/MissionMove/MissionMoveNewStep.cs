@@ -108,7 +108,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 var destinationBay = this.BaysDataProvider.GetByLoadingUnitLocation(destination);
                 if (destinationBay != null)
                 {
-                    if (destinationBay.Number != requestingBay)
+                    if (mission.LoadUnitSource != LoadingUnitLocation.Elevator
+                        && mission.LoadUnitCellSourceId == null)
                     {
                         // move from bay to bay
                         if (destinationBay.Shutter.Type != ShutterType.NotSpecified
