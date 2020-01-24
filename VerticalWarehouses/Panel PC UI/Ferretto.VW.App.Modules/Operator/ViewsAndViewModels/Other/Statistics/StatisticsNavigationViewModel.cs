@@ -12,8 +12,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly INavigationService navigationService;
-
         private ICommand cellsStatisticsButtonCommand;
 
         private ICommand drawerSpaceSaturationButtonCommand;
@@ -26,12 +24,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 
         #region Constructors
 
-        public StatisticsNavigationViewModel(
-            IEventAggregator eventAggregator,
-            INavigationService navigationService)
+        public StatisticsNavigationViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
-            this.navigationService = navigationService;
             this.NavigationViewModel = null;
         }
 
@@ -41,7 +36,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 
         public ICommand CellsStatisticsButtonCommand => this.cellsStatisticsButtonCommand ?? (this.cellsStatisticsButtonCommand = new DelegateCommand(() =>
         {
-            this.navigationService.NavigateToView<CellsStatisticsViewModel, ICellsStatisticsViewModel>();
         }));
 
         public ICommand DrawerSpaceSaturationButtonCommand =>
@@ -49,7 +43,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
             ??
             (this.drawerSpaceSaturationButtonCommand = new DelegateCommand(() =>
                 {
-                    this.navigationService.NavigateToView<DrawerWeightSaturationViewModel, IDrawerWeightSaturationViewModel>();
                 }));
 
         public ICommand ErrorsStatisticsButtonCommand =>
@@ -57,7 +50,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
             ??
             (this.errorsStatisticsButtonCommand = new DelegateCommand(() =>
                 {
-                    this.navigationService.NavigateToView<ErrorsStatisticsViewModel, IErrorsStatisticsViewModel>();
                 }));
 
         public ICommand MachineStatisticsButtonCommand =>

@@ -18,17 +18,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 
         private readonly CustomControlCellStatisticsDataGridViewModel dataGridViewModelRef;
 
-        private readonly Operator.Interfaces.INavigationService navigationService;
-
         // private readonly IStatusMessageService statusMessageService;
+
+        private readonly ICommand drawerCompactingButtonCommand;
 
         private ObservableCollection<CellStatusStatistics> cells;
 
         private CellStatisticsSummary cellStatistics;
 
         private BindableBase dataGridViewModel;
-
-        private readonly ICommand drawerCompactingButtonCommand;
 
         private CellStatusStatistics selectedCell;
 
@@ -37,21 +35,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
         #region Constructors
 
         public CellsStatisticsViewModel(
-            Operator.Interfaces.INavigationService navigationService,
             IMachineCellsWebService cellsService,
             ICustomControlCellStatisticsDataGridViewModel cellStatisticsDataGridViewModel)
         {
-            if (navigationService == null)
-            {
-                throw new System.ArgumentNullException(nameof(navigationService));
-            }
-
             if (cellsService == null)
             {
                 throw new System.ArgumentNullException(nameof(cellsService));
             }
 
-            this.navigationService = navigationService;
             this.cellsService = cellsService;
             this.dataGridViewModelRef = cellStatisticsDataGridViewModel as CustomControlCellStatisticsDataGridViewModel;
 

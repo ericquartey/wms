@@ -116,8 +116,8 @@ namespace Ferretto.VW.App.Controls
                 this.navigationStack.Push(new NavigationHistoryRecord(moduleName, viewName, viewModelName));
 
                 this.eventAggregator
-                    .GetEvent<NavigationCompleted>()
-                    .Publish(new NavigationCompletedPubSubEventArgs(moduleName, viewModelName));
+                    .GetEvent<PubSubEvent<NavigationCompletedEventArgs>>()
+                    .Publish(new NavigationCompletedEventArgs(moduleName, viewModelName));
             }
             catch (Exception ex)
             {
@@ -241,10 +241,10 @@ namespace Ferretto.VW.App.Controls
             }
         }
 
-        public object SubscribeToNavigationCompleted(Action<NavigationCompletedPubSubEventArgs> action)
+        public object SubscribeToNavigationCompleted(Action<NavigationCompletedEventArgs> action)
         {
             return this.eventAggregator
-                .GetEvent<NavigationCompleted>()
+                .GetEvent<PubSubEvent<NavigationCompletedEventArgs>>()
                 .Subscribe(action);
         }
 
@@ -253,7 +253,7 @@ namespace Ferretto.VW.App.Controls
             if (subscriptionToken is SubscriptionToken token)
             {
                 this.eventAggregator
-                    .GetEvent<NavigationCompleted>()
+                    .GetEvent<PubSubEvent<NavigationCompletedEventArgs>>()
                     .Unsubscribe(token);
             }
         }
@@ -293,8 +293,8 @@ namespace Ferretto.VW.App.Controls
                 new NavigationParameters());
 
             this.eventAggregator
-                .GetEvent<NavigationCompleted>()
-                .Publish(new NavigationCompletedPubSubEventArgs(historyRecord.ModuleName, historyRecord.ViewModelName));
+                .GetEvent<PubSubEvent<NavigationCompletedEventArgs>>()
+                .Publish(new NavigationCompletedEventArgs(historyRecord.ModuleName, historyRecord.ViewModelName));
         }
 
         #endregion
