@@ -124,6 +124,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Parametri Giostra.
+        /// </summary>
+        public static string BayCarousel_Description {
+            get {
+                return ResourceManager.GetString("BayCarousel_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inverter baia {0}.
         /// </summary>
         public static string BayInverter {
