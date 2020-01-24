@@ -304,6 +304,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Profiles.
+        /// </summary>
+        public static string ElevatorAxis_Profiles {
+            get {
+                return ResourceManager.GetString("ElevatorAxis_Profiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Risoluzione.
         /// </summary>
         public static string ElevatorAxis_Resolution {
@@ -466,6 +475,60 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lungo deposito.
+        /// </summary>
+        public static string MovementProfileType_LongDeposit {
+            get {
+                return ResourceManager.GetString("MovementProfileType.LongDeposit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lungo prelievo.
+        /// </summary>
+        public static string MovementProfileType_LongPickup {
+            get {
+                return ResourceManager.GetString("MovementProfileType.LongPickup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Corto deposito.
+        /// </summary>
+        public static string MovementProfileType_ShortDeposit {
+            get {
+                return ResourceManager.GetString("MovementProfileType.ShortDeposit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Corto prelievo.
+        /// </summary>
+        public static string MovementProfileType_ShortPickup {
+            get {
+                return ResourceManager.GetString("MovementProfileType.ShortPickup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Non definito.
+        /// </summary>
+        public static string MovementProfileType_Undefined {
+            get {
+                return ResourceManager.GetString("MovementProfileType.Undefined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configurazione di rete.
+        /// </summary>
+        public static string NetworkConfiguration {
+            get {
+                return ResourceManager.GetString("NetworkConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to orizzontale.
         /// </summary>
         public static string Orientation_Horizontal {
@@ -579,6 +642,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         public static string ShutterType_TwoSensors {
             get {
                 return ResourceManager.GetString("ShutterType.TwoSensors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Totale distanza.
+        /// </summary>
+        public static string TotalDistance {
+            get {
+                return ResourceManager.GetString("TotalDistance", resourceCulture);
             }
         }
     }

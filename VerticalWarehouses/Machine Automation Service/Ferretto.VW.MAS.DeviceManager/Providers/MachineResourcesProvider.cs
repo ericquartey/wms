@@ -7,6 +7,7 @@ using Ferretto.VW.MAS.DeviceManager.SensorsStatus;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
@@ -31,6 +32,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         /// </summary>
         private readonly bool[] sensorStatus = new bool[3 * REMOTEIO_INPUTS + INVERTER_INPUTS * 8];
 
+        private readonly IServiceScopeFactory serviceScopeFactory;
+
         private bool enableNotificatons;
 
         #endregion
@@ -40,9 +43,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public MachineResourcesProvider(
             IMachineProvider machineProvider,
             IBaysDataProvider baysDataProvider,
+            IServiceScopeFactory serviceScopeFactory,
             ILogger<MachineResourcesProvider> logger)
         {
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             this.logger = logger;
         }
 
@@ -137,7 +142,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public ShutterPosition GetShutterPosition(InverterIndex inverterIndex)
         {
-            var inverterStatus = new AglInverterStatus(inverterIndex);
+            var inverterStatus = new AglInverterStatus(inverterIndex, this.serviceScopeFactory);
 
             var sensorStart = (int)(IOMachineSensors.PowerOnOff + (byte)inverterStatus.SystemIndex * inverterStatus.Inputs.Length);
 

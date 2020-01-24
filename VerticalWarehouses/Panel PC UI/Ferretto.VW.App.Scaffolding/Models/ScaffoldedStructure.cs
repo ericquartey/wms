@@ -17,7 +17,7 @@ namespace Ferretto.VW.App.Scaffolding.Models
 
         #endregion
 
-        public string AbbrevationCategory => this.Category?.Substring(0, 1) ?? null;
+        public string AbbrevationCategory => this.Category?.Substring(0, 2) ?? null;
 
         #region Properties
 

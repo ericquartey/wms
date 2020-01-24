@@ -4,6 +4,8 @@ using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 // ReSharper disable ArrangeThisQualifier
 
@@ -15,18 +17,21 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         private const int TOTAL_SENSOR_INPUTS = 8;
 
+        private readonly IServiceScopeFactory serviceScopeFactory;
+
         private ShutterPosition currentShutterPosition;
 
         #endregion
 
         #region Constructors
 
-        public AglInverterStatus(InverterIndex systemIndex)
+        public AglInverterStatus(InverterIndex systemIndex, IServiceScopeFactory serviceScopeFactory)
             : base(systemIndex)
         {
             this.Inputs = new bool[TOTAL_SENSOR_INPUTS];
             this.currentShutterPosition = ShutterPosition.Opened; // Set the Opened position (workaround)
             this.OperatingMode = (ushort)InverterOperationMode.ProfileVelocity;
+            this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory)); ;
         }
 
         #endregion
@@ -139,27 +144,64 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         private ShutterPosition GetCurrentPosition()
         {
-            var value = ShutterPosition.NotSpecified;
-            if (!this.Inputs[(int)InverterSensors.AGL_ShutterSensorA])
+            var configurationEnvName = "";
+            using (var scope = this.serviceScopeFactory.CreateScope())
             {
-                if (this.Inputs[(int)InverterSensors.AGL_ShutterSensorB])
+                var envProvider = scope.ServiceProvider.GetRequiredService<IHostingEnvironment>();
+                configurationEnvName = envProvider.EnvironmentName;
+            }
+
+            var value = ShutterPosition.NotSpecified;
+
+            if (configurationEnvName == "Prototype1")
+            {
+                // Used only for Prototype1 (old true table for shutters)
+                if (this.Inputs[(int)InverterSensors.AGL_ShutterSensorA])
                 {
-                    value = ShutterPosition.Opened;
+                    if (this.Inputs[(int)InverterSensors.AGL_ShutterSensorB])
+                    {
+                        value = ShutterPosition.Opened;
+                    }
+                    else
+                    {
+                        value = ShutterPosition.Half;
+                    }
                 }
                 else
                 {
-                    value = ShutterPosition.Closed;
+                    if (this.Inputs[(int)InverterSensors.AGL_ShutterSensorB])
+                    {
+                        value = ShutterPosition.Intermediate;
+                    }
+                    else
+                    {
+                        value = ShutterPosition.Closed;
+                    }
                 }
             }
             else
             {
-                if (this.Inputs[(int)InverterSensors.AGL_ShutterSensorB])
+                if (!this.Inputs[(int)InverterSensors.AGL_ShutterSensorA])
                 {
-                    value = ShutterPosition.Intermediate;
+                    if (this.Inputs[(int)InverterSensors.AGL_ShutterSensorB])
+                    {
+                        value = ShutterPosition.Opened;
+                    }
+                    else
+                    {
+                        value = ShutterPosition.Closed;
+                    }
                 }
                 else
                 {
-                    value = ShutterPosition.Half;
+                    if (this.Inputs[(int)InverterSensors.AGL_ShutterSensorB])
+                    {
+                        value = ShutterPosition.Intermediate;
+                    }
+                    else
+                    {
+                        value = ShutterPosition.Half;
+                    }
                 }
             }
 

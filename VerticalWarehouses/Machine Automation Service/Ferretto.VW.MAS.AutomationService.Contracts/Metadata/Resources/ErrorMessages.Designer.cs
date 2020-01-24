@@ -88,7 +88,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Il valore delcampo {0} non è valido..
+        ///   Looks up a localized string similar to Il valore del campo {0} non è valido..
         /// </summary>
         public static string Regex {
             get {
