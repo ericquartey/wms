@@ -664,6 +664,7 @@
         </Setter>
     </Style>
 
+
     <Style x:Key="WizardIntoButton"
            BasedOn="{StaticResource {x:Type controls:PpcButton}}"
            TargetType="{x:Type controls:PpcButton}">
@@ -673,6 +674,7 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
     <Style x:Key="WizardConfirmButton"
            BasedOn="{StaticResource WizardIntoButton}"
            TargetType="{x:Type controls:PpcButton}">

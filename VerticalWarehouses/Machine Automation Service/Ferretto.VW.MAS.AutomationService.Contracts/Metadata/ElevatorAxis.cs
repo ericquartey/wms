@@ -64,7 +64,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [ScaffoldColumn(false)]
             public double ProfileCalibrateSpeed { get; set; }
 
-            [ScaffoldColumn(false)]
+            // [ScaffoldColumn(false)]
+
+            [Category("Profilo {0}")]
+            [CategoryParameter(nameof(MovementProfile.Name), ValueStringifierType = typeof(EnumValueStringifier))]
             public System.Collections.Generic.IEnumerable<MovementProfile> Profiles { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_Resolution))]
