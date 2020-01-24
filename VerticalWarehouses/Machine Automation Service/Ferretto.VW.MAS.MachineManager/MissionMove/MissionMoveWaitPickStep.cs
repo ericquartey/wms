@@ -36,18 +36,21 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.RestoreStep = MissionStep.NotDefined;
             this.Mission.Step = MissionStep.WaitPick;
             this.Mission.StopReason = StopRequestReason.NoReason;
+            this.Mission.Status = MissionStatus.Waiting;
             this.MissionsDataProvider.Update(this.Mission);
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
             var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
 
-            this.LoadingUnitMovementProvider.NotifyAssignedMissionOperationChanged(bay.Number, this.Mission.WmsId.Value);
+            if (this.Mission.WmsId.HasValue)
+            {
+                this.LoadingUnitMovementProvider.NotifyAssignedMissionOperationChanged(bay.Number, this.Mission.WmsId.Value);
+            }
 
             if (this.Mission.LoadUnitId > 0)
             {
                 this.LoadingUnitsDataProvider.SetHeight(this.Mission.LoadUnitId, 0);
             }
-            this.Mission.Status = MissionStatus.Waiting;
             this.Mission.RestoreConditions = false;
             this.MissionsDataProvider.Update(this.Mission);
 

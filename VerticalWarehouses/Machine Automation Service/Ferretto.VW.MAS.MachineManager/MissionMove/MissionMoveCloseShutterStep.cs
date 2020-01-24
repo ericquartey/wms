@@ -88,7 +88,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     || bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitDestination).IsUpper
                     || bay.Carousel is null)
                 {
-                    if (this.Mission.WmsId.HasValue)
+                    if (this.Mission.MissionType == MissionType.OUT
+                        || this.Mission.MissionType == MissionType.WMS
+                        )
                     {
                         newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     }

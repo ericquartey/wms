@@ -26,6 +26,8 @@ namespace Ferretto.VW.MAS.MachineManager
 
         private readonly IServiceScope serviceScope;
 
+        private readonly object syncObject = new object();
+
         private bool isDisposed;
 
         #endregion
