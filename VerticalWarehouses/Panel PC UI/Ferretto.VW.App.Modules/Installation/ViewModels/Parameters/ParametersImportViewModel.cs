@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
@@ -24,17 +26,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly UsbWatcherService _usbWatcher;
 
-        private bool cells = false;
-
         private IEnumerable<FileInfo> configurationFiles = Array.Empty<FileInfo>();
+
+        private VertimagConfiguration importingConfiguration = null;
 
         private bool isBusy = false;
 
-        private bool loadUnits = false;
-
-        private bool parameters = false;
-
         private DelegateCommand saveCommand = null;
+
+        private VertimagConfiguration selectedConfiguration = null;
 
         private FileInfo selectedFile = null;
 
@@ -55,22 +55,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public IEnumerable<FileInfo> ConfigurationFiles => this.configurationFiles;
 
-        public bool ImportCellPanels
+        /// <summary>
+        /// Gets or sets the configuration ready to be imported, if any.
+        /// </summary>
+        public VertimagConfiguration ImportingConfiguration
         {
-            get => this.cells;
-            set => this.SetProperty(ref this.cells, value);
-        }
-
-        public bool ImportLoadUnits
-        {
-            get => this.loadUnits;
-            set => this.SetProperty(ref this.loadUnits, value);
-        }
-
-        public bool ImportParameters
-        {
-            get => this.parameters;
-            set => this.SetProperty(ref this.parameters, value);
+            get => this.importingConfiguration;
+            set => this.SetProperty(ref this.importingConfiguration, value);
         }
 
         public bool IsBusy
@@ -90,16 +81,26 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     this.saveCommand
                     ??
                     (this.saveCommand = new DelegateCommand(
-                    this.Restore, this.CanRestore));
+                    async () => await this.RestoreAsync(), this.CanRestore));
+
+        /// <summary>
+        /// Gets or sets the configuration stored in the current <see cref="SelectedFile"/>, if any.
+        /// </summary>
+        public VertimagConfiguration SelectedConfiguration
+        {
+            get => this.selectedConfiguration;
+            set => this.SetProperty(ref this.selectedConfiguration, value);
+        }
 
         public FileInfo SelectedFile
         {
             get => this.selectedFile;
             set
             {
+                FileInfo old = this.selectedFile;
                 if (this.SetProperty(ref this.selectedFile, value))
                 {
-                    this.saveCommand?.RaiseCanExecuteChanged();
+                    this.OnSelectedFileChanged(old, value);
                 }
             }
         }
@@ -126,15 +127,61 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             return base.OnAppearedAsync();
         }
 
-        private bool CanRestore()
+        protected override void OnPropertyChanged(PropertyChangedEventArgs args)
         {
-            return !this.IsBusy && this.SelectedFile != null;
+            base.OnPropertyChanged(args);
+            if (args?.PropertyName == nameof(this.IsMoving) || args?.PropertyName == nameof(this.ImportingConfiguration))
+            {
+                this.saveCommand?.RaiseCanExecuteChanged();
+            }
         }
 
-        private void Restore()
+        private bool CanRestore()
         {
-            var file = this.selectedFile;
-            var configuration = JsonConvert.DeserializeObject<VertimagConfiguration>(File.ReadAllText(file.FullName), new JsonConverter[] { new CommonUtils.Converters.IPAddressConverter() });
+            return !this.IsBusy && !this.IsMoving && this.ImportingConfiguration != null;
+        }
+
+        private void OnSelectedFileChanged(FileInfo _, FileInfo file)
+        {
+            VertimagConfiguration config = null;
+            if (file != null)
+            {
+                try
+                {
+                    config = file.ParseJson<VertimagConfiguration>();
+                }
+                catch (Exception exc)
+                {
+                    this.ShowNotification(exc);
+                }
+            }
+            this.selectedConfiguration = config;
+            this.RaisePropertyChanged(nameof(this.SelectedConfiguration));
+
+            this.saveCommand?.RaiseCanExecuteChanged();
+        }
+
+        private Task RestoreAsync()
+        {
+            try
+            {
+                // merge and save
+                JObject result = JObject.FromObject(this.Data);
+                result.Merge(JObject.FromObject(this.ImportingConfiguration), new JsonMergeSettings
+                {
+                    MergeNullValueHandling = MergeNullValueHandling.Ignore,
+                    MergeArrayHandling = MergeArrayHandling.Replace,
+                    PropertyNameComparison = StringComparison.Ordinal,
+                });
+                var configuration = result.ToObject<VertimagConfiguration>();
+
+                return this._machineConfigurationWebService.SetAsync(configuration);
+            }
+            catch (Exception exc)
+            {
+                this.ShowNotification(exc);
+                return Task.CompletedTask;
+            }
         }
 
         private void UsbWatcher_DrivesChange(object sender, DrivesChangeEventArgs e)
