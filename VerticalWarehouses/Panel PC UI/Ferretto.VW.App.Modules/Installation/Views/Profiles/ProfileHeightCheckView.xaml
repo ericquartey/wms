@@ -798,7 +798,7 @@
                        Margin="0,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="Barriera misura altezza" />
+                       Text="Calibrazione Altezza" />
         </StackPanel>
         <!--#endregion-->
 
