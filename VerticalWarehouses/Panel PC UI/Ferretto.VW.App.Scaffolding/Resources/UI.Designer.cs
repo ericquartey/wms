@@ -70,6 +70,15 @@ namespace Ferretto.VW.App.Scaffolding.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Permette di accedere all&apos;elenco di tutti i parametri indipendemente dalla cattegoria..
+        /// </summary>
+        public static string AllDescription {
+            get {
+                return ResourceManager.GetString("AllDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Annulla.
         /// </summary>
         public static string Cancel {

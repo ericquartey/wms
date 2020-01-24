@@ -120,6 +120,9 @@
   <data name="All" xml:space="preserve">
     <value>Tutti</value>
   </data>
+  <data name="AllDescription" xml:space="preserve">
+    <value>Permette di accedere all'elenco di tutti i parametri indipendemente dalla cattegoria.</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Annulla</value>
   </data>
