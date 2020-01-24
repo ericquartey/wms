@@ -74,7 +74,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.RestoreConditions = false;
             this.MissionsDataProvider.Update(this.Mission);
 
-            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationExecuting);
+            this.SendMoveNotification(this.Mission.TargetBay,
+                this.Mission.Step.ToString(),
+                (this.Mission.Status == MissionStatus.Waiting) ? MessageStatus.OperationEnd : MessageStatus.OperationExecuting);
 
             return true;
         }
@@ -178,6 +180,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 try
                 {
                     this.LoadingUnitMovementProvider.MoveCarousel(this.Mission.LoadUnitId, MessageActor.MachineManager, bay.Number, false);
+                    this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationStart);
                 }
                 catch (StateMachineException ex)
                 {
