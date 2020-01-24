@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Services.IO;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
@@ -41,13 +43,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Constructors
 
-        public ParametersViewModel(IMachineConfigurationWebService machineConfigurationWebService)
+        public ParametersViewModel(IMachineConfigurationWebService machineConfigurationWebService, UsbWatcherService usb)
             : base(Services.PresentationMode.Installer)
         {
             this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
-
-            // TODO: inject
-            this.usbWatcher = new UsbWatcherService();
+            this.usbWatcher = usb;
         }
 
         #endregion
@@ -129,6 +129,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
+        protected override void OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs args)
+        {
+            base.OnPropertyChanged(args);
+            if (args.PropertyName == nameof(this.IsMoving))
+            {
+                this.goToImport?.RaiseCanExecuteChanged();
+            }
+        }
+
         private bool CanSave()
         {
             return !this.IsBusy;
@@ -141,7 +150,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private bool CanShowImport()
         {
-            return !this.IsBusy && this.ImportableFiles.Any();
+            return !this.IsBusy && !this.IsMoving && this.ImportableFiles.Any();
         }
 
         private async Task SaveAsync()
@@ -179,8 +188,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Installation),
-                Utils.Modules.Installation.Parameters.PARAMETERSIMPORTSTEP1,
-                null,
+                // Utils.Modules.Installation.Parameters.PARAMETERSIMPORTSTEP1,
+                nameof(ParametersImportViewModel),
+                data: null,
                 trackCurrentView: true);
         }
 
@@ -188,12 +198,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             // exportable drives
             var drives = ((UsbWatcherService)sender).Drives;
-            this.exportableDrives = new ReadOnlyCollection<DriveInfo>(drives.Where(d => d.AvailableFreeSpace > 0L).ToList());
+            this.exportableDrives = new ReadOnlyCollection<DriveInfo>(drives.Writable().ToList());
             this.RaisePropertyChanged(nameof(this.AvailableDrives));
             this.goToExport?.RaiseCanExecuteChanged();
 
             // importable files
-            var importables = drives.SelectMany(drive => drive.RootDirectory.GetFiles("*.json", System.IO.SearchOption.AllDirectories)).ToList();
+            var importables = drives.FindConfigurationFiles().ToList();
             this.importableFiles = new ReadOnlyCollection<FileInfo>(importables);
             this.RaisePropertyChanged(nameof(this.ImportableFiles));
             this.goToImport?.RaiseCanExecuteChanged();
@@ -201,11 +211,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             if (e.Attached.Any())
             {
                 int count = importables.Count;
-                string message = string.Format(Resources.InstallationApp.MultipleConfigurationsDetected, count);
+                CultureInfo culture = System.Threading.Thread.CurrentThread.CurrentCulture;
+                string message = string.Format(culture, Resources.InstallationApp.MultipleConfigurationsDetected, count);
                 switch (count)
                 {
                     case 1:
-                        message = string.Format(Resources.InstallationApp.ConfigurationDetected, string.Concat(importables[0].Name));
+                        message = string.Format(culture, Resources.InstallationApp.ConfigurationDetected, string.Concat(importables[0].Name));
                         break;
 
                     case 0:

@@ -16,7 +16,6 @@
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
     <ctrls:View.Resources>
-        <converters2:TruthyToVisibilityConverter x:Key="TruthyToVisibilityConverter" />
         <ctrls:PropertyGridCellTemplateSelector x:Key="PropertyGridCellTemplateSelector" />
         <Style TargetType="{x:Type dxprg:RowControl}">
             <Setter Property="FontSize" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_FontSize}" />
@@ -67,14 +66,14 @@
 
             <controls:PpcButton Grid.Row="1"
                                 Margin="15,0,0,0"
-                                Visibility="{Binding IsNavigating, ElementName=scaffolder, Converter={StaticResource TruthyToVisibilityConverter}, ConverterParameter=Invert}"
+                                Visibility="{Binding IsNavigating, ElementName=scaffolder, Converter={StaticResource TTUI}, ConverterParameter=Invert}"
                                 Command="{Binding GoToImport}"
                                 Content="{x:Static res:InstallationApp.Restore}"
                                 IsBusy="{Binding IsBusy}" />
 
             <controls:PpcButton Grid.Row="2"
                                 Margin="15,15,0,0"
-                                Visibility="{Binding IsNavigating, ElementName=scaffolder, Converter={StaticResource TruthyToVisibilityConverter}, ConverterParameter=Invert}"
+                                Visibility="{Binding IsNavigating, ElementName=scaffolder, Converter={StaticResource TTUI}, ConverterParameter=Invert}"
                                 Command="{Binding GoToExport}"
                                 Content="{x:Static res:InstallationApp.Export}"
                                 IsBusy="{Binding IsBusy}" />

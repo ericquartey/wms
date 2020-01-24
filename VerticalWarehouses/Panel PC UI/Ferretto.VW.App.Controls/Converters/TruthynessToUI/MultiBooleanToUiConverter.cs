@@ -2,9 +2,9 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace Ferretto.VW.App.Scaffolding.Converters
+namespace Ferretto.VW.App.Controls.Converters
 {
-    public class MultiBooleanToVisibilityConverter : IMultiValueConverter
+    public class MultiBooleanToUiConverter : IMultiValueConverter
     {
         #region Methods
 
@@ -45,6 +45,6 @@ namespace Ferretto.VW.App.Scaffolding.Converters
             throw new NotSupportedException();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

@@ -119,6 +119,14 @@ namespace Ferretto.VW.App
             RegisterWmsProviders(containerRegistry);
             var wmsHubPath = ConfigurationManager.AppSettings.GetWMSDataServiceHubDataPath();
             containerRegistry.RegisterWmsHub(wmsHubPath);
+
+            // USB Watcher
+            RegisterUsbWatcher(containerRegistry);
+        }
+
+        private static void RegisterUsbWatcher(IContainerRegistry container)
+        {
+            container.Register<Ferretto.VW.App.Services.IO.UsbWatcherService>();
         }
 
         private static void RegisterWmsProviders(IContainerRegistry container)
