@@ -18,6 +18,8 @@ namespace Ferretto.VW.App.Services
 
         Bay Bay { get; }
 
+        bool BayFirstPositionIsUpper { get; }
+
         BayNumber BayNumber { get; }
 
         IEnumerable<Cell> Cells { get; }
@@ -39,13 +41,14 @@ namespace Ferretto.VW.App.Services
         MachinePowerState MachinePower { get; }
 
         MachineStatus MachineStatus { get; }
-        bool BayFirstPositionIsUpper { get; }
 
         #endregion
 
         #region Methods
 
         void ClearNotifications();
+
+        LoadingUnitLocation GetBayPositionSourceByDestination(bool isPositionDownSelected);
 
         Task OnUpdateServiceAsync();
 

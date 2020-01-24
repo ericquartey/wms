@@ -342,9 +342,12 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             else
             {
                 var structureUnion = new[]{
-                    new Models.ScaffoldedStructure(Ferretto.VW.App.Scaffolding.Resources.UI.All,
+                    new Models.ScaffoldedStructure(Scaffolding.Resources.UI.All,
                     this._elasticDataTable.OrderBy(i => i.Entity.Id).Select(i => new Models.ScaffoldedEntity( i.Entity.Property, i.Entity.Instance, i.Entity.Metadata, i.Id, i.FullCategory)),
                     Array.Empty<Models.ScaffoldedStructure>())
+                    {
+                        Description = Scaffolding.Resources.UI.AllDescription
+                    }
                 }.Union(this._model.Children);
 
                 this.FocusStructure = this._navigationRoot = new Models.ScaffoldedStructure(

@@ -24,6 +24,7 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App", "Panel PC UI\Ferretto.VW.App\Ferretto.VW.App.csproj", "{BBB70951-5692-44F2-BD04-C1E150D970FD}"
 	ProjectSection(ProjectDependencies) = postProject
 		{577F198A-0013-47CE-AFC8-6862CD3494B4} = {577F198A-0013-47CE-AFC8-6862CD3494B4}
+		{6533758A-46FC-4058-A4BF-693B7966AF8A} = {6533758A-46FC-4058-A4BF-693B7966AF8A}
 		{7A484BAF-AB01-488A-853F-C0CE4305BA56} = {7A484BAF-AB01-488A-853F-C0CE4305BA56}
 		{907674B7-B982-41C4-92DF-8928F8C9AF6B} = {907674B7-B982-41C4-92DF-8928F8C9AF6B}
 		{F58AA4C5-3E96-471D-B2C5-7767C5C165EF} = {F58AA4C5-3E96-471D-B2C5-7767C5C165EF}
@@ -68,7 +69,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Accessories
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Devices.BarcodeReader.Newland", "Common\Ferretto.VW.Devices.BarcodeReader.Newland\Ferretto.VW.Devices.BarcodeReader.Newland.csproj", "{8C82EE92-0A67-45F7-B95B-E342A30147FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.VW.App.Scaffolding", "Panel PC UI\Ferretto.VW.App.Scaffolding\Ferretto.VW.App.Scaffolding.csproj", "{6533758A-46FC-4058-A4BF-693B7966AF8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Scaffolding", "Panel PC UI\Ferretto.VW.App.Scaffolding\Ferretto.VW.App.Scaffolding.csproj", "{6533758A-46FC-4058-A4BF-693B7966AF8A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

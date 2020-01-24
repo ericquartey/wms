@@ -236,6 +236,47 @@ namespace Ferretto.VW.App.Services
             this.Dispose(true);
         }
 
+        public MAS.AutomationService.Contracts.LoadingUnitLocation GetBayPositionSourceByDestination(bool isPositionDownSelected)
+        {
+            if (this.bayNumber == MAS.AutomationService.Contracts.BayNumber.BayOne)
+            {
+                if (isPositionDownSelected)
+                {
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay1Down;
+                }
+                else
+                {
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay1Up;
+                }
+            }
+
+            if (this.bayNumber == MAS.AutomationService.Contracts.BayNumber.BayTwo)
+            {
+                if (isPositionDownSelected)
+                {
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay2Down;
+                }
+                else
+                {
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay2Up;
+                }
+            }
+
+            if (this.bayNumber == MAS.AutomationService.Contracts.BayNumber.BayThree)
+            {
+                if (isPositionDownSelected)
+                {
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay3Down;
+                }
+                else
+                {
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay3Up;
+                }
+            }
+
+            return MAS.AutomationService.Contracts.LoadingUnitLocation.NoLocation;
+        }
+
         public async Task OnInitializationServiceAsync()
         {
             if (this.healthProbeService.HealthStatus is HealthStatus.Healthy

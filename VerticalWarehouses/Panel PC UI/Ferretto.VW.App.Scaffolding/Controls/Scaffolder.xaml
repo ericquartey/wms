@@ -22,8 +22,6 @@
         <converters:ScaffoldTypeConverter x:Key="ScaffoldTypeConverter" />
         <converters:IsReadOnlyConverter x:Key="IsReadOnlyConverter" />
         <converters:IsEditableConverter x:Key="IsEditableConverter" />
-        <converters:TruthyToVisibilityConverter x:Key="TruthyToVisibilityConverter" />
-        <converters:MultiBooleanToVisibilityConverter x:Key="MultiBooleanToVisibilityConverter" />
         <converters:ValidationRuleConverter x:Key="ValidationRuleConverter" />
         <converters:DefaultValueConverter x:Key="DefaultValueConverter" />
 
@@ -84,7 +82,8 @@
             </Setter>
         </Style>
 
-        <Style TargetType="Border" x:Key="ListBoxItemBorder">
+        <Style x:Key="ListBoxItemBorder"
+               TargetType="Border">
             <Setter Property="BorderThickness" Value="0,0,0,1" />
             <Setter Property="CornerRadius" Value="0" />
             <Setter Property="SnapsToDevicePixels" Value="True" />
@@ -109,23 +108,29 @@
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                    <Border Background="{TemplateBinding Background}" Name="border"
-                                                BorderBrush="{DynamicResource FerrettoMediumGray}"
-                                                Style="{StaticResource ListBoxItemBorder}">
+                                    <Border Name="border"
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{DynamicResource FerrettoMediumGray}"
+                                            Style="{StaticResource ListBoxItemBorder}">
                                         <Grid>
                                             <GridViewRowPresenter />
-                                            <ProgressBar Margin="0" IsHitTestVisible="False"
-                                             HorizontalAlignment="Stretch"
-                                             VerticalAlignment="Stretch"
-                                             Background="{TemplateBinding Background}"
-                                             BorderBrush="{TemplateBinding BorderBrush}"
-                                             Foreground="{DynamicResource PpcButtonForeground}"
-                                             IsIndeterminate="True"
-                                             Opacity="0.2">
+                                            <ProgressBar Margin="0"
+                                                         HorizontalAlignment="Stretch"
+                                                         VerticalAlignment="Stretch"
+                                                         Background="{TemplateBinding Background}"
+                                                         BorderBrush="{TemplateBinding BorderBrush}"
+                                                         Foreground="{DynamicResource PpcButtonForeground}"
+                                                         IsHitTestVisible="False"
+                                                         IsIndeterminate="True"
+                                                         Opacity="0.2">
                                                 <ProgressBar.Visibility>
-                                                    <MultiBinding Converter="{StaticResource MultiBooleanToVisibilityConverter}">
-                                                        <Binding Path="IsBusy" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}" />
-                                                        <Binding Path="IsSelected" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}" />
+                                                    <MultiBinding Converter="{StaticResource MBTUI}">
+                                                        <Binding Path="IsBusy"
+                                                                 RelativeSource="{RelativeSource Mode=FindAncestor,
+                                                                                                 AncestorType=controls:Scaffolder}" />
+                                                        <Binding Path="IsSelected"
+                                                                 RelativeSource="{RelativeSource Mode=FindAncestor,
+                                                                                                 AncestorType=ListViewItem}" />
                                                     </MultiBinding>
                                                 </ProgressBar.Visibility>
                                             </ProgressBar>
@@ -150,8 +155,7 @@
                             <MultiDataTrigger>
                                 <MultiDataTrigger.Conditions>
                                     <Condition Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=Self}}" Value="True" />
-                                    <Condition Value="True"
-                                               Binding="{Binding Path=IsBusy, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}}" />
+                                    <Condition Binding="{Binding Path=IsBusy, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}}" Value="True" />
                                 </MultiDataTrigger.Conditions>
                                 <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
                                 <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
@@ -268,6 +272,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
     </UserControl.Resources>
 
     <!--
@@ -277,7 +282,7 @@
     -->
     <Grid>
         <Grid.Visibility>
-            <Binding Converter="{StaticResource TruthyToVisibilityConverter}"
+            <Binding Converter="{StaticResource TTUI}"
                      Path="Model"
                      RelativeSource="{RelativeSource Mode=FindAncestor,
                                                      AncestorType=controls:Scaffolder}" />
@@ -286,12 +291,12 @@
             <RowDefinition Height="Auto" />
             <RowDefinition>
                 <RowDefinition.Height>
-                    <MultiBinding Converter="{StaticResource MultiBooleanToVisibilityConverter}">
-                        <Binding Converter="{StaticResource TruthyToVisibilityConverter}"
+                    <MultiBinding Converter="{StaticResource MBTUI}">
+                        <Binding Converter="{StaticResource TTUI}"
                                  Path="Structures.Count"
                                  RelativeSource="{RelativeSource Mode=FindAncestor,
                                                                  AncestorType=controls:Scaffolder}" />
-                        <Binding Converter="{StaticResource TruthyToVisibilityConverter}"
+                        <Binding Converter="{StaticResource TTUI}"
                                  ConverterParameter="Invert"
                                  Path="Entities.Count"
                                  RelativeSource="{RelativeSource Mode=FindAncestor,
@@ -299,19 +304,19 @@
                     </MultiBinding>
                 </RowDefinition.Height>
             </RowDefinition>
-            <RowDefinition Height="{Binding Path=Entities.Count, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}, Converter={StaticResource TruthyToVisibilityConverter}}" />
+            <RowDefinition Height="{Binding Path=Entities.Count, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}, Converter={StaticResource TTUI}}" />
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0"
                     Grid.ColumnSpan="2"
                     DataContext="{Binding Path=Breadcrumb, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
                     Orientation="Horizontal"
-                    Visibility="{Binding Path=Count, Converter={StaticResource TruthyToVisibilityConverter}}">
+                    Visibility="{Binding Path=Count, Converter={StaticResource TTUI}}">
 
             <Button Margin="0,0,0,8"
                     Click="Back_Click"
                     Style="{StaticResource IconButtonStyle}"
-                    Visibility="{Binding Path=Count, Converter={StaticResource TruthyToVisibilityConverter}}">
+                    Visibility="{Binding Path=Count, Converter={StaticResource TTUI}}">
                 <Button.Content>
                     <icons:PackIconFontAwesome Kind="ReplySolid" />
                 </Button.Content>
@@ -321,10 +326,11 @@
                        VerticalAlignment="Center"
                        Style="{StaticResource BreadcrumbTextBlock}"
                        Text="{x:Static resx:UI.Root}"
-                       Visibility="{Binding Path=Count, Converter={StaticResource TruthyToVisibilityConverter}}" />
+                       Visibility="{Binding Path=Count, Converter={StaticResource TTUI}}" />
+
             <!--  breadcrumb  -->
             <ItemsControl ItemsSource="{Binding}"
-                          Visibility="{Binding Path=Count, Converter={StaticResource TruthyToVisibilityConverter}}">
+                          Visibility="{Binding Path=Count, Converter={StaticResource TTUI}}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel VerticalAlignment="Center"
@@ -348,7 +354,7 @@
                                                        IsDesignTimeCreatable=True}"
                       DataContext="{Binding Path=Structures, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}}"
                       VerticalScrollBarVisibility="Auto"
-                      Visibility="{Binding Path=Count, Converter={StaticResource TruthyToVisibilityConverter}}">
+                      Visibility="{Binding Path=Count, Converter={StaticResource TTUI}}">
 
             <ItemsControl ItemsSource="{Binding}">
                 <ItemsControl.ItemsPanel>
@@ -358,10 +364,12 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-
-                        <ctrls:PpcButton Height="100"
-                                         Margin="0,0,10,10"
-                                         Content="{Binding Category}">
+                        <ctrls:PpcButton Title="{Binding Category}"
+                                         Margin="0,0,30,30"
+                                         Abbrevation="{Binding AbbrevationCategory}"
+                                         BorderBrush="{DynamicResource FerrettoRed}"
+                                         Content="{Binding Description}"
+                                         Style="{DynamicResource PpcButtonMenuCardStyle}">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Click">
                                     <i:CallMethodAction MethodName="SelectCategory"
@@ -379,9 +387,14 @@
                                                IsDesignTimeCreatable=True}"
               DataContext="{Binding Path=Entities, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}}">
             <Grid.Visibility>
-                <MultiBinding Converter="{StaticResource MultiBooleanToVisibilityConverter}" ConverterParameter="Or">
-                    <Binding Path="Count" Converter="{StaticResource TruthyToVisibilityConverter}" />
-                    <Binding Path="SearchText" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}" Converter="{StaticResource TruthyToVisibilityConverter}" />
+                <MultiBinding Converter="{StaticResource MBTUI}"
+                              ConverterParameter="Or">
+                    <Binding Converter="{StaticResource TTUI}"
+                             Path="Count" />
+                    <Binding Converter="{StaticResource TTUI}"
+                             Path="SearchText"
+                             RelativeSource="{RelativeSource Mode=FindAncestor,
+                                                             AncestorType=controls:Scaffolder}" />
                 </MultiBinding>
             </Grid.Visibility>
             <Grid.RowDefinitions>
@@ -421,7 +434,7 @@
                         Background="White"
                         Click="Back_Click"
                         Style="{StaticResource IconButtonInvertStyle}"
-                        Visibility="{Binding Path=SearchText, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}, Converter={StaticResource TruthyToVisibilityConverter}}">
+                        Visibility="{Binding Path=SearchText, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}, Converter={StaticResource TTUI}}">
                     <Button.Template>
                         <ControlTemplate>
                             <Grid Margin="0"
@@ -520,7 +533,7 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Width="64"
+                        <GridViewColumn Width="110"
                                         Header="U.m.">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -549,6 +562,6 @@
                                  VerticalAlignment="Stretch"
                                  Commit="Editor_Commit"
                                  Entity="{Binding Path=EditingEntity, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
-                                 Visibility="{Binding Path=Entity, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource TruthyToVisibilityConverter}}" />
+                                 Visibility="{Binding Path=Entity, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource TTUI}}" />
     </Grid>
 </UserControl>

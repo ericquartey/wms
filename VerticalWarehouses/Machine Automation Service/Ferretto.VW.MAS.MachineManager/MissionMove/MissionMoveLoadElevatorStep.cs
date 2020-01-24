@@ -160,6 +160,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         if (this.UpdateResponseList(notification.Type))
                         {
                             this.MissionsDataProvider.Update(this.Mission);
+                            this.Logger.LogTrace($"UpdateResponseList: {notification.Type}");
                             if (notification.Type == MessageType.Positioning)
                             {
                                 this.LoadUnitChangePosition();

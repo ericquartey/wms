@@ -53,23 +53,29 @@
 
                 <ctrls:PpcSpinEdit Grid.Row="1"
                                    Grid.Column="0"
+                                   Height="90"
                                    Margin="15,5"
                                    HorizontalAlignment="Stretch"
                                    VerticalAlignment="Center"
-                                   EditValue="{Binding Path=InputLoadingUnitId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                   IsEnabled="{Binding CanInputLoadingUnitId}"
+                                   EditValue="{Binding Path=LoadingUnitId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                   IsEnabled="{Binding CanLoadingUnitId}"
                                    LabelText="{x:Static res:InstallationApp.DrawerNumber}"
-                                   Mask="#0" />
+                                   Mask="#0"
+                                   MinValue="1" />
 
                 <controls:PpcButton Grid.Row="1"
                                     Grid.Column="1"
                                     VerticalAlignment="Center"
-                                    Content="Chiamata cassetto" />
+                                    Command="{Binding CallLoadunitToBayCommand}"
+                                    Content="Chiamata cassetto"
+                                    Style="{StaticResource WizardIntoButton}" />
 
                 <controls:PpcButton Grid.Row="2"
                                     Grid.Column="1"
                                     VerticalAlignment="Center"
-                                    Content="Chiudi serranda" />
+                                    Command="{Binding CloseShutterCommand}"
+                                    Content="Chiudi serranda"
+                                    Style="{StaticResource WizardIntoButton}" />
 
                 <controls:PpcButton Grid.Row="3"
                                     Grid.Column="1"
@@ -111,25 +117,41 @@
                                TextWrapping="Wrap" />
                 </StackPanel>
 
+                <ctrls:PpcSpinEdit Grid.Row="1"
+                                   Grid.Column="0"
+                                   Height="90"
+                                   Margin="15,5"
+                                   HorizontalAlignment="Stretch"
+                                   VerticalAlignment="Center"
+                                   EditValue="{Binding BayPosition.Height}"
+                                   IsEnabled="False"
+                                   LabelText="Posizione baia"
+                                   Mask="####0.00"
+                                   MinValue="1" />
+
                 <controls:PpcButton Grid.Row="1"
-                                    Grid.Column="0"
-                                    Grid.ColumnSpan="2"
+                                    Grid.Column="1"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
-                                    Content="Vai a baia" />
+                                    Command="{Binding GoToBayCommand}"
+                                    Content="Vai a baia"
+                                    Style="{StaticResource WizardIntoButton}" />
 
                 <controls:PpcButton Grid.Row="2"
                                     Grid.Column="0"
                                     Grid.ColumnSpan="2"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
-                                    Content="Chiudi serranda" />
+                                    Command="{Binding CloseShutterCommand}"
+                                    Content="Chiudi serranda"
+                                    Style="{StaticResource WizardIntoButton}" />
 
                 <controls:PpcButton Grid.Row="3"
                                     Grid.Column="1"
                                     Margin="15,15,0,0"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Bottom"
+                                    Command="{Binding MoveToShapePositionDxCommand}"
                                     Content="Avanti"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
@@ -160,7 +182,7 @@
 
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Posizionare la sagoma di regolazione nell'angolo superiore a destra del cassetto in baia, assicurarsi di posizionare le calamite in modo date che la stessa rimanga ben salda al cassetto."
+                               Text="Posizionare la sagoma di regolazione nell'angolo superiore a destra del cassetto in baia, assicurarsi di posizionare le calamite in modo che la stessa rimanga ben salda al cassetto."
                                TextWrapping="Wrap" />
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
@@ -179,6 +201,7 @@
                                     Margin="15,15,0,0"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Bottom"
+                                    Command="{Binding MensurationDxCommand}"
                                     Content="Misurazione lato destro"
                                     Style="{StaticResource WizardConfirmButton}" />
 
@@ -429,7 +452,7 @@
 
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Posizionare la sagoma di regolazione nell'angolo superiore a sinistra del cassetto in baia, assicurarsi di posizionare le calamite in modo date che la stessa rimanga ben salda al cassetto."
+                               Text="Posizionare la sagoma di regolazione nell'angolo superiore a sinistra del cassetto in baia, assicurarsi di posizionare le calamite in modo che la stessa rimanga ben salda al cassetto."
                                TextWrapping="Wrap" />
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
@@ -448,6 +471,7 @@
                                     Margin="15,15,0,0"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Bottom"
+                                    Command="{Binding MensurationSxCommand}"
                                     Content="Misurazione lato sinistro"
                                     Style="{StaticResource WizardConfirmButton}" />
 
@@ -774,7 +798,7 @@
                        Margin="0,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="Barriera misura altezza" />
+                       Text="Calibrazione Altezza" />
         </StackPanel>
         <!--#endregion-->
 

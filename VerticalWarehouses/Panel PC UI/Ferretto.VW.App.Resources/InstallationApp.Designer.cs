@@ -2455,6 +2455,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Device is not available anymore..
+        /// </summary>
+        public static string NoDevicesAvailableAnymore {
+            get {
+                return ResourceManager.GetString("NoDevicesAvailableAnymore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Off.
         /// </summary>
         public static string Off {

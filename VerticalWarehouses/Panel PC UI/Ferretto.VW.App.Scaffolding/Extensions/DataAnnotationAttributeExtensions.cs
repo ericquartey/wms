@@ -29,6 +29,9 @@ namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
         public static string Category(this CategoryAttribute attribute)
             => (attribute ?? throw new ArgumentNullException(nameof(attribute))).Localize();
 
+        public static string Description(this CategoryDescriptionAttribute attribute)
+            => (attribute ?? throw new ArgumentNullException(nameof(attribute))).Localize();
+
         public static string Tag(this TagAttribute attribute)
             => (attribute ?? throw new ArgumentNullException(nameof(attribute))).Localize();
 

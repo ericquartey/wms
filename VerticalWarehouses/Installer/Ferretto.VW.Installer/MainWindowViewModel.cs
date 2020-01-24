@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Threading;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 
 namespace Ferretto.VW.Installer
 {
@@ -12,6 +14,8 @@ namespace Ferretto.VW.Installer
         #region Fields
 
         private readonly InstallationService installationService;
+
+        private RelayCommand abortCommand;
 
         private Step selectedStep;
 
@@ -46,6 +50,11 @@ namespace Ferretto.VW.Installer
 
         #region Properties
 
+        public ICommand AbortCommand =>
+            this.abortCommand
+            ??
+            (this.abortCommand = new RelayCommand(this.Abort, this.CanAbort));
+
         public Step SelectedStep
         {
             get => this.selectedStep;
@@ -58,17 +67,31 @@ namespace Ferretto.VW.Installer
             set => this.SetProperty(ref this.selectedStepLog, value);
         }
 
+        public string SoftwareVersion => this.installationService.SoftwareVersion;
+
         public IEnumerable<Step> Steps => this.installationService.Steps;
 
         #endregion
 
         #region Methods
 
+        private void Abort()
+        {
+            this.installationService.Abort();
+            this.abortCommand?.RaiseCanExecuteChanged();
+        }
+
+        private bool CanAbort()
+        {
+            return !this.installationService.IsRollbackInProgress;
+        }
+
         private void InstallationService_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(InstallationService.ActiveStep))
             {
                 this.SelectedStep = this.installationService.ActiveStep;
+                this.abortCommand.RaiseCanExecuteChanged();
             }
         }
 

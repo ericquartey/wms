@@ -34,4 +34,8 @@
     <conv:MultiValueConverterAdapter x:Key="MVC" />
 
     <conv:DebugDummyConverter x:Key="DEBUG" />
+
+    <!-- truthy to ui -->
+    <conv:TruthyToUiConverter x:Key="TTUI" />
+    <conv:MultiBooleanToUiConverter x:Key="MBTUI" />
 </ResourceDictionary>

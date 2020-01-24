@@ -51,7 +51,6 @@ namespace Ferretto.VW.Simulator
             if (System.Environment.GetCommandLineArgs().Any(a => a.Equals("--autostart", System.StringComparison.InvariantCultureIgnoreCase)))
             {
                 mainWindowViewModel.StartSimulatorCommand.Execute(null);
-                application.MainWindow.WindowState = WindowState.Minimized;
             }
 
             application.MainWindow.Show();
