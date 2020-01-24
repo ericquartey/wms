@@ -7,9 +7,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [Ferretto.VW.MAS.Scaffolding.DataAnnotations.MetadataType(typeof(Bay.Metadata))]
     public partial class Bay
     {
+        #region Classes
+
         private class Metadata
         {
+            #region Properties
+
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.BayCarousel))]
+            [CategoryDescription(ResourceType = typeof(Vertimag), Description = nameof(Vertimag.BayCarousel_Description))]
             [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
             [PullToRoot, Unfold]
             public Carousel Carousel { get; set; }
@@ -80,6 +85,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [ScaffoldColumn(false)]
             public BayStatus Status { get; set; }
+
+            #endregion
         }
+
+        #endregion
     }
 }

@@ -123,6 +123,9 @@
   <data name="BayCarousel" xml:space="preserve">
     <value>Giostra baia {0}</value>
   </data>
+  <data name="BayCarousel_Description" xml:space="preserve">
+    <value>Parametri Giostra</value>
+  </data>
   <data name="BayInverter" xml:space="preserve">
     <value>Inverter baia {0}</value>
   </data>
