@@ -203,7 +203,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.StopAsync(),
                 this.CanStop));
 
-        private BayPosition BayPosition => this.MachineService.Bay.Positions.OrderByDescending(o => o.Height).First();
+        public BayPosition BayPosition => this.MachineService.Bay.Positions.OrderByDescending(o => o.Height).First();
 
         #endregion
 

@@ -6,8 +6,6 @@
 
         public const string EMPTY = "EmptyViewModel";
 
-        public const string LOADING_UNIT = "LoadingUnitViewModel";
-
         public const string OPERATOR_MENU = "OperatorMenuViewModel";
 
         #endregion

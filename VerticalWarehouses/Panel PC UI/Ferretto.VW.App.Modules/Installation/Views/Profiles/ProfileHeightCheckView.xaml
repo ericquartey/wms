@@ -117,9 +117,20 @@
                                TextWrapping="Wrap" />
                 </StackPanel>
 
+                <ctrls:PpcSpinEdit Grid.Row="1"
+                                   Grid.Column="0"
+                                   Height="90"
+                                   Margin="15,5"
+                                   HorizontalAlignment="Stretch"
+                                   VerticalAlignment="Center"
+                                   EditValue="{Binding BayPosition.Height}"
+                                   IsEnabled="False"
+                                   LabelText="Posizione baia"
+                                   Mask="####0.00"
+                                   MinValue="1" />
+
                 <controls:PpcButton Grid.Row="1"
-                                    Grid.Column="0"
-                                    Grid.ColumnSpan="2"
+                                    Grid.Column="1"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Command="{Binding GoToBayCommand}"

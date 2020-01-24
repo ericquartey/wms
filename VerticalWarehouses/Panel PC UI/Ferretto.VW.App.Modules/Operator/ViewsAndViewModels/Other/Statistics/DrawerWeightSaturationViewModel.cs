@@ -17,8 +17,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 
         private readonly IMachineLoadingUnitsWebService loadingUnitService;
 
-        private readonly INavigationService navigationService;
-
         private int currentItemIndex;
 
         private ICustomControlDrawerWeightSaturationDataGridViewModel dataGridViewModel;
@@ -48,12 +46,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
         public DrawerWeightSaturationViewModel(
             IMachineLoadingUnitsWebService loadingUnitService,
             IMachineIdentityWebService identityService,
-            INavigationService navigationService,
             ICustomControlDrawerWeightSaturationDataGridViewModel drawerWeightSaturationDataGridViewModel)
         {
             this.dataGridViewModel = drawerWeightSaturationDataGridViewModel;
             this.loadingUnitService = loadingUnitService;
-            this.navigationService = navigationService;
             this.identityService = identityService;
         }
 
@@ -73,7 +69,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
             ??
             (this.drawerSpaceSaturationButtonCommand = new DelegateCommand(() =>
                 {
-                    this.navigationService.NavigateToView<DrawerSpaceSaturationViewModel, IDrawerSpaceSaturationViewModel>();
                 }));
 
         public double GrossWeight { get => this.grossWeight; set => this.SetProperty(ref this.grossWeight, value); }
