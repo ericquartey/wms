@@ -42,9 +42,9 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="[2.2.0]" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Api.Analyzers" Version="[2.2.6]" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Api.Analyzers" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" PrivateAssets="All" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="[2.2.6]" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.0" />
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />

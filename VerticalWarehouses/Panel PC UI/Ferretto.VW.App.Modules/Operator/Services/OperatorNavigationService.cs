@@ -83,17 +83,20 @@ namespace Ferretto.VW.App.Modules.Operator.Services
 
         #region Methods
 
-        private async Task CheckForNewOperationAsync()
+        public async Task NavigateToDrawerViewAsync()
         {
-            if (this.machineModeService.MachineMode != MachineMode.Automatic
-                ||
-                !this.autoNavigate)
+            await this.CheckForNewOperationAsync(forceNavigation: true);
+        }
+
+        private async Task CheckForNewOperationAsync(bool forceNavigation = false)
+        {
+            if (!forceNavigation && !this.autoNavigate)
             {
                 return;
             }
 
             var missionOperation = this.missionOperationsService.CurrentMissionOperation;
-            var activeViewModelName = this.navigationService.GetActiveViewModel().GetType().Name;
+            var activeViewModelName = this.GetActiveViewModelName();
             if (this.missionOperationsService.CurrentMissionOperation is null)
             {
                 if (activeViewModelName == Utils.Modules.Operator.OPERATOR_MENU
@@ -106,14 +109,22 @@ namespace Ferretto.VW.App.Modules.Operator.Services
                     {
                         this.NavigateToLoadingUnitDetails(loadingUnit.Id);
                     }
+                    else
+                    {
+                        this.navigationService.Appear(
+                            nameof(Utils.Modules.Operator),
+                            Utils.Modules.Operator.ItemOperations.WAIT,
+                            null,
+                            trackCurrentView: activeViewModelName != Utils.Modules.Operator.ItemOperations.WAIT);
+                    }
                 }
-                else if (activeViewModelName != Utils.Modules.Operator.ItemOperations.WAIT)
+                else if (activeViewModelName != Utils.Modules.Operator.ItemOperations.LOADING_UNIT)
                 {
                     this.lastActiveMissionId = null;
                     this.navigationService.GoBackTo(nameof(Utils.Modules.Operator), Utils.Modules.Operator.ItemOperations.WAIT);
                 }
             }
-            else
+            else if (this.machineModeService.MachineMode is MachineMode.Automatic)
             {
                 switch (this.missionOperationsService.CurrentMissionOperation.Type)
                 {
@@ -136,26 +147,35 @@ namespace Ferretto.VW.App.Modules.Operator.Services
             }
         }
 
+        private string GetActiveViewModelName()
+        {
+            return this.navigationService.GetActiveViewModel().GetType().Name;
+        }
+
         private void NavigateToLoadingUnitDetails(int loadingUnitId)
         {
             this.lastActiveMissionId = null;
+
+            var activeViewModelName = this.GetActiveViewModelName();
 
             this.navigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 Utils.Modules.Operator.ItemOperations.LOADING_UNIT,
                 loadingUnitId,
-                trackCurrentView: true);
+                trackCurrentView: activeViewModelName != Utils.Modules.Operator.ItemOperations.WAIT);
         }
 
         private void NavigateToOperationDetails(string viewModelName)
         {
             this.lastActiveMissionId = this.missionOperationsService.CurrentMission.Id;
 
+            var activeViewModelName = this.GetActiveViewModelName();
+
             this.navigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 viewModelName,
                 null,
-                trackCurrentView: true);
+                trackCurrentView: activeViewModelName != Utils.Modules.Operator.ItemOperations.WAIT);
         }
 
         private async Task OnAssignedMissionOperationChangedAsync(AssignedMissionOperationChangedEventArgs e)

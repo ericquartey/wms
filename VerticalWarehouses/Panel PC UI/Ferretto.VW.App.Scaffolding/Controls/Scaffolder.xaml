@@ -82,7 +82,8 @@
             </Setter>
         </Style>
 
-        <Style TargetType="Border" x:Key="ListBoxItemBorder">
+        <Style x:Key="ListBoxItemBorder"
+               TargetType="Border">
             <Setter Property="BorderThickness" Value="0,0,0,1" />
             <Setter Property="CornerRadius" Value="0" />
             <Setter Property="SnapsToDevicePixels" Value="True" />
@@ -107,23 +108,29 @@
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                    <Border Background="{TemplateBinding Background}" Name="border"
-                                                BorderBrush="{DynamicResource FerrettoMediumGray}"
-                                                Style="{StaticResource ListBoxItemBorder}">
+                                    <Border Name="border"
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{DynamicResource FerrettoMediumGray}"
+                                            Style="{StaticResource ListBoxItemBorder}">
                                         <Grid>
                                             <GridViewRowPresenter />
-                                            <ProgressBar Margin="0" IsHitTestVisible="False"
-                                             HorizontalAlignment="Stretch"
-                                             VerticalAlignment="Stretch"
-                                             Background="{TemplateBinding Background}"
-                                             BorderBrush="{TemplateBinding BorderBrush}"
-                                             Foreground="{DynamicResource PpcButtonForeground}"
-                                             IsIndeterminate="True"
-                                             Opacity="0.2">
+                                            <ProgressBar Margin="0"
+                                                         HorizontalAlignment="Stretch"
+                                                         VerticalAlignment="Stretch"
+                                                         Background="{TemplateBinding Background}"
+                                                         BorderBrush="{TemplateBinding BorderBrush}"
+                                                         Foreground="{DynamicResource PpcButtonForeground}"
+                                                         IsHitTestVisible="False"
+                                                         IsIndeterminate="True"
+                                                         Opacity="0.2">
                                                 <ProgressBar.Visibility>
                                                     <MultiBinding Converter="{StaticResource MBTUI}">
-                                                        <Binding Path="IsBusy" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}" />
-                                                        <Binding Path="IsSelected" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}" />
+                                                        <Binding Path="IsBusy"
+                                                                 RelativeSource="{RelativeSource Mode=FindAncestor,
+                                                                                                 AncestorType=controls:Scaffolder}" />
+                                                        <Binding Path="IsSelected"
+                                                                 RelativeSource="{RelativeSource Mode=FindAncestor,
+                                                                                                 AncestorType=ListViewItem}" />
                                                     </MultiBinding>
                                                 </ProgressBar.Visibility>
                                             </ProgressBar>
@@ -148,8 +155,7 @@
                             <MultiDataTrigger>
                                 <MultiDataTrigger.Conditions>
                                     <Condition Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=Self}}" Value="True" />
-                                    <Condition Value="True"
-                                               Binding="{Binding Path=IsBusy, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}}" />
+                                    <Condition Binding="{Binding Path=IsBusy, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}}" Value="True" />
                                 </MultiDataTrigger.Conditions>
                                 <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
                                 <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
@@ -266,6 +272,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
     </UserControl.Resources>
 
     <!--
@@ -320,6 +327,7 @@
                        Style="{StaticResource BreadcrumbTextBlock}"
                        Text="{x:Static resx:UI.Root}"
                        Visibility="{Binding Path=Count, Converter={StaticResource TTUI}}" />
+
             <!--  breadcrumb  -->
             <ItemsControl ItemsSource="{Binding}"
                           Visibility="{Binding Path=Count, Converter={StaticResource TTUI}}">
@@ -356,10 +364,12 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-
-                        <ctrls:PpcButton Height="100"
-                                         Margin="0,0,10,10"
-                                         Content="{Binding Category}">
+                        <ctrls:PpcButton Title="{Binding Category}"
+                                         Margin="0,0,30,30"
+                                         Abbrevation="{Binding AbbrevationCategory}"
+                                         BorderBrush="{DynamicResource FerrettoRed}"
+                                         Content="{Binding Description}"
+                                         Style="{DynamicResource PpcButtonMenuCardStyle}">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Click">
                                     <i:CallMethodAction MethodName="SelectCategory"
@@ -377,9 +387,14 @@
                                                IsDesignTimeCreatable=True}"
               DataContext="{Binding Path=Entities, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}}">
             <Grid.Visibility>
-                <MultiBinding Converter="{StaticResource MBTUI}" ConverterParameter="Or">
-                    <Binding Path="Count" Converter="{StaticResource TTUI}" />
-                    <Binding Path="SearchText" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}" Converter="{StaticResource TTUI}" />
+                <MultiBinding Converter="{StaticResource MBTUI}"
+                              ConverterParameter="Or">
+                    <Binding Converter="{StaticResource TTUI}"
+                             Path="Count" />
+                    <Binding Converter="{StaticResource TTUI}"
+                             Path="SearchText"
+                             RelativeSource="{RelativeSource Mode=FindAncestor,
+                                                             AncestorType=controls:Scaffolder}" />
                 </MultiBinding>
             </Grid.Visibility>
             <Grid.RowDefinitions>
@@ -518,7 +533,7 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Width="64"
+                        <GridViewColumn Width="110"
                                         Header="U.m.">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
