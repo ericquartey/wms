@@ -59,6 +59,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                : base(bayManager, machineLoadingUnitsWebService, loadingUnitsWmsWebService)
         {
             this.itemsWmsWebService = itemsWmsWebService ?? throw new ArgumentNullException(nameof(itemsWmsWebService));
+            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService;
         }
 
         #endregion
