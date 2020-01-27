@@ -23,9 +23,8 @@
                                 VerticalAlignment="Top"
                                 HorizontalAlignment="Left"                                
                                 TextBlock.TextAlignment="Right"
-                                Content="Loading unit"
-                                Command="{Binding ChangeModeLoadingUnitCommand}"
-                                CommandParameter="{x:Static res:OperatorApp.LoadingUnit}"
+                                Content="{x:Static res:OperatorApp.LoadingUnit}"
+                                Command="{Binding ChangeModeLoadingUnitCommand}"                               
                                 Foreground="{DynamicResource FerrettoPureWhite}"
                                 Visibility="{Binding IsListVisibile, Converter={StaticResource BTVC}}"
                                 Kind="Grid">
@@ -36,9 +35,8 @@
                                 Height="50"                              
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
-                                Content="Griglia"
-                                Command="{Binding ChangeModeListCommand}"
-                                CommandParameter="Grid"
+                                Content="{x:Static res:OperatorApp.List}"
+                                Command="{Binding ChangeModeListCommand}"                                
                                 Foreground="{DynamicResource FerrettoPureWhite}"
                                 Visibility="{Binding IsListVisibile, Converter={StaticResource BTVIC}}"
                                 Kind="Table" />

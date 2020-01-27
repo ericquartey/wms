@@ -146,7 +146,7 @@
                 <DataGridTextColumn x:Name="Column3"
                                     Width="90"
                                     Binding="{Binding Path=Stock}"
-                                    Header="{x:Static Resources:OperatorApp.Quantity}">
+                                    Header="{x:Static Resources:OperatorApp.CompartmentStock}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
