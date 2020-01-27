@@ -8,13 +8,15 @@
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:parameters="clr-namespace:Ferretto.VW.App.Modules.Installation.Controls"
+            xmlns:converters="clr-namespace:Ferretto.VW.App.Modules.Installation.Converters"
+             xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d" 
             d:DesignHeight="450" d:DesignWidth="800">
 
 
     <ctrls:View.Resources>
-
+        <converters:DriveToVertimagFilenameConverter x:Key="DriveToVertimagFilenameConverter" />
 
         <Style x:Key="CellBorderStyle"
                TargetType="Border">
@@ -38,7 +40,7 @@
             <Setter Property="ToolTip" Value="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
         </Style>
 
-        <Style TargetType="{x:Type GridViewColumnHeader}">
+        <Style TargetType="{x:Type GridViewColumnHeader}" x:Key="GridViewColumnHeaderStyle">
             <Setter Property="Background" Value="{x:Null}" />
             <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
             <Setter Property="FontSize" Value="{DynamicResource FontSize_Normal}" />
@@ -47,6 +49,7 @@
             <Setter Property="Padding" Value="10,5" />
             <Setter Property="Margin" Value="-2,0" />
             <Setter Property="Height" Value="32" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
@@ -56,7 +59,7 @@
                             <TextBlock x:Name="ContentHeader"
                                        Width="{TemplateBinding Width}"
                                        Padding="{TemplateBinding Padding}"
-                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                        Foreground="{TemplateBinding Foreground}"
                                        Text="{TemplateBinding Content}"
                                        TextAlignment="Center" />
@@ -199,28 +202,70 @@
                   ItemsSource="{Binding AvailableDrives}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Width="230"
-                                        Header="Drive">
+                    <GridViewColumn Width="815"
+                                        Header="File">
+                        <GridViewColumn.HeaderContainerStyle>
+                            <Style TargetType="{x:Type GridViewColumnHeader}"
+                                   BasedOn="{StaticResource GridViewColumnHeaderStyle}">
+                                <Setter Property="HorizontalContentAlignment" Value="Left" />
+                            </Style>
+                        </GridViewColumn.HeaderContainerStyle>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Border Style="{StaticResource FirstCellBorderStyle}">
-                                    <TextBlock Style="{StaticResource CellTextBlockStyle}"
-                                                   Text="{Binding Path=Name}" />
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Border Background="{DynamicResource FerrettoRed}"
+                                                Margin="0,0,10,0"
+                                                CornerRadius="12" Height="24" Width="24">
+                                            <icons:PackIconFontAwesome VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                Foreground="{DynamicResource FerrettoPureWhite}"
+                                                Kind="ExclamationSolid" />
+                                            <Border.Visibility>
+                                                <MultiBinding Converter="{StaticResource MBTUI}">
+                                                    <Binding Path="IsSelected"
+                                                         RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}" />
+                                                    <Binding Path="DataContext.OverwriteTargetFile"
+                                                         RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=UserControl}" />
+                                                    <Binding Path="DataContext.HasFilenameConflict"
+                                                         RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=UserControl}" />
+                                                </MultiBinding>
+                                            </Border.Visibility>
+                                        </Border>
+                                        <TextBlock Grid.Column="1" Style="{StaticResource CellTextBlockStyle}">
+                                            <TextBlock.Text>
+                                                <MultiBinding Converter="{StaticResource DriveToVertimagFilenameConverter}">
+                                                    <Binding Path="." />
+                                                    <Binding Path="DataContext.ExportingConfiguration"
+                                                         RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=UserControl}" />
+                                                    <Binding Path="DataContext.OverwriteTargetFile"
+                                                         RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=UserControl}" />
+                                                    <Binding Path="IsSelected"
+                                                         RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </Grid>
                                 </Border>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Width="550">
+                    <!--<GridViewColumn Width="550">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <!--<Border Style="{StaticResource CellBorderStyle}">
+                                -->
+                    <!--<Border Style="{StaticResource CellBorderStyle}">
                                     <TextBlock Style="{StaticResource CellTextBlockStyle}"
                                                    FontStyle="Italic"
                                                    Text="{Binding Path=FullName}" />
                                 </Border>-->
+                    <!--
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
+                    </GridViewColumn>-->
                 </GridView>
             </ListView.View>
         </ListView>
