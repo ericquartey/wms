@@ -189,8 +189,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
         }
 
-        protected async override Task OnMachineModeChangedAsync(
-                                                                                                                                                                                            MAS.AutomationService.Contracts.Hubs.MachineModeChangedEventArgs e)
+        protected async override Task OnMachineModeChangedAsync(MAS.AutomationService.Contracts.Hubs.MachineModeChangedEventArgs e)
         {
             await base.OnMachineModeChangedAsync(e);
 
