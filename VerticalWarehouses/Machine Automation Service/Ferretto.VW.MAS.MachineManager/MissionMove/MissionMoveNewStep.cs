@@ -149,21 +149,29 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if (commandMessage != null
                 && commandMessage.Data is IMoveLoadingUnitMessageData messageData)
             {
-                returnValue = this.IsMachineOk(messageData, showErrors);
-
-                if (returnValue)
+                using (var transaction = this.ElevatorDataProvider.GetContextTransaction())
                 {
-                    returnValue = this.IsSourceOk(mission, messageData, commandMessage.RequestingBay, showErrors);
-                }
+                    returnValue = this.IsMachineOk(messageData, showErrors);
 
-                if (returnValue)
-                {
-                    returnValue = this.IsDestinationOk(mission, messageData, commandMessage.RequestingBay, showErrors);
-                }
+                    if (returnValue)
+                    {
+                        returnValue = this.IsSourceOk(mission, messageData, commandMessage.RequestingBay, showErrors);
+                    }
 
-                if (returnValue)
-                {
-                    returnValue = this.IsElevatorOk(mission, showErrors);
+                    if (returnValue)
+                    {
+                        returnValue = this.IsDestinationOk(mission, messageData, commandMessage.RequestingBay, showErrors);
+                    }
+
+                    if (returnValue)
+                    {
+                        returnValue = this.IsElevatorOk(mission, showErrors);
+                    }
+
+                    if(returnValue)
+                    {
+                        transaction.Commit();
+                    }
                 }
             }
             else
@@ -202,15 +210,26 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 this.ErrorsProvider.RecordNew(MachineErrorCode.WarehouseIsFull, this.Mission.TargetBay);
                                 throw new StateMachineException(ErrorDescriptions.WarehouseIsFull, this.Mission.TargetBay, MessageActor.MachineManager);
                             }
+                            else
+                            {
+                                this.Logger.LogInformation(ErrorDescriptions.WarehouseIsFull);
+                            }
                             return false;
                         }
                         returnValue = true;
                         mission.LoadUnitDestination = LoadingUnitLocation.Cell;
                     }
 
-                    if (!returnValue && showErrors)
+                    if (!returnValue)
                     {
-                        this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationCell, this.Mission.TargetBay);
+                        if (showErrors)
+                        {
+                            this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationCell, this.Mission.TargetBay);
+                        }
+                        else
+                        {
+                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationCell);
+                        }
                     }
 
                     break;
@@ -248,6 +267,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                             else
                             {
+                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitUndefinedUpper);
                                 return false;
                             }
                         }
@@ -261,6 +281,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                             else
                             {
+                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitUndefinedBottom);
                                 return false;
                             }
                         }
@@ -316,6 +337,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
+                        this.Logger.LogInformation(ErrorDescriptions.LoadUnitSourceElevator);
                         return false;
                     }
                 }
@@ -330,6 +352,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                         else
                         {
+                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitPresentOnEmptyElevator);
                             return false;
                         }
                     }
@@ -347,6 +370,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
+                        this.Logger.LogInformation(ErrorDescriptions.LoadUnitElevator);
                         return false;
                     }
                 }
@@ -361,6 +385,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                         else
                         {
+                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitPresentOnEmptyElevator);
                             return false;
                         }
                     }
@@ -416,6 +441,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
+                    this.Logger.LogInformation(ErrorDescriptions.AnotherMissionIsActiveForThisBay);
                     return false;
                 }
             }
@@ -458,6 +484,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         if (showErrors)
                         {
                             this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceCell, requestingBay);
+                        }
+                        else
+                        {
+                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitSourceCell);
                         }
                         return false;
                     }
@@ -511,11 +541,19 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             {
                                 this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotLoaded, requestingBay);
                             }
+                            else
+                            {
+                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitNotLoaded);
+                            }
                         }
                     }
                     else if (showErrors)
                     {
                         this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotFound, requestingBay);
+                    }
+                    else
+                    {
+                        this.Logger.LogInformation(ErrorDescriptions.LoadUnitNotFound);
                     }
                     if (unitToMove == null)
                     {
@@ -540,6 +578,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             {
                                 this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitOtherBay, requestingBay);
                             }
+                            else
+                            {
+                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitOtherBay);
+                            }
                         }
                     }
                     else
@@ -554,6 +596,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         {
                             this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotFound, requestingBay);
                         }
+                        else
+                        {
+                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitNotFound);
+                        }
                     }
                     else if (unitToMove.CellId.HasValue)
                     {
@@ -561,6 +607,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         if (showErrors)
                         {
                             this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitPresentInCell, requestingBay);
+                        }
+                        else
+                        {
+                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitPresentInCell);
                         }
                     }
 #if CHECK_BAY_SENSOR
@@ -570,6 +620,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         if (showErrors)
                         {
                             this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceBay, requestingBay);
+                        }
+                        else
+                        {
+                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitSourceBay);
                         }
                     }
 #endif
@@ -582,6 +636,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         if (showErrors)
                         {
                             this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, requestingBay);
+                        }
+                        else
+                        {
+                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitShutterOpen);
                         }
                     }
                     if (unitToMove == null)
@@ -603,6 +661,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 if (showErrors)
                 {
                     this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceDb, requestingBay);
+                }
+                else
+                {
+                    this.Logger.LogInformation(ErrorDescriptions.LoadUnitSourceDb);
                 }
             }
 
