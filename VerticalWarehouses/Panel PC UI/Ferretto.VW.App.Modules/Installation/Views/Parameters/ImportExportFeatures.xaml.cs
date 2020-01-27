@@ -209,41 +209,46 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
                 {
                     output.Machine = null;
                 }
-                else if (!this.IncludeCellPanels)
+                else
                 {
-                    if (output.Machine != null)
+                    if (!this.IncludeCellPanels)
                     {
-                        output.Machine.Panels = null;
-                    }
-                }
-                else // if (!this.IncludeParameters)
-                {
-                    var machine = new Machine
-                    {
-                        // preserve panels
-                        Panels = output.Machine.Panels,
-                        SerialNumber = output.Machine.SerialNumber,
-                    };
-
-                    output.Machine = machine;
-
-                    var jobject = Newtonsoft.Json.Linq.JObject.FromObject(output);
-                    var machineProp = typeof(VertimagConfiguration).GetProperty(nameof(VertimagConfiguration.Machine));
-                    string machinePropJsonName = machineProp.JsonPropertyName();
-
-                    // preserve value-type stuff
-                    // by removing unwanted properties...
-                    foreach (var prop in typeof(Machine).GetProperties())
-                    {
-                        if (prop.PropertyType.IsValueType)
+                        if (output.Machine != null)
                         {
-                            string name = prop.JsonPropertyName();
-                            var token = (Newtonsoft.Json.Linq.JObject)jobject[machinePropJsonName];
-                            token.Remove(name);
+                            output.Machine.Panels = null;
                         }
                     }
 
-                    outputObject = jobject.ToObject<object>();
+                    // remove parameters?
+                    if (!this.IncludeParameters)
+                    {
+                        var machine = new Machine
+                        {
+                            // preserve panels
+                            Panels = output.Machine.Panels,
+                            SerialNumber = output.Machine.SerialNumber,
+                        };
+
+                        output.Machine = machine;
+
+                        var jobject = Newtonsoft.Json.Linq.JObject.FromObject(output);
+                        var machineProp = typeof(VertimagConfiguration).GetProperty(nameof(VertimagConfiguration.Machine));
+                        string machinePropJsonName = machineProp.JsonPropertyName();
+
+                        // preserve value-type stuff
+                        // by removing unwanted properties...
+                        foreach (var prop in typeof(Machine).GetProperties())
+                        {
+                            if (prop.PropertyType.IsValueType)
+                            {
+                                string name = prop.JsonPropertyName();
+                                var token = (Newtonsoft.Json.Linq.JObject)jobject[machinePropJsonName];
+                                token.Remove(name);
+                            }
+                        }
+
+                        outputObject = jobject.ToObject<object>();
+                    }
 
                 }
             }
