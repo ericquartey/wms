@@ -12,25 +12,15 @@
 
     <UserControl.Resources>
 
-        <Style x:Key="BorderTimeLineCirleTextBlock"
-           TargetType="{x:Type TextBlock}">
-            <Setter Property="Margin" Value="-1,-1,0,0" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="FontSize" Value="{StaticResource FontSize_High}" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="Foreground" Value="{StaticResource FerrettoLightGray}" />
-        </Style>
-
         <Style x:Key="OperationIndicatorStyle" BasedOn="{StaticResource BorderTimeLinePath}"
                TargetType="{x:Type Path}">
-            <Setter Property="Width" Value="30" />
-            <Setter Property="Height" Value="30" />
+            <Setter Property="Width" Value="26" />
+            <Setter Property="Height" Value="26" />
             <Setter Property="Stretch" Value="Fill" />
             <Setter Property="HorizontalAlignment" Value="Right" />
             <Setter Property="VerticalAlignment" Value="Bottom" />
             <Setter Property="StrokeThickness" Value="2" />
-            <Setter Property="StrokeThickness" Value="0" />
+            <Setter Property="StrokeThickness" Value="2" />
             <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
             <Setter Property="RenderTransform">
                 <Setter.Value>
@@ -45,23 +35,23 @@
         </Style>
 
         <Style x:Key="AdjustIndicatorStyle" BasedOn="{StaticResource OperationIndicatorStyle}"  TargetType="{x:Type Path}">
-            <Setter Property="Margin" Value="0 0 370 0" />
+            <Setter Property="Margin" Value="0 -2 550 2" />
         </Style>
 
         <Style x:Key="PickIndicatorStyle" BasedOn="{StaticResource OperationIndicatorStyle}"  TargetType="{x:Type Path}">
-            <Setter Property="Margin" Value="0 0 280 0" />
+            <Setter Property="Margin" Value="0 -2 380 2" />
         </Style>
 
         <Style x:Key="PutIndicatorStyle" BasedOn="{StaticResource OperationIndicatorStyle}"  TargetType="{x:Type Path}">
-            <Setter Property="Margin" Value="0 0 180 0" />
+            <Setter Property="Margin" Value="0 -2 200 2" />
         </Style>
 
     </UserControl.Resources>
 
-    <Grid Visibility="{Binding IsOperationVisible, Converter={StaticResource BTVC}}">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
 
         <Border Background="{StaticResource PpcBackground}"
@@ -72,34 +62,42 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition/>
-                    <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="15"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock
-                    Grid.ColumnSpan="2"
-                    Text="{Binding SelectedItemCompartment.ItemDescription}"/>
+                <controls:PpcLabeledText
+                                     Grid.Column="2"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding SelectedItemCompartment.ItemDescription}"
+                                     LabelText="{x:Static res:OperatorApp.CommonItemDescription}" />
 
                 <ctrls:PpcImage 
-                   Grid.Row="1"
+                   Grid.Row="0"
                    Grid.RowSpan="2"
                    Grid.Column="0"
+                   Margin="5"
                    Width="180"
                    Height="180"                   
                    HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
+                   VerticalAlignment="Center"
                    Path="{Binding SelectedItemCompartment.ItemId}"                   
                    Stretch="UniformToFill" />
+
+
+                <StackPanel Grid.Row="1"
+                            Grid.Column="2"
+                            HorizontalAlignment="Center"
+                            Orientation="Horizontal">
                 
-                <ctrls:PpcSpinEdit Grid.Row="1"                               
-                               Grid.Column="1"
-                               Grid.ColumnSpan="2"
+                <ctrls:PpcSpinEdit                                                                                            
                                Margin="0,0,10,0"
                                HorizontalAlignment="Right"
-                               VerticalAlignment="Top"                                 
+                               VerticalAlignment="Center"                                 
                                Increment="{Binding QuantityIncrement}"
                                Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
                                EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -110,18 +108,18 @@
                                     Grid.Column="1"
                                     Margin="40,0,0,0"
                                     HorizontalAlignment="Right"
-                                    VerticalAlignment="Top"
+                                    VerticalAlignment="Center"
                                     Command="{Binding ConfirmOperationCommand}"
                                     Content="{x:Static res:OperatorApp.Confirm}"
-                                    IsBusy="{Binding IsBusyConfirmingOperation}"
-                                    />
+                                    IsBusy="{Binding IsBusyConfirmingOperation}"/>
+                </StackPanel>
 
             </Grid>
         </Border>
 
         <Grid Grid.Row="1">
             <Path  Style="{StaticResource AdjustIndicatorStyle}"
-                   Visibility="{Binding IsAdjustVisible, Converter={StaticResource BTVC}}">
+                   Visibility="{Binding IsAdjustmentVisible, Converter={StaticResource BTVC}}">
             </Path>
 
             <Path  Style="{StaticResource PickIndicatorStyle}"

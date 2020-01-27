@@ -51,10 +51,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private double loadingUnitWidth;
 
-        private DelegateCommand<string> operationCommand;
-
-        private DelegateCommand recallLoadingUnitCommand;
-
         private TrayControlCompartment selectedCompartment;
 
         private CompartmentDetails selectedItem;
@@ -174,16 +170,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Methods
 
-        public virtual bool CanRecallLoadingUnit()
-        {
-            return
-                !this.IsWaitingForResponse
-                &&
-                this.LoadingUnit != null
-                &&
-                this.MachineModeService.MachineMode is MachineMode.Automatic;
-        }
-
         public void ChangeSelectedItem(bool isUp)
         {
             if (this.items is null)
@@ -245,8 +231,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 }
 
                 this.RaiseCanExecuteChanged();
-                this.RaisePropertyChanged();
-                this.recallLoadingUnitCommand?.RaiseCanExecuteChanged();
+                this.RaisePropertyChanged();                
             }
         }
 
@@ -289,8 +274,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.itemCompartmentUpCommand.RaiseCanExecuteChanged();
             this.itemDownCommand.RaiseCanExecuteChanged();
             this.itemUpCommand.RaiseCanExecuteChanged();
-            this.operationCommand.RaiseCanExecuteChanged();
-            this.recallLoadingUnitCommand.RaiseCanExecuteChanged();
 
             base.RaiseCanExecuteChanged();
         }

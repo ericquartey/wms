@@ -152,8 +152,20 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Methods
 
+        public virtual bool CanRecallLoadingUnit()
+        {
+            return
+                !this.IsWaitingForResponse
+                &&
+                this.LoadingUnit != null
+                &&
+                this.MachineModeService.MachineMode is MachineMode.Automatic;
+        }
+
         public async override Task OnAppearedAsync()
         {
+            this.ResetOperations();
+
             await base.OnAppearedAsync();
         }
 
@@ -188,6 +200,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
+
+            this.operationCommand.RaiseCanExecuteChanged();
+            this.confirmOperationCommand.RaiseCanExecuteChanged();
+            this.recallLoadingUnitCommand.RaiseCanExecuteChanged();
         }
 
         private bool CanConfirmOperation()
@@ -217,7 +233,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private async Task SetTypeOperationAsync(string param)
         {
+            this.ResetOperations();
             this.IsOperationVisible = true;
+
             if (param == OperatorApp.Pick)
             {
                 this.IsPickVisible = true;
@@ -240,6 +258,16 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.InputQuantity = this.SelectedItemCompartment.Stock;
 
             this.RaisePropertyChanged();
+            this.RaiseCanExecuteChanged();
+        }
+
+
+        private void ResetOperations()
+        {
+            this.IsOperationVisible = false;
+            this.IsPickVisible = false;
+            this.IsPutVisible = false;
+            this.IsAdjustmentVisible = false;
         }
 
         #endregion

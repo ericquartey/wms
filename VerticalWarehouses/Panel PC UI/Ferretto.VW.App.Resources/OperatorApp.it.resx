@@ -1175,7 +1175,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
     <value>Quantità da rettificare  [{0}]</value>
   </data>
   <data name="PutQuantity" xml:space="preserve">
-    <value>Quantità versata [{0}]</value>
+    <value>Quantità da versare [{0}]</value>
   </data>
   <data name="PickingQuantity" xml:space="preserve">
     <value>Quantità da prelevare [{0}]</value>
