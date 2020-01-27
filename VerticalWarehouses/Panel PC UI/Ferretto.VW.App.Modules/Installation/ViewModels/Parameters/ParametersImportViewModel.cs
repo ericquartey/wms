@@ -28,7 +28,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private IEnumerable<FileInfo> configurationFiles = Array.Empty<FileInfo>();
 
-        private VertimagConfiguration importingConfiguration = null;
+        private object importingConfiguration = null;
 
         private bool isBusy = false;
 
@@ -58,10 +58,23 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         /// <summary>
         /// Gets or sets the configuration ready to be imported, if any.
         /// </summary>
-        public VertimagConfiguration ImportingConfiguration
+        public object ImportingConfiguration
         {
             get => this.importingConfiguration;
-            set => this.SetProperty(ref this.importingConfiguration, value);
+            set
+            {
+                if (this.SetProperty(ref this.importingConfiguration, value))
+                {
+                    if (this.importingConfiguration != null)
+                    {
+                        this.ShowNotification(string.Format(Resources.InstallationApp.RestorePossibleFromFile, this.selectedFile.Name));
+                    }
+                    else if (this.selectedConfiguration != null)
+                    {
+                        this.ShowNotification(string.Format(Resources.InstallationApp.RestoreNotPossibleFromFile, this.selectedFile.Name), Services.Models.NotificationSeverity.Warning);
+                    }
+                }
+            }
         }
 
         public bool IsBusy
@@ -123,6 +136,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             this._usbWatcher.DrivesChange += this.UsbWatcher_DrivesChange;
             this._usbWatcher.Start();
+            this.FindConfigurationFiles();
 
             return base.OnAppearedAsync();
         }
@@ -148,7 +162,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 try
                 {
-                    config = VertimagConfiguration.FromJson(File.ReadAllText(file.FullName));
+                    // merge with an empty configuration (to avoid JsonPropertyAttribute idiosyncrasy)
+                    var json = File.ReadAllText(file.FullName);
+                    var source = new VertimagConfiguration
+                    {
+                        Machine = new Machine(),
+                    }.ExtendWith(JObject.Parse(json));
+                    config = VertimagConfiguration.FromJson(source.ToString());
                 }
                 catch (Exception exc)
                 {
@@ -165,31 +185,39 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             try
             {
+                this.IsBusy = true;
+
                 // fetch the very last version
                 var source = await this._machineConfigurationWebService.GetAsync();
 
                 // merge and save
-                JObject result = JObject.Parse(source.ToJson());
-                result.Merge(JObject.Parse(this.ImportingConfiguration.ToJson()), new JsonMergeSettings
-                {
-                    MergeNullValueHandling = MergeNullValueHandling.Ignore,
-                    MergeArrayHandling = MergeArrayHandling.Replace,
-                    PropertyNameComparison = StringComparison.Ordinal,
-                });
+                var result = source.ExtendWith(this.ImportingConfiguration);
                 var target = VertimagConfiguration.FromJson(result.ToString());
 
                 await this._machineConfigurationWebService.SetAsync(target);
+
+                this.SelectedFile = null;
+                this.ShowNotification(Resources.InstallationApp.RestoreSuccessful, Services.Models.NotificationSeverity.Success);
             }
             catch (Exception exc)
             {
                 this.ShowNotification(exc);
             }
+            finally
+            {
+                this.IsBusy = false;
+            }
         }
 
         private void UsbWatcher_DrivesChange(object sender, DrivesChangeEventArgs e)
         {
+            this.FindConfigurationFiles();
+        }
+
+        private void FindConfigurationFiles()
+        {
             this.IsBusy = true;
-            UsbWatcherService usb = (UsbWatcherService)sender;
+            UsbWatcherService usb = this._usbWatcher;
             var configurationFiles = this.configurationFiles = usb.Drives.FindConfigurationFiles();
             this.RaisePropertyChanged(nameof(this.ConfigurationFiles));
             if (!configurationFiles.Any())

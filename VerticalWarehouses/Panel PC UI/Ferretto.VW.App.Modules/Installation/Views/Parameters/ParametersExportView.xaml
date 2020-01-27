@@ -239,7 +239,7 @@
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource DriveToVertimagFilenameConverter}">
                                                     <Binding Path="." />
-                                                    <Binding Path="DataContext.ExportingConfiguration"
+                                                    <Binding Path="DataContext.Data"
                                                          RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=UserControl}" />
                                                     <Binding Path="DataContext.OverwriteTargetFile"
                                                          RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=UserControl}" />

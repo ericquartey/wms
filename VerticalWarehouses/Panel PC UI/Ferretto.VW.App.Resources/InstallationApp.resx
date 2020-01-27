@@ -1467,4 +1467,16 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Device is not available anymore.</value>
     <comment>Warning</comment>
   </data>
+  <data name="RestoreNotPossible" xml:space="preserve">
+    <value>Restore is NOT possible.</value>
+  </data>
+  <data name="RestoreNotPossibleFromFile" xml:space="preserve">
+    <value>Restore is NOT possible from file {0}.</value>
+  </data>
+  <data name="RestorePossible" xml:space="preserve">
+    <value>Restore is possible.</value>
+  </data>
+  <data name="RestorePossibleFromFile" xml:space="preserve">
+    <value>Restore is possible from file {0}.</value>
+  </data>
 </root>

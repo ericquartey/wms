@@ -1398,4 +1398,16 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Unità di archiviazione non più disponibile.</value>
     <comment>Warning</comment>
   </data>
+  <data name="RestoreNotPossible" xml:space="preserve">
+    <value>Importazione NON possibile.</value>
+  </data>
+  <data name="RestoreNotPossibleFromFile" xml:space="preserve">
+    <value>Importazione NON possibile dal file "{0}".</value>
+  </data>
+  <data name="RestorePossible" xml:space="preserve">
+    <value>Importazione possibile.</value>
+  </data>
+  <data name="RestorePossibleFromFile" xml:space="preserve">
+    <value>Importazione possibile dal file "{0}".</value>
+  </data>
 </root>

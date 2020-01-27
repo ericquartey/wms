@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
+using System.Reflection;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Modules.Installation.Controls
@@ -38,7 +38,7 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
             = DependencyProperty.Register(nameof(Input), typeof(VertimagConfiguration), typeof(ImportExportFeatures), new PropertyMetadata(OnInputPropertyChanged));
 
         public static readonly DependencyProperty OutputProperty
-            = DependencyProperty.Register(nameof(Output), typeof(VertimagConfiguration), typeof(ImportExportFeatures));
+            = DependencyProperty.Register(nameof(Output), typeof(object), typeof(ImportExportFeatures));
 
         private static readonly DependencyProperty IncludeCellPanelsProperty
             = DependencyProperty.Register(nameof(IncludeCellPanels), typeof(bool), typeof(ImportExportFeatures), new PropertyMetadata(false, OnIncludePropertyChanged));
@@ -125,9 +125,9 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
             set => this.SetValue(InputProperty, value);
         }
 
-        public VertimagConfiguration Output
+        public object Output
         {
-            get => (VertimagConfiguration)this.GetValue(OutputProperty);
+            get => this.GetValue(OutputProperty);
             set => this.SetValue(OutputProperty, value);
         }
 
@@ -188,40 +188,12 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
 
         private void AdjustOutput(VertimagConfiguration configuration)
         {
-            VertimagConfiguration output = null;
-            if (this.IncludeCellPanels || this.IncludeParameters || this.IncludeSetupProcedures || this.IncludeLoadingUnits)
+            object outputObject = null;
+            if (configuration != null && (this.IncludeCellPanels || this.IncludeParameters || this.IncludeSetupProcedures || this.IncludeLoadingUnits))
             {
                 // clone to avoid unwanted references' collisions.
-                output = this.CloneInput(configuration);
-
-                if (!this.IncludeParameters && !this.IncludeCellPanels)
-                {
-                    output.Machine = null;
-                }
-                else if (!this.IncludeCellPanels)
-                {
-                    output.Machine.Panels = null;
-                }
-                else // if (!this.IncludeParameters)
-                {
-                    var machine = new Machine
-                    {
-                        // preserve panels
-                        Panels = output.Machine.Panels,
-                        SerialNumber = output.Machine.SerialNumber,
-                    };
-
-                    // preserve value-type stuff
-                    foreach (var prop in typeof(Machine).GetProperties())
-                    {
-                        if (prop.PropertyType.IsValueType)
-                        {
-                            prop.SetValue(machine, prop.GetValue(output.Machine));
-                        }
-                    }
-
-                    output.Machine = machine;
-                }
+                VertimagConfiguration output = this.CloneInput(configuration);
+                outputObject = output;
 
                 if (!this.IncludeLoadingUnits)
                 {
@@ -232,9 +204,51 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
                 {
                     output.SetupProcedures = null;
                 }
+
+                if (!this.IncludeParameters && !this.IncludeCellPanels)
+                {
+                    output.Machine = null;
+                }
+                else if (!this.IncludeCellPanels)
+                {
+                    if (output.Machine != null)
+                    {
+                        output.Machine.Panels = null;
+                    }
+                }
+                else // if (!this.IncludeParameters)
+                {
+                    var machine = new Machine
+                    {
+                        // preserve panels
+                        Panels = output.Machine.Panels,
+                        SerialNumber = output.Machine.SerialNumber,
+                    };
+
+                    output.Machine = machine;
+
+                    var jobject = Newtonsoft.Json.Linq.JObject.FromObject(output);
+                    var machineProp = typeof(VertimagConfiguration).GetProperty(nameof(VertimagConfiguration.Machine));
+                    string machinePropJsonName = machineProp.JsonPropertyName();
+
+                    // preserve value-type stuff
+                    // by removing unwanted properties...
+                    foreach (var prop in typeof(Machine).GetProperties())
+                    {
+                        if (prop.PropertyType.IsValueType)
+                        {
+                            string name = prop.JsonPropertyName();
+                            var token = (Newtonsoft.Json.Linq.JObject)jobject[machinePropJsonName];
+                            token.Remove(name);
+                        }
+                    }
+
+                    outputObject = jobject.ToObject<object>();
+
+                }
             }
 
-            this.Output = output;
+            this.Output = outputObject;
         }
 
         private void OnInputChanged(VertimagConfiguration _, VertimagConfiguration configuration)
