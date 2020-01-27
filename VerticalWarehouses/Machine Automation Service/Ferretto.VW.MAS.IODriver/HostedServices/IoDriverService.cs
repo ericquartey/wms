@@ -59,6 +59,13 @@ namespace Ferretto.VW.MAS.IODriver
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
             this.env = env ?? throw new ArgumentNullException(nameof(env));
+
+            //using (var scope = this.ServiceScopeFactory.CreateScope())
+            //{
+            //    this.baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+            //    this.digitalDevicesDataProvider = scope.ServiceProvider.GetRequiredService<IDigitalDevicesDataProvider>();
+            //    this.errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+            //}
         }
 
         #endregion
@@ -165,31 +172,41 @@ namespace Ferretto.VW.MAS.IODriver
             var useMockedTransport = this.configuration.GetValue<bool>("Vertimag:RemoteIODriver:UseMock");
             var readTimeoutMilliseconds = this.configuration.GetValue("Vertimag:RemoteIODriver:ReadTimeoutMilliseconds", -1);
 
-            var ioDevices = this.digitalDevicesDataProvider.GetAllIoDevices();
+            //using (var scope = this.ServiceScopeFactory.CreateScope())
+            //{
+            //    var bayDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+            //    var digitalDevicesDataProvider = scope.ServiceProvider.GetRequiredService<IDigitalDevicesDataProvider>();
+            //    var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
 
-            var mainIoDevice = ioDevices.SingleOrDefault(d => d.Index == DataModels.IoIndex.IoDevice1);
+                //var ioDevices = digitalDevicesDataProvider.GetAllIoDevices();
+                var ioDevices = this.digitalDevicesDataProvider.GetAllIoDevices();
 
-            foreach (var ioDevice in ioDevices)
-            {
-                var transport = useMockedTransport
-                    ? (IIoTransport)new IoTransportMock()
-                    : new IoTransport(readTimeoutMilliseconds);
+                var mainIoDevice = ioDevices.SingleOrDefault(d => d.Index == DataModels.IoIndex.IoDevice1);
 
-                this.ioDevices.Add(
-                    ioDevice.Index,
-                    new IoDevice(
-                        this.EventAggregator,
-                        this.ioDeviceService,
-                        this.errorsProvider,
-                        transport,
-                        ioDevice.IpAddress,
-                        ioDevice.TcpPort,
+                foreach (var ioDevice in ioDevices)
+                {
+                    var transport = useMockedTransport
+                        ? (IIoTransport)new IoTransportMock()
+                        : new IoTransport(readTimeoutMilliseconds);
+
+                    this.ioDevices.Add(
                         ioDevice.Index,
-                        this.baysDataProvider.GetByIoIndex(ioDevice.Index),
-                        this.Logger,
-                        this.CancellationToken,
-                        this.env));
-            }
+                        new IoDevice(
+                            this.EventAggregator,
+                            this.ioDeviceService,
+                            this.errorsProvider,
+                            //errorsProvider,
+                            transport,
+                            ioDevice.IpAddress,
+                            ioDevice.TcpPort,
+                            ioDevice.Index,
+                            this.baysDataProvider.GetByIoIndex(ioDevice.Index),
+                            //bayDataProvider.GetByIoIndex(ioDevice.Index),
+                            this.Logger,
+                            this.CancellationToken,
+                            this.env));
+                }
+            //}
         }
 
         private async Task StartHardwareCommunicationsAsync()
