@@ -13,7 +13,19 @@ namespace Ferretto.VW.App
     {
         #region Fields
 
-        private static readonly JsonConverter[] jsonConverters = new JsonConverter[] { new CommonUtils.Converters.IPAddressConverter() };
+        private static readonly JsonSerializerSettings jsonSettings;
+
+        #endregion
+
+        #region Constructors
+
+        static ParametersModelExtensions()
+        {
+            jsonSettings = new JsonSerializerSettings();
+            jsonSettings.ContractResolver = new CommonUtils.ContractResolver.FirstLetterPropertyNameResolver();
+            jsonSettings.Converters.Add(new CommonUtils.Converters.IPAddressConverter());
+            jsonSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+        }
 
         #endregion
 
@@ -21,7 +33,7 @@ namespace Ferretto.VW.App
 
         public static T DeepClone<T>(this T input)
                     where T : class
-                    => JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(input ?? throw new ArgumentNullException(nameof(input)), jsonConverters), jsonConverters);
+                    => JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(input ?? throw new ArgumentNullException(nameof(input)), jsonSettings), jsonSettings);
 
         /// <summary>
         /// Returns whether a <paramref name="configuration"/> includes the machine parameters.
@@ -45,7 +57,7 @@ namespace Ferretto.VW.App
         public static T ParseJson<T>(this FileInfo file)
             => JsonConvert.DeserializeObject<T>(
                 File.ReadAllText(file?.FullName ?? throw new ArgumentNullException(nameof(file))),
-                jsonConverters);
+                jsonSettings);
 
         #endregion
     }

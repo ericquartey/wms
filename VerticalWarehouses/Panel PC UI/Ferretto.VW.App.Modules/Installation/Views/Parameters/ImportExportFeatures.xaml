@@ -9,13 +9,15 @@
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
+
     </UserControl.Resources>
+
     <StackPanel Orientation="Horizontal" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=self:ImportExportFeatures}}">
 
-        <CheckBox IsEnabled="{Binding HasParameters}" IsChecked="{Binding IncludeParameters, Mode=TwoWay}" Content="Parametri" />
-        <CheckBox IsEnabled="{Binding HasLoadingUnits}" IsChecked="{Binding IncludeLoadingUnits, Mode=TwoWay}" Content="Cassetti" />
-        <CheckBox IsEnabled="{Binding HasCellPanels}" IsChecked="{Binding IncludeCellPanels, Mode=TwoWay}" Content="Pannelli" />
-        <CheckBox IsEnabled="{Binding HasSetupProcedures}" IsChecked="{Binding IncludeSetupProcedures, Mode=TwoWay}" Content="Dati collaudo" />
+        <CheckBox IsEnabled="{Binding HasParameters}" IsChecked="{Binding IncludeParameters, Mode=TwoWay}" Content="Parametri" Style="{StaticResource PpcCheckBoxStyle}" />
+        <CheckBox IsEnabled="{Binding HasLoadingUnits}" IsChecked="{Binding IncludeLoadingUnits, Mode=TwoWay}" Content="Cassetti" Style="{StaticResource PpcCheckBoxStyle}" />
+        <CheckBox IsEnabled="{Binding HasCellPanels}" IsChecked="{Binding IncludeCellPanels, Mode=TwoWay}" Content="Pannelli" Style="{StaticResource PpcCheckBoxStyle}" />
+        <CheckBox IsEnabled="{Binding HasSetupProcedures}" IsChecked="{Binding IncludeSetupProcedures, Mode=TwoWay}" Content="Dati collaudo" Style="{StaticResource PpcCheckBoxStyle}" />
 
     </StackPanel>
 </UserControl>

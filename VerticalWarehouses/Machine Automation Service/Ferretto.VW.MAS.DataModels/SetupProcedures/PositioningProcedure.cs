@@ -23,10 +23,10 @@
             get => this.step;
             set
             {
-                if (value <= 0)
-                {
-                    throw new System.ArgumentOutOfRangeException(nameof(value));
-                }
+                //if (value <= 0)
+                //{
+                //    throw new System.ArgumentOutOfRangeException(nameof(value));
+                //}
 
                 this.step = value;
             }
