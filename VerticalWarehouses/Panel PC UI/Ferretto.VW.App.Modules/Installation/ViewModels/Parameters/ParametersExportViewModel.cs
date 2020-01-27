@@ -23,8 +23,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
     {
         #region Fields
 
-        private const string CONFIGURATION_FILENAME = "vertimag-configuration.{0}-{1}{2}.json";
-
         private readonly IMachineConfigurationWebService machineConfigurationWebService;
 
         private readonly UsbWatcherService usbWatcherService;
@@ -165,15 +163,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 this.RaisePropertyChanged();
 
                 // fetch latest version
-                var configuration = this.ExportingConfiguration;
+                var configuration = await this.machineConfigurationWebService.GetAsync();
 
                 string json = configuration.ToJson();
-                string fullPath = this.GetFullPath(this.SelectedDrive, configuration.Machine.SerialNumber);
-                int tick = 0;
-                while (!this.OverwriteTargetFile && File.Exists(fullPath))
-                {
-                    fullPath = this.GetFullPath(this.SelectedDrive, configuration.Machine.SerialNumber, string.Concat("(", ++tick, ")"));
-                }
+                string fullPath = configuration.Filename(this.SelectedDrive, !this.OverwriteTargetFile);
 
                 File.WriteAllText(fullPath, json);
                 this.ShowNotification(Resources.InstallationApp.ExportSuccessful, Services.Models.NotificationSeverity.Success);
@@ -193,14 +186,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
-        private string GetFullPath(DriveInfo drive, string serial, string tick = default)
-        {
-            string name = Regex.Replace(serial, @"[^\w\.-]", string.Empty);
-            return System.IO.Path.Combine(
-                  (drive ?? throw new ArgumentNullException(nameof(drive))).RootDirectory.FullName,
-                  string.Format(CONFIGURATION_FILENAME, name, AssemblyInfo.Version, tick));
-        }
-
         private void OnSelectedDriveChanged(DriveInfo old, DriveInfo value)
         {
             bool hasConflict = false;
@@ -209,7 +194,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 try
                 {
                     var vertimag = this.Data as VertimagConfiguration;
-                    string fullPath = this.GetFullPath(value, vertimag.Machine.SerialNumber);
+                    string fullPath = vertimag.Filename(value, false);// this.GetFullPath(value, vertimag.Machine.SerialNumber);
                     hasConflict = File.Exists(fullPath);
                 }
                 catch (Exception exc)
@@ -217,12 +202,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     this.ShowNotification(exc);
                 }
             }
-            this.hasNameConflict = hasConflict;
+            this.hasNameConflict = this.overwrite = hasConflict;
             this.RaisePropertyChanged(nameof(this.HasFilenameConflict));
-            if (!hasConflict && this.overwrite)
-            {
-                this.OverwriteTargetFile = false;
-            }
+            this.RaisePropertyChanged(nameof(this.OverwriteTargetFile));
             this.exportCommand?.RaiseCanExecuteChanged();
         }
 

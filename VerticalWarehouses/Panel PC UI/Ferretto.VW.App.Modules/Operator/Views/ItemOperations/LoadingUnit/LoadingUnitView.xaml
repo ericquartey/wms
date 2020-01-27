@@ -35,9 +35,10 @@
 
             <controls:PpcButton                                 
                                     HorizontalAlignment="Right"
-                                    VerticalAlignment="Top"
+                                    VerticalAlignment="Top"                                    
                                     Command="{Binding OperationCommand}"
                                     CommandParameter="{x:Static res:OperatorApp.Adjustment}"
+                                    IsActive="{Binding IsAdjustmentVisible}"
                                     Content="{x:Static res:OperatorApp.Adjustment}"
                                     IsBusy="{Binding IsBusyConfirmingOperation}" />
 
@@ -48,6 +49,7 @@
                                     VerticalAlignment="Top"
                                     Command="{Binding OperationCommand}"
                                     CommandParameter="{x:Static res:OperatorApp.Pick}"
+                                    IsActive="{Binding IsPickVisible}"
                                     Content="{x:Static res:OperatorApp.Pick}"
                                     IsBusy="{Binding IsBusyConfirmingOperation}" />
             <controls:PpcButton
@@ -56,6 +58,7 @@
                                     VerticalAlignment="Top"
                                     Command="{Binding OperationCommand}"
                                     CommandParameter="{x:Static res:OperatorApp.Put}"
+                                    IsActive="{Binding IsPutVisible}"
                                     Content="{x:Static res:OperatorApp.Put}"
                                     IsBusy="{Binding IsBusyConfirmingOperation}" />
 
