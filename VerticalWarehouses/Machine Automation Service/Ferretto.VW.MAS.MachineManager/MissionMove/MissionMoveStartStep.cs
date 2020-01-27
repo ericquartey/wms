@@ -107,6 +107,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         this.Mission.CloseShutterBayNumber = bay;
                     }
                 }
+                else if (this.Mission.RestoreConditions
+                    && targetBayPositionId != null)
+                {
+                    var bay = this.BaysDataProvider.GetByBayPositionId(targetBayPositionId.Value);
+                    this.Mission.CloseShutterBayNumber = bay.Number;
+                }
 
                 if (this.Mission.NeedHomingAxis == Axis.Horizontal)
                 {

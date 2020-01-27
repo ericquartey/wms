@@ -18,6 +18,8 @@ namespace Ferretto.VW.App.Services
 
         private const string OverrideSetupStatusKey = "OverrideSetupStatus";
 
+        private const string UseOldTrueTableForShutterKey = "Workaround:UseOldTrueTableForShutter";
+
         private const string WmsServiceEnabledDefaultValue = "False";
 
         private const string WmsServiceEnabledEnvKey = "WMS_ENABLED";
@@ -107,6 +109,17 @@ namespace Ferretto.VW.App.Services
 
             var valueString = appSettings.Get(LogoutWhenUnhealthyKey);
             return bool.Parse(valueString);
+        }
+
+        public static bool UseOldTrueTableForShutter(this NameValueCollection appSettings)
+        {
+            if (appSettings is null)
+            {
+                throw new ArgumentNullException(nameof(appSettings));
+            }
+
+            var useOldTrueTableForShutterString = appSettings.Get(UseOldTrueTableForShutterKey);
+            return bool.Parse(useOldTrueTableForShutterString);
         }
 
         #endregion

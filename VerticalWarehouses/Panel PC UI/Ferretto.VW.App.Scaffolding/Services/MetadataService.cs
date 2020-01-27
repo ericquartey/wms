@@ -78,6 +78,15 @@ namespace Ferretto.VW.App.Scaffolding.Services
                 return GetDisplayName(member);
             }
 
+            private static string GetCategoryDescription(MemberInfo member)
+            {
+                if (member.TryGetCustomAttribute<CategoryDescriptionAttribute>(out var description))
+                {
+                    return description.Description();
+                }
+                return string.Empty;
+            }
+
             /// <summary>
             /// Overload method for ARRAYS.
             /// </summary>
@@ -202,6 +211,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                                 }
 
                                 string categoryName = GetCategoryName(elementType, format, item, this._culture, categoryParameters.ToArray());
+                                string categoryDescription = GetCategoryDescription(elementType);
                                 var newBranch = target.Children.FirstOrDefault(b => b.Category == categoryName);
                                 if (newBranch != null)
                                 {
@@ -210,7 +220,8 @@ namespace Ferretto.VW.App.Scaffolding.Services
                                 newBranch = new ScaffoldedStructureInternal
                                 {
                                     Category = categoryName,
-                                    Parent = target
+                                    Parent = target,
+                                    Description= categoryDescription
                                 };
                                 target.Children.Add(newBranch);
                                 this.ScaffoldTypeInternal(elementType, item, newBranch, root);
@@ -227,13 +238,15 @@ namespace Ferretto.VW.App.Scaffolding.Services
                         if (hasCategory)
                         {
                             string categoryName = GetCategoryName(prop, instance, this._culture);
+                            string categoryDescription = GetCategoryDescription(prop);
                             var tget = target.Children.FirstOrDefault(c => c.Category == categoryName);
                             if (tget == null)
                             {
                                 tget = new ScaffoldedStructureInternal
                                 {
                                     Category = categoryName,
-                                    Parent = target
+                                    Parent = target,
+                                    Description = categoryDescription
                                 };
                                 target.Children.Add(tget);
                             }
@@ -281,7 +294,10 @@ namespace Ferretto.VW.App.Scaffolding.Services
                 tree.Children
                 .Select(c => c.Publish())
                 .Where(c => c.Entities.Any() || c.Children.Any())
-                );
+                )
+            {
+                Description = tree.Description
+            };
         }
 
         #endregion PRIVATE
@@ -306,6 +322,8 @@ namespace Ferretto.VW.App.Scaffolding.Services
     internal class ScaffoldedStructureInternal
     {
         public string Category { get; set; }
+
+        public string Description { get; set; }
 
         public ScaffoldedStructureInternal Parent { get; set; }
 

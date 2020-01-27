@@ -17,6 +17,7 @@
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Dark/DarkCustomControlDataGrid.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Dark/DarkPpcBadge.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Shared.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Dark/DarkCheckBoxStyle.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

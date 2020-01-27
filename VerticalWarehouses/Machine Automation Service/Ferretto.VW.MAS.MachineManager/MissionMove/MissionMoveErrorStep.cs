@@ -131,13 +131,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
 
                 case MissionStep.Start:
-                    this.Mission.RestoreConditions = false;
-                    this.Mission.NeedMovingBackward = false;
-                    this.Mission.StopReason = StopRequestReason.NoReason;
-                    {
-                        var newStep = new MissionMoveStartStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                        newStep.OnEnter(null);
-                    }
+                    this.RestoreStartStep();
                     break;
 
                 case MissionStep.WaitPick:
@@ -193,7 +187,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Mission.RestoreStep = MissionStep.NotDefined;
                 this.Mission.RestoreConditions = false;
                 this.Mission.NeedMovingBackward = false;
-                if (this.Mission.WmsId.HasValue)
+                if (this.Mission.MissionType == MissionType.OUT
+                    || this.Mission.MissionType == MissionType.WMS
+                    )
                 {
                     var newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     newStep.OnEnter(null);
@@ -278,11 +274,40 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 newStep = new MissionMoveCloseShutterStep(this.Mission, this.ServiceProvider, this.EventAggregator);
             }
+            else if (this.Mission.RestoreStep == MissionStep.Start)
+            {
+                newStep = new MissionMoveStartStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+            }
             else
             {
                 newStep = new MissionMoveToTargetStep(this.Mission, this.ServiceProvider, this.EventAggregator);
             }
             newStep.OnEnter(null);
+        }
+
+        private void RestoreStartStep()
+        {
+            this.Mission.NeedMovingBackward = false;
+            this.Mission.StopReason = StopRequestReason.NoReason;
+            var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(this.Mission.TargetBay);
+            var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
+            if (shutterPosition != ShutterPosition.Opened
+                && shutterPosition != ShutterPosition.Closed)
+            {
+                this.Mission.RestoreConditions = true;
+                this.Mission.OpenShutterPosition = ShutterPosition.Opened;
+                this.Logger.LogDebug($"{this.GetType().Name}: Manual Shutter positioning start");
+                this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.Mission.OpenShutterPosition, this.Mission.TargetBay, true);
+                this.Mission.ErrorMovements = MissionErrorMovements.MoveShutterOpen;
+                this.MissionsDataProvider.Update(this.Mission);
+            }
+            else
+            {
+                this.Mission.RestoreConditions = true;
+                this.Mission.RestoreStep = MissionStep.NotDefined;
+                var newStep = new MissionMoveStartStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                newStep.OnEnter(null);
+            }
         }
 
         #endregion
