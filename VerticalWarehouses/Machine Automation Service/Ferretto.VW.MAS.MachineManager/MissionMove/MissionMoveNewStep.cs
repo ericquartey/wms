@@ -172,6 +172,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         transaction.Commit();
                     }
+                    else
+                    {
+                        transaction.Rollback();
+                    }
                 }
             }
             else

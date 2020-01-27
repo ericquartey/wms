@@ -36,6 +36,7 @@ namespace Ferretto.VW.MAS.MachineManager
                     lock (this.syncObject)
                     {
                         this.OnMoveLoadingUnit(command, serviceProvider);
+                        this.missionsDataProvider.CheckPendingChanges();
                     }
                     break;
 
