@@ -108,7 +108,7 @@ namespace Ferretto.VW.MAS.AutomationService
                     break;
 
                 case MessageType.DataLayerReady:
-                    this.OnDataLayerReady();
+                    this.OnDataLayerReady(serviceProvider);
                     break;
 
                 case MessageType.ChangeRunningState:

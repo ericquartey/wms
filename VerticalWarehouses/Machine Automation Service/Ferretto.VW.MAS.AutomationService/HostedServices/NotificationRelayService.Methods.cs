@@ -60,8 +60,9 @@ namespace Ferretto.VW.MAS.AutomationService
                 {
                     if (data.AxisToCalibrate == Axis.BayChain)
                     {
-                        var bay = this.baysDataProvider.GetByNumber(receivedMessage.RequestingBay);
-                        this.baysDataProvider.UpdateHoming(bay.Number, true);
+                        var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                        var bay = baysDataProvider.GetByNumber(receivedMessage.RequestingBay);
+                        baysDataProvider.UpdateHoming(bay.Number, true);
                     }
                     else if (data.AxisToCalibrate == Axis.HorizontalAndVertical)
                     {
@@ -159,18 +160,19 @@ namespace Ferretto.VW.MAS.AutomationService
             }
         }
 
-        private void OnDataLayerReady()
+        private void OnDataLayerReady(IServiceProvider serviceProvider)
         {
-            var bays = this.baysDataProvider.GetAll().ToList();
+            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+            var bays = baysDataProvider.GetAll().ToList();
             foreach (var bay in bays)
             {
                 if (bay.Carousel != null)
                 {
-                    this.baysDataProvider.UpdateHoming(bay.Number, false);
+                    baysDataProvider.UpdateHoming(bay.Number, false);
                 }
             }
 
-            this.baysDataProvider.AddElevatorPseudoBay();
+            baysDataProvider.AddElevatorPseudoBay();
         }
 
         private async Task OnElevatorPositionChanged(ElevatorPositionMessageData data)
