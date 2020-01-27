@@ -96,24 +96,10 @@ namespace Ferretto.VW.MAS.MissionManager
                 return;
             }
 
-            //var mission = activeMissions.OrderBy(o => o.CreationDate)
-            //        .FirstOrDefault(x => x.Status == MissionStatus.Executing || x.Status == MissionStatus.Waiting);
-            //if (mission is null)
-            //{
-            //    mission = activeMissions.FirstOrDefault(x => x.Status == MissionStatus.New
-            //        && (x.MissionType == MissionType.IN
-            //            || x.MissionType == MissionType.OUT
-            //            || x.MissionType == MissionType.WMS
-            //        ));
-            //    if (mission is null)
-            //    {
-            //        // no more missions are available for scheduling on this bay
-            //        this.NotifyAssignedMissionOperationChanged(bayNumber, null, null);
-            //        return;
-            //    }
-            //}
-
-            var missions = activeMissions.Where(x => x.Status == MissionStatus.New || x.Status == MissionStatus.Executing || x.Status == MissionStatus.Waiting).OrderBy(o => o.CreationDate);
+            var missions = activeMissions.Where(x => x.Status == MissionStatus.New
+                    || x.Status == MissionStatus.Executing
+                    || x.Status == MissionStatus.Waiting)
+                .OrderBy(o => o.Status);
             if(missions is null)
             {
                 // no more missions are available for scheduling on this bay

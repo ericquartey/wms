@@ -148,7 +148,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 try
                 {
-                    config = file.ParseJson<VertimagConfiguration>();
+                    config = VertimagConfiguration.FromJson(File.ReadAllText(file.FullName));
                 }
                 catch (Exception exc)
                 {
@@ -161,26 +161,28 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.saveCommand?.RaiseCanExecuteChanged();
         }
 
-        private Task RestoreAsync()
+        private async Task RestoreAsync()
         {
             try
             {
+                // fetch the very last version
+                var source = await this._machineConfigurationWebService.GetAsync();
+
                 // merge and save
-                JObject result = JObject.FromObject(this.Data);
-                result.Merge(JObject.FromObject(this.ImportingConfiguration), new JsonMergeSettings
+                JObject result = JObject.Parse(source.ToJson());
+                result.Merge(JObject.Parse(this.ImportingConfiguration.ToJson()), new JsonMergeSettings
                 {
                     MergeNullValueHandling = MergeNullValueHandling.Ignore,
                     MergeArrayHandling = MergeArrayHandling.Replace,
                     PropertyNameComparison = StringComparison.Ordinal,
                 });
-                var configuration = result.ToObject<VertimagConfiguration>();
+                var target = VertimagConfiguration.FromJson(result.ToString());
 
-                return this._machineConfigurationWebService.SetAsync(configuration);
+                await this._machineConfigurationWebService.SetAsync(target);
             }
             catch (Exception exc)
             {
                 this.ShowNotification(exc);
-                return Task.CompletedTask;
             }
         }
 
