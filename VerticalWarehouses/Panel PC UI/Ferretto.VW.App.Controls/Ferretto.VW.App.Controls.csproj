@@ -64,6 +64,7 @@
     <None Remove="Styles\CheckBoxStyle.xaml" />
     <None Remove="Styles\ComboBoxStyle.xaml" />
     <None Remove="Styles\PasswordBoxEdit.xaml" />
+    <None Remove="Styles\ScrollViewerStyle.xaml" />
     <None Remove="Styles\TextBlockStyles - Copy.xaml" />
   </ItemGroup>
 

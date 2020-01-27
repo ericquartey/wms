@@ -2,6 +2,7 @@
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:converters2="clr-namespace:Ferretto.VW.App.Scaffolding.Converters;assembly=Ferretto.VW.App.Scaffolding"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
@@ -10,7 +11,6 @@
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:scaffolding="clr-namespace:Ferretto.VW.App.Scaffolding.Controls;assembly=Ferretto.VW.App.Scaffolding"
-            xmlns:converters2="clr-namespace:Ferretto.VW.App.Scaffolding.Converters;assembly=Ferretto.VW.App.Scaffolding"
             d:DesignHeight="450"
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
@@ -22,30 +22,82 @@
             <Setter Property="ctrls:PropertyGridRowControlAttachedProperties.IsEnabled" Value="True" />
         </Style>
     </ctrls:View.Resources>
-
-    <Grid Margin="15,15,15,0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.ColumnSpan="2"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="Modifica configurazione" />
+        <Grid Grid.Column="0"
+              Margin="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-        <scaffolding:Scaffolder Grid.Row="1" x:Name="scaffolder"
-                                HorizontalAlignment="Stretch"
-                                Command="{Binding SaveCommand}"
-                                IsBusy="{Binding IsBusy}"
-                                Model="{Binding Path=Configuration}">
-            <!--<scaffolding:Scaffolder.Style>
+            <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <controls:PpcButton Grid.Row="0"
+                                    Margin="15,0,15,0"
+                                    Padding="-2,1,0,0"
+                                    Abbrevation="4...1"
+                                    BorderBrush="{DynamicResource FerrettoRed}"
+                                    Command="{Binding GoToImport}"
+                                    Content="Importa"
+                                    IsBusy="{Binding IsBusy}"
+                                    Kind="Magnify"
+                                    Style="{DynamicResource PpcButtonMenuStyle}"
+                                    Visibility="{Binding IsNavigating, ElementName=scaffolder, Converter={StaticResource TTUI}, ConverterParameter=Invert}" />
+
+                <controls:PpcButton Grid.Row="1"
+                                    Margin="15,15,15,0"
+                                    Padding="-2,1,0,0"
+                                    Abbrevation="4...2"
+                                    BorderBrush="{DynamicResource FerrettoRed}"
+                                    Command="{Binding GoToExport}"
+                                    Content="{x:Static res:InstallationApp.Export}"
+                                    IsBusy="{Binding IsBusy}"
+                                    Kind="Magnify"
+                                    Style="{DynamicResource PpcButtonMenuStyle}"
+                                    Visibility="{Binding IsNavigating, ElementName=scaffolder, Converter={StaticResource TTUI}, ConverterParameter=Invert}" />
+
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Column="1"
+              Margin="15,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!--#region Title-->
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal">
+                <TextBlock Margin="0,10,15,10"
+                           VerticalAlignment="Top"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="4.7.2" />
+                <TextBlock Grid.ColumnSpan="2"
+                           Margin="0,10,15,10"
+                           VerticalAlignment="Top"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="Parametri" />
+            </StackPanel>
+            <!--#endregion-->
+
+            <scaffolding:Scaffolder x:Name="scaffolder"
+                                    Grid.Row="1"
+                                    HorizontalAlignment="Stretch"
+                                    Command="{Binding SaveCommand}"
+                                    IsBusy="{Binding IsBusy}"
+                                    Model="{Binding Path=Configuration}">
+                <!--<scaffolding:Scaffolder.Style>
                 <Style TargetType="{x:Type scaffolding:Scaffolder}">
                     <Style.Triggers>
                         <Trigger Property="IsNavigating" Value="True">
@@ -54,37 +106,8 @@
                     </Style.Triggers>
                 </Style>
             </scaffolding:Scaffolder.Style>-->
-        </scaffolding:Scaffolder>
+            </scaffolding:Scaffolder>
 
-        <Grid Grid.Row="1"
-              Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
-            <controls:PpcButton Grid.Row="1"
-                                Margin="15,0,0,0"
-                                Visibility="{Binding IsNavigating, ElementName=scaffolder, Converter={StaticResource TTUI}, ConverterParameter=Invert}"
-                                Command="{Binding GoToImport}"
-                                Content="{x:Static res:InstallationApp.Restore}"
-                                IsBusy="{Binding IsBusy}" />
-
-            <controls:PpcButton Grid.Row="2"
-                                Margin="15,15,0,0"
-                                Visibility="{Binding IsNavigating, ElementName=scaffolder, Converter={StaticResource TTUI}, ConverterParameter=Invert}"
-                                Command="{Binding GoToExport}"
-                                Content="{x:Static res:InstallationApp.Export}"
-                                IsBusy="{Binding IsBusy}" />
-
-            <controls:PpcButton Grid.Row="2"
-                                Margin="15,15,0,0"
-                                VerticalAlignment="Bottom"
-                                Command="{Binding SaveCommand}"
-                                Content="{x:Static res:General.Save}"
-                                IsBusy="{Binding IsBusy}"
-                                Visibility="Collapsed" />
         </Grid>
     </Grid>
 </ctrls:View>

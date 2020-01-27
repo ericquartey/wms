@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Modules.Operator.Services;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
@@ -26,11 +27,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private readonly IMissionOperationsService missionOperationsService;
 
+        private readonly IOperatorNavigationService operatorNavigationService;
+
         private readonly ISessionService sessionService;
 
         private bool areItemsEnabled;
-
-        private bool checkOnlyFirstAppeared;
 
         private DelegateCommand drawerActivityButtonCommand;
 
@@ -51,16 +52,16 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public OperatorMenuViewModel(
             IBayManager bayManager,
             ISessionService sessionService,
+            IOperatorNavigationService operatorNavigationService,
             IMachineBaysWebService machineBaysWebService,
             IMissionOperationsService missionOperationsService)
         : base(PresentationMode.Operator)
         {
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
+            this.operatorNavigationService = operatorNavigationService ?? throw new ArgumentNullException(nameof(sessionService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.missionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
-
-            this.checkOnlyFirstAppeared = true;
         }
 
         #endregion
@@ -78,7 +79,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public ICommand DrawerActivityButtonCommand => this.drawerActivityButtonCommand
             ??
             (this.drawerActivityButtonCommand = new DelegateCommand(
-                () => this.ShowItemOperations(true),
+                async () => await this.operatorNavigationService.NavigateToDrawerViewAsync(),
                 this.CanShowItemOperations));
 
         public override EnableMask EnableMask => EnableMask.Any;
@@ -143,8 +144,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         protected override async Task OnDataRefreshAsync()
         {
             await this.machineBaysWebService.ActivateAsync();
-
-            this.CheckForNewOperationsAsync();
         }
 
         protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
@@ -198,29 +197,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             return !this.IsWaitingForResponse;
         }
 
-        private void CheckForNewOperation()
-        {
-            if (this.MachineModeService.MachineMode != MachineMode.Automatic)
-            {
-                return;
-            }
-
-            this.ShowItemOperations(false);
-        }
-
-        private async Task CheckForNewOperationsAsync()
-        {
-            while (this.IsVisible &&
-                   this.checkOnlyFirstAppeared)
-            {
-                this.CheckForNewOperation();
-                await Task.Delay(1000);
-            }
-        }
-
         private void ImmediateLoadingUnitCallMenu()
         {
-            this.checkOnlyFirstAppeared = false;
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 Utils.Modules.Operator.Others.IMMEDIATELOADINGUNITCALL,
@@ -230,7 +208,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private void ShowItemLists()
         {
-            this.checkOnlyFirstAppeared = false;
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 Utils.Modules.Operator.WaitingLists.MAIN,
@@ -238,57 +215,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 trackCurrentView: true);
         }
 
-        private void ShowItemOperations(bool showItemOperationWait)
-        {
-            var missionOperation = this.missionOperationsService.CurrentMissionOperation;
-            if (missionOperation != null)
-            {
-                switch (missionOperation.Type)
-                {
-                    case MissionOperationType.Inventory:
-                        this.checkOnlyFirstAppeared = false;
-                        this.NavigationService.Appear(
-                            nameof(Utils.Modules.Operator),
-                            Utils.Modules.Operator.ItemOperations.INVENTORY,
-                            null,
-                            trackCurrentView: true);
-                        break;
-
-                    case MissionOperationType.Pick:
-                        this.checkOnlyFirstAppeared = false;
-                        this.NavigationService.Appear(
-                            nameof(Utils.Modules.Operator),
-                            Utils.Modules.Operator.ItemOperations.PICK,
-                            null,
-                            trackCurrentView: true);
-                        break;
-
-                    case MissionOperationType.Put:
-                        this.checkOnlyFirstAppeared = false;
-                        this.NavigationService.Appear(
-                            nameof(Utils.Modules.Operator),
-                            Utils.Modules.Operator.ItemOperations.PUT,
-                            null,
-                            trackCurrentView: true);
-                        break;
-                }
-            }
-            else
-            {
-                if (showItemOperationWait)
-                {
-                    this.NavigationService.Appear(
-                        nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.ItemOperations.WAIT,
-                        null,
-                        trackCurrentView: true);
-                }
-            }
-        }
-
         private void ShowItemSearch()
         {
-            this.checkOnlyFirstAppeared = false;
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 Utils.Modules.Operator.ItemSearch.MAIN,

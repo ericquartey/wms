@@ -78,7 +78,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
                 && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator
                 && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadUnit
-                && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation)
+                && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation
+                && this.Mission.MissionType != MissionType.Manual)
             {
                 var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
                 var description = $"Load Unit {this.Mission.LoadUnitId} placed on bay {bay.Number}";
@@ -88,7 +89,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     || bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitDestination).IsUpper
                     || bay.Carousel is null)
                 {
-                    if (this.Mission.WmsId.HasValue)
+                    if (this.Mission.MissionType == MissionType.OUT
+                        || this.Mission.MissionType == MissionType.WMS
+                        )
                     {
                         newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     }

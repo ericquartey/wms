@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
@@ -122,7 +123,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     break;
 
                 case VerticalMovementDirection.Up:
-                    if (isLoadingUnitInUpperPosition)
+                    if (isLoadingUnitInUpperPosition
+                        || bay.Positions.FirstOrDefault(p => p.IsUpper).LoadingUnit != null)
                     {
                         return new ActionPolicy { Reason = Resources.Bays.TheBayContainsALoadingUnitInItsUpperPosition };
                     }
