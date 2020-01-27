@@ -14,6 +14,7 @@ using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -25,7 +26,7 @@ namespace Ferretto.VW.MAS.LaserDriver
 
         private readonly CancellationToken cancellationToken;
 
-        private readonly IErrorsProvider errorsProvider;
+        private readonly IServiceScopeFactory serviceScopeFactory;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -57,7 +58,7 @@ namespace Ferretto.VW.MAS.LaserDriver
             int port,
             ISocketTransport transport,
             IEventAggregator eventAggregator,
-            IErrorsProvider errorsProvider,
+            IServiceScopeFactory serviceScopeFactory,
             ILogger logger,
             CancellationToken cancellationToken)
         {
@@ -67,9 +68,9 @@ namespace Ferretto.VW.MAS.LaserDriver
 
             this.writeEnableEvent = new ManualResetEventSlim(true);
             this.socketTransport = transport;
+            this.serviceScopeFactory = serviceScopeFactory;
             this.logger = logger;
             this.cancellationToken = cancellationToken;
-            this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
             this.eventAggregator = eventAggregator;
 
             this.laserReceiveTask = new Task(async () => await this.ReceiveLaserDataTaskFunction());
@@ -204,7 +205,11 @@ namespace Ferretto.VW.MAS.LaserDriver
             if (!this.socketTransport.IsConnected)
             {
                 this.logger.LogError($"3:Failed to connect to Laser {this.BayNumber}");
-                this.errorsProvider.RecordNew(DataModels.MachineErrorCode.LaserConnectionError, this.BayNumber);
+                using (var scope = this.serviceScopeFactory.CreateScope())
+                {
+                    var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+                    errorsProvider.RecordNew(DataModels.MachineErrorCode.LaserConnectionError, this.BayNumber);
+                }
             }
             else
             {
@@ -272,7 +277,11 @@ namespace Ferretto.VW.MAS.LaserDriver
                     if (!this.socketTransport.IsConnected)
                     {
                         this.logger.LogError("3:Socket Transport failed to connect");
-                        this.errorsProvider.RecordNew(DataModels.MachineErrorCode.LaserConnectionError, this.BayNumber);
+                        using (var scope = this.serviceScopeFactory.CreateScope())
+                        {
+                            var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+                            errorsProvider.RecordNew(DataModels.MachineErrorCode.LaserConnectionError, this.BayNumber);
+                        }
                         continue;
                     }
                     else
@@ -294,7 +303,11 @@ namespace Ferretto.VW.MAS.LaserDriver
                     {
                         // connection error
                         this.logger.LogError($"4:Laser Driver message is null");
-                        this.errorsProvider.RecordNew(DataModels.MachineErrorCode.LaserConnectionError, this.BayNumber);
+                        using (var scope = this.serviceScopeFactory.CreateScope())
+                        {
+                            var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+                            errorsProvider.RecordNew(DataModels.MachineErrorCode.LaserConnectionError, this.BayNumber);
+                        }
                         var ex = new Exception();
                         continue;
                     }
@@ -309,7 +322,11 @@ namespace Ferretto.VW.MAS.LaserDriver
                 {
                     // connection error
                     this.logger.LogError(ex, $"3:Exception: {ex.Message} while connecting to Laser {this.BayNumber} - ExceptionCode: {ex.ExceptionCode}; Inner exception: {ex.InnerException?.Message ?? string.Empty}");
-                    this.errorsProvider.RecordNew(DataModels.MachineErrorCode.LaserConnectionError, this.BayNumber);
+                    using (var scope = this.serviceScopeFactory.CreateScope())
+                    {
+                        var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+                        errorsProvider.RecordNew(DataModels.MachineErrorCode.LaserConnectionError, this.BayNumber);
+                    }
                     continue;
                 }
                 catch (Exception ex)
