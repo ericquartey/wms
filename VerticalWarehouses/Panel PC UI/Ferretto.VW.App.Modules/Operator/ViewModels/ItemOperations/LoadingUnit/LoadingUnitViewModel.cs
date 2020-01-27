@@ -213,9 +213,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private bool CanDoOperation(string param)
         {
-            return !(this.SelectedItem is null)
-                &&
-                this.MachineModeService.MachineMode is MachineMode.Automatic;
+            return !(this.SelectedItem is null);
         }
 
         private Task ConfirmOperationAsync()
@@ -235,6 +233,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             this.ResetOperations();
             this.IsOperationVisible = true;
+            this.IsListVisibile = false;
 
             if (param == OperatorApp.Pick)
             {

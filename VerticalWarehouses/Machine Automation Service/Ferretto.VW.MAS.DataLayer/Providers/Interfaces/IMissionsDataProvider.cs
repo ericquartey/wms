@@ -45,6 +45,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void ResetMachine(MessageActor sender);
 
+        void CheckPendingChanges();
         void Update(Mission mission);
 
         void UpdateHomingMissions(BayNumber bayNumber, Axis axis);

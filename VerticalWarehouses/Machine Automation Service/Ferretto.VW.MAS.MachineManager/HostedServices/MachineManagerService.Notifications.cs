@@ -6,6 +6,8 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -35,21 +37,22 @@ namespace Ferretto.VW.MAS.MachineManager
 
         protected override Task OnNotificationReceivedAsync(NotificationMessage message, IServiceProvider serviceProvider)
         {
+            var missionMoveProvider = serviceProvider.GetRequiredService<IMissionMoveProvider>();
             switch (message.Type)
             {
                 case MessageType.FaultStateChanged:
                 case MessageType.RunningStateChanged:
-                    this.OnMachineRunningStatusChange(message);
+                    this.OnMachineRunningStatusChange(message, serviceProvider);
                     lock (this.syncObject)
                     {
-                        this.missionMoveProvider.OnNotification(message, serviceProvider);
+                        missionMoveProvider.OnNotification(message, serviceProvider);
                     }
                     break;
 
                 case MessageType.DataLayerReady:
                     // performance optimization
-                    this.serviceScope.ServiceProvider.GetRequiredService<ICellsProvider>().GetAll();
-                    this.serviceScope.ServiceProvider.GetRequiredService<IMachineProvider>().Get();
+                    serviceProvider.GetRequiredService<ICellsProvider>().GetAll();
+                    serviceProvider.GetRequiredService<IMachineProvider>().Get();
 
                     this.isDataLayerReady = true;
                     break;
@@ -61,7 +64,7 @@ namespace Ferretto.VW.MAS.MachineManager
                 case MessageType.Homing:
                     lock (this.syncObject)
                     {
-                        this.missionMoveProvider.OnNotification(message, serviceProvider);
+                        missionMoveProvider.OnNotification(message, serviceProvider);
                     }
                     break;
             }
@@ -69,7 +72,7 @@ namespace Ferretto.VW.MAS.MachineManager
             return Task.CompletedTask;
         }
 
-        private void OnMachineRunningStatusChange(NotificationMessage message)
+        private void OnMachineRunningStatusChange(NotificationMessage message, IServiceProvider serviceProvider)
         {
             if (message is null)
             {
@@ -100,9 +103,10 @@ namespace Ferretto.VW.MAS.MachineManager
                         MessageType.ChangeRunningState,
                         message.RequestingBay);
 
-                    if (this.machineMissionsProvider.TryCreateMachineMission(FsmType.ChangeRunningType, command, out var missionId))
+                    var machineMissionsProvider = serviceProvider.GetRequiredService<IMachineMissionsProvider>();
+                    if (machineMissionsProvider.TryCreateMachineMission(FsmType.ChangeRunningType, command, out var missionId))
                     {
-                        this.machineMissionsProvider.StartMachineMission(missionId, command);
+                        machineMissionsProvider.StartMachineMission(missionId, command);
                     }
                     else
                     {

@@ -364,6 +364,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private void Reset()
         {
+            this.IsListVisibile = false;
             this.SelectedItemCompartment = null;
             this.SelectedCompartment = null;
             this.SelectedItem = null;
