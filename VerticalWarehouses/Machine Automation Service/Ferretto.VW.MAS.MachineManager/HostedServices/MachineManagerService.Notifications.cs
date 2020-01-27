@@ -43,6 +43,7 @@ namespace Ferretto.VW.MAS.MachineManager
                     lock (this.syncObject)
                     {
                         this.missionMoveProvider.OnNotification(message, serviceProvider);
+                        this.missionsDataProvider.CheckPendingChanges();
                     }
                     break;
 
@@ -62,6 +63,7 @@ namespace Ferretto.VW.MAS.MachineManager
                     lock (this.syncObject)
                     {
                         this.missionMoveProvider.OnNotification(message, serviceProvider);
+                        this.missionsDataProvider.CheckPendingChanges();
                     }
                     break;
             }
