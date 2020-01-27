@@ -223,7 +223,6 @@
             {
               "Name": "ShortPickup",
               "TotalDistance": 1252,
-              "Correction": 20,
               "Steps": [
                 {
                   "Acceleration": 3000,
@@ -267,7 +266,6 @@
             {
               "Name": "ShortDeposit",
               "TotalDistance": 1252,
-              "Correction": 20,
               "Steps": [
                 {
                   "Acceleration": 1000,
@@ -311,7 +309,6 @@
             {
               "Name": "LongPickup",
               "TotalDistance": 1252,
-              "Correction": 20,
               "Steps": [
                 {
                   "Acceleration": 3000,
@@ -355,7 +352,6 @@
             {
               "Name": "LongDeposit",
               "TotalDistance": 1252,
-              "Correction": 20,
               "Steps": [
                 {
                   "Acceleration": 1000,
