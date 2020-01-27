@@ -53,7 +53,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedUpper, this.Mission.TargetBay);
                 throw new StateMachineException(ErrorDescriptions.LoadUnitUndefinedUpper, this.Mission.TargetBay, MessageActor.MachineManager);
             }
-            this.Mission.LoadUnitDestination = destination.Location;
             if (this.LoadingUnitMovementProvider.IsOnlyBottomPositionOccupied(bay.Number))
             {
                 this.Mission.RestoreConditions = false;
@@ -112,6 +111,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 this.BaysDataProvider.SetLoadingUnit(origin.Id, null);
                                 this.BaysDataProvider.SetLoadingUnit(destination.Id, this.Mission.LoadUnitId);
                             }
+                            this.Mission.LoadUnitDestination = destination.Location;
 
                             var notificationText = $"Load Unit {this.Mission.LoadUnitId} placed on bay {bay.Number}";
                             this.SendMoveNotification(bay.Number, notificationText, MessageStatus.OperationWaitResume);
@@ -176,11 +176,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override void OnResume(CommandMessage command)
         {
+            var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+            var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
 #if CHECK_BAY_SENSOR
-            if (!this.SensorsProvider.IsLoadingUnitInLocation(this.Mission.LoadUnitDestination))
+            if (!this.SensorsProvider.IsLoadingUnitInLocation(destination.Location)
+                && this.LoadingUnitMovementProvider.IsOnlyBottomPositionOccupied(bay.Number)
+                )
 #endif
             {
-                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
                 try
                 {
                     this.LoadingUnitMovementProvider.MoveCarousel(this.Mission.LoadUnitId, MessageActor.MachineManager, bay.Number, false);
@@ -188,15 +191,17 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 catch (StateMachineException ex)
                 {
-                    this.ErrorsProvider.RecordNew(MachineErrorCode.MoveBayChainNotAllowed, this.Mission.TargetBay);
-                    throw new StateMachineException(ErrorDescriptions.MoveBayChainNotAllowed, this.Mission.TargetBay, MessageActor.MachineManager);
+                    //this.ErrorsProvider.RecordNew(MachineErrorCode.MoveBayChainNotAllowed, this.Mission.TargetBay);
+                    //throw new StateMachineException(ErrorDescriptions.MoveBayChainNotAllowed, this.Mission.TargetBay, MessageActor.MachineManager);
+                    this.Logger.LogInformation(ErrorDescriptions.MoveBayChainNotAllowed);
                 }
             }
 #if CHECK_BAY_SENSOR
             else
             {
-                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotRemoved, this.Mission.TargetBay);
-                throw new StateMachineException(ErrorDescriptions.LoadUnitNotRemoved, this.Mission.TargetBay, MessageActor.MachineManager);
+                //this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotRemoved, this.Mission.TargetBay);
+                //throw new StateMachineException(ErrorDescriptions.LoadUnitNotRemoved, this.Mission.TargetBay, MessageActor.MachineManager);
+                this.Logger.LogInformation(ErrorDescriptions.LoadUnitNotRemoved);
             }
 #endif
         }

@@ -161,16 +161,18 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         private void RestoreBayChain()
         {
             this.Mission.StopReason = StopRequestReason.NoReason;
-            if (this.LoadingUnitMovementProvider.IsOnlyTopPositionOccupied(this.Mission.TargetBay))
+            var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+            var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
+            if (destination is null)
+            {
+                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedUpper, this.Mission.TargetBay);
+                throw new StateMachineException(ErrorDescriptions.LoadUnitUndefinedUpper, this.Mission.TargetBay, MessageActor.MachineManager);
+            }
+            if (!this.SensorsProvider.IsLoadingUnitInLocation(destination.Location)
+                && this.LoadingUnitMovementProvider.IsOnlyTopPositionOccupied(this.Mission.TargetBay)
+                )
             {
                 // movement is finished
-                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
-                var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
-                if (destination is null)
-                {
-                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedUpper, this.Mission.TargetBay);
-                    throw new StateMachineException(ErrorDescriptions.LoadUnitUndefinedUpper, this.Mission.TargetBay, MessageActor.MachineManager);
-                }
                 this.Mission.LoadUnitDestination = destination.Location;
 
                 var origin = bay.Positions.FirstOrDefault(p => !p.IsUpper);

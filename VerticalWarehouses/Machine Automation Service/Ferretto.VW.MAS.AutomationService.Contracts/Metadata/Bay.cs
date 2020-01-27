@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.BayCarousel))]
             [CategoryDescription(ResourceType = typeof(Vertimag), Description = nameof(Vertimag.BayCarousel_Description))]
             [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
-            [PullToRoot, Unfold]
+            //[PullToRoot, Unfold]
             public Carousel Carousel { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_MaxGrossWeight))]
@@ -37,12 +37,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.BayInverter))]
             [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
-            [PullToRoot, Unfold]
+            //[PullToRoot, Unfold]
             public Inverter Inverter { get; set; }
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.BayIoDevice))]
             [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
-            [PullToRoot, Unfold]
+            //[PullToRoot, Unfold]
             public IoDevice IoDevice { get; set; }
 
             [Editable(false)]
@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.BayLaser))]
             [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
-            [PullToRoot, Unfold]
+            //[PullToRoot, Unfold]
             public Laser Laser { get; set; }
 
             [ScaffoldColumn(false)]
@@ -76,7 +76,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.BayShutter))]
             [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
-            [PullToRoot, Unfold]
+            //[PullToRoot, Unfold]
             public Shutter Shutter { get; set; }
 
             [Editable(false)]
