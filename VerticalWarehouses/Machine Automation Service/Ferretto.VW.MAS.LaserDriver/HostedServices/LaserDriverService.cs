@@ -21,13 +21,7 @@ namespace Ferretto.VW.MAS.LaserDriver
     {
         #region Fields
 
-        private readonly IBaysDataProvider baysDataProvider;
-
         private readonly IConfiguration configuration;
-
-        private readonly IDigitalDevicesDataProvider digitalDevicesDataProvider;
-
-        private readonly IErrorsProvider errorsProvider;
 
         private IDictionary<BayNumber, LaserDevice> lasers;
 
@@ -37,17 +31,11 @@ namespace Ferretto.VW.MAS.LaserDriver
 
         public LaserDriverService(
             IEventAggregator eventAggregator,
-            IDigitalDevicesDataProvider digitalDevicesDataProvider,
-            IBaysDataProvider baysDataProvider,
-            IErrorsProvider errorsProvider,
             ILogger<LaserDriverService> logger,
             IConfiguration configuration,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.digitalDevicesDataProvider = digitalDevicesDataProvider ?? throw new ArgumentNullException(nameof(digitalDevicesDataProvider));
-            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
-            this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
@@ -98,6 +86,7 @@ namespace Ferretto.VW.MAS.LaserDriver
 
                     case FieldMessageType.LaserMoveAndSwitchOn:
                         device.ExecuteLaserMoveAndSwitchOn();
+
                         break;
                 }
             }
@@ -141,18 +130,22 @@ namespace Ferretto.VW.MAS.LaserDriver
 
         private void InitializeLaserDevices()
         {
-            var lasersDto = this.digitalDevicesDataProvider.GetAllLasers();
-            var readTimeoutMilliseconds = this.configuration.GetValue("Vertimag:LaserDriver:ReadTimeoutMilliseconds", -1);
+            using (var scope = this.ServiceScopeFactory.CreateScope())
+            {
+                var digitalDevicesDataProvider = scope.ServiceProvider.GetRequiredService<IDigitalDevicesDataProvider>();
+                var lasersDto = digitalDevicesDataProvider.GetAllLasers();
+                var readTimeoutMilliseconds = this.configuration.GetValue("Vertimag:LaserDriver:ReadTimeoutMilliseconds", -1);
 
-            this.lasers = lasersDto.ToDictionary(
-                x => x.Bay.Number,
-                y => new LaserDevice(y.Bay.Number, y.IpAddress, y.TcpPort,
-                     new SocketTransport(readTimeoutMilliseconds),
-                     this.EventAggregator,
-                     this.errorsProvider,
-                     this.Logger,
-                     this.CancellationToken)
-                );
+                this.lasers = lasersDto.ToDictionary(
+                    x => x.Bay.Number,
+                    y => new LaserDevice(y.Bay.Number, y.IpAddress, y.TcpPort,
+                         new SocketTransport(readTimeoutMilliseconds),
+                         this.EventAggregator,
+                         this.ServiceScopeFactory,
+                         this.Logger,
+                         this.CancellationToken)
+                    );
+            }
         }
 
         private async Task StartHardwareCommunicationsAsync()

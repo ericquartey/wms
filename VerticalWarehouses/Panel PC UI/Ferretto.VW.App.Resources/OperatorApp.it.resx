@@ -1166,7 +1166,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
     <value>Descrizione articolo</value>
   </data>
   <data name="ItemCode" xml:space="preserve">
-    <value>Codice articolo</value>
+    <value>Codice art.</value>
   </data>
   <data name="CompartmentId" xml:space="preserve">
     <value>Id Scomp.</value>
