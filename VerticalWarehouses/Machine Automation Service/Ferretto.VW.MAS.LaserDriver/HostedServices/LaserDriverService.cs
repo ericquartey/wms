@@ -21,8 +21,6 @@ namespace Ferretto.VW.MAS.LaserDriver
     {
         #region Fields
 
-        private readonly IBaysDataProvider baysDataProvider;
-
         private readonly IConfiguration configuration;
 
         private readonly IDigitalDevicesDataProvider digitalDevicesDataProvider;
@@ -38,7 +36,6 @@ namespace Ferretto.VW.MAS.LaserDriver
         public LaserDriverService(
             IEventAggregator eventAggregator,
             IDigitalDevicesDataProvider digitalDevicesDataProvider,
-            IBaysDataProvider baysDataProvider,
             IErrorsProvider errorsProvider,
             ILogger<LaserDriverService> logger,
             IConfiguration configuration,
@@ -46,7 +43,6 @@ namespace Ferretto.VW.MAS.LaserDriver
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.digitalDevicesDataProvider = digitalDevicesDataProvider ?? throw new ArgumentNullException(nameof(digitalDevicesDataProvider));
-            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
@@ -98,6 +94,7 @@ namespace Ferretto.VW.MAS.LaserDriver
 
                     case FieldMessageType.LaserMoveAndSwitchOn:
                         device.ExecuteLaserMoveAndSwitchOn();
+
                         break;
                 }
             }
