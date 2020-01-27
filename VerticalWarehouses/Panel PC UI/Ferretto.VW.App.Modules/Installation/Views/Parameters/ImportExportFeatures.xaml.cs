@@ -246,8 +246,8 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
 
             this.SetValue(IncludeCellPanelsProperty, cellPanels);
             this.SetValue(IncludeLoadingUnitsProperty, loadingUnits);
-            this.SetValue(IncludeParametersProperty, setup);
-            this.SetValue(IncludeSetupProceduresProperty, parameters);
+            this.SetValue(IncludeParametersProperty, parameters);
+            this.SetValue(IncludeSetupProceduresProperty, setup);
 
             this.SetValue(HasCellPanelsPropertyKey, cellPanels);
             this.SetValue(HasLoadingUnitsPropertyKey, loadingUnits);
