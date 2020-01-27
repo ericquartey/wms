@@ -11,7 +11,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class LoadingUnitViewModel : BaseOperatorViewModel
+    public class BaseLoadingUnitViewModel : BaseOperatorViewModel
     {
         #region Fields
 
@@ -51,10 +51,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private double loadingUnitWidth;
 
-        private DelegateCommand<string> operationCommand;
-
-        private DelegateCommand recallLoadingUnitCommand;
-
         private TrayControlCompartment selectedCompartment;
 
         private CompartmentDetails selectedItem;
@@ -65,7 +61,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Constructors
 
-        public LoadingUnitViewModel(
+        public BaseLoadingUnitViewModel(
             IBayManager bayManager,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             WMS.Data.WebAPI.Contracts.ILoadingUnitsWmsWebService loadingUnitsWmsWebService)
@@ -152,18 +148,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             set => this.SetProperty(ref this.loadingUnitWidth, value, this.RaiseCanExecuteChanged);
         }
 
-        public ICommand OperationCommand =>
-               this.operationCommand
-                ??
-                (this.operationCommand = new DelegateCommand<string>((param) => this.DoOperation(param), this.CanDoOperation));
-
-        public ICommand RecallLoadingUnitCommand =>
-            this.recallLoadingUnitCommand
-            ??
-            (this.recallLoadingUnitCommand = new DelegateCommand(
-                async () => await this.RecallLoadingUnitAsync(),
-                this.CanRecallLoadingUnit));
-
         public TrayControlCompartment SelectedCompartment
         {
             get => this.selectedCompartment;
@@ -185,16 +169,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #endregion
 
         #region Methods
-
-        public virtual bool CanRecallLoadingUnit()
-        {
-            return
-                !this.IsWaitingForResponse
-                &&
-                this.LoadingUnit != null
-                &&
-                this.MachineModeService.MachineMode is MachineMode.Automatic;
-        }
 
         public void ChangeSelectedItem(bool isUp)
         {
@@ -257,9 +231,16 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 }
 
                 this.RaiseCanExecuteChanged();
-                this.RaisePropertyChanged(nameof(this.LoadingUnit));
-                this.recallLoadingUnitCommand?.RaiseCanExecuteChanged();
+                this.RaisePropertyChanged();                
             }
+        }
+
+        public virtual void RaisePropertyChanged()
+        {
+            this.RaisePropertyChanged(nameof(this.SelectedCompartment));
+            this.RaisePropertyChanged(nameof(this.LoadingUnit));
+            this.RaisePropertyChanged(nameof(this.SelectedItem));
+            this.RaisePropertyChanged(nameof(this.SelectedItemCompartment));
         }
 
         public async Task RecallLoadingUnitAsync()
@@ -293,8 +274,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.itemCompartmentUpCommand.RaiseCanExecuteChanged();
             this.itemDownCommand.RaiseCanExecuteChanged();
             this.itemUpCommand.RaiseCanExecuteChanged();
-            this.operationCommand.RaiseCanExecuteChanged();
-            this.recallLoadingUnitCommand.RaiseCanExecuteChanged();
 
             base.RaiseCanExecuteChanged();
         }
@@ -338,13 +317,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
                    this.isListVisibile;
         }
 
-        private bool CanDoOperation(string param)
-        {
-            return !(this.selectedItem is null)
-                &&
-                this.MachineModeService.MachineMode is MachineMode.Automatic;
-        }
-
         private void ChangeMode()
         {
             if (!this.isListVisibile
@@ -355,12 +327,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
 
             this.IsListVisibile = !this.IsListVisibile;
-        }
-
-        private void DoOperation(string param)
-        {
-            (string operationType, CompartmentDetails selectedItemCompartment) dataSend = (param, this.selectedItemCompartment);
-            // TODO implement specific operation
         }
 
         private bool ItemCanDown()
@@ -449,14 +415,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             this.selectedCompartment = this.Compartments.FirstOrDefault(c => c.Id == this.selectedItemCompartment.Id);
             this.SetItems();
-            this.RaisePropertyChanged(nameof(this.SelectedCompartment));
+            this.RaisePropertyChanged();
             if (this.items?.Any() == true)
             {
                 if (this.items.FirstOrDefault(ic => ic.ItemId == this.selectedItemCompartment.ItemId) is CompartmentDetails newSelectedItem)
                 {
                     this.currentItemIndex = this.items.ToList().IndexOf(newSelectedItem);
                     this.selectedItem = newSelectedItem;
-                    this.RaisePropertyChanged(nameof(this.SelectedItem));
+                    this.RaisePropertyChanged();
                 }
             }
 
@@ -477,7 +443,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 this.currentItemCompartmentIndex = this.itemsCompartments.ToList().IndexOf(newSelectedItemCompartment);
                 this.selectedItemCompartment = newSelectedItemCompartment;
-                this.RaisePropertyChanged(nameof(this.SelectedItemCompartment));
+                this.RaisePropertyChanged();
             }
 
             this.RaiseCanExecuteChanged();
