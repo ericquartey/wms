@@ -99,8 +99,8 @@
                 },
                 "Carousel": {
                     "ElevatorDistance": 453.5,
-                    "HomingFastSpeed": 8000,
-                    "HomingCreepSpeed": 2000,
+                    "HomingFastSpeed": 22,
+                    "HomingCreepSpeed": 5,
                     "ManualMovements": {
                         "FeedRate": 0.1
                     },
@@ -125,8 +125,8 @@
                     "Resolution": 99.177657,
                     "Offset": 461,
                     "ChainOffset": 0,
-                    "HomingFastSpeed": 2000,
-                    "HomingCreepSpeed": 500,
+                    "HomingFastSpeed": 25,
+                    "HomingCreepSpeed": 6,
                     "UpperBound": 8600,
                     "LowerBound": 305,
                     "EmptyLoadMovement": {
@@ -166,8 +166,8 @@
                     "Resolution": 88.3038556,
                     "Offset": 0,
                     "ChainOffset": -10,
-                    "HomingFastSpeed": 2000,
-                    "HomingCreepSpeed": 500,
+                    "HomingFastSpeed": 25,
+                    "HomingCreepSpeed": 6,
                     "ProfileCalibratePosition": 300,
                     "ProfileCalibrateSpeed": 30,
                     "ProfileCalibrateLength": 900,
@@ -443,7 +443,12 @@
                         "Priority": 19,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 21,
                         "Position": 1688.0,
@@ -513,7 +518,12 @@
                         "Priority": 39,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 41,
                         "Position": 1938.0,
@@ -583,7 +593,12 @@
                         "Priority": 59,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 61,
                         "Position": 2188.0,
@@ -653,7 +668,12 @@
                         "Priority": 79,
                         "IsFree": false,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 81,
                         "Position": 2439.0,
@@ -723,7 +743,12 @@
                         "Priority": 99,
                         "IsFree": false,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 101,
                         "Position": 2689.0,
@@ -793,7 +818,12 @@
                         "Priority": 119,
                         "IsFree": false,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 121,
                         "Position": 2939.0,
@@ -863,7 +893,12 @@
                         "Priority": 139,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 141,
                         "Position": 3189.0,
@@ -933,7 +968,12 @@
                         "Priority": 159,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 161,
                         "Position": 3439.0,
@@ -1003,7 +1043,12 @@
                         "Priority": 179,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 181,
                         "Position": 3689.0,
@@ -1073,7 +1118,12 @@
                         "Priority": 199,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 201,
                         "Position": 3939.0,
@@ -1143,7 +1193,12 @@
                         "Priority": 219,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 221,
                         "Position": 4189.0,
@@ -1213,7 +1268,12 @@
                         "Priority": 239,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 241,
                         "Position": 4439.0,
@@ -1283,7 +1343,12 @@
                         "Priority": 259,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 261,
                         "Position": 4689.0,
@@ -1353,7 +1418,12 @@
                         "Priority": 279,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 281,
                         "Position": 4939.0,
@@ -1423,7 +1493,12 @@
                         "Priority": 299,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 301,
                         "Position": 5189.0,
@@ -1493,7 +1568,12 @@
                         "Priority": 319,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 321,
                         "Position": 5439.0,
@@ -1563,7 +1643,12 @@
                         "Priority": 339,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 341,
                         "Position": 5689.0,
@@ -1633,7 +1718,12 @@
                         "Priority": 359,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 361,
                         "Position": 5939.0,
@@ -1703,7 +1793,12 @@
                         "Priority": 379,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 381,
                         "Position": 6189.0,
@@ -1773,7 +1868,12 @@
                         "Priority": 399,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 401,
                         "Position": 6439.0,
@@ -1843,7 +1943,12 @@
                         "Priority": 419,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 421,
                         "Position": 6689.0,
@@ -1913,7 +2018,12 @@
                         "Priority": 439,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 441,
                         "Position": 6939.0,
@@ -1983,7 +2093,12 @@
                         "Priority": 459,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 461,
                         "Position": 7189.0,
@@ -2053,7 +2168,12 @@
                         "Priority": 479,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 481,
                         "Position": 7439.0,
@@ -2123,7 +2243,12 @@
                         "Priority": 499,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 501,
                         "Position": 7689.0,
@@ -2193,7 +2318,12 @@
                         "Priority": 519,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 521,
                         "Position": 7939.0,
@@ -2263,7 +2393,12 @@
                         "Priority": 539,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 541,
                         "Position": 8189.0,
@@ -2333,7 +2468,12 @@
                         "Priority": 559,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 561,
                         "Position": 8439.0,
@@ -2403,7 +2543,12 @@
                         "Priority": 579,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 581,
                         "Position": 8690.0,
@@ -2473,7 +2618,12 @@
                         "Priority": 599,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Front",
+                "Cells": [
                     {
                         "Id": 601,
                         "Position": 8940.0,
@@ -2556,7 +2706,12 @@
                         "Priority": 20,
                         "IsFree": false,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 22,
                         "Position": 1689.0,
@@ -2626,7 +2781,12 @@
                         "Priority": 40,
                         "IsFree": false,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 42,
                         "Position": 1939.0,
@@ -2696,7 +2856,12 @@
                         "Priority": 60,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 62,
                         "Position": 2189.0,
@@ -2766,7 +2931,12 @@
                         "Priority": 80,
                         "IsFree": false,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 82,
                         "Position": 2439.0,
@@ -2836,7 +3006,12 @@
                         "Priority": 100,
                         "IsFree": false,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 102,
                         "Position": 2689.0,
@@ -2906,7 +3081,12 @@
                         "Priority": 120,
                         "IsFree": false,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 122,
                         "Position": 2939.0,
@@ -2976,7 +3156,12 @@
                         "Priority": 140,
                         "IsFree": false,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 142,
                         "Position": 3189.0,
@@ -3046,7 +3231,12 @@
                         "Priority": 160,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 162,
                         "Position": 3439.0,
@@ -3116,7 +3306,12 @@
                         "Priority": 180,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 182,
                         "Position": 3689.0,
@@ -3186,7 +3381,12 @@
                         "Priority": 200,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 202,
                         "Position": 3939.0,
@@ -3256,7 +3456,12 @@
                         "Priority": 220,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 222,
                         "Position": 4189.0,
@@ -3326,7 +3531,12 @@
                         "Priority": 240,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 242,
                         "Position": 4439.0,
@@ -3396,7 +3606,12 @@
                         "Priority": 260,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 262,
                         "Position": 4689.0,
@@ -3466,7 +3681,12 @@
                         "Priority": 280,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 282,
                         "Position": 4939.0,
@@ -3536,7 +3756,12 @@
                         "Priority": 300,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 302,
                         "Position": 5189.0,
@@ -3606,7 +3831,12 @@
                         "Priority": 320,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 322,
                         "Position": 5439.0,
@@ -3676,7 +3906,12 @@
                         "Priority": 340,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 342,
                         "Position": 5689.0,
@@ -3746,7 +3981,12 @@
                         "Priority": 360,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 362,
                         "Position": 5939.0,
@@ -3816,7 +4056,12 @@
                         "Priority": 380,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 382,
                         "Position": 6189.0,
@@ -3886,7 +4131,12 @@
                         "Priority": 400,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 402,
                         "Position": 6439.0,
@@ -3956,7 +4206,12 @@
                         "Priority": 420,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 422,
                         "Position": 6689.0,
@@ -4026,7 +4281,12 @@
                         "Priority": 440,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 442,
                         "Position": 6939.0,
@@ -4096,7 +4356,12 @@
                         "Priority": 460,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 462,
                         "Position": 7189.0,
@@ -4166,7 +4431,12 @@
                         "Priority": 480,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 482,
                         "Position": 7439.0,
@@ -4236,7 +4506,12 @@
                         "Priority": 500,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 502,
                         "Position": 7689.0,
@@ -4306,7 +4581,12 @@
                         "Priority": 520,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 522,
                         "Position": 7939.0,
@@ -4376,7 +4656,12 @@
                         "Priority": 540,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 542,
                         "Position": 8189.0,
@@ -4446,7 +4731,12 @@
                         "Priority": 560,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 562,
                         "Position": 8439.0,
@@ -4516,7 +4806,12 @@
                         "Priority": 580,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 582,
                         "Position": 8690.0,
@@ -4586,7 +4881,12 @@
                         "Priority": 600,
                         "IsFree": true,
                         "BlockLevel": "None"
-                    },
+                    }
+                ]
+            },
+            {
+                "Side": "Back",
+                "Cells": [
                     {
                         "Id": 602,
                         "Position": 8940.0,
