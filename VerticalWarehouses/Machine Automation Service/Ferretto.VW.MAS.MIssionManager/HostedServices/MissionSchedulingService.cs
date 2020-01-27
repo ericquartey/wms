@@ -74,19 +74,24 @@ namespace Ferretto.VW.MAS.MissionManager
 
             var activeMissions = missionsDataProvider.GetAllActiveMissionsByBay(bayNumber);
 
-            var missionToRestore = activeMissions.FirstOrDefault(x => (x.Status == MissionStatus.Executing || x.Status == MissionStatus.Waiting)
-                && x.IsMissionToRestore());
-            if (missionToRestore != null)
+            var missionToRestore = activeMissions.Where(x => (x.Status == MissionStatus.Executing || x.Status == MissionStatus.Waiting)
+                    && x.IsMissionToRestore())
+                .OrderBy(o => o.Status)
+                .ThenBy(t => t.Step);
+            if (missionToRestore.Any())
             {
-                if (restore)
+                foreach (var mission in missionToRestore)
                 {
-                    moveLoadingUnitProvider.ResumeMoveLoadUnit(missionToRestore.Id, LoadingUnitLocation.NoLocation, LoadingUnitLocation.NoLocation, bayNumber, null, MessageActor.MissionManager);
+                    if (restore)
+                    {
+                        moveLoadingUnitProvider.ResumeMoveLoadUnit(mission.Id, LoadingUnitLocation.NoLocation, LoadingUnitLocation.NoLocation, bayNumber, null, MessageActor.MissionManager);
+                    }
+                    else
+                    {
+                        this.Logger.LogTrace($"ScheduleMissionsAsync: waiting for mission to restore {mission.WmsId}, LoadUnit {mission.LoadUnitId}; bay {bayNumber}");
+                    }
+                    break;
                 }
-                else
-                {
-                    this.Logger.LogTrace($"ScheduleMissionsAsync: waiting for mission to restore {missionToRestore.WmsId}, LoadUnit {missionToRestore.LoadUnitId}; bay {bayNumber}");
-                }
-
                 return;
             }
 
@@ -96,25 +101,11 @@ namespace Ferretto.VW.MAS.MissionManager
                 return;
             }
 
-            //var mission = activeMissions.OrderBy(o => o.CreationDate)
-            //        .FirstOrDefault(x => x.Status == MissionStatus.Executing || x.Status == MissionStatus.Waiting);
-            //if (mission is null)
-            //{
-            //    mission = activeMissions.FirstOrDefault(x => x.Status == MissionStatus.New
-            //        && (x.MissionType == MissionType.IN
-            //            || x.MissionType == MissionType.OUT
-            //            || x.MissionType == MissionType.WMS
-            //        ));
-            //    if (mission is null)
-            //    {
-            //        // no more missions are available for scheduling on this bay
-            //        this.NotifyAssignedMissionOperationChanged(bayNumber, null, null);
-            //        return;
-            //    }
-            //}
-
-            var missions = activeMissions.Where(x => x.Status == MissionStatus.New || x.Status == MissionStatus.Executing || x.Status == MissionStatus.Waiting).OrderBy(o => o.CreationDate);
-            if(missions is null)
+            var missions = activeMissions.Where(x => x.Status == MissionStatus.New
+                    || x.Status == MissionStatus.Executing
+                    || x.Status == MissionStatus.Waiting)
+                .OrderBy(o => o.Status);
+            if(!missions.Any())
             {
                 // no more missions are available for scheduling on this bay
                 this.NotifyAssignedMissionOperationChanged(bayNumber, null, null);

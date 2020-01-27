@@ -224,6 +224,7 @@
 
 
         <parameters:ImportExportFeatures Grid.Row="2"
+                                         Margin="0,15,0,0"
                                          Input="{Binding Path=SelectedConfiguration}"
                                          Output="{Binding Path=ImportingConfiguration, Mode=OneWayToSource}">            
         </parameters:ImportExportFeatures>

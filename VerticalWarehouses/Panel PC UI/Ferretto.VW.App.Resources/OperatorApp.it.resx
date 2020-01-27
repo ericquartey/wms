@@ -1166,9 +1166,18 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
     <value>Descrizione articolo</value>
   </data>
   <data name="ItemCode" xml:space="preserve">
-    <value>Codice articolo</value>
+    <value>Codice art.</value>
   </data>
   <data name="CompartmentId" xml:space="preserve">
     <value>Id Scomp.</value>
+  </data>
+  <data name="AdjustmentQuantity" xml:space="preserve">
+    <value>Quantità da rettificare  [{0}]</value>
+  </data>
+  <data name="PutQuantity" xml:space="preserve">
+    <value>Quantità da versare [{0}]</value>
+  </data>
+  <data name="PickingQuantity" xml:space="preserve">
+    <value>Quantità da prelevare [{0}]</value>
   </data>
 </root>

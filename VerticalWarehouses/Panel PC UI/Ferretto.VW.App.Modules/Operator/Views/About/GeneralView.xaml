@@ -367,7 +367,6 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-
                             <TextBlock Margin="0,20,0,0"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
@@ -407,7 +406,6 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-
                             <TextBlock Margin="0,20,0,0"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
@@ -445,7 +443,6 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-
 
                             <TextBlock Margin="0,20,0,0"
                                        HorizontalAlignment="Center"
@@ -505,7 +502,6 @@
                     </Grid>
                 </Border>
             </Border>
-
 
             <controls:PpcButton Grid.Row="6"
                                 Grid.Column="0"

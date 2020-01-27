@@ -355,7 +355,6 @@
                       DataContext="{Binding Path=Structures, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}}"
                       VerticalScrollBarVisibility="Auto"
                       Visibility="{Binding Path=Count, Converter={StaticResource TTUI}}">
-
             <ItemsControl ItemsSource="{Binding}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -365,11 +364,24 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <ctrls:PpcButton Title="{Binding Category}"
-                                         Margin="0,0,30,30"
                                          Abbrevation="{Binding AbbrevationCategory}"
                                          BorderBrush="{DynamicResource FerrettoRed}"
-                                         Content="{Binding Description}"
-                                         Style="{DynamicResource PpcButtonMenuCardStyle}">
+                                         Content="{Binding Description}">
+                            <ctrls:PpcButton.Style>
+                                <Style BasedOn="{StaticResource PpcButtonMenuCardStyle}"
+                                       TargetType="{x:Type ctrls:PpcButton}">
+                                    <Setter Property="Margin" Value="0,0,30,30" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsNavigating, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Scaffolder}}"
+                                                     Value="True">
+                                            <Setter Property="Margin" Value="0,0,15,20" />
+                                            <Setter Property="Height" Value="80" />
+                                            <Setter Property="Width" Value="180" />
+                                            <Setter Property="FontSize" Value="{DynamicResource FontSize_Normal}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ctrls:PpcButton.Style>
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Click">
                                     <i:CallMethodAction MethodName="SelectCategory"

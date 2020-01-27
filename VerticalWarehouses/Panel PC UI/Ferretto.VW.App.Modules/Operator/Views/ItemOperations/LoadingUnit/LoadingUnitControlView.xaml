@@ -23,9 +23,8 @@
                                 VerticalAlignment="Top"
                                 HorizontalAlignment="Left"                                
                                 TextBlock.TextAlignment="Right"
-                                Content="Loading unit"
-                                Command="{Binding ChangeModeLoadingUnitCommand}"
-                                CommandParameter="{x:Static res:OperatorApp.LoadingUnit}"
+                                Content="{x:Static res:OperatorApp.LoadingUnit}"
+                                Command="{Binding ChangeModeLoadingUnitCommand}"                               
                                 Foreground="{DynamicResource FerrettoPureWhite}"
                                 Visibility="{Binding IsListVisibile, Converter={StaticResource BTVC}}"
                                 Kind="Grid">
@@ -36,9 +35,8 @@
                                 Height="50"                              
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
-                                Content="Griglia"
-                                Command="{Binding ChangeModeListCommand}"
-                                CommandParameter="Grid"
+                                Content="{x:Static res:OperatorApp.List}"
+                                Command="{Binding ChangeModeListCommand}"                                
                                 Foreground="{DynamicResource FerrettoPureWhite}"
                                 Visibility="{Binding IsListVisibile, Converter={StaticResource BTVIC}}"
                                 Kind="Table" />
@@ -49,10 +47,7 @@
         <Grid Name="TrayControlGrid"
                   Grid.Row="1"
                   Visibility="{Binding IsListVisibile, Converter={StaticResource BTVIC}}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="720"/>
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
+          
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" MaxHeight="300"/>
                 <RowDefinition Height="*" MinHeight="220"/>
@@ -70,51 +65,64 @@
                                         DimensionHeight="{Binding LoadingUnitDepth}"
                                         DimensionWidth="{Binding LoadingUnitWidth}"
                                         GridLinesColor="#3c3c3c"
-                                        IsEnabled="True"
+                                        IsEnabled="{Binding IsOperationVisible, Converter={StaticResource BNC}}"
                                         IsRotated="{Binding IsBaySideBack}"
                                         SelectedColorFilterFunc="{Binding CompartmentColoringFunction}"
                                         SelectedItem="{Binding SelectedCompartment, Mode=TwoWay}"
                                         ShowBackground="False"
                                         ShowRuler="False" />
 
-            <views:ItemsDataGridView Grid.Row="1"
-                                         Visibility="{Binding IsListVisibile, Converter={StaticResource BTVIC}}" />
-
             <Grid Grid.Row="1"
-                    Grid.Column="1"
-                    Margin="0 0 0 0"
-                    VerticalAlignment="Top">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+                  Visibility="{Binding IsOperationVisible, Converter={StaticResource BTVIC}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="720"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                
+                <views:ItemsDataGridView Visibility="{Binding IsListVisibile, Converter={StaticResource BTVIC}}" />
 
-                <controls:PpcButton Grid.Row="0"                                                               
-                                    VerticalAlignment="Top"
-                                    Command="{Binding ItemUpCommand}"
-                                    Content="{x:Static res:OperatorApp.CommonUp}" />
+                <Grid 
+                        Grid.Column="1"
+                        Margin="0 0 0 0"
+                        VerticalAlignment="Top">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
 
-                <controls:PpcButton Grid.Row="1"
-                                    Margin="0,15,0,0"                                
-                                    Command="{Binding ItemDownCommand}"
-                                    Content="{x:Static res:OperatorApp.CommonDown}" />
+                    <controls:PpcButton Grid.Row="0"                                                               
+                                        VerticalAlignment="Top"
+                                        Command="{Binding ItemUpCommand}"
+                                        Content="{x:Static res:OperatorApp.CommonUp}" />
 
-            </Grid>
+                    <controls:PpcButton Grid.Row="1"
+                                        Margin="0,15,0,0"                                
+                                        Command="{Binding ItemDownCommand}"
+                                        Content="{x:Static res:OperatorApp.CommonDown}" />
+
+                </Grid>
+        </Grid>
+
+            <views:LoadingUnitOperationsView Grid.Row="1"
+                                             Visibility="{Binding IsOperationVisible, Converter={StaticResource BTVC}}"/>
         </Grid>
 
         <Grid Name="ListGrid"
-                  Grid.Row="1"
+                  Grid.Row="1"                 
                   Visibility="{Binding IsListVisibile, Converter={StaticResource BTVC}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="720"/>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
+            
             <views:ItemsCompartmentsDataGridView />
 
             <Grid Grid.Row="0"
-                    Grid.Column="1"                    
-                    VerticalAlignment="Top">
+                  Grid.Column="1"
+                  VerticalAlignment="Top"
+                  IsEnabled="{Binding IsOperationVisible, Converter={StaticResource BNC}}">
+                
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
