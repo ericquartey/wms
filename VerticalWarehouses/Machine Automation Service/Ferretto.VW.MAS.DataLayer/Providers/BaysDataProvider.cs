@@ -978,6 +978,7 @@ namespace Ferretto.VW.MAS.DataLayer
         public void SetBayActive(BayNumber bayNumber, bool active)
         {
             // TODO: Check bay activation logic
+            // TODO: Check method Deactivate
 
             lock (this.dataContext)
             {
