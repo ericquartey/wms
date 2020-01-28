@@ -761,7 +761,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 acceleration,
                 deceleration,
                 switchPosition,
-                direction);
+                direction)
+            {
+                SourceBayPositionId = bayPositionId,
+            };
 
             this.PublishCommand(
                 messageData,

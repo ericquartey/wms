@@ -176,9 +176,18 @@ namespace Ferretto.VW.MAS.DataLayer
         /// height = kMul * profile + kSum;
         /// </summary>
         [Obsolete("This method contains business logic. It should not be in the DataLayer.")]
-        public double ConvertProfileToHeight(ushort profile)
+        public double ConvertProfileToHeight(ushort profile, int positionId)
         {
-            return (profile * this.kMul) + this.kSum;
+            lock (this.dataContext)
+            {
+                var bay = this.GetByBayPositionId(positionId);
+                if (bay is null)
+                {
+                    throw new EntityNotFoundException();
+                }
+                var offset = bay.Positions.FirstOrDefault(x => x.Id == positionId)?.ProfileOffset ?? 0;
+                return (profile * this.kMul) + this.kSum + offset;
+            }
         }
 
         [Obsolete("This method contains business logic. It should not be in the DataLayer.")]
@@ -278,7 +287,9 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var bay = this.dataContext.Bays.SingleOrDefault(b => b.Positions.Any(p => p.Id == bayPositionId));
+                var bay = this.dataContext.Bays
+                    .Include(b => b.Positions)
+                    .SingleOrDefault(b => b.Positions.Any(p => p.Id == bayPositionId));
                 if (bay is null)
                 {
                     throw new EntityNotFoundException(bayPositionId);

@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Bay ClearMission(BayNumber bayNumber);
 
-        double ConvertProfileToHeight(ushort profile);
+        double ConvertProfileToHeight(ushort profile, int positionId);
 
         double ConvertPulsesToMillimeters(double pulses, InverterIndex inverterIndex);
 
