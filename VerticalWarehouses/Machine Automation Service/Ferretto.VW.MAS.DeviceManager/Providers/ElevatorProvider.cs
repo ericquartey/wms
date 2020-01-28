@@ -685,7 +685,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.ElevatorBay);
         }
 
-        public void MoveHorizontalManual(HorizontalMovementDirection direction, double distance, bool measure, int? loadingUnitId, BayNumber requestingBay, MessageActor sender)
+        public void MoveHorizontalManual(HorizontalMovementDirection direction, double distance, bool measure, int? loadingUnitId, int? positionId, BayNumber requestingBay, MessageActor sender)
         {
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
 
@@ -718,6 +718,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if (loadingUnitId.HasValue)
             {
                 messageData.LoadingUnitId = loadingUnitId;
+                messageData.SourceBayPositionId = positionId;
             }
 
             this.PublishCommand(

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
@@ -40,6 +41,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
             var measure = (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell);
+            int? positionId = null;
             switch (this.Mission.LoadUnitSource)
             {
                 case LoadingUnitLocation.Cell:
@@ -76,6 +78,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceBay, this.Mission.TargetBay);
                             throw new StateMachineException(ErrorDescriptions.LoadUnitSourceBay, this.Mission.TargetBay, MessageActor.MachineManager);
                         }
+                        positionId = bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitSource).Id;
                         this.Mission.Direction = (bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards);
                         this.Mission.OpenShutterPosition = this.LoadingUnitMovementProvider.GetShutterOpenPosition(bay, this.Mission.LoadUnitSource);
                         var shutterInverter = bay.Shutter.Inverter.Index;
@@ -112,13 +115,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 else
                 {
                     this.Logger.LogDebug($"MoveManualLoadingUnitForward start: direction {this.Mission.Direction}");
-                    this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, false, measure, this.Mission.LoadUnitId, MessageActor.MachineManager, this.Mission.TargetBay);
+                    this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, false, measure, this.Mission.LoadUnitId, positionId, MessageActor.MachineManager, this.Mission.TargetBay);
                 }
             }
             else
             {
                 this.Logger.LogDebug($"MoveLoadingUnit start: direction {this.Mission.Direction}, openShutter {this.Mission.OpenShutterPosition}, measure {measure}");
-                this.LoadingUnitMovementProvider.MoveLoadingUnit(this.Mission.Direction, true, this.Mission.OpenShutterPosition, measure, MessageActor.MachineManager, this.Mission.TargetBay, this.Mission.LoadUnitId);
+                this.LoadingUnitMovementProvider.MoveLoadingUnit(this.Mission.Direction, true, this.Mission.OpenShutterPosition, measure, MessageActor.MachineManager, this.Mission.TargetBay, this.Mission.LoadUnitId, positionId);
             }
             this.Mission.RestoreConditions = false;
             this.MissionsDataProvider.Update(this.Mission);
@@ -136,6 +139,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 case MessageStatus.OperationEnd:
                     var measure = (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell);
+                    int? positionId = null;
                     if (notification.Type == MessageType.Homing)
                     {
                         if (this.Mission.NeedHomingAxis == Axis.Horizontal)
@@ -177,8 +181,16 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             {
                                 if (this.Mission.NeedHomingAxis == Axis.BayChain)
                                 {
+                                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
+                                    if (bay is null)
+                                    {
+                                        this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceBay, this.Mission.TargetBay);
+                                        throw new StateMachineException(ErrorDescriptions.LoadUnitSourceBay, this.Mission.TargetBay, MessageActor.MachineManager);
+                                    }
+                                    positionId = bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitSource).Id;
+
                                     this.Logger.LogDebug($"MoveManualLoadingUnitForward start: direction {this.Mission.Direction}");
-                                    this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, false, measure, this.Mission.LoadUnitId, MessageActor.MachineManager, this.Mission.TargetBay);
+                                    this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, false, measure, this.Mission.LoadUnitId, positionId, MessageActor.MachineManager, this.Mission.TargetBay);
                                 }
                                 else
                                 {

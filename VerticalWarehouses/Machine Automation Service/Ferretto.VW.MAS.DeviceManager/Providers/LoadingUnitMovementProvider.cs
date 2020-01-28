@@ -358,9 +358,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
         }
 
-        public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, ShutterPosition moveShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId)
+        public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, ShutterPosition moveShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId, int? positionId)
         {
-            this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, loadUnitId, null, (moveShutter != ShutterPosition.NotSpecified), measure, requestingBay, sender);
+            this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, loadUnitId, null, (moveShutter != ShutterPosition.NotSpecified), measure, requestingBay, sender, sourceBayPositionId: positionId);
             if (moveShutter != ShutterPosition.NotSpecified)
             {
                 try
@@ -412,11 +412,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 return false;
             }
-            this.elevatorProvider.MoveHorizontalManual(direction, distance, false, loadUnitId, requestingBay, sender);
+            this.elevatorProvider.MoveHorizontalManual(direction, distance, false, loadUnitId, null, requestingBay, sender);
             return true;
         }
 
-        public bool MoveManualLoadingUnitForward(HorizontalMovementDirection direction, bool isLoadingUnitOnBoard, bool measure, int? loadUnitId, MessageActor sender, BayNumber requestingBay)
+        public bool MoveManualLoadingUnitForward(HorizontalMovementDirection direction, bool isLoadingUnitOnBoard, bool measure, int? loadUnitId, int? positionId, MessageActor sender, BayNumber requestingBay)
         {
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
             var profileType = this.elevatorProvider.SelectProfileType(direction, isLoadingUnitOnBoard);
@@ -435,7 +435,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 // already arrived at destination?
                 distance = 1;
             }
-            this.elevatorProvider.MoveHorizontalManual(direction, distance, measure, loadUnitId, requestingBay, sender);
+            this.elevatorProvider.MoveHorizontalManual(direction, distance, measure, loadUnitId, positionId, requestingBay, sender);
             return true;
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -221,6 +222,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             this.Mission.Direction = HorizontalMovementDirection.Backwards;
             var measure = (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell);
+            int? positionId = null;
             this.Mission.OpenShutterPosition = ShutterPosition.NotSpecified;
             this.Mission.ErrorMovements = MissionErrorMovements.None;
             switch (this.Mission.LoadUnitSource)
@@ -254,6 +256,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         this.Mission.Direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
                     }
+                    positionId = bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitSource).Id;
                     this.Mission.OpenShutterPosition = this.LoadingUnitMovementProvider.GetShutterOpenPosition(bay, this.Mission.LoadUnitSource);
                     var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(this.Mission.TargetBay);
                     var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
@@ -288,7 +291,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             else
             {
                 this.Logger.LogDebug($"{this.GetType().Name}: Manual Horizontal forward positioning start");
-                if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, false, measure, this.Mission.LoadUnitId, MessageActor.MachineManager, this.Mission.TargetBay))
+                if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, false, measure, this.Mission.LoadUnitId, positionId, MessageActor.MachineManager, this.Mission.TargetBay))
                 {
                     this.Mission.ErrorMovements |= MissionErrorMovements.MoveForward;
                 }
@@ -337,8 +340,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             else
             {
                 var isLoaded = (this.Mission.RestoreStep == MissionStep.DepositUnit);
-                var measure = (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell);
-                if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, isLoaded, measure, this.Mission.LoadUnitId, MessageActor.MachineManager, this.Mission.TargetBay))
+                if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, isLoaded, false, this.Mission.LoadUnitId, null, MessageActor.MachineManager, this.Mission.TargetBay))
                 {
                     this.Logger.LogDebug($"{this.GetType().Name}: Manual Horizontal forward positioning start");
                     this.Mission.ErrorMovements |= MissionErrorMovements.MoveForward;

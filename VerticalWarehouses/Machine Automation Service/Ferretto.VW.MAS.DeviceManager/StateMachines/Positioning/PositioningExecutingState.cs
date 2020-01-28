@@ -686,7 +686,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                 if (message.Source == FieldMessageActor.InverterDriver)
                 {
-                    var profileHeight = this.baysDataProvider.ConvertProfileToHeight(data.Profile);
+                    var profileHeight = this.baysDataProvider.ConvertProfileToHeight(data.Profile, this.machineData.MessageData.SourceBayPositionId.Value);
                     this.Logger.LogInformation($"Height measured {profileHeight}mm. Profile {data.Profile / 100.0}%");
 
                     var bayNumber = this.baysDataProvider.GetByInverterIndex(this.machineData.CurrentInverterIndex);
