@@ -27,14 +27,7 @@ namespace Ferretto.VW.MAS.DataLayer
             services
                 .AddSingleton<IDataLayerService, DataLayerService>()
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IHostedService)
-                .AddSingleton<IDbContextRedundancyService<DataLayerContext>, DbContextRedundancyService<DataLayerContext>>()
-
-                //.AddScoped(p =>
-                //    new DataLayerContext(
-                //       isActiveChannel: true,
-                //       p.GetRequiredService<IDbContextRedundancyService<DataLayerContext>>()))
-
-                ;
+                .AddSingleton<IDbContextRedundancyService<DataLayerContext>, DbContextRedundancyService<DataLayerContext>>();
 
             services.AddEntityFrameworkSqlite();
             services.AddDbContext<DataLayerContext>();
