@@ -7,8 +7,6 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
-using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.MachineManager;
 using Ferretto.VW.MAS.MachineManager.MissionMove;
 using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
@@ -105,7 +103,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     || x.Status == MissionStatus.Executing
                     || x.Status == MissionStatus.Waiting)
                 .OrderBy(o => o.Status);
-            if(!missions.Any())
+            if (!missions.Any())
             {
                 // no more missions are available for scheduling on this bay
                 this.NotifyAssignedMissionOperationChanged(bayNumber, null, null);
@@ -287,12 +285,13 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
-        private void GenerateHoming(IBaysDataProvider bayProvider)
+        private bool GenerateHoming(IBaysDataProvider bayProvider, bool isHomingExecuted)
         {
             var bays = bayProvider.GetAll();
-            if (bays.Any(x => x.Carousel != null && !x.Carousel.IsHomingExecuted))
+            bool generated = false;
+            if (bays.Any(x => x.Carousel != null && !x.Carousel.IsHomingExecuted && x.CurrentMission == null))
             {
-                var bayNumber = bays.First(x => x.Carousel != null && !x.Carousel.IsHomingExecuted).Number;
+                var bayNumber = bays.First(x => x.Carousel != null && !x.Carousel.IsHomingExecuted && x.CurrentMission == null).Number;
                 IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, Calibration.FindSensor, null, false);
 
                 this.EventAggregator
@@ -305,8 +304,9 @@ namespace Ferretto.VW.MAS.MissionManager
                             MessageActor.MissionManager,
                             MessageType.Homing,
                             bayNumber));
+                generated = true;
             }
-            else
+            else if (!isHomingExecuted)
             {
                 IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical, Calibration.FindSensor, null, false);
 
@@ -320,10 +320,12 @@ namespace Ferretto.VW.MAS.MissionManager
                             MessageActor.MissionManager,
                             MessageType.Homing,
                             BayNumber.BayOne));
+                generated = true;
             }
+            return generated;
         }
 
-        private async Task InvokeSchedulerAsync()
+        private async Task InvokeSchedulerAsync(IServiceProvider serviceProvider)
         {
             if (!this.dataLayerIsReady)
             {
@@ -331,107 +333,95 @@ namespace Ferretto.VW.MAS.MissionManager
                 return;
             }
 
-            using (var scope = this.ServiceScopeFactory.CreateScope())
+            var modeProvider = serviceProvider.GetRequiredService<IMachineModeProvider>();
+            var bayProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+            var machineProvider = serviceProvider.GetRequiredService<IMachineProvider>();
+
+            switch (modeProvider.GetCurrent())
             {
-                var modeProvider = scope.ServiceProvider.GetRequiredService<IMachineModeProvider>();
-                var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+                case MachineMode.SwitchingToAutomatic:
+                    {
+                        var machineModeDataProvider = serviceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
+                        var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+                        var activeMissions = missionsDataProvider.GetAllActiveMissions();
 
-                switch (modeProvider.GetCurrent())
-                {
-                    case MachineMode.SwitchingToAutomatic:
+                        if (!activeMissions.Any(m => (m.Status == MissionStatus.Executing)
+                            && m.Step > MissionStep.New
+                            && m.Step < MissionStep.Error)
+                            )
                         {
-                            var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
-                            var machineModeDataProvider = scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
-                            var missionsDataProvider = scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
-                            var activeMissions = missionsDataProvider.GetAllActiveMissions();
-
-                            if (!activeMissions.Any(m => (m.Status == MissionStatus.Executing)
-                                && m.Step > MissionStep.New
-                                && m.Step < MissionStep.Error)
+                            if (activeMissions.Any(m => m.Step >= MissionStep.Error)
+                                || !this.GenerateHoming(bayProvider, machineProvider.IsHomingExecuted)
                                 )
                             {
-                                if (!machineProvider.IsHomingExecuted
-                                    && !activeMissions.Any(m => m.Step >= MissionStep.Error || m.Status == MissionStatus.Waiting)
-                                    )
-                                {
-                                    this.GenerateHoming(bayProvider);
-                                }
-                                else
-                                {
-                                    machineModeDataProvider.Mode = MachineMode.Automatic;
-                                    this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
-                                }
-                            }
-                        }
-                        break;
-
-                    case MachineMode.Automatic:
-                        {
-                            foreach (var bay in bayProvider.GetAll())
-                            {
-                                try
-                                {
-                                    if (bay.IsActive)
-                                    {
-                                        await this.ScheduleMissionsOnBayAsync(bay.Number, scope.ServiceProvider, true);
-                                    }
-                                }
-                                catch (Exception ex)
-                                {
-                                    this.Logger.LogError(ex, "Failed to schedule missions on bay {number}.", bay.Number);
-                                }
-                            }
-                        }
-                        break;
-
-                    case MachineMode.SwitchingToCompact:
-                        {
-                            var missionsDataProvider = scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
-                            var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
-
-                            if (!missionsDataProvider.GetAllActiveMissions().Any())
-                            {
-                                if (machineProvider.IsHomingExecuted)
-                                {
-                                    var machineModeDataProvider = scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
-                                    machineModeDataProvider.Mode = MachineMode.Compact;
-                                    this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
-                                }
-                                else
-                                {
-                                    this.GenerateHoming(bayProvider);
-                                }
-                            }
-                        }
-                        break;
-
-                    case MachineMode.Compact:
-                        {
-                            await this.ScheduleCompactingMissionsAsync(scope.ServiceProvider);
-                        }
-                        break;
-
-                    case MachineMode.SwitchingToManual:
-                        {
-                            var missionsDataProvider = scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
-                            if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status == MissionStatus.Executing
-                                && m.Step > MissionStep.New)
-                                )
-                            {
-                                var machineModeDataProvider = scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
-                                machineModeDataProvider.Mode = MachineMode.Manual;
+                                machineModeDataProvider.Mode = MachineMode.Automatic;
                                 this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
                             }
                         }
-                        break;
+                    }
+                    break;
 
-                    default:
+                case MachineMode.Automatic:
+                    {
+                        foreach (var bay in bayProvider.GetAll())
                         {
-                            this.Logger.LogDebug("Cannot perform mission scheduling, because machine is not in automatic mode.");
+                            try
+                            {
+                                if (bay.IsActive)
+                                {
+                                    await this.ScheduleMissionsOnBayAsync(bay.Number, serviceProvider, true);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                this.Logger.LogError(ex, "Failed to schedule missions on bay {number}.", bay.Number);
+                            }
                         }
-                        break;
-                }
+                    }
+                    break;
+
+                case MachineMode.SwitchingToCompact:
+                    {
+                        var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+
+                        if (!missionsDataProvider.GetAllActiveMissions().Any()
+                            && !this.GenerateHoming(bayProvider, machineProvider.IsHomingExecuted))
+                        {
+                            var machineModeDataProvider = serviceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
+                            machineModeDataProvider.Mode = MachineMode.Compact;
+                            this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
+                        }
+
+                    }
+                    break;
+
+                case MachineMode.Compact:
+                    {
+                        await this.ScheduleCompactingMissionsAsync(serviceProvider);
+                    }
+                    break;
+
+                case MachineMode.SwitchingToManual:
+                    {
+                        var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+                        if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status == MissionStatus.Executing
+                            && m.Step > MissionStep.New)
+                            )
+                        {
+                            var machineModeDataProvider = serviceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
+                            machineModeDataProvider.Mode = MachineMode.Manual;
+                            this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
+                        }
+                    }
+                    break;
+
+                default:
+                    {
+                        this.Logger.LogDebug("Cannot perform mission scheduling, because machine is not in automatic mode.");
+                    }
+                    break;
             }
+
         }
 
         private void NotifyAssignedMissionOperationChanged(
@@ -459,16 +449,16 @@ namespace Ferretto.VW.MAS.MissionManager
                 .Publish(notificationMessage);
         }
 
-        private async Task OnBayOperationalStatusChangedAsync()
+        private async Task OnBayOperationalStatusChangedAsync(IServiceProvider serviceProvider)
         {
-            await this.InvokeSchedulerAsync();
+            await this.InvokeSchedulerAsync(serviceProvider);
         }
 
         private async Task OnDataLayerReadyAsync(IServiceProvider serviceProvider)
         {
             GetPersistedMissions(serviceProvider, this.EventAggregator);
             this.dataLayerIsReady = true;
-            await this.InvokeSchedulerAsync();
+            await this.InvokeSchedulerAsync(serviceProvider);
         }
 
         private async Task OnLoadingUnitMovedAsync(NotificationMessage message, IServiceProvider serviceProvider)
@@ -540,20 +530,20 @@ namespace Ferretto.VW.MAS.MissionManager
                 this.Logger.LogError($"Failed to process mission: {ex.Message}");
             }
 
-            await this.InvokeSchedulerAsync();
+            await this.InvokeSchedulerAsync(serviceProvider);
         }
 
-        private async Task OnMachineModeChangedAsync()
+        private async Task OnMachineModeChangedAsync(IServiceProvider serviceProvider)
         {
-            await this.InvokeSchedulerAsync();
+            await this.InvokeSchedulerAsync(serviceProvider);
         }
 
-        private async Task OnNewMachineMissionAvailableAsync()
+        private async Task OnNewMachineMissionAvailableAsync(IServiceProvider serviceProvider)
         {
-            await this.InvokeSchedulerAsync();
+            await this.InvokeSchedulerAsync(serviceProvider);
         }
 
-        private async Task OnOperationComplete(MissionOperationCompletedMessageData messageData)
+        private async Task OnOperationComplete(MissionOperationCompletedMessageData messageData, IServiceProvider serviceProvider)
         {
             Contract.Requires(messageData != null);
 
@@ -563,39 +553,38 @@ namespace Ferretto.VW.MAS.MissionManager
                 return;
             }
 
-            using (var scope = this.ServiceScopeFactory.CreateScope())
+
+            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+
+            var bay = baysDataProvider
+                .GetAll()
+                .SingleOrDefault(b => b.CurrentWmsMissionOperationId == messageData.MissionOperationId);
+
+            if (bay is null)
             {
-                var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+                this.Logger.LogWarning("Cannot complete operation {operationId}: none of the bays is currently executing it.", messageData.MissionOperationId);
+            }
+            else
+            {
+                // close operation and schedule next
+                baysDataProvider.ClearMission(bay.Number);
 
-                var bay = baysDataProvider
-                    .GetAll()
-                    .SingleOrDefault(b => b.CurrentWmsMissionOperationId == messageData.MissionOperationId);
+                var currentMode = serviceProvider
+                    .GetRequiredService<IMachineModeProvider>()
+                    .GetCurrent();
 
-                if (bay is null)
+                switch (currentMode)
                 {
-                    this.Logger.LogWarning("Cannot complete operation {operationId}: none of the bays is currently executing it.", messageData.MissionOperationId);
-                }
-                else
-                {
-                    // close operation and schedule next
-                    baysDataProvider.ClearMission(bay.Number);
+                    case MachineMode.Automatic:
+                        await this.ScheduleMissionsOnBayAsync(bay.Number, serviceProvider);
+                        break;
 
-                    var currentMode = scope.ServiceProvider
-                        .GetRequiredService<IMachineModeProvider>()
-                        .GetCurrent();
-
-                    switch (currentMode)
-                    {
-                        case MachineMode.Automatic:
-                            await this.ScheduleMissionsOnBayAsync(bay.Number, scope.ServiceProvider);
-                            break;
-
-                        case MachineMode.Compact:
-                            await this.ScheduleCompactingMissionsAsync(scope.ServiceProvider);
-                            break;
-                    }
+                    case MachineMode.Compact:
+                        await this.ScheduleCompactingMissionsAsync(serviceProvider);
+                        break;
                 }
             }
+
         }
 
         #endregion

@@ -387,10 +387,15 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var bay = this.dataContext.Bays.AsNoTracking().SingleOrDefault(b =>
-                    b.Inverter.Index == inverterIndex
-                    ||
-                    b.Shutter.Inverter.Index == inverterIndex);
+                var bay = this.dataContext.Bays
+                        .Include(i => i.Inverter)
+                        .Include(i => i.Shutter)
+                            .ThenInclude(s => s.Inverter)
+                        .AsNoTracking()
+                        .SingleOrDefault(b =>
+                            b.Inverter.Index == inverterIndex
+                            ||
+                            b.Shutter.Inverter.Index == inverterIndex);
 
                 if (bay is null)
                 {

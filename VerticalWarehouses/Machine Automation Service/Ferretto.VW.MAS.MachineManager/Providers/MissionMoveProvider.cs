@@ -230,23 +230,19 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 );
             if (waitMission != null)
             {
-                //using (var transaction = missionsDataProvider.GetContextTransaction())
+                try
                 {
-                    try
+                    if (baysDataProvider.IsMissionInBay(waitMission))
                     {
-                        if (baysDataProvider.IsMissionInBay(waitMission))
-                        {
-                            baysDataProvider.AssignMission(mission.TargetBay, mission);
-                        }
+                        baysDataProvider.ClearMission(mission.TargetBay);
+                    }
 
-                        missionsDataProvider.Delete(waitMission.Id);
-                        this.Logger.LogDebug($"{this.GetType().Name}: Delete {waitMission}");
-                    }
-                    catch (Exception ex)
-                    {
-                        return false;
-                    }
-                    //transaction.Commit();
+                    missionsDataProvider.Delete(waitMission.Id);
+                    this.Logger.LogDebug($"{this.GetType().Name}: Delete {waitMission}");
+                }
+                catch (Exception ex)
+                {
+                    return false;
                 }
             }
             return true;

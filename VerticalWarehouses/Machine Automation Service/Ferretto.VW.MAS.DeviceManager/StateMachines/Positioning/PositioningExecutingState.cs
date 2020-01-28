@@ -602,37 +602,40 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                 case MovementMode.ProfileCalibration:
                     {
-                        var machineResourcesProvider = this.scope.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
-                        if (machineResourcesProvider.IsProfileCalibratedBay(this.machineData.RequestingBay))
+                        if (message.DeviceIndex == (byte)this.machineData.CurrentInverterIndex)
                         {
-                            var bayNumber = this.baysDataProvider.GetByInverterIndex(this.machineData.CurrentInverterIndex);
-
-                            var chainPosition = this.baysDataProvider.GetChainPosition(bayNumber);
-
-                            if (this.countProfileCalibrated == 0
-                                && !this.profileStartPosition.HasValue)
+                            var machineResourcesProvider = this.scope.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
+                            if (machineResourcesProvider.IsProfileCalibratedBay(this.machineData.RequestingBay))
                             {
-                                this.profileStartPosition = chainPosition;
-                                this.Logger.LogDebug($"profileStartPosition = {this.profileStartPosition.Value}");
+                                var data = message.Data as InverterStatusUpdateFieldMessageData;
+                                var chainPosition = data.CurrentPosition;
+
+                                if (this.countProfileCalibrated == 0
+                                    && !this.profileStartPosition.HasValue)
+                                {
+                                    this.profileStartPosition = chainPosition;
+                                    this.Logger.LogDebug($"profileStartPosition = {this.profileStartPosition.Value}");
+                                }
+                                else if (this.countProfileCalibrated == 1
+                                    && !this.profileCalibratePosition.HasValue)
+                                {
+                                    this.profileCalibratePosition = chainPosition - this.profileStartPosition.Value;
+
+                                    // TODO - store the profileCalibratePosition in the corrisponding configuration parameter or send it to the UI?
+                                    this.Logger.LogInformation($"profileCalibratePosition Reached! Value {this.profileCalibratePosition.Value}");
+
+                                    this.Stop(StopRequestReason.Stop);
+
+                                    // TODO - go back to starting position (axis.LastIdealPosition)
+                                }
                             }
-                            else if (this.countProfileCalibrated == 1
-                                && !this.profileCalibratePosition.HasValue)
+                            else if (this.countProfileCalibrated == 0
+                                && this.profileStartPosition.HasValue)
                             {
-                                this.profileCalibratePosition = chainPosition - this.profileStartPosition.Value;
-
-                                // TODO - store the profileCalibratePosition in the corrisponding configuration parameter or send it to the UI?
-                                this.Logger.LogInformation($"profileCalibratePosition Reached! Value {this.profileCalibratePosition.Value}");
-
-                                this.Stop(StopRequestReason.Stop);
+                                // profileCalibrated signal is low after startPosition
+                                this.countProfileCalibrated = 1;
                             }
                         }
-                        else if (this.countProfileCalibrated == 0
-                            && this.profileStartPosition.HasValue)
-                        {
-                            // profileCalibrated signal is low after startPosion
-                            this.countProfileCalibrated = 1;
-                        }
-
                         break;
                     }
 

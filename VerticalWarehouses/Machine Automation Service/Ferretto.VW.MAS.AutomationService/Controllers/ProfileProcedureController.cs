@@ -50,7 +50,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Calibration(HorizontalMovementDirection direction)
         {
-            this.elevatorProvider.MoveHorizontalProfileCalibration(direction, this.BayNumber, MessageActor.AutomationService);
+            this.elevatorProvider.MoveHorizontalProfileCalibration(this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
