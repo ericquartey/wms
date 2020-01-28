@@ -16,6 +16,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool IsMachineRunning { get; set; }
 
+        double ElevatorHorizontalPosition { get; set; }
+
+        double ElevatorVerticalPosition { get; set; }
+
         #endregion
     }
 }

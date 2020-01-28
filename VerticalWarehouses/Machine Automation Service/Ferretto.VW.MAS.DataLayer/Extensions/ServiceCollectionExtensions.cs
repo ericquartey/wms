@@ -55,7 +55,6 @@ namespace Ferretto.VW.MAS.DataLayer
             services
                 .AddSingleton<IVerticalOriginVolatileSetupStatusProvider, VerticalOriginVolatileSetupStatusProvider>()
                 .AddSingleton<IMachineVolatileDataProvider, MachineVolatileDataProvider>()
-                .AddSingleton<IElevatorVolatileDataProvider, ElevatorVolatileDataProvider>()
                 .AddSingleton<IBayChainVolatileDataProvider, BayChainVolatileDataProvider>();
 
             return services;
