@@ -31,7 +31,6 @@ namespace Ferretto.VW.MAS.DataLayer
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.cache = cache ?? throw new ArgumentNullException(nameof(cache));
-            
         }
 
         #endregion
@@ -47,7 +46,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
-            this.cache.Remove(BaysDataProvider.GetElevatorAxesCacheKey());
+            this.cache.Remove(ElevatorDataProvider.GetAxesCacheKey());
 
             lock (this.dataContext)
             {
@@ -60,7 +59,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
-            this.cache.Remove(BaysDataProvider.GetElevatorAxesCacheKey());
+            this.cache.Remove(ElevatorDataProvider.GetAxesCacheKey());
 
             lock (this.dataContext)
             {
@@ -182,7 +181,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
-            this.cache.Remove(BaysDataProvider.GetElevatorAxesCacheKey());
+            this.cache.Remove(ElevatorDataProvider.GetAxesCacheKey());
 
             context.ElevatorAxisManualParameters.RemoveRange(context.ElevatorAxisManualParameters);
             context.ShutterManualParameters.RemoveRange(context.ShutterManualParameters);
@@ -232,7 +231,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
-            this.cache.Remove(BaysDataProvider.GetElevatorAxesCacheKey());
+            this.cache.Remove(ElevatorDataProvider.GetAxesCacheKey());
 
             machine.Elevator?.Axes.ForEach((a) =>
             {

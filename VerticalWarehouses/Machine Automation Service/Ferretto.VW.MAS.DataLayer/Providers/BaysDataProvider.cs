@@ -338,7 +338,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (bay is null)
                 {
-                    if (this.GetElevatorAxes().Any(a => a.Inverter.Index == inverterIndex))
+                    if (this.elevatorDataProvider.GetElevatorAxes().Any(a => a.Inverter.Index == inverterIndex))
                     {
                         return BayNumber.ElevatorBay;
                     }
@@ -515,30 +515,6 @@ namespace Ferretto.VW.MAS.DataLayer
         public double GetChainPosition(BayNumber bayNumber)
         {
             return this.machineVolatileDataProvider.GetBayEncoderPosition(bayNumber);
-        }
-
-        public IEnumerable<ElevatorAxis> GetElevatorAxes()
-        {
-            lock (this.dataContext)
-            {
-                var cacheKey = GetElevatorAxesCacheKey();
-                if (!this.cache.TryGetValue(cacheKey, out IEnumerable<ElevatorAxis> cacheEntry))
-                {
-                    cacheEntry = this.dataContext.ElevatorAxes
-                        .AsNoTracking()
-                        .Include(i => i.Inverter)
-                        .ToList();
-
-                    if (cacheEntry is null)
-                    {
-                        throw new EntityNotFoundException(string.Empty);
-                    }
-
-                    this.cache.Set(cacheKey, cacheEntry, this.cacheOptions);
-                }
-
-                return cacheEntry;
-            }
         }
 
         [Obsolete("This method contains business logic. It should not be in the DataLayer.")]
@@ -1014,8 +990,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 return this.GetByNumber(bayNumber);
             }
         }
-
-        internal static string GetElevatorAxesCacheKey() => $"{nameof(GetElevatorAxes)}";
 
         private void Update(Bay bay)
         {

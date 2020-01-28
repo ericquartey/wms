@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
@@ -38,11 +39,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
-        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
-
         private readonly IEventAggregator eventAggregator;
 
         private readonly ILogger<DataLayerContext> logger;
+
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
@@ -190,6 +191,30 @@ namespace Ferretto.VW.MAS.DataLayer
                 //    }
 
                 return currentCell;
+            }
+        }
+
+        public IEnumerable<ElevatorAxis> GetElevatorAxes()
+        {
+            lock (this.dataContext)
+            {
+                var cacheKey = GetAxesCacheKey();
+                if (!this.cache.TryGetValue(cacheKey, out IEnumerable<ElevatorAxis> cacheEntry))
+                {
+                    cacheEntry = this.dataContext.ElevatorAxes
+                        .AsNoTracking()
+                        .Include(i => i.Inverter)
+                        .ToList();
+
+                    if (cacheEntry is null)
+                    {
+                        throw new EntityNotFoundException(string.Empty);
+                    }
+
+                    this.cache.Set(cacheKey, cacheEntry, this.cacheOptions);
+                }
+
+                return cacheEntry;
             }
         }
 
@@ -421,6 +446,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.setupProceduresDataProvider.MarkAsCompleted(procedureParameters);
             }
         }
+
+        internal static string GetAxesCacheKey() => $"{nameof(GetElevatorAxes)}";
 
         internal static string GetAxisCacheKey(Orientation orientation) => $"{nameof(GetAxis)}{orientation}";
 

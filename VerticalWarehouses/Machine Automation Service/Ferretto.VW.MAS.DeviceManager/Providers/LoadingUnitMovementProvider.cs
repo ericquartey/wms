@@ -404,7 +404,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return MessageStatus.NotSpecified;
         }
 
-        public bool MoveManualLoadingUnitBack(HorizontalMovementDirection direction, int? loadUnitId, MessageActor sender, BayNumber requestingBay)
+        public bool MoveManualLoadingUnitBackward(HorizontalMovementDirection direction, int? loadUnitId, MessageActor sender, BayNumber requestingBay)
         {
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
             var distance = Math.Abs(this.elevatorDataProvider.HorizontalPosition - axis.LastIdealPosition);
