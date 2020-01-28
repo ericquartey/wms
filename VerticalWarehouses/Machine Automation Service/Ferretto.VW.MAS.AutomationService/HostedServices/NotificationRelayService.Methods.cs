@@ -28,11 +28,11 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private void ChangeMachineMode(IServiceProvider serviceProvider)
         {
-            var machineModeDataProvider = serviceProvider.GetRequiredService<IMachineVolatileDataProvider>();
-            if (machineModeDataProvider.Mode == MachineMode.SwitchingToAutomatic)
+            var machineVolatileDataProvider = serviceProvider.GetRequiredService<IMachineVolatileDataProvider>();
+            if (machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic)
             {
-                machineModeDataProvider.Mode = MachineMode.Automatic;
-                this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
+                machineVolatileDataProvider.Mode = MachineMode.Automatic;
+                this.Logger.LogInformation($"Machine status switched to {machineVolatileDataProvider.Mode}");
             }
         }
 
