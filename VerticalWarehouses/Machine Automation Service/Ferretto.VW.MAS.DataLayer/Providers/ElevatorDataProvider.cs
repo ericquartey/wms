@@ -38,7 +38,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
-        private readonly IElevatorVolatileDataProvider elevatorVolatileDataProvider;
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -55,7 +55,7 @@ namespace Ferretto.VW.MAS.DataLayer
             IMemoryCache memoryCache,
             IConfiguration configuration,
             IEventAggregator eventAggregator,
-            IElevatorVolatileDataProvider elevatorVolatileDataProvider,
+            IMachineVolatileDataProvider machineVolatileDataProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider,
             ILogger<DataLayerContext> logger)
         {
@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.cache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.elevatorVolatileDataProvider = elevatorVolatileDataProvider ?? throw new ArgumentNullException(nameof(elevatorVolatileDataProvider));
+            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
 
             this.cacheOptions = configuration.GetMemoryCacheOptions();
@@ -75,12 +75,12 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public double HorizontalPosition
         {
-            get => this.elevatorVolatileDataProvider.HorizontalPosition;
+            get => this.machineVolatileDataProvider.ElevatorHorizontalPosition;
             set
             {
-                if (this.elevatorVolatileDataProvider.HorizontalPosition != value)
+                if (this.machineVolatileDataProvider.ElevatorHorizontalPosition != value)
                 {
-                    this.elevatorVolatileDataProvider.HorizontalPosition = value;
+                    this.machineVolatileDataProvider.ElevatorHorizontalPosition = value;
 
                     this.NotifyElevatorPositionChanged();
                 }
@@ -89,12 +89,12 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public double VerticalPosition
         {
-            get => this.elevatorVolatileDataProvider.VerticalPosition;
+            get => this.machineVolatileDataProvider.ElevatorVerticalPosition;
             set
             {
-                if (this.elevatorVolatileDataProvider.VerticalPosition != value)
+                if (this.machineVolatileDataProvider.ElevatorVerticalPosition != value)
                 {
-                    this.elevatorVolatileDataProvider.VerticalPosition = value;
+                    this.machineVolatileDataProvider.ElevatorVerticalPosition = value;
 
                     var currentCell = this.GetCurrentCell();
                     if (currentCell != null && !this.IsVerticalPositionWithinTolerance(currentCell.Position))
@@ -427,9 +427,9 @@ namespace Ferretto.VW.MAS.DataLayer
         private bool IsVerticalPositionWithinTolerance(double position)
         {
             return
-                this.elevatorVolatileDataProvider.VerticalPosition - VerticalPositionValidationTolerance < position
+                this.machineVolatileDataProvider.ElevatorVerticalPosition - VerticalPositionValidationTolerance < position
                 &&
-                this.elevatorVolatileDataProvider.VerticalPosition + VerticalPositionValidationTolerance > position;
+                this.machineVolatileDataProvider.ElevatorVerticalPosition + VerticalPositionValidationTolerance > position;
         }
 
         private void NotifyElevatorPositionChanged()
@@ -442,8 +442,8 @@ namespace Ferretto.VW.MAS.DataLayer
                     new NotificationMessage
                     {
                         Data = new ElevatorPositionMessageData(
-                            this.elevatorVolatileDataProvider.VerticalPosition,
-                            this.elevatorVolatileDataProvider.HorizontalPosition,
+                            this.machineVolatileDataProvider.ElevatorVerticalPosition,
+                            this.machineVolatileDataProvider.ElevatorHorizontalPosition,
                             this.GetCurrentCell()?.Id,
                             pos?.Id,
                             pos?.IsUpper),

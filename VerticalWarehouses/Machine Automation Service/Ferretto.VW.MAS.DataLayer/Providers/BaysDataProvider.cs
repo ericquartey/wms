@@ -24,8 +24,6 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
-        private readonly IBayChainVolatileDataProvider bayChainVolatileDataProvider;
-
         private readonly IMemoryCache cache;
 
         private readonly MemoryCacheEntryOptions cacheOptions;
@@ -48,6 +46,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly IMachineProvider machineProvider;
 
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
+
         private readonly NotificationEvent notificationEvent;
 
         #endregion
@@ -58,17 +58,17 @@ namespace Ferretto.VW.MAS.DataLayer
             DataLayerContext dataContext,
             IEventAggregator eventAggregator,
             IMachineProvider machineProvider,
+            IMachineVolatileDataProvider machineVolatileDataProvider,
             IConfiguration configuration,
             IElevatorDataProvider elevatorDataProvider,
-            IBayChainVolatileDataProvider bayChainVolatileDataProvider,
             IMemoryCache memoryCache,
             ILogger<DataLayerContext> logger)
             : base(eventAggregator)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
-            this.bayChainVolatileDataProvider = bayChainVolatileDataProvider ?? throw new ArgumentNullException(nameof(bayChainVolatileDataProvider));
             this.cache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
@@ -575,7 +575,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public double GetChainPosition(BayNumber bayNumber)
         {
-            return this.bayChainVolatileDataProvider.GetPositionByBayNumber(bayNumber);
+            return this.machineVolatileDataProvider.GetBayEncoderPosition(bayNumber);
         }
 
         public IEnumerable<ElevatorAxis> GetElevatorAxes()
@@ -750,7 +750,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public bool GetLightOn(BayNumber bayNumber)
         {
-            return this.machineProvider.IsBayLightOn.GetValueOrDefault(bayNumber);
+            return this.machineVolatileDataProvider.IsBayLightOn.GetValueOrDefault(bayNumber);
         }
 
         public LoadingUnit GetLoadingUnitByDestination(LoadingUnitLocation location)
@@ -923,7 +923,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void SetChainPosition(BayNumber bayNumber, double value)
         {
-            this.bayChainVolatileDataProvider.SetPosition(bayNumber, value);
+            this.machineVolatileDataProvider.SetBayEncoderPosition(bayNumber, value);
         }
 
         public Bay SetCurrentOperation(BayNumber targetBay, BayOperation newOperation)
@@ -975,8 +975,10 @@ namespace Ferretto.VW.MAS.DataLayer
             this.dataContext.SaveChanges();
         }
 
-        public void UpdateHoming(BayNumber bayNumber, bool isExecuted)
+        public void SetBayActive(BayNumber bayNumber, bool active)
         {
+            // TODO: Check bay activation logic
+
             lock (this.dataContext)
             {
                 var bay = this.dataContext.Bays
@@ -993,8 +995,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new InvalidOperationException($"The bay {bayNumber} has no carousel.");
                 }
 
-                bay.Carousel.IsHomingExecuted = isExecuted;
-                bay.IsActive = true;
+                bay.IsActive = active;
                 this.dataContext.SaveChanges();
 
                 this.notificationEvent.Publish(

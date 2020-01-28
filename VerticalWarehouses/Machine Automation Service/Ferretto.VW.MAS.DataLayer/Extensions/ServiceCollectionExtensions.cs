@@ -27,14 +27,7 @@ namespace Ferretto.VW.MAS.DataLayer
             services
                 .AddSingleton<IDataLayerService, DataLayerService>()
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IHostedService)
-                .AddSingleton<IDbContextRedundancyService<DataLayerContext>, DbContextRedundancyService<DataLayerContext>>()
-
-                //.AddScoped(p =>
-                //    new DataLayerContext(
-                //       isActiveChannel: true,
-                //       p.GetRequiredService<IDbContextRedundancyService<DataLayerContext>>()))
-
-                ;
+                .AddSingleton<IDbContextRedundancyService<DataLayerContext>, DbContextRedundancyService<DataLayerContext>>();
 
             services.AddEntityFrameworkSqlite();
             services.AddDbContext<DataLayerContext>();
@@ -56,14 +49,12 @@ namespace Ferretto.VW.MAS.DataLayer
                 .AddTransient<ITorqueCurrentMeasurementsDataProvider, TorqueCurrentMeasurementsDataProvider>()
                 .AddTransient<IWmsSettingsProvider, WmsSettingsProvider>()
                 .AddTransient<IUsersProvider, UsersProvider>()
-                .AddTransient<IMachineMissionsProvider, MachineMissionsProvider>();
+                .AddTransient<IMachineMissionsProvider, MachineMissionsProvider>()
+                .AddTransient<IMachineProvider, MachineProvider>();
 
             services
-                .AddSingleton<IMachineProvider, MachineProvider>()
                 .AddSingleton<IVerticalOriginVolatileSetupStatusProvider, VerticalOriginVolatileSetupStatusProvider>()
-                .AddSingleton<IMachineModeVolatileDataProvider, MachineModeVolatileDataProvider>()
-                .AddSingleton<IElevatorVolatileDataProvider, ElevatorVolatileDataProvider>()
-                .AddSingleton<IBayChainVolatileDataProvider, BayChainVolatileDataProvider>();
+                .AddSingleton<IMachineVolatileDataProvider, MachineVolatileDataProvider>();
 
             return services;
         }

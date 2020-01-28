@@ -1250,9 +1250,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("homingFastSpeed", Required = Newtonsoft.Json.Required.Always)]
         public double HomingFastSpeed { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("isHomingExecuted", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsHomingExecuted { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("lastIdealPosition", Required = Newtonsoft.Json.Required.Always)]
         public double LastIdealPosition { get; set; }
     

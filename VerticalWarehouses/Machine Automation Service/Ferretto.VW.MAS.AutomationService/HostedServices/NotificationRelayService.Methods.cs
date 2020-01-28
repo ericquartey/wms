@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private void ChangeMachineMode(IServiceProvider serviceProvider)
         {
-            var machineModeDataProvider = serviceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
+            var machineModeDataProvider = serviceProvider.GetRequiredService<IMachineVolatileDataProvider>();
             if (machineModeDataProvider.Mode == MachineMode.SwitchingToAutomatic)
             {
                 machineModeDataProvider.Mode = MachineMode.Automatic;
@@ -62,11 +62,11 @@ namespace Ferretto.VW.MAS.AutomationService
                     {
                         var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
                         var bay = baysDataProvider.GetByNumber(receivedMessage.RequestingBay);
-                        baysDataProvider.UpdateHoming(bay.Number, true);
+                        baysDataProvider.SetBayActive(bay.Number, true);
                     }
                     else if (data.AxisToCalibrate == Axis.HorizontalAndVertical)
                     {
-                        this.machineProvider.IsHomingExecuted = true;
+                        this.machineVolatileDataProvider.IsHomingExecuted = true;
                         this.ChangeMachineMode(serviceProvider);
                     }
                     else
@@ -123,9 +123,9 @@ namespace Ferretto.VW.MAS.AutomationService
         private async Task OnBayLight(NotificationMessage receivedMessage)
         {
             if (receivedMessage.Status == MessageStatus.OperationEnd
-                && this.machineProvider.IsBayLightOn.ContainsKey(receivedMessage.RequestingBay))
+                && this.machineVolatileDataProvider.IsBayLightOn.ContainsKey(receivedMessage.RequestingBay))
             {
-                await this.installationHub.Clients.All.BayLightChanged(this.machineProvider.IsBayLightOn[receivedMessage.RequestingBay], receivedMessage.RequestingBay);
+                await this.installationHub.Clients.All.BayLightChanged(this.machineVolatileDataProvider.IsBayLightOn[receivedMessage.RequestingBay], receivedMessage.RequestingBay);
             }
         }
 
@@ -154,7 +154,7 @@ namespace Ferretto.VW.MAS.AutomationService
                         machinePowerState = data.Enable ? MachinePowerState.Unpowered : MachinePowerState.Powered;
                         break;
                 }
-                this.machineProvider.IsMachineRunning = (machinePowerState == MachinePowerState.Powered);
+                this.machineVolatileDataProvider.IsMachineRunning = (machinePowerState == MachinePowerState.Powered);
 
                 await this.installationHub.Clients.All.MachinePowerChanged(machinePowerState);
             }
@@ -168,7 +168,7 @@ namespace Ferretto.VW.MAS.AutomationService
             {
                 if (bay.Carousel != null)
                 {
-                    baysDataProvider.UpdateHoming(bay.Number, false);
+                    baysDataProvider.SetBayActive(bay.Number, false);
                 }
             }
 
