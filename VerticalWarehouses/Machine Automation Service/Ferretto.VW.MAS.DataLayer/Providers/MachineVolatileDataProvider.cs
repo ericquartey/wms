@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
@@ -14,6 +15,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private MachineMode mode;
 
+        private readonly Dictionary<BayNumber, double> positions = new Dictionary<BayNumber, double>();
+
         #endregion
 
         #region Constructors
@@ -23,6 +26,10 @@ namespace Ferretto.VW.MAS.DataLayer
             this.eventAggregator = eventAggregator ?? throw new System.ArgumentNullException(nameof(eventAggregator));
 
             this.IsBayLightOn = new Dictionary<BayNumber, bool>();
+
+            this.positions.Add(BayNumber.BayOne, 0);
+            this.positions.Add(BayNumber.BayTwo, 0);
+            this.positions.Add(BayNumber.BayThree, 0);
         }
 
         #endregion
@@ -61,6 +68,44 @@ namespace Ferretto.VW.MAS.DataLayer
         public double ElevatorHorizontalPosition { get; set; }
 
         public double ElevatorVerticalPosition { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        public double GetBayEncoderPosition(BayNumber bayNumber)
+        {
+            if (!this.positions.ContainsKey(bayNumber))
+            {
+                throw new ArgumentOutOfRangeException(nameof(bayNumber));
+            }
+
+            return this.positions[bayNumber];
+        }
+
+        public void SetBayEncoderPosition(BayNumber bayNumber, double position)
+        {
+            if (!this.positions.ContainsKey(bayNumber))
+            {
+                throw new ArgumentOutOfRangeException(nameof(bayNumber));
+            }
+
+            if (this.positions[bayNumber] != position)
+            {
+                this.positions[bayNumber] = position;
+
+                this.eventAggregator
+                    .GetEvent<NotificationEvent>()
+                    .Publish(
+                        new NotificationMessage
+                        {
+                            Data = new BayChainPositionMessageData(bayNumber, position),
+                            Destination = MessageActor.Any,
+                            Source = MessageActor.DataLayer,
+                            Type = MessageType.BayChainPosition,
+                        });
+            }
+        }
 
         #endregion
     }

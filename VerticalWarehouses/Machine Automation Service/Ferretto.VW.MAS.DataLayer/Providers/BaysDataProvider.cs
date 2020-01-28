@@ -24,8 +24,6 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
-        private readonly IBayChainVolatileDataProvider bayChainVolatileDataProvider;
-
         private readonly IMemoryCache cache;
 
         private readonly MemoryCacheEntryOptions cacheOptions;
@@ -63,7 +61,6 @@ namespace Ferretto.VW.MAS.DataLayer
             IMachineVolatileDataProvider machineVolatileDataProvider,
             IConfiguration configuration,
             IElevatorDataProvider elevatorDataProvider,
-            IBayChainVolatileDataProvider bayChainVolatileDataProvider,
             IMemoryCache memoryCache,
             ILogger<DataLayerContext> logger)
             : base(eventAggregator)
@@ -72,7 +69,6 @@ namespace Ferretto.VW.MAS.DataLayer
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
-            this.bayChainVolatileDataProvider = bayChainVolatileDataProvider ?? throw new ArgumentNullException(nameof(bayChainVolatileDataProvider));
             this.cache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
@@ -579,7 +575,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public double GetChainPosition(BayNumber bayNumber)
         {
-            return this.bayChainVolatileDataProvider.GetPositionByBayNumber(bayNumber);
+            return this.machineVolatileDataProvider.GetBayEncoderPosition(bayNumber);
         }
 
         public IEnumerable<ElevatorAxis> GetElevatorAxes()
@@ -927,7 +923,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void SetChainPosition(BayNumber bayNumber, double value)
         {
-            this.bayChainVolatileDataProvider.SetPosition(bayNumber, value);
+            this.machineVolatileDataProvider.SetBayEncoderPosition(bayNumber, value);
         }
 
         public Bay SetCurrentOperation(BayNumber targetBay, BayOperation newOperation)

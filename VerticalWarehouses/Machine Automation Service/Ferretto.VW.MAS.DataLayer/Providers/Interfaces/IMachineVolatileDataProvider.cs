@@ -21,5 +21,13 @@ namespace Ferretto.VW.MAS.DataLayer
         double ElevatorVerticalPosition { get; set; }
 
         #endregion
+
+        #region Methods
+
+        double GetBayEncoderPosition(BayNumber bayNumber);
+
+        void SetBayEncoderPosition(BayNumber bayNumber, double position);
+
+        #endregion
     }
 }
