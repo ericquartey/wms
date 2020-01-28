@@ -17,7 +17,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private readonly IBayManager bayManager;
 
-        private readonly WMS.Data.WebAPI.Contracts.ILoadingUnitsWmsWebService loadingUnitsWmsWebService;
+        private readonly ILoadingUnitsWmsWebService loadingUnitsWmsWebService;
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
@@ -252,7 +252,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 }
 
                 this.RaiseCanExecuteChanged();
-                this.RaisePropertyChanged();                
+                this.RaisePropertyChanged();
             }
         }
 

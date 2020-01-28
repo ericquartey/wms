@@ -110,7 +110,7 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
                                     Command="{Binding ConfirmOperationCommand}"
-                                    Content="{x:Static res:OperatorApp.Confirm}"
+                                    Content="{Binding ConfirmOperationInfo}"
                                     IsBusy="{Binding IsBusyConfirmingOperation}"/>
                 </StackPanel>
 

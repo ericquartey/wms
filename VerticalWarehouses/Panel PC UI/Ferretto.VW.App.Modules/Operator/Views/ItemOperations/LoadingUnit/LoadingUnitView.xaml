@@ -71,7 +71,7 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
                                     Command="{Binding RecallLoadingUnitCommand}"                                    
-                                    Content="{x:Static res:OperatorApp.RecallDrawer}"
+                                    Content="{Binding RecallLoadingUnitInfo}"
                                     IsBusy="{Binding IsBusyConfirmingRecallOperation}" />
 
         </StackPanel>
