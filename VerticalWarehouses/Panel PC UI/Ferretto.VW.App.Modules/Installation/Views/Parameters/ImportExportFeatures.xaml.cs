@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
+using System.Reflection;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Modules.Installation.Controls
@@ -38,19 +38,25 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
             = DependencyProperty.Register(nameof(Input), typeof(VertimagConfiguration), typeof(ImportExportFeatures), new PropertyMetadata(OnInputPropertyChanged));
 
         public static readonly DependencyProperty OutputProperty
-            = DependencyProperty.Register(nameof(Output), typeof(VertimagConfiguration), typeof(ImportExportFeatures));
+            = DependencyProperty.Register(nameof(Output), typeof(object), typeof(ImportExportFeatures));
 
         private static readonly DependencyProperty IncludeCellPanelsProperty
-            = DependencyProperty.Register(nameof(IncludeCellPanels), typeof(bool), typeof(ImportExportFeatures), new PropertyMetadata(false));
+            = DependencyProperty.Register(nameof(IncludeCellPanels), typeof(bool), typeof(ImportExportFeatures), new PropertyMetadata(false, OnIncludePropertyChanged));
+
+        private static void OnIncludePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var impExp = (ImportExportFeatures)d;
+            impExp.AdjustOutput(impExp.Input);
+        }
 
         private static readonly DependencyProperty IncludeLoadingUnitsProperty
-            = DependencyProperty.Register(nameof(IncludeLoadingUnits), typeof(bool), typeof(ImportExportFeatures), new PropertyMetadata(false));
+            = DependencyProperty.Register(nameof(IncludeLoadingUnits), typeof(bool), typeof(ImportExportFeatures), new PropertyMetadata(false, OnIncludePropertyChanged));
 
         private static readonly DependencyProperty IncludeParametersProperty
-            = DependencyProperty.Register(nameof(IncludeParameters), typeof(bool), typeof(ImportExportFeatures), new PropertyMetadata(false));
+            = DependencyProperty.Register(nameof(IncludeParameters), typeof(bool), typeof(ImportExportFeatures), new PropertyMetadata(false, OnIncludePropertyChanged));
 
         private static readonly DependencyProperty IncludeSetupProceduresProperty
-            = DependencyProperty.Register(nameof(IncludeSetupProcedures), typeof(bool), typeof(ImportExportFeatures), new PropertyMetadata(false));
+            = DependencyProperty.Register(nameof(IncludeSetupProcedures), typeof(bool), typeof(ImportExportFeatures), new PropertyMetadata(false, OnIncludePropertyChanged));
 
         #endregion
 
@@ -119,9 +125,9 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
             set => this.SetValue(InputProperty, value);
         }
 
-        public VertimagConfiguration Output
+        public object Output
         {
-            get => (VertimagConfiguration)this.GetValue(OutputProperty);
+            get => this.GetValue(OutputProperty);
             set => this.SetValue(OutputProperty, value);
         }
 
@@ -165,7 +171,7 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
             {
                 return null;
             }
-            return input.DeepClone();
+            return VertimagConfiguration.FromJson(input.ToJson());
         }
 
         private void CoercePropertyValue(DependencyProperty hasProperty, DependencyProperty includeProperty)
@@ -176,34 +182,98 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
             {
                 this.SetValue(includeProperty, false);
             }
-            else if (DependencyProperty.UnsetValue.Equals(include))
-            {
-                this.SetValue(includeProperty, true);
-            }
+
+            this.AdjustOutput(this.Input);
         }
 
-        private void OnInputChanged(VertimagConfiguration old, VertimagConfiguration configuration)
+        private void AdjustOutput(VertimagConfiguration configuration)
         {
-            this.SetValue(IncludeCellPanelsProperty, DependencyProperty.UnsetValue);
-            this.SetValue(IncludeLoadingUnitsProperty, DependencyProperty.UnsetValue);
-            this.SetValue(IncludeParametersProperty, DependencyProperty.UnsetValue);
-            this.SetValue(IncludeSetupProceduresProperty, DependencyProperty.UnsetValue);
-
-            this.SetValue(HasCellPanelsPropertyKey, configuration?.Machine?.Panels?.Any() == true);
-            this.SetValue(HasLoadingUnitsPropertyKey, configuration?.LoadingUnits?.Any() == true);
-            this.SetValue(HasSetupProceduresPropertyKey, configuration?.SetupProcedures != null);
-            this.SetValue(HasParametersPropertyKey, configuration?.HasParameters() == true);
-
-            if (!this.HasCellPanels && !this.HasParameters && !this.HasSetupProcedures && !this.HasLoadingUnits)
-            {
-                // empty configuration => null output
-                this.Output = null;
-            }
-            else
+            object outputObject = null;
+            if (configuration != null && (this.IncludeCellPanels || this.IncludeParameters || this.IncludeSetupProcedures || this.IncludeLoadingUnits))
             {
                 // clone to avoid unwanted references' collisions.
-                this.Output = this.CloneInput(configuration);
+                VertimagConfiguration output = this.CloneInput(configuration);
+                outputObject = output;
+
+                if (!this.IncludeLoadingUnits)
+                {
+                    output.LoadingUnits = null;
+                }
+
+                if (!this.IncludeSetupProcedures)
+                {
+                    output.SetupProcedures = null;
+                }
+
+                if (!this.IncludeParameters && !this.IncludeCellPanels)
+                {
+                    output.Machine = null;
+                }
+                else
+                {
+                    if (!this.IncludeCellPanels)
+                    {
+                        if (output.Machine != null)
+                        {
+                            output.Machine.Panels = null;
+                        }
+                    }
+
+                    // remove parameters?
+                    if (!this.IncludeParameters)
+                    {
+                        var machine = new Machine
+                        {
+                            // preserve panels
+                            Panels = output.Machine.Panels,
+                            SerialNumber = output.Machine.SerialNumber,
+                        };
+
+                        output.Machine = machine;
+
+                        var jobject = Newtonsoft.Json.Linq.JObject.FromObject(output);
+                        var machineProp = typeof(VertimagConfiguration).GetProperty(nameof(VertimagConfiguration.Machine));
+                        string machinePropJsonName = machineProp.JsonPropertyName();
+
+                        // preserve value-type stuff
+                        // by removing unwanted properties...
+                        foreach (var prop in typeof(Machine).GetProperties())
+                        {
+                            if (prop.PropertyType.IsValueType)
+                            {
+                                string name = prop.JsonPropertyName();
+                                var token = (Newtonsoft.Json.Linq.JObject)jobject[machinePropJsonName];
+                                token.Remove(name);
+                            }
+                        }
+
+                        outputObject = jobject.ToObject<object>();
+                    }
+
+                }
             }
+
+            this.Output = outputObject;
+        }
+
+        private void OnInputChanged(VertimagConfiguration _, VertimagConfiguration configuration)
+        {
+            bool cellPanels = configuration?.Machine?.Panels?.Any() == true;
+            bool loadingUnits = configuration?.LoadingUnits?.Any() == true;
+            bool setup = configuration?.SetupProcedures != null;
+            bool parameters = configuration?.HasParameters() == true;
+
+            this.SetValue(IncludeCellPanelsProperty, cellPanels);
+            this.SetValue(IncludeLoadingUnitsProperty, loadingUnits);
+            this.SetValue(IncludeParametersProperty, parameters);
+            this.SetValue(IncludeSetupProceduresProperty, setup);
+
+            this.SetValue(HasCellPanelsPropertyKey, cellPanels);
+            this.SetValue(HasLoadingUnitsPropertyKey, loadingUnits);
+            this.SetValue(HasSetupProceduresPropertyKey, setup);
+            this.SetValue(HasParametersPropertyKey, parameters);
+
+            this.AdjustOutput(configuration);
         }
 
         #endregion

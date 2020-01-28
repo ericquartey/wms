@@ -35,29 +35,38 @@
 
             <controls:PpcButton                                 
                                     HorizontalAlignment="Right"
-                                    VerticalAlignment="Top"
+                                    VerticalAlignment="Top"                                    
                                     Command="{Binding OperationCommand}"
+                                    BorderBrush="{StaticResource FerrettoBlue}"
                                     CommandParameter="{x:Static res:OperatorApp.Adjustment}"
+                                    IsActive="{Binding IsAdjustmentVisible}"
                                     Content="{x:Static res:OperatorApp.Adjustment}"
-                                    IsBusy="{Binding IsBusyConfirmingOperation}" />
+                                    IsBusy="{Binding IsBusyConfirmingOperation}"
+                                    Style="{DynamicResource PpcButtonMarkStyle}" />
 
 
             <controls:PpcButton
                                     Margin="15 0 0 0"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
+                                    BorderBrush="{StaticResource FerrettoBlue}"
                                     Command="{Binding OperationCommand}"
                                     CommandParameter="{x:Static res:OperatorApp.Pick}"
+                                    IsActive="{Binding IsPickVisible}"
                                     Content="{x:Static res:OperatorApp.Pick}"
-                                    IsBusy="{Binding IsBusyConfirmingOperation}" />
+                                    IsBusy="{Binding IsBusyConfirmingOperation}"
+                                    Style="{DynamicResource PpcButtonMarkStyle}"/>
             <controls:PpcButton
                                     Margin="15 0 0 0"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
+                                    BorderBrush="{StaticResource FerrettoBlue}"
                                     Command="{Binding OperationCommand}"
                                     CommandParameter="{x:Static res:OperatorApp.Put}"
+                                    IsActive="{Binding IsPutVisible}"
                                     Content="{x:Static res:OperatorApp.Put}"
-                                    IsBusy="{Binding IsBusyConfirmingOperation}" />
+                                    IsBusy="{Binding IsBusyConfirmingOperation}"
+                                    Style="{DynamicResource PpcButtonMarkStyle}"/>
 
 
             <controls:PpcButton 

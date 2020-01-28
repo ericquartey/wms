@@ -128,7 +128,7 @@
                                 <MultiDataTrigger.Conditions>
                                     <Condition Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=Self}}" Value="True" />
                                     <Condition Value="True"
-                                               Binding="{Binding Path=IsBusy, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
+                                               Binding="{Binding Path=DataContext.IsBusy, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
                                 </MultiDataTrigger.Conditions>
                                 <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
                                 <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
@@ -224,6 +224,7 @@
 
 
         <parameters:ImportExportFeatures Grid.Row="2"
+                                         Margin="0,15,0,0"
                                          Input="{Binding Path=SelectedConfiguration}"
                                          Output="{Binding Path=ImportingConfiguration, Mode=OneWayToSource}">            
         </parameters:ImportExportFeatures>
