@@ -6,17 +6,22 @@ using System.Windows;
 namespace Ferretto.VW.App.Scaffolding
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ScaffolderWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ScaffolderWindow : Window
     {
-        public MainWindow()
-        {
-            this.InitializeComponent();
-            this.SetValue(VertimagProperty, _vertimag);
-        }
+        #region Fields
 
-        public static readonly DependencyProperty VertimagProperty = DependencyProperty.Register("Vertimag", typeof(Models.VertimagModel), typeof(MainWindow));
+        public static readonly DependencyProperty CurrentStructureProperty
+            = DependencyProperty.Register("CurrentStructure", typeof(Models.ScaffoldedStructure), typeof(ScaffolderWindow), new PropertyMetadata(OnCurrentStructurePropertyChanged));
+
+        public static readonly DependencyProperty EntitiesProperty
+            = DependencyProperty.Register("Entities", typeof(ObservableCollection<Models.ScaffoldedEntity>), typeof(ScaffolderWindow));
+
+        public static readonly DependencyProperty StructuresProperty
+            = DependencyProperty.Register("Structures", typeof(ObservableCollection<Models.ScaffoldedStructure>), typeof(ScaffolderWindow));
+
+        public static readonly DependencyProperty VertimagProperty = DependencyProperty.Register("Vertimag", typeof(Models.VertimagModel), typeof(ScaffolderWindow));
 
         private static readonly Models.VertimagModel _vertimag = new Models.VertimagModel
         {
@@ -56,18 +61,19 @@ namespace Ferretto.VW.App.Scaffolding
             Key = "abcdefghijkl"
         };
 
-        #region dependency properties
+        #endregion
 
-        public static readonly DependencyProperty CurrentStructureProperty
-            = DependencyProperty.Register("CurrentStructure", typeof(Models.ScaffoldedStructure), typeof(MainWindow), new PropertyMetadata(OnCurrentStructurePropertyChanged));
+        #region Constructors
 
-        private static void OnCurrentStructurePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        public ScaffolderWindow()
         {
-            Models.ScaffoldedStructure current = e.NewValue as Models.ScaffoldedStructure;
-            MainWindow window = d as MainWindow;
-            window.Entities = new ObservableCollection<Models.ScaffoldedEntity>(current?.Entities.AsEnumerable() ?? new Models.ScaffoldedEntity[0]);
-            window.Structures = new ObservableCollection<Models.ScaffoldedStructure>(current?.Children.AsEnumerable() ?? new Models.ScaffoldedStructure[0]);
+            this.InitializeComponent();
+            this.SetValue(VertimagProperty, _vertimag);
         }
+
+        #endregion
+
+        #region Properties
 
         public Models.ScaffoldedStructure CurrentStructure
         {
@@ -75,17 +81,11 @@ namespace Ferretto.VW.App.Scaffolding
             set => this.SetValue(CurrentStructureProperty, value);
         }
 
-        public static readonly DependencyProperty EntitiesProperty
-            = DependencyProperty.Register("Entities", typeof(ObservableCollection<Models.ScaffoldedEntity>), typeof(MainWindow));
-
         public ObservableCollection<Models.ScaffoldedEntity> Entities
         {
             get => (ObservableCollection<Models.ScaffoldedEntity>)this.GetValue(EntitiesProperty);
             set => this.SetValue(EntitiesProperty, value);
         }
-
-        public static readonly DependencyProperty StructuresProperty
-            = DependencyProperty.Register("Structures", typeof(ObservableCollection<Models.ScaffoldedStructure>), typeof(MainWindow));
 
         public ObservableCollection<Models.ScaffoldedStructure> Structures
         {
@@ -93,14 +93,24 @@ namespace Ferretto.VW.App.Scaffolding
             set => this.SetValue(StructuresProperty, value);
         }
 
-        #endregion dependency properties
+        #endregion
 
-
+        #region Methods
 
         public void SelectCategory(object sender, EventArgs e)
         {
             Models.ScaffoldedStructure context = ((FrameworkElement)sender).DataContext as Models.ScaffoldedStructure;
             this.SetValue(CurrentStructureProperty, context);
         }
+
+        private static void OnCurrentStructurePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            Models.ScaffoldedStructure current = e.NewValue as Models.ScaffoldedStructure;
+            ScaffolderWindow window = d as ScaffolderWindow;
+            window.Entities = new ObservableCollection<Models.ScaffoldedEntity>(current?.Entities.AsEnumerable() ?? new Models.ScaffoldedEntity[0]);
+            window.Structures = new ObservableCollection<Models.ScaffoldedStructure>(current?.Children.AsEnumerable() ?? new Models.ScaffoldedStructure[0]);
+        }
+
+        #endregion
     }
 }
