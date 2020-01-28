@@ -6,16 +6,6 @@ namespace Ferretto.VW.MAS.DataLayer
 {
     public interface IMachineProvider
     {
-        #region Properties
-
-        Dictionary<BayNumber, bool> IsBayLightOn { get; set; }
-
-        bool IsHomingExecuted { get; set; }
-
-        bool IsMachineRunning { get; set; }
-
-        #endregion
-
         #region Methods
 
         void Add(Machine machine);

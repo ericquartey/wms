@@ -23,15 +23,9 @@ namespace Ferretto.VW.MAS.IODriver
     {
         #region Fields
 
-        private readonly IBaysDataProvider baysDataProvider;
-
         private readonly IConfiguration configuration;
 
-        private readonly IDigitalDevicesDataProvider digitalDevicesDataProvider;
-
         private readonly IHostingEnvironment env;
-
-        private readonly IErrorsProvider errorsProvider;
 
         private readonly Dictionary<DataModels.IoIndex, IIoDevice> ioDevices = new Dictionary<DataModels.IoIndex, IIoDevice>();
 
@@ -43,9 +37,6 @@ namespace Ferretto.VW.MAS.IODriver
 
         public IoDriverService(
             IEventAggregator eventAggregator,
-            IDigitalDevicesDataProvider digitalDevicesDataProvider,
-            IBaysDataProvider baysDataProvider,
-            IErrorsProvider errorsProvider,
             IIoDevicesProvider iIoDeviceService,
             ILogger<IoDriverService> logger,
             IConfiguration configuration,
@@ -54,10 +45,7 @@ namespace Ferretto.VW.MAS.IODriver
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.ioDeviceService = iIoDeviceService ?? throw new ArgumentNullException(nameof(iIoDeviceService));
-            this.digitalDevicesDataProvider = digitalDevicesDataProvider ?? throw new ArgumentNullException(nameof(digitalDevicesDataProvider));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
-            this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
             this.env = env ?? throw new ArgumentNullException(nameof(env));
         }
 
@@ -165,30 +153,36 @@ namespace Ferretto.VW.MAS.IODriver
             var useMockedTransport = this.configuration.GetValue<bool>("Vertimag:RemoteIODriver:UseMock");
             var readTimeoutMilliseconds = this.configuration.GetValue("Vertimag:RemoteIODriver:ReadTimeoutMilliseconds", -1);
 
-            var ioDevices = this.digitalDevicesDataProvider.GetAllIoDevices();
-
-            var mainIoDevice = ioDevices.SingleOrDefault(d => d.Index == DataModels.IoIndex.IoDevice1);
-
-            foreach (var ioDevice in ioDevices)
+            using (var scope = this.ServiceScopeFactory.CreateScope())
             {
-                var transport = useMockedTransport
-                    ? (IIoTransport)new IoTransportMock()
-                    : new IoTransport(readTimeoutMilliseconds);
+                var bayDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+                var digitalDevicesDataProvider = scope.ServiceProvider.GetRequiredService<IDigitalDevicesDataProvider>();
+                var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
 
-                this.ioDevices.Add(
-                    ioDevice.Index,
-                    new IoDevice(
-                        this.EventAggregator,
-                        this.ioDeviceService,
-                        this.errorsProvider,
-                        transport,
-                        ioDevice.IpAddress,
-                        ioDevice.TcpPort,
+                var ioDevices = digitalDevicesDataProvider.GetAllIoDevices();
+                var mainIoDevice = ioDevices.SingleOrDefault(d => d.Index == DataModels.IoIndex.IoDevice1);
+
+                foreach (var ioDevice in ioDevices)
+                {
+                    var transport = useMockedTransport
+                        ? (IIoTransport)new IoTransportMock()
+                        : new IoTransport(readTimeoutMilliseconds);
+
+                    this.ioDevices.Add(
                         ioDevice.Index,
-                        this.baysDataProvider.GetByIoIndex(ioDevice.Index),
-                        this.Logger,
-                        this.CancellationToken,
-                        this.env));
+                        new IoDevice(
+                            this.EventAggregator,
+                            this.ioDeviceService,
+                            this.ServiceScopeFactory,
+                            transport,
+                            ioDevice.IpAddress,
+                            ioDevice.TcpPort,
+                            ioDevice.Index,
+                            bayDataProvider.GetByIoIndex(ioDevice.Index),
+                            this.Logger,
+                            this.CancellationToken,
+                            this.env));
+                }
             }
         }
 

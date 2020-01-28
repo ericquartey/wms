@@ -13,19 +13,19 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         private readonly ILogger<MachineModeProvider> logger;
 
-        private readonly IMachineModeVolatileDataProvider machineModeDataProvider;
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
         #endregion
 
         #region Constructors
 
         public MachineModeProvider(
-            IMachineModeVolatileDataProvider machineModeDataProvider,
+            IMachineVolatileDataProvider machineVolatileDataProvider,
             ILogger<MachineModeProvider> logger,
             IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
-            this.machineModeDataProvider = machineModeDataProvider ?? throw new ArgumentNullException(nameof(machineModeDataProvider));
+            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -35,12 +35,12 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         public MachineMode GetCurrent()
         {
-            return this.machineModeDataProvider.Mode;
+            return this.machineVolatileDataProvider.Mode;
         }
 
         public void RequestChange(MachineMode machineMode)
         {
-            if (machineMode == this.machineModeDataProvider.Mode)
+            if (machineMode == this.machineVolatileDataProvider.Mode)
             {
                 return;
             }
@@ -48,18 +48,18 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             switch (machineMode)
             {
                 case MachineMode.Automatic:
-                    this.machineModeDataProvider.Mode = MachineMode.SwitchingToAutomatic;
-                    this.logger.LogInformation($"Machine status switched to {this.machineModeDataProvider.Mode}");
+                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToAutomatic;
+                    this.logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
                     break;
 
                 case MachineMode.Manual:
-                    this.machineModeDataProvider.Mode = MachineMode.SwitchingToManual;
-                    this.logger.LogInformation($"Machine status switched to {this.machineModeDataProvider.Mode}");
+                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToManual;
+                    this.logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
                     break;
 
                 case MachineMode.Compact:
-                    this.machineModeDataProvider.Mode = MachineMode.SwitchingToCompact;
-                    this.logger.LogInformation($"Machine status switched to {this.machineModeDataProvider.Mode}");
+                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToCompact;
+                    this.logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
                     break;
 
                 default:

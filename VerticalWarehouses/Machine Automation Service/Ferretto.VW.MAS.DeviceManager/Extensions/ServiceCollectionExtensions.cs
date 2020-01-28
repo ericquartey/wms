@@ -20,16 +20,16 @@ namespace Ferretto.VW.MAS.DeviceManager
             services.AddHostedService<DeviceManagerService>();
 
             services
-                .AddTransient<IElevatorHorizontalChainZeroConditionEvaluator, ElevatorHorizontalChainZeroConditionEvaluator>();
+                .AddScoped<IElevatorHorizontalChainZeroConditionEvaluator, ElevatorHorizontalChainZeroConditionEvaluator>();
 
             services
                 .AddSingleton<IMachineResourcesProvider, MachineResourcesProvider>()
-                .AddTransient(s => s.GetRequiredService<IMachineResourcesProvider>() as ISensorsProvider)
-                .AddTransient<IElevatorProvider, ElevatorProvider>()
-                .AddTransient<IShutterProvider, ShutterProvider>()
-                .AddTransient<IMachineControlProvider, MachineControlProvider>()
-                .AddTransient<ILoadingUnitMovementProvider, LoadingUnitMovementProvider>()
-                .AddTransient<ICarouselProvider, CarouselProvider>();
+                .AddScoped(s => s.GetRequiredService<IMachineResourcesProvider>() as ISensorsProvider)
+                .AddScoped<IElevatorProvider, ElevatorProvider>()
+                .AddScoped<IShutterProvider, ShutterProvider>()
+                .AddScoped<IMachineControlProvider, MachineControlProvider>()
+                .AddScoped<ILoadingUnitMovementProvider, LoadingUnitMovementProvider>()
+                .AddScoped<ICarouselProvider, CarouselProvider>();
 
             return services;
         }
