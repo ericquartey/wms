@@ -97,19 +97,20 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     this.machineVolatileDataProvider.ElevatorVerticalPosition = value;
 
-                    var currentCell = this.GetCurrentCell();
-                    if (currentCell != null && !this.IsVerticalPositionWithinTolerance(currentCell.Position))
-                    {
-                        this.logger.LogDebug($"Elevator is leaving cell id={currentCell.Id}");
-                        this.SetCurrentCell(null);
-                    }
+                    // TODO: Review Elevator Position Tolerance logic (probably not necessary anymore)
+                    //var currentCell = this.GetCurrentCell();
+                    //if (currentCell != null && !this.IsVerticalPositionWithinTolerance(currentCell.Position))
+                    //{
+                    //    this.logger.LogDebug($"Elevator is leaving cell id={currentCell.Id}");
+                    //    this.SetCurrentCell(null);
+                    //}
 
-                    var currentBayPosition = this.GetCurrentBayPosition();
-                    if (currentBayPosition != null && !this.IsVerticalPositionWithinTolerance(currentBayPosition.Height))
-                    {
-                        this.logger.LogDebug($"Elevator is leaving bay position id={currentBayPosition.Id}");
-                        this.SetCurrentBayPosition(null);
-                    }
+                    //var currentBayPosition = this.GetCurrentBayPosition();
+                    //if (currentBayPosition != null && !this.IsVerticalPositionWithinTolerance(currentBayPosition.Height))
+                    //{
+                    //    this.logger.LogDebug($"Elevator is leaving bay position id={currentBayPosition.Id}");
+                    //    this.SetCurrentBayPosition(null);
+                    //}
 
                     this.NotifyElevatorPositionChanged();
                 }
@@ -340,7 +341,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     this.cache.Remove(ElevatorCurrentBayPositionCacheKey);
 
-                    this.NotifyElevatorPositionChanged();
+                    this.NotifyElevatorPositionChanged(true);
                 }
             }
         }
@@ -377,7 +378,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     this.cache.Remove(ElevatorCurrentCellCacheKey);
 
-                    this.NotifyElevatorPositionChanged();
+                    this.NotifyElevatorPositionChanged(true);
                 }
             }
         }
@@ -459,9 +460,19 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.machineVolatileDataProvider.ElevatorVerticalPosition + VerticalPositionValidationTolerance > position;
         }
 
-        private void NotifyElevatorPositionChanged()
+        private void NotifyElevatorPositionChanged(bool refreshElevatorPosition = false)
         {
-            var pos = this.GetCurrentBayPosition();
+            // TODO: Review Elevator Position Tolerance logic (probably not necessary anymore)
+            // refreshElevatorPosition = false call are used to bypass logic for now
+
+            BayPosition bayPosition = null;
+            Cell cell = null;
+
+            if (refreshElevatorPosition)
+            {
+                bayPosition = this.GetCurrentBayPosition();
+                cell = this.GetCurrentCell();
+            }
 
             this.eventAggregator
                 .GetEvent<NotificationEvent>()
@@ -471,9 +482,9 @@ namespace Ferretto.VW.MAS.DataLayer
                         Data = new ElevatorPositionMessageData(
                             this.machineVolatileDataProvider.ElevatorVerticalPosition,
                             this.machineVolatileDataProvider.ElevatorHorizontalPosition,
-                            this.GetCurrentCell()?.Id,
-                            pos?.Id,
-                            pos?.IsUpper),
+                            cell?.Id,
+                            bayPosition?.Id,
+                            bayPosition?.IsUpper),
                         Destination = MessageActor.Any,
                         Source = MessageActor.DataLayer,
                         Type = MessageType.ElevatorPosition,
