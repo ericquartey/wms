@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
     <LanguageTargets>$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
@@ -7,10 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="WindowsBase" />
+    <Reference Include="System.Web" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,17 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="**\*.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="**\*.xaml" Exclude="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Remove="Assets\*.*" />
     <Content Remove="Fonts\*.*" />
   </ItemGroup>
@@ -53,31 +39,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Controls\CardSensorAxisHorizontal.xaml" />
-    <None Remove="Controls\CardSensorAxisVertical.xaml" />
-    <None Remove="Controls\CardSensorBay.xaml" />
-    <None Remove="Controls\CardSensorDrawer.xaml" />
-    <None Remove="Controls\CardSensorPosition.xaml" />
-    <None Remove="Controls\CardSensorShutter.xaml" />
-    <None Remove="Controls\CardSensorBay.xaml" />
-    <None Remove="Styles\ComboBoxStyle.xaml" />
-    <None Remove="Styles\PasswordBoxEdit.xaml" />
-    <None Remove="Styles\ScrollViewerStyle.xaml" />
-    <None Remove="Styles\TextBlockStyles - Copy.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Ferretto.VW.App.Resources\Ferretto.VW.App.Resources.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Page Update="Styles\TextBlockStyles.xaml">
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Page>
-  </ItemGroup>
-
 
 </Project>
 
