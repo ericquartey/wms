@@ -28,9 +28,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly IMachineProvider machineProvider;
 
-        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
-
         private readonly IMachineResourcesProvider machineResourcesProvider;
+
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
         private readonly IMissionsDataProvider missionsDataProvider;
 
@@ -67,6 +67,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
             this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
+            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.machineResourcesProvider = machineResourcesProvider ?? throw new ArgumentNullException(nameof(machineResourcesProvider));
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
