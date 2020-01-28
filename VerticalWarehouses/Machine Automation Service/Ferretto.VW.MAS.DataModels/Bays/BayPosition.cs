@@ -39,6 +39,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public double MaxSingleHeight { get; set; }
 
+        public double ProfileOffset { get; set; }
+
         #endregion
 
         #region Methods

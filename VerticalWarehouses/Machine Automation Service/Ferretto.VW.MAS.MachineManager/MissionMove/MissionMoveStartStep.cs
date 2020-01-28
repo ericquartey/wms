@@ -152,7 +152,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         this.Mission.NeedHomingAxis = Axis.None;
                         this.MissionsDataProvider.Update(this.Mission);
 
-                        this.MachineProvider.IsHomingExecuted = true;
+                        this.MachineVolatileDataProvider.IsHomingExecuted = true;
 
                         if (this.Mission.LoadUnitSource is LoadingUnitLocation.Elevator)
                         {

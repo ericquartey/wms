@@ -1930,6 +1930,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("maxSingleHeight", Required = Newtonsoft.Json.Required.Always)]
         public double MaxSingleHeight { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("profileOffset", Required = Newtonsoft.Json.Required.Always)]
+        public double ProfileOffset { get; set; }
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });

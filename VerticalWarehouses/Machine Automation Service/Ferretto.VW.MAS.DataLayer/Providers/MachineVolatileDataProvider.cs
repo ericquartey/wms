@@ -13,9 +13,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly IEventAggregator eventAggregator;
 
-        private MachineMode mode;
-
         private readonly Dictionary<BayNumber, double> positions = new Dictionary<BayNumber, double>();
+
+        private MachineMode mode;
 
         #endregion
 
@@ -27,6 +27,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.IsBayLightOn = new Dictionary<BayNumber, bool>();
 
+            this.IsBayHomingExecuted = new Dictionary<BayNumber, bool>();
+            this.IsBayHomingExecuted.Add(BayNumber.BayOne, false);
+            this.IsBayHomingExecuted.Add(BayNumber.BayTwo, false);
+            this.IsBayHomingExecuted.Add(BayNumber.BayThree, false);
+
             this.positions.Add(BayNumber.BayOne, 0);
             this.positions.Add(BayNumber.BayTwo, 0);
             this.positions.Add(BayNumber.BayThree, 0);
@@ -35,6 +40,18 @@ namespace Ferretto.VW.MAS.DataLayer
         #endregion
 
         #region Properties
+
+        public double ElevatorHorizontalPosition { get; set; }
+
+        public double ElevatorVerticalPosition { get; set; }
+
+        public Dictionary<BayNumber, bool> IsBayHomingExecuted { get; set; }
+
+        public Dictionary<BayNumber, bool> IsBayLightOn { get; set; }
+
+        public bool IsHomingExecuted { get; set; }
+
+        public bool IsMachineRunning { get; set; }
 
         public MachineMode Mode
         {
@@ -58,18 +75,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
             }
         }
-
-        public Dictionary<BayNumber, bool> IsBayLightOn { get; set; }
-
-        public bool IsHomingExecuted { get; set; }
-
-        public bool IsMachineRunning { get; set; }
-
-        public double ElevatorHorizontalPosition { get; set; }
-
-        public double ElevatorVerticalPosition { get; set; }
-
-        public Dictionary<BayNumber, bool> IsBayHomingExecuted { get; set; }
 
         #endregion
 

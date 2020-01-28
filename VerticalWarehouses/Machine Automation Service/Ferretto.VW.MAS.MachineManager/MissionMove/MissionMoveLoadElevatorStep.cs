@@ -140,7 +140,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         if (this.Mission.NeedHomingAxis == Axis.Horizontal)
                         {
-                            this.MachineProvider.IsHomingExecuted = true;
+                            this.MachineVolatileDataProvider.IsHomingExecuted = true;
                             if (!this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
                             {
                                 this.Mission.NeedHomingAxis = Axis.None;
