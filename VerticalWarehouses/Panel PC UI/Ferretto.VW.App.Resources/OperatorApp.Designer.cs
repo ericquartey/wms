@@ -475,6 +475,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm and new operations available.
+        /// </summary>
+        public static string ConfirmAndNewOperationsAvailable {
+            get {
+                return ResourceManager.GetString("ConfirmAndNewOperationsAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm on empty.
         /// </summary>
         public static string ConfirmOnEmpty {
@@ -2488,6 +2497,15 @@ namespace Ferretto.VW.App.Resources {
         public static string NavigationMainMenuOther {
             get {
                 return ResourceManager.GetString("NavigationMainMenuOther", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New operations available.
+        /// </summary>
+        public static string NewOperationsAvailable {
+            get {
+                return ResourceManager.GetString("NewOperationsAvailable", resourceCulture);
             }
         }
         

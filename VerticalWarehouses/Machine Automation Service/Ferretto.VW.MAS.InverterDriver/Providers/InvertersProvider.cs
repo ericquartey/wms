@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Enumerations;
@@ -35,7 +36,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly IServiceScopeFactory serviceScopeFactory;
 
-        private IEnumerable<IInverterStatusBase> inverters;
+        private static IEnumerable<IInverterStatusBase> inverters;
 
         #endregion
 
@@ -48,6 +49,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             IBaysDataProvider baysDataProvider,
             IDigitalDevicesDataProvider digitalDevicesDataProvider,
             IErrorsProvider errorsProvider,
+            IDataLayerService dataLayerService,
             IServiceScopeFactory serviceScopeFactory,
             ILogger<InverterDriverService> logger
             )
@@ -66,22 +68,17 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
             this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
 
-            eventAggregator
-                .GetEvent<NotificationEvent>()
-                .Subscribe(
-                    m => this.OnDataLayerReady(),
-                    ThreadOption.PublisherThread,
-                    false,
-                    message => message.Type is MessageType.DataLayerReady);
-
-            try
+            if (dataLayerService.IsReady)
             {
                 this.OnDataLayerReady();
             }
-            catch
+            else
             {
-                // do nothing.
-                // it is ok to swallow the exception here.
+                eventAggregator.GetEvent<NotificationEvent>().Subscribe((x) =>
+                    this.OnDataLayerReady(),
+                    ThreadOption.PublisherThread,
+                    false,
+                    m => m.Type is MessageType.DataLayerReady);
             }
         }
 
@@ -248,17 +245,17 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         public IEnumerable<IInverterStatusBase> GetAll()
         {
-            if (this.inverters is null)
+            if (inverters is null)
             {
                 throw new InvalidOperationException("The inverter configuration is not yet loaded because data layer is not ready.");
             }
 
-            return this.inverters;
+            return inverters;
         }
 
         public IInverterStatusBase GetByIndex(InverterIndex index)
         {
-            var inverter = this.inverters.SingleOrDefault(i => i.SystemIndex == index);
+            var inverter = inverters.SingleOrDefault(i => i.SystemIndex == index);
 
             if (inverter is null)
             {
@@ -270,15 +267,15 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         public IAngInverterStatus GetMainInverter()
         {
-            System.Diagnostics.Debug.Assert(this.inverters.Any(i => i.SystemIndex == InverterIndex.MainInverter));
+            System.Diagnostics.Debug.Assert(inverters.Any(i => i.SystemIndex == InverterIndex.MainInverter));
 
-            return this.inverters.Single(i => i.SystemIndex == InverterIndex.MainInverter) as IAngInverterStatus;
+            return inverters.Single(i => i.SystemIndex == InverterIndex.MainInverter) as IAngInverterStatus;
         }
 
         public IInverterStatusBase GetShutterInverter(BayNumber bayNumber)
         {
             var index = this.baysDataProvider.GetByNumber(bayNumber).Shutter.Inverter.Index;
-            var inverter = this.inverters.SingleOrDefault(i => i.SystemIndex == index);
+            var inverter = inverters.SingleOrDefault(i => i.SystemIndex == index);
 
             if (inverter is null)
             {
@@ -354,7 +351,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private void OnDataLayerReady()
         {
-            this.inverters = this.digitalDevicesDataProvider
+            inverters = inverters ?? this.digitalDevicesDataProvider
              .GetAllInverters()
              .Select<Inverter, IInverterStatusBase>(i =>
              {
@@ -375,7 +372,7 @@ namespace Ferretto.VW.MAS.InverterDriver
              })
              .ToArray();
 
-            if (this.inverters.SingleOrDefault(i => i.SystemIndex == InverterIndex.MainInverter) as IAngInverterStatus is null)
+            if (inverters.SingleOrDefault(i => i.SystemIndex == InverterIndex.MainInverter) as IAngInverterStatus is null)
             {
                 throw new Exception("No main inverter is configured in the system.");
             }

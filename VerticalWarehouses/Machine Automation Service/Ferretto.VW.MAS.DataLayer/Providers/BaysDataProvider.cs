@@ -5,7 +5,6 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Providers;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -14,7 +13,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
@@ -23,8 +21,6 @@ namespace Ferretto.VW.MAS.DataLayer
     internal sealed class BaysDataProvider : BaseProvider, IBaysDataProvider
     {
         #region Fields
-
-        private readonly IBayChainVolatileDataProvider bayChainVolatileDataProvider;
 
         private readonly IMemoryCache cache;
 
@@ -48,6 +44,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly IMachineProvider machineProvider;
 
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
+
         private readonly NotificationEvent notificationEvent;
 
         #endregion
@@ -58,17 +56,17 @@ namespace Ferretto.VW.MAS.DataLayer
             DataLayerContext dataContext,
             IEventAggregator eventAggregator,
             IMachineProvider machineProvider,
+            IMachineVolatileDataProvider machineVolatileDataProvider,
             IConfiguration configuration,
             IElevatorDataProvider elevatorDataProvider,
-            IBayChainVolatileDataProvider bayChainVolatileDataProvider,
             IMemoryCache memoryCache,
             ILogger<DataLayerContext> logger)
             : base(eventAggregator)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
-            this.bayChainVolatileDataProvider = bayChainVolatileDataProvider ?? throw new ArgumentNullException(nameof(bayChainVolatileDataProvider));
             this.cache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
@@ -79,41 +77,6 @@ namespace Ferretto.VW.MAS.DataLayer
         #endregion
 
         #region Methods
-
-        public Bay Activate(BayNumber bayNumber)
-        {
-            lock (this.dataContext)
-            {
-                var bay = this.GetByNumber(bayNumber);
-                if (bay is null)
-                {
-                    throw new EntityNotFoundException(bayNumber.ToString());
-                }
-
-                if (!bay.IsActive)
-                {
-                    bay.IsActive = true;
-
-                    this.logger.LogInformation($"The bay {bay.Number} is now active and ready to accept missions.");
-                }
-
-                this.Update(bay);
-
-                this.notificationEvent.Publish(
-                  new NotificationMessage(
-                      new BayOperationalStatusChangedMessageData
-                      {
-                          BayStatus = bay.Status,
-                      },
-                      $"Bay #{bay.Number} status changed to {bay.Status}",
-                      MessageActor.MissionManager,
-                      MessageActor.WebApi,
-                      MessageType.BayOperationalStatusChanged,
-                      bay.Number));
-
-                return bay;
-            }
-        }
 
         public void AddElevatorPseudoBay()
         {
@@ -246,41 +209,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public Bay Deactivate(BayNumber bayNumber)
-        {
-            lock (this.dataContext)
-            {
-                var bay = this.GetByNumber(bayNumber);
-                if (bay is null)
-                {
-                    throw new EntityNotFoundException(bayNumber.ToString());
-                }
-
-                if (bay.IsActive)
-                {
-                    bay.IsActive = false;
-
-                    this.Update(bay);
-
-                    this.notificationEvent.Publish(
-                      new NotificationMessage(
-                          new BayOperationalStatusChangedMessageData
-                          {
-                              BayStatus = bay.Status,
-                          },
-                          $"Bay #{bay.Number} status changed to {bay.Status}",
-                          MessageActor.MissionManager,
-                          MessageActor.WebApi,
-                          MessageType.BayOperationalStatusChanged,
-                          bay.Number));
-
-                    this.logger.LogInformation($"The bay {bay.Number} is now deactivated and can no longer accept missions.");
-                }
-
-                return bay;
-            }
-        }
-
         public void FindZero(BayNumber bayNumber)
         {
             this.PublishCommand(
@@ -387,10 +315,15 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var bay = this.dataContext.Bays.AsNoTracking().SingleOrDefault(b =>
-                    b.Inverter.Index == inverterIndex
-                    ||
-                    b.Shutter.Inverter.Index == inverterIndex);
+                var bay = this.dataContext.Bays
+                        .Include(i => i.Inverter)
+                        .Include(i => i.Shutter)
+                            .ThenInclude(s => s.Inverter)
+                        .AsNoTracking()
+                        .SingleOrDefault(b =>
+                            b.Inverter.Index == inverterIndex
+                            ||
+                            b.Shutter.Inverter.Index == inverterIndex);
 
                 if (bay is null)
                 {
@@ -570,7 +503,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public double GetChainPosition(BayNumber bayNumber)
         {
-            return this.bayChainVolatileDataProvider.GetPositionByBayNumber(bayNumber);
+            return this.machineVolatileDataProvider.GetBayEncoderPosition(bayNumber);
         }
 
         public IEnumerable<ElevatorAxis> GetElevatorAxes()
@@ -638,7 +571,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             switch (data.AxisMovement)
                             {
                                 case Axis.Horizontal:
-                                    returnValue = this.machineProvider.IsOneTonMachine() ? InverterIndex.Slave1 : InverterIndex.MainInverter;
+                                    returnValue = this.machineVolatileDataProvider.IsOneTonMachine.Value ? InverterIndex.Slave1 : InverterIndex.MainInverter;
                                     break;
 
                                 case Axis.Vertical:
@@ -657,7 +590,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             break;
 
                         case MovementMode.FindZero:
-                            returnValue = this.machineProvider.IsOneTonMachine() ? InverterIndex.Slave1 : InverterIndex.MainInverter;
+                            returnValue = this.machineVolatileDataProvider.IsOneTonMachine.Value ? InverterIndex.Slave1 : InverterIndex.MainInverter;
                             break;
 
                         default:
@@ -745,7 +678,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public bool GetLightOn(BayNumber bayNumber)
         {
-            return this.machineProvider.IsBayLightOn.GetValueOrDefault(bayNumber);
+            return this.machineVolatileDataProvider.IsBayLightOn.GetValueOrDefault(bayNumber);
         }
 
         public LoadingUnit GetLoadingUnitByDestination(LoadingUnitLocation location)
@@ -916,9 +849,42 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public Bay SetBayActive(BayNumber bayNumber, bool active)
+        {
+            // TODO: Check bay activation logic
+
+            lock (this.dataContext)
+            {
+                var bay = this.GetByNumber(bayNumber);
+
+                if (bay is null)
+                {
+                    throw new EntityNotFoundException(bayNumber.ToString());
+                }
+
+                bay.IsActive = active;
+                this.dataContext.SaveChanges();
+
+                this.notificationEvent.Publish(
+                  new NotificationMessage(
+                      new BayOperationalStatusChangedMessageData
+                      {
+                          BayStatus = bay.Status,
+                      },
+                      $"Bay #{bay.Number} status changed to {bay.Status}",
+                      MessageActor.MissionManager,
+                      MessageActor.WebApi,
+                      MessageType.BayOperationalStatusChanged,
+                      bay.Number));
+
+                this.logger.LogInformation($"The bay {bay.Number} is now {(active ? "active" : "deactivated")}");
+                return bay;
+            }
+        }
+
         public void SetChainPosition(BayNumber bayNumber, double value)
         {
-            this.bayChainVolatileDataProvider.SetPosition(bayNumber, value);
+            this.machineVolatileDataProvider.SetBayEncoderPosition(bayNumber, value);
         }
 
         public Bay SetCurrentOperation(BayNumber targetBay, BayOperation newOperation)
@@ -968,42 +934,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             this.dataContext.SaveChanges();
-        }
-
-        public void UpdateHoming(BayNumber bayNumber, bool isExecuted)
-        {
-            lock (this.dataContext)
-            {
-                var bay = this.dataContext.Bays
-                    .Include(b => b.Carousel)
-                    .SingleOrDefault(b => b.Number == bayNumber);
-
-                if (bay is null)
-                {
-                    throw new EntityNotFoundException(bayNumber.ToString());
-                }
-
-                if (bay.Carousel is null)
-                {
-                    throw new InvalidOperationException($"The bay {bayNumber} has no carousel.");
-                }
-
-                bay.Carousel.IsHomingExecuted = isExecuted;
-                bay.IsActive = true;
-                this.dataContext.SaveChanges();
-
-                this.notificationEvent.Publish(
-                  new NotificationMessage(
-                      new BayOperationalStatusChangedMessageData
-                      {
-                          BayStatus = bay.Status,
-                      },
-                      $"Bay #{bay.Number} status changed to {bay.Status}",
-                      MessageActor.MissionManager,
-                      MessageActor.WebApi,
-                      MessageType.BayOperationalStatusChanged,
-                      bay.Number));
-            }
         }
 
         public void UpdateLastIdealPosition(double position, BayNumber bayNumber)

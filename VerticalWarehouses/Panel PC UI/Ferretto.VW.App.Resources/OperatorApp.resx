@@ -1486,4 +1486,12 @@ Please put back any moved pieces in their original position.</value>
     <value>Picking quantity [{0}]</value>
     <comment>Label text</comment>
   </data>
+  <data name="NewOperationsAvailable" xml:space="preserve">
+    <value>New operations available</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="ConfirmAndNewOperationsAvailable" xml:space="preserve">
+    <value>Confirm and new operations available</value>
+    <comment>Button text</comment>
+  </data>
 </root>

@@ -140,7 +140,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                         data.AxisToCalibrate,
                         data.CalibrationType,
                         data.LoadingUnitId,
-                        serviceProvider.GetRequiredService<IMachineProvider>().IsOneTonMachine(),
+                        serviceProvider.GetRequiredService<IMachineVolatileDataProvider>().IsOneTonMachine.Value,
                         data.ShowErrors,
                         receivedMessage.RequestingBay,
                         receivedMessage.TargetBay,

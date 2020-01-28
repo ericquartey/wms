@@ -12,6 +12,8 @@ namespace Ferretto.VW.App.Services
 
         Task PickAsync(int itemId, double requestedQuantity);
 
+        Task PutAsync(int itemId, double requestedQuantity);
+
         #endregion
     }
 }
