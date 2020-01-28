@@ -96,6 +96,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double>("MaxSingleHeight");
 
+                    b.Property<double>("ProfileOffset");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BayId");
@@ -1096,7 +1098,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 3, 28, 13, 6, 48, 246, DateTimeKind.Local).AddTicks(3807),
+                            InstallationDate = new DateTime(2017, 3, 28, 14, 11, 38, 262, DateTimeKind.Local).AddTicks(7070),
                             ServiceStatus = 86
                         });
                 });

@@ -28,11 +28,11 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private void ChangeMachineMode(IServiceProvider serviceProvider)
         {
-            var machineModeDataProvider = serviceProvider.GetRequiredService<IMachineVolatileDataProvider>();
-            if (machineModeDataProvider.Mode == MachineMode.SwitchingToAutomatic)
+            var machineVolatileDataProvider = serviceProvider.GetRequiredService<IMachineVolatileDataProvider>();
+            if (machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic)
             {
-                machineModeDataProvider.Mode = MachineMode.Automatic;
-                this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
+                machineVolatileDataProvider.Mode = MachineMode.Automatic;
+                this.Logger.LogInformation($"Machine status switched to {machineVolatileDataProvider.Mode}");
             }
         }
 
@@ -60,9 +60,19 @@ namespace Ferretto.VW.MAS.AutomationService
                 {
                     if (data.AxisToCalibrate == Axis.BayChain)
                     {
-                        var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-                        var bay = baysDataProvider.GetByNumber(receivedMessage.RequestingBay);
-                        baysDataProvider.SetBayActive(bay.Number, true);
+                        this.machineVolatileDataProvider.IsBayHomingExecuted[receivedMessage.RequestingBay] = true;
+
+                        // the following message wakes up MissionSchedulingService
+                        this.EventAggregator
+                            .GetEvent<NotificationEvent>()
+                            .Publish(
+                                new NotificationMessage
+                                {
+                                    Data = new MachineModeMessageData(this.machineVolatileDataProvider.Mode),
+                                    Destination = MessageActor.MissionManager,
+                                    Source = MessageActor.AutomationService,
+                                    Type = MessageType.MachineMode,
+                                });
                     }
                     else if (data.AxisToCalibrate == Axis.HorizontalAndVertical)
                     {
@@ -164,12 +174,9 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
             var bays = baysDataProvider.GetAll().ToList();
-            foreach (var bay in bays)
+            foreach (var bay in bays.Where(b => b.Carousel == null))
             {
-                if (bay.Carousel != null)
-                {
-                    baysDataProvider.SetBayActive(bay.Number, false);
-                }
+                this.machineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = true;
             }
 
             baysDataProvider.AddElevatorPseudoBay();

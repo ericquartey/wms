@@ -52,7 +52,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public ActionResult<Bay> ActivateAsync()
         {
-            var bay = this.baysDataProvider.Activate(this.BayNumber);
+            var bay = this.baysDataProvider.SetBayActive(this.BayNumber, active: true);
 
             return this.Ok(bay);
         }
@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public ActionResult<Bay> DeactivateAsync()
         {
-            var bay = this.baysDataProvider.Deactivate(this.BayNumber);
+            var bay = this.baysDataProvider.SetBayActive(this.BayNumber, active: false);
 
             return this.Ok(bay);
         }

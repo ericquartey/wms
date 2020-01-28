@@ -28,9 +28,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly IMachineProvider machineProvider;
 
-        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
-
         private readonly IMachineResourcesProvider machineResourcesProvider;
+
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
         private readonly IMissionsDataProvider missionsDataProvider;
 
@@ -67,6 +67,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
             this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
+            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.machineResourcesProvider = machineResourcesProvider ?? throw new ArgumentNullException(nameof(machineResourcesProvider));
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
@@ -470,7 +471,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             var sensors = this.sensorsProvider.GetAll();
 
-            var zeroSensor = this.machineProvider.IsOneTonMachine()
+            var zeroSensor = this.machineVolatileDataProvider.IsOneTonMachine.Value
                 ? IOMachineSensors.ZeroPawlSensorOneTon
                 : IOMachineSensors.ZeroPawlSensor;
 
@@ -566,7 +567,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var sensors = this.sensorsProvider.GetAll();
 
-            var zeroSensor = this.machineProvider.IsOneTonMachine()
+            var zeroSensor = this.machineVolatileDataProvider.IsOneTonMachine.Value
                 ? IOMachineSensors.ZeroPawlSensorOneTon
                 : IOMachineSensors.ZeroPawlSensor;
 
@@ -729,13 +730,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.ElevatorBay);
         }
 
-        public void MoveHorizontalProfileCalibration(BayNumber requestingBay, MessageActor sender)
+        public void MoveHorizontalProfileCalibration(int bayPositionId, BayNumber requestingBay, MessageActor sender)
         {
+            var policy = this.CanLoadFromBay(bayPositionId, requestingBay, isGuided: false);
+            if (!policy.IsAllowed)
+            {
+                throw new InvalidOperationException(policy.Reason);
+            }
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
 
             var targetPosition = axis.ManualMovements.TargetDistanceAfterZero;
 
             var bay = this.baysDataProvider.GetByNumber(requestingBay);
+
             var direction = (bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards);
 
             targetPosition *= (direction == HorizontalMovementDirection.Forwards) ? 1 : -1;

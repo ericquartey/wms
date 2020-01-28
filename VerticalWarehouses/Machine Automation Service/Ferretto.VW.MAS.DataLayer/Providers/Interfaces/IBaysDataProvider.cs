@@ -11,8 +11,6 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
-        Bay Activate(BayNumber bayNumber);
-
         void AddElevatorPseudoBay();
 
         Bay AssignMission(BayNumber bayNumber, Mission mission);
@@ -24,8 +22,6 @@ namespace Ferretto.VW.MAS.DataLayer
         double ConvertProfileToHeight(ushort profile);
 
         double ConvertPulsesToMillimeters(double pulses, InverterIndex inverterIndex);
-
-        Bay Deactivate(BayNumber bayNumber);
 
         void FindZero(BayNumber bayNumber);
 
@@ -114,6 +110,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void ResetMachine();
 
+        Bay SetBayActive(BayNumber bayNumber, bool active);
+
         void SetChainPosition(BayNumber bayNumber, double value);
 
         Bay SetCurrentOperation(BayNumber bayNumber, BayOperation newOperation);
@@ -126,8 +124,6 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <param name="loadingUnitId">The identifier of the loading unit.</param>
         /// <param name="height">"only when it is not null"</param>
         void SetLoadingUnit(int bayPositionId, int? loadingUnitId, double? height = null);
-
-        void SetBayActive(BayNumber bayNumber, bool active);
 
         void UpdateLastIdealPosition(double position, BayNumber bayNumber);
 

@@ -21,6 +21,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IMachineProvider machineProvider;
 
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
+
         private readonly IMachinesWmsWebService machinesWmsWebService;
 
         private readonly IServicingProvider servicingProvider;
@@ -33,12 +35,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             ILoadingUnitsDataProvider loadingUnitStatisticsProvider,
             IServicingProvider servicingProvider,
             IMachineProvider machineProvider,
+            IMachineVolatileDataProvider machineVolatileDataProvider,
             IConfiguration configuration,
             IMachinesWmsWebService machinesWmsWebService)
         {
             this.loadingUnitStatisticsProvider = loadingUnitStatisticsProvider ?? throw new System.ArgumentNullException(nameof(loadingUnitStatisticsProvider));
             this.servicingProvider = servicingProvider ?? throw new System.ArgumentNullException(nameof(servicingProvider));
             this.machineProvider = machineProvider ?? throw new System.ArgumentNullException(nameof(machineProvider));
+            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new System.ArgumentNullException(nameof(machineVolatileDataProvider));
             this.configuration = configuration ?? throw new System.ArgumentNullException(nameof(configuration));
             this.machinesWmsWebService = machinesWmsWebService ?? throw new System.ArgumentNullException(nameof(machinesWmsWebService));
         }
@@ -74,7 +78,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 InstallationDate = servicingInfo.InstallationDate,
                 NextServiceDate = servicingInfo.NextServiceDate,
                 LastServiceDate = servicingInfo.LastServiceDate,
-                IsOneTonMachine = this.machineProvider.IsOneTonMachine(),
+                IsOneTonMachine = this.machineVolatileDataProvider.IsOneTonMachine.Value,
             };
 
             return this.Ok(machineInfo);
