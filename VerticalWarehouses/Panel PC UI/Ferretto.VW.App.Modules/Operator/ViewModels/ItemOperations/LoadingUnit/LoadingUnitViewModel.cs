@@ -23,6 +23,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
+        readonly IMissionOperationsService missionOperationsService;
+
+        private readonly IWmsDataProvider wmsDataProvider;
+
         private bool canInputQuantity;
 
         private DelegateCommand confirmOperationCommand;
@@ -55,11 +59,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
                IBayManager bayManager,
                IItemsWmsWebService itemsWmsWebService,
                IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-               ILoadingUnitsWmsWebService loadingUnitsWmsWebService)
+               IMissionOperationsService missionOperationsService,
+               ILoadingUnitsWmsWebService loadingUnitsWmsWebService,
+               IWmsDataProvider wmsDataProvider)
                : base(bayManager, machineLoadingUnitsWebService, loadingUnitsWmsWebService)
         {
             this.itemsWmsWebService = itemsWmsWebService ?? throw new ArgumentNullException(nameof(itemsWmsWebService));
-            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService;
+            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
+            this.missionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
+            this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider)); 
         }
 
         #endregion
@@ -153,19 +161,28 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Methods
 
-        public virtual bool CanRecallLoadingUnit()
+        private bool CanRecallLoadingUnit()
         {
             return
+                !this.IsBusyConfirmingOperation
+                &&
+                !this.IsBusyConfirmingRecallOperation
+                &&
                 !this.IsWaitingForResponse
                 &&
-                this.LoadingUnit != null
+                !(this.LoadingUnit is null)
                 &&
                 this.MachineModeService.MachineMode is MachineMode.Automatic;
         }
 
         public async override Task OnAppearedAsync()
         {
-            this.ResetOperations();
+            if (!this.IsBusyConfirmingOperation
+                &&
+                !this.IsBusyConfirmingRecallOperation)
+            {
+                this.ResetOperations();
+            }
 
             await base.OnAppearedAsync();
         }
@@ -179,7 +196,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             try
             {
-                this.IsWaitingForResponse = true;
+                this.IsBusyConfirmingRecallOperation = true;
                 await this.machineLoadingUnitsWebService.RemoveFromBayAsync(this.LoadingUnit.Id);
 
                 this.NavigationService.GoBack();
@@ -187,6 +204,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
             catch (MasWebApiException ex)
             {
                 this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsBusyConfirmingRecallOperation = false;
             }
         }
 
@@ -208,18 +229,50 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private bool CanConfirmOperation()
         {
-            return this.MachineModeService.MachineMode is MachineMode.Automatic;
+            return !this.IsBusyConfirmingRecallOperation
+                   &&
+                   !this.IsBusyConfirmingOperation
+                   &&
+                   this.MachineModeService.MachineMode is MachineMode.Automatic;
         }
 
         private bool CanDoOperation(string param)
         {
-            return !(this.SelectedItem is null);
+            return !(this.SelectedItem is null)
+                   &&
+                   !this.IsBusyConfirmingRecallOperation
+                   &&
+                   !this.IsBusyConfirmingOperation;
         }
 
-        private Task ConfirmOperationAsync()
+        private async Task ConfirmOperationAsync()
         {
-            // TO DO confirm operation
-            return Task.CompletedTask;
+            try
+            {                
+                this.IsBusyConfirmingOperation = true;
+
+                if (this.IsPickVisible)
+                {
+                    await this.wmsDataProvider.PickAsync(this.SelectedItem.Id,
+                                                         this.InputQuantity);
+                }
+                else if (this.IsPutVisible)
+                {
+                    await this.missionOperationsService.PartiallyCompleteCurrentAsync(this.InputQuantity);
+                }
+                else if (this.IsAdjustmentVisible)
+                {
+                    await this.missionOperationsService.PartiallyCompleteCurrentAsync(this.InputQuantity);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsBusyConfirmingOperation = false;                
+            }
         }
 
         private async Task GetItemInfoAsync()

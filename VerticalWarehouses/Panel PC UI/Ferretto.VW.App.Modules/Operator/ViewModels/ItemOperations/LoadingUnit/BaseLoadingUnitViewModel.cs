@@ -57,6 +57,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private CompartmentDetails selectedItemCompartment;
 
+        private bool isBusyConfirmingRecallOperation;
+
+        private bool isBusyConfirmingOperation;
+
         #endregion
 
         #region Constructors
@@ -166,6 +170,18 @@ namespace Ferretto.VW.App.Operator.ViewModels
             set => this.SetProperty(ref this.selectedItemCompartment, value, this.SetSelectedItemAndCompartment);
         }
 
+        public bool IsBusyConfirmingOperation
+        {
+            get => this.isBusyConfirmingOperation;
+            set => this.SetProperty(ref this.isBusyConfirmingOperation, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsBusyConfirmingRecallOperation
+        {
+            get => this.isBusyConfirmingRecallOperation;
+            set => this.SetProperty(ref this.isBusyConfirmingRecallOperation, value, this.RaiseCanExecuteChanged);
+        }
+
         #endregion
 
         #region Methods
@@ -206,7 +222,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public async override Task OnAppearedAsync()
         {
-            this.Reset();
+            if (!this.isBusyConfirmingOperation
+                &&
+                !this.IsBusyConfirmingRecallOperation)
+            {
+                this.Reset();
+            }
 
             await base.OnAppearedAsync();
 
@@ -295,18 +316,32 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private bool CanChangeListMode()
         {
+            if (this.isBusyConfirmingOperation
+                ||
+                this.isBusyConfirmingRecallOperation)
+            {
+                return false;
+            }
+
             if (this.itemsCompartments is null)
             {
                 return false;
             }
 
-            return this.itemsCompartments.Any()
+            return this.itemsCompartments.Any()                
                    &&
                    !this.isListVisibile;
         }
 
         private bool CanChangeLoadingUnitMode()
         {
+            if (this.isBusyConfirmingOperation
+                ||
+                this.isBusyConfirmingRecallOperation)
+            {
+                return false;
+            }
+
             if (this.itemsCompartments is null)
             {
                 return false;
@@ -364,6 +399,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private void Reset()
         {
+            this.currentItemCompartmentIndex = 0;
+            this.currentItemIndex = 0;
             this.IsListVisibile = false;
             this.SelectedItemCompartment = null;
             this.SelectedCompartment = null;
