@@ -326,7 +326,10 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var bay = this.dataContext.Bays
+                var cacheKey = GetInverterIndexCacheKey(inverterIndex);
+                if (!this.cache.TryGetValue(cacheKey, out BayNumber cacheEntry))
+                {
+                    var bay = this.dataContext.Bays
                         .Include(i => i.Inverter)
                         .Include(i => i.Shutter)
                             .ThenInclude(s => s.Inverter)
@@ -336,19 +339,25 @@ namespace Ferretto.VW.MAS.DataLayer
                             ||
                             b.Shutter.Inverter.Index == inverterIndex);
 
-                if (bay is null)
-                {
-                    if (this.elevatorDataProvider.GetElevatorAxes().Any(a => a.Inverter.Index == inverterIndex))
+                    if (bay is null)
                     {
-                        return BayNumber.ElevatorBay;
+                        if (this.elevatorDataProvider.GetElevatorAxes().Any(a => a.Inverter.Index == inverterIndex))
+                        {
+                            cacheEntry = BayNumber.ElevatorBay;
+                        }
+                        else
+                        {
+                            throw new EntityNotFoundException(inverterIndex.ToString());
+                        }
                     }
                     else
                     {
-                        throw new EntityNotFoundException(inverterIndex.ToString());
+                        cacheEntry = bay.Number;
                     }
-                }
 
-                return bay.Number;
+                    this.cache.Set(cacheKey, cacheEntry, this.cacheOptions);
+                }
+                return cacheEntry;
             }
         }
 
@@ -990,6 +999,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 return this.GetByNumber(bayNumber);
             }
         }
+
+        internal static string GetInverterIndexCacheKey(InverterIndex inverterIndex) => $"{nameof(GetByInverterIndex)}{inverterIndex}";
 
         private void Update(Bay bay)
         {
