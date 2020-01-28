@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
         private readonly IShutterPositioningMachineData machineData;
 
-        private readonly IMachineModeVolatileDataProvider machineModeDataProvider;
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
         private readonly IServiceScope scope;
 
@@ -38,7 +38,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IShutterPositioningMachineData;
             this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
-            this.machineModeDataProvider = this.scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
+            this.machineVolatileDataProvider = this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>();
         }
 
         #endregion
@@ -216,7 +216,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                     this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.stateData));
                     return;
                 }
-                this.machineModeDataProvider.Mode = MachineMode.Test;
+                this.machineVolatileDataProvider.Mode = MachineMode.Test;
                 this.Logger.LogInformation($"Machine status switched to {MachineMode.Test}");
 
                 // first move the shutter in Open position

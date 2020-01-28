@@ -127,7 +127,7 @@ namespace Ferretto.VW.MAS.MissionManager
             else
             {
                 // no more compacting is possible. Exit from compact mode
-                var machineModeDataProvider = serviceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
+                var machineModeDataProvider = serviceProvider.GetRequiredService<IMachineVolatileDataProvider>();
                 machineModeDataProvider.Mode = MachineMode.Manual;
                 this.logger.LogInformation($"Compacting terminated. Machine status switched to {machineModeDataProvider.Mode}");
             }

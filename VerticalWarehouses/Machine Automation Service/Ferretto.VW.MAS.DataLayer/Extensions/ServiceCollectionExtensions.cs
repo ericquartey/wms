@@ -49,12 +49,12 @@ namespace Ferretto.VW.MAS.DataLayer
                 .AddTransient<ITorqueCurrentMeasurementsDataProvider, TorqueCurrentMeasurementsDataProvider>()
                 .AddTransient<IWmsSettingsProvider, WmsSettingsProvider>()
                 .AddTransient<IUsersProvider, UsersProvider>()
-                .AddTransient<IMachineMissionsProvider, MachineMissionsProvider>();
+                .AddTransient<IMachineMissionsProvider, MachineMissionsProvider>()
+                .AddTransient<IMachineProvider, MachineProvider>();
 
             services
-                .AddSingleton<IMachineProvider, MachineProvider>()
                 .AddSingleton<IVerticalOriginVolatileSetupStatusProvider, VerticalOriginVolatileSetupStatusProvider>()
-                .AddSingleton<IMachineModeVolatileDataProvider, MachineModeVolatileDataProvider>()
+                .AddSingleton<IMachineVolatileDataProvider, MachineVolatileDataProvider>()
                 .AddSingleton<IElevatorVolatileDataProvider, ElevatorVolatileDataProvider>()
                 .AddSingleton<IBayChainVolatileDataProvider, BayChainVolatileDataProvider>();
 

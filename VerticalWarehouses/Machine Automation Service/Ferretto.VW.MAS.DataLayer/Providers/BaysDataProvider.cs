@@ -48,6 +48,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly IMachineProvider machineProvider;
 
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
+
         private readonly NotificationEvent notificationEvent;
 
         #endregion
@@ -58,6 +60,7 @@ namespace Ferretto.VW.MAS.DataLayer
             DataLayerContext dataContext,
             IEventAggregator eventAggregator,
             IMachineProvider machineProvider,
+            IMachineVolatileDataProvider machineVolatileDataProvider,
             IConfiguration configuration,
             IElevatorDataProvider elevatorDataProvider,
             IBayChainVolatileDataProvider bayChainVolatileDataProvider,
@@ -67,6 +70,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.bayChainVolatileDataProvider = bayChainVolatileDataProvider ?? throw new ArgumentNullException(nameof(bayChainVolatileDataProvider));
             this.cache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
@@ -750,7 +754,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public bool GetLightOn(BayNumber bayNumber)
         {
-            return this.machineProvider.IsBayLightOn.GetValueOrDefault(bayNumber);
+            return this.machineVolatileDataProvider.IsBayLightOn.GetValueOrDefault(bayNumber);
         }
 
         public LoadingUnit GetLoadingUnitByDestination(LoadingUnitLocation location)

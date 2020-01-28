@@ -32,7 +32,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private readonly IHubContext<InstallationHub, IInstallationHub> installationHub;
 
-        private readonly IMachineProvider machineProvider;
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
         private readonly IHubContext<OperatorHub, IOperatorHub> operatorHub;
 
@@ -48,7 +48,7 @@ namespace Ferretto.VW.MAS.AutomationService
             IHubContext<OperatorHub, IOperatorHub> operatorHub,
             IServiceScopeFactory serviceScopeFactory,
             IApplicationLifetime applicationLifetime,
-            IMachineProvider machineProvider,
+            IMachineVolatileDataProvider machineVolatileDataProvider,
             IConfiguration configuration)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
@@ -57,7 +57,7 @@ namespace Ferretto.VW.MAS.AutomationService
             this.operatorHub = operatorHub ?? throw new ArgumentNullException(nameof(operatorHub));
             this.applicationLifetime = applicationLifetime ?? throw new ArgumentNullException(nameof(applicationLifetime));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
 
             this.dataHubClient.EntityChanged += this.OnDataHubClientEntityChanged;
 

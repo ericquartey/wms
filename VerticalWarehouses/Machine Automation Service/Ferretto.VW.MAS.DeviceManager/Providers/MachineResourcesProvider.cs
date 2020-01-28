@@ -26,6 +26,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly IMachineProvider machineProvider;
 
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
+
         /// <summary>
         /// It contains the Remote IO sensor status between index 0 and 47
         /// followed by the Inverter sensor between index 48 and 111.
@@ -42,10 +44,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public MachineResourcesProvider(
             IMachineProvider machineProvider,
+            IMachineVolatileDataProvider machineVolatileDataProvider,
             IServiceScopeFactory serviceScopeFactory,
             ILogger<MachineResourcesProvider> logger)
         {
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
             this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             this.logger = logger;
         }
@@ -95,7 +99,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool IsMachineInFaultState => this.sensorStatus[(int)IOMachineSensors.InverterInFault1];
 
-        public bool IsMachineInRunningState => this.machineProvider.IsMachineRunning;
+        public bool IsMachineInRunningState => this.machineVolatileDataProvider.IsMachineRunning;
 
         public bool IsMachineSecurityRunning => this.sensorStatus[(int)IOMachineSensors.RunningState];
 
@@ -152,7 +156,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool IsBayLightOn(BayNumber bayNumber)
         {
-            if (this.machineProvider.IsBayLightOn.TryGetValue(bayNumber, out var isLight))
+            if (this.machineVolatileDataProvider.IsBayLightOn.TryGetValue(bayNumber, out var isLight))
             {
                 return isLight;
             }

@@ -28,6 +28,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly IMachineProvider machineProvider;
 
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
+
         private readonly IMachineResourcesProvider machineResourcesProvider;
 
         private readonly IMissionsDataProvider missionsDataProvider;
@@ -51,6 +53,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             IBaysDataProvider baysDataProvider,
             ICellsProvider cellsProvider,
             IMachineProvider machineProvider,
+            IMachineVolatileDataProvider machineVolatileDataProvider,
             IMachineResourcesProvider machineResourcesProvider,
             IMissionsDataProvider missionsDataProvider,
             ISensorsProvider sensorsProvider,
@@ -63,7 +66,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.setupStatusProvider = setupStatusProvider ?? throw new ArgumentNullException(nameof(setupStatusProvider));
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
-            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
             this.machineResourcesProvider = machineResourcesProvider ?? throw new ArgumentNullException(nameof(machineResourcesProvider));
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
@@ -685,7 +688,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
 
-            var targetPosition = this.machineProvider.IsHomingExecuted
+            var targetPosition = this.machineVolatileDataProvider.IsHomingExecuted
                 ? axis.ManualMovements.TargetDistanceAfterZero
                 : axis.ManualMovements.TargetDistance;
             if (distance > 0)
@@ -867,7 +870,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     Resources.Elevator.MovementDistanceCannotBeZero);
             }
 
-            var homingDone = this.machineProvider.IsHomingExecuted;
+            var homingDone = this.machineVolatileDataProvider.IsHomingExecuted;
             if (!homingDone)
             {
                 throw new InvalidOperationException(Resources.Elevator.VerticalOriginCalibrationMustBePerformed);
@@ -930,7 +933,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             double targetPosition;
 
             // INFO Absolute movement using the min and max reachable positions for limits
-            var homingDone = this.machineProvider.IsHomingExecuted;
+            var homingDone = this.machineVolatileDataProvider.IsHomingExecuted;
             if (homingDone)
             {
                 feedRate = parameters.FeedRateAfterZero;
@@ -1000,7 +1003,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 &&
                 sensors[(int)IOMachineSensors.LuPresentInOperatorSide];
 
-            var homingDone = this.machineProvider.IsHomingExecuted;
+            var homingDone = this.machineVolatileDataProvider.IsHomingExecuted;
             if (!homingDone)
             {
                 throw new InvalidOperationException(Resources.Elevator.VerticalOriginCalibrationMustBePerformed);
@@ -1114,7 +1117,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var procedureParameters = this.setupProceduresDataProvider.GetBeltBurnishingTest();
 
-            var homingDone = this.machineProvider.IsHomingExecuted;
+            var homingDone = this.machineVolatileDataProvider.IsHomingExecuted;
 
             var assistedMovementsAxis = this.elevatorDataProvider.GetAssistedMovementsAxis(Orientation.Vertical);
 
@@ -1266,7 +1269,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 throw new InvalidOperationException(string.Format(Resources.Elevator.TargetPositionOutOfBounds, targetPosition, lowerBound, upperBound));
             }
 
-            var homingDone = (checkHomingDone ? this.machineProvider.IsHomingExecuted : true);
+            var homingDone = (checkHomingDone ? this.machineVolatileDataProvider.IsHomingExecuted : true);
 
             var sensors = this.sensorsProvider.GetAll();
             var isLoadingUnitOnBoard =

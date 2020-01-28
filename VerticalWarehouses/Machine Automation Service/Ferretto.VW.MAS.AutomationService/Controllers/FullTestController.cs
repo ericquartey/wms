@@ -10,15 +10,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     [ApiController]
     public class FullTestController : ControllerBase
     {
-        //private readonly IMachineModeProvider machineModeProvider;
-
         #region Constructors
 
-        public FullTestController(
-            //IMachineModeProvider machineModeProvider
-            )
+        public FullTestController()
         {
-            //this.machineModeProvider = machineModeProvider ?? throw new ArgumentNullException(nameof(machineModeProvider));
         }
 
         #endregion
@@ -31,7 +26,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Start(List<int> loadunits, int cycle)
         {
-            //this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Compact);
             return this.Accepted();
         }
 
@@ -40,7 +34,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Stop()
         {
-            //this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Manual);
             return this.Accepted();
         }
 

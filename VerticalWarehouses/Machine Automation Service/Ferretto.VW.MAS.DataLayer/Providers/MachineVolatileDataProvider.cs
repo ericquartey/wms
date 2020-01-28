@@ -1,11 +1,12 @@
-﻿using Ferretto.VW.CommonUtils.Messages;
+﻿using System.Collections.Generic;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
-    internal sealed class MachineModeVolatileDataProvider : IMachineModeVolatileDataProvider
+    internal sealed class MachineVolatileDataProvider : IMachineVolatileDataProvider
     {
         #region Fields
 
@@ -17,9 +18,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Constructors
 
-        public MachineModeVolatileDataProvider(IEventAggregator eventAggregator)
+        public MachineVolatileDataProvider(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator ?? throw new System.ArgumentNullException(nameof(eventAggregator));
+
+            this.IsBayLightOn = new Dictionary<BayNumber, bool>();
         }
 
         #endregion
@@ -48,6 +51,12 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
             }
         }
+
+        public Dictionary<BayNumber, bool> IsBayLightOn { get; set; }
+
+        public bool IsHomingExecuted { get; set; }
+
+        public bool IsMachineRunning { get; set; }
 
         #endregion
     }

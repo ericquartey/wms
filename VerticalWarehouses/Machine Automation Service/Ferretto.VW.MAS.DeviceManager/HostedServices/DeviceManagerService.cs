@@ -651,14 +651,14 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                     if (receivedMessage.Status == MessageStatus.OperationEnd)
                     {
-                        var machineProvider = serviceProvider.GetRequiredService<IMachineProvider>();
-                        if (machineProvider.IsBayLightOn.ContainsKey(bayNumber))
+                        var machineVolatileDataProvider = serviceProvider.GetRequiredService<IMachineVolatileDataProvider>();
+                        if (machineVolatileDataProvider.IsBayLightOn.ContainsKey(bayNumber))
                         {
-                            machineProvider.IsBayLightOn[bayNumber] = enable;
+                            machineVolatileDataProvider.IsBayLightOn[bayNumber] = enable;
                         }
                         else
                         {
-                            machineProvider.IsBayLightOn.Add(bayNumber, enable);
+                            machineVolatileDataProvider.IsBayLightOn.Add(bayNumber, enable);
                         }
                     }
 

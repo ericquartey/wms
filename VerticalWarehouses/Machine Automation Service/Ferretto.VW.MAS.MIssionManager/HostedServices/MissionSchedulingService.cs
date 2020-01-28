@@ -335,13 +335,13 @@ namespace Ferretto.VW.MAS.MissionManager
 
             var modeProvider = serviceProvider.GetRequiredService<IMachineModeProvider>();
             var bayProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-            var machineProvider = serviceProvider.GetRequiredService<IMachineProvider>();
+            var machineVolatileDataProvider = serviceProvider.GetRequiredService<IMachineVolatileDataProvider>();
 
             switch (modeProvider.GetCurrent())
             {
                 case MachineMode.SwitchingToAutomatic:
                     {
-                        var machineModeDataProvider = serviceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
+                        
                         var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
                         var activeMissions = missionsDataProvider.GetAllActiveMissions();
 
@@ -351,11 +351,11 @@ namespace Ferretto.VW.MAS.MissionManager
                             )
                         {
                             if (activeMissions.Any(m => m.Step >= MissionStep.Error)
-                                || !this.GenerateHoming(bayProvider, machineProvider.IsHomingExecuted)
+                                || !this.GenerateHoming(bayProvider, machineVolatileDataProvider.IsHomingExecuted)
                                 )
                             {
-                                machineModeDataProvider.Mode = MachineMode.Automatic;
-                                this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
+                                machineVolatileDataProvider.Mode = MachineMode.Automatic;
+                                this.Logger.LogInformation($"Machine status switched to {machineVolatileDataProvider.Mode}");
                             }
                         }
                     }
@@ -385,11 +385,10 @@ namespace Ferretto.VW.MAS.MissionManager
                         var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
 
                         if (!missionsDataProvider.GetAllActiveMissions().Any()
-                            && !this.GenerateHoming(bayProvider, machineProvider.IsHomingExecuted))
+                            && !this.GenerateHoming(bayProvider, machineVolatileDataProvider.IsHomingExecuted))
                         {
-                            var machineModeDataProvider = serviceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
-                            machineModeDataProvider.Mode = MachineMode.Compact;
-                            this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
+                            machineVolatileDataProvider.Mode = MachineMode.Compact;
+                            this.Logger.LogInformation($"Machine status switched to {machineVolatileDataProvider.Mode}");
                         }
 
                     }
@@ -408,7 +407,7 @@ namespace Ferretto.VW.MAS.MissionManager
                             && m.Step > MissionStep.New)
                             )
                         {
-                            var machineModeDataProvider = serviceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
+                            var machineModeDataProvider = serviceProvider.GetRequiredService<IMachineVolatileDataProvider>();
                             machineModeDataProvider.Mode = MachineMode.Manual;
                             this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
                         }
