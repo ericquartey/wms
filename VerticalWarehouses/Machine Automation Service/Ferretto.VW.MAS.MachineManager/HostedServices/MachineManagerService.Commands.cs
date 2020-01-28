@@ -4,6 +4,8 @@ using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,29 +28,27 @@ namespace Ferretto.VW.MAS.MachineManager
 
         protected override Task OnCommandReceivedAsync(CommandMessage command, IServiceProvider serviceProvider)
         {
-            switch (command.Type)
-            {
-                case MessageType.ChangeRunningState:
-                    this.OnChangeRunningStateCommandReceived(command);
-                    break;
+                switch (command.Type)
+                {
+                    case MessageType.ChangeRunningState:
+                        this.OnChangeRunningStateCommandReceived(command, serviceProvider);
+                        break;
 
-                case MessageType.MoveLoadingUnit:
-                    lock (this.syncObject)
-                    {
-                        this.OnMoveLoadingUnit(command, serviceProvider);
-                        this.missionsDataProvider.CheckPendingChanges();
-                    }
-                    break;
+                    case MessageType.MoveLoadingUnit:
+                        lock (this.syncObject)
+                        {
+                            this.OnMoveLoadingUnit(command, serviceProvider);
+                        }
+                        break;
 
-                case MessageType.FullTest:
-                    this.OnFullTest(command, serviceProvider);
-                    break;
-            }
-
+                    case MessageType.FullTest:
+                        this.OnFullTest(command, serviceProvider);
+                        break;
+                }
             return Task.CompletedTask;
         }
 
-        private void OnChangeRunningStateCommandReceived(CommandMessage command)
+        private void OnChangeRunningStateCommandReceived(CommandMessage command, IServiceProvider serviceProvider)
         {
             if (command is null)
             {
@@ -67,11 +67,12 @@ namespace Ferretto.VW.MAS.MachineManager
                 switch (messageData.CommandAction)
                 {
                     case CommandAction.Start:
-                        if (this.machineMissionsProvider.TryCreateMachineMission(FsmType.ChangeRunningType, command, out var missionId))
+                        var machineMissionsProvider = serviceProvider.GetRequiredService<IMachineMissionsProvider>();
+                        if (machineMissionsProvider.TryCreateMachineMission(FsmType.ChangeRunningType, command, out var missionId))
                         {
                             try
                             {
-                                this.machineMissionsProvider.StartMachineMission(missionId, command);
+                                machineMissionsProvider.StartMachineMission(missionId, command);
                             }
                             catch (Exception ex)
                             {
@@ -142,6 +143,9 @@ namespace Ferretto.VW.MAS.MachineManager
                 this.NotifyCommandError(command);
                 return;
             }
+            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+            var missionMoveProvider = serviceProvider.GetRequiredService<IMissionMoveProvider>();
+
 
             if (command.Data is MoveLoadingUnitMessageData messageData)
             {
@@ -149,13 +153,13 @@ namespace Ferretto.VW.MAS.MachineManager
                 {
                     case CommandAction.Start:
                         {
-                            if (this.missionMoveProvider.TryCreateMachineMission(command, serviceProvider, out var mission)
+                            if (missionMoveProvider.TryCreateMachineMission(command, serviceProvider, out var mission)
                                 && mission != null
                                 )
                             {
                                 try
                                 {
-                                    this.missionMoveProvider.StartMission(mission, command, serviceProvider, true);
+                                    missionMoveProvider.StartMission(mission, command, serviceProvider, true);
                                 }
                                 catch (Exception ex)
                                 {
@@ -175,10 +179,10 @@ namespace Ferretto.VW.MAS.MachineManager
                     case CommandAction.Activate:
                         try
                         {
-                            var mission = this.missionsDataProvider.GetById(messageData.MissionId.Value);
-                            var baysDataProvider = this.serviceScope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
-                            if (!this.missionMoveProvider.UpdateWaitingMission(this.missionsDataProvider, baysDataProvider, mission)
-                                || !this.missionMoveProvider.StartMission(mission, command, serviceProvider, false)
+                            var mission = missionsDataProvider.GetById(messageData.MissionId.Value);
+                            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                            if (!missionMoveProvider.UpdateWaitingMission(missionsDataProvider, baysDataProvider, mission)
+                                || !missionMoveProvider.StartMission(mission, command, serviceProvider, false)
                                 )
                             {
                                 this.Logger.LogWarning($"Conditions not met to activate Mission {mission.Id}, Load Unit {mission.LoadUnitId} .");
@@ -195,7 +199,7 @@ namespace Ferretto.VW.MAS.MachineManager
                         {
                             if (messageData.MissionId != null)
                             {
-                                if (!this.missionMoveProvider.StopMission(messageData.MissionId.Value, StopRequestReason.Abort, serviceProvider))
+                                if (!missionMoveProvider.StopMission(messageData.MissionId.Value, StopRequestReason.Abort, serviceProvider))
                                 {
                                     this.Logger.LogError("Supplied mission Id to be aborted is no longer valid");
                                     this.NotifyCommandError(command);
@@ -203,9 +207,9 @@ namespace Ferretto.VW.MAS.MachineManager
                             }
                             else
                             {
-                                foreach (var mission in this.missionsDataProvider.GetAllMissions())
+                                foreach (var mission in missionsDataProvider.GetAllMissions())
                                 {
-                                    this.missionMoveProvider.StopMission(mission.Id, StopRequestReason.Abort, serviceProvider);
+                                    missionMoveProvider.StopMission(mission.Id, StopRequestReason.Abort, serviceProvider);
                                 }
                             }
                         }
@@ -220,7 +224,7 @@ namespace Ferretto.VW.MAS.MachineManager
                         {
                             if (messageData.MissionId != null)
                             {
-                                if (!this.missionMoveProvider.StopMission(messageData.MissionId.Value, StopRequestReason.Stop, serviceProvider))
+                                if (!missionMoveProvider.StopMission(messageData.MissionId.Value, StopRequestReason.Stop, serviceProvider))
                                 {
                                     this.Logger.LogError("Supplied mission Id to be stopped is no longer valid");
                                     this.NotifyCommandError(command);
@@ -228,9 +232,9 @@ namespace Ferretto.VW.MAS.MachineManager
                             }
                             else
                             {
-                                foreach (var mission in this.missionsDataProvider.GetAllActiveMissions())
+                                foreach (var mission in missionsDataProvider.GetAllActiveMissions())
                                 {
-                                    this.missionMoveProvider.StopMission(mission.Id, StopRequestReason.Stop, serviceProvider);
+                                    missionMoveProvider.StopMission(mission.Id, StopRequestReason.Stop, serviceProvider);
                                 }
                             }
                         }
@@ -262,7 +266,7 @@ namespace Ferretto.VW.MAS.MachineManager
                     case CommandAction.Resume:
                         if (messageData.MissionId != null)
                         {
-                            if (!this.missionMoveProvider.ResumeMission(messageData.MissionId.Value, command, serviceProvider))
+                            if (!missionMoveProvider.ResumeMission(messageData.MissionId.Value, command, serviceProvider))
                             {
                                 this.Logger.LogError("Supplied mission Id to be resumed is no longer valid");
                                 this.NotifyCommandError(command);
@@ -270,9 +274,9 @@ namespace Ferretto.VW.MAS.MachineManager
                         }
                         else
                         {
-                            foreach (var mission in this.missionsDataProvider.GetAllActiveMissions())
+                            foreach (var mission in missionsDataProvider.GetAllActiveMissions())
                             {
-                                this.missionMoveProvider.ResumeMission(mission.Id, command, serviceProvider);
+                                missionMoveProvider.ResumeMission(mission.Id, command, serviceProvider);
                             }
                         }
 
@@ -281,7 +285,7 @@ namespace Ferretto.VW.MAS.MachineManager
                     case CommandAction.Test:
                         if (messageData.MissionId != null)
                         {
-                            if (!this.missionMoveProvider.TestMission(messageData.MissionId.Value, command, serviceProvider))
+                            if (!missionMoveProvider.TestMission(messageData.MissionId.Value, command, serviceProvider))
                             {
                                 this.Logger.LogError("Supplied mission Id to be tested is no longer valid");
                                 this.NotifyCommandError(command);
@@ -289,9 +293,9 @@ namespace Ferretto.VW.MAS.MachineManager
                         }
                         else
                         {
-                            foreach (var mission in this.missionsDataProvider.GetAllActiveMissions())
+                            foreach (var mission in missionsDataProvider.GetAllActiveMissions())
                             {
-                                this.missionMoveProvider.TestMission(mission.Id, command, serviceProvider);
+                                missionMoveProvider.TestMission(mission.Id, command, serviceProvider);
                             }
                         }
 
@@ -303,6 +307,7 @@ namespace Ferretto.VW.MAS.MachineManager
                 this.Logger.LogError($"Invalid command message data {command.Data.GetType().Name} for Move Loading Unit Command");
                 this.NotifyCommandError(command);
             }
+            missionsDataProvider.CheckPendingChanges();
         }
 
         #endregion

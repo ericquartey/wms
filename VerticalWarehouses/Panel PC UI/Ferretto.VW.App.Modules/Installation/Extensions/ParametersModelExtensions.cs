@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Ferretto.VW.App
 {
@@ -84,6 +86,31 @@ namespace Ferretto.VW.App
             } while (unique && File.Exists(filename));
 
             return filename;
+        }
+
+        public static string JsonPropertyName(this PropertyInfo prop)
+         => (prop ?? throw new ArgumentNullException(nameof(prop))).GetCustomAttributes<JsonPropertyAttribute>().Select(p => p.PropertyName).FirstOrDefault() ?? prop.Name;
+
+        public static JObject ExtendWith(this object target, params object[] sources)
+        {
+            var serializer = new JsonSerializer();
+            serializer.Converters.Add(new Ferretto.VW.CommonUtils.Converters.IPAddressConverter());
+            var retval = JObject.FromObject(target, serializer);
+
+            if (sources != null)
+            {
+                foreach (var source in sources)
+                {
+                    retval.Merge(JObject.FromObject(source, serializer), new JsonMergeSettings
+                    {
+                        MergeNullValueHandling = MergeNullValueHandling.Ignore,
+                        MergeArrayHandling = MergeArrayHandling.Replace,
+                        PropertyNameComparison = StringComparison.Ordinal,
+                    });
+                }
+            }
+
+            return retval;
         }
 
         #endregion
