@@ -42,7 +42,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public MachineResourcesProvider(
             IMachineProvider machineProvider,
-            IBaysDataProvider baysDataProvider,
             IServiceScopeFactory serviceScopeFactory,
             ILogger<MachineResourcesProvider> logger)
         {
