@@ -64,6 +64,24 @@ namespace Ferretto.VW.App.Services
             });
         }
 
+        public async Task PutAsync(int itemId, double requestedQuantity)
+        {
+            if (!this.bayManager.Identity.AreaId.HasValue)
+            {
+                return;
+            }
+
+            var bay = await this.bayManager.GetBayAsync();
+
+            await this.itemsWmsWebService.PutAsync(itemId, new ItemOptions
+            {
+                AreaId = this.bayManager.Identity.AreaId.Value,
+                BayId = bay.Id,
+                MachineId = this.bayManager.Identity.Id,
+                RequestedQuantity = requestedQuantity,
+                RunImmediately = true
+            });
+        }
         #endregion
     }
 }
