@@ -975,8 +975,10 @@ namespace Ferretto.VW.MAS.DataLayer
             this.dataContext.SaveChanges();
         }
 
-        public void UpdateHoming(BayNumber bayNumber, bool isExecuted)
+        public void SetBayActive(BayNumber bayNumber, bool active)
         {
+            // TODO: Check bay activation logic
+
             lock (this.dataContext)
             {
                 var bay = this.dataContext.Bays
@@ -993,8 +995,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new InvalidOperationException($"The bay {bayNumber} has no carousel.");
                 }
 
-                bay.Carousel.IsHomingExecuted = isExecuted;
-                bay.IsActive = true;
+                bay.IsActive = active;
                 this.dataContext.SaveChanges();
 
                 this.notificationEvent.Publish(

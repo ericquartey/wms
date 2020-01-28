@@ -31,6 +31,8 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private readonly WMS.Data.WebAPI.Contracts.IMissionsWmsWebService missionsWmsWebService;
 
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider; 
+
         private bool dataLayerIsReady;
 
         #endregion
@@ -41,6 +43,7 @@ namespace Ferretto.VW.MAS.MissionManager
             IConfiguration configuration,
             WMS.Data.WebAPI.Contracts.IMissionsWmsWebService missionsWmsWebService,
             WMS.Data.WebAPI.Contracts.IMissionOperationsWmsWebService missionOperationsWmsWebService,
+            IMachineVolatileDataProvider machineVolatileDataProvider,
             IEventAggregator eventAggregator,
             ILogger<MissionSchedulingService> logger,
             IServiceScopeFactory serviceScopeFactory)
@@ -49,6 +52,7 @@ namespace Ferretto.VW.MAS.MissionManager
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             this.missionsWmsWebService = missionsWmsWebService ?? throw new ArgumentNullException(nameof(missionsWmsWebService));
             this.missionOperationsWmsWebService = missionOperationsWmsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWmsWebService));
+            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
         }
 
         #endregion
@@ -289,9 +293,9 @@ namespace Ferretto.VW.MAS.MissionManager
         {
             var bays = bayProvider.GetAll();
             bool generated = false;
-            if (bays.Any(x => x.Carousel != null && !x.Carousel.IsHomingExecuted && x.CurrentMission == null))
+            if (this.machineVolatileDataProvider.IsBayHomingExecuted.Any(x => !x.Value) && bays.Any(x => x.CurrentMission == null))
             {
-                var bayNumber = bays.First(x => x.Carousel != null && !x.Carousel.IsHomingExecuted && x.CurrentMission == null).Number;
+                var bayNumber = bays.First(x => !this.machineVolatileDataProvider.IsBayHomingExecuted[x.Number] && x.CurrentMission == null).Number;
                 IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, Calibration.FindSensor, null, false);
 
                 this.EventAggregator

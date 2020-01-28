@@ -62,7 +62,7 @@ namespace Ferretto.VW.MAS.AutomationService
                     {
                         var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
                         var bay = baysDataProvider.GetByNumber(receivedMessage.RequestingBay);
-                        baysDataProvider.UpdateHoming(bay.Number, true);
+                        baysDataProvider.SetBayActive(bay.Number, true);
                     }
                     else if (data.AxisToCalibrate == Axis.HorizontalAndVertical)
                     {
@@ -168,7 +168,7 @@ namespace Ferretto.VW.MAS.AutomationService
             {
                 if (bay.Carousel != null)
                 {
-                    baysDataProvider.UpdateHoming(bay.Number, false);
+                    baysDataProvider.SetBayActive(bay.Number, false);
                 }
             }
 

@@ -127,7 +127,7 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <param name="height">"only when it is not null"</param>
         void SetLoadingUnit(int bayPositionId, int? loadingUnitId, double? height = null);
 
-        void UpdateHoming(BayNumber bayNumber, bool isExecuted);
+        void SetBayActive(BayNumber bayNumber, bool active);
 
         void UpdateLastIdealPosition(double position, BayNumber bayNumber);
 

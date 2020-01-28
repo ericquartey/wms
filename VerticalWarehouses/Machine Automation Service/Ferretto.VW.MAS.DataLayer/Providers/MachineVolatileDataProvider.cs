@@ -69,6 +69,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public double ElevatorVerticalPosition { get; set; }
 
+        public Dictionary<BayNumber, bool> IsBayHomingExecuted { get; set; }
+
         #endregion
 
         #region Methods
