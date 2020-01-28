@@ -726,13 +726,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.ElevatorBay);
         }
 
-        public void MoveHorizontalProfileCalibration(BayNumber requestingBay, MessageActor sender)
+        public void MoveHorizontalProfileCalibration(int bayPositionId, BayNumber requestingBay, MessageActor sender)
         {
+            var policy = this.CanLoadFromBay(bayPositionId, requestingBay, isGuided: false);
+            if (!policy.IsAllowed)
+            {
+                throw new InvalidOperationException(policy.Reason);
+            }
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
 
             var targetPosition = axis.ManualMovements.TargetDistanceAfterZero;
 
             var bay = this.baysDataProvider.GetByNumber(requestingBay);
+
             var direction = (bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards);
 
             targetPosition *= (direction == HorizontalMovementDirection.Forwards) ? 1 : -1;

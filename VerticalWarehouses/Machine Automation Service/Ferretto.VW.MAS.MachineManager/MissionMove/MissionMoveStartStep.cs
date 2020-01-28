@@ -152,6 +152,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         this.Mission.NeedHomingAxis = Axis.None;
                         this.MissionsDataProvider.Update(this.Mission);
 
+                        this.MachineProvider.IsHomingExecuted = true;
+
                         if (this.Mission.LoadUnitSource is LoadingUnitLocation.Elevator)
                         {
                             var destinationHeight = this.LoadingUnitMovementProvider.GetDestinationHeight(this.Mission, out var targetBayPositionId, out var targetCellId);

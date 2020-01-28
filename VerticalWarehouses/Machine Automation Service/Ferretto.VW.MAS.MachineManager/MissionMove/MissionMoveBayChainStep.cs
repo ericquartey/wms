@@ -143,6 +143,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                             else
                             {
+                                this.MachineProvider.IsHomingExecuted = true;
                                 this.BayChainEnd();
                             }
                         }
