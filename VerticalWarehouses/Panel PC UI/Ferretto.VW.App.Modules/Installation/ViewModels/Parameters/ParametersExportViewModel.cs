@@ -2,19 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.IO;
-using Ferretto.VW.CommonUtils.ContractResolver;
-using Ferretto.VW.CommonUtils.Converters;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Newtonsoft.Json;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
@@ -29,7 +24,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private IEnumerable<DriveInfo> availableDrives = Array.Empty<DriveInfo>();
 
-        private VertimagConfiguration configuration = null;
+        private object configuration = null;
 
         private DriveInfo drive = null;
 
@@ -64,7 +59,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     (this.exportCommand = new DelegateCommand(
                     async () => await this.ExportAsync(), this.CanExport));
 
-        public VertimagConfiguration ExportingConfiguration
+        public object ExportingConfiguration
         {
             get => this.configuration;
             set
@@ -163,12 +158,16 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 this.RaisePropertyChanged();
 
                 // fetch latest version
-                var configuration = await this.machineConfigurationWebService.GetAsync();
+                var output = this.ExportingConfiguration;
+                var configuration = this.Data as VertimagConfiguration;
 
-                string json = configuration.ToJson();
+                string json = Newtonsoft.Json.JsonConvert.SerializeObject(output, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+                //configuration.ToJson();
                 string fullPath = configuration.Filename(this.SelectedDrive, !this.OverwriteTargetFile);
 
                 File.WriteAllText(fullPath, json);
+
+                this.SelectedDrive = null;
                 this.ShowNotification(Resources.InstallationApp.ExportSuccessful, Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex)

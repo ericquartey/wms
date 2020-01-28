@@ -2880,6 +2880,42 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Restore is NOT possible..
+        /// </summary>
+        public static string RestoreNotPossible {
+            get {
+                return ResourceManager.GetString("RestoreNotPossible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore is NOT possible from file {0}..
+        /// </summary>
+        public static string RestoreNotPossibleFromFile {
+            get {
+                return ResourceManager.GetString("RestoreNotPossibleFromFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore is possible..
+        /// </summary>
+        public static string RestorePossible {
+            get {
+                return ResourceManager.GetString("RestorePossible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore is possible from file {0}..
+        /// </summary>
+        public static string RestorePossibleFromFile {
+            get {
+                return ResourceManager.GetString("RestorePossibleFromFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Restore successful.
         /// </summary>
         public static string RestoreSuccessful {
