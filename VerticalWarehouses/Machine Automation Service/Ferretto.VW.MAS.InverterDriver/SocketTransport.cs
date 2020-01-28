@@ -78,9 +78,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             if (this.transportClient != null || this.transportStream != null)
             {
                 this.transportClient?.Dispose();
-                this.transportStream?.Dispose();
                 this.transportClient = null;
-                this.transportStream = null;
             }
 
             try
