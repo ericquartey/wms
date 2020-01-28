@@ -41,7 +41,6 @@
                                     CommandParameter="{x:Static res:OperatorApp.Adjustment}"
                                     IsActive="{Binding IsAdjustmentVisible}"
                                     Content="{x:Static res:OperatorApp.Adjustment}"
-                                    IsBusy="{Binding IsBusyConfirmingOperation}"
                                     Style="{DynamicResource PpcButtonMarkStyle}" />
 
 
@@ -53,8 +52,7 @@
                                     Command="{Binding OperationCommand}"
                                     CommandParameter="{x:Static res:OperatorApp.Pick}"
                                     IsActive="{Binding IsPickVisible}"
-                                    Content="{x:Static res:OperatorApp.Pick}"
-                                    IsBusy="{Binding IsBusyConfirmingOperation}"
+                                    Content="{x:Static res:OperatorApp.Pick}"                                    
                                     Style="{DynamicResource PpcButtonMarkStyle}"/>
             <controls:PpcButton
                                     Margin="15 0 0 0"
@@ -64,8 +62,7 @@
                                     Command="{Binding OperationCommand}"
                                     CommandParameter="{x:Static res:OperatorApp.Put}"
                                     IsActive="{Binding IsPutVisible}"
-                                    Content="{x:Static res:OperatorApp.Put}"
-                                    IsBusy="{Binding IsBusyConfirmingOperation}"
+                                    Content="{x:Static res:OperatorApp.Put}"                                    
                                     Style="{DynamicResource PpcButtonMarkStyle}"/>
 
 
@@ -74,8 +71,8 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
                                     Command="{Binding RecallLoadingUnitCommand}"                                    
-                                    Content="{x:Static res:OperatorApp.RecallDrawer}"
-                                    IsBusy="{Binding IsBusyConfirmingOperation}" />
+                                    Content="{Binding RecallLoadingUnitInfo}"
+                                    IsBusy="{Binding IsBusyConfirmingRecallOperation}" />
 
         </StackPanel>
     </Grid>
