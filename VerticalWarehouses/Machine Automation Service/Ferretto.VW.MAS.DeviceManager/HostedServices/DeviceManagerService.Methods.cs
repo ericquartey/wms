@@ -237,7 +237,7 @@ namespace Ferretto.VW.MAS.DeviceManager
         private void ProcessPositioningMessage(CommandMessage message, IServiceProvider serviceProvider)
         {
             var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-            var machineProvider = serviceProvider.GetRequiredService<IMachineProvider>();
+            var machineVolatileDataProvider = serviceProvider.GetRequiredService<IMachineVolatileDataProvider>();
             var machineResourcesProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
 
             System.Diagnostics.Debug.Assert(
@@ -258,7 +258,7 @@ namespace Ferretto.VW.MAS.DeviceManager
             }
             else
             {
-                data.IsOneTonMachine = machineProvider.IsOneTonMachine();
+                data.IsOneTonMachine = machineVolatileDataProvider.IsOneTonMachine.Value;
                 data.IsStartedOnBoard = machineResourcesProvider.IsDrawerCompletelyOnCradle;
 
                 currentStateMachine = new PositioningStateMachine(
