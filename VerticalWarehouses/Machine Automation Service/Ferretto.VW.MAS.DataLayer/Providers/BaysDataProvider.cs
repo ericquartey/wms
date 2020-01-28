@@ -571,7 +571,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             switch (data.AxisMovement)
                             {
                                 case Axis.Horizontal:
-                                    returnValue = this.machineProvider.IsOneTonMachine() ? InverterIndex.Slave1 : InverterIndex.MainInverter;
+                                    returnValue = this.machineVolatileDataProvider.IsOneTonMachine.Value ? InverterIndex.Slave1 : InverterIndex.MainInverter;
                                     break;
 
                                 case Axis.Vertical:
@@ -590,7 +590,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             break;
 
                         case MovementMode.FindZero:
-                            returnValue = this.machineProvider.IsOneTonMachine() ? InverterIndex.Slave1 : InverterIndex.MainInverter;
+                            returnValue = this.machineVolatileDataProvider.IsOneTonMachine.Value ? InverterIndex.Slave1 : InverterIndex.MainInverter;
                             break;
 
                         default:

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
+using Microsoft.Extensions.DependencyInjection;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.DataLayer
@@ -13,6 +15,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IServiceScopeFactory serviceScopeFactory;
+
         private readonly Dictionary<BayNumber, double> positions = new Dictionary<BayNumber, double>();
 
         private MachineMode mode;
@@ -21,8 +25,12 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Constructors
 
-        public MachineVolatileDataProvider(IEventAggregator eventAggregator)
+        public MachineVolatileDataProvider(
+            IServiceScopeFactory serviceScopeFactory,
+            IEventAggregator eventAggregator,
+            IDataLayerService dataLayerService)
         {
+            this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             this.eventAggregator = eventAggregator ?? throw new System.ArgumentNullException(nameof(eventAggregator));
 
             this.IsBayLightOn = new Dictionary<BayNumber, bool>();
@@ -35,6 +43,19 @@ namespace Ferretto.VW.MAS.DataLayer
             this.positions.Add(BayNumber.BayOne, 0);
             this.positions.Add(BayNumber.BayTwo, 0);
             this.positions.Add(BayNumber.BayThree, 0);
+
+            if (dataLayerService.IsReady)
+            {
+                this.OnDataLayerReady();
+            }
+            else
+            {
+                eventAggregator.GetEvent<NotificationEvent>().Subscribe((x) =>
+                    this.OnDataLayerReady(),
+                    ThreadOption.PublisherThread,
+                    false,
+                    m => m.Type is MessageType.DataLayerReady);
+            }
         }
 
         #endregion
@@ -76,9 +97,16 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool? IsOneTonMachine { get; set; }
+
         #endregion
 
         #region Methods
+
+        private void OnDataLayerReady()
+        {
+            this.IsOneTonMachine = this.IsOneTonMachine ?? this.serviceScopeFactory.CreateScope().ServiceProvider.GetService<IMachineProvider>().IsOneTonMachine();
+        }
 
         public double GetBayEncoderPosition(BayNumber bayNumber)
         {

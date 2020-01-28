@@ -20,6 +20,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         double ElevatorVerticalPosition { get; set; }
         Dictionary<BayNumber, bool> IsBayHomingExecuted { get; set; }
+        bool? IsOneTonMachine { get; set; }
 
         #endregion
 

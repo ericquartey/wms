@@ -24,8 +24,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly ILogger<MachineResourcesProvider> logger;
 
-        private readonly IMachineProvider machineProvider;
-
         private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
         /// <summary>
@@ -43,12 +41,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         #region Constructors
 
         public MachineResourcesProvider(
-            IMachineProvider machineProvider,
             IMachineVolatileDataProvider machineVolatileDataProvider,
             IServiceScopeFactory serviceScopeFactory,
             ILogger<MachineResourcesProvider> logger)
         {
-            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
             this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             this.logger = logger;
@@ -125,7 +121,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool IsSensorZeroOnBay3 => this.sensorStatus[(int)IOMachineSensors.ACUBay3S3IND];
 
-        public bool IsSensorZeroOnCradle => (this.machineProvider.IsOneTonMachine() ? this.sensorStatus[(int)IOMachineSensors.ZeroPawlSensorOneTon] : this.sensorStatus[(int)IOMachineSensors.ZeroPawlSensor]);
+        public bool IsSensorZeroOnCradle => (this.machineVolatileDataProvider.IsOneTonMachine.Value ? this.sensorStatus[(int)IOMachineSensors.ZeroPawlSensorOneTon] : this.sensorStatus[(int)IOMachineSensors.ZeroPawlSensor]);
 
         public bool IsSensorZeroOnElevator => this.sensorStatus[(int)IOMachineSensors.ZeroVerticalSensor];
 

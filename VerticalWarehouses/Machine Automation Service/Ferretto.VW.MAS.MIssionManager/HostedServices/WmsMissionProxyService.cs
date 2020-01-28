@@ -60,6 +60,14 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 await this.OnDataLayerReadyAsync();
             }
+            else
+            {
+                this.EventAggregator.GetEvent<NotificationEvent>().Subscribe(async (x) =>
+                    await this.OnDataLayerReadyAsync(),
+                    ThreadOption.PublisherThread,
+                    false,
+                    m => m.Type is CommonUtils.Messages.Enumerations.MessageType.DataLayerReady);
+            }
         }
 
         private void RetrieveMachineId()

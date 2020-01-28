@@ -470,7 +470,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             var sensors = this.sensorsProvider.GetAll();
 
-            var zeroSensor = this.machineProvider.IsOneTonMachine()
+            var zeroSensor = this.machineVolatileDataProvider.IsOneTonMachine.Value
                 ? IOMachineSensors.ZeroPawlSensorOneTon
                 : IOMachineSensors.ZeroPawlSensor;
 
@@ -566,7 +566,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var sensors = this.sensorsProvider.GetAll();
 
-            var zeroSensor = this.machineProvider.IsOneTonMachine()
+            var zeroSensor = this.machineVolatileDataProvider.IsOneTonMachine.Value
                 ? IOMachineSensors.ZeroPawlSensorOneTon
                 : IOMachineSensors.ZeroPawlSensor;
 
