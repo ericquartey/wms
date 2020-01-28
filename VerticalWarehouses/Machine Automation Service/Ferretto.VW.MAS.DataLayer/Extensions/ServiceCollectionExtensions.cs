@@ -33,24 +33,24 @@ namespace Ferretto.VW.MAS.DataLayer
             services.AddDbContext<DataLayerContext>();
 
             services
-                .AddTransient<IBaysDataProvider, BaysDataProvider>()
-                .AddTransient<ICellPanelsProvider, CellPanelsProvider>()
-                .AddTransient<ICellsProvider, CellsProvider>()
-                .AddTransient<IDigitalDevicesDataProvider, DigitalDevicesDataProvider>()
-                .AddTransient<IElevatorDataProvider, ElevatorDataProvider>()
-                .AddTransient<IElevatorWeightCheckProcedureProvider, ElevatorWeightCheckProcedureProvider>()
-                .AddTransient<IErrorsProvider, ErrorsProvider>()
-                .AddTransient<ILoadingUnitsDataProvider, LoadingUnitsDataProvider>()
-                .AddTransient<ILogEntriesProvider, LogEntriesProvider>()
-                .AddTransient<IServicingProvider, ServicingProvider>()
-                .AddTransient<IMissionsDataProvider, MissionsDataProvider>()
-                .AddTransient<ISetupStatusProvider, SetupStatusProvider>()
-                .AddTransient<ISetupProceduresDataProvider, SetupProceduresDataProvider>()
-                .AddTransient<ITorqueCurrentMeasurementsDataProvider, TorqueCurrentMeasurementsDataProvider>()
-                .AddTransient<IWmsSettingsProvider, WmsSettingsProvider>()
-                .AddTransient<IUsersProvider, UsersProvider>()
-                .AddTransient<IMachineMissionsProvider, MachineMissionsProvider>()
-                .AddTransient<IMachineProvider, MachineProvider>();
+                .AddScoped<IBaysDataProvider, BaysDataProvider>()
+                .AddScoped<ICellPanelsProvider, CellPanelsProvider>()
+                .AddScoped<ICellsProvider, CellsProvider>()
+                .AddScoped<IDigitalDevicesDataProvider, DigitalDevicesDataProvider>()
+                .AddScoped<IElevatorDataProvider, ElevatorDataProvider>()
+                .AddScoped<IElevatorWeightCheckProcedureProvider, ElevatorWeightCheckProcedureProvider>()
+                .AddScoped<IErrorsProvider, ErrorsProvider>()
+                .AddScoped<ILoadingUnitsDataProvider, LoadingUnitsDataProvider>()
+                .AddScoped<ILogEntriesProvider, LogEntriesProvider>()
+                .AddScoped<IServicingProvider, ServicingProvider>()
+                .AddScoped<IMissionsDataProvider, MissionsDataProvider>()
+                .AddScoped<ISetupStatusProvider, SetupStatusProvider>()
+                .AddScoped<ISetupProceduresDataProvider, SetupProceduresDataProvider>()
+                .AddScoped<ITorqueCurrentMeasurementsDataProvider, TorqueCurrentMeasurementsDataProvider>()
+                .AddScoped<IWmsSettingsProvider, WmsSettingsProvider>()
+                .AddScoped<IUsersProvider, UsersProvider>()
+                .AddScoped<IMachineMissionsProvider, MachineMissionsProvider>()
+                .AddScoped<IMachineProvider, MachineProvider>();
 
             services
                 .AddSingleton<IVerticalOriginVolatileSetupStatusProvider, VerticalOriginVolatileSetupStatusProvider>()
