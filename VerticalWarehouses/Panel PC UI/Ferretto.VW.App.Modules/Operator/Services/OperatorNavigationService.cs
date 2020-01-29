@@ -6,6 +6,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.WMS.Data.WebAPI.Contracts;
+using NLog;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Operator.Services
@@ -19,6 +20,8 @@ namespace Ferretto.VW.App.Modules.Operator.Services
         private readonly IEventAggregator eventAggregator;
 
         private readonly SubscriptionToken loadingUnitToken;
+
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly IMachineModeService machineModeService;
 
@@ -99,29 +102,36 @@ namespace Ferretto.VW.App.Modules.Operator.Services
             var activeViewModelName = this.GetActiveViewModelName();
             if (this.missionOperationsService.CurrentMissionOperation is null)
             {
-                if (activeViewModelName == Utils.Modules.Operator.OPERATOR_MENU
-                    ||
-                    activeViewModelName == Utils.Modules.Operator.ItemOperations.WAIT)
+                var bay = await this.bayManager.GetBayAsync();
+                var loadingUnit = bay.Positions
+                    .Where(p => p.LoadingUnit != null)
+                    .OrderByDescending(p => p.Height)
+                    .Select(p => p.LoadingUnit)
+                    .FirstOrDefault();
+                if (loadingUnit != null)
                 {
-                    var bay = await this.bayManager.GetBayAsync();
-                    var loadingUnit = bay.Positions.OrderByDescending(p => p.Height).Select(p => p.LoadingUnit).FirstOrDefault();
-                    if (loadingUnit != null)
+                    if (activeViewModelName is Utils.Modules.Operator.OPERATOR_MENU
+                       ||
+                       activeViewModelName is Utils.Modules.Operator.ItemOperations.WAIT)
                     {
                         this.NavigateToLoadingUnitDetails(loadingUnit.Id);
                     }
-                    else
+                }
+                else
+                {
+                    this.lastActiveMissionId = null;
+                    if (activeViewModelName == Utils.Modules.Operator.OPERATOR_MENU && forceNavigation)
                     {
                         this.navigationService.Appear(
                             nameof(Utils.Modules.Operator),
                             Utils.Modules.Operator.ItemOperations.WAIT,
                             null,
-                            trackCurrentView: activeViewModelName != Utils.Modules.Operator.ItemOperations.WAIT);
+                            false);
                     }
-                }
-                else if (activeViewModelName != Utils.Modules.Operator.ItemOperations.LOADING_UNIT)
-                {
-                    this.lastActiveMissionId = null;
-                    this.navigationService.GoBackTo(nameof(Utils.Modules.Operator), Utils.Modules.Operator.ItemOperations.WAIT);
+                    else
+                    {
+                        this.navigationService.GoBackTo(nameof(Utils.Modules.Operator), Utils.Modules.Operator.ItemOperations.WAIT);
+                    }
                 }
             }
             else if (this.machineModeService.MachineMode is MachineMode.Automatic)
@@ -180,16 +190,21 @@ namespace Ferretto.VW.App.Modules.Operator.Services
 
         private async Task OnAssignedMissionOperationChangedAsync(AssignedMissionOperationChangedEventArgs e)
         {
+            this.logger.Info($"**** Assigned mission={e.MissionId} op={e.MissionOperationId}");
             await this.CheckForNewOperationAsync();
         }
 
         private void OnLoadingUnitMoved(NotificationMessageUI<CommonUtils.Messages.Data.MoveLoadingUnitMessageData> message)
         {
+            this.logger.Info($"**** LU Moved: id={message.Data.LoadUnitId} type={message.Data.MissionType} status={message.Status} stage={message.Description}");
+
             if (message.Data.MissionType is CommonUtils.Messages.Enumerations.MissionType.OUT
                &&
                message.Status is CommonUtils.Messages.Enumerations.MessageStatus.OperationWaitResume
                &&
-               message.Data.LoadUnitId.HasValue)
+               message.Data.LoadUnitId.HasValue
+               &&
+               this.autoNavigate)
             {
                 this.NavigateToLoadingUnitDetails(message.Data.LoadUnitId.Value);
             }
@@ -199,6 +214,15 @@ namespace Ferretto.VW.App.Modules.Operator.Services
         {
             switch (e.ViewModelName)
             {
+                case Utils.Modules.Operator.OPERATOR_MENU:
+                    this.autoNavigate = this.autoNavigateOnMenu;
+                    this.autoNavigateOnMenu = false;
+                    if (this.autoNavigate)
+                    {
+                        await this.CheckForNewOperationAsync();
+                    }
+                    break;
+
                 case Utils.Modules.Operator.ItemOperations.WAIT:
                 case Utils.Modules.Operator.ItemOperations.LOADING_UNIT:
                 case Utils.Modules.Operator.ItemOperations.LOADING_UNIT_CHECK:
@@ -211,13 +235,10 @@ namespace Ferretto.VW.App.Modules.Operator.Services
                     this.autoNavigate = true;
                     break;
 
-                case Utils.Modules.Operator.OPERATOR_MENU:
-                    this.autoNavigate = this.autoNavigateOnMenu;
-                    this.autoNavigateOnMenu = false;
-                    break;
-
                 case Utils.Modules.Operator.WaitingLists.MAIN:
                 case Utils.Modules.Operator.ItemSearch.MAIN:
+                case Utils.Modules.Operator.ItemSearch.ITEM_DETAILS:
+                case Utils.Modules.Operator.WaitingLists.DETAIL:
                 case Utils.Modules.Operator.Others.IMMEDIATELOADINGUNITCALL:
                 case Utils.Modules.Operator.Others.LOADINGUNITSMISSIONS:
                     this.autoNavigate = false;
@@ -229,7 +250,7 @@ namespace Ferretto.VW.App.Modules.Operator.Services
                     break;
             }
 
-            await this.CheckForNewOperationAsync();
+            //await this.CheckForNewOperationAsync();
         }
 
         #endregion

@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources;
+using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts
 {
@@ -10,6 +12,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [ScaffoldColumn(false)]
             public System.Collections.Generic.IEnumerable<LoadingUnit> LoadingUnits { get; set; }
 
+            [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.Machine))]
+            [Offset(100)]
+            [PullToRoot, Unfold]
             public Machine Machine { get; set; }
 
             [ScaffoldColumn(false)]

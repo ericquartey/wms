@@ -7,11 +7,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [Ferretto.VW.MAS.Scaffolding.DataAnnotations.MetadataType(typeof(Elevator.Metadata))]
     partial class Elevator
     {
+        #region Classes
+
         private class Metadata
         {
+            #region Properties
+
             [Category(Category = nameof(Vertimag.ElevatorAxis), ResourceType = typeof(Vertimag))]
             [CategoryParameter(nameof(ElevatorAxis.Orientation), ValueStringifierType = typeof(EnumValueStringifier))]
-            //[PullToRoot]
+            [Offset(200)]
             public System.Collections.Generic.IEnumerable<ElevatorAxis> Axes { get; set; }
 
             [ScaffoldColumn(false)]
@@ -27,6 +31,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public int? LoadingUnitId { get; set; }
 
             public ElevatorStructuralProperties StructuralProperties { get; set; }
+
+            #endregion
         }
+
+        #endregion
     }
 }

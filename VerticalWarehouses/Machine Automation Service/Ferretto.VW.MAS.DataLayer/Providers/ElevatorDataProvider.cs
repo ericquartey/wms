@@ -161,16 +161,16 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                // if (!this.cache.TryGetValue(ElevatorCurrentBayPositionCacheKey, out BayPosition currentBayPosition))
-                //{
-                var currentBayPosition = this.dataContext.Elevators
+                if (!this.cache.TryGetValue(ElevatorCurrentBayPositionCacheKey, out BayPosition currentBayPosition))
+                {
+                 currentBayPosition = this.dataContext.Elevators
                     .Select(e => e.BayPosition)
                         .Include(p => p.LoadingUnit)
                         .Include(p => p.Bay)
                     .SingleOrDefault();
 
                 this.cache.Set(ElevatorCurrentBayPositionCacheKey, currentBayPosition, this.cacheOptions);
-                // }
+                 }
 
                 return currentBayPosition;
             }
@@ -180,16 +180,16 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                //    if (!this.cache.TryGetValue(ElevatorCurrentCellCacheKey, out Cell currentCell))
-                //    {
-                var currentCell = this.dataContext.Elevators
+                if (!this.cache.TryGetValue(ElevatorCurrentCellCacheKey, out Cell currentCell))
+                    {
+                 currentCell = this.dataContext.Elevators
                     .Select(e => e.Cell)
                     .Include(c => c.Panel)
                     .Include(c => c.LoadingUnit)
                     .SingleOrDefault();
 
                 this.cache.Set(ElevatorCurrentCellCacheKey, currentCell, this.cacheOptions);
-                //    }
+                    }
 
                 return currentCell;
             }
@@ -462,17 +462,14 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private void NotifyElevatorPositionChanged(bool refreshElevatorPosition = false)
         {
-            // TODO: Review Elevator Position Tolerance logic (probably not necessary anymore)
-            // refreshElevatorPosition = false call are used to bypass logic for now
-
             BayPosition bayPosition = null;
             Cell cell = null;
 
-            if (refreshElevatorPosition)
-            {
+            //if (refreshElevatorPosition)
+            //{
                 bayPosition = this.GetCurrentBayPosition();
                 cell = this.GetCurrentCell();
-            }
+            //}
 
             this.eventAggregator
                 .GetEvent<NotificationEvent>()

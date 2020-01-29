@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.MAS.AutomationService.Contracts
+﻿using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
+
+namespace Ferretto.VW.MAS.AutomationService.Contracts
 {
     [Ferretto.VW.MAS.Scaffolding.DataAnnotations.MetadataType(typeof(StepMovementParameters.Metadata))]
     public partial class StepMovementParameters
@@ -9,16 +11,22 @@
         {
             #region Properties
 
+            [Id(1)]
             public double Acceleration { get; set; }
 
+            [Id(2)]
             public bool AdjustByWeight { get; set; }
 
+            [Id(3)]
             public double Deceleration { get; set; }
 
+            [Id(4)]
             public int Number { get; set; }
 
+            [Id(5)]
             public double Position { get; set; }
 
+            [Id(6)]
             public double Speed { get; set; }
 
             #endregion

@@ -329,6 +329,7 @@ namespace Ferretto.VW.App.Scaffolding.Controls
 
         private void OnModelChanged(DependencyPropertyChangedEventArgs e)
         {
+            this.SearchText = default;
             object model = e.NewValue;
             this._model = model?.Scaffold();
 
@@ -346,9 +347,10 @@ namespace Ferretto.VW.App.Scaffolding.Controls
                     this._elasticDataTable.OrderBy(i => i.Entity.Id).Select(i => new Models.ScaffoldedEntity( i.Entity.Property, i.Entity.Instance, i.Entity.Metadata, i.Id, i.FullCategory)),
                     Array.Empty<Models.ScaffoldedStructure>())
                     {
-                        Description = Scaffolding.Resources.UI.AllDescription
+                        Description = Scaffolding.Resources.UI.AllDescription,
+                        Id = 0
                     }
-                }.Union(this._model.Children);
+                }.Union(this._model.Children).OrderBy(o => o.Id);
 
                 this.FocusStructure = this._navigationRoot = new Models.ScaffoldedStructure(
                     Ferretto.VW.App.Scaffolding.Resources.UI.Root,

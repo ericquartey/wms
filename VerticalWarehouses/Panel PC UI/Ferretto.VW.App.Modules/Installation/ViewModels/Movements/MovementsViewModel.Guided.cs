@@ -62,8 +62,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand loadFromCellCommand;
 
-        private ActionPolicy loadFromCellPolicy;
-
         private LoadingUnit loadingUnitInCell;
 
         private string log;
@@ -103,8 +101,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private DelegateCommand unloadToBayCommand;
 
         private DelegateCommand unloadToCellCommand;
-
-        private ActionPolicy unloadToCellPolicy;
 
         #endregion
 
@@ -429,6 +425,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
                 this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
+
+                this.loadFromCellCommand?.RaiseCanExecuteChanged();
+                this.unloadToCellCommand?.RaiseCanExecuteChanged();
+
+                this.loadFromBayCommand?.RaiseCanExecuteChanged();
+                this.unloadToBayCommand?.RaiseCanExecuteChanged();
             }
         }
 
@@ -470,12 +472,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             var cellPosition = this.Cells.FirstOrDefault(f => f.Id == this.MachineStatus?.LogicalPositionId);
 
-            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+            var res = (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
                    this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Cell &&
                    this.CanBaseExecute() &&
                    this.SelectedCell != null &&
-                   !(cellPosition?.IsFree ?? true)  &&
+                   !(cellPosition?.IsFree ?? true) &&
                    this.MachineStatus.EmbarkedLoadingUnit is null;
+
+            return res;
         }
 
         private bool CanMoveCarouselDown()
@@ -594,7 +598,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanUnloadToCell()
         {
-            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+            var res = (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
                 this.CanBaseExecute()
                 &&
                 (this.SelectedCell != null ||
@@ -602,6 +606,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                      this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Cell))
                 &&
                 this.MachineStatus.EmbarkedLoadingUnit != null;
+
+            return res;
         }
 
         private async Task ClosedShutterAsync()
