@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ using Prism.Events;
 namespace Ferretto.VW.App.Installation.ViewModels
 {
     [Warning(WarningsArea.MovementsView)]
-    internal sealed partial class MovementsViewModel : BaseMainViewModel
+    internal sealed partial class MovementsViewModel : BaseMainViewModel, IDataErrorInfo
     {
         #region Fields
 
@@ -47,6 +48,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private readonly IMachineShuttersWebService shuttersWebService;
 
         private SubscriptionToken cellsToken;
+
+        private string currentError;
 
         private SubscriptionToken elevatorPositionChangedToken;
 
@@ -120,6 +123,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private IEnumerable<Cell> Cells => this.MachineService.Cells;
 
         public override EnableMask EnableMask => EnableMask.MachinePoweredOn;
+
+        public string Error => string.Join(
+                                                                                                                                                                                    Environment.NewLine,
+            this.GetType().GetProperties()
+                .Select(p => this[p.Name])
+                .Distinct()
+                .Where(s => !string.IsNullOrEmpty(s)));
 
         public ICommand GoToMovementsGuidedCommand =>
             this.goToMovementsGuidedCommand
@@ -200,6 +210,43 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         private IEnumerable<LoadingUnit> LoadingUnits => this.MachineService.Loadunits;
+
+        #endregion
+
+        #region Indexers
+
+        public string this[string columnName]
+        {
+            get
+            {
+                this.currentError = null;
+
+                if (this.IsWaitingForResponse)
+                {
+                    return null;
+                }
+
+                switch (columnName)
+                {
+                    case nameof(this.InputLoadingUnitId):
+                        if (!this.InputLoadingUnitId.HasValue ||
+                            (!this.MachineService.Loadunits.DrawerInLocationById(this.InputLoadingUnitId.Value) &&
+                             !this.MachineService.Loadunits.DrawerInBayById(this.InputLoadingUnitId.Value)))
+                        {
+                            return "Il cassetto selezionato non è valido";
+                        }
+
+                        break;
+                }
+
+                if (this.IsVisible && string.IsNullOrEmpty(this.currentError))
+                {
+                    //this.ClearNotifications();
+                }
+
+                return null;
+            }
+        }
 
         #endregion
 

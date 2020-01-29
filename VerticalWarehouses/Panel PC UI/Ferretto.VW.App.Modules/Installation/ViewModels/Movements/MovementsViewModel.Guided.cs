@@ -511,8 +511,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanMoveToLoadingUnitHeight()
         {
             var canMove =
-                (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
-
+                (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed)
+                &&
                 this.CanBaseExecute()
                 &&
                 this.SelectedLoadingUnit != null
@@ -523,13 +523,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.SensorsService.Sensors.LuPresentInMachineSide
                 &&
-                !this.SensorsService.Sensors.LuPresentInOperatorSide;
+                !this.SensorsService.Sensors.LuPresentInOperatorSide
+                &&
+                string.IsNullOrEmpty(this.Error);
 
             if (!canMove)
             {
                 canMove =
-                    (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
-
+                    (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed)
+                    &&
                     this.CanBaseExecute()
                     &&
                     this.SelectedLoadingUnit != null
@@ -538,7 +540,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     &&
                     this.SensorsService.Sensors.LuPresentInMachineSide
                     &&
-                    this.SensorsService.Sensors.LuPresentInOperatorSide;
+                    this.SensorsService.Sensors.LuPresentInOperatorSide
+                    &&
+                    string.IsNullOrEmpty(this.Error);
             }
 
             return canMove;
