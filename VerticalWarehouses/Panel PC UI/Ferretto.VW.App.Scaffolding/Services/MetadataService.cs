@@ -11,136 +11,68 @@ namespace Ferretto.VW.App.Scaffolding.Services
 {
     public static class MetadataService
     {
-        #region NESTED TYPES
+        #region Methods
+
+        public static Models.ScaffoldedStructure Scaffold(this object instance)
+            => instance.Scaffold(CultureInfo.CurrentCulture);
+
+        public static Models.ScaffoldedStructure Scaffold(this object instance, CultureInfo culture)
+            => new MetadataServiceExecutor(culture).ScaffoldTypeInternal(instance?.GetType() ?? throw new ArgumentNullException(nameof(instance)), instance, new ScaffoldedStructureInternal());
+
+        public static bool TryGetCustomAttribute<T>(this MemberInfo member, out T attribute) where T : Attribute
+        {
+            attribute = (member ?? throw new ArgumentNullException(nameof(member))).GetCustomAttribute<T>();
+            return attribute != null;
+        }
+
+        private static Models.ScaffoldedEntity Publish(this ScaffoldedEntityInternal entity)
+                    => new Models.ScaffoldedEntity(entity.Property, entity.Instance, entity.Metadata, entity.Id);
+
+        private static Models.ScaffoldedStructure Publish(this ScaffoldedStructureInternal tree)
+        {
+            return new Models.ScaffoldedStructure(tree.Category,
+                tree.Entities
+                    .Where(e => e.Property != null && e.Instance != null)
+                    .Select(e => e.Publish())
+                    .OrderBy(o => o.Id),
+                tree.Children
+                    .Select(c => c.Publish())
+                    .Where(c => c.Entities.Any() || c.Children.Any())
+                    .OrderBy(o => o.Id)
+                )
+            {
+                Description = tree.Description,
+                Id = tree.Id,
+            };
+        }
+
+        #endregion
+
+        #region Classes
 
         /// <summary>
         /// Use it and throw it away...
         /// </summary>
         private class MetadataServiceExecutor
         {
-            private int idSeed = 0;
+            #region Fields
+
             private readonly CultureInfo _culture;
+
+            private int idSeed = 0;
+
+            #endregion
+
+            #region Constructors
 
             public MetadataServiceExecutor(CultureInfo culture)
             {
                 this._culture = culture;
             }
 
-            private static MemberInfo[] GetMemberInfos(Type type)
-            {
-                var props = (type ?? throw new ArgumentNullException(nameof(type)))
-                    .GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty)
-                    .Cast<MemberInfo>();
-                var fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty)
-                    .Cast<MemberInfo>();
-                return fields.Union(props).ToArray();
-            }
+            #endregion
 
-            private static string GetDisplayName(MemberInfo prop)
-            {
-                if (prop.TryGetCustomAttribute<DisplayAttribute>(out var displayAttribute))
-                {
-                    return displayAttribute.GetName();
-                }
-                return prop.Name;
-            }
-
-            private static string GetCategoryName(MemberInfo member, object instance, CultureInfo culture)
-            {
-                if (member.TryGetCustomAttribute<CategoryAttribute>(out var category))
-                {
-                    object[] categoryProperties = member.GetCustomAttributes<CategoryParameterAttribute>().Select(p =>
-                    {
-                        if (instance == null)
-                        {
-                            return null;
-                        }
-                        // Does the very type on the property contain a 'PropertyReference'-named property?
-                        var subPropInfo = p.GetType().GetProperty(p.PropertyReference);
-                        if (subPropInfo != null)
-                        {
-                            object subValue = member.MemberType == MemberTypes.Field ? ((FieldInfo)member).GetValue(instance) : ((PropertyInfo)member).GetValue(instance);
-                            if (subValue != null)
-                            {
-                                return GetUnderlyingType(subPropInfo.GetValue(subValue), culture);
-                            }
-                            else
-                            {
-                                return null;
-                            }
-                        }
-                        // Ok, does then the owning type contain a 'PropertyReference'-named property?
-                        return GetUnderlyingType(instance.GetType().GetProperty(p.PropertyReference).GetValue(instance), culture);
-                    }).ToArray();
-
-                    return string.Format(culture, category.Category(), categoryProperties);
-                }
-                return GetDisplayName(member);
-            }
-
-            private static string GetCategoryDescription(MemberInfo member)
-            {
-                if (member.TryGetCustomAttribute<CategoryDescriptionAttribute>(out var description))
-                {
-                    return description.Description();
-                }
-                return string.Empty;
-            }
-
-            /// <summary>
-            /// Overload method for ARRAYS.
-            /// </summary>
-            private static string GetCategoryName(Type itemtype, string format, object item, CultureInfo culture, params CategoryParameterAttribute[] propertyReferences)
-            {
-                if (!(propertyReferences?.Length > 0))
-                {
-                    throw new ArgumentNullException(nameof(propertyReferences));
-                }
-                object[] categoryProperties = propertyReferences.Select(p =>
-                {
-                    if (item == null)
-                    {
-                        return null;
-                    }
-                    var subPropInfo = itemtype.GetProperty(p.PropertyReference);
-                    object itemValue = subPropInfo.GetValue(item);
-                    if (p.ValueStringifierType != null)
-                    {
-                        try
-                        {
-                            var converter = Activator.CreateInstance(p.ValueStringifierType);
-                            if (!(converter is IValueStringifier stringifier))
-                            {
-                                throw new ScaffoldingException($"{p.ValueStringifierType} does not implement {typeof(IValueStringifier)}.");
-                            }
-                            return stringifier.Stringify(itemValue, culture);
-                        }
-                        catch
-                        {
-                            throw new ScaffoldingException($"Cannot create an instance of {p.ValueStringifierType}. No public empty constructor found.");
-                        }
-                    }
-                    return GetUnderlyingType(itemValue, culture);
-                }).ToArray();
-
-                return string.Format(culture, format, categoryProperties);
-            }
-
-            private static bool IsSimpleType(Type type)
-            {
-                var coreType = Nullable.GetUnderlyingType(type) ?? type;
-                return coreType == typeof(string) || coreType.IsValueType || coreType.IsSerializable;
-            }
-
-            private static object GetUnderlyingType(object obj, CultureInfo culture)
-            {
-                if (obj is Enum @enum)
-                {
-                    Type baseType = Enum.GetUnderlyingType(@enum.GetType());
-                    return System.Convert.ChangeType(obj, baseType, culture);
-                }
-                return obj;
-            }
+            #region Methods
 
             public Models.ScaffoldedStructure ScaffoldTypeInternal(Type type, object instance, ScaffoldedStructureInternal branch, ScaffoldedStructureInternal root = default, bool unfoldingBranch = false)
             {
@@ -178,6 +110,18 @@ namespace Ferretto.VW.App.Scaffolding.Services
                     bool hasCategoryParameters = categoryParameters.Any();
                     bool isSimpleType = IsSimpleType(propertyType);
 
+                    int id = 0;
+                    if (prop.TryGetCustomAttribute<IdAttribute>(out var idAttribute))
+                    {
+                        id = idAttribute.Id;
+                    }
+
+                    int offset = 0;
+                    if (prop.TryGetCustomAttribute<OffsetAttribute>(out var offsetAttribute))
+                    {
+                        offset = offsetAttribute.Offset;
+                    }
+
                     #region array? (must have Category AND CategoryParameter attributes)
 
                     // flattening
@@ -210,18 +154,27 @@ namespace Ferretto.VW.App.Scaffolding.Services
                                     continue;
                                 }
 
-                                string categoryName = GetCategoryName(elementType, format, item, this._culture, categoryParameters.ToArray());
+                                var category = GetCategoryName(elementType, format, item, this._culture, categoryParameters.ToArray());
                                 string categoryDescription = GetCategoryDescription(elementType);
-                                var newBranch = target.Children.FirstOrDefault(b => b.Category == categoryName);
+                                var newBranch = target.Children.FirstOrDefault(b => b.Category == category.Name);
                                 if (newBranch != null)
                                 {
-                                    throw new ScaffoldingException($"A category with the name {categoryName} already exists.");
+                                    throw new ScaffoldingException($"A category with the name {category.Name} already exists.");
                                 }
+
+                                int p = 1;
+                                if (!int.TryParse(category.FirstParameter, out p))
+                                {
+                                    p = 1;
+                                }
+
                                 newBranch = new ScaffoldedStructureInternal
                                 {
-                                    Category = categoryName,
+                                    Category = category.Name,
                                     Parent = target,
-                                    Description= categoryDescription
+                                    Description = categoryDescription,
+                                    CategoryParameter = category.FirstParameter,
+                                    Id = target.Id + id + (offset * p)
                                 };
                                 target.Children.Add(newBranch);
                                 this.ScaffoldTypeInternal(elementType, item, newBranch, root);
@@ -237,16 +190,18 @@ namespace Ferretto.VW.App.Scaffolding.Services
                         // find or create category branch (even if unfolding is ongoing)
                         if (hasCategory)
                         {
-                            string categoryName = GetCategoryName(prop, instance, this._culture);
+                            var category = GetCategoryName(prop, instance, this._culture);
                             string categoryDescription = GetCategoryDescription(prop);
-                            var tget = target.Children.FirstOrDefault(c => c.Category == categoryName);
+                            var tget = target.Children.FirstOrDefault(c => c.Category == category.Name);
                             if (tget == null)
                             {
                                 tget = new ScaffoldedStructureInternal
                                 {
-                                    Category = categoryName,
+                                    Category = category.Name,
                                     Parent = target,
-                                    Description = categoryDescription
+                                    Description = categoryDescription,
+                                    CategoryParameter = category.FirstParameter,
+                                    Id = target.Id + id + offset
                                 };
                                 target.Children.Add(tget);
                             }
@@ -260,6 +215,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                                 Instance = instance,
                                 Property = actualProp,
                                 Metadata = prop.GetCustomAttributes<Attribute>(),
+                                //Id = target.Id + id,
                                 Id = ++this.idSeed
                             });
                         }
@@ -276,67 +232,162 @@ namespace Ferretto.VW.App.Scaffolding.Services
                 // at the end of all recursions...
                 return root.Publish();
             }
-        }
 
-        #endregion NESTED TYPES
-
-        #region PRIVATE
-
-        private static Models.ScaffoldedEntity Publish(this ScaffoldedEntityInternal entity)
-            => new Models.ScaffoldedEntity(entity.Property, entity.Instance, entity.Metadata, entity.Id);
-
-        private static Models.ScaffoldedStructure Publish(this ScaffoldedStructureInternal tree)
-        {
-            return new Models.ScaffoldedStructure(tree.Category,
-                tree.Entities
-                .Where(e => e.Property != null && e.Instance != null)
-                .Select(e => e.Publish()),
-                tree.Children
-                .Select(c => c.Publish())
-                .Where(c => c.Entities.Any() || c.Children.Any())
-                )
+            private static string GetCategoryDescription(MemberInfo member)
             {
-                Description = tree.Description
-            };
+                if (member.TryGetCustomAttribute<CategoryDescriptionAttribute>(out var description))
+                {
+                    return description.Description();
+                }
+                return string.Empty;
+            }
+
+            private static (string Name, string FirstParameter) GetCategoryName(MemberInfo member, object instance, CultureInfo culture)
+            {
+                if (member.TryGetCustomAttribute<CategoryAttribute>(out var category))
+                {
+                    object[] categoryProperties = member.GetCustomAttributes<CategoryParameterAttribute>().Select(p =>
+                    {
+                        if (instance == null)
+                        {
+                            return null;
+                        }
+                        // Does the very type on the property contain a 'PropertyReference'-named property?
+                        var subPropInfo = p.GetType().GetProperty(p.PropertyReference);
+                        if (subPropInfo != null)
+                        {
+                            object subValue = member.MemberType == MemberTypes.Field ? ((FieldInfo)member).GetValue(instance) : ((PropertyInfo)member).GetValue(instance);
+                            if (subValue != null)
+                            {
+                                return GetUnderlyingType(subPropInfo.GetValue(subValue), culture);
+                            }
+                            else
+                            {
+                                return null;
+                            }
+                        }
+                        // Ok, does then the owning type contain a 'PropertyReference'-named property?
+                        return GetUnderlyingType(instance.GetType().GetProperty(p.PropertyReference).GetValue(instance), culture);
+                    }).ToArray();
+
+                    return (string.Format(culture, category.Category(), categoryProperties), categoryProperties?.FirstOrDefault()?.ToString());
+                }
+                return (GetDisplayName(member), null);
+            }
+
+            /// <summary>
+            /// Overload method for ARRAYS.
+            /// </summary>
+            private static (string Name, string FirstParameter) GetCategoryName(Type itemtype, string format, object item, CultureInfo culture, params CategoryParameterAttribute[] propertyReferences)
+            {
+                if (!(propertyReferences?.Length > 0))
+                {
+                    throw new ArgumentNullException(nameof(propertyReferences));
+                }
+                object[] categoryProperties = propertyReferences.Select(p =>
+                {
+                    if (item == null)
+                    {
+                        return null;
+                    }
+                    var subPropInfo = itemtype.GetProperty(p.PropertyReference);
+                    object itemValue = subPropInfo.GetValue(item);
+                    if (p.ValueStringifierType != null)
+                    {
+                        try
+                        {
+                            var converter = Activator.CreateInstance(p.ValueStringifierType);
+                            if (!(converter is IValueStringifier stringifier))
+                            {
+                                throw new ScaffoldingException($"{p.ValueStringifierType} does not implement {typeof(IValueStringifier)}.");
+                            }
+                            return stringifier.Stringify(itemValue, culture);
+                        }
+                        catch
+                        {
+                            throw new ScaffoldingException($"Cannot create an instance of {p.ValueStringifierType}. No public empty constructor found.");
+                        }
+                    }
+                    return GetUnderlyingType(itemValue, culture);
+                }).ToArray();
+
+                return (string.Format(culture, format, categoryProperties), categoryProperties?.FirstOrDefault()?.ToString());
+            }
+
+            private static string GetDisplayName(MemberInfo prop)
+            {
+                if (prop.TryGetCustomAttribute<DisplayAttribute>(out var displayAttribute))
+                {
+                    return displayAttribute.GetName();
+                }
+                return prop.Name;
+            }
+
+            private static MemberInfo[] GetMemberInfos(Type type)
+            {
+                var props = (type ?? throw new ArgumentNullException(nameof(type)))
+                    .GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty)
+                    .Cast<MemberInfo>();
+                var fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty)
+                    .Cast<MemberInfo>();
+                return fields.Union(props).ToArray();
+            }
+
+            private static object GetUnderlyingType(object obj, CultureInfo culture)
+            {
+                if (obj is Enum @enum)
+                {
+                    Type baseType = Enum.GetUnderlyingType(@enum.GetType());
+                    return System.Convert.ChangeType(obj, baseType, culture);
+                }
+                return obj;
+            }
+
+            private static bool IsSimpleType(Type type)
+            {
+                var coreType = Nullable.GetUnderlyingType(type) ?? type;
+                return coreType == typeof(string) || coreType.IsValueType || coreType.IsSerializable;
+            }
+
+            #endregion
         }
 
-        #endregion PRIVATE
-
-        #region PUBLIC
-
-        public static bool TryGetCustomAttribute<T>(this MemberInfo member, out T attribute) where T : Attribute
-        {
-            attribute = (member ?? throw new ArgumentNullException(nameof(member))).GetCustomAttribute<T>();
-            return attribute != null;
-        }
-
-        public static Models.ScaffoldedStructure Scaffold(this object instance)
-            => instance.Scaffold(CultureInfo.CurrentCulture);
-
-        public static Models.ScaffoldedStructure Scaffold(this object instance, CultureInfo culture)
-        => new MetadataServiceExecutor(culture).ScaffoldTypeInternal(instance?.GetType() ?? throw new ArgumentNullException(nameof(instance)), instance, new ScaffoldedStructureInternal());
-
-        #endregion PUBLIC
-    }
-
-    internal class ScaffoldedStructureInternal
-    {
-        public string Category { get; set; }
-
-        public string Description { get; set; }
-
-        public ScaffoldedStructureInternal Parent { get; set; }
-
-        public List<ScaffoldedEntityInternal> Entities { get; set; } = new List<ScaffoldedEntityInternal>();
-
-        public List<ScaffoldedStructureInternal> Children { get; set; } = new List<ScaffoldedStructureInternal>();
+        #endregion
     }
 
     internal class ScaffoldedEntityInternal
     {
-        public IEnumerable<Attribute> Metadata { get; set; }
-        public PropertyInfo Property { get; set; }
-        public object Instance { get; set; }
+        #region Properties
+
         public int Id { get; set; }
+
+        public object Instance { get; set; }
+
+        public IEnumerable<Attribute> Metadata { get; set; }
+
+        public PropertyInfo Property { get; set; }
+
+        #endregion
+    }
+
+    internal class ScaffoldedStructureInternal
+    {
+        #region Properties
+
+        public string Category { get; set; }
+
+        public string CategoryParameter { get; set; }
+
+        public List<ScaffoldedStructureInternal> Children { get; set; } = new List<ScaffoldedStructureInternal>();
+
+        public string Description { get; set; }
+
+        public List<ScaffoldedEntityInternal> Entities { get; set; } = new List<ScaffoldedEntityInternal>();
+
+        public int Id { get; set; }
+
+        public ScaffoldedStructureInternal Parent { get; set; }
+
+        #endregion
     }
 }

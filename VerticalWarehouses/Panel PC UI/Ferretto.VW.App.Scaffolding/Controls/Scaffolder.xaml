@@ -186,12 +186,6 @@
                             </ScrollViewer>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <!--<Trigger Property="IsEnabled"
-                                 Value="false">
-                                <Setter TargetName="Bd"
-                                    Property="Background"
-                                    Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
-                            </Trigger>-->
                             <MultiTrigger>
                                 <MultiTrigger.Conditions>
                                     <Condition Property="IsGrouping" Value="true" />
@@ -468,11 +462,13 @@
                       ItemsSource="{Binding}">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Width="63"
+                        <GridViewColumn Width="60"
                                         Header="Id">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Border Style="{StaticResource FirstCellBorderStyle}">
+                                    <Border Padding="0"
+                                            HorizontalAlignment="Center"
+                                            Style="{StaticResource FirstCellBorderStyle}">
                                         <TextBlock HorizontalAlignment="Center"
                                                    Style="{StaticResource CellTextBlockStyle}"
                                                    Text="{Binding Path=Id}" />
@@ -480,18 +476,20 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Width="258"
+                        <GridViewColumn Width="400"
                                         Header="Nome">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <Border Style="{StaticResource CellBorderStyle}">
-                                        <TextBlock Style="{StaticResource CellTextBlockStyle}"
+                                        <TextBlock HorizontalAlignment="Left"
+                                                   FlowDirection="RightToLeft"
+                                                   Style="{StaticResource CellTextBlockStyle}"
                                                    Text="{Binding Path=Caption}" />
                                     </Border>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Width="240"
+                        <GridViewColumn Width="200"
                                         Header="Value">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -512,7 +510,7 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Width="110"
+                        <GridViewColumn Width="80"
                                         Header="Default">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -523,7 +521,7 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Width="110"
+                        <GridViewColumn Width="80"
                                         Header="Min">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -534,7 +532,7 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Width="110"
+                        <GridViewColumn Width="80"
                                         Header="Max">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -545,7 +543,7 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Width="110"
+                        <GridViewColumn Width="80"
                                         Header="U.m.">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>

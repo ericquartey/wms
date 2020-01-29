@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Acceleration" xml:space="preserve">
+    <value>Acceleration</value>
+  </data>
+  <data name="AssistedMovements" xml:space="preserve">
+    <value>AssistedMovements</value>
+  </data>
   <data name="Bay" xml:space="preserve">
     <value>Baia {0}</value>
   </data>
@@ -134,6 +140,9 @@
   </data>
   <data name="BayLaser" xml:space="preserve">
     <value>Laser baia {0}</value>
+  </data>
+  <data name="BayNumber" xml:space="preserve">
+    <value>Numero baia</value>
   </data>
   <data name="BayNumber.BayOne" xml:space="preserve">
     <value>1</value>
@@ -165,6 +174,12 @@
   <data name="Bay_Side" xml:space="preserve">
     <value>Lato</value>
   </data>
+  <data name="BeltRigidity" xml:space="preserve">
+    <value>BeltRigidity</value>
+  </data>
+  <data name="BeltSpacing" xml:space="preserve">
+    <value>BeltSpacing</value>
+  </data>
   <data name="Carousel" xml:space="preserve">
     <value>Giostra</value>
   </data>
@@ -177,8 +192,11 @@
   <data name="Carousel_HomingFastSpeed" xml:space="preserve">
     <value>Velocità homing (fast)</value>
   </data>
+  <data name="Deceleration" xml:space="preserve">
+    <value>Deceleration</value>
+  </data>
   <data name="Elevator" xml:space="preserve">
-    <value>Culla</value>
+    <value>Elevatore</value>
   </data>
   <data name="ElevatorAxis" xml:space="preserve">
     <value>Asse elevatore {0}</value>
@@ -203,6 +221,18 @@
   </data>
   <data name="ElevatorAxis_Resolution" xml:space="preserve">
     <value>Risoluzione</value>
+  </data>
+  <data name="ElevatorWeight" xml:space="preserve">
+    <value>ElevatorWeight</value>
+  </data>
+  <data name="FeedRate" xml:space="preserve">
+    <value>FeedRate</value>
+  </data>
+  <data name="FeedRateAfterZero" xml:space="preserve">
+    <value>FeedRateAfterZero</value>
+  </data>
+  <data name="HalfShaftLength" xml:space="preserve">
+    <value>HalfShaftLength</value>
   </data>
   <data name="Inverter" xml:space="preserve">
     <value>Inverter</value>
@@ -234,6 +264,9 @@
   <data name="Laser" xml:space="preserve">
     <value>Laser</value>
   </data>
+  <data name="Machine" xml:space="preserve">
+    <value>Macchina</value>
+  </data>
   <data name="Machine_Height" xml:space="preserve">
     <value>Altezza</value>
   </data>
@@ -254,6 +287,27 @@
   </data>
   <data name="Machine_SerialNumber" xml:space="preserve">
     <value>Matricola</value>
+  </data>
+  <data name="ManualMovements" xml:space="preserve">
+    <value>ManualMovements</value>
+  </data>
+  <data name="MeasureConst0" xml:space="preserve">
+    <value>MeasureConst0</value>
+  </data>
+  <data name="MeasureConst1" xml:space="preserve">
+    <value>MeasureConst1</value>
+  </data>
+  <data name="MeasureConst2" xml:space="preserve">
+    <value>MeasureConst2</value>
+  </data>
+  <data name="MeasureSpeed" xml:space="preserve">
+    <value>MeasureSpeed</value>
+  </data>
+  <data name="MeasureTime" xml:space="preserve">
+    <value>MeasureTime</value>
+  </data>
+  <data name="MovementParameters" xml:space="preserve">
+    <value>MovementParameters</value>
   </data>
   <data name="MovementProfileType.LongDeposit" xml:space="preserve">
     <value>Lungo deposito</value>
@@ -278,6 +332,15 @@
   </data>
   <data name="Orientation.Vertical" xml:space="preserve">
     <value>verticale</value>
+  </data>
+  <data name="PulleyDiameter" xml:space="preserve">
+    <value>PulleyDiameter</value>
+  </data>
+  <data name="ShaftDiameter" xml:space="preserve">
+    <value>ShaftDiameter</value>
+  </data>
+  <data name="ShaftElasticity" xml:space="preserve">
+    <value>ShaftElasticity</value>
   </data>
   <data name="ShutterManualParameters_FeedRate" xml:space="preserve">
     <value>Feed rate parametri manuali shutter</value>
@@ -311,6 +374,15 @@
   </data>
   <data name="Shutter_Type" xml:space="preserve">
     <value>Tipo shutter</value>
+  </data>
+  <data name="Speed" xml:space="preserve">
+    <value>Speed</value>
+  </data>
+  <data name="TargetDistance" xml:space="preserve">
+    <value>TargetDistance</value>
+  </data>
+  <data name="TargetDistanceAfterZero" xml:space="preserve">
+    <value>TargetDistanceAfterZero</value>
   </data>
   <data name="TotalDistance" xml:space="preserve">
     <value>Totale distanza</value>
