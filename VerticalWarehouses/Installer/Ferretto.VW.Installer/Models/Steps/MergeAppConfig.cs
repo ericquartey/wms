@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -34,7 +35,7 @@ namespace Ferretto.VW.Installer
         {
             try
             {
-                this.MergeDocs();
+                this.MergeDocuments();
 
                 return Task.FromResult(StepStatus.Done);
             }
@@ -60,160 +61,132 @@ namespace Ferretto.VW.Installer
             }
         }
 
-        private static XmlNode DeepCloneToDoc(XmlNode NodeToClone, XmlDocument TargetDoc)
+        private static XmlNode DeepCloneToDoc(XmlNode sourceNode, XmlDocument targetDoc)
         {
-            var newNode = TargetDoc.CreateNode(NodeToClone.NodeType, NodeToClone.Name, NodeToClone.NamespaceURI);
+            var targetNode = targetDoc.CreateNode(sourceNode.NodeType, sourceNode.Name, sourceNode.NamespaceURI);
 
-            foreach (XmlAttribute attrib in NodeToClone.Attributes)
+            foreach (XmlAttribute attrib in sourceNode.Attributes)
             {
-                newNode.Attributes.Append(TargetDoc.CreateAttribute(attrib.Prefix, attrib.LocalName, attrib.NamespaceURI));
+                targetNode.Attributes.Append(targetDoc.CreateAttribute(attrib.Prefix, attrib.LocalName, attrib.NamespaceURI));
             }
 
-            foreach (XmlNode child in NodeToClone.ChildNodes)
+            foreach (XmlNode child in sourceNode.ChildNodes)
             {
-                newNode.AppendChild(DeepCloneToDoc(NodeToClone, TargetDoc));
+                targetNode.AppendChild(DeepCloneToDoc(child, targetDoc));
             }
 
-            return newNode;
+            return targetNode;
         }
 
-        private static int FindElementIndex(XmlElement element)
+      
+        private static void MergeAttributes(XmlNode oldNode, XmlNode newNode, XmlDocument targetDoc, XmlNode targetNode)
         {
-            var parentNode = element.ParentNode;
-            if (parentNode is XmlDocument)
+            IEnumerable<XmlNode> fromOld;
+            if (oldNode.Attributes is null)
             {
-                return 1;
+                fromOld = new List<XmlNode>();
             }
-
-            var parent = (XmlElement)parentNode;
-            int index = 1;
-            foreach (XmlNode candidate in parent.ChildNodes)
+            else
             {
-                if (candidate is XmlElement && candidate.Name == element.Name)
+                foreach (XmlAttribute attribute in oldNode.Attributes)
                 {
-                    if (candidate == element)
-                    {
-                        return index;
-                    }
-                    index++;
+                    var targetAttribute = targetDoc.CreateAttribute(attribute.Prefix, attribute.LocalName, attribute.NamespaceURI);
+                    targetAttribute.Value = attribute.Value;
+                    targetNode.Attributes.Append(targetAttribute);
                 }
-            }
-            throw new ArgumentException("Couldn't find element within parent");
-        }
 
-        private static string FindXPath(XmlNode node)
-        {
-            var builder = new StringBuilder();
-            while (node != null)
+                fromOld = oldNode.Attributes.Cast<XmlAttribute>();
+            }
+
+            IEnumerable<XmlNode> fromNew;
+            if (oldNode.Attributes is null)
             {
-                switch (node.NodeType)
-                {
-                    case XmlNodeType.Attribute:
-                        builder.Insert(0, "/@" + node.Name);
-                        node = ((XmlAttribute)node).OwnerElement;
-                        break;
-
-                    case XmlNodeType.Element:
-                        int index = FindElementIndex((XmlElement)node);
-                        builder.Insert(0, "/" + node.Name + "[" + index + "]");
-                        node = node.ParentNode;
-                        break;
-
-                    case XmlNodeType.Document:
-                        return "/";
-
-                    default:
-                        throw new ArgumentException("Only elements and attributes are supported");
-                }
+                fromNew = new List<XmlNode>();
             }
-            throw new ArgumentException("Node was not in a document");
+            else
+            {
+                fromNew = newNode.Attributes.Cast<XmlAttribute>();
+            }
+
+            var toAdd = fromNew.Where(attr => !fromOld.Any(ata => ata.Name == attr.Name));
+
+            foreach (var attribute in toAdd)
+            {
+                var targetAttribute = targetDoc.CreateAttribute(attribute.Prefix, attribute.LocalName, attribute.NamespaceURI);
+                targetAttribute.Value = attribute.Value;
+                targetNode.Attributes.Append(targetAttribute);
+            }
         }
 
-        private void MergeDocs()
+        private void MergeDocuments()
         {
-            var docOld = new XmlDocument();
-            var docNew = new XmlDocument();
-            var docMerged = new XmlDocument();
+            var oldDocument = new XmlDocument();
+            var newDocument = new XmlDocument();
+            var mergedDocument = new XmlDocument();
 
-            docOld.Load(this.OldPathName);
-            docNew.Load(this.NewPathName);
+            oldDocument.Load(this.OldPathName);
+            newDocument.Load(this.NewPathName);
 
-            var childsFromOld = docOld.ChildNodes.Cast<XmlNode>();
-            var childsFromNew = docNew.ChildNodes.Cast<XmlNode>();
+            this.MergeNodes(oldDocument, newDocument, mergedDocument);
 
-            var uniquesFromOld = childsFromOld.Where(ch => !childsFromNew.Any(chb => chb.Name == ch.Name));
-            var uniquesFromNew = childsFromNew.Where(ch => !childsFromOld.Any(chb => chb.Name == ch.Name));
+            throw new NotImplementedException();
+
+            mergedDocument.Save(this.NewPathName + ".new.xml");
+        }
+
+        private XmlNode MergeNodes(XmlNode oldNode, XmlNode newNode, XmlDocument targetDocument)
+        {
+            if (oldNode.NodeType == XmlNodeType.Document)
+            {
+                targetDocument.AppendChild(
+                    this.MergeNodes(oldNode.FirstChild, newNode.FirstChild, targetDocument));
+                targetDocument.AppendChild(
+                    this.MergeNodes(oldNode.LastChild, newNode.LastChild, targetDocument));
+
+                return targetDocument;
+            }
+
+            var targetNode = targetDocument.CreateNode(oldNode.NodeType, oldNode.Name, oldNode.NamespaceURI);
+            this.LogInformation($"Creating node: {targetNode.Name}");
+            MergeAttributes(oldNode, newNode, targetDocument, targetNode);
+
+            var childsFromOld = oldNode.ChildNodes.Cast<XmlNode>().ToArray();
+            var childsFromNew = newNode.ChildNodes.Cast<XmlNode>().ToArray();
+            this.LogInformation($"Node {oldNode.Name}: old# {childsFromOld.Length} new {childsFromNew.Length}.");
+
+
+            var uniquesFromOld = childsFromOld.Where(ch => !childsFromNew.Any(chb => chb.Name == ch.Name)).ToArray();
+            var uniquesFromNew = childsFromNew.Where(ch => !childsFromOld.Any(chb => chb.Name == ch.Name)).ToArray();
 
             foreach (var unique in uniquesFromOld)
             {
-                docMerged.AppendChild(DeepCloneToDoc(unique, docMerged));
+                targetNode.AppendChild(DeepCloneToDoc(unique, targetDocument));
             }
 
             foreach (var unique in uniquesFromNew)
             {
-                docMerged.AppendChild(DeepCloneToDoc(unique, docMerged));
+                targetNode.AppendChild(DeepCloneToDoc(unique, targetDocument));
             }
 
-            var duplicates = from chA in childsFromOld
-                             from chB in childsFromNew
-                             where chA.Name == chB.Name
-                             select new { A = chA, B = chB };
+            childsFromOld.Where(o => childsFromNew.Any(n => n.Name == o.Name));
+            childsFromNew.Where(n => childsFromOld.Any(o => o.Name == n.Name));
 
-            foreach (var grp in duplicates)
+
+            // discriminant is not the name of the node but its key!!!!
+            var duplicateNodes = childsFromOld.Join(
+                childsFromNew,
+                on => on.Name,
+                nn => nn.Name,
+                (on, nn) => new { on, nn }).ToArray();
+
+            this.LogInformation($"Node {oldNode.Name}: there are {duplicateNodes.Length} nodes.");
+            foreach (var duplicateNode in duplicateNodes)
             {
-                docMerged.AppendChild(this.MergeNodes(grp.A, grp.B, docMerged));
+                var mergedNode = this.MergeNodes(duplicateNode.on, duplicateNode.nn, targetDocument);
+                targetNode.AppendChild(mergedNode);
             }
 
-            docMerged.Save(this.NewPathName + ".new.xml");
-        }
-
-        private XmlNode MergeNodes(XmlNode A, XmlNode B, XmlDocument TargetDoc)
-        {
-            var merged = TargetDoc.CreateNode(A.NodeType, A.Name, A.NamespaceURI);
-
-            foreach (XmlAttribute attrib in A.Attributes)
-            {
-                merged.Attributes.Append(TargetDoc.CreateAttribute(attrib.Prefix, attrib.LocalName, attrib.NamespaceURI));
-            }
-
-            var fromA = A.Attributes.Cast<XmlAttribute>();
-
-            var fromB = B.Attributes.Cast<XmlAttribute>();
-
-            var toAdd = fromB.Where(attr => !fromA.Any(ata => ata.Name == attr.Name));
-
-            foreach (var attrib in toAdd)
-            {
-                merged.Attributes.Append(TargetDoc.CreateAttribute(attrib.Prefix, attrib.LocalName, attrib.NamespaceURI));
-            }
-
-            var childsFromA = A.ChildNodes.Cast<XmlNode>();
-            var childsFromB = B.ChildNodes.Cast<XmlNode>();
-
-            var uniquesFromA = childsFromA.Where(ch => !childsFromB.Any(chb => chb.Name == ch.Name));
-            var uniquesFromB = childsFromB.Where(ch => !childsFromA.Any(chb => chb.Name == ch.Name));
-
-            foreach (var unique in uniquesFromA)
-            {
-                merged.AppendChild(DeepCloneToDoc(unique, TargetDoc));
-            }
-
-            foreach (var unique in uniquesFromA)
-            {
-                merged.AppendChild(DeepCloneToDoc(unique, TargetDoc));
-            }
-
-            var duplicates = from chA in childsFromA
-                             from chB in childsFromB
-                             where chA.Name == chB.Name
-                             select new { A = chA, B = chB };
-
-            foreach (var grp in duplicates)
-            {
-                merged.AppendChild(this.MergeNodes(grp.A, grp.B, TargetDoc));
-            }
-
-            return merged;
+            return targetNode;
         }
 
         #endregion

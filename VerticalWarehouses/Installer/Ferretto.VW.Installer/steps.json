@@ -87,11 +87,11 @@
     },
     {
       "$type": "Ferretto.VW.Installer.MergeAppConfig, Ferretto.VW.Installer",
-      "number": 11,
+      "number": 0,
       "title": "Configura App PanelPC",
       "description": "Aggiorna il file di configurazione del Panel PC.",
-      "newPathName": "$(Install:Root:Path)\\$(Install:PPC:Path)\\App.config",
-      "oldPathName": "$(Backup:Root:Path)\\Staging\\App\\$(Install:PPC:Path)\\App.config"
+      "newPathName": "$(Install:Root:Path)\\$(Install:PPC:Path)\\Ferretto.VW.App.exe.config",
+      "oldPathName": "$(Backup:Root:Path)\\Staging\\App\\$(Install:PPC:Path)\\Ferretto.VW.App.exe.config"
     },
     /**********************
     {

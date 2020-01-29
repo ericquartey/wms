@@ -196,9 +196,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         this.machineData.MessageData.TargetCellId,
                         this.machineData.MessageData.TargetPosition);
                 }
-                if (this.machineData.MessageData.AxisMovement is Axis.Horizontal
-                    && this.machineData.MessageData.MovementType == MovementType.TableTarget
-                    )
+
+                if (this.machineData.MessageData.AxisMovement is Axis.Horizontal &&
+                    this.machineData.MessageData.MovementType == MovementType.TableTarget)
                 {
                     this.UpdateLastIdealPosition(this.machineData.MessageData.AxisMovement);
                 }
