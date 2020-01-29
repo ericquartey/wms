@@ -25,6 +25,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         double? GetDestinationHeight(Mission moveData, out int? targetBayPositionId, out int? targetCellId);
 
+        double GetLastVerticalPosition();
+
         ShutterPosition GetShutterOpenPosition(Bay bay, LoadingUnitLocation location);
 
         double? GetSourceHeight(Mission moveData, out int? targetBayPositionId, out int? targetCellId);

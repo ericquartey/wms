@@ -170,7 +170,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .SingleOrDefault();
 
                 this.cache.Set(ElevatorCurrentBayPositionCacheKey, currentBayPosition, this.cacheOptions);
-                 //}
+                //}
 
                 return currentBayPosition;
             }
@@ -181,15 +181,15 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 //if (!this.cache.TryGetValue(ElevatorCurrentCellCacheKey, out Cell currentCell))
-                    //{
-                 var currentCell = this.dataContext.Elevators
-                    .Select(e => e.Cell)
-                    .Include(c => c.Panel)
-                    .Include(c => c.LoadingUnit)
-                    .SingleOrDefault();
+                //{
+                var currentCell = this.dataContext.Elevators
+                   .Select(e => e.Cell)
+                   .Include(c => c.Panel)
+                   .Include(c => c.LoadingUnit)
+                   .SingleOrDefault();
 
                 this.cache.Set(ElevatorCurrentCellCacheKey, currentCell, this.cacheOptions);
-                    //}
+                //}
 
                 return currentCell;
             }
@@ -410,7 +410,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.dataContext.SaveChanges();
 
                 this.cache.Remove(GetAxisCacheKey(orientation));
-                this.NotifyElevatorPositionChanged(true);
+                if (orientation == Orientation.Horizontal)
+                {
+                    this.NotifyElevatorPositionChanged(true);
+                }
             }
         }
 
