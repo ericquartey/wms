@@ -165,6 +165,13 @@ namespace Ferretto.VW.App.Controls
                 this.machineStatusChangesToken = null;
             }
 
+            if (this.machineModeChangedToken != null)
+            {
+                this.EventAggregator?.GetEvent<PubSubEvent<MachineModeChangedEventArgs>>().Unsubscribe(this.machineModeChangedToken);
+                this.machineModeChangedToken?.Dispose();
+                this.machineModeChangedToken = null;
+            }
+            
             //this.ClearSteps();
 
             /*
