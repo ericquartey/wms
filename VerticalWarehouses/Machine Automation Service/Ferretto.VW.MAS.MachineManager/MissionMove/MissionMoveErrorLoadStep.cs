@@ -256,7 +256,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         this.Mission.Direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
                     }
-                    positionId = bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitSource).Id;
+                    var bayPosition = bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitSource);
+                    positionId = bayPosition.Id;
+                    if (bay.Carousel != null
+                        && !bayPosition.IsUpper
+                        )
+                    {
+                        // in lower carousel position there is no profile check barrier
+                        measure = false;
+                    }
                     this.Mission.OpenShutterPosition = this.LoadingUnitMovementProvider.GetShutterOpenPosition(bay, this.Mission.LoadUnitSource);
                     var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(this.Mission.TargetBay);
                     var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
