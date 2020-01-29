@@ -408,7 +408,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 axis.LastIdealPosition = position;
 
                 this.dataContext.SaveChanges();
+
                 this.cache.Remove(GetAxisCacheKey(orientation));
+
+                this.NotifyElevatorPositionChanged(true);
             }
         }
 
