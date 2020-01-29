@@ -409,6 +409,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.SaveChanges();
                 this.cache.Remove(GetAxisCacheKey(orientation));
+                this.NotifyElevatorPositionChanged(true);
             }
         }
 
