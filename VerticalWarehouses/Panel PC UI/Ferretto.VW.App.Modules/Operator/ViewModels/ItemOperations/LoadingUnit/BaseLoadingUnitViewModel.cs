@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using DevExpress.XtraPrinting.Native;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -33,6 +34,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private int currentItemIndex;
 
+        private bool isBusyConfirmingOperation;
+
+        private bool isBusyConfirmingRecallOperation;
+
         private bool isListVisibile;
 
         private DelegateCommand itemCompartmentDownCommand;
@@ -57,10 +62,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private CompartmentDetails selectedItemCompartment;
 
-        private bool isBusyConfirmingRecallOperation;
-
-        private bool isBusyConfirmingOperation;
-
         #endregion
 
         #region Constructors
@@ -81,9 +82,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Properties
 
         public ICommand ChangeModeListCommand =>
-                        this.changeModeListCommand
-                        ??
-                        (this.changeModeListCommand = new DelegateCommand(() => this.ChangeMode(), this.CanChangeListMode));
+            this.changeModeListCommand
+            ??
+            (this.changeModeListCommand = new DelegateCommand(() => this.ChangeMode(), this.CanChangeListMode));
 
         public ICommand ChangeModeLoadingUnitCommand =>
                this.changeModeLoadingUnitCommand
@@ -99,6 +100,18 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public override EnableMask EnableMask => EnableMask.Any;
 
         public bool IsBaySideBack => this.bay?.Side is WarehouseSide.Back;
+
+        public bool IsBusyConfirmingOperation
+        {
+            get => this.isBusyConfirmingOperation;
+            set => this.SetProperty(ref this.isBusyConfirmingOperation, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsBusyConfirmingRecallOperation
+        {
+            get => this.isBusyConfirmingRecallOperation;
+            set => this.SetProperty(ref this.isBusyConfirmingRecallOperation, value, this.RaiseCanExecuteChanged);
+        }
 
         public bool IsListVisibile
         {
@@ -170,17 +183,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             set => this.SetProperty(ref this.selectedItemCompartment, value, this.SetSelectedItemAndCompartment);
         }
 
-        public bool IsBusyConfirmingOperation
-        {
-            get => this.isBusyConfirmingOperation;
-            set => this.SetProperty(ref this.isBusyConfirmingOperation, value, this.RaiseCanExecuteChanged);
-        }
-
-        public bool IsBusyConfirmingRecallOperation
-        {
-            get => this.isBusyConfirmingRecallOperation;
-            set => this.SetProperty(ref this.isBusyConfirmingRecallOperation, value, this.RaiseCanExecuteChanged);
-        }
+        protected IBayManager BayManager => this.bayManager;
 
         #endregion
 
@@ -328,7 +331,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 return false;
             }
 
-            return this.itemsCompartments.Any()                
+            return this.itemsCompartments.Any()
                    &&
                    !this.isListVisibile;
         }
@@ -371,7 +374,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 return false;
             }
 
-            return (this.currentItemIndex < this.items.Count() - 1);
+            return this.currentItemIndex < this.items.Count() - 1;
         }
 
         private bool ItemCanUp()
