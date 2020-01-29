@@ -333,6 +333,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.RaiseCanExecuteChanged();
 
+            this.InputLoadingUnitIdPropertyChanged();
+
+            this.InputCellIdPropertyChanged();
+
             this.OnGuidedRaiseCanExecuteChanged();
             this.OnManualRaiseCanExecuteChanged();
 
@@ -431,6 +435,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsElevatorInBay = e.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay;
             this.IsElevatorInCell = e.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Cell;
 
+            Debug.WriteLine($"IsElevatorInCell:{this.IsElevatorInCell}");
+
             // se sto muovendo in modalità guidata, è possibile che la cella sia scelta dal mas, quindi la riassegno così le policy indicheranno la cella corrente
             if (e.CellId.HasValue)
             {
@@ -516,16 +522,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
 
                 var selectedCell = this.SelectedCell;
-                if (selectedCell != null && this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Cell)
-                {
-                    Debug.WriteLine("-->:RefreshActionPoliciesAsync:selectedCell");
-                    this.loadFromCellPolicy = await this.machineElevatorWebService.CanLoadFromCellAsync(selectedCell.Id);
-                    this.loadFromCellCommand?.RaiseCanExecuteChanged();
-
-                    this.unloadToCellPolicy = await this.machineElevatorWebService.CanUnloadToCellAsync(selectedCell.Id);
-                    this.unloadToCellCommand?.RaiseCanExecuteChanged();
-                }
-
                 var selectedLoadunitCell = this.SelectedLoadingUnit?.Cell;
                 if (selectedCell != null || selectedLoadunitCell != null)
                 {
