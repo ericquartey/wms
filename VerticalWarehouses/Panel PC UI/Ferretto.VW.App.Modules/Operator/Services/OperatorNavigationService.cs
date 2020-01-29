@@ -6,6 +6,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.WMS.Data.WebAPI.Contracts;
+using NLog;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Operator.Services
@@ -19,6 +20,8 @@ namespace Ferretto.VW.App.Modules.Operator.Services
         private readonly IEventAggregator eventAggregator;
 
         private readonly SubscriptionToken loadingUnitToken;
+
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly IMachineModeService machineModeService;
 
@@ -187,16 +190,21 @@ namespace Ferretto.VW.App.Modules.Operator.Services
 
         private async Task OnAssignedMissionOperationChangedAsync(AssignedMissionOperationChangedEventArgs e)
         {
+            this.logger.Info($"**** Assigned mission={e.MissionId} op={e.MissionOperationId}");
             await this.CheckForNewOperationAsync();
         }
 
         private void OnLoadingUnitMoved(NotificationMessageUI<CommonUtils.Messages.Data.MoveLoadingUnitMessageData> message)
         {
+            this.logger.Info($"**** LU Moved: id={message.Data.LoadUnitId} type={message.Data.MissionType} status={message.Status} stage={message.Description}");
+
             if (message.Data.MissionType is CommonUtils.Messages.Enumerations.MissionType.OUT
                &&
                message.Status is CommonUtils.Messages.Enumerations.MessageStatus.OperationWaitResume
                &&
-               message.Data.LoadUnitId.HasValue)
+               message.Data.LoadUnitId.HasValue
+               &&
+               this.autoNavigate)
             {
                 this.NavigateToLoadingUnitDetails(message.Data.LoadUnitId.Value);
             }
@@ -209,6 +217,10 @@ namespace Ferretto.VW.App.Modules.Operator.Services
                 case Utils.Modules.Operator.OPERATOR_MENU:
                     this.autoNavigate = this.autoNavigateOnMenu;
                     this.autoNavigateOnMenu = false;
+                    if (this.autoNavigate)
+                    {
+                        await this.CheckForNewOperationAsync();
+                    }
                     break;
 
                 case Utils.Modules.Operator.ItemOperations.WAIT:
@@ -238,7 +250,7 @@ namespace Ferretto.VW.App.Modules.Operator.Services
                     break;
             }
 
-            await this.CheckForNewOperationAsync();
+            //await this.CheckForNewOperationAsync();
         }
 
         #endregion
