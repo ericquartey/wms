@@ -333,9 +333,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.RaiseCanExecuteChanged();
 
-            this.InputLoadingUnitIdPropertyChanged();
+            //this.InputLoadingUnitIdPropertyChanged();
 
-            this.InputCellIdPropertyChanged();
+            //this.InputCellIdPropertyChanged();
 
             this.OnGuidedRaiseCanExecuteChanged();
             this.OnManualRaiseCanExecuteChanged();
