@@ -1,5 +1,6 @@
 using System;
 using System.Configuration;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
@@ -52,6 +53,17 @@ namespace Ferretto.VW.App.Services
         #endregion
 
         #region Methods
+
+        public async Task<LoadingUnit> GetAccessibleLoadingUnitAsync()
+        {
+            var bay = await this.GetBayAsync();
+
+            return bay.Positions
+                    .Where(p => p.LoadingUnit != null)
+                    .OrderByDescending(p => p.Height)
+                    .Select(p => p.LoadingUnit)
+                    .FirstOrDefault();
+        }
 
         public async Task<Bay> GetBayAsync()
         {
