@@ -314,13 +314,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override void Disappear()
         {
             base.Disappear();
-
             /*
-             * Avoid unsubscribing in case of navigation to error page.
-             * We may need to review this behaviour.
-             *
-            this.positioningMessageReceivedToken?.Dispose();
-            this.positioningMessageReceivedToken = null;
+            if (this.positioningMessageReceivedToken != null)
+            {
+                this.EventAggregator?.GetEvent<NotificationEventUI<PositioningMessageData>>().Unsubscribe(this.positioningMessageReceivedToken);
+                this.positioningMessageReceivedToken?.Dispose();
+                this.positioningMessageReceivedToken = null;
+            }
+
+            if (this.elevatorPositionChangedToken != null)
+            {
+                this.EventAggregator?.GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>().Unsubscribe(this.elevatorPositionChangedToken);
+                this.elevatorPositionChangedToken?.Dispose();
+                this.elevatorPositionChangedToken = null;
+            }
             */
         }
 
@@ -457,7 +464,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                this.IsExecutingProcedure = true;
                 this.IsWaitingForResponse = true;
 
                 var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Rodaggio cinghia", DialogType.Question, DialogButtons.YesNo);
@@ -475,7 +481,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             finally
             {
-                this.IsExecutingProcedure = false;
                 this.IsWaitingForResponse = false;
             }
         }
