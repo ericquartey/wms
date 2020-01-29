@@ -78,7 +78,16 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceBay, this.Mission.TargetBay);
                             throw new StateMachineException(ErrorDescriptions.LoadUnitSourceBay, this.Mission.TargetBay, MessageActor.MachineManager);
                         }
-                        positionId = bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitSource).Id;
+                        var bayPosition = bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitSource);
+                        positionId = bayPosition.Id;
+                        if (bay.Carousel != null
+                            && !bayPosition.IsUpper
+                            )
+                        {
+                            // in lower carousel position there is no profile check barrier
+                            measure = false;
+                        }
+
                         this.Mission.Direction = (bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards);
                         this.Mission.OpenShutterPosition = this.LoadingUnitMovementProvider.GetShutterOpenPosition(bay, this.Mission.LoadUnitSource);
                         var shutterInverter = bay.Shutter.Inverter.Index;
@@ -187,7 +196,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                         this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceBay, this.Mission.TargetBay);
                                         throw new StateMachineException(ErrorDescriptions.LoadUnitSourceBay, this.Mission.TargetBay, MessageActor.MachineManager);
                                     }
-                                    positionId = bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitSource).Id;
+                                    var bayPosition = bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitSource);
+                                    positionId = bayPosition.Id;
+                                    if (bay.Carousel != null
+                                        && !bayPosition.IsUpper
+                                        )
+                                    {
+                                        // in lower carousel position there is no profile check barrier
+                                        measure = false;
+                                    }
 
                                     this.Logger.LogDebug($"MoveManualLoadingUnitForward start: direction {this.Mission.Direction}");
                                     this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, false, measure, this.Mission.LoadUnitId, positionId, MessageActor.MachineManager, this.Mission.TargetBay);

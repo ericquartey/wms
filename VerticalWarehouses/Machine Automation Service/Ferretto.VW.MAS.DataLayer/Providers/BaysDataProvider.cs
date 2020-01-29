@@ -736,6 +736,8 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             var bayPosition = this.dataContext.BayPositions
                 .Include(b => b.Bay)
+                    .ThenInclude(i => i.Carousel)
+                .Include(b => b.LoadingUnit)
                 .SingleOrDefault(p => p.Location == location);
             if (bayPosition is null)
             {

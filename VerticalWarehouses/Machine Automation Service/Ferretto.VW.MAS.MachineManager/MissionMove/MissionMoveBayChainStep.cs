@@ -53,7 +53,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedUpper, this.Mission.TargetBay);
                 throw new StateMachineException(ErrorDescriptions.LoadUnitUndefinedUpper, this.Mission.TargetBay, MessageActor.MachineManager);
             }
+#if CHECK_BAY_SENSOR
             if (this.LoadingUnitMovementProvider.IsOnlyBottomPositionOccupied(bay.Number))
+#endif
             {
                 this.Mission.RestoreConditions = false;
             }

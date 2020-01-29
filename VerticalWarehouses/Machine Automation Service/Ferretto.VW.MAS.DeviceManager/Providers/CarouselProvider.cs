@@ -123,8 +123,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     break;
 
                 case VerticalMovementDirection.Up:
-                    if (isLoadingUnitInUpperPosition
-                        || bay.Positions.FirstOrDefault(p => p.IsUpper).LoadingUnit != null)
+                    if (
+#if CHECK_BAY_SENSOR
+                        isLoadingUnitInUpperPosition ||
+#endif
+                        bay.Positions.FirstOrDefault(p => p.IsUpper).LoadingUnit != null
+                        )
                     {
                         return new ActionPolicy { Reason = Resources.Bays.TheBayContainsALoadingUnitInItsUpperPosition };
                     }
@@ -184,7 +188,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 throw new InvalidOperationException(policy.Reason);
             }
-
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
             var targetPosition = bay.Carousel.ElevatorDistance * (direction is VerticalMovementDirection.Up ? 1 : -1);
@@ -241,7 +244,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 throw new InvalidOperationException(policy.Reason);
             }
-
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
             var targetPosition = bay.Carousel.ElevatorDistance * (direction is VerticalMovementDirection.Up ? 1 : -1);
