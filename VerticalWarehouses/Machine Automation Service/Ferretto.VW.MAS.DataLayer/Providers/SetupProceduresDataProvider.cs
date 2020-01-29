@@ -286,8 +286,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 if (existingProcedure is RepeatedTestProcedure repeatedTestProcedure)
                 {
                     repeatedTestProcedure.PerformedCycles = 0;
-                    repeatedTestProcedure.IsCompleted = false;
-                    repeatedTestProcedure.InProgress = false;
 
                     this.dataContext.SetupProcedures.Update(repeatedTestProcedure);
                     this.dataContext.SaveChanges();

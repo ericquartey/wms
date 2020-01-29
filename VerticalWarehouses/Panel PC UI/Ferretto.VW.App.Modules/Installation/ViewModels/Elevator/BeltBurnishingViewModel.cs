@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -23,6 +24,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Fields
 
         private readonly IMachineBeltBurnishingProcedureWebService beltBurnishingWebService;
+
+        private readonly Services.IDialogService dialogService;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -74,13 +77,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IEventAggregator eventAggregator,
             IMachineElevatorWebService machineElevatorWebService,
             IMachineBeltBurnishingProcedureWebService beltBurnishingWebService,
-            IMachineElevatorService machineElevatorService)
+            IMachineElevatorService machineElevatorService,
+            Services.IDialogService dialogService)
             : base(PresentationMode.Installer)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.beltBurnishingWebService = beltBurnishingWebService ?? throw new ArgumentNullException(nameof(beltBurnishingWebService));
             this.machineElevatorService = machineElevatorService ?? throw new ArgumentNullException(nameof(machineElevatorService));
+            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
         }
 
         #endregion
@@ -455,10 +460,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsExecutingProcedure = true;
                 this.IsWaitingForResponse = true;
 
-                this.CumulativePerformedCycles = 0;
-                this.PerformedCyclesThisSession = 0;
+                var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Rodaggio cinghia", DialogType.Question, DialogButtons.YesNo);
+                if (messageBoxResult == DialogResult.Yes)
+                {
+                    this.CumulativePerformedCycles = 0;
+                    this.PerformedCyclesThisSession = 0;
 
-                await this.beltBurnishingWebService.ResetAsync();
+                    await this.beltBurnishingWebService.ResetAsync();
+                }
             }
             catch (System.Exception ex)
             {

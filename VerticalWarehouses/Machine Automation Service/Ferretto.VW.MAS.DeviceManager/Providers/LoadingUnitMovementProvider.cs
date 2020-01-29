@@ -234,6 +234,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return targetPosition;
         }
 
+        public double GetLastVerticalPosition()
+        {
+            var axis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
+            return axis.LastIdealPosition;
+        }
+
         public ShutterPosition GetShutterOpenPosition(Bay bay, LoadingUnitLocation location)
         {
             var openShutter = ShutterPosition.NotSpecified;
