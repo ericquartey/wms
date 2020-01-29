@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.MAS.DataModels
 {
-    public sealed class Cell : DataModel
+    public sealed class Cell : DataModel, IValidable
     {
         #region Properties
 
@@ -29,6 +29,15 @@ namespace Ferretto.VW.MAS.DataModels
         public int Priority { get; set; }
 
         public WarehouseSide Side => this.Panel?.Side ?? WarehouseSide.NotSpecified;
+
+        #endregion
+
+        #region Methods
+
+        public void Validate()
+        {
+            // do nothing
+        }
 
         #endregion
     }

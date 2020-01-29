@@ -190,14 +190,11 @@ namespace Ferretto.VW.App.Modules.Operator.Services
 
         private async Task OnAssignedMissionOperationChangedAsync(AssignedMissionOperationChangedEventArgs e)
         {
-            this.logger.Info($"**** Assigned mission={e.MissionId} op={e.MissionOperationId}");
             await this.CheckForNewOperationAsync();
         }
 
         private void OnLoadingUnitMoved(NotificationMessageUI<CommonUtils.Messages.Data.MoveLoadingUnitMessageData> message)
         {
-            this.logger.Info($"**** LU Moved: id={message.Data.LoadUnitId} type={message.Data.MissionType} status={message.Status} stage={message.Description}");
-
             if (message.Data.MissionType is CommonUtils.Messages.Enumerations.MissionType.OUT
                &&
                message.Status is CommonUtils.Messages.Enumerations.MessageStatus.OperationWaitResume
@@ -249,8 +246,6 @@ namespace Ferretto.VW.App.Modules.Operator.Services
                     this.autoNavigateOnMenu = true;
                     break;
             }
-
-            //await this.CheckForNewOperationAsync();
         }
 
         #endregion
