@@ -56,9 +56,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
             int? sourceCellId = null,
             int? sourceBayPositionId = null);
 
-        void MoveHorizontalManual(HorizontalMovementDirection direction, double distance, bool measure, int? loadingUnitId, BayNumber requestingBay, MessageActor sender);
+        void MoveHorizontalManual(HorizontalMovementDirection direction, double distance, bool measure, int? loadingUnitId, int? positionId, BayNumber requestingBay, MessageActor sender);
 
-        void MoveHorizontalProfileCalibration(BayNumber requestingBay, MessageActor sender);
+        void MoveHorizontalProfileCalibration(int bayPositionId, BayNumber requestingBay, MessageActor sender);
 
         void MoveToAbsoluteVerticalPosition(
             bool manualMovment,

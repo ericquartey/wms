@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
 
         private readonly IMachineControlProvider machineControlProvider;
 
-        private readonly IMachineModeVolatileDataProvider machineModeDataProvider;
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
         private readonly Dictionary<BayNumber, MessageStatus> stateMachineResponses;
 
@@ -43,14 +43,14 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
         public ChangeRunningStateStartState(
             IBaysDataProvider baysDataProvider,
             IMachineControlProvider machineControlProvider,
-            IMachineModeVolatileDataProvider machineModeDataProvider,
+            IMachineVolatileDataProvider machineVolatileDataProvider,
             ILogger<StateBase> logger)
             : base(logger)
         {
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
 
             this.machineControlProvider = machineControlProvider ?? throw new ArgumentNullException(nameof(machineControlProvider));
-            this.machineModeDataProvider = machineModeDataProvider ?? throw new ArgumentNullException(nameof(machineModeDataProvider));
+            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
 
             this.stateMachineResponses = new Dictionary<BayNumber, MessageStatus>();
         }
@@ -85,8 +85,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                     var newMessageData = new StopMessageData(this.stopReason);
                     this.machineControlProvider.StopOperation(newMessageData, this.currentBay, MessageActor.MachineManager, commandMessage.RequestingBay);
 
-                    this.machineModeDataProvider.Mode = MachineMode.Manual;
-                    this.Logger.LogInformation($"Machine status switched to {this.machineModeDataProvider.Mode}");
+                    this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                    this.Logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
                 }
 
                 var notificationData = new ChangeRunningStateMessageData(

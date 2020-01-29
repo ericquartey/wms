@@ -169,9 +169,9 @@ namespace Ferretto.VW.MAS.AutomationService
 
             services.AddHostedService<NotificationRelayService>();
 
-            services.AddTransient<IInverterProvider, InverterProvider>();
-            services.AddTransient<IIoDeviceProvider, IoDeviceProvider>();
-            services.AddTransient<IConfigurationProvider, ConfigurationProvider>();
+            services.AddScoped<IInverterProvider, InverterProvider>();
+            services.AddScoped<IIoDeviceProvider, IoDeviceProvider>();
+            services.AddScoped<IConfigurationProvider, ConfigurationProvider>();
         }
 
         private void InitialiseWmsInterfaces(IServiceCollection services)

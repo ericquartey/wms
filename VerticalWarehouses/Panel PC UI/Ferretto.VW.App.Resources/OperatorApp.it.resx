@@ -1180,4 +1180,10 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="PickingQuantity" xml:space="preserve">
     <value>Quantità da prelevare [{0}]</value>
   </data>
+  <data name="NewOperationsAvailable" xml:space="preserve">
+    <value>Nuove operazioni disponibili</value>
+  </data>
+  <data name="ConfirmAndNewOperationsAvailable" xml:space="preserve">
+    <value>Conferma e nuove operazioni disponibili</value>
+  </data>
 </root>

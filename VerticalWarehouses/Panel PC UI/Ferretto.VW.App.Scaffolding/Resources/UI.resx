@@ -129,6 +129,12 @@
   <data name="Empty" xml:space="preserve">
     <value>Nessun elemento corrispondente al criterio di navigazione.</value>
   </data>
+  <data name="Machine" xml:space="preserve">
+    <value>Macchina</value>
+  </data>
+  <data name="MachineDescription" xml:space="preserve">
+    <value>Permette di accedere all'elenco di tutti i parametri indipendemente dalla cattegoria.</value>
+  </data>
   <data name="Root" xml:space="preserve">
     <value>Root</value>
   </data>

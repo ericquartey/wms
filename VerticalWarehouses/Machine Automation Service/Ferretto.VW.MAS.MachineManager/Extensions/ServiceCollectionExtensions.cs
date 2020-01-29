@@ -24,20 +24,20 @@ namespace Ferretto.VW.MAS.MachineManager
                 .AddHostedService<MachineManagerService>();
 
             services
-                .AddTransient<IRunningStateProvider, RunningStateProvider>()
-                .AddTransient<IMoveLoadingUnitProvider, MoveLoadingUnitProvider>()
-                .AddTransient<IMissionMoveProvider, MissionMoveProvider>()
-                .AddTransient<IMachineModeProvider, MachineModeProvider>();
+                .AddScoped<IRunningStateProvider, RunningStateProvider>()
+                .AddScoped<IMoveLoadingUnitProvider, MoveLoadingUnitProvider>()
+                .AddScoped<IMissionMoveProvider, MissionMoveProvider>()
+                .AddScoped<IMachineModeProvider, MachineModeProvider>();
 
             services
-                .AddTransient<IChangeRunningStateStateMachine, ChangeRunningStateStateMachine>();
+                .AddScoped<IChangeRunningStateStateMachine, ChangeRunningStateStateMachine>();
 
             services
-                .AddTransient<IChangeRunningStateStartState, ChangeRunningStateStartState>()
-                .AddTransient<IChangeRunningStateResetFaultState, ChangeRunningStateResetFaultState>()
-                .AddTransient<IChangeRunningStateResetSecurity, ChangeRunningStateResetSecurity>()
-                .AddTransient<IChangeRunningStateInverterPowerSwitch, ChangeRunningStateInverterPowerSwitch>()
-                .AddTransient<IChangeRunningStateEndState, ChangeRunningStateEndState>();
+                .AddScoped<IChangeRunningStateStartState, ChangeRunningStateStartState>()
+                .AddScoped<IChangeRunningStateResetFaultState, ChangeRunningStateResetFaultState>()
+                .AddScoped<IChangeRunningStateResetSecurity, ChangeRunningStateResetSecurity>()
+                .AddScoped<IChangeRunningStateInverterPowerSwitch, ChangeRunningStateInverterPowerSwitch>()
+                .AddScoped<IChangeRunningStateEndState, ChangeRunningStateEndState>();
 
             return services;
         }

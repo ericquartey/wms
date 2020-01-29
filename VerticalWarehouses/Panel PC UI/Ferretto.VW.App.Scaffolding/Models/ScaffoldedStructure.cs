@@ -17,9 +17,11 @@ namespace Ferretto.VW.App.Scaffolding.Models
 
         #endregion
 
-        public string AbbrevationCategory => this.Category?.Substring(0, 2) ?? null;
-
         #region Properties
+
+        public string AbbrevationCategory => this.Category?.Substring(0, 2);
+
+        //public string AbbrevationCategory => this.Id > 0 ? this.Id.ToString() : this.Category?.Substring(0, 2) ?? null;
 
         public string Category { get; }
 
@@ -28,6 +30,8 @@ namespace Ferretto.VW.App.Scaffolding.Models
         public string Description { get; set; }
 
         public ReadOnlyCollection<ScaffoldedEntity> Entities { get; }
+
+        public int Id { get; set; }
 
         #endregion
     }

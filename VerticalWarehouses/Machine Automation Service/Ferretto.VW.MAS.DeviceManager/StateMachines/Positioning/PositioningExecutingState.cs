@@ -686,7 +686,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                 if (message.Source == FieldMessageActor.InverterDriver)
                 {
-                    var profileHeight = this.baysDataProvider.ConvertProfileToHeight(data.Profile);
+                    var profileHeight = this.baysDataProvider.ConvertProfileToHeight(data.Profile, this.machineData.MessageData.SourceBayPositionId.Value);
                     this.Logger.LogInformation($"Height measured {profileHeight}mm. Profile {data.Profile / 100.0}%");
 
                     var bayNumber = this.baysDataProvider.GetByInverterIndex(this.machineData.CurrentInverterIndex);
@@ -767,7 +767,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     break;
 
                 case MovementMode.BeltBurnishing:
-                    this.scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>().Mode = MachineMode.Test;
+                    this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Test;
                     this.Logger.LogInformation($"Machine status switched to {MachineMode.Test}");
                     this.machineData.MessageData.ExecutedCycles = this.performedCycles;
 

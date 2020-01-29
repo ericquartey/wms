@@ -14,18 +14,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Carousel_ElevatorDistance))]
             [Unit("mm")]
+            [Id(1)]
             public double ElevatorDistance { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Carousel_HomingCreepSpeed))]
             [Unit("mm/s")]
+            [Id(2)]
             public double HomingCreepSpeed { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Carousel_HomingFastSpeed))]
             [Unit("mm/s")]
+            [Id(3)]
             public double HomingFastSpeed { get; set; }
-
-            [ScaffoldColumn(false)]
-            public bool IsHomingExecuted { get; set; }
 
             [ScaffoldColumn(false)]
             public double LastIdealPosition { get; set; }

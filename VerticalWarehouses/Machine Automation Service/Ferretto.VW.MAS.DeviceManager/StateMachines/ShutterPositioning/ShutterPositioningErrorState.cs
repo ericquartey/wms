@@ -111,7 +111,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
             if (this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterTest)
             {
-                this.scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>().Mode = MachineMode.Manual;
+                this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Manual;
                 this.Logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
             }
         }

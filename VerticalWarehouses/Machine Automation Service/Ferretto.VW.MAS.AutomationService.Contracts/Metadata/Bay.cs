@@ -16,11 +16,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.BayCarousel))]
             [CategoryDescription(ResourceType = typeof(Vertimag), Description = nameof(Vertimag.BayCarousel_Description))]
             [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
-            //[PullToRoot, Unfold]
             public Carousel Carousel { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_MaxGrossWeight))]
             [Unit("mm")]
+            [Id(1)]
             public double ChainOffset { get; set; }
 
             [ScaffoldColumn(false)]
@@ -37,7 +37,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.BayInverter))]
             [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
-            //[PullToRoot, Unfold]
+            [Id(2)]
             public Inverter Inverter { get; set; }
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.BayIoDevice))]
@@ -47,14 +47,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Editable(false)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Bay_IsActive))]
+            [Id(3)]
             public bool IsActive { get; set; }
 
             [Editable(false)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Bay_IsDouble))]
+            [Id(4)]
             public bool IsDouble { get; set; }
 
             [Editable(false)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Bay_IsExternal))]
+            [Id(5)]
             public bool IsExternal { get; set; }
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.BayLaser))]
@@ -62,7 +65,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             //[PullToRoot, Unfold]
             public Laser Laser { get; set; }
 
-            [ScaffoldColumn(false)]
+            [Editable(false)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.BayNumber))]
+            [Id(6)]
             public BayNumber Number { get; set; }
 
             [ScaffoldColumn(false)]
@@ -72,6 +77,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public System.Collections.Generic.IEnumerable<BayPosition> Positions { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Bay_Resolution))]
+            [Id(7)]
             public double Resolution { get; set; }
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.BayShutter))]
@@ -81,6 +87,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Editable(false)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Bay_Side))]
+            [Id(8)]
             public WarehouseSide Side { get; set; }
 
             [ScaffoldColumn(false)]

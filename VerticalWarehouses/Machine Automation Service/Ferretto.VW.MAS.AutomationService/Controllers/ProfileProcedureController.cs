@@ -48,9 +48,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult Calibration(HorizontalMovementDirection direction)
+        public IActionResult Calibration(int bayPositionId)
         {
-            this.elevatorProvider.MoveHorizontalProfileCalibration(this.BayNumber, MessageActor.AutomationService);
+            this.elevatorProvider.MoveHorizontalProfileCalibration(bayPositionId, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }

@@ -15,19 +15,19 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         private readonly IErrorsProvider errorsProvider;
 
-        private readonly IMachineProvider machineProvider;
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
         #endregion
 
         #region Constructors
 
         public RunningStateProvider(
-            IMachineProvider machineProvider,
+            IMachineVolatileDataProvider machineProvider,
             IEventAggregator eventAggregator,
             IErrorsProvider errorsProvider)
             : base(eventAggregator)
         {
-            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            this.machineVolatileDataProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
         }
 
@@ -35,9 +35,9 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         #region Properties
 
-        public bool IsHoming => this.machineProvider.IsHomingExecuted;
+        public bool IsHoming => this.machineVolatileDataProvider.IsHomingExecuted;
 
-        public bool IsRunning => this.machineProvider.IsMachineRunning;
+        public bool IsRunning => this.machineVolatileDataProvider.IsMachineRunning;
 
         #endregion
 

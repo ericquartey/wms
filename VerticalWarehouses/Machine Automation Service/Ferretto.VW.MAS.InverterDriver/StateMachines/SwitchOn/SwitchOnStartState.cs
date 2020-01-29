@@ -43,7 +43,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
             this.Logger.LogDebug($"Switch On Start Inverter {this.InverterStatus.SystemIndex}");
             this.InverterStatus.CommonControlWord.SwitchOn = true;
             this.InverterStatus.CommonControlWord.HorizontalAxis =
-                this.ParentStateMachine.GetRequiredService<IMachineProvider>().IsOneTonMachine()
+                this.ParentStateMachine.GetRequiredService<IMachineVolatileDataProvider>().IsOneTonMachine.Value
                 ? false
                 : this.axisToSwitchOn == Axis.Horizontal;
 

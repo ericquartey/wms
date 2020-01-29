@@ -97,6 +97,24 @@ namespace Ferretto.VW.App.Scaffolding.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Macchina.
+        /// </summary>
+        public static string Machine {
+            get {
+                return ResourceManager.GetString("Machine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Permette di accedere all&apos;elenco di tutti i parametri indipendemente dalla cattegoria..
+        /// </summary>
+        public static string MachineDescription {
+            get {
+                return ResourceManager.GetString("MachineDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Root.
         /// </summary>
         public static string Root {

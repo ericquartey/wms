@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 this.Mission.Status = MissionStatus.New;
 
-                this.Mission.NeedHomingAxis = (this.MachineProvider.IsHomingExecuted ? Axis.None : Axis.Horizontal);
+                this.Mission.NeedHomingAxis = (this.MachineVolatileDataProvider.IsHomingExecuted ? Axis.None : Axis.Horizontal);
 
                 if (command != null
                     && command.Data is IMoveLoadingUnitMessageData messageData
@@ -405,21 +405,21 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             switch (messageData.MissionType)
             {
                 case MissionType.Manual:
-                    returnValue = (this.MachineModeDataProvider.Mode == MachineMode.Manual);
+                    returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.Manual);
                     break;
 
                 case MissionType.Compact:
-                    returnValue = (this.MachineModeDataProvider.Mode == MachineMode.Compact);
+                    returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.Compact);
                     break;
 
                 case MissionType.WMS:
                 case MissionType.OUT:
                 case MissionType.IN:
-                    returnValue = (this.MachineModeDataProvider.Mode == MachineMode.Automatic);
+                    returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.Automatic);
                     break;
 
                 case MissionType.FullTest:
-                    returnValue = (this.MachineModeDataProvider.Mode == MachineMode.Test);
+                    returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.Test);
                     break;
 
                 default:

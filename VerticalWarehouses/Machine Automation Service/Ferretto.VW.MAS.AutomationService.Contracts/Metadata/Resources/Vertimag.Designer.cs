@@ -61,6 +61,24 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Acceleration.
+        /// </summary>
+        public static string Acceleration {
+            get {
+                return ResourceManager.GetString("Acceleration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AssistedMovements.
+        /// </summary>
+        public static string AssistedMovements {
+            get {
+                return ResourceManager.GetString("AssistedMovements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Baia {0}.
         /// </summary>
         public static string Bay {
@@ -160,6 +178,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Numero baia.
+        /// </summary>
+        public static string BayNumber {
+            get {
+                return ResourceManager.GetString("BayNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 1.
         /// </summary>
         public static string BayNumber_BayOne {
@@ -205,6 +232,24 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BeltRigidity.
+        /// </summary>
+        public static string BeltRigidity {
+            get {
+                return ResourceManager.GetString("BeltRigidity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BeltSpacing.
+        /// </summary>
+        public static string BeltSpacing {
+            get {
+                return ResourceManager.GetString("BeltSpacing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Giostra.
         /// </summary>
         public static string Carousel {
@@ -241,7 +286,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Culla.
+        ///   Looks up a localized string similar to Deceleration.
+        /// </summary>
+        public static string Deceleration {
+            get {
+                return ResourceManager.GetString("Deceleration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elevatore.
         /// </summary>
         public static string Elevator {
             get {
@@ -318,6 +372,42 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         public static string ElevatorAxis_Resolution {
             get {
                 return ResourceManager.GetString("ElevatorAxis_Resolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ElevatorWeight.
+        /// </summary>
+        public static string ElevatorWeight {
+            get {
+                return ResourceManager.GetString("ElevatorWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FeedRate.
+        /// </summary>
+        public static string FeedRate {
+            get {
+                return ResourceManager.GetString("FeedRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FeedRateAfterZero.
+        /// </summary>
+        public static string FeedRateAfterZero {
+            get {
+                return ResourceManager.GetString("FeedRateAfterZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HalfShaftLength.
+        /// </summary>
+        public static string HalfShaftLength {
+            get {
+                return ResourceManager.GetString("HalfShaftLength", resourceCulture);
             }
         }
         
@@ -412,6 +502,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Macchina.
+        /// </summary>
+        public static string Machine {
+            get {
+                return ResourceManager.GetString("Machine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Altezza.
         /// </summary>
         public static string Machine_Height {
@@ -471,6 +570,69 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         public static string Machine_SerialNumber {
             get {
                 return ResourceManager.GetString("Machine_SerialNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ManualMovements.
+        /// </summary>
+        public static string ManualMovements {
+            get {
+                return ResourceManager.GetString("ManualMovements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MeasureConst0.
+        /// </summary>
+        public static string MeasureConst0 {
+            get {
+                return ResourceManager.GetString("MeasureConst0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MeasureConst1.
+        /// </summary>
+        public static string MeasureConst1 {
+            get {
+                return ResourceManager.GetString("MeasureConst1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MeasureConst2.
+        /// </summary>
+        public static string MeasureConst2 {
+            get {
+                return ResourceManager.GetString("MeasureConst2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MeasureSpeed.
+        /// </summary>
+        public static string MeasureSpeed {
+            get {
+                return ResourceManager.GetString("MeasureSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MeasureTime.
+        /// </summary>
+        public static string MeasureTime {
+            get {
+                return ResourceManager.GetString("MeasureTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MovementParameters.
+        /// </summary>
+        public static string MovementParameters {
+            get {
+                return ResourceManager.GetString("MovementParameters", resourceCulture);
             }
         }
         
@@ -543,6 +705,33 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         public static string Orientation_Vertical {
             get {
                 return ResourceManager.GetString("Orientation.Vertical", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PulleyDiameter.
+        /// </summary>
+        public static string PulleyDiameter {
+            get {
+                return ResourceManager.GetString("PulleyDiameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ShaftDiameter.
+        /// </summary>
+        public static string ShaftDiameter {
+            get {
+                return ResourceManager.GetString("ShaftDiameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ShaftElasticity.
+        /// </summary>
+        public static string ShaftElasticity {
+            get {
+                return ResourceManager.GetString("ShaftElasticity", resourceCulture);
             }
         }
         
@@ -642,6 +831,33 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         public static string ShutterType_TwoSensors {
             get {
                 return ResourceManager.GetString("ShutterType.TwoSensors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Speed.
+        /// </summary>
+        public static string Speed {
+            get {
+                return ResourceManager.GetString("Speed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TargetDistance.
+        /// </summary>
+        public static string TargetDistance {
+            get {
+                return ResourceManager.GetString("TargetDistance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TargetDistanceAfterZero.
+        /// </summary>
+        public static string TargetDistanceAfterZero {
+            get {
+                return ResourceManager.GetString("TargetDistanceAfterZero", resourceCulture);
             }
         }
         

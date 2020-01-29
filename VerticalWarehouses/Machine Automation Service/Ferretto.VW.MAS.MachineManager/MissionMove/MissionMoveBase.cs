@@ -35,10 +35,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.ErrorsProvider = this.ServiceProvider.GetRequiredService<IErrorsProvider>();
             this.LoadingUnitMovementProvider = this.ServiceProvider.GetRequiredService<ILoadingUnitMovementProvider>();
             this.LoadingUnitsDataProvider = this.ServiceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
-            this.MachineProvider = this.ServiceProvider.GetRequiredService<IMachineProvider>();
+            this.MachineVolatileDataProvider = this.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>();
             this.MissionsDataProvider = this.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
             this.SensorsProvider = this.ServiceProvider.GetRequiredService<ISensorsProvider>();
-            this.MachineModeDataProvider = this.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
 
             this.Logger = this.ServiceProvider.GetRequiredService<ILogger<MachineManagerService>>();
         }
@@ -65,11 +64,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         internal ILoadingUnitsDataProvider LoadingUnitsDataProvider { get; }
 
-        public IMachineProvider MachineProvider { get; }
+        public IMachineVolatileDataProvider MachineVolatileDataProvider { get; }
 
         internal ILogger<MachineManagerService> Logger { get; }
-
-        internal IMachineModeVolatileDataProvider MachineModeDataProvider { get; }
 
         internal IMissionsDataProvider MissionsDataProvider { get; }
 
@@ -150,7 +147,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 else
                 {
                     var bayPosition = this.BaysDataProvider.GetPositionByLocation(this.Mission.LoadUnitDestination);
-                    if (this.Mission.LoadUnitId > 0)
+                    // we set LoadUnit height to zero, but not in lower carousel position, because there is not a profile check barrier
+                    if (bayPosition.Bay.Carousel != null
+                        && !bayPosition.IsUpper)
+                    {
+                        this.BaysDataProvider.SetLoadingUnit(bayPosition.Id, this.Mission.LoadUnitId);
+                    }
+                    else
                     {
                         this.BaysDataProvider.SetLoadingUnit(bayPosition.Id, this.Mission.LoadUnitId, 0);
                     }

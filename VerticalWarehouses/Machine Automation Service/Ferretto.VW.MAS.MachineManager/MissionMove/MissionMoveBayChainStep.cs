@@ -109,7 +109,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             using (var transaction = this.ElevatorDataProvider.GetContextTransaction())
                             {
                                 this.BaysDataProvider.SetLoadingUnit(origin.Id, null);
-                                this.BaysDataProvider.SetLoadingUnit(destination.Id, this.Mission.LoadUnitId);
+                                this.BaysDataProvider.SetLoadingUnit(destination.Id, this.Mission.LoadUnitId, 0);
                             }
                             this.Mission.LoadUnitDestination = destination.Location;
 
@@ -143,6 +143,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                             else
                             {
+                                this.MachineVolatileDataProvider.IsHomingExecuted = true;
                                 this.BayChainEnd();
                             }
                         }

@@ -17,8 +17,6 @@ namespace Ferretto.VW.MAS.DataModels
 
         public double HomingFastSpeed { get; set; }
 
-        public bool IsHomingExecuted { get; set; }
-
         public double LastIdealPosition { get; set; }
 
         public CarouselManualParameters ManualMovements { get; set; }
