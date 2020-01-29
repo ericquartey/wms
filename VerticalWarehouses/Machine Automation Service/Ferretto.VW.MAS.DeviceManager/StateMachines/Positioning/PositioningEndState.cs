@@ -189,14 +189,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             }
             else
             {
+                if (this.machineData.MessageData.AxisMovement is Axis.Horizontal ||
+                    this.machineData.MessageData.AxisMovement is Axis.Vertical)
+                {
                     this.PersistElevatorPosition(
                         this.machineData.MessageData.TargetBayPositionId,
                         this.machineData.MessageData.TargetCellId,
                         this.machineData.MessageData.TargetPosition);
+                }
 
-                if (this.machineData.MessageData.AxisMovement is Axis.Horizontal
-                    && this.machineData.MessageData.MovementType == MovementType.TableTarget
-                    )
+                if (this.machineData.MessageData.AxisMovement is Axis.Horizontal &&
+                    this.machineData.MessageData.MovementType == MovementType.TableTarget)
                 {
                     this.UpdateLastIdealPosition(this.machineData.MessageData.AxisMovement);
                 }

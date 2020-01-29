@@ -44,10 +44,12 @@
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                            Text="{x:Static res:InstallationApp.Bay1}" />
                 <controls:PpcSensorControl SensorState="{Binding Sensors.LUPresentInBay1}"
-                                           Text="{x:Static res:InstallationApp.LuPresentInBay}" />
+                                           Text="Cassetto in posizione alta"
+                                           Visibility="{Binding IsBay1PositionUpPresent, Converter={StaticResource BTVC}}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.LUPresentMiddleBottomBay1}"
-                                           Text="{x:Static res:InstallationApp.LUPresentMiddleBottomBay}" />
+                                           Text="Cassetto in posizione bassa"
+                                           Visibility="{Binding IsBay1PositionDownPresent, Converter={StaticResource BTVC}}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.ProfileCalibrationBay1}"
                                            Text="{x:Static res:InstallationApp.BarrierCalibration}" />
@@ -74,10 +76,12 @@
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                            Text="{x:Static res:InstallationApp.Bay2}" />
                 <controls:PpcSensorControl SensorState="{Binding Sensors.LUPresentInBay2}"
-                                           Text="{x:Static res:InstallationApp.LuPresentInBay}" />
+                                           Text="Cassetto in posizione alta"
+                                           Visibility="{Binding IsBay2PositionUpPresent, Converter={StaticResource BTVC}}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.LUPresentMiddleBottomBay2}"
-                                           Text="{x:Static res:InstallationApp.LUPresentMiddleBottomBay}" />
+                                           Text="Cassetto in posizione bassa"
+                                           Visibility="{Binding IsBay2PositionDownPresent, Converter={StaticResource BTVC}}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.ProfileCalibrationBay2}"
                                            Text="{x:Static res:InstallationApp.BarrierCalibration}" />
@@ -103,10 +107,12 @@
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                            Text="{x:Static res:InstallationApp.Bay3}" />
                 <controls:PpcSensorControl SensorState="{Binding Sensors.LUPresentInBay3}"
-                                           Text="{x:Static res:InstallationApp.LuPresentInBay}" />
+                                           Text="Cassetto in posizione alta"
+                                           Visibility="{Binding IsBay3PositionUpPresent, Converter={StaticResource BTVC}}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.LUPresentMiddleBottomBay3}"
-                                           Text="{x:Static res:InstallationApp.LUPresentMiddleBottomBay}" />
+                                           Text="Cassetto in posizione bassa"
+                                           Visibility="{Binding IsBay3PositionDownPresent, Converter={StaticResource BTVC}}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.ProfileCalibrationBay3}"
                                            Text="{x:Static res:InstallationApp.BarrierCalibration}" />
