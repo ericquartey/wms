@@ -352,14 +352,18 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 IMissionMoveBase newStep;
                 if (this.Mission.Step >= MissionStep.Error
-                    || !this.Mission.IsRestoringType()
+                    && !this.Mission.IsRestoringType()
                     )
                 {
                     newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    newStep.OnEnter(null);
                 }
-                else
+                else if (this.Mission.Step < MissionStep.Error)
                 {
-                    this.Mission.RestoreStep = this.Mission.Step;
+                    if (this.Mission.RestoreStep == MissionStep.NotDefined)
+                    {
+                        this.Mission.RestoreStep = this.Mission.Step;
+                    }
                     if (moveBackward)
                     {
                         this.Mission.NeedMovingBackward = true;
@@ -376,8 +380,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         newStep = new MissionMoveErrorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     }
+                    newStep.OnEnter(null);
                 }
-                newStep.OnEnter(null);
+                else
+                {
+                    this.OnEnter(null);
+                }
 
                 var stopMachineData = new ChangeRunningStateMessageData(false, null, CommandAction.Start, StopRequestReason.Stop);
                 var stopMachineMessage = new CommandMessage(stopMachineData,

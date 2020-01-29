@@ -189,7 +189,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.StopReason = StopRequestReason.NoReason;
             var destination = this.LoadingUnitMovementProvider.GetDestinationHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
             var current = this.LoadingUnitMovementProvider.GetCurrentVerticalPosition();
-            if ((!destination.HasValue || Math.Abs(destination.Value - current) > 2)
+            if ((!destination.HasValue || Math.Abs(destination.Value - current) > 3)
                 && this.Mission.LoadUnitDestination == LoadingUnitLocation.Cell
                 )
             {
