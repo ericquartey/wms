@@ -217,7 +217,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 switch (columnName)
                 {
                     case nameof(this.InputLoadingUnitId):
-                        if (!this.InputLoadingUnitId.HasValue ||
+                        if (this.InputLoadingUnitId.HasValue &&
                             (!this.MachineService.Loadunits.DrawerInLocationById(this.InputLoadingUnitId.Value) &&
                              !this.MachineService.Loadunits.DrawerInBayById(this.InputLoadingUnitId.Value)))
                         {
