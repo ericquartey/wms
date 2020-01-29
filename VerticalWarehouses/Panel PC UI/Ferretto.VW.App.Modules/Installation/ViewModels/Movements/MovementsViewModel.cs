@@ -435,8 +435,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsElevatorInBay = e.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay;
             this.IsElevatorInCell = e.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Cell;
 
-            Debug.WriteLine($"IsElevatorInCell:{this.IsElevatorInCell}");
-
             // se sto muovendo in modalità guidata, è possibile che la cella sia scelta dal mas, quindi la riassegno così le policy indicheranno la cella corrente
             if (e.CellId.HasValue)
             {

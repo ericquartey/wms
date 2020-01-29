@@ -479,10 +479,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    !(cellPosition?.IsFree ?? true) &&
                    this.MachineStatus.EmbarkedLoadingUnit is null;
 
-            Debug.WriteLine($"IsElevatorInCell:{this.IsElevatorInCell}");
-            Debug.WriteLine($"SelectedCell:{this.SelectedCell}");
-            Debug.WriteLine($"CanLoadFromCell:{res}");
-
             return res;
         }
 
@@ -610,10 +606,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                      this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Cell))
                 &&
                 this.MachineStatus.EmbarkedLoadingUnit != null;
-
-            Debug.WriteLine($"IsElevatorInCell:{this.IsElevatorInCell}");
-            Debug.WriteLine($"SelectedCell:{this.SelectedCell}");
-            Debug.WriteLine($"CanUnloadToCell:{res}");
 
             return res;
         }
