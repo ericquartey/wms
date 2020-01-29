@@ -587,13 +587,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanUnloadToBay()
         {
             var selectedBayPosition = this.SelectedBayPosition();
-            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
+            var res = (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
                    this.CanBaseExecute() &&
                    this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay &&
                    this.IsPositionUpSelected == this.MachineStatus.BayPositionUpper &&
                    selectedBayPosition != null &&
                    selectedBayPosition.LoadingUnit == null &&
                    this.MachineStatus.EmbarkedLoadingUnit != null;
+
+            return res;
         }
 
         private bool CanUnloadToCell()

@@ -113,7 +113,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.CellsHeightCheck),
                 () => this.CanExecuteCommand() &&
                       this.MachineModeService.MachineMode == MachineMode.Manual &&
-                      (this.CellsHeightCheck.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
+                      (this.CellsHeightCheck.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus()) &&
+                      false
                ));
 
         public bool IsCellPanelsCheckProcedure => this.CellPanelsCheck.IsCompleted;
