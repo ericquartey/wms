@@ -374,7 +374,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 return false;
             }
 
-            return (this.currentItemIndex < this.items.Count() - 1);
+            return this.currentItemIndex < this.items.Count() - 1;
         }
 
         private bool ItemCanUp()

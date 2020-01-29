@@ -356,7 +356,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private void MissionOperationUpdate(AssignedMissionOperationChangedEventArgs e)
         {
-            if (!(e.MissionOperationId is null))
+            if (e.MissionOperationId.HasValue)
             {
                 this.isNewOperationAvailable = true;
             }
