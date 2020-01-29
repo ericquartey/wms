@@ -128,7 +128,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             await this.SensorsService.RefreshAsync(true);
 
-            this.SelectBayPositionDown();
+            if (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper)
+            {
+                this.SelectBayPositionUp();
+            }
+            else
+            {
+                this.SelectBayPositionDown();
+            }
         }
 
         protected override void OnWaitResume()

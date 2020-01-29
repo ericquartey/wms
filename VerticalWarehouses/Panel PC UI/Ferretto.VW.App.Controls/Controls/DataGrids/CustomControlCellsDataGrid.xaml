@@ -11,6 +11,8 @@
     </UserControl.Resources>
     <Border BorderBrush="White"
             BorderThickness="1">
+        <!--<ScrollViewer HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto">-->
         <DataGrid Name="DataGrid"
                   Width="auto"
                   Height="auto"
@@ -271,6 +273,7 @@
                 </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
+        <!--</ScrollViewer>-->
     </Border>
 
 </UserControl>

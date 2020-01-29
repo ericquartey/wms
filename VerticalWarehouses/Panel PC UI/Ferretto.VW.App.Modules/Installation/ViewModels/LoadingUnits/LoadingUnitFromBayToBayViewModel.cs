@@ -296,7 +296,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             await this.GetLoadingUnits();
 
-            this.SelectBayPositionDown();
+            if (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper)
+            {
+                this.SelectBayPositionUp();
+            }
+            else
+            {
+                this.SelectBayPositionDown();
+            }
         }
 
         private async Task SetDataBays()

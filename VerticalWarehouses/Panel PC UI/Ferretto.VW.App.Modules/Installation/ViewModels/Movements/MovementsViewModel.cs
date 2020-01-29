@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ using Prism.Events;
 namespace Ferretto.VW.App.Installation.ViewModels
 {
     [Warning(WarningsArea.MovementsView)]
-    internal sealed partial class MovementsViewModel : BaseMainViewModel
+    internal sealed partial class MovementsViewModel : BaseMainViewModel, IDataErrorInfo
     {
         #region Fields
 
@@ -121,6 +122,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override EnableMask EnableMask => EnableMask.MachinePoweredOn;
 
+        public string Error => string.Join(
+            Environment.NewLine,
+            this[nameof(this.InputLoadingUnitId)]);
+
         public ICommand GoToMovementsGuidedCommand =>
             this.goToMovementsGuidedCommand
             ??
@@ -203,6 +208,31 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #endregion
 
+        #region Indexers
+
+        public string this[string columnName]
+        {
+            get
+            {
+                switch (columnName)
+                {
+                    case nameof(this.InputLoadingUnitId):
+                        if (this.InputLoadingUnitId.HasValue &&
+                            (!this.MachineService.Loadunits.DrawerInLocationById(this.InputLoadingUnitId.Value) &&
+                             !this.MachineService.Loadunits.DrawerInBayById(this.InputLoadingUnitId.Value)))
+                        {
+                            return "Il cassetto selezionato non è valido";
+                        }
+
+                        break;
+                }
+
+                return null;
+            }
+        }
+
+        #endregion
+
         #region Methods
 
         public override void Disappear()
@@ -247,8 +277,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.InputLoadingUnitIdPropertyChanged();
 
-                this.InputCellIdPropertyChanged();
-
                 if (this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Cell)
                 {
                     this.inputCellId = this.MachineStatus.LogicalPositionId;
@@ -264,6 +292,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.IsPositionUpSelected = true;
                 }
+
+                this.InputCellIdPropertyChanged();
 
                 this.RaisePropertyChanged(nameof(this.SelectedBayPosition));
 
