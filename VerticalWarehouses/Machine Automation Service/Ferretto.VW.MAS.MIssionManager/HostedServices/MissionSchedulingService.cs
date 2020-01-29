@@ -296,7 +296,7 @@ namespace Ferretto.VW.MAS.MissionManager
             if (this.machineVolatileDataProvider.IsBayHomingExecuted.Any(x => !x.Value)
                 && bays.All(x => x.CurrentMission == null))
             {
-                var bayNumber = bays.FirstOrDefault(x => !this.machineVolatileDataProvider.IsBayHomingExecuted[x.Number]
+                var bayNumber = bays.FirstOrDefault(x => this.machineVolatileDataProvider.IsBayHomingExecuted.ContainsKey(x.Number) && !this.machineVolatileDataProvider.IsBayHomingExecuted[x.Number]
                     && x.Carousel != null
                     && x.CurrentMission == null)?.Number ?? BayNumber.None;
                 if (bayNumber != BayNumber.None)
