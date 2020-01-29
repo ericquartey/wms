@@ -3,7 +3,7 @@ using Ferretto.VW.MAS.DataModels.Enumerations;
 
 namespace Ferretto.VW.MAS.DataModels
 {
-    public sealed class LoadingUnit : DataModel
+    public sealed class LoadingUnit : DataModel, IValidable
     {
         #region Fields
 
@@ -116,6 +116,18 @@ namespace Ferretto.VW.MAS.DataModels
                 }
 
                 this.tare = value;
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        public void Validate()
+        {
+            if (this.NetWeight < 0)
+            {
+                throw new System.Exception($"Cassetto {this.Id}: il peso netto non può essere negativo.");
             }
         }
 

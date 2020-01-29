@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Ferretto.VW.MAS.DataModels
 {
-    public sealed class Machine : DataModel
+    public sealed class Machine : DataModel, IValidable
     {
         #region Properties
 
@@ -46,6 +48,23 @@ namespace Ferretto.VW.MAS.DataModels
         /// Gets or sets the machine's serial number.
         /// </summary>
         public string SerialNumber { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        public void Validate()
+        {
+            if (this.Bays.Select(b => b.Number).Distinct().Count() != this.Bays.Count())
+            {
+                throw new Exception("C'è più di una baia definita con lo stesso numero.");
+            }
+
+            this.Bays.ForEach(b => b.Validate());
+
+            this.Panels.ForEach(p => p.Validate());
+            this.Elevator.Validate();
+        }
 
         #endregion
     }

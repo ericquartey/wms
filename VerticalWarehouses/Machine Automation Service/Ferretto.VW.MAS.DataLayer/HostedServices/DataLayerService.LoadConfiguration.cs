@@ -54,6 +54,7 @@ namespace Ferretto.VW.MAS.DataLayer
             settings.Converters.Add(new IPAddressConverter());
 
             var vertimagConfiguration = JsonConvert.DeserializeObject<VertimagConfiguration>(jsonObject.ToString(), settings);
+            vertimagConfiguration.Validate();
 
             dataContext.Machines.Add(vertimagConfiguration.Machine);
             dataContext.LoadingUnits.AddRange(vertimagConfiguration.LoadingUnits);

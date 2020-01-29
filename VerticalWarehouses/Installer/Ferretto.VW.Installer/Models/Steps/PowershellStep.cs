@@ -59,10 +59,8 @@ namespace Ferretto.VW.Installer
                     while (!result.IsCompleted)
                     {
                         var p = shell.Streams.Progress.LastOrDefault();
-                        System.Diagnostics.Debug.WriteLine(">>>" + p?.SecondsRemaining + " secs;  " + p?.PercentComplete + "%");
                         this.ProgressPercentage = p?.PercentComplete;
-                        //    System.Diagnostics.Debug.WriteLine(p?.PercentComplete + "%");
-                        Thread.Sleep(100);
+                        Thread.Sleep(300);
                     }
 
                     // result.Select(r => r.Properties["Message"]?.ToString()).ToList().ForEach(l => this.LogInformation(l));
