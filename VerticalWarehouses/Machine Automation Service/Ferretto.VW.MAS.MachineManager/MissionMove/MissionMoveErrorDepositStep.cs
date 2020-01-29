@@ -187,9 +187,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         private void RestoreDepositStart()
         {
             this.Mission.StopReason = StopRequestReason.NoReason;
-            var destination = this.LoadingUnitMovementProvider.GetDestinationHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
+            var destination = this.LoadingUnitMovementProvider.GetLastVerticalPosition();
             var current = this.LoadingUnitMovementProvider.GetCurrentVerticalPosition();
-            if ((!destination.HasValue || Math.Abs(destination.Value - current) > 2)
+            if ((Math.Abs(destination - current) > 3)
                 && this.Mission.LoadUnitDestination == LoadingUnitLocation.Cell
                 )
             {

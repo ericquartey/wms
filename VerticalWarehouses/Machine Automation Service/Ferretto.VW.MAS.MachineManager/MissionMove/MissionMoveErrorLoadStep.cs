@@ -195,9 +195,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         private void RestoreLoadElevatorStart()
         {
             this.Mission.StopReason = StopRequestReason.NoReason;
-            var origin = this.LoadingUnitMovementProvider.GetSourceHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
+            var origin = this.LoadingUnitMovementProvider.GetLastVerticalPosition();
             var current = this.LoadingUnitMovementProvider.GetCurrentVerticalPosition();
-            if ((!origin.HasValue || Math.Abs(origin.Value - current) > 2)
+            if ((Math.Abs(origin - current) > 3)
                 && this.Mission.LoadUnitSource == LoadingUnitLocation.Cell
                 )
             {
