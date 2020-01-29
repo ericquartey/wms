@@ -3,6 +3,7 @@ using Ferretto.VW.CommonUtils;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.TimeManagement.Models;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.TimeManagement
@@ -13,28 +14,28 @@ namespace Ferretto.VW.MAS.TimeManagement
 
         private readonly IConfiguration configuration;
 
+        private readonly IServiceScopeFactory serviceScopeFactory;
+
         private readonly PubSubEvent<SyncStateChangeRequestEventArgs> syncStateChangeRequestEvent;
 
         private readonly PubSubEvent<SystemTimeChangedEventArgs> timeChangedEvent;
-
-        private readonly IWmsSettingsProvider wmsSettingsProvider;
 
         #endregion
 
         #region Constructors
 
         public SystemTimeProvider(
-            IWmsSettingsProvider wmsSettingsProvider,
             IConfiguration configuration,
-            IEventAggregator eventAggregator)
+            IEventAggregator eventAggregator,
+            IServiceScopeFactory serviceScopeFactory)
         {
             if (eventAggregator is null)
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
 
-            this.wmsSettingsProvider = wmsSettingsProvider ?? throw new ArgumentNullException(nameof(wmsSettingsProvider));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
 
             this.syncStateChangeRequestEvent = eventAggregator.GetEvent<PubSubEvent<SyncStateChangeRequestEventArgs>>();
             this.timeChangedEvent = eventAggregator.GetEvent<PubSubEvent<SystemTimeChangedEventArgs>>();
@@ -48,7 +49,7 @@ namespace Ferretto.VW.MAS.TimeManagement
 
         public bool IsWmsAutoSyncEnabled
         {
-            get => this.wmsSettingsProvider.IsWmsTimeSyncEnabled;
+            get => this.serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IWmsSettingsProvider>().IsWmsTimeSyncEnabled;
             set
             {
                 if (!this.CanEnableWmsAutoSyncMode && value)
@@ -56,7 +57,7 @@ namespace Ferretto.VW.MAS.TimeManagement
                     throw new InvalidOperationException("Unable to enable WMS auto sync because WMS is not enabled.");
                 }
 
-                this.wmsSettingsProvider.IsWmsTimeSyncEnabled = value;
+                this.serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IWmsSettingsProvider>().IsWmsTimeSyncEnabled = value;
 
                 this.syncStateChangeRequestEvent.Publish(new SyncStateChangeRequestEventArgs(value));
             }

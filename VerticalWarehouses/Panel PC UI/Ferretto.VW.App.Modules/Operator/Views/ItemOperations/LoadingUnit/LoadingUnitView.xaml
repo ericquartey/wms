@@ -35,29 +35,35 @@
 
             <controls:PpcButton                                 
                                     HorizontalAlignment="Right"
-                                    VerticalAlignment="Top"
+                                    VerticalAlignment="Top"                                    
                                     Command="{Binding OperationCommand}"
+                                    BorderBrush="{StaticResource FerrettoBlue}"
                                     CommandParameter="{x:Static res:OperatorApp.Adjustment}"
+                                    IsActive="{Binding IsAdjustmentVisible}"
                                     Content="{x:Static res:OperatorApp.Adjustment}"
-                                    IsBusy="{Binding IsBusyConfirmingOperation}" />
+                                    Style="{DynamicResource PpcButtonMarkStyle}" />
 
 
             <controls:PpcButton
                                     Margin="15 0 0 0"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
+                                    BorderBrush="{StaticResource FerrettoBlue}"
                                     Command="{Binding OperationCommand}"
                                     CommandParameter="{x:Static res:OperatorApp.Pick}"
-                                    Content="{x:Static res:OperatorApp.Pick}"
-                                    IsBusy="{Binding IsBusyConfirmingOperation}" />
+                                    IsActive="{Binding IsPickVisible}"
+                                    Content="{x:Static res:OperatorApp.Pick}"                                    
+                                    Style="{DynamicResource PpcButtonMarkStyle}"/>
             <controls:PpcButton
                                     Margin="15 0 0 0"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
+                                    BorderBrush="{StaticResource FerrettoBlue}"
                                     Command="{Binding OperationCommand}"
                                     CommandParameter="{x:Static res:OperatorApp.Put}"
-                                    Content="{x:Static res:OperatorApp.Put}"
-                                    IsBusy="{Binding IsBusyConfirmingOperation}" />
+                                    IsActive="{Binding IsPutVisible}"
+                                    Content="{x:Static res:OperatorApp.Put}"                                    
+                                    Style="{DynamicResource PpcButtonMarkStyle}"/>
 
 
             <controls:PpcButton 
@@ -65,8 +71,8 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
                                     Command="{Binding RecallLoadingUnitCommand}"                                    
-                                    Content="{x:Static res:OperatorApp.RecallDrawer}"
-                                    IsBusy="{Binding IsBusyConfirmingOperation}" />
+                                    Content="{Binding RecallLoadingUnitInfo}"
+                                    IsBusy="{Binding IsBusyConfirmingRecallOperation}" />
 
         </StackPanel>
     </Grid>

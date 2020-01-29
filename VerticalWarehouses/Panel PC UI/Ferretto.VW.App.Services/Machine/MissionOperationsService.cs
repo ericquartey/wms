@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
@@ -22,6 +23,8 @@ namespace Ferretto.VW.App.Services
         private readonly WMS.Data.WebAPI.Contracts.IMissionsWmsWebService missionsDataService;
 
         private readonly IOperatorHubClient operatorHubClient;
+
+        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         private Bay bay;
 
@@ -102,9 +105,18 @@ namespace Ferretto.VW.App.Services
             {
                 try
                 {
-                    this.CurrentMission = await this.missionsDataService.GetByIdAsync(e.MissionId.Value);
-                    this.CurrentMissionOperation =
-                        await this.missionOperationsDataService.GetByIdAsync(e.MissionOperationId.Value);
+                    var loadingUnitAccessibleInBay = this.bay.Positions.Where(p => p.LoadingUnit != null).OrderByDescending(p => p.Height).Select(p => p.LoadingUnit).FirstOrDefault();
+                    var currentMission = await this.missionsDataService.GetByIdAsync(e.MissionId.Value);
+                    if (loadingUnitAccessibleInBay?.Id == currentMission.LoadingUnitId)
+                    {
+                        this.CurrentMission = currentMission;
+                        this.CurrentMissionOperation =
+                            await this.missionOperationsDataService.GetByIdAsync(e.MissionOperationId.Value);
+                    }
+                    else
+                    {
+                        this.logger.Warn($"Mission discarded load. unit in Bay Id {loadingUnitAccessibleInBay?.Id}, Mission load. Unit Id {currentMission.LoadingUnitId}");
+                    }
                 }
                 catch (Exception ex)
                 {

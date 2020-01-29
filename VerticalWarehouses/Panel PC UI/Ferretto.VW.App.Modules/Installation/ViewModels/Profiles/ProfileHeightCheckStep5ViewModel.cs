@@ -150,7 +150,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 var direction = this.GetDirection();
 
-                await this.ProfileProcedureService.CalibrationAsync(direction);
+                //await this.ProfileProcedureService.CalibrationAsync(this.BayPosition.Id);
             }
             catch (Exception ex)
             {

@@ -96,6 +96,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double>("MaxSingleHeight");
 
+                    b.Property<double>("ProfileOffset");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BayId");
@@ -117,8 +119,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<double>("HomingCreepSpeed");
 
                     b.Property<double>("HomingFastSpeed");
-
-                    b.Property<bool>("IsHomingExecuted");
 
                     b.Property<double>("LastIdealPosition");
 
@@ -152,9 +152,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("BlockLevel");
 
-                    b.Property<bool>("IsFree")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(true);
+                    b.Property<bool>("IsFree");
 
                     b.Property<int>("PanelId");
 
@@ -652,6 +650,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Code = 64,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
                             Code = 1000,
                             TotalErrors = 0
                         },
@@ -1095,7 +1098,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 3, 21, 15, 1, 26, 589, DateTimeKind.Local).AddTicks(1266),
+                            InstallationDate = new DateTime(2017, 3, 28, 14, 11, 38, 262, DateTimeKind.Local).AddTicks(7070),
                             ServiceStatus = 86
                         });
                 });

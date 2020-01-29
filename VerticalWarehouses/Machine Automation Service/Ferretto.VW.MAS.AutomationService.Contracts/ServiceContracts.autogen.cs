@@ -1014,11 +1014,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineProfileProcedureWebService
     {
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task CalibrationAsync(HorizontalMovementDirection direction);
+        System.Threading.Tasks.Task CalibrationAsync(int bayPositionId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task CalibrationAsync(HorizontalMovementDirection direction, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task CalibrationAsync(int bayPositionId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task SaveAsync(int bayNumber);
@@ -1249,9 +1249,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("homingFastSpeed", Required = Newtonsoft.Json.Required.Always)]
         public double HomingFastSpeed { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("isHomingExecuted", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsHomingExecuted { get; set; }
     
         [Newtonsoft.Json.JsonProperty("lastIdealPosition", Required = Newtonsoft.Json.Required.Always)]
         public double LastIdealPosition { get; set; }
@@ -1932,6 +1929,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("maxSingleHeight", Required = Newtonsoft.Json.Required.Always)]
         public double MaxSingleHeight { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("profileOffset", Required = Newtonsoft.Json.Required.Always)]
+        public double ProfileOffset { get; set; }
     
         public string ToJson() 
         {

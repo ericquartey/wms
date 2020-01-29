@@ -538,7 +538,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.machineProfileProcedureWeb.CalibrationAsync(MAS.AutomationService.Contracts.HorizontalMovementDirection.Forwards);
+                await this.machineProfileProcedureWeb.CalibrationAsync(this.BayPosition.Id);
 
                 this.CurrentStep = ProfileCheckStep.TuningChainDx;
             }
@@ -558,7 +558,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.machineProfileProcedureWeb.CalibrationAsync(MAS.AutomationService.Contracts.HorizontalMovementDirection.Forwards);
+                await this.machineProfileProcedureWeb.CalibrationAsync(this.BayPosition.Id);
 
                 this.CurrentStep = ProfileCheckStep.TuningChainSx;
             }

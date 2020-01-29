@@ -81,31 +81,32 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             {
                 return;
             }
-                var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
-                var missions = missionsDataProvider.GetAllActiveMissions().Where(x => x.Status != MissionStatus.New);
-                if (missions.Any())
+            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+            var missions = missionsDataProvider.GetAllActiveMissions().Where(x => x.Status != MissionStatus.New);
+            if (missions.Any())
+            {
+                foreach (var mission in missions)
                 {
-                    foreach (var mission in missions)
+                    var state = GetStateByClassName(serviceProvider, mission, this.eventAggregator);
+
+                    if (state != null)
                     {
-                        var state = GetStateByClassName(serviceProvider, mission, this.eventAggregator);
-
-                        if (state != null)
+                        try
                         {
-                            try
-                            {
-                                state.OnNotification(message);
-                            }
-                            catch (StateMachineException ex)
-                            {
-                                this.Logger.LogError(ex.NotificationMessage.Description, "Error while activating a State.");
-                                //this.eventAggregator.GetEvent<NotificationEvent>().Publish(ex.NotificationMessage);
+                            state.OnNotification(message);
+                        }
+                        catch (StateMachineException ex)
+                        {
+                            this.Logger.LogError(ex.NotificationMessage.Description, "Error while activating a State.");
+                            //this.eventAggregator.GetEvent<NotificationEvent>().Publish(ex.NotificationMessage);
 
-                                state.OnStop(StopRequestReason.Error);
-                            }
+                            state.OnStop(StopRequestReason.Error);
                         }
                     }
                 }
-            
+            }
+            missionsDataProvider.CheckPendingChanges();
+
         }
 
         public bool ResumeMission(int missionId, CommandMessage command, IServiceProvider serviceProvider)
@@ -229,23 +230,19 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 );
             if (waitMission != null)
             {
-                //using (var transaction = missionsDataProvider.GetContextTransaction())
+                try
                 {
-                    try
+                    if (baysDataProvider.IsMissionInBay(waitMission))
                     {
-                        if (baysDataProvider.IsMissionInBay(waitMission))
-                        {
-                            baysDataProvider.AssignMission(mission.TargetBay, mission);
-                        }
+                        baysDataProvider.ClearMission(mission.TargetBay);
+                    }
 
-                        missionsDataProvider.Delete(waitMission.Id);
-                        this.Logger.LogDebug($"{this.GetType().Name}: Delete {waitMission}");
-                    }
-                    catch (Exception ex)
-                    {
-                        return false;
-                    }
-                    //transaction.Commit();
+                    missionsDataProvider.Delete(waitMission.Id);
+                    this.Logger.LogDebug($"{this.GetType().Name}: Delete {waitMission}");
+                }
+                catch (Exception ex)
+                {
+                    return false;
                 }
             }
             return true;

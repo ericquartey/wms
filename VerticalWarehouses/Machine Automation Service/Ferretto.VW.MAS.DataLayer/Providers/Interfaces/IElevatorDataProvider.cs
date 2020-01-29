@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.DataModels;
+﻿using System.Collections.Generic;
+using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Ferretto.VW.MAS.DataLayer
@@ -36,7 +37,7 @@ namespace Ferretto.VW.MAS.DataLayer
         /// Gets the cell where the elevator is currently located, or null if the elevator is not located opposite a cell.
         /// </summary>
         Cell GetCurrentCell();
-
+        IEnumerable<ElevatorAxis> GetElevatorAxes();
         LoadingUnit GetLoadingUnitOnBoard();
 
         ElevatorAxisManualParameters GetManualMovementsAxis(Orientation orientation);

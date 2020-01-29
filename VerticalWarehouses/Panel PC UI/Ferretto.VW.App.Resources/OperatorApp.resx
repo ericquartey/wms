@@ -1474,4 +1474,24 @@ Please put back any moved pieces in their original position.</value>
     <value>Comp. Id</value>
     <comment>Header text</comment>
   </data>
+  <data name="AdjustmentQuantity" xml:space="preserve">
+    <value>Adjustment quantity [{0}]</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="PutQuantity" xml:space="preserve">
+    <value>Put quantity [{0}]</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="PickingQuantity" xml:space="preserve">
+    <value>Picking quantity [{0}]</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="NewOperationsAvailable" xml:space="preserve">
+    <value>New operations available</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="ConfirmAndNewOperationsAvailable" xml:space="preserve">
+    <value>Confirm and new operations available</value>
+    <comment>Button text</comment>
+  </data>
 </root>

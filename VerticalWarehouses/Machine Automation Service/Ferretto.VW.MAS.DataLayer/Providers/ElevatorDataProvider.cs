@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
@@ -38,11 +39,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
-        private readonly IElevatorVolatileDataProvider elevatorVolatileDataProvider;
-
         private readonly IEventAggregator eventAggregator;
 
         private readonly ILogger<DataLayerContext> logger;
+
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
@@ -55,7 +56,7 @@ namespace Ferretto.VW.MAS.DataLayer
             IMemoryCache memoryCache,
             IConfiguration configuration,
             IEventAggregator eventAggregator,
-            IElevatorVolatileDataProvider elevatorVolatileDataProvider,
+            IMachineVolatileDataProvider machineVolatileDataProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider,
             ILogger<DataLayerContext> logger)
         {
@@ -63,7 +64,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.cache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.elevatorVolatileDataProvider = elevatorVolatileDataProvider ?? throw new ArgumentNullException(nameof(elevatorVolatileDataProvider));
+            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
 
             this.cacheOptions = configuration.GetMemoryCacheOptions();
@@ -75,12 +76,12 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public double HorizontalPosition
         {
-            get => this.elevatorVolatileDataProvider.HorizontalPosition;
+            get => this.machineVolatileDataProvider.ElevatorHorizontalPosition;
             set
             {
-                if (this.elevatorVolatileDataProvider.HorizontalPosition != value)
+                if (this.machineVolatileDataProvider.ElevatorHorizontalPosition != value)
                 {
-                    this.elevatorVolatileDataProvider.HorizontalPosition = value;
+                    this.machineVolatileDataProvider.ElevatorHorizontalPosition = value;
 
                     this.NotifyElevatorPositionChanged();
                 }
@@ -89,26 +90,27 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public double VerticalPosition
         {
-            get => this.elevatorVolatileDataProvider.VerticalPosition;
+            get => this.machineVolatileDataProvider.ElevatorVerticalPosition;
             set
             {
-                if (this.elevatorVolatileDataProvider.VerticalPosition != value)
+                if (this.machineVolatileDataProvider.ElevatorVerticalPosition != value)
                 {
-                    this.elevatorVolatileDataProvider.VerticalPosition = value;
+                    this.machineVolatileDataProvider.ElevatorVerticalPosition = value;
 
-                    var currentCell = this.GetCurrentCell();
-                    if (currentCell != null && !this.IsVerticalPositionWithinTolerance(currentCell.Position))
-                    {
-                        this.logger.LogDebug($"Elevator is leaving cell id={currentCell.Id}");
-                        this.SetCurrentCell(null);
-                    }
+                    // TODO: Review Elevator Position Tolerance logic (probably not necessary anymore)
+                    //var currentCell = this.GetCurrentCell();
+                    //if (currentCell != null && !this.IsVerticalPositionWithinTolerance(currentCell.Position))
+                    //{
+                    //    this.logger.LogDebug($"Elevator is leaving cell id={currentCell.Id}");
+                    //    this.SetCurrentCell(null);
+                    //}
 
-                    var currentBayPosition = this.GetCurrentBayPosition();
-                    if (currentBayPosition != null && !this.IsVerticalPositionWithinTolerance(currentBayPosition.Height))
-                    {
-                        this.logger.LogDebug($"Elevator is leaving bay position id={currentBayPosition.Id}");
-                        this.SetCurrentBayPosition(null);
-                    }
+                    //var currentBayPosition = this.GetCurrentBayPosition();
+                    //if (currentBayPosition != null && !this.IsVerticalPositionWithinTolerance(currentBayPosition.Height))
+                    //{
+                    //    this.logger.LogDebug($"Elevator is leaving bay position id={currentBayPosition.Id}");
+                    //    this.SetCurrentBayPosition(null);
+                    //}
 
                     this.NotifyElevatorPositionChanged();
                 }
@@ -190,6 +192,30 @@ namespace Ferretto.VW.MAS.DataLayer
                 //    }
 
                 return currentCell;
+            }
+        }
+
+        public IEnumerable<ElevatorAxis> GetElevatorAxes()
+        {
+            lock (this.dataContext)
+            {
+                var cacheKey = GetAxesCacheKey();
+                if (!this.cache.TryGetValue(cacheKey, out IEnumerable<ElevatorAxis> cacheEntry))
+                {
+                    cacheEntry = this.dataContext.ElevatorAxes
+                        .AsNoTracking()
+                        .Include(i => i.Inverter)
+                        .ToList();
+
+                    if (cacheEntry is null)
+                    {
+                        throw new EntityNotFoundException(string.Empty);
+                    }
+
+                    this.cache.Set(cacheKey, cacheEntry, this.cacheOptions);
+                }
+
+                return cacheEntry;
             }
         }
 
@@ -315,7 +341,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     this.cache.Remove(ElevatorCurrentBayPositionCacheKey);
 
-                    this.NotifyElevatorPositionChanged();
+                    this.NotifyElevatorPositionChanged(true);
                 }
             }
         }
@@ -352,7 +378,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     this.cache.Remove(ElevatorCurrentCellCacheKey);
 
-                    this.NotifyElevatorPositionChanged();
+                    this.NotifyElevatorPositionChanged(true);
                 }
             }
         }
@@ -422,19 +448,31 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        internal static string GetAxesCacheKey() => $"{nameof(GetElevatorAxes)}";
+
         internal static string GetAxisCacheKey(Orientation orientation) => $"{nameof(GetAxis)}{orientation}";
 
         private bool IsVerticalPositionWithinTolerance(double position)
         {
             return
-                this.elevatorVolatileDataProvider.VerticalPosition - VerticalPositionValidationTolerance < position
+                this.machineVolatileDataProvider.ElevatorVerticalPosition - VerticalPositionValidationTolerance < position
                 &&
-                this.elevatorVolatileDataProvider.VerticalPosition + VerticalPositionValidationTolerance > position;
+                this.machineVolatileDataProvider.ElevatorVerticalPosition + VerticalPositionValidationTolerance > position;
         }
 
-        private void NotifyElevatorPositionChanged()
+        private void NotifyElevatorPositionChanged(bool refreshElevatorPosition = false)
         {
-            var pos = this.GetCurrentBayPosition();
+            // TODO: Review Elevator Position Tolerance logic (probably not necessary anymore)
+            // refreshElevatorPosition = false call are used to bypass logic for now
+
+            BayPosition bayPosition = null;
+            Cell cell = null;
+
+            if (refreshElevatorPosition)
+            {
+                bayPosition = this.GetCurrentBayPosition();
+                cell = this.GetCurrentCell();
+            }
 
             this.eventAggregator
                 .GetEvent<NotificationEvent>()
@@ -442,11 +480,11 @@ namespace Ferretto.VW.MAS.DataLayer
                     new NotificationMessage
                     {
                         Data = new ElevatorPositionMessageData(
-                            this.elevatorVolatileDataProvider.VerticalPosition,
-                            this.elevatorVolatileDataProvider.HorizontalPosition,
-                            this.GetCurrentCell()?.Id,
-                            pos?.Id,
-                            pos?.IsUpper),
+                            this.machineVolatileDataProvider.ElevatorVerticalPosition,
+                            this.machineVolatileDataProvider.ElevatorHorizontalPosition,
+                            cell?.Id,
+                            bayPosition?.Id,
+                            bayPosition?.IsUpper),
                         Destination = MessageActor.Any,
                         Source = MessageActor.DataLayer,
                         Type = MessageType.ElevatorPosition,

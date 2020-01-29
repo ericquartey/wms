@@ -18,14 +18,6 @@ namespace Ferretto.VW.MAS.MachineManager
     {
         #region Fields
 
-        private readonly IMachineMissionsProvider machineMissionsProvider;
-
-        private readonly IMissionMoveProvider missionMoveProvider;
-
-        private readonly IMissionsDataProvider missionsDataProvider;
-
-        private readonly IServiceScope serviceScope;
-
         private readonly object syncObject = new object();
 
         private bool isDisposed;
@@ -35,19 +27,11 @@ namespace Ferretto.VW.MAS.MachineManager
         #region Constructors
 
         public MachineManagerService(
-            IMachineMissionsProvider missionsProvider,
-            IMissionsDataProvider missionsDataProvider,
-            IMissionMoveProvider missionMoveProvider,
             IEventAggregator eventAggregator,
             ILogger<MachineManagerService> logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.machineMissionsProvider = missionsProvider ?? throw new ArgumentNullException(nameof(missionsProvider));
-            this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
-            this.missionMoveProvider = missionMoveProvider ?? throw new ArgumentNullException(nameof(missionMoveProvider));
-
-            this.serviceScope = serviceScopeFactory.CreateScope();
 
             this.isDataLayerReady = false;
             this.Logger.LogTrace("Mission manager initialized.");
@@ -63,7 +47,6 @@ namespace Ferretto.VW.MAS.MachineManager
 
             if (!this.isDisposed)
             {
-                this.serviceScope.Dispose();
 
                 this.isDisposed = true;
             }

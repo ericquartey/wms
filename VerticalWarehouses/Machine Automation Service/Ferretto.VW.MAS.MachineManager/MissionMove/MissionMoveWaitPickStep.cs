@@ -46,6 +46,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 this.LoadingUnitMovementProvider.NotifyAssignedMissionOperationChanged(bay.Number, this.Mission.WmsId.Value);
             }
+            else
+            {
+                this.BaysDataProvider.AssignMission(this.Mission.TargetBay, this.Mission);
+            }
 
             if (this.Mission.LoadUnitId > 0)
             {

@@ -18,7 +18,7 @@ namespace Ferretto.VW.MAS.IODriver
             services.AddHostedService<IoDriverService>();
 
             services.AddSingleton<IIoDevicesProvider, IoDevicesProvider>();
-            services.AddTransient<ISecurityIsClearedConditionEvaluator, SecurityIsClearedConditionEvaluator>();
+            services.AddScoped<ISecurityIsClearedConditionEvaluator, SecurityIsClearedConditionEvaluator>();
 
             return services;
         }

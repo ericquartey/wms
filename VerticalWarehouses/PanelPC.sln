@@ -71,6 +71,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Devices.Barcode
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Scaffolding", "Panel PC UI\Ferretto.VW.App.Scaffolding\Ferretto.VW.App.Scaffolding.csproj", "{6533758A-46FC-4058-A4BF-693B7966AF8A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Keyboards", "Panel PC UI\Ferretto.VW.App.Keyboards\Ferretto.VW.App.Keyboards.csproj", "{7B660156-F60E-439F-8973-B84D33A7349D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -357,6 +359,18 @@ Global
 		{6533758A-46FC-4058-A4BF-693B7966AF8A}.Release|x64.Build.0 = Release|Any CPU
 		{6533758A-46FC-4058-A4BF-693B7966AF8A}.Release|x86.ActiveCfg = Release|Any CPU
 		{6533758A-46FC-4058-A4BF-693B7966AF8A}.Release|x86.Build.0 = Release|Any CPU
+		{7B660156-F60E-439F-8973-B84D33A7349D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B660156-F60E-439F-8973-B84D33A7349D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B660156-F60E-439F-8973-B84D33A7349D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7B660156-F60E-439F-8973-B84D33A7349D}.Debug|x64.Build.0 = Debug|Any CPU
+		{7B660156-F60E-439F-8973-B84D33A7349D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7B660156-F60E-439F-8973-B84D33A7349D}.Debug|x86.Build.0 = Debug|Any CPU
+		{7B660156-F60E-439F-8973-B84D33A7349D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B660156-F60E-439F-8973-B84D33A7349D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B660156-F60E-439F-8973-B84D33A7349D}.Release|x64.ActiveCfg = Release|Any CPU
+		{7B660156-F60E-439F-8973-B84D33A7349D}.Release|x64.Build.0 = Release|Any CPU
+		{7B660156-F60E-439F-8973-B84D33A7349D}.Release|x86.ActiveCfg = Release|Any CPU
+		{7B660156-F60E-439F-8973-B84D33A7349D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -386,6 +400,7 @@ Global
 		{BAA38474-3E77-4CB3-94A2-975E25E3F04D} = {F1C06ED8-17DC-48AE-9D64-B18455CA3231}
 		{8C82EE92-0A67-45F7-B95B-E342A30147FF} = {DCBB7A7C-3A9A-4992-9F82-09F0C7C88EDB}
 		{6533758A-46FC-4058-A4BF-693B7966AF8A} = {F1C06ED8-17DC-48AE-9D64-B18455CA3231}
+		{7B660156-F60E-439F-8973-B84D33A7349D} = {F1C06ED8-17DC-48AE-9D64-B18455CA3231}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {40395CF2-451B-48E4-A29A-0E8AE12146B4}

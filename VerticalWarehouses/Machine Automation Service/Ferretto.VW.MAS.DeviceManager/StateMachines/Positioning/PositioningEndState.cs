@@ -115,7 +115,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         case MessageStatus.OperationEnd:
                             if (message.Data is MeasureProfileFieldMessageData data && message.Source == FieldMessageActor.InverterDriver)
                             {
-                                var profileHeight = this.baysDataProvider.ConvertProfileToHeight(data.Profile);
+                                var profileHeight = this.baysDataProvider.ConvertProfileToHeight(data.Profile, this.machineData.MessageData.SourceBayPositionId.Value);
                                 this.Logger.LogInformation($"Height measured {profileHeight}mm. Profile {data.Profile / 100.0}%");
                                 if (profileHeight < this.minHeight || data.Profile > 10000)
                                 {
@@ -248,7 +248,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             if (this.machineData.MessageData.MovementMode == MovementMode.BeltBurnishing)
             {
-                this.scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>().Mode = MachineMode.Manual;
+                this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Manual;
                 this.Logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
             }
         }

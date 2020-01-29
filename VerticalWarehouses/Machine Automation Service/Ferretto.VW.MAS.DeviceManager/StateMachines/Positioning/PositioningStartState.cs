@@ -180,7 +180,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         .GetBeltBurnishingTest()
                         .PerformedCycles;
 
-                    this.scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>().Mode = MachineMode.Test;
+                    this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Test;
                     this.Logger.LogInformation($"Machine status switched to {MachineMode.Test}");
                 }
             }

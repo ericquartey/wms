@@ -28,9 +28,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public double HomingFastSpeed { get; set; }
 
             [ScaffoldColumn(false)]
-            public bool IsHomingExecuted { get; set; }
-
-            [ScaffoldColumn(false)]
             public double LastIdealPosition { get; set; }
 
             [Unfold]

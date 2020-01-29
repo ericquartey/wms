@@ -31,18 +31,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.cache = cache ?? throw new ArgumentNullException(nameof(cache));
-            this.IsBayLightOn = new Dictionary<BayNumber, bool>();
         }
-
-        #endregion
-
-        #region Properties
-
-        public Dictionary<BayNumber, bool> IsBayLightOn { get; set; }
-
-        public bool IsHomingExecuted { get; set; }
-
-        public bool IsMachineRunning { get; set; }
 
         #endregion
 
@@ -57,7 +46,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
-            this.cache.Remove(BaysDataProvider.GetElevatorAxesCacheKey());
+            this.cache.Remove(ElevatorDataProvider.GetAxesCacheKey());
 
             lock (this.dataContext)
             {
@@ -70,7 +59,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
-            this.cache.Remove(BaysDataProvider.GetElevatorAxesCacheKey());
+            this.cache.Remove(ElevatorDataProvider.GetAxesCacheKey());
 
             lock (this.dataContext)
             {
@@ -192,7 +181,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
-            this.cache.Remove(BaysDataProvider.GetElevatorAxesCacheKey());
+            this.cache.Remove(ElevatorDataProvider.GetAxesCacheKey());
 
             context.ElevatorAxisManualParameters.RemoveRange(context.ElevatorAxisManualParameters);
             context.ShutterManualParameters.RemoveRange(context.ShutterManualParameters);
@@ -242,7 +231,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
-            this.cache.Remove(BaysDataProvider.GetElevatorAxesCacheKey());
+            this.cache.Remove(ElevatorDataProvider.GetAxesCacheKey());
 
             machine.Elevator?.Axes.ForEach((a) =>
             {
@@ -320,52 +309,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
             );
             dataContext.SaveChanges();
-        }
-
-        private void DeleteBays(IEnumerable<Bay> bays)
-        {
-            if (bays is null)
-            {
-                return;
-            }
-
-            foreach (var bay in bays)
-            {
-                bay.Inverter = null;
-                bay.IoDevice = null;
-                if (!(bay.Positions is null))
-                {
-                    foreach (var position in bay.Positions)
-                    {
-                        position.LoadingUnit = null;
-                    }
-                }
-                bay.Positions = null;
-                bay.Shutter = null;
-            }
-        }
-
-        private void DeleteElevators(Elevator elevator)
-        {
-            if (elevator is null)
-            {
-                return;
-            }
-            if (!(elevator.Axes is null))
-            {
-                foreach (var axes in elevator.Axes)
-                {
-                    axes.FullLoadMovement = null;
-                    axes.EmptyLoadMovement = null;
-                    axes.Inverter = null;
-                    foreach (var profile in axes.Profiles)
-                    {
-                        profile.Steps = null;
-                    }
-                    axes.WeightMeasurement = null;
-                }
-            }
-            elevator.StructuralProperties = null;
         }
 
         #endregion
