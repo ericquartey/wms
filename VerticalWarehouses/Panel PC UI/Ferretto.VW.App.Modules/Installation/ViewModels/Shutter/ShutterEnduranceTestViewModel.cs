@@ -1,10 +1,12 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Modules.Installation.Models;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -21,6 +23,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     internal sealed class ShutterEnduranceTestViewModel : BaseMainViewModel, IDataErrorInfo
     {
         #region Fields
+
+        private readonly Services.IDialogService dialogService;
 
         private readonly IMachineSensorsWebService machineSensorsWebService;
 
@@ -60,11 +64,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public ShutterEnduranceTestViewModel(
             IMachineShuttersWebService shuttersWebService,
-            IMachineSensorsWebService machineSensorsWebService)
+            IMachineSensorsWebService machineSensorsWebService,
+            Services.IDialogService dialogService)
             : base(PresentationMode.Installer)
         {
-            this.machineSensorsWebService = machineSensorsWebService ?? throw new System.ArgumentNullException(nameof(machineSensorsWebService));
-            this.shuttersWebService = shuttersWebService ?? throw new System.ArgumentNullException(nameof(shuttersWebService));
+            this.machineSensorsWebService = machineSensorsWebService ?? throw new ArgumentNullException(nameof(machineSensorsWebService));
+            this.shuttersWebService = shuttersWebService ?? throw new ArgumentNullException(nameof(shuttersWebService));
+            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
         }
 
         #endregion
@@ -295,12 +301,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                this.CumulativePerformedCycles = 0;
-                this.CumulativePerformedCyclesBeforeStart = 0;
+                var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Test serranda", DialogType.Question, DialogButtons.YesNo);
+                if (messageBoxResult == DialogResult.Yes)
+                {
+                    this.CumulativePerformedCycles = 0;
+                    this.CumulativePerformedCyclesBeforeStart = 0;
 
-                await this.shuttersWebService.ResetTestAsync();
+                    await this.shuttersWebService.ResetTestAsync();
+                }
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
