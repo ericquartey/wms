@@ -28,23 +28,23 @@ namespace Ferretto.VW.MAS.MachineManager
 
         protected override Task OnCommandReceivedAsync(CommandMessage command, IServiceProvider serviceProvider)
         {
-                switch (command.Type)
-                {
-                    case MessageType.ChangeRunningState:
-                        this.OnChangeRunningStateCommandReceived(command, serviceProvider);
-                        break;
+            switch (command.Type)
+            {
+                case MessageType.ChangeRunningState:
+                    this.OnChangeRunningStateCommandReceived(command, serviceProvider);
+                    break;
 
-                    case MessageType.MoveLoadingUnit:
-                        lock (this.syncObject)
-                        {
-                            this.OnMoveLoadingUnit(command, serviceProvider);
-                        }
-                        break;
+                case MessageType.MoveLoadingUnit:
+                    lock (this.syncObject)
+                    {
+                        this.OnMoveLoadingUnit(command, serviceProvider);
+                    }
+                    break;
 
-                    case MessageType.FullTest:
-                        this.OnFullTest(command, serviceProvider);
-                        break;
-                }
+                case MessageType.FullTest:
+                    this.OnFullTest(command, serviceProvider);
+                    break;
+            }
             return Task.CompletedTask;
         }
 
@@ -145,7 +145,6 @@ namespace Ferretto.VW.MAS.MachineManager
             }
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
             var missionMoveProvider = serviceProvider.GetRequiredService<IMissionMoveProvider>();
-
 
             if (command.Data is MoveLoadingUnitMessageData messageData)
             {
@@ -264,20 +263,27 @@ namespace Ferretto.VW.MAS.MachineManager
                     //    break;
 
                     case CommandAction.Resume:
-                        if (messageData.MissionId != null)
+                        try
                         {
-                            if (!missionMoveProvider.ResumeMission(messageData.MissionId.Value, command, serviceProvider))
+                            if (messageData.MissionId != null)
                             {
-                                this.Logger.LogError("Supplied mission Id to be resumed is no longer valid");
-                                this.NotifyCommandError(command);
+                                if (!missionMoveProvider.ResumeMission(messageData.MissionId.Value, command, serviceProvider))
+                                {
+                                    this.Logger.LogError($"Supplied mission Id {messageData.MissionId} to be resumed is no longer valid");
+                                    this.NotifyCommandError(command);
+                                }
+                            }
+                            else
+                            {
+                                foreach (var mission in missionsDataProvider.GetAllActiveMissions())
+                                {
+                                    missionMoveProvider.ResumeMission(mission.Id, command, serviceProvider);
+                                }
                             }
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            foreach (var mission in missionsDataProvider.GetAllActiveMissions())
-                            {
-                                missionMoveProvider.ResumeMission(mission.Id, command, serviceProvider);
-                            }
+                            this.Logger.LogError($"Failed to resume mission: {ex}");
                         }
 
                         break;
