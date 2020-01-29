@@ -49,8 +49,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken cellsToken;
 
-        private string currentError;
-
         private SubscriptionToken elevatorPositionChangedToken;
 
         private DelegateCommand goToMovementsGuidedCommand;
@@ -125,11 +123,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override EnableMask EnableMask => EnableMask.MachinePoweredOn;
 
         public string Error => string.Join(
-                                                                                                                                                                                    Environment.NewLine,
-            this.GetType().GetProperties()
-                .Select(p => this[p.Name])
-                .Distinct()
-                .Where(s => !string.IsNullOrEmpty(s)));
+            Environment.NewLine,
+            this[nameof(this.InputLoadingUnitId)]);
 
         public ICommand GoToMovementsGuidedCommand =>
             this.goToMovementsGuidedCommand
@@ -219,13 +214,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get
             {
-                this.currentError = null;
-
-                if (this.IsWaitingForResponse)
-                {
-                    return null;
-                }
-
                 switch (columnName)
                 {
                     case nameof(this.InputLoadingUnitId):
@@ -237,11 +225,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         }
 
                         break;
-                }
-
-                if (this.IsVisible && string.IsNullOrEmpty(this.currentError))
-                {
-                    //this.ClearNotifications();
                 }
 
                 return null;
@@ -294,8 +277,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.InputLoadingUnitIdPropertyChanged();
 
-                this.InputCellIdPropertyChanged();
-
                 if (this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Cell)
                 {
                     this.inputCellId = this.MachineStatus.LogicalPositionId;
@@ -311,6 +292,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.IsPositionUpSelected = true;
                 }
+
+                this.InputCellIdPropertyChanged();
 
                 this.RaisePropertyChanged(nameof(this.SelectedBayPosition));
 
