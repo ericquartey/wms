@@ -530,6 +530,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 measure: false,
                 bayNumber,
                 sender,
+                targetCellId: cellId,
                 sourceCellId: cellId);
         }
 
