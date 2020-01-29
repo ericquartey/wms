@@ -53,7 +53,7 @@ namespace Ferretto.VW.MAS.AutomationService
         private async Task HomingMethod(NotificationMessage receivedMessage, IServiceProvider serviceProvider)
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
-            if (!missionsDataProvider.GetAllActiveMissions().Any())
+            if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status != MissionStatus.Waiting))
             {
                 if (receivedMessage.Status == MessageStatus.OperationEnd
                     && receivedMessage.Data is IHomingMessageData data)

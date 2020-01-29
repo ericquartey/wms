@@ -247,6 +247,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.Carousel)
                     .Include(b => b.EmptyLoadMovement)
                     .Include(b => b.FullLoadMovement)
+                    .Include(b => b.CurrentMission)
                     .ToArray();
             }
         }
