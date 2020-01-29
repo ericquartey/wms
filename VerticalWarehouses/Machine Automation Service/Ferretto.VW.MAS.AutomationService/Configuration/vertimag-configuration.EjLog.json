@@ -89,8 +89,8 @@
         },
         "Carousel": {
           "ElevatorDistance": 460,
-          "HomingFastSpeed": 8000,
-          "HomingCreepSpeed": 2000,
+          "HomingFastSpeed": 22,
+          "HomingCreepSpeed": 5,
           "ManualMovements": {
             "FeedRate": 0.1
           },
