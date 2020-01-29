@@ -119,7 +119,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public string Error => string.Join(
-            System.Environment.NewLine,
+            Environment.NewLine,
             this[nameof(this.InputDelayBetweenCycles)]);
 
         public int? InputDelayBetweenCycles
@@ -210,6 +210,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override void Disappear()
         {
             base.Disappear();
+
+            /*
+            if (this.shutterTestStatusChangedToken != null)
+            {
+                this.EventAggregator?.GetEvent<NotificationEventUI<ShutterPositioningMessageData>>().Unsubscribe(this.shutterTestStatusChangedToken);
+                this.shutterTestStatusChangedToken?.Dispose();
+                this.shutterTestStatusChangedToken = null;
+            }
+
+            if (this.sensorsChangedToken != null)
+            {
+                this.EventAggregator?.GetEvent<NotificationEventUI<SensorsChangedMessageData>>().Unsubscribe(this.sensorsChangedToken);
+                this.sensorsChangedToken?.Dispose();
+                this.sensorsChangedToken = null;
+            }
+            */
         }
 
         public override async Task OnAppearedAsync()
@@ -225,7 +241,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             var procedureParameters = await this.shuttersWebService.GetTestParametersAsync();
             this.InputRequiredCycles = procedureParameters.RequiredCycles;
-            this.InputDelayBetweenCycles = 1;
+            if (!this.InputDelayBetweenCycles.HasValue)
+            {
+                this.InputDelayBetweenCycles = 1;
+            }
+
             this.CumulativePerformedCycles = procedureParameters.PerformedCycles;
 
             var sensorsStates = await this.machineSensorsWebService.GetAsync();
@@ -333,7 +353,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.InputDelayBetweenCycles.Value,
                     this.InputRequiredCycles.Value);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 this.IsExecutingProcedure = false;
                 this.ShowNotification(ex);
@@ -352,7 +372,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.MachineService.StopMovingByAllAsync();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }

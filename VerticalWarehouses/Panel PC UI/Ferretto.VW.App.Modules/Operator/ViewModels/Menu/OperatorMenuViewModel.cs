@@ -88,7 +88,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.immediateLoadingUnitCallMenuCommand
             ??
             (this.immediateLoadingUnitCallMenuCommand = new DelegateCommand(
-                this.ImmediateLoadingUnitCallMenu,
+                this.ShowLoadingUnits,
                 this.CanShowOtherMenu));
 
         public bool IsWmsEnabled
@@ -197,7 +197,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             return !this.IsWaitingForResponse;
         }
 
-        private void ImmediateLoadingUnitCallMenu()
+        private void ShowLoadingUnits()
         {
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Operator),

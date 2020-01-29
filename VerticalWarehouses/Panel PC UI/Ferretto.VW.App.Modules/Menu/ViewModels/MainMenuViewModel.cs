@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Modules.Operator.Services;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
@@ -17,6 +18,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
         #region Fields
 
         private readonly IBayManager bayManager;
+
+        private readonly IOperatorNavigationService operatorNavigationService;
 
         private readonly ISessionService sessionService;
 
@@ -36,11 +39,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public MainMenuViewModel(
             IBayManager bayManager,
-            ISessionService sessionService)
+            ISessionService sessionService,
+            IOperatorNavigationService operatorNavigationService)
             : base(PresentationMode.Menu)
         {
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
+            this.operatorNavigationService = operatorNavigationService ?? throw new ArgumentNullException(nameof(operatorNavigationService));
         }
 
         #endregion
@@ -64,10 +69,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Properties
 
-        public int BayNumber
-        {
-            get => (int)this.MachineService?.BayNumber;
-        }
+        public int BayNumber => (int)this.MachineService?.BayNumber;
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -89,14 +91,14 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.menuInstalationCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Installation),
-                () => this.CanExecuteCommand()));
+                this.CanExecuteCommand));
 
         public ICommand MenuMaintenanceCommand =>
             this.menuMaintenanceCommand
             ??
             (this.menuMaintenanceCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Maintenance),
-                () => this.CanExecuteCommand()));
+                this.CanExecuteCommand));
 
         public ICommand MenuOperationCommand =>
             this.menuOperationCommand
@@ -160,11 +162,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 switch (menu)
                 {
                     case Menu.Operation:
-                        this.NavigationService.Appear(
-                            nameof(Utils.Modules.Operator),
-                            Utils.Modules.Operator.OPERATOR_MENU,
-                            data: null,
-                            trackCurrentView: true);
+                        this.operatorNavigationService.NavigateToOperatorMenuAsync();
                         break;
 
                     case Menu.Maintenance:

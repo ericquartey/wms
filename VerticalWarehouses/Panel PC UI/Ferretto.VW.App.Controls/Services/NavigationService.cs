@@ -76,7 +76,7 @@ namespace Ferretto.VW.App.Controls
 
         #region Methods
 
-        public void Appear(string moduleName, string viewModelName, object data = null, bool trackCurrentView = true)
+        public void Appear(string moduleName, string viewModelName, object data = null, bool trackCurrentView = true, bool doNotAppear = false)
         {
             if (!MvvmNaming.IsViewModelNameValid(viewModelName))
             {
@@ -104,7 +104,10 @@ namespace Ferretto.VW.App.Controls
 
                 this.DisappearActiveView();
 
-                this.regionManager.RequestNavigate(this.MainContentRegionName, viewName, parameters);
+                if(!doNotAppear)
+                { 
+                    this.regionManager.RequestNavigate(this.MainContentRegionName, viewName, parameters);
+                }
 
                 if (this.navigationStack.Count > 0)
                 {
@@ -114,10 +117,12 @@ namespace Ferretto.VW.App.Controls
                 }
 
                 this.navigationStack.Push(new NavigationHistoryRecord(moduleName, viewName, viewModelName));
-
-                this.eventAggregator
+                if (!doNotAppear)
+                {
+                    this.eventAggregator
                     .GetEvent<PubSubEvent<NavigationCompletedEventArgs>>()
                     .Publish(new NavigationCompletedEventArgs(moduleName, viewModelName));
+                }
             }
             catch (Exception ex)
             {
