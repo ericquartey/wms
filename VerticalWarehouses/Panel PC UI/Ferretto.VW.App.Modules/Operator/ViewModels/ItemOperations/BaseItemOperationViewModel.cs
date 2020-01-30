@@ -145,8 +145,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             try
             {
-                if(this.MissionOperationsService.CurrentMissionOperation is null)
+                if (this.MissionOperationsService.CurrentMissionOperation is null)
                 {
+                    this.NavigationService.GoBack();
                     return;
                 }
 

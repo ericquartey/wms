@@ -70,7 +70,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                 case PresentationMode.Login:
                     this.Show(PresentationTypes.None, false);
                     this.Show(PresentationTypes.Theme, true);
-                    this.Show(PresentationTypes.Shutdown, true);
+                    this.Show(PresentationTypes.Shutdown, false);
                     break;
 
                 case PresentationMode.Menu:
