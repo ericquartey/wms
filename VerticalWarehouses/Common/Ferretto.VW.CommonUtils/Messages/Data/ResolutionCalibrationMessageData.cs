@@ -25,7 +25,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public double ReadStartPosition { get; }
 
-        public decimal Resolution { get; set; }
+        public double Resolution { get; set; }
 
         public MessageVerbosity Verbosity { get; }
 

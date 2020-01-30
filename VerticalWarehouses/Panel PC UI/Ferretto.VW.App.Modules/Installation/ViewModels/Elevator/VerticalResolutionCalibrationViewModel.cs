@@ -50,7 +50,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private string currentError;
 
-        private decimal? currentResolution;
+        private double? currentResolution;
 
         private CalibrationStep currentStep;
 
@@ -84,7 +84,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand moveToStartPositionCommand;
 
-        private decimal? newResolution;
+        private double? newResolution;
 
         private DelegateCommand saveCommand;
 
@@ -132,7 +132,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.axisUpperBound, value, this.RaiseCanExecuteChanged);
         }
 
-        public decimal? CurrentResolution
+        public double? CurrentResolution
         {
             get => this.currentResolution;
             protected set => this.SetProperty(ref this.currentResolution, value);
@@ -273,7 +273,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.StartAsync(this.StartPosition),
                 this.CanMoveToStartPosition));
 
-        public decimal? NewResolution
+        public double? NewResolution
         {
             get => this.newResolution;
             set => this.SetProperty(ref this.newResolution, value, this.RaiseCanExecuteChanged);

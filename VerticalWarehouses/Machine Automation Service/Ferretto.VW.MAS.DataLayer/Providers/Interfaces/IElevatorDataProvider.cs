@@ -37,7 +37,9 @@ namespace Ferretto.VW.MAS.DataLayer
         /// Gets the cell where the elevator is currently located, or null if the elevator is not located opposite a cell.
         /// </summary>
         Cell GetCurrentCell();
+
         IEnumerable<ElevatorAxis> GetElevatorAxes();
+
         LoadingUnit GetLoadingUnitOnBoard();
 
         ElevatorAxisManualParameters GetManualMovementsAxis(Orientation orientation);
@@ -64,7 +66,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void UpdateVerticalOffset(double newOffset);
 
-        void UpdateVerticalResolution(decimal newResolution);
+        void UpdateVerticalResolution(double newResolution);
 
         #endregion
     }
