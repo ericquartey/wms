@@ -121,7 +121,12 @@ namespace Ferretto.VW.App.Modules.Operator.Services
             else
             {
                 var machineMissions = await this.machineMissionsWebService.GetAllAsync();
-                var currentMission = machineMissions.SingleOrDefault(m => m.Step == MissionStep.WaitPick && m.TargetBay == this.machineService.BayNumber);
+                var currentMission = machineMissions.SingleOrDefault(m =>
+                    m.Step == MissionStep.WaitPick
+                    &&
+                    m.TargetBay == this.machineService.BayNumber
+                    &&
+                    m.MissionType != MissionType.WMS);
                 var loadingUnit = this.machineService.Loadunits.SingleOrDefault(l => l.Id == currentMission?.LoadUnitId);
                 if (loadingUnit != null)
                 {
@@ -168,7 +173,12 @@ namespace Ferretto.VW.App.Modules.Operator.Services
             else
             {
                 var machineMissions = await this.machineMissionsWebService.GetAllAsync();
-                var currentMission = machineMissions.SingleOrDefault(m => m.Step == MissionStep.WaitPick && m.TargetBay == this.machineService.BayNumber);
+                var currentMission = machineMissions.SingleOrDefault(m =>
+                    m.Step == MissionStep.WaitPick
+                    &&
+                    m.TargetBay == this.machineService.BayNumber
+                    &&
+                    m.MissionType != MissionType.WMS);
                 var loadingUnit = this.machineService.Loadunits.SingleOrDefault(l => l.Id == currentMission?.LoadUnitId);
                 if (loadingUnit != null)
                 {

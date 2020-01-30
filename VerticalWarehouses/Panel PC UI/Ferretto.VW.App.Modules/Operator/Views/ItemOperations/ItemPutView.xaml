@@ -27,7 +27,22 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static resources:OperatorApp.DrawerActivityRefillingHeader}" />
 
-        <localControls:LoadingUnitControlView Grid.Row="1" />
+        <WmsControls:TrayControl Name="TrayControl"
+                                 Grid.Row="1"
+                                 Margin="0"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Stretch"
+                                 Compartments="{Binding Compartments}"
+                                 DefaultCompartmentColor="#444444"
+                                 DimensionHeight="{Binding LoadingUnitDepth}"
+                                 DimensionWidth="{Binding LoadingUnitWidth}"
+                                 GridLinesColor="#3c3c3c"
+                                 IsEnabled="False"
+                                 IsRotated="{Binding IsBaySideBack}"
+                                 SelectedColorFilterFunc="{Binding CompartmentColoringFunction}"
+                                 SelectedItem="{Binding SelectedCompartment, Mode=TwoWay}"
+                                 ShowBackground="False"
+                                 ShowRuler="False" />
 
         <Grid Grid.Row="2"
               Margin="0,15,0,0">
@@ -65,11 +80,11 @@
                                Margin="0,0,10,0"
                                HorizontalAlignment="Right"
                                VerticalAlignment="Top"
-                               Increment="{Binding QuantityIncrement}"
-                               Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
                                EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               Increment="{Binding QuantityIncrement}"
                                IsEnabled="{Binding CanInputQuantity}"
-                               LabelText="{Binding MeasureUnit, StringFormat={x:Static resources:OperatorApp.DrawerActivityRefillingQtyRefilled}}" />
+                               LabelText="{Binding MeasureUnit, StringFormat={x:Static resources:OperatorApp.DrawerActivityRefillingQtyRefilled}}"
+                               Mask="{Binding QuantityTolerance, StringFormat=F{0}}" />
 
             <StackPanel Grid.Row="4"
                         Grid.ColumnSpan="4"
@@ -81,16 +96,16 @@
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
                                     Command="{Binding ShowDetailsCommand}"
-                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}"
-                                    Content="{x:Static resources:OperatorApp.Details}" />
+                                    Content="{x:Static resources:OperatorApp.Details}"
+                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
                 <controls:PpcButton Grid.Row="4"
                                     Grid.Column="2"
                                     Margin="20,0,0,0"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
-                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}"
-                                    Content="{x:Static resources:OperatorApp.DrawerActivityRefillingCapacityMaxAdjust}" />
+                                    Content="{x:Static resources:OperatorApp.DrawerActivityRefillingCapacityMaxAdjust}"
+                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
                 <controls:PpcButton Grid.Row="4"
                                     Grid.Column="2"
@@ -98,9 +113,9 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
                                     Command="{Binding FullOperationCommand}"
-                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}"
                                     Content="{x:Static resources:OperatorApp.ConfirmOnFull}"
-                                    IsBusy="{Binding IsBusyConfirmingOperation}" />
+                                    IsBusy="{Binding IsBusyConfirmingOperation}"
+                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
                 <controls:PpcButton Grid.Row="4"
                                     Grid.Column="3"
@@ -109,8 +124,8 @@
                                     VerticalAlignment="Top"
                                     Command="{Binding ConfirmOperationCommand}"
                                     Content="{x:Static resources:OperatorApp.Confirm}"
-                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}"
-                                    IsBusy="{Binding IsBusyConfirmingOperation}" />
+                                    IsBusy="{Binding IsBusyConfirmingOperation}"
+                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
                 <controls:PpcButton Grid.Row="4"
                                     Grid.Column="3"
@@ -119,8 +134,8 @@
                                     VerticalAlignment="Top"
                                     Command="{Binding ConfirmOperationCanceledCommand}"
                                     Content="{x:Static resources:OperatorApp.CancelPut}"
-                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVC}}"
-                                    IsBusy="{Binding IsBusyConfirmingOperation}" />
+                                    IsBusy="{Binding IsBusyConfirmingOperation}"
+                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVC}}" />
 
             </StackPanel>
         </Grid>
