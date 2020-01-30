@@ -171,13 +171,13 @@ namespace Ferretto.VW.MAS.MissionManager
             switch (exception.StatusCode)
             {
                 case (int)HttpStatusCode.BadRequest:
-                    throw new ArgumentException(problemDetails.Detail);
+                    throw new ArgumentException(problemDetails?.Detail);
 
                 case (int)HttpStatusCode.NotFound:
                     throw new EntityNotFoundException();
 
                 case (int)HttpStatusCode.UnprocessableEntity:
-                    throw new InvalidOperationException(problemDetails.Detail);
+                    throw new InvalidOperationException(problemDetails?.Detail);
 
                 default:
                     throw exception;

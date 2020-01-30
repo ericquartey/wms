@@ -1,6 +1,8 @@
 using System;
 using System.Configuration;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Models;
@@ -70,6 +72,15 @@ namespace Ferretto.VW.App
         protected override Window CreateShell()
         {
             return this.Container.Resolve<Shell>();
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            AppCheck.End();
+
+            this.DeactivateBay();
+
+            base.OnExit(e);
         }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -144,17 +155,25 @@ namespace Ferretto.VW.App
             });
         }
 
-        private void Application_Exit(object sender, ExitEventArgs e)
-        {
-            AppCheck.End();
-        }
-
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             this.logger.Error(e.ExceptionObject as Exception, "An unhandled exception was thrown.");
 
+            this.DeactivateBay();
+
             NLog.LogManager.Flush();
             NLog.LogManager.Shutdown();
+        }
+
+        private void DeactivateBay()
+        {
+            this.logger.Info("Deactivating bay on application exit.");
+
+            var baysWebService = this.Container.Resolve<IMachineBaysWebService>();
+
+            Task
+                .Run(async () => await baysWebService.DeactivateAsync())
+                .Wait();
         }
 
         private void HACK_ForceItalianLanguage()

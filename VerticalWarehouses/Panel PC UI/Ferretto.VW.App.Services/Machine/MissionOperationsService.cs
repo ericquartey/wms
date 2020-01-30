@@ -16,6 +16,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private readonly WMS.Data.WebAPI.Contracts.IMissionOperationsWmsWebService missionOperationsDataService;
 
         private readonly IMachineMissionOperationsWebService missionOperationsWebService;
@@ -23,8 +25,6 @@ namespace Ferretto.VW.App.Services
         private readonly WMS.Data.WebAPI.Contracts.IMissionsWmsWebService missionsDataService;
 
         private readonly IOperatorHubClient operatorHubClient;
-
-        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         private Bay bay;
 
@@ -105,18 +105,18 @@ namespace Ferretto.VW.App.Services
             {
                 try
                 {
-                    var loadingUnitAccessibleInBay = this.bay.Positions.Where(p => p.LoadingUnit != null).OrderByDescending(p => p.Height).Select(p => p.LoadingUnit).FirstOrDefault();
+                    //var loadingUnitAccessibleInBay = this.bay.Positions.Where(p => p.LoadingUnit != null).OrderByDescending(p => p.Height).Select(p => p.LoadingUnit).FirstOrDefault();
                     var currentMission = await this.missionsDataService.GetByIdAsync(e.MissionId.Value);
-                    if (loadingUnitAccessibleInBay?.Id == currentMission.LoadingUnitId)
-                    {
-                        this.CurrentMission = currentMission;
-                        this.CurrentMissionOperation =
-                            await this.missionOperationsDataService.GetByIdAsync(e.MissionOperationId.Value);
-                    }
-                    else
-                    {
-                        this.logger.Warn($"Mission discarded load. unit in Bay Id {loadingUnitAccessibleInBay?.Id}, Mission load. Unit Id {currentMission.LoadingUnitId}");
-                    }
+                    // if (loadingUnitAccessibleInBay?.Id == currentMission.LoadingUnitId)
+                    //  {
+                    this.CurrentMission = currentMission;
+                    this.CurrentMissionOperation =
+                        await this.missionOperationsDataService.GetByIdAsync(e.MissionOperationId.Value);
+                    //}
+                    // else
+                    // {
+                    //     this.logger.Warn($"Mission discarded load. unit in Bay Id {loadingUnitAccessibleInBay?.Id}, Mission load. Unit Id {currentMission.LoadingUnitId}");
+                    //}
                 }
                 catch (Exception ex)
                 {
