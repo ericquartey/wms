@@ -66,6 +66,7 @@
                                         DimensionWidth="{Binding LoadingUnitWidth}"
                                         GridLinesColor="#3c3c3c"
                                         IsRotated="{Binding IsBaySideBack}"
+                                        IsEnabled="{Binding IsWaitingForNewOperation, Converter={StaticResource BNC}}"
                                         SelectedColorFilterFunc="{Binding CompartmentColoringFunction}"
                                         SelectedItem="{Binding SelectedCompartment, Mode=TwoWay}"
                                         ShowBackground="False"
