@@ -300,13 +300,8 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.InverterType = inverterType;
 
             this.homingTimer = new Timer(this.HomingTick, null, -1, Timeout.Infinite);
-            this.homingTimerActive = false;
-
             this.targetTimer = new Timer(this.TargetTick, null, -1, Timeout.Infinite);
-            this.targetTimerActive = false;
-
             this.shutterTimer = new Timer(this.ShutterTick, null, -1, Timeout.Infinite);
-            this.shutterTimerActive = false;
 
             this.digitalIO.Add(new BitModel("00", false, GetInverterSignalDescription(inverterType, 0)));
             this.digitalIO.Add(new BitModel("01", false, GetInverterSignalDescription(inverterType, 1)));
@@ -341,6 +336,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.axisPosition = new Dictionary<Axis, double>();
             this.axisPosition.Add(Axis.Horizontal, 0);
             this.axisPosition.Add(Axis.Vertical, 0);
+
             if (inverterType != InverterType.Agl)
             {
                 this.HorizontalZeroSensor(true);
