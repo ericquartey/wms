@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Input;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -569,6 +570,8 @@ namespace Ferretto.VW.Simulator.Services.Models
         public bool IsWarning => (this.statusWord & 0x0080) > 0;
 
         public bool IsWarning2 => (this.statusWord & 0x8000) > 0;
+
+        public Machine Machine { get; set; }
 
         public InverterOperationMode OperationMode
         {
