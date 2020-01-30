@@ -84,7 +84,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
             methods.Reverse();
 
-            this.logger.LogTrace($"{string.Join(" -> ", methods)}{command.CommandText}");
+            this.logger.LogTrace($"{string.Join(" -> ", methods)}\n{command.CommandText}");
 #else
             this.logger.LogTrace($"{command.CommandText}");
 #endif
