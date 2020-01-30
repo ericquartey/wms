@@ -76,8 +76,8 @@ namespace Ferretto.VW.Simulator.Services
             this.Inverters.Add(new InverterModel(Models.InverterType.Agl) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 6, Enabled = false }); //da sistemare
             this.Inverters.Add(new InverterModel(Models.InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 7, Enabled = false }); //da sistemare
 
-            this.Inverters00.OnHorizontalMovementComplete += this.OnHorizontalMovementComplete;
-            this.Inverters01.OnHorizontalMovementComplete += this.OnHorizontalMovementComplete;
+            this.Inverters00.OnHorizontalMovementComplete += this.OnHorizontalMovementCompleted;
+            this.Inverters01.OnHorizontalMovementComplete += this.OnHorizontalMovementCompleted;
         }
 
         #endregion
@@ -295,7 +295,7 @@ namespace Ferretto.VW.Simulator.Services
             }
         }
 
-        private void OnHorizontalMovementComplete(object sender, HorizontalMovementEventArgs e)
+        private void OnHorizontalMovementCompleted(object sender, HorizontalMovementEventArgs e)
         {
             if (this.Machine == null)
             {
@@ -762,11 +762,6 @@ namespace Ferretto.VW.Simulator.Services
 
         private void UpdateInverter(InverterModel inverter)
         {
-            if (!this.RemoteIOs01.Inputs[(int)IoPorts.NormalState].Value)
-            {
-                inverter.EmergencyStop();
-            }
-
             if ((inverter.ControlWord & 0x0100) > 0)       // Halt
             {
                 inverter.IsFault = true;
@@ -788,7 +783,7 @@ namespace Ferretto.VW.Simulator.Services
 
             // Quick Stop
             inverter.IsQuickStopTrue = (inverter.ControlWord & 0x0004) > 0;
-            if (!inverter.IsQuickStopTrue)                      // Quick stop
+            if (!inverter.IsQuickStopTrue)
             {
                 inverter.IsOperationEnabled = false;
             }
@@ -808,7 +803,7 @@ namespace Ferretto.VW.Simulator.Services
 
         private void UpdateRemoteIO(IODeviceModel device)
         {
-            // Logic
+            // If any security signal is received, reset run status
             if (!this.RemoteIOs01.Outputs[(int)IoPorts.PowerEnable].Value ||
                 !device.Inputs[(int)IoPorts.MushroomEmergency].Value ||
                 !device.Inputs[(int)IoPorts.MicroCarterLeftSideBay].Value ||
@@ -819,6 +814,7 @@ namespace Ferretto.VW.Simulator.Services
                 // Reset run status
                 this.remoteIOs.ToList().ForEach(x => x.Inputs[(int)IoPorts.NormalState].Value = false);
             }
+            // If reset security impulse is received and there are no emergency button pushed, set run status
             else if (this.RemoteIOs01.Outputs[(int)IoPorts.ResetSecurity].Value && this.remoteIOs.All(x => x.Inputs[(int)IoPorts.MushroomEmergency].Value))
             {
                 if (!this.Inverters.Any(x => x.IsFault))
@@ -834,7 +830,14 @@ namespace Ferretto.VW.Simulator.Services
                 }
             }
 
+            // Set inverter cumulative fault if any inverter is in fault
             this.remoteIOs[0].Inputs[(int)IoPorts.InverterInFault].Value = this.Inverters.Any(x => x.IsFault);
+
+            // If run status is off, trigger emergency stop on inverters
+            if (!this.RemoteIOs01.Inputs[(int)IoPorts.NormalState].Value)
+            {
+                this.Inverters.ToList().ForEach(x => x.EmergencyStop());
+            }
         }
 
         #endregion
