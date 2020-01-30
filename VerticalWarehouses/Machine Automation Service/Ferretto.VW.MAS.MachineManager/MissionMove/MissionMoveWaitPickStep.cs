@@ -59,6 +59,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.MissionsDataProvider.Update(this.Mission);
 
             this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationExecuting);
+
+            var description = $"Load Unit {this.Mission.LoadUnitId} placed on bay {bay.Number}";
+            this.SendMoveNotification(bay.Number, description, MessageStatus.OperationWaitResume);
             return true;
         }
 
