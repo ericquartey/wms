@@ -425,7 +425,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void UpdateVerticalResolution(decimal newResolution)
+        public void UpdateVerticalResolution(double newResolution)
         {
             lock (this.dataContext)
             {

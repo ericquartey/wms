@@ -11,7 +11,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         private double offset;
 
-        private decimal resolution;
+        private double resolution;
 
         private int totalCycles = 1;
 
@@ -90,7 +90,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public IEnumerable<MovementProfile> Profiles { get; set; }
 
-        public decimal Resolution
+        public double Resolution
         {
             get => this.resolution;
             set

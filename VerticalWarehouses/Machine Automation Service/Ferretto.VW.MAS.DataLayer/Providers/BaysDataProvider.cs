@@ -190,34 +190,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        [Obsolete("This method contains business logic. It should not be in the DataLayer.")]
-        public double ConvertPulsesToMillimeters(double pulses, InverterIndex inverterIndex)
-        {
-            if (pulses == 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(pulses), "Pulses must be different from zero.");
-            }
-
-            lock (this.dataContext)
-            {
-                var bay = this.dataContext.Bays
-                    .SingleOrDefault(b => b.Inverter.Index == inverterIndex);
-
-                if (bay is null)
-                {
-                    throw new EntityNotFoundException(inverterIndex.ToString());
-                }
-
-                if (bay.Resolution == 0)
-                {
-                    throw new InvalidOperationException(
-                        $"Configured inverter {inverterIndex} resolution is zero, therefore it is not possible to convert pulses to millimeters.");
-                }
-
-                return pulses / bay.Resolution;
-            }
-        }
-
         public void FindZero(BayNumber bayNumber)
         {
             this.PublishCommand(

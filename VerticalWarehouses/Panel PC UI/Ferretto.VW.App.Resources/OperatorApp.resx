@@ -1494,4 +1494,8 @@ Please put back any moved pieces in their original position.</value>
     <value>Confirm and new operations available</value>
     <comment>Button text</comment>
   </data>
+  <data name="ItemStock" xml:space="preserve">
+    <value>Stock</value>
+    <comment>Label text</comment>
+  </data>
 </root>

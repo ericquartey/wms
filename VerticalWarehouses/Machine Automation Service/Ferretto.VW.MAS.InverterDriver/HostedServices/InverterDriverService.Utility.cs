@@ -312,7 +312,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         {
                             if (axis == Axis.BayChain)
                             {
-                                currentAxisPosition = serviceProvider.GetRequiredService<IBaysDataProvider>().ConvertPulsesToMillimeters(message.IntPayload, message.SystemIndex);
+                                currentAxisPosition = invertersProvider.ConvertPulsesToMillimeters(message.IntPayload, inverter);
                             }
                             else
                             {

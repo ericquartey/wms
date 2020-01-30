@@ -1691,6 +1691,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stock.
+        /// </summary>
+        public static string ItemStock {
+            get {
+                return ResourceManager.GetString("ItemStock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LIFO time span.
         /// </summary>
         public static string LIFOPeriod {

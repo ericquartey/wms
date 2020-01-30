@@ -143,35 +143,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         protected async Task RetrieveMissionOperationAsync()
         {
-            var newMissionOperation = this.MissionOperationsService.CurrentMissionOperation;
-            if (this.MissionOperation?.Type != newMissionOperation?.Type)
-            {
-                this.Logger.Debug("A new mission operation is available but its type is different from the current one ...");
-                return;
-            }
-
-            /* handled by navigation service
-             *
-             *
-             *
-            if (newMissionOperation is null)
-            {
-                this.Logger.Debug("No new mission operation available, leaving the operation view ...");
-                this.NavigationService.GoBack();
-                return;
-            }
-
-            if (this.MissionOperation != null && this.MissionOperation.Type != newMissionOperation.Type)
-            {
-                this.Logger.Debug("A new mission operation is available but its type is different from the current one, leaving the operation view ...");
-                this.NavigationService.GoBack();
-                return;
-            }
-            */
-
             try
             {
-                this.MissionOperation = newMissionOperation;
+                if(this.MissionOperationsService.CurrentMissionOperation is null)
+                {
+                    return;
+                }
+
+                this.MissionOperation = this.MissionOperationsService.CurrentMissionOperation;
 
                 this.Mission = await this.missionWmsWebService.GetDetailsByIdAsync(this.MissionOperationsService.CurrentMission.Id);
 
