@@ -7,7 +7,6 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.TimeManagement.Models;
 using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -26,13 +25,14 @@ namespace Ferretto.VW.MAS.AutomationService
             await this.installationHub.Clients.All.CalibrateAxisNotify(message);
         }
 
-        private void ChangeMachineMode(IServiceProvider serviceProvider)
+        private void ChangeMachineMode()
         {
-            var machineVolatileDataProvider = serviceProvider.GetRequiredService<IMachineVolatileDataProvider>();
-            if (machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic)
+            if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic
+                || this.machineVolatileDataProvider.Mode == MachineMode.Restore
+                )
             {
-                machineVolatileDataProvider.Mode = MachineMode.Automatic;
-                this.Logger.LogInformation($"Machine status switched to {machineVolatileDataProvider.Mode}");
+                this.machineVolatileDataProvider.Mode = MachineMode.Automatic;
+                this.Logger.LogInformation($"Automation Machine status switched to {this.machineVolatileDataProvider.Mode}");
             }
         }
 
@@ -74,19 +74,15 @@ namespace Ferretto.VW.MAS.AutomationService
                                     Type = MessageType.MachineMode,
                                 });
                     }
-                    else if (data.AxisToCalibrate == Axis.HorizontalAndVertical)
-                    {
-                        this.machineVolatileDataProvider.IsHomingExecuted = true;
-                        this.ChangeMachineMode(serviceProvider);
-                    }
                     else
                     {
-                        this.ChangeMachineMode(serviceProvider);
+                        this.machineVolatileDataProvider.IsHomingExecuted = true;
+                        this.ChangeMachineMode();
                     }
                 }
                 else if (receivedMessage.Status == MessageStatus.OperationError)
                 {
-                    this.ChangeMachineMode(serviceProvider);
+                    this.ChangeMachineMode();
                 }
             }
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);

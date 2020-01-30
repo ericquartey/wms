@@ -77,8 +77,8 @@ namespace Ferretto.VW.MAS.MissionManager
             var activeMissions = missionsDataProvider.GetAllActiveMissionsByBay(bayNumber);
 
             var missionToRestore = activeMissions.OrderBy(o => o.Status)
-                .ThenBy(t => t.Step)
-                .FirstOrDefault(x => x.Status == MissionStatus.Executing
+                .ThenBy(t => t.RestoreStep)
+                .FirstOrDefault(x => (x.Status == MissionStatus.Executing || x.Status == MissionStatus.Waiting)
                     && x.IsMissionToRestore());
             if (missionToRestore != null)
             {
@@ -344,15 +344,12 @@ namespace Ferretto.VW.MAS.MissionManager
                         if (activeMissions.Any(m => m.IsMissionToRestore()))
                         {
                             this.machineVolatileDataProvider.Mode = MachineMode.Restore;
-                            this.Logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                            this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                         }
-                        else if (activeMissions.All(m => (m.Status == MissionStatus.Executing)
-                                    && m.Step > MissionStep.New)
-                            && !this.GenerateHoming(bayProvider, this.machineVolatileDataProvider.IsHomingExecuted)
-                            )
+                        else if (!this.GenerateHoming(bayProvider, this.machineVolatileDataProvider.IsHomingExecuted))
                         {
                             this.machineVolatileDataProvider.Mode = MachineMode.Automatic;
-                            this.Logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                            this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                         }
                     }
                     break;
@@ -384,7 +381,7 @@ namespace Ferretto.VW.MAS.MissionManager
                             && !this.GenerateHoming(bayProvider, this.machineVolatileDataProvider.IsHomingExecuted))
                         {
                             this.machineVolatileDataProvider.Mode = MachineMode.Compact;
-                            this.Logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                            this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                         }
                     }
                     break;
@@ -403,7 +400,7 @@ namespace Ferretto.VW.MAS.MissionManager
                             )
                         {
                             this.machineVolatileDataProvider.Mode = MachineMode.Manual;
-                            this.Logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                            this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                         }
                     }
                     break;
@@ -415,30 +412,33 @@ namespace Ferretto.VW.MAS.MissionManager
 
                         if (activeMissions.Any(m => m.Step >= MissionStep.Error))
                         {
-                            foreach (var bay in bayProvider.GetAll())
+                            if (!activeMissions.Any(m => m.Step >= MissionStep.Error && m.RestoreStep == MissionStep.NotDefined))
                             {
-                                try
+                                foreach (var bay in bayProvider.GetAll())
                                 {
-                                    if (bay.IsActive)
+                                    try
                                     {
-                                        await this.ScheduleMissionsOnBayAsync(bay.Number, serviceProvider, true);
+                                        if (bay.IsActive)
+                                        {
+                                            await this.ScheduleMissionsOnBayAsync(bay.Number, serviceProvider, true);
+                                        }
                                     }
-                                }
-                                catch (Exception ex)
-                                {
-                                    this.Logger.LogError(ex, "Failed to schedule missions on bay {number}.", bay.Number);
+                                    catch (Exception ex)
+                                    {
+                                        this.Logger.LogError(ex, "Failed to schedule missions on bay {number}.", bay.Number);
+                                    }
                                 }
                             }
                         }
                         else
                         {
-                            if (activeMissions.All(m => m.Status == MissionStatus.Executing
+                            if (!activeMissions.Any(m => m.Status == MissionStatus.Executing
                                     && m.Step > MissionStep.New)
                                 && !this.GenerateHoming(bayProvider, this.machineVolatileDataProvider.IsHomingExecuted)
                                 )
                             {
                                 this.machineVolatileDataProvider.Mode = MachineMode.Automatic;
-                                this.Logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                                this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                             }
                         }
                     }

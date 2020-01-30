@@ -342,7 +342,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                 && destination != null
                                 && origin.LoadingUnit != null)
                             {
-                                baysDataProvider.SetLoadingUnit(destination.Id, origin.LoadingUnit.Id);
+                                baysDataProvider.SetLoadingUnit(destination.Id, origin.LoadingUnit.Id, 0);
                                 baysDataProvider.SetLoadingUnit(origin.Id, null);
                                 isChanged = true;
                             }
