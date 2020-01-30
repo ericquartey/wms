@@ -51,7 +51,7 @@ namespace Ferretto.VW.Simulator.Services
 
         private DateTime heartBeatTime;
 
-        private bool isInverterConnect;
+        private bool isInverterConnected;
 
         private Machine machine;
 
@@ -302,16 +302,17 @@ namespace Ferretto.VW.Simulator.Services
                 return;
             }
 
+            // Check if movement was executed on a bay (use coordinate to determine position)
             var bay = this.Machine.Bays.FirstOrDefault(x => x.Positions.Any(y => Math.Abs(y.Height - this.Inverters00.AxisPositionY - this.Machine.Elevator.Axes.First().Offset) <= 2));
             if (bay != null)
             {
                 bool isCarousel = bay.Carousel != null;
 
+                // Retrieve bay position (upper/lower position)
                 var bayPosition = bay.Positions.FirstOrDefault(x => Math.Abs(x.Height - this.Inverters00.AxisPositionY - this.Machine.Elevator.Axes.First().Offset) <= 2);
                 if (bayPosition != null)
                 {
-                    Debug.WriteLine($"{bay.Number} {bayPosition.IsUpper}");
-
+                    // Set/Reset bay presence
                     switch (bay.Number)
                     {
                         case BayNumber.BayOne:
@@ -458,11 +459,11 @@ namespace Ferretto.VW.Simulator.Services
         private void ReplyToInverterMessage(TcpClient client, InverterMessage message)
         {
             var inverter = this.Inverters.First(x => x.InverterRole == (InverterRole)message.SystemIndex);
-            if (!this.isInverterConnect)
+            if (!this.isInverterConnected)
             {
                 this.heartBeatTime = DateTime.UtcNow;
             }
-            this.isInverterConnect = true;
+            this.isInverterConnected = true;
 
             if (DateTime.UtcNow.Subtract(this.heartBeatTime).TotalMilliseconds > this.DELAY_HEARTBEAT)
             {
@@ -761,6 +762,11 @@ namespace Ferretto.VW.Simulator.Services
 
         private void UpdateInverter(InverterModel inverter)
         {
+            if (!this.RemoteIOs01.Inputs[(int)IoPorts.NormalState].Value)
+            {
+                inverter.EmergencyStop();
+            }
+
             if ((inverter.ControlWord & 0x0100) > 0)       // Halt
             {
                 inverter.IsFault = true;

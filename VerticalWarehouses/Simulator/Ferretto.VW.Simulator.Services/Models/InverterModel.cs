@@ -759,6 +759,18 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
         }
 
+        public void EmergencyStop()
+        {
+            this.homingTimer.Change(-1, Timeout.Infinite);
+            this.homingTimerActive = false;
+
+            this.shutterTimer.Change(-1, Timeout.Infinite);
+            this.shutterTimerActive = false;
+
+            this.targetTimer.Change(-1, Timeout.Infinite);
+            this.targetTimerActive = false;
+        }
+
         public int GetDigitalIO()
         {
             var result = 0;
@@ -770,67 +782,6 @@ namespace Ferretto.VW.Simulator.Services.Models
                 }
             }
             return result;
-        }
-
-        public void HomingTick(object state)
-        {
-            if (!this.homingTimerActive)
-            {
-                return;
-            }
-            if (!this.ioDevice[(int)IoPorts.NormalState].Value)
-            {
-                this.homingTimerActive = false;
-                this.homingTimer.Change(-1, Timeout.Infinite);
-                return;
-            }
-            var increment = 50d;
-            if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) < 1)
-            {
-                increment = 0.1;
-            }
-            else if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) <= 10)
-            {
-                increment = 1;
-            }
-            else if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) <= 50)
-            {
-                increment = 10;
-            }
-
-            if (this.AxisPosition < this.TargetPosition[this.currentAxis])
-            {
-                this.AxisPosition += increment;
-            }
-            else if (this.AxisPosition > this.TargetPosition[this.currentAxis])
-            {
-                this.AxisPosition -= increment;
-            }
-
-            if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) <= 0.1)
-            {
-                this.StatusWord |= 0x1000;          // Set TargetReached
-                if (this.currentAxis == Axis.Horizontal
-                    && !this.ioDevice[(int)IoPorts.DrawerInMachineSide].Value
-                    && !this.ioDevice[(int)IoPorts.DrawerInOperatorSide].Value)
-                {
-                    if (this.Id == 0)
-                    {
-                        this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = true;
-                    }
-                    else
-                    {
-                        this.DigitalIO[(int)InverterSensors.OneKMachineZeroCradle].Value = true;
-                    }
-                }
-                this.AxisPosition = 0;
-                this.homingTimerActive = false;
-                this.homingTimer.Change(-1, Timeout.Infinite);
-            }
-            else
-            {
-                this.StatusWord &= 0xEFFF;          // Reset TargetReached
-            }
         }
 
         public double Impulses2millimeters(int value)
@@ -1008,6 +959,62 @@ namespace Ferretto.VW.Simulator.Services.Models
             return "Free";
         }
 
+        private void HomingTick(object state)
+        {
+            if (!this.homingTimerActive)
+            {
+                return;
+            }
+
+            var increment = 50d;
+            if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) < 1)
+            {
+                increment = 0.1;
+            }
+            else if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) <= 10)
+            {
+                increment = 1;
+            }
+            else if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) <= 50)
+            {
+                increment = 10;
+            }
+
+            if (this.AxisPosition < this.TargetPosition[this.currentAxis])
+            {
+                this.AxisPosition += increment;
+            }
+            else if (this.AxisPosition > this.TargetPosition[this.currentAxis])
+            {
+                this.AxisPosition -= increment;
+            }
+
+            if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) <= 0.1)
+            {
+                this.StatusWord |= 0x1000;          // Set TargetReached
+                if (this.currentAxis == Axis.Horizontal
+                    && !this.ioDevice[(int)IoPorts.DrawerInMachineSide].Value
+                    && !this.ioDevice[(int)IoPorts.DrawerInOperatorSide].Value)
+                {
+                    if (this.Id == 0)
+                    {
+                        this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = true;
+                    }
+                    else
+                    {
+                        this.DigitalIO[(int)InverterSensors.OneKMachineZeroCradle].Value = true;
+                    }
+                }
+                this.AxisPosition = 0;
+                this.homingTimerActive = false;
+                this.homingTimer.Change(-1, Timeout.Infinite);
+            }
+            else
+            {
+                this.StatusWord &= 0xEFFF;          // Reset TargetReached
+            }
+        }
+
         private void HorizontalZeroSensor(bool force)
         {
             if ((this.OperationMode != InverterOperationMode.TableTravel &&
@@ -1057,22 +1064,14 @@ namespace Ferretto.VW.Simulator.Services.Models
             {
                 return;
             }
-            if (!this.ioDevice[(int)IoPorts.NormalState].Value)
-            {
-                this.shutterTimer.Change(-1, Timeout.Infinite);
 
-                this.shutterTimerActive = false;
-                return;
-            }
-            if (this.TargetShutterPosition == (int)ShutterPosition.Opened
-                || (this.TargetShutterPosition == (int)ShutterPosition.Half && this.AxisPosition <= 4)
-                )
+            if (this.TargetShutterPosition == (int)ShutterPosition.Opened ||
+               (this.TargetShutterPosition == (int)ShutterPosition.Half && this.AxisPosition <= 4))
             {
                 this.AxisPosition++;
             }
-            else if (this.TargetShutterPosition == (int)ShutterPosition.Closed
-                || (this.TargetShutterPosition == (int)ShutterPosition.Half && this.AxisPosition >= 6)
-                )
+            else if (this.TargetShutterPosition == (int)ShutterPosition.Closed ||
+                    (this.TargetShutterPosition == (int)ShutterPosition.Half && this.AxisPosition >= 6))
             {
                 this.AxisPosition--;
             }
@@ -1123,12 +1122,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             {
                 return;
             }
-            if (!this.ioDevice[(int)IoPorts.NormalState].Value)
-            {
-                this.targetTimer.Change(-1, Timeout.Infinite);
-                this.targetTimerActive = false;
-                return;
-            }
+
             var target = this.TargetPosition[this.currentAxis];
             if (this.IsRelativeMovement)
             {

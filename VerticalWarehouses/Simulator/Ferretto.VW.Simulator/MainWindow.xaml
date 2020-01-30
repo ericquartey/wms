@@ -603,14 +603,17 @@
 
                     <ContentControl Grid.Column="0"
                                     DataContext="{Binding MachineService.RemoteIOs01}"
+                                    IsEnabled="{Binding Enabled}"
                                     Template="{StaticResource VWSIM_Grid_IoDriver}" />
 
                     <ContentControl Grid.Column="1"
                                     DataContext="{Binding MachineService.RemoteIOs02}"
+                                    IsEnabled="{Binding Enabled}"
                                     Template="{StaticResource VWSIM_Grid_IoDriver}" />
 
                     <ContentControl Grid.Column="2"
                                     DataContext="{Binding MachineService.RemoteIOs03}"
+                                    IsEnabled="{Binding Enabled}"
                                     Template="{StaticResource VWSIM_Grid_IoDriver}" />
 
                 </Grid>
