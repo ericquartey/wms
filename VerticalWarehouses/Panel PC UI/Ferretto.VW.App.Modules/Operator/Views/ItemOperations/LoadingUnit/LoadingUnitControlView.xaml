@@ -65,7 +65,6 @@
                                         DimensionHeight="{Binding LoadingUnitDepth}"
                                         DimensionWidth="{Binding LoadingUnitWidth}"
                                         GridLinesColor="#3c3c3c"
-                                        IsEnabled="{Binding IsOperationVisible, Converter={StaticResource BNC}}"
                                         IsRotated="{Binding IsBaySideBack}"
                                         SelectedColorFilterFunc="{Binding CompartmentColoringFunction}"
                                         SelectedItem="{Binding SelectedCompartment, Mode=TwoWay}"
@@ -120,8 +119,7 @@
 
             <Grid Grid.Row="0"
                   Grid.Column="1"
-                  VerticalAlignment="Top"
-                  IsEnabled="{Binding IsOperationVisible, Converter={StaticResource BNC}}">
+                  VerticalAlignment="Top">
                 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
