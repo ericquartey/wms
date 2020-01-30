@@ -157,6 +157,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             return
                 !this.IsWaitingForResponse
                 &&
+                this.MissionOperation != null
+                &&
                 !this.IsBusyAbortingOperation
                 &&
                 !this.IsBusyConfirmingOperation

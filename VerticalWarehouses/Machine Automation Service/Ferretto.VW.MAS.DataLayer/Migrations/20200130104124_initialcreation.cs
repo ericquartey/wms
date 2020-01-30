@@ -837,7 +837,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     ProfileCalibrateLength = table.Column<double>(nullable: false),
                     ProfileCalibratePosition = table.Column<int>(nullable: false),
                     ProfileCalibrateSpeed = table.Column<double>(nullable: false),
-                    Resolution = table.Column<decimal>(nullable: false),
+                    Resolution = table.Column<double>(nullable: false),
                     TotalCycles = table.Column<int>(nullable: false),
                     UpperBound = table.Column<double>(nullable: false),
                     WeightMeasurementId = table.Column<int>(nullable: true),
@@ -1298,7 +1298,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 3, 28, 14, 11, 38, 262, DateTimeKind.Local).AddTicks(7070), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 3, 30, 11, 41, 23, 499, DateTimeKind.Local).AddTicks(7545), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",

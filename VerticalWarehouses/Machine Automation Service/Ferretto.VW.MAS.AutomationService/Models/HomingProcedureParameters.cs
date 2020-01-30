@@ -10,7 +10,7 @@
 
         public double Offset { get; set; }
 
-        public decimal Resolution { get; set; }
+        public double Resolution { get; set; }
 
         public double UpperBound { get; set; }
 

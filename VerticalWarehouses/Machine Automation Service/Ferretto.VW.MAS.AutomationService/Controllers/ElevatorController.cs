@@ -170,7 +170,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpGet("vertical/resolution")]
-        public ActionResult<decimal> GetVerticalResolution()
+        public ActionResult<double> GetVerticalResolution()
         {
             return this.Ok(this.elevatorDataProvider.GetAxis(Orientation.Vertical).Resolution);
         }
@@ -371,7 +371,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpPost("vertical/resolution")]
-        public IActionResult UpdateVerticalResolution(decimal newResolution)
+        public IActionResult UpdateVerticalResolution(double newResolution)
         {
             this.elevatorDataProvider.UpdateVerticalResolution(newResolution);
 
