@@ -141,11 +141,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             await base.OnAppearedAsync();
         }
 
-        protected override async Task OnDataRefreshAsync()
-        {
-            await this.machineBaysWebService.ActivateAsync();
-        }
-
         protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
         {
             if (e is null)
@@ -197,15 +192,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             return !this.IsWaitingForResponse;
         }
 
-        private void ShowLoadingUnits()
-        {
-            this.NavigationService.Appear(
-                nameof(Utils.Modules.Operator),
-                Utils.Modules.Operator.Others.IMMEDIATELOADINGUNITCALL,
-                null,
-                trackCurrentView: true);
-        }
-
         private void ShowItemLists()
         {
             this.NavigationService.Appear(
@@ -220,6 +206,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 Utils.Modules.Operator.ItemSearch.MAIN,
+                null,
+                trackCurrentView: true);
+        }
+
+        private void ShowLoadingUnits()
+        {
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Operator),
+                Utils.Modules.Operator.Others.IMMEDIATELOADINGUNITCALL,
                 null,
                 trackCurrentView: true);
         }

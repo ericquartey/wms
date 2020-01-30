@@ -65,11 +65,12 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="15"/>
+                    <ColumnDefinition Width="5"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
                 <controls:PpcLabeledText
+                                     Margin="0 2 0 0"
                                      Grid.Column="2"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
@@ -80,7 +81,7 @@
                    Grid.Row="0"
                    Grid.RowSpan="2"
                    Grid.Column="0"
-                   Margin="5"
+                   Margin="5 5 0 5"
                    Width="180"
                    Height="180"                   
                    HorizontalAlignment="Left"
