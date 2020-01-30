@@ -80,7 +80,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     this.RestoreOriginalStep();
                                 }
                             }
-                            if (shutterPosition == ShutterPosition.Closed
+                            else if (shutterPosition == ShutterPosition.Closed
                                 && this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveShutterClosed)
                                 )
                             {
