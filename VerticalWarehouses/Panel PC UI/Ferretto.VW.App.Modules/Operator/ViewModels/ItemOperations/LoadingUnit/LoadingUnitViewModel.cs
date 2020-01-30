@@ -256,8 +256,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         private bool CanRecallLoadingUnit()
         {
             return
-                !this.IsWaitingForNewOperation
-                &&
                 !this.IsBusyConfirmingOperation
                 &&
                 !this.IsBusyConfirmingRecallOperation
