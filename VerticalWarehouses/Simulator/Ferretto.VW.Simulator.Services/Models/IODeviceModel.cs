@@ -75,9 +75,9 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private ObservableCollection<BitModel> inputs = new ObservableCollection<BitModel>();
 
-        private List<BitModel> outputs;
-
         private Machine machine;
+
+        private List<BitModel> outputs;
 
         #endregion
 
@@ -158,19 +158,18 @@ namespace Ferretto.VW.Simulator.Services.Models
 
                 if (this.Machine != null)
                 {
-                    switch (this.Id)
+                    var bay = this.Machine.Bays.FirstOrDefault(x => (int)x.Number == this.Id + 1);
+                    if (bay != null)
                     {
-                        case 0:
-                            this.Enabled = this.Machine.Bays.Any(x => x.Number == BayNumber.BayOne);
-                            break;
+                        bool hasCarousel = bay.Carousel != null;
+                        this.Enabled = true;
 
-                        case 1:
-                            this.Enabled = this.Machine.Bays.Any(x => x.Number == BayNumber.BayTwo);
-                            break;
-
-                        case 2:
-                            this.Enabled = this.Machine.Bays.Any(x => x.Number == BayNumber.BayThree);
-                            break;
+                        // Set empty position on bay
+                        this.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = hasCarousel ? false : true;
+                    }
+                    else
+                    {
+                        this.Enabled = false;
                     }
                 }
             }

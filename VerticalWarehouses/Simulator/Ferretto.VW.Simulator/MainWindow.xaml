@@ -475,26 +475,26 @@
                     VerticalAlignment="Top"
                     Command="{Binding StartSimulatorCommand}"
                     Content="{x:Static res:General.StartSimulatorCommand}"
-                    IsEnabled="{Binding InverterService.IsStartedSimulator, Converter={StaticResource BNC}}"
+                    IsEnabled="{Binding MachineService.IsStartedSimulator, Converter={StaticResource BNC}}"
                     Template="{StaticResource VWSIM_ActionButton_ControlTemplate}"
-                    Visibility="{Binding InverterService.IsStartedSimulator, Converter={StaticResource BTVIC}}" />
+                    Visibility="{Binding MachineService.IsStartedSimulator, Converter={StaticResource BTVIC}}" />
 
             <Button Margin="10"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Command="{Binding StopSimulatorCommand}"
                     Content="{x:Static res:General.StopSimulatorCommand}"
-                    IsEnabled="{Binding InverterService.IsStartedSimulator}"
+                    IsEnabled="{Binding MachineService.IsStartedSimulator}"
                     Template="{StaticResource VWSIM_ActionButton_ControlTemplate}"
-                    Visibility="{Binding InverterService.IsStartedSimulator, Converter={StaticResource BTVC}}" />
+                    Visibility="{Binding MachineService.IsStartedSimulator, Converter={StaticResource BTVC}}" />
 
             <Button Grid.Column="1"
                     Margin="10"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Command="{Binding ImportConfigurationCommand}"
-                    Content="Import configuration"
-                    IsEnabled="{Binding InverterService.IsStartedSimulator, Converter={StaticResource BNC}}"
+                    Content="{x:Static res:General.ImportConfigurationCommand}"
+                    IsEnabled="{Binding MachineService.IsStartedSimulator, Converter={StaticResource BNC}}"
                     Template="{StaticResource VWSIM_ActionButton_ControlTemplate}" />
 
 
@@ -502,7 +502,7 @@
                                        Margin="10"
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
-                                       SensorState="{Binding InverterService.IsStartedSimulator}"
+                                       SensorState="{Binding MachineService.IsStartedSimulator}"
                                        Text="{x:Static res:General.SimulatorStarted}"
                                        Visibility="Collapsed" />
 
@@ -510,7 +510,7 @@
                                        Margin="10"
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
-                                       SensorState="{Binding InverterService.RemoteIOs01.Inputs[0].Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       SensorState="{Binding MachineService.RemoteIOs01.Inputs[0].Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                        Text="Sicurezza" />
 
         </Grid>
@@ -602,15 +602,15 @@
                     </Grid.ColumnDefinitions>
 
                     <ContentControl Grid.Column="0"
-                                    DataContext="{Binding InverterService.RemoteIOs01}"
+                                    DataContext="{Binding MachineService.RemoteIOs01}"
                                     Template="{StaticResource VWSIM_Grid_IoDriver}" />
 
                     <ContentControl Grid.Column="1"
-                                    DataContext="{Binding InverterService.RemoteIOs02}"
+                                    DataContext="{Binding MachineService.RemoteIOs02}"
                                     Template="{StaticResource VWSIM_Grid_IoDriver}" />
 
                     <ContentControl Grid.Column="2"
-                                    DataContext="{Binding InverterService.RemoteIOs03}"
+                                    DataContext="{Binding MachineService.RemoteIOs03}"
                                     Template="{StaticResource VWSIM_Grid_IoDriver}" />
 
                 </Grid>
@@ -636,42 +636,42 @@
 
                     <ContentControl Grid.Row="0"
                                     Grid.Column="0"
-                                    DataContext="{Binding InverterService.Inverters00}"
+                                    DataContext="{Binding MachineService.Inverters00}"
                                     Template="{StaticResource VWSIM_Grid_Inverter}" />
 
                     <ContentControl Grid.Row="0"
                                     Grid.Column="1"
-                                    DataContext="{Binding InverterService.Inverters01}"
+                                    DataContext="{Binding MachineService.Inverters01}"
                                     Template="{StaticResource VWSIM_Grid_Inverter}" />
 
                     <ContentControl Grid.Row="0"
                                     Grid.Column="2"
-                                    DataContext="{Binding InverterService.Inverters02}"
+                                    DataContext="{Binding MachineService.Inverters02}"
                                     Template="{StaticResource VWSIM_Grid_Inverter}" />
 
                     <ContentControl Grid.Row="1"
                                     Grid.Column="0"
-                                    DataContext="{Binding InverterService.Inverters03}"
+                                    DataContext="{Binding MachineService.Inverters03}"
                                     Template="{StaticResource VWSIM_Grid_Inverter}" />
 
                     <ContentControl Grid.Row="1"
                                     Grid.Column="1"
-                                    DataContext="{Binding InverterService.Inverters04}"
+                                    DataContext="{Binding MachineService.Inverters04}"
                                     Template="{StaticResource VWSIM_Grid_Inverter}" />
 
                     <ContentControl Grid.Row="1"
                                     Grid.Column="2"
-                                    DataContext="{Binding InverterService.Inverters05}"
+                                    DataContext="{Binding MachineService.Inverters05}"
                                     Template="{StaticResource VWSIM_Grid_Inverter}" />
 
                     <ContentControl Grid.Row="2"
                                     Grid.Column="0"
-                                    DataContext="{Binding InverterService.Inverters06}"
+                                    DataContext="{Binding MachineService.Inverters06}"
                                     Template="{StaticResource VWSIM_Grid_Inverter}" />
 
                     <ContentControl Grid.Row="2"
                                     Grid.Column="1"
-                                    DataContext="{Binding InverterService.Inverters07}"
+                                    DataContext="{Binding MachineService.Inverters07}"
                                     Template="{StaticResource VWSIM_Grid_Inverter}" />
 
                 </Grid>

@@ -251,10 +251,6 @@ namespace Ferretto.VW.Simulator.Services.Models
     {
         #region Fields
 
-        public BitModel[] controlWordArray;
-
-        public double IMPULSES_ENCODER_PER_ROUND;
-
         public BitModel[] ioDevice;
 
         private const int LOWER_SPEED_Y_AXIS = 17928;
@@ -271,6 +267,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private int controlWord;
 
+        private BitModel[] controlWordArray;
+
         private Axis currentAxis;
 
         private ObservableCollection<BitModel> digitalIO = new ObservableCollection<BitModel>();
@@ -283,6 +281,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private InverterType inverterType;
 
+        private Machine machine;
+
         private InverterOperationMode operationMode;
 
         private bool shutterTimerActive;
@@ -290,10 +290,6 @@ namespace Ferretto.VW.Simulator.Services.Models
         private int statusWord;
 
         private bool targetTimerActive;
-
-        private Machine machine;
-
-        public event EventHandler<HorizontalMovementEventArgs> OnHorizontalMovementComplete;
 
         #endregion
 
@@ -377,6 +373,12 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         #endregion
 
+        #region Events
+
+        public event EventHandler<HorizontalMovementEventArgs> OnHorizontalMovementComplete;
+
+        #endregion
+
         #region Properties
 
         public double AxisPosition
@@ -429,6 +431,8 @@ namespace Ferretto.VW.Simulator.Services.Models
         public bool Enabled { get => this.enabled; set => this.SetProperty(ref this.enabled, value); }
 
         public int Id { get; set; }
+
+        public double ImpulsesEncoderPerRound { get; set; }
 
         public ICommand InverterInFaultCommand => this.inverterInFaultCommand ?? (this.inverterInFaultCommand = new DelegateCommand(() => this.InverterInFault()));
 
@@ -587,24 +591,25 @@ namespace Ferretto.VW.Simulator.Services.Models
                     switch (this.InverterRole)
                     {
                         case InverterRole.Main:
-                            this.IMPULSES_ENCODER_PER_ROUND = this.Machine.Elevator.Axes.First().Resolution;
+                            this.ImpulsesEncoderPerRound = this.Machine.Elevator.Axes.First().Resolution;
                             break;
 
                         case InverterRole.ElevatorChain:
-                            this.IMPULSES_ENCODER_PER_ROUND = this.Machine.Elevator.Axes.Last().Resolution;
+                            this.ImpulsesEncoderPerRound = this.Machine.Elevator.Axes.Last().Resolution;
                             break;
+
                         case InverterRole.Bay1:
-                            this.IMPULSES_ENCODER_PER_ROUND = this.Machine.Bays.ToArray()[0].Resolution;
+                            this.ImpulsesEncoderPerRound = this.Machine.Bays.ToArray()[0].Resolution;
                             this.Enabled = this.Machine.Bays.Any(x => x.Number == BayNumber.BayOne);
                             break;
 
                         case InverterRole.Bay2:
-                            this.IMPULSES_ENCODER_PER_ROUND = this.Machine.Bays.ToArray()[1].Resolution;
+                            this.ImpulsesEncoderPerRound = this.Machine.Bays.ToArray()[1].Resolution;
                             this.Enabled = this.Machine.Bays.Any(x => x.Number == BayNumber.BayTwo);
                             break;
 
                         case InverterRole.Bay3:
-                            this.IMPULSES_ENCODER_PER_ROUND = this.Machine.Bays.ToArray()[2].Resolution;
+                            this.ImpulsesEncoderPerRound = this.Machine.Bays.ToArray()[2].Resolution;
                             this.Enabled = this.Machine.Bays.Any(x => x.Number == BayNumber.BayThree);
                             break;
                     }
@@ -726,9 +731,9 @@ namespace Ferretto.VW.Simulator.Services.Models
                 if (this.targetTimerActive)
                 {
                     this.targetTimer.Change(-1, Timeout.Infinite);
-                    this.targetTimerActive = false;                    
+                    this.targetTimerActive = false;
                 }
-                this.statusWord &= ~0x0100;  // motion block in progress off                
+                this.statusWord &= ~0x0100;  // motion block in progress off
             }
         }
 
@@ -830,13 +835,13 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public double Impulses2millimeters(int value)
         {
-            double resolution = this.IMPULSES_ENCODER_PER_ROUND;
+            double resolution = this.ImpulsesEncoderPerRound;
             return value / resolution;
         }
 
         public int Millimeters2Impulses(double value)
         {
-            double resolution = this.IMPULSES_ENCODER_PER_ROUND;
+            double resolution = this.ImpulsesEncoderPerRound;
             return (int)Math.Round(value * resolution);
         }
 
@@ -1294,7 +1299,6 @@ namespace Ferretto.VW.Simulator.Services.Models
                 this.IsTargetReached = true;
                 this.targetTimer.Change(-1, Timeout.Infinite);
                 this.targetTimerActive = false;
-
             }
             else
             {

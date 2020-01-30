@@ -64,75 +64,20 @@ namespace Ferretto.VW.Simulator.Services
             this.heartBeatTime = DateTime.UtcNow;
             this.remoteIOs.Add(new IODeviceModel() { Id = 0 });
             this.remoteIOs.Add(new IODeviceModel() { Id = 1 });
-            this.remoteIOs.Add(new IODeviceModel() { Id = 2, Enabled = false });
+            this.remoteIOs.Add(new IODeviceModel() { Id = 2 });
 
             this.Inverters = new ObservableCollection<InverterModel>();
-            this.Inverters.Add(new InverterModel(Models.InverterType.Ang) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 0, IMPULSES_ENCODER_PER_ROUND = 77.61182 });
-            this.Inverters.Add(new InverterModel(Models.InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 1, IMPULSES_ENCODER_PER_ROUND = 77.6722 });
+            this.Inverters.Add(new InverterModel(Models.InverterType.Ang) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 0, ImpulsesEncoderPerRound = 77.61182 });
+            this.Inverters.Add(new InverterModel(Models.InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 1, ImpulsesEncoderPerRound = 77.6722 });
             this.Inverters.Add(new InverterModel(Models.InverterType.Agl) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 2 });
-            this.Inverters.Add(new InverterModel(Models.InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 3, IMPULSES_ENCODER_PER_ROUND = 369.8453 });
+            this.Inverters.Add(new InverterModel(Models.InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 3, ImpulsesEncoderPerRound = 369.8453 });
             this.Inverters.Add(new InverterModel(Models.InverterType.Agl) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 4 });
-            this.Inverters.Add(new InverterModel(Models.InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 5, IMPULSES_ENCODER_PER_ROUND = 369.8453 });
+            this.Inverters.Add(new InverterModel(Models.InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 5, ImpulsesEncoderPerRound = 369.8453 });
             this.Inverters.Add(new InverterModel(Models.InverterType.Agl) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 6, Enabled = false }); //da sistemare
             this.Inverters.Add(new InverterModel(Models.InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 7, Enabled = false }); //da sistemare
 
             this.Inverters00.OnHorizontalMovementComplete += this.OnHorizontalMovementComplete;
             this.Inverters01.OnHorizontalMovementComplete += this.OnHorizontalMovementComplete;
-
-        }
-
-        private void OnHorizontalMovementComplete(object sender, HorizontalMovementEventArgs e)
-        {
-            if (this.Machine == null)
-            {
-                return;
-            }
-
-            var bay = this.Machine.Bays.FirstOrDefault(x => x.Positions.Any(y => Math.Abs(y.Height - this.Inverters00.AxisPositionY - this.Machine.Elevator.Axes.First().Offset) <= 2));
-            if (bay != null)
-            {
-                bool isCarousel = bay.Carousel != null;
-
-                var bayPosition = bay.Positions.FirstOrDefault(x => Math.Abs(x.Height - this.Inverters00.AxisPositionY - this.Machine.Elevator.Axes.First().Offset) <= 2);
-                if (bayPosition != null)
-                {
-                    Debug.WriteLine($"{bay.Number} {bayPosition.IsUpper}");
-
-                    switch (bay.Number)
-                    {
-                        case BayNumber.BayOne:
-                            if (bayPosition.IsUpper)
-                            {
-                                this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading ? true : false;
-                            }
-                            else
-                            {
-                                this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = (isCarousel && e.IsLoading) ? false : true;
-                            }
-                            break;
-                        case BayNumber.BayTwo:
-                            if (bayPosition.IsUpper)
-                            {
-                                this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading ? true : false;
-                            }
-                            else
-                            {
-                                this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = (isCarousel && e.IsLoading) ? false : true;
-                            }
-                            break;
-                        case BayNumber.BayThree:
-                            if (bayPosition.IsUpper)
-                            {
-                                this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading ? true : false;
-                            }
-                            else
-                            {
-                                this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = (isCarousel && e.IsLoading) ? false : true;
-                            }
-                            break;
-                    }
-                }
-            }
         }
 
         #endregion
@@ -346,6 +291,62 @@ namespace Ferretto.VW.Simulator.Services
                 }
                 catch (SocketException)
                 {
+                }
+            }
+        }
+
+        private void OnHorizontalMovementComplete(object sender, HorizontalMovementEventArgs e)
+        {
+            if (this.Machine == null)
+            {
+                return;
+            }
+
+            var bay = this.Machine.Bays.FirstOrDefault(x => x.Positions.Any(y => Math.Abs(y.Height - this.Inverters00.AxisPositionY - this.Machine.Elevator.Axes.First().Offset) <= 2));
+            if (bay != null)
+            {
+                bool isCarousel = bay.Carousel != null;
+
+                var bayPosition = bay.Positions.FirstOrDefault(x => Math.Abs(x.Height - this.Inverters00.AxisPositionY - this.Machine.Elevator.Axes.First().Offset) <= 2);
+                if (bayPosition != null)
+                {
+                    Debug.WriteLine($"{bay.Number} {bayPosition.IsUpper}");
+
+                    switch (bay.Number)
+                    {
+                        case BayNumber.BayOne:
+                            if (bayPosition.IsUpper)
+                            {
+                                this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading ? true : false;
+                            }
+                            else
+                            {
+                                this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = (isCarousel && e.IsLoading) ? false : true;
+                            }
+                            break;
+
+                        case BayNumber.BayTwo:
+                            if (bayPosition.IsUpper)
+                            {
+                                this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading ? true : false;
+                            }
+                            else
+                            {
+                                this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = (isCarousel && e.IsLoading) ? false : true;
+                            }
+                            break;
+
+                        case BayNumber.BayThree:
+                            if (bayPosition.IsUpper)
+                            {
+                                this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading ? true : false;
+                            }
+                            else
+                            {
+                                this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = (isCarousel && e.IsLoading) ? false : true;
+                            }
+                            break;
+                    }
                 }
             }
         }
