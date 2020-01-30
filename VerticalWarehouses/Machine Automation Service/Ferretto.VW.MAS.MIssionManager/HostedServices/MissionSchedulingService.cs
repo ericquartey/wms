@@ -303,6 +303,7 @@ namespace Ferretto.VW.MAS.MissionManager
                                 MessageActor.MissionManager,
                                 MessageType.Homing,
                                 bayNumber));
+                    this.Logger.LogDebug($"GenerateHoming: bay {bayNumber}");
                     generated = true;
                 }
             }
@@ -320,6 +321,7 @@ namespace Ferretto.VW.MAS.MissionManager
                             MessageActor.MissionManager,
                             MessageType.Homing,
                             BayNumber.BayOne));
+                this.Logger.LogDebug($"GenerateHoming: Elevator");
                 generated = true;
             }
             return generated;

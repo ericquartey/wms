@@ -189,7 +189,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Mission.ErrorMovements |= MissionErrorMovements.MoveShutterClosed;
                 this.MissionsDataProvider.Update(this.Mission);
             }
-            else if (destination.LoadingUnit is null
+            else if ((destination.LoadingUnit is null || destination.LoadingUnit.Id == this.Mission.LoadUnitId)
                 && this.SensorsProvider.IsLoadingUnitInLocation(destination.Location)
                 && this.LoadingUnitMovementProvider.IsOnlyTopPositionOccupied(this.Mission.TargetBay)
                 )

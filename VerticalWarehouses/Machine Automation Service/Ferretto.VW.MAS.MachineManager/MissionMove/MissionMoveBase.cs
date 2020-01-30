@@ -329,7 +329,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
                 if (bay != null
+#if CHECK_BAY_SENSOR
                     && this.LoadingUnitMovementProvider.CheckBaySensors(bay, this.Mission.LoadUnitDestination, deposit: true) == MachineErrorCode.NoError
+#endif
                     )
                 {
                     this.Mission.NeedHomingAxis = Axis.None;

@@ -139,10 +139,18 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         {
                             if (messageData.AxisToCalibrate == Axis.BayChain)
                             {
-                                this.Mission.NeedHomingAxis = Axis.Horizontal;
-                                this.MissionsDataProvider.Update(this.Mission);
-                                this.Logger.LogDebug($"Homing elevator free start");
-                                this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, notification.RequestingBay, MessageActor.MachineManager);
+                                if (!this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
+                                {
+                                    this.Mission.NeedHomingAxis = Axis.Horizontal;
+                                    this.MissionsDataProvider.Update(this.Mission);
+                                    this.Logger.LogDebug($"Homing elevator free start");
+                                    this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, notification.RequestingBay, MessageActor.MachineManager);
+                                }
+                                else
+                                {
+                                    this.Mission.NeedHomingAxis = Axis.None;
+                                    this.BayChainEnd();
+                                }
                             }
                             else if (this.Mission.NeedHomingAxis == Axis.Horizontal)
                             {
