@@ -5,10 +5,13 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using DevExpress.XtraPrinting.Native;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
+using Prism.Events;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
@@ -17,6 +20,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Fields
 
         private readonly IBayManager bayManager;
+
+        private readonly IEventAggregator eventAggregator;
 
         private readonly ILoadingUnitsWmsWebService loadingUnitsWmsWebService;
 
@@ -34,11 +39,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private int currentItemIndex;
 
+        private int? currentLoadingUnitId;
+
         private bool isBusyConfirmingOperation;
 
         private bool isBusyConfirmingRecallOperation;
 
         private bool isListVisibile;
+
+        private bool isNewOperationAvailable;
 
         private DelegateCommand itemCompartmentDownCommand;
 
@@ -56,6 +65,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private double loadingUnitWidth;
 
+        private SubscriptionToken missionOperationToken;
+
+        private int? newLoadingUnitId;
+
         private TrayControlCompartment selectedCompartment;
 
         private CompartmentDetails selectedItem;
@@ -69,9 +82,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public BaseLoadingUnitViewModel(
             IBayManager bayManager,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-            WMS.Data.WebAPI.Contracts.ILoadingUnitsWmsWebService loadingUnitsWmsWebService)
+            ILoadingUnitsWmsWebService loadingUnitsWmsWebService,
+            IEventAggregator eventAggregator)
             : base(PresentationMode.Operator)
         {
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.loadingUnitsWmsWebService = loadingUnitsWmsWebService;
@@ -81,8 +96,27 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Properties
 
+        public bool CanReset
+        {
+            get
+            {
+                if (this.IsNewLoadingUnit
+                    &&
+                    !this.isNewOperationAvailable
+                    &&
+                    !this.IsBusyConfirmingOperation
+                    &&
+                    !this.IsBusyConfirmingRecallOperation)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
         public ICommand ChangeModeListCommand =>
-            this.changeModeListCommand
+                    this.changeModeListCommand
             ??
             (this.changeModeListCommand = new DelegateCommand(() => this.ChangeMode(), this.CanChangeListMode));
 
@@ -96,6 +130,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             get => this.compartments;
             set => this.SetProperty(ref this.compartments, value);
         }
+
+        public string ConfirmOperationInfo => this.isNewOperationAvailable ? OperatorApp.ConfirmAndNewOperationsAvailable : OperatorApp.Confirm;
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -118,6 +154,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             get => this.isListVisibile;
             set => this.SetProperty(ref this.isListVisibile, value, this.RaiseCanExecuteChanged);
         }
+
+        public bool IsNewLoadingUnit => this.currentLoadingUnitId != this.newLoadingUnitId;
 
         public ICommand ItemCompartmentDownCommand =>
               this.itemCompartmentDownCommand
@@ -164,6 +202,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             get => this.loadingUnitWidth;
             set => this.SetProperty(ref this.loadingUnitWidth, value, this.RaiseCanExecuteChanged);
         }
+
+        public string RecallLoadingUnitInfo => this.isNewOperationAvailable ? OperatorApp.NewOperationsAvailable : OperatorApp.RecallDrawer;
 
         public TrayControlCompartment SelectedCompartment
         {
@@ -223,18 +263,33 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.SelectItemCompartment();
         }
 
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            if (this.missionOperationToken != null)
+            {
+                this.EventAggregator.GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>().Unsubscribe(this.missionOperationToken);
+                this.missionOperationToken?.Dispose();
+                this.missionOperationToken = null;
+            }
+        }
+
         public async override Task OnAppearedAsync()
         {
-            if (!this.isBusyConfirmingOperation
-                &&
-                !this.IsBusyConfirmingRecallOperation)
+            this.missionOperationToken = this.eventAggregator.GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>()
+                                 .Subscribe(this.MissionOperationUpdate);
+
+            this.bay = await this.bayManager.GetBayAsync();
+
+            this.newLoadingUnitId = this.GetLoadingUnitId();
+
+            if (this.CanReset)
             {
                 this.Reset();
             }
 
             await base.OnAppearedAsync();
-
-            this.bay = await this.bayManager.GetBayAsync();
 
             if (this.Data is int loadingUnitId)
             {
@@ -367,6 +422,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.IsListVisibile = !this.IsListVisibile;
         }
 
+        private int? GetLoadingUnitId()
+        {
+            var loadingUnit = this.bay.Positions.Where(p => !(p.LoadingUnit is null)).OrderByDescending(p => p.Height).Select(p => p.LoadingUnit).FirstOrDefault();
+            return loadingUnit?.Id;
+        }
+
         private bool ItemCanDown()
         {
             if (this.items is null)
@@ -400,6 +461,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.currentItemCompartmentIndex > 0;
         }
 
+        private void MissionOperationUpdate(AssignedMissionOperationChangedEventArgs e)
+        {
+            if (e.MissionOperationId.HasValue)
+            {
+                this.isNewOperationAvailable = true;
+            }
+        }
+
         private void Reset()
         {
             this.currentItemCompartmentIndex = 0;
@@ -408,6 +477,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.SelectedItemCompartment = null;
             this.SelectedCompartment = null;
             this.SelectedItem = null;
+            this.currentLoadingUnitId = this.newLoadingUnitId;
+            this.isNewOperationAvailable = false;
         }
 
         private void SelectItemCompartment()
