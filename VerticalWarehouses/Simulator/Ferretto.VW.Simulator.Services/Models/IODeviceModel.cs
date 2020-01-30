@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Prism.Mvvm;
 
@@ -76,6 +77,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private List<BitModel> outputs;
 
+        private Machine machine;
+
         #endregion
 
         #region Constructors
@@ -146,7 +149,32 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
         }
 
-        public Machine Machine { get; set; }
+        public Machine Machine
+        {
+            get { return this.machine; }
+            set
+            {
+                this.machine = value;
+
+                if (this.Machine != null)
+                {
+                    switch (this.Id)
+                    {
+                        case 0:
+                            this.Enabled = this.Machine.Bays.Any(x => x.Number == BayNumber.BayOne);
+                            break;
+
+                        case 1:
+                            this.Enabled = this.Machine.Bays.Any(x => x.Number == BayNumber.BayTwo);
+                            break;
+
+                        case 2:
+                            this.Enabled = this.Machine.Bays.Any(x => x.Number == BayNumber.BayThree);
+                            break;
+                    }
+                }
+            }
+        }
 
         public List<BitModel> Outputs
         {

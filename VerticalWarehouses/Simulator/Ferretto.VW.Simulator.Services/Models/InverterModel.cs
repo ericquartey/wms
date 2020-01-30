@@ -291,6 +291,10 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private bool targetTimerActive;
 
+        private Machine machine;
+
+        public event EventHandler<HorizontalMovementEventArgs> OnHorizontalMovementComplete;
+
         #endregion
 
         #region Constructors
@@ -571,7 +575,42 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public bool IsWarning2 => (this.statusWord & 0x8000) > 0;
 
-        public Machine Machine { get; set; }
+        public Machine Machine
+        {
+            get { return this.machine; }
+            set
+            {
+                this.machine = value;
+
+                if (this.Machine != null)
+                {
+                    switch (this.InverterRole)
+                    {
+                        case InverterRole.Main:
+                            this.IMPULSES_ENCODER_PER_ROUND = this.Machine.Elevator.Axes.First().Resolution;
+                            break;
+
+                        case InverterRole.ElevatorChain:
+                            this.IMPULSES_ENCODER_PER_ROUND = this.Machine.Elevator.Axes.Last().Resolution;
+                            break;
+                        case InverterRole.Bay1:
+                            this.IMPULSES_ENCODER_PER_ROUND = this.Machine.Bays.ToArray()[0].Resolution;
+                            this.Enabled = this.Machine.Bays.Any(x => x.Number == BayNumber.BayOne);
+                            break;
+
+                        case InverterRole.Bay2:
+                            this.IMPULSES_ENCODER_PER_ROUND = this.Machine.Bays.ToArray()[1].Resolution;
+                            this.Enabled = this.Machine.Bays.Any(x => x.Number == BayNumber.BayTwo);
+                            break;
+
+                        case InverterRole.Bay3:
+                            this.IMPULSES_ENCODER_PER_ROUND = this.Machine.Bays.ToArray()[2].Resolution;
+                            this.Enabled = this.Machine.Bays.Any(x => x.Number == BayNumber.BayThree);
+                            break;
+                    }
+                }
+            }
+        }
 
         public InverterOperationMode OperationMode
         {
@@ -687,9 +726,9 @@ namespace Ferretto.VW.Simulator.Services.Models
                 if (this.targetTimerActive)
                 {
                     this.targetTimer.Change(-1, Timeout.Infinite);
-                    this.targetTimerActive = false;
+                    this.targetTimerActive = false;                    
                 }
-                this.statusWord &= ~0x0100;  // motion block in progress off
+                this.statusWord &= ~0x0100;  // motion block in progress off                
             }
         }
 
@@ -791,12 +830,14 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public double Impulses2millimeters(int value)
         {
-            return value / this.IMPULSES_ENCODER_PER_ROUND;
+            double resolution = this.IMPULSES_ENCODER_PER_ROUND;
+            return value / resolution;
         }
 
         public int Millimeters2Impulses(double value)
         {
-            return (int)Math.Round(value * this.IMPULSES_ENCODER_PER_ROUND);
+            double resolution = this.IMPULSES_ENCODER_PER_ROUND;
+            return (int)Math.Round(value * resolution);
         }
 
         public BitModel[] RefreshControlWordArray()
@@ -1246,12 +1287,14 @@ namespace Ferretto.VW.Simulator.Services.Models
                 {
                     // simulate positioning error
                     //this.AxisPosition += (short)(new Random().Next(-3, 3));
+                    OnHorizontalMovementComplete?.Invoke(this, new HorizontalMovementEventArgs() { IsLoading = !this.IsStartedOnBoard });
                 }
                 this.ControlWord &= 0xFFEF;     // Reset Rfg Enable Signal
                 this.StatusWord |= 0x1000;      // Set Point Ack
                 this.IsTargetReached = true;
                 this.targetTimer.Change(-1, Timeout.Infinite);
                 this.targetTimerActive = false;
+
             }
             else
             {
