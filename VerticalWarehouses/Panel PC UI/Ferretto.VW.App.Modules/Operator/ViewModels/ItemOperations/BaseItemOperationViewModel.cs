@@ -144,7 +144,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         protected async Task RetrieveMissionOperationAsync()
         {
             var newMissionOperation = this.MissionOperationsService.CurrentMissionOperation;
-            if (this.MissionOperation.Type != newMissionOperation?.Type)
+            if (this.MissionOperation?.Type != newMissionOperation?.Type)
             {
                 this.Logger.Debug("A new mission operation is available but its type is different from the current one ...");
                 return;
