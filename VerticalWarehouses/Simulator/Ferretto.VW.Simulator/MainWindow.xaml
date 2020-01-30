@@ -47,9 +47,10 @@
 
         <ControlTemplate x:Key="VWSIM_Grid_IoDriver">
             <Border Width="420"
+                    Background="{StaticResource FerrettoMediumGray}"
                     Style="{StaticResource ResourceKey=VWSIM_Border_IoDriver}">
                 <Grid Margin="-1"
-                      Background="{StaticResource FerrettoMediumGray}">
+                      Visibility="{Binding Enabled, Converter={StaticResource BTVC}}">
 
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -79,7 +80,7 @@
                                    Grid.Column="1"
                                    VerticalAlignment="Center"
                                    Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
-                                   Text="{Binding Id, StringFormat='IO DEVICE 0{0}'}"
+                                   Text="{Binding Id, StringFormat='IO DEVICE {0:00}'}"
                                    ToolTip="Id" />
 
                         <Grid Grid.Row="1"
