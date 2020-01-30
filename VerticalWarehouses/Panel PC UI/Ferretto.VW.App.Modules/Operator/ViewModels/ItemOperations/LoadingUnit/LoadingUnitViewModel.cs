@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Resources;
@@ -189,7 +190,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             try
             {
                 this.IsBusyConfirmingRecallOperation = true;
-                this.isWaitingForResponse = true;
+                this.IsWaitingForNewOperation = true;
                 await this.machineLoadingUnitsWebService.RemoveFromBayAsync(this.LoadingUnit.Id);
 
                 this.NavigationService.GoBack();
@@ -232,7 +233,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private bool CanConfirmOperation()
         {
-            return !this.isWaitingForResponse
+            return !this.IsWaitingForNewOperation
                    &&
                    this.InputQuantity.HasValue
                    &&
@@ -245,7 +246,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             return !(this.SelectedItem is null)
                    &&
-                   !this.isWaitingForResponse
+                   !this.IsWaitingForNewOperation
                    &&
                    !this.IsBusyConfirmingRecallOperation
                    &&
@@ -255,13 +256,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
         private bool CanRecallLoadingUnit()
         {
             return
-                !this.isWaitingForResponse
+                !this.IsWaitingForNewOperation
                 &&
                 !this.IsBusyConfirmingOperation
                 &&
                 !this.IsBusyConfirmingRecallOperation
-                &&
-                !this.IsWaitingForResponse
                 &&
                 !(this.LoadingUnit is null);
         }
@@ -274,13 +273,13 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
                 if (this.IsPickVisible)
                 {
-                    this.isWaitingForResponse = true;
+                    this.IsWaitingForNewOperation = true;
                     await this.wmsDataProvider.PickAsync(this.SelectedItem.ItemId.Value,
                                                          this.InputQuantity.Value);
                 }
                 else if (this.IsPutVisible)
                 {
-                    this.isWaitingForResponse = true;
+                    this.IsWaitingForNewOperation = true;
                     await this.wmsDataProvider.PutAsync(this.SelectedItem.ItemId.Value,
                                                         this.InputQuantity.Value);
                 }
@@ -293,7 +292,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
                     };
 
                     var newItemCompartment = await this.compartmentsWmsWebService.UpdateAsync(compartment, this.SelectedItemCompartment.Id);
-                    this.SelectedItemCompartment.Stock = newItemCompartment.Stock;
+
+                    await this.ResetLoadData();
                 }
             }
             catch (Exception ex)
