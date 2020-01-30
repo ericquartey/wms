@@ -326,7 +326,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             await base.OnMachineModeChangedAsync(e);
 
-            if (e.MachineMode == MachineMode.SwitchingToAutomatic)
+            if (e.MachineMode == MachineMode.SwitchingToAutomatic
+                || e.MachineMode == MachineMode.Restore)
             {
                 this.GoToMovementsExecuteCommand(true);
                 this.goToMovementsManualCommand?.RaiseCanExecuteChanged();
@@ -592,7 +593,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.IsKeyboardOpened = true;
 
-            var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, this.Title, DialogType.Question, DialogButtons.YesNo);
+            var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Reset macchina", DialogType.Question, DialogButtons.YesNo);
             if (messageBoxResult is DialogResult.Yes)
             {
                 try

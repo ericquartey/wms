@@ -171,8 +171,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     break;
             }
-            this.MachineVolatileDataProvider.Mode = MachineMode.SwitchingToManual;
-            this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
         }
 
         /// <summary>

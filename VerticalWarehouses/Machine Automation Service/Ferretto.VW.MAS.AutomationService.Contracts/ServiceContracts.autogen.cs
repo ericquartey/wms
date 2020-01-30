@@ -398,18 +398,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<double> GetVerticalOffsetAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<decimal> GetVerticalResolutionAsync();
+        System.Threading.Tasks.Task<double> GetVerticalResolutionAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<decimal> GetVerticalResolutionAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<double> GetVerticalResolutionAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> UpdateVerticalResolutionAsync(decimal newResolution);
+        System.Threading.Tasks.Task<FileResponse> UpdateVerticalResolutionAsync(double newResolution);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> UpdateVerticalResolutionAsync(decimal newResolution, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<FileResponse> UpdateVerticalResolutionAsync(double newResolution, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task LoadFromBayAsync(int bayPositionId);
@@ -842,11 +842,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineVerticalResolutionCalibrationProcedureWebService
     {
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<decimal> GetAdjustedResolutionAsync(double measuredDistance, double expectedDistance);
+        System.Threading.Tasks.Task<double> GetAdjustedResolutionAsync(double measuredDistance, double expectedDistance);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<decimal> GetAdjustedResolutionAsync(double measuredDistance, double expectedDistance, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<double> GetAdjustedResolutionAsync(double measuredDistance, double expectedDistance, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<VerticalResolutionCalibrationProcedure> GetParametersAsync();
@@ -2542,7 +2542,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public System.Collections.Generic.IEnumerable<MovementProfile> Profiles { get; set; }
     
         [Newtonsoft.Json.JsonProperty("resolution", Required = Newtonsoft.Json.Required.Always)]
-        public decimal Resolution { get; set; }
+        public double Resolution { get; set; }
     
         [Newtonsoft.Json.JsonProperty("totalCycles", Required = Newtonsoft.Json.Required.Always)]
         public int TotalCycles { get; set; }
@@ -3609,7 +3609,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public double Offset { get; set; }
     
         [Newtonsoft.Json.JsonProperty("resolution", Required = Newtonsoft.Json.Required.Always)]
-        public decimal Resolution { get; set; }
+        public double Resolution { get; set; }
     
         [Newtonsoft.Json.JsonProperty("upperBound", Required = Newtonsoft.Json.Required.Always)]
         public double UpperBound { get; set; }
@@ -3639,11 +3639,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         Compact = 4,
     
-        SwitchingToAutomatic = 5,
+        Restore = 5,
     
-        SwitchingToManual = 6,
+        SwitchingToAutomatic = 6,
     
-        SwitchingToCompact = 7,
+        SwitchingToManual = 7,
+    
+        SwitchingToCompact = 8,
     
     }
     

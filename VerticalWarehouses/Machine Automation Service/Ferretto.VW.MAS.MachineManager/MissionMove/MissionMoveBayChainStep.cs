@@ -125,6 +125,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                             if (this.Mission.NeedHomingAxis == Axis.BayChain)
                             {
+                                this.MissionsDataProvider.Update(this.Mission);
                                 this.Logger.LogDebug($"Homing Bay occupied start");
                                 this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, notification.RequestingBay, MessageActor.MachineManager);
                             }
@@ -143,7 +144,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 this.Logger.LogDebug($"Homing elevator free start");
                                 this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, notification.RequestingBay, MessageActor.MachineManager);
                             }
-                            else
+                            else if (this.Mission.NeedHomingAxis == Axis.Horizontal)
                             {
                                 this.MachineVolatileDataProvider.IsHomingExecuted = true;
                                 this.BayChainEnd();
@@ -189,6 +190,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 try
                 {
+                    this.Mission.Status = MissionStatus.Executing;
+                    this.MissionsDataProvider.Update(this.Mission);
+                    this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
+
                     this.LoadingUnitMovementProvider.MoveCarousel(this.Mission.LoadUnitId, MessageActor.MachineManager, bay.Number, false);
                     this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationStart);
                 }

@@ -216,6 +216,7 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Missions
+                    .AsNoTracking()
                     .Where(x => x.Status != MissionStatus.Completed
                         && x.Status != MissionStatus.Aborted)
                     .OrderBy(o => o.Priority)

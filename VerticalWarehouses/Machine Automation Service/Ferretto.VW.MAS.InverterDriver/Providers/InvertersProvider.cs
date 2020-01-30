@@ -22,6 +22,8 @@ namespace Ferretto.VW.MAS.InverterDriver
     {
         #region Fields
 
+        private static IEnumerable<IInverterStatusBase> inverters;
+
         private readonly IBaysDataProvider baysDataProvider;
 
         private readonly IDigitalDevicesDataProvider digitalDevicesDataProvider;
@@ -35,8 +37,6 @@ namespace Ferretto.VW.MAS.InverterDriver
         private readonly IMachineProvider machineProvider;
 
         private readonly IServiceScopeFactory serviceScopeFactory;
-
-        private static IEnumerable<IInverterStatusBase> inverters;
 
         #endregion
 
@@ -123,12 +123,12 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (position < axis.LowerBound)
                 {
-                    this.errorsProvider.RecordNew(DataModels.MachineErrorCode.DestinationBelowLowerBound, this.baysDataProvider.GetByInverterIndex(inverter.SystemIndex));
+                    this.errorsProvider.RecordNew(MachineErrorCode.DestinationBelowLowerBound, this.baysDataProvider.GetByInverterIndex(inverter.SystemIndex));
                     throw new InvalidOperationException($"The requested position ({position}) is less than the axis lower bound ({axis.LowerBound}).");
                 }
                 if (position > axis.UpperBound)
                 {
-                    this.errorsProvider.RecordNew(DataModels.MachineErrorCode.DestinationOverUpperBound, this.baysDataProvider.GetByInverterIndex(inverter.SystemIndex));
+                    this.errorsProvider.RecordNew(MachineErrorCode.DestinationOverUpperBound, this.baysDataProvider.GetByInverterIndex(inverter.SystemIndex));
                     throw new InvalidOperationException($"The requested position ({position}) is greater than the axis upper bound ({axis.UpperBound}).");
                 }
 
@@ -222,7 +222,12 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             var axis = this.elevatorDataProvider.GetAxis(orientation);
 
-            return (int)Math.Round(axis.Resolution * (decimal)millimeters);
+            return (int)Math.Round(axis.Resolution * millimeters);
+        }
+
+        public int ConvertMillimetersToPulses(double millimeters, IInverterStatusBase inverter)
+        {
+            return (int)Math.Round(this.baysDataProvider.GetResolution(inverter.SystemIndex) * millimeters);
         }
 
         public double ConvertPulsesToMillimeters(int pulses, Orientation orientation)
@@ -240,7 +245,25 @@ namespace Ferretto.VW.MAS.InverterDriver
                     $"Configured {orientation} axis resolution is zero, therefore it is not possible to convert pulses to millimeters.");
             }
 
-            return (double)(pulses / axis.Resolution);
+            return pulses / axis.Resolution;
+        }
+
+        public double ConvertPulsesToMillimeters(int pulses, IInverterStatusBase inverter)
+        {
+            if (pulses == 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(pulses), "Pulses must be different from zero.");
+            }
+
+            var resolution = this.baysDataProvider.GetResolution(inverter.SystemIndex);
+
+            if (resolution == 0)
+            {
+                throw new InvalidOperationException(
+                    $"Configured inverter {inverter.SystemIndex} encoder resolution is zero, therefore it is not possible to convert pulses to millimeters.");
+            }
+
+            return (pulses / resolution);
         }
 
         public IEnumerable<IInverterStatusBase> GetAll()
@@ -324,29 +347,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                 64 * (m + 1) * (grossWeight * Math.Pow(properties.PulleyDiameter, 2) * properties.HalfShaftLength)
                 /
                 (Math.PI * Math.Pow(properties.ShaftDiameter, 4) * m * properties.ShaftElasticity);
-        }
-
-        private int ConvertMillimetersToPulses(double millimeters, IInverterStatusBase inverter)
-        {
-            return (int)Math.Round(this.baysDataProvider.GetResolution(inverter.SystemIndex) * millimeters);
-        }
-
-        private double ConvertPulsesToMillimeters(int pulses, IInverterStatusBase inverter)
-        {
-            if (pulses == 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(pulses), "Pulses must be different from zero.");
-            }
-
-            var resolution = Math.Round(this.baysDataProvider.GetResolution(inverter.SystemIndex));
-
-            if (resolution == 0)
-            {
-                throw new InvalidOperationException(
-                    $"Configured inverter {inverter.SystemIndex} encoder resolution is zero, therefore it is not possible to convert pulses to millimeters.");
-            }
-
-            return pulses / resolution;
         }
 
         private void OnDataLayerReady()

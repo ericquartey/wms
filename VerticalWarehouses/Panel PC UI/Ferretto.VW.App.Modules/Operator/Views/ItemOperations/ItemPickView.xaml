@@ -9,6 +9,7 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:wpf="clr-namespace:Ferretto.Common.Controls.WPF;assembly=Ferretto.Common.Controls.WPF"
             d:DesignHeight="450"
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
@@ -27,7 +28,22 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static resources:OperatorApp.DrawerActivityPickingPageHeader}" />
 
-        <localControls:LoadingUnitControlView Grid.Row="1" />
+        <wpf:TrayControl Name="TrayControl"
+                         Grid.Row="1"
+                         Margin="0"
+                         HorizontalAlignment="Stretch"
+                         VerticalAlignment="Stretch"
+                         Compartments="{Binding Compartments}"
+                         DefaultCompartmentColor="#444444"
+                         DimensionHeight="{Binding LoadingUnitDepth}"
+                         DimensionWidth="{Binding LoadingUnitWidth}"
+                         GridLinesColor="#3c3c3c"
+                         IsEnabled="False"
+                         IsRotated="{Binding IsBaySideBack}"
+                         SelectedColorFilterFunc="{Binding CompartmentColoringFunction}"
+                         SelectedItem="{Binding SelectedCompartment, Mode=TwoWay}"
+                         ShowBackground="False"
+                         ShowRuler="False" />
 
 
         <Grid Grid.Row="2"
@@ -67,12 +83,11 @@
                                Margin="0,0,10,0"
                                HorizontalAlignment="Right"
                                VerticalAlignment="Top"
-                               Increment="{Binding QuantityIncrement}"
-                               Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
                                EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               Increment="{Binding QuantityIncrement}"
                                IsEnabled="{Binding CanInputQuantity}"
                                LabelText="{Binding MeasureUnit, StringFormat={x:Static resources:OperatorApp.PickedQuantity}}"
-                                />
+                               Mask="{Binding QuantityTolerance, StringFormat=F{0}}" />
 
             <StackPanel Grid.Row="4"
                         Grid.ColumnSpan="4"

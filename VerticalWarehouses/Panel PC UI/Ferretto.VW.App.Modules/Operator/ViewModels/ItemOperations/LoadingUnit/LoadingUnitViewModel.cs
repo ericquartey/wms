@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 using Prism.Events;
@@ -16,11 +14,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
     {
         #region Fields
 
-        public double inputQuantity;
+        public double? inputQuantity;
 
         private readonly ICompartmentsWmsWebService compartmentsWmsWebService;
-
-        private readonly IEventAggregator eventAggregator;
 
         private readonly IItemsWmsWebService itemsWmsWebService;
 
@@ -34,13 +30,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private DelegateCommand confirmOperationCommand;
 
-        private int? currentLoadingUnitId;
-
         private string inputQuantityInfo;
 
         private bool isAdjustmentVisible;
-
-        private bool isNewOperationAvailable;
 
         private bool isOperationVisible;
 
@@ -49,8 +41,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         private bool isPutVisible;
 
         private string measureUnit;
-
-        private SubscriptionToken missionOperationToken;
 
         private DelegateCommand<string> operationCommand;
 
@@ -73,13 +63,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
             ILoadingUnitsWmsWebService loadingUnitsWmsWebService,
             IEventAggregator eventAggregator,
             IWmsDataProvider wmsDataProvider)
-            : base(bayManager, machineLoadingUnitsWebService, loadingUnitsWmsWebService)
+            : base(bayManager, machineLoadingUnitsWebService, loadingUnitsWmsWebService, eventAggregator)
         {
             this.itemsWmsWebService = itemsWmsWebService ?? throw new ArgumentNullException(nameof(itemsWmsWebService));
             this.compartmentsWmsWebService = compartmentsWmsWebService ?? throw new ArgumentNullException(nameof(compartmentsWmsWebService));
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.missionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
-            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
         }
 
@@ -98,12 +87,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 ??
                 (this.confirmOperationCommand = new DelegateCommand(async () => await this.ConfirmOperationAsync(), this.CanConfirmOperation));
 
-        public string ConfirmOperationInfo => this.isNewOperationAvailable ? OperatorApp.ConfirmAndNewOperationsAvailable : OperatorApp.Confirm;
-
-        public double InputQuantity
+        public double? InputQuantity
         {
             get => this.inputQuantity;
-            set => this.SetProperty(ref this.inputQuantity, value);
+            set => this.SetProperty(ref this.inputQuantity, value, this.RaiseCanExecuteChanged);
         }
 
         public string InputQuantityInfo
@@ -117,6 +104,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             get => this.isAdjustmentVisible;
             set => this.SetProperty(ref this.isAdjustmentVisible, value);
         }
+
+        public bool IsItemStockVisible => this.isPickVisible || this.isPutVisible;
 
         public bool IsOperationVisible
         {
@@ -172,37 +161,18 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 async () => await this.RecallLoadingUnitAsync(),
                 this.CanRecallLoadingUnit));
 
-        public string RecallLoadingUnitInfo => this.isNewOperationAvailable ? OperatorApp.NewOperationsAvailable : OperatorApp.RecallDrawer;
-
         #endregion
 
         #region Methods
 
-        public override void Disappear()
-        {
-            base.Disappear();
-
-            if (this.missionOperationToken != null)
-            {
-                this.EventAggregator.GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>().Unsubscribe(this.missionOperationToken);
-                this.missionOperationToken?.Dispose();
-                this.missionOperationToken = null;
-            }
-        }
-
         public async override Task OnAppearedAsync()
         {
-            this.missionOperationToken = this.eventAggregator.GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>()
-                                             .Subscribe(this.MissionOperationUpdate);
-
-            var loadingUnitId = await this.GetLoadingUnitId();
-
-            if (this.CanResetOperations(loadingUnitId))
-            {
-                this.ResetOperations(loadingUnitId);
-            }
-
             await base.OnAppearedAsync();
+
+            if (this.CanReset)
+            {
+                this.ResetOperations();
+            }
         }
 
         public override void RaisePropertyChanged()
@@ -211,6 +181,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             this.RaisePropertyChanged(nameof(this.RecallLoadingUnitInfo));
             this.RaisePropertyChanged(nameof(this.ConfirmOperationInfo));
+            this.RaisePropertyChanged(nameof(this.IsItemStockVisible));
         }
 
         public async Task RecallLoadingUnitAsync()
@@ -233,6 +204,16 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
         }
 
+        public override void ResetOperations()
+        {
+            base.ResetOperations();
+
+            this.IsOperationVisible = false;
+            this.IsPickVisible = false;
+            this.IsPutVisible = false;
+            this.IsAdjustmentVisible = false;
+        }
+
         protected async override Task OnMachineModeChangedAsync(MAS.AutomationService.Contracts.Hubs.MachineModeChangedEventArgs e)
         {
             await base.OnMachineModeChangedAsync(e);
@@ -252,6 +233,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
         private bool CanConfirmOperation()
         {
             return !this.isWaitingForResponse
+                   &&
+                   this.InputQuantity.HasValue
                    &&
                    !this.IsBusyConfirmingRecallOperation
                    &&
@@ -283,22 +266,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 !(this.LoadingUnit is null);
         }
 
-        private bool CanResetOperations(int? newLoadingUnitId)
-        {
-            if (this.currentLoadingUnitId != newLoadingUnitId
-                &&
-                !this.isNewOperationAvailable
-                &&
-                !this.IsBusyConfirmingOperation
-                &&
-                !this.IsBusyConfirmingRecallOperation)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
         private async Task ConfirmOperationAsync()
         {
             try
@@ -308,21 +275,21 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 if (this.IsPickVisible)
                 {
                     this.isWaitingForResponse = true;
-                    await this.wmsDataProvider.PickAsync(this.SelectedItem.Id,
-                                                         this.InputQuantity);
+                    await this.wmsDataProvider.PickAsync(this.SelectedItem.ItemId.Value,
+                                                         this.InputQuantity.Value);
                 }
                 else if (this.IsPutVisible)
                 {
                     this.isWaitingForResponse = true;
-                    await this.wmsDataProvider.PutAsync(this.SelectedItem.Id,
-                                                        this.InputQuantity);
+                    await this.wmsDataProvider.PutAsync(this.SelectedItem.ItemId.Value,
+                                                        this.InputQuantity.Value);
                 }
                 else if (this.IsAdjustmentVisible)
                 {
                     var compartment = new CompartmentDetails()
                     {
                         ItemId = this.SelectedItemCompartment.ItemId,
-                        Stock = this.InputQuantity,
+                        Stock = this.InputQuantity.Value,
                     };
 
                     var newItemCompartment = await this.compartmentsWmsWebService.UpdateAsync(compartment, this.SelectedItemCompartment.Id);
@@ -347,51 +314,27 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.MeasureUnit = item.MeasureUnitDescription;
         }
 
-        private async Task<int?> GetLoadingUnitId()
-        {
-            var bay = await this.BayManager.GetBayAsync();
-            var loadingUnit = bay.Positions.Where(p => (p.LoadingUnit is null)).OrderByDescending(p => p.Height).Select(p => p.LoadingUnit).FirstOrDefault();
-            return loadingUnit?.Id;
-        }
-
-        private void MissionOperationUpdate(AssignedMissionOperationChangedEventArgs e)
-        {
-            if (e.MissionOperationId.HasValue)
-            {
-                this.isNewOperationAvailable = true;
-            }
-        }
-
-        private async Task ResetOperations(int? loadingUnitId)
-        {
-            this.isNewOperationAvailable = false;
-            this.IsOperationVisible = false;
-            this.IsPickVisible = false;
-            this.IsPutVisible = false;
-            this.IsAdjustmentVisible = false;
-            this.isWaitingForResponse = false;
-
-            this.currentLoadingUnitId = loadingUnitId;
-        }
-
         private async Task SetTypeOperationAsync(string param)
         {
-            this.ResetOperations(this.currentLoadingUnitId);
+            this.ResetOperations();
             this.IsOperationVisible = true;
             this.IsListVisibile = false;
 
             if (param == OperatorApp.Pick)
             {
+                this.InputQuantity = null;
                 this.IsPickVisible = true;
                 this.InputQuantityInfo = string.Format(OperatorApp.PickingQuantity, this.MeasureUnit);
             }
             else if (param == OperatorApp.Put)
             {
+                this.InputQuantity = null;
                 this.IsPutVisible = true;
                 this.InputQuantityInfo = string.Format(OperatorApp.PutQuantity, this.MeasureUnit);
             }
             else if (param == OperatorApp.Adjustment)
             {
+                this.InputQuantity = this.SelectedItemCompartment.Stock;
                 this.IsAdjustmentVisible = true;
                 this.InputQuantityInfo = string.Format(OperatorApp.AdjustmentQuantity, this.MeasureUnit);
             }
@@ -399,7 +342,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             await this.GetItemInfoAsync();
 
             this.CanInputQuantity = true;
-            this.InputQuantity = this.SelectedItemCompartment.Stock;
 
             this.RaisePropertyChanged();
             this.RaiseCanExecuteChanged();

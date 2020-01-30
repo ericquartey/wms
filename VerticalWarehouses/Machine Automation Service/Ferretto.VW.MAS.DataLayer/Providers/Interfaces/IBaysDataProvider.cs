@@ -21,8 +21,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         double ConvertProfileToHeight(ushort profile, int positionId);
 
-        double ConvertPulsesToMillimeters(double pulses, InverterIndex inverterIndex);
-
         void FindZero(BayNumber bayNumber);
 
         IEnumerable<Bay> GetAll();

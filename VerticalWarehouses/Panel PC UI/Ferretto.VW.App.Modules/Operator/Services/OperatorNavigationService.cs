@@ -23,6 +23,8 @@ namespace Ferretto.VW.App.Modules.Operator.Services
 
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
+        private readonly IMachineMissionsWebService machineMissionsWebService;
+
         private readonly IMachineModeService machineModeService;
 
         private readonly IMachineService machineService;
@@ -48,9 +50,10 @@ namespace Ferretto.VW.App.Modules.Operator.Services
         #region Constructors
 
         public OperatorNavigationService(
-                    INavigationService navigationService,
+            INavigationService navigationService,
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
+            IMachineMissionsWebService machineMissionsWebService,
             IBayManager bayManager,
             IMachineService machineService,
             IMachineModeService machineModeService)
@@ -58,6 +61,7 @@ namespace Ferretto.VW.App.Modules.Operator.Services
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             this.missionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
             this.machineModeService = machineModeService ?? throw new ArgumentNullException(nameof(machineModeService));
@@ -97,47 +101,14 @@ namespace Ferretto.VW.App.Modules.Operator.Services
 
         public async Task NavigateToDrawerViewAsync()
         {
-            await this.NavigateToDrawerViewAsync(true);
-        }
-
-        public async Task NavigateToDrawerViewAsync(bool goToWaitViewIfBayIsEmpty = true)
-        {
-            var activeViewModelName = this.GetActiveViewModelName();
-            if (activeViewModelName != Utils.Modules.Operator.OPERATOR_MENU
-                &&
-                activeViewModelName != Utils.Modules.Operator.ItemOperations.WAIT)
-            {
-                return;
-            }
-
-            if (this.missionOperationsService.CurrentMissionOperation != null)
-            {
-                this.NavigateToOperationDetails(this.missionOperationsService.CurrentMissionOperation.Type);
-            }
-            else
-            {
-                var loadingUnit = await this.bayManager.GetAccessibleLoadingUnitAsync();
-                if (loadingUnit != null)
-                {
-                    this.NavigateToLoadingUnitDetails(loadingUnit.Id);
-                }
-                else if (activeViewModelName != Utils.Modules.Operator.ItemOperations.WAIT && goToWaitViewIfBayIsEmpty)
-                {
-                    this.logger.Trace("No operation and no loading unit in bay, navigation to wait view.");
-
-                    this.navigationService.Appear(
-                        nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.ItemOperations.WAIT,
-                        null,
-                        true);
-                }
-            }
+            await this.NavigateToDrawerViewAsync(goToWaitViewIfBayIsEmpty: true);
         }
 
         public async Task NavigateToOperatorMenuAsync()
         {
             if (this.missionOperationsService.CurrentMissionOperation != null)
             {
+                // TODO: remove doNotAppear parameter, then remove this call
                 this.navigationService.Appear(
                       nameof(Utils.Modules.Operator),
                       Utils.Modules.Operator.OPERATOR_MENU,
@@ -149,9 +120,17 @@ namespace Ferretto.VW.App.Modules.Operator.Services
             }
             else
             {
-                var loadingUnit = await this.bayManager.GetAccessibleLoadingUnitAsync();
+                var machineMissions = await this.machineMissionsWebService.GetAllAsync();
+                var currentMission = machineMissions.SingleOrDefault(m =>
+                    m.Step == MissionStep.WaitPick
+                    &&
+                    m.TargetBay == this.machineService.BayNumber
+                    &&
+                    m.MissionType != MissionType.WMS);
+                var loadingUnit = this.machineService.Loadunits.SingleOrDefault(l => l.Id == currentMission?.LoadUnitId);
                 if (loadingUnit != null)
                 {
+                    // TODO: remove doNotAppear parameter, then remove this call
                     this.navigationService.Appear(
                       nameof(Utils.Modules.Operator),
                       Utils.Modules.Operator.OPERATOR_MENU,
@@ -175,6 +154,47 @@ namespace Ferretto.VW.App.Modules.Operator.Services
         private string GetActiveViewModelName()
         {
             return this.navigationService.GetActiveViewModel().GetType().Name;
+        }
+
+        private async Task NavigateToDrawerViewAsync(bool goToWaitViewIfBayIsEmpty)
+        {
+            var activeViewModelName = this.GetActiveViewModelName();
+            if (activeViewModelName != Utils.Modules.Operator.OPERATOR_MENU
+                &&
+                activeViewModelName != Utils.Modules.Operator.ItemOperations.WAIT)
+            {
+                return;
+            }
+
+            if (this.missionOperationsService.CurrentMissionOperation != null)
+            {
+                this.NavigateToOperationDetails(this.missionOperationsService.CurrentMissionOperation.Type);
+            }
+            else
+            {
+                var machineMissions = await this.machineMissionsWebService.GetAllAsync();
+                var currentMission = machineMissions.SingleOrDefault(m =>
+                    m.Step == MissionStep.WaitPick
+                    &&
+                    m.TargetBay == this.machineService.BayNumber
+                    &&
+                    m.MissionType != MissionType.WMS);
+                var loadingUnit = this.machineService.Loadunits.SingleOrDefault(l => l.Id == currentMission?.LoadUnitId);
+                if (loadingUnit != null)
+                {
+                    this.NavigateToLoadingUnitDetails(loadingUnit.Id);
+                }
+                else if (activeViewModelName != Utils.Modules.Operator.ItemOperations.WAIT && goToWaitViewIfBayIsEmpty)
+                {
+                    this.logger.Trace("No operation and no loading unit in bay, navigation to wait view.");
+
+                    this.navigationService.Appear(
+                        nameof(Utils.Modules.Operator),
+                        Utils.Modules.Operator.ItemOperations.WAIT,
+                        null,
+                        true);
+                }
+            }
         }
 
         private void NavigateToLoadingUnitDetails(int loadingUnitId)
@@ -269,7 +289,7 @@ namespace Ferretto.VW.App.Modules.Operator.Services
                 case Utils.Modules.Operator.OPERATOR_MENU:
                     if (this.autoNavigateOnMenu)
                     {
-                        await this.NavigateToDrawerViewAsync(false);
+                        await this.NavigateToDrawerViewAsync(goToWaitViewIfBayIsEmpty: false);
                     }
 
                     break;

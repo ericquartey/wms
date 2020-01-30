@@ -7,7 +7,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [Ferretto.VW.MAS.Scaffolding.DataAnnotations.MetadataType(typeof(ElevatorAxis.Metadata))]
     partial class ElevatorAxis
     {
-        class Metadata {
+        #region Classes
+
+        private class Metadata
+        {
+            #region Properties
 
             [Offset(20)]
             [Unfold]
@@ -28,11 +32,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(3)]
             public double ChainOffset { get; set; }
 
-
             [Offset(50)]
             [Unfold]
             public MovementParameters EmptyLoadMovement { get; set; }
-
 
             [Offset(60)]
             [Unfold]
@@ -87,7 +89,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_Resolution))]
             [Id(8)]
-            public decimal Resolution { get; set; }
+            public double Resolution { get; set; }
 
             [ScaffoldColumn(false)]
             public int TotalCycles { get; set; }
@@ -98,6 +100,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Unfold]
             [Offset(30)]
             public WeightMeasurement WeightMeasurement { get; set; }
+
+            #endregion
         }
+
+        #endregion
     }
 }

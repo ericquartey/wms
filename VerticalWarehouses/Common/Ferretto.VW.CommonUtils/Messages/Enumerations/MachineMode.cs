@@ -12,6 +12,8 @@
 
         Compact,
 
+        Restore,
+
         SwitchingToAutomatic,
 
         SwitchingToManual,

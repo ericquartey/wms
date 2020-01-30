@@ -155,10 +155,10 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                 !this.IsBusy
                 &&
                 (this.MachineMode is MachineMode.Automatic
-                ||
-                this.MachineMode is MachineMode.Manual
-                ||
-                this.MachineMode is MachineMode.Test)
+                    ||
+                    this.MachineMode is MachineMode.Manual
+                    ||
+                    this.MachineMode is MachineMode.Test)
                 &&
                 this.MachinePowerState is MachinePowerState.Powered
                 &&
@@ -206,6 +206,8 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             this.IsMachineInTestMode = this.MachineMode is MachineMode.Test;
 
             this.IsBusy =
+                this.MachineMode is MachineMode.Restore
+                ||
                 this.MachineMode is MachineMode.SwitchingToAutomatic
                 ||
                 this.MachineMode is MachineMode.SwitchingToManual

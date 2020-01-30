@@ -22,7 +22,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
     {
         #region Fields
 
-        private readonly IMachineMissionOperationsWebService machineMissionOperationsWebService;
+        private readonly IMachineMissionsWebService machineMissionsWebService;
 
         private int loadingUnitsMovements;
 
@@ -32,10 +32,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Constructors
 
-        public ItemOperationWaitViewModel(IMachineMissionOperationsWebService machineMissionOperationsWebService)
+        public ItemOperationWaitViewModel(IMachineMissionsWebService machineMissionsWebService)
             : base(PresentationMode.Operator)
         {
-            this.machineMissionOperationsWebService = machineMissionOperationsWebService ?? throw new ArgumentNullException(nameof(machineMissionOperationsWebService));
+            this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
         }
 
         #endregion
@@ -89,7 +89,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private async Task CheckForNewOperationCount()
         {
-            this.loadingUnitsMovements = await this.machineMissionOperationsWebService.GetByBayCountAsync();
+            var missions = await this.machineMissionsWebService.GetAllAsync();
+            this.loadingUnitsMovements = missions.Count(m => m.MissionType == MissionType.OUT || m.MissionType == MissionType.WMS);
             this.RaisePropertyChanged(nameof(this.LoadingUnitsInfo));
         }
 
