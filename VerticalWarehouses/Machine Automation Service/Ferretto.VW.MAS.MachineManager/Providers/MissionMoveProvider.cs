@@ -103,93 +103,99 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                             state.OnStop(StopRequestReason.Error);
                         }
                     }
+                    else
+                    {
+                        this.Logger.LogError($"Error while processing a notification: GetStateByClassName {mission.Step} not found");
+                    }
                 }
             }
             missionsDataProvider.CheckPendingChanges();
-
         }
 
         public bool ResumeMission(int missionId, CommandMessage command, IServiceProvider serviceProvider)
         {
-                var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
-                var mission = missionsDataProvider.GetById(missionId);
-                if (mission != null)
+            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+            var mission = missionsDataProvider.GetById(missionId);
+            var state = GetStateByClassName(serviceProvider, mission, this.eventAggregator);
+            if (state != null)
+            {
+                try
                 {
-                    var state = GetStateByClassName(serviceProvider, mission, this.eventAggregator);
-                    if (state != null)
-                    {
-                        try
-                        {
-                            state.OnResume(command);
-                        }
-                        catch (StateMachineException ex)
-                        {
-                            this.Logger.LogError(ex.NotificationMessage.Description, "Error while resuming a State.");
-                            //this.eventAggregator.GetEvent<NotificationEvent>().Publish(ex.NotificationMessage);
-
-                            state.OnStop(StopRequestReason.Error);
-                        }
-                    }
+                    state.OnResume(command);
                 }
+                catch (StateMachineException ex)
+                {
+                    this.Logger.LogError(ex.NotificationMessage.Description, "Error while resuming a State.");
+                    //this.eventAggregator.GetEvent<NotificationEvent>().Publish(ex.NotificationMessage);
 
-                return true;
+                    state.OnStop(StopRequestReason.Error);
+                    return false;
+                }
+            }
+            else
+            {
+                this.Logger.LogError($"Error while resuming a State: GetStateByClassName {mission.Step} not found");
+                return false;
+            }
+
+            return true;
         }
 
         public bool StartMission(Mission mission, CommandMessage command, IServiceProvider serviceProvider, bool showErrors)
         {
-                var newState = new MissionMoveNewStep(mission, serviceProvider, this.eventAggregator);
+            var newState = new MissionMoveNewStep(mission, serviceProvider, this.eventAggregator);
 
-                try
-                {
-                    return newState.OnEnter(command, showErrors);
-                }
-                catch (StateMachineException ex)
-                {
-                    this.Logger.LogError(ex.NotificationMessage.Description, "Error while activating a State.");
-                    //this.eventAggregator.GetEvent<NotificationEvent>().Publish(ex.NotificationMessage);
+            try
+            {
+                return newState.OnEnter(command, showErrors);
+            }
+            catch (StateMachineException ex)
+            {
+                this.Logger.LogError(ex.NotificationMessage.Description, "Error while activating a State.");
+                //this.eventAggregator.GetEvent<NotificationEvent>().Publish(ex.NotificationMessage);
 
-                    newState.OnStop(StopRequestReason.Error);
-                    return false;
-                }
+                newState.OnStop(StopRequestReason.Error);
+                return false;
+            }
         }
 
         public bool StopMission(int missionId, StopRequestReason stopRequest, IServiceProvider serviceProvider)
         {
-                var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
-                var mission = missionsDataProvider.GetById(missionId);
-                if (mission != null)
+            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+            var mission = missionsDataProvider.GetById(missionId);
+            if (mission != null)
+            {
+                if (mission.Status == MissionStatus.Completed)
                 {
-                    if (mission.Status == MissionStatus.Completed)
-                    {
-                        missionsDataProvider.Complete(missionId);
-                    }
-                    else
-                    {
-                        var state = GetStateByClassName(serviceProvider, mission, this.eventAggregator);
-                        if (state != null)
-                        {
-                            state.OnStop(stopRequest);
-                        }
-                    }
+                    missionsDataProvider.Complete(missionId);
                 }
-
-                return true;
-        }
-
-        public bool TestMission(int missionId, CommandMessage command, IServiceProvider serviceProvider)
-        {
-                var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
-                var mission = missionsDataProvider.GetById(missionId);
-                if (mission != null)
+                else
                 {
                     var state = GetStateByClassName(serviceProvider, mission, this.eventAggregator);
                     if (state != null)
                     {
-                        state.OnResume(command);
+                        state.OnStop(stopRequest);
                     }
                 }
+            }
 
-                return true;
+            return true;
+        }
+
+        public bool TestMission(int missionId, CommandMessage command, IServiceProvider serviceProvider)
+        {
+            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+            var mission = missionsDataProvider.GetById(missionId);
+            if (mission != null)
+            {
+                var state = GetStateByClassName(serviceProvider, mission, this.eventAggregator);
+                if (state != null)
+                {
+                    state.OnResume(command);
+                }
+            }
+
+            return true;
         }
 
         public bool TryCreateMachineMission(CommandMessage command, IServiceProvider serviceProvider, out Mission mission)
@@ -199,23 +205,23 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 throw new ArgumentNullException(nameof(command));
             }
 
-                mission = null;
+            mission = null;
 
-                if (command.Data is IMoveLoadingUnitMessageData messageData
-                    && messageData.LoadUnitId.HasValue
-                    )
+            if (command.Data is IMoveLoadingUnitMessageData messageData
+                && messageData.LoadUnitId.HasValue
+                )
+            {
+                var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+                if (missionsDataProvider.CanCreateMission(messageData.LoadUnitId.Value, command.RequestingBay))
                 {
-                    var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
-                    if (missionsDataProvider.CanCreateMission(messageData.LoadUnitId.Value, command.RequestingBay))
+                    var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                    mission = missionsDataProvider.CreateBayMission(messageData.LoadUnitId.Value, command.RequestingBay, MissionType.Manual);
+                    if (this.UpdateWaitingMission(missionsDataProvider, baysDataProvider, mission))
                     {
-                        var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-                        mission = missionsDataProvider.CreateBayMission(messageData.LoadUnitId.Value, command.RequestingBay, MissionType.Manual);
-                        if (this.UpdateWaitingMission(missionsDataProvider, baysDataProvider, mission))
-                        {
-                            return true;
-                        }
+                        return true;
                     }
                 }
+            }
             return false;
         }
 

@@ -154,29 +154,36 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private bool CanConfirmEjectLoadingUnit()
         {
-            return this.LoadingUnitId.HasValue &&
-                   this.isEjectLoadingUnitConfirmationEnabled &&
+            return !this.IsMoving &&
                    ((this.MachineStatus.LoadingUnitPositionUpInBay != null && this.IsPositionUpSelected) ||
                     (this.MachineStatus.LoadingUnitPositionDownInBay != null && this.IsPositionDownSelected));
         }
 
         private async Task ConfirmEjectLoadingUnit()
         {
-            if (this.LoadingUnitId.HasValue)
+            try
             {
-                try
-                {
-                    await this.machineBaysWebService.RemoveLoadUnitAsync(this.LoadingUnitId.Value);
+                int lu = 0;
 
-                    this.SensorsService.RefreshAsync(true);
-                    this.MachineService.OnUpdateServiceAsync();
-
-                    this.ShowNotification($"Cassetto id {this.LoadingUnitId.Value} estratto", Services.Models.NotificationSeverity.Warning);
-                }
-                catch (Exception e)
+                if (this.IsPositionUpSelected)
                 {
-                    this.ShowNotification(e);
+                    lu = this.MachineStatus.LoadingUnitPositionUpInBay.Id;
                 }
+                else
+                {
+                    lu = this.MachineStatus.LoadingUnitPositionDownInBay.Id;
+                }
+
+                await this.machineBaysWebService.RemoveLoadUnitAsync(lu);
+
+                this.SensorsService.RefreshAsync(true);
+                this.MachineService.OnUpdateServiceAsync();
+
+                this.ShowNotification($"Cassetto id {this.LoadingUnitId.Value} estratto", Services.Models.NotificationSeverity.Warning);
+            }
+            catch (Exception e)
+            {
+                this.ShowNotification(e);
             }
         }
 
