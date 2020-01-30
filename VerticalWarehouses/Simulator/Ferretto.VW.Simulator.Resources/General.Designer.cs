@@ -61,7 +61,7 @@ namespace Ferretto.VW.Simulator.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Import configuration.
+        ///   Looks up a localized string similar to Load configuration.
         /// </summary>
         public static string ImportConfigurationCommand {
             get {

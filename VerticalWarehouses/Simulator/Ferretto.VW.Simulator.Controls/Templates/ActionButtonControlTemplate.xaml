@@ -3,7 +3,6 @@
     <ControlTemplate x:Key="VWSIM_ActionButton_ControlTemplate"
                      TargetType="Button">
         <Border Name="Root_ActionButtonBorder"
-                Width="160"
                 Height="60"
                 HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                 Background="{DynamicResource FerrettoMediumGray}"
@@ -11,6 +10,7 @@
                 BorderThickness="{DynamicResource PpcButtonBorderThickness}"
                 CornerRadius="4">
             <TextBlock Name="ActionButtonTextBlock"
+                       Margin="15"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        FontFamily="{DynamicResource PpcFontFamily}"

@@ -111,7 +111,6 @@ namespace Ferretto.VW.Simulator
                 {
                     string fileContents;
 
-                    Directory.SetCurrentDirectory(openFileDialog.InitialDirectory);
                     using (var streamReader = new StreamReader(openFileDialog.FileName))
                     {
                         fileContents = await streamReader.ReadToEndAsync();

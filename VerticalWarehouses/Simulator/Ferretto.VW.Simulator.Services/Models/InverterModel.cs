@@ -298,6 +298,7 @@ namespace Ferretto.VW.Simulator.Services.Models
         public InverterModel(InverterType inverterType)
         {
             this.InverterType = inverterType;
+            this.Enabled = true;
 
             this.homingTimer = new Timer(this.HomingTick, null, -1, Timeout.Infinite);
             this.targetTimer = new Timer(this.TargetTick, null, -1, Timeout.Infinite);
@@ -592,20 +593,33 @@ namespace Ferretto.VW.Simulator.Services.Models
 
                         case InverterRole.ElevatorChain:
                             this.ImpulsesEncoderPerRound = this.Machine.Elevator.Axes.Last().Resolution;
+                            this.Enabled = this.Machine.Elevator.Axes.Count(x => x.Inverter != null) > 1;
+                            break;
+
+                        case InverterRole.Shutter1:
+                            this.Enabled = this.Machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayOne)?.Shutter != null;
+                            break;
+
+                        case InverterRole.Shutter2:
+                            this.Enabled = this.Machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayTwo)?.Shutter != null;
+                            break;
+
+                        case InverterRole.Shutter3:
+                            this.Enabled = this.Machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayThree)?.Shutter != null;
                             break;
 
                         case InverterRole.Bay1:
-                            this.ImpulsesEncoderPerRound = this.Machine.Bays.ToArray()[0].Resolution;
+                            this.ImpulsesEncoderPerRound = this.Machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayOne)?.Resolution ?? this.ImpulsesEncoderPerRound;
                             this.Enabled = this.Machine.Bays.Any(x => x.Number == BayNumber.BayOne);
                             break;
 
                         case InverterRole.Bay2:
-                            this.ImpulsesEncoderPerRound = this.Machine.Bays.ToArray()[1].Resolution;
+                            this.ImpulsesEncoderPerRound = this.Machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayTwo)?.Resolution ?? this.ImpulsesEncoderPerRound;
                             this.Enabled = this.Machine.Bays.Any(x => x.Number == BayNumber.BayTwo);
                             break;
 
                         case InverterRole.Bay3:
-                            this.ImpulsesEncoderPerRound = this.Machine.Bays.ToArray()[2].Resolution;
+                            this.ImpulsesEncoderPerRound = this.Machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayThree)?.Resolution ?? this.ImpulsesEncoderPerRound;
                             this.Enabled = this.Machine.Bays.Any(x => x.Number == BayNumber.BayThree);
                             break;
                     }
@@ -988,9 +1002,10 @@ namespace Ferretto.VW.Simulator.Services.Models
             if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) <= 0.1)
             {
                 this.StatusWord |= 0x1000;          // Set TargetReached
-                if (this.currentAxis == Axis.Horizontal
-                    && !this.ioDevice[(int)IoPorts.DrawerInMachineSide].Value
-                    && !this.ioDevice[(int)IoPorts.DrawerInOperatorSide].Value)
+
+                if (this.currentAxis == Axis.Horizontal &&
+                    !this.ioDevice[(int)IoPorts.DrawerInMachineSide].Value &&
+                    !this.ioDevice[(int)IoPorts.DrawerInOperatorSide].Value)
                 {
                     if (this.Id == 0)
                     {
@@ -1001,6 +1016,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                         this.DigitalIO[(int)InverterSensors.OneKMachineZeroCradle].Value = true;
                     }
                 }
+
                 this.AxisPosition = 0;
                 this.homingTimerActive = false;
                 this.homingTimer.Change(-1, Timeout.Infinite);
