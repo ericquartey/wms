@@ -83,7 +83,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     this.machineVolatileDataProvider.ElevatorHorizontalPosition = value;
 
-                    this.NotifyElevatorPositionChanged();
+                    this.NotifyElevatorPositionChanged(useCachedValue: true);
                 }
             }
         }
@@ -97,22 +97,21 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     this.machineVolatileDataProvider.ElevatorVerticalPosition = value;
 
-                    // TODO: Review Elevator Position Tolerance logic (probably not necessary anymore)
-                    //var currentCell = this.GetCurrentCell();
-                    //if (currentCell != null && !this.IsVerticalPositionWithinTolerance(currentCell.Position))
-                    //{
-                    //    this.logger.LogDebug($"Elevator is leaving cell id={currentCell.Id}");
-                    //    this.SetCurrentCell(null);
-                    //}
+                    this.cache.TryGetValue(ElevatorCurrentCellCacheKey, out Cell currentCell);
+                    this.cache.TryGetValue(ElevatorCurrentBayPositionCacheKey, out BayPosition currentBayPosition);
 
-                    //var currentBayPosition = this.GetCurrentBayPosition();
-                    //if (currentBayPosition != null && !this.IsVerticalPositionWithinTolerance(currentBayPosition.Height))
-                    //{
-                    //    this.logger.LogDebug($"Elevator is leaving bay position id={currentBayPosition.Id}");
-                    //    this.SetCurrentBayPosition(null);
-                    //}
-
-                    this.NotifyElevatorPositionChanged();
+                    if (currentCell != null && this.IsVerticalPositionWithinTolerance(currentCell.Position))
+                    {
+                        this.NotifyElevatorPositionChanged(useCachedValue: true);
+                    }
+                    else if (currentBayPosition != null && this.IsVerticalPositionWithinTolerance(currentBayPosition.Height))
+                    {
+                        this.NotifyElevatorPositionChanged(useCachedValue: true);
+                    }
+                    else
+                    {
+                        this.NotifyElevatorPositionChanged();
+                    }
                 }
             }
         }
@@ -161,16 +160,11 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                //if (!this.cache.TryGetValue(ElevatorCurrentBayPositionCacheKey, out BayPosition currentBayPosition))
-                //{
                 var currentBayPosition = this.dataContext.Elevators
                     .Select(e => e.BayPosition)
                         .Include(p => p.LoadingUnit)
                         .Include(p => p.Bay)
                     .SingleOrDefault();
-
-                this.cache.Set(ElevatorCurrentBayPositionCacheKey, currentBayPosition, this.cacheOptions);
-                //}
 
                 return currentBayPosition;
             }
@@ -180,16 +174,11 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                //if (!this.cache.TryGetValue(ElevatorCurrentCellCacheKey, out Cell currentCell))
-                //{
                 var currentCell = this.dataContext.Elevators
                    .Select(e => e.Cell)
                    .Include(c => c.Panel)
                    .Include(c => c.LoadingUnit)
                    .SingleOrDefault();
-
-                this.cache.Set(ElevatorCurrentCellCacheKey, currentCell, this.cacheOptions);
-                //}
 
                 return currentCell;
             }
@@ -296,8 +285,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.SaveChanges();
 
+                this.cache.Remove(ElevatorCurrentBayPositionCacheKey);
+                this.cache.Remove(ElevatorCurrentCellCacheKey);
                 this.cache.Remove(GetAxisCacheKey(Orientation.Horizontal));
                 this.cache.Remove(GetAxisCacheKey(Orientation.Vertical));
+                this.cache.Remove(GetAxesCacheKey());
             }
         }
 
@@ -331,17 +323,16 @@ namespace Ferretto.VW.MAS.DataLayer
                         }
 
                         elevator.BayPosition = newBayPosition;
+                        this.cache.Set(ElevatorCurrentBayPositionCacheKey, newBayPosition, this.cacheOptions);
                     }
                     else
                     {
                         elevator.BayPosition = null;
+                        this.cache.Remove(ElevatorCurrentBayPositionCacheKey);
                     }
 
                     this.dataContext.SaveChanges();
-
-                    this.cache.Remove(ElevatorCurrentBayPositionCacheKey);
-
-                    this.NotifyElevatorPositionChanged(true);
+                    this.NotifyElevatorPositionChanged(useCachedValue: true);
                 }
             }
         }
@@ -368,17 +359,16 @@ namespace Ferretto.VW.MAS.DataLayer
                         }
 
                         elevator.Cell = newCell;
+                        this.cache.Set(ElevatorCurrentCellCacheKey, newCell, this.cacheOptions);
                     }
                     else
                     {
                         elevator.Cell = null;
+                        this.cache.Remove(ElevatorCurrentCellCacheKey);
                     }
 
                     this.dataContext.SaveChanges();
-
-                    this.cache.Remove(ElevatorCurrentCellCacheKey);
-
-                    this.NotifyElevatorPositionChanged(true);
+                    this.NotifyElevatorPositionChanged(useCachedValue: true);
                 }
             }
         }
@@ -412,7 +402,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.cache.Remove(GetAxisCacheKey(orientation));
                 if (orientation == Orientation.Horizontal)
                 {
-                    this.NotifyElevatorPositionChanged(true);
+                    this.NotifyElevatorPositionChanged(useCachedValue: true);
                 }
             }
         }
@@ -465,15 +455,15 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.machineVolatileDataProvider.ElevatorVerticalPosition + VerticalPositionValidationTolerance > position;
         }
 
-        private void NotifyElevatorPositionChanged(bool refreshElevatorPosition = false)
+        private void NotifyElevatorPositionChanged(bool useCachedValue = false)
         {
             BayPosition bayPosition = null;
-            Cell cell = null;
+            Cell cellPosition = null;
 
-            if (refreshElevatorPosition)
+            if (useCachedValue)
             {
-                bayPosition = this.GetCurrentBayPosition();
-                cell = this.GetCurrentCell();
+                this.cache.TryGetValue(ElevatorCurrentBayPositionCacheKey, out bayPosition);
+                this.cache.TryGetValue(ElevatorCurrentCellCacheKey, out cellPosition);
             }
 
             this.eventAggregator
@@ -484,7 +474,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         Data = new ElevatorPositionMessageData(
                             this.machineVolatileDataProvider.ElevatorVerticalPosition,
                             this.machineVolatileDataProvider.ElevatorHorizontalPosition,
-                            cell?.Id,
+                            cellPosition?.Id,
                             bayPosition?.Id,
                             bayPosition?.IsUpper),
                         Destination = MessageActor.Any,
