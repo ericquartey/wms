@@ -40,7 +40,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public string ActiveContextName => OperationalContext.ItemPick.ToString();
 
         public ICommand EmptyOperationCommand =>
-                    this.emptyOperationCommand
+            this.emptyOperationCommand
             ??
             (this.emptyOperationCommand = new DelegateCommand(
                 async () => await this.PartiallyCompleteOnEmptyCompartmentAsync(),
@@ -86,6 +86,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
         private bool CanPartiallyCompleteOnEmptyCompartment()
         {
             return
+                this.MissionOperation != null
+                &&
                 !this.IsWaitingForResponse
                 &&
                 !this.IsBusyAbortingOperation

@@ -1186,4 +1186,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="ConfirmAndNewOperationsAvailable" xml:space="preserve">
     <value>Conferma e nuove operazioni disponibili</value>
   </data>
+  <data name="ItemStock" xml:space="preserve">
+    <value>Giacenza</value>
+  </data>
 </root>
