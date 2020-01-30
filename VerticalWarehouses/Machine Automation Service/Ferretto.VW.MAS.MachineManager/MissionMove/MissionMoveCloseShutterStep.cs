@@ -82,8 +82,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 && this.Mission.MissionType != MissionType.Manual)
             {
                 var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
-                var description = $"Load Unit {this.Mission.LoadUnitId} placed on bay {bay.Number}";
-                this.SendMoveNotification(bay.Number, description, MessageStatus.OperationWaitResume);
 
                 if (bay.Positions.Count() == 1
                     || bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitDestination).IsUpper

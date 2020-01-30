@@ -285,7 +285,8 @@ namespace Ferretto.VW.MAS.MissionManager
             if (this.machineVolatileDataProvider.IsBayHomingExecuted.Any(x => !x.Value)
                 && bays.All(x => x.CurrentMission == null))
             {
-                var bayNumber = bays.FirstOrDefault(x => this.machineVolatileDataProvider.IsBayHomingExecuted.ContainsKey(x.Number) && !this.machineVolatileDataProvider.IsBayHomingExecuted[x.Number]
+                var bayNumber = bays.FirstOrDefault(x => this.machineVolatileDataProvider.IsBayHomingExecuted.ContainsKey(x.Number)
+                    && !this.machineVolatileDataProvider.IsBayHomingExecuted[x.Number]
                     && x.Carousel != null
                     && x.CurrentMission == null)?.Number ?? BayNumber.None;
                 if (bayNumber != BayNumber.None)
@@ -522,7 +523,10 @@ namespace Ferretto.VW.MAS.MissionManager
                     }
                     missionsDataProvider.Complete(mission.Id);
                 }
-                else if (mission.LoadUnitDestination != LoadingUnitLocation.Cell && mission.LoadUnitDestination != LoadingUnitLocation.Elevator)
+                else if (mission.LoadUnitDestination != LoadingUnitLocation.Cell
+                    && mission.LoadUnitDestination != LoadingUnitLocation.Elevator
+                    && mission.Status != MissionStatus.Waiting
+                    )
                 // loading unit to bay mission
                 {
                     var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
@@ -547,7 +551,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         this.NotifyAssignedMissionOperationChanged(mission.TargetBay, null, null);
                     }
                 }
-                else
+                else if (mission.Status != MissionStatus.Waiting)
                 // any other mission type
                 {
                     missionsDataProvider.Complete(mission.Id);
