@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Ferretto.VW.MAS.DataModels;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.Simulator.Services.Models
@@ -144,6 +145,8 @@ namespace Ferretto.VW.Simulator.Services.Models
                 return result;
             }
         }
+
+        public Machine Machine { get; set; }
 
         public List<BitModel> Outputs
         {
