@@ -89,6 +89,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         {
                             this.Mission.OpenShutterPosition = ShutterPosition.NotSpecified;
                         }
+#if CHECK_BAY_SENSOR
                         if (bay.Carousel != null)
                         {
                             var result = this.LoadingUnitMovementProvider.CheckBaySensors(bay, this.Mission.LoadUnitDestination, deposit: true);
@@ -98,6 +99,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 throw new StateMachineException(error.Reason, this.Mission.TargetBay, MessageActor.MachineManager);
                             }
                         }
+#endif
                     }
                     break;
             }
