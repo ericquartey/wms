@@ -225,6 +225,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 {
                     this.sessionService.SetUserAccessLevel(claims.AccessLevel);
 
+                    await this.machineBaysWebService.ActivateAsync();
+
                     this.NavigationService.Appear(
                         nameof(Utils.Modules.Menu),
                         Utils.Modules.Menu.MAIN_MENU,

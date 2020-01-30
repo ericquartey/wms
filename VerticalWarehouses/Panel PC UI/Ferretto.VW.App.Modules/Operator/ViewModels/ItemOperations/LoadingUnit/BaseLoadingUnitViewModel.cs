@@ -48,6 +48,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private bool isNewOperationAvailable;
 
+        private bool isWaitingForNewOperation;
+
         private DelegateCommand itemCompartmentDownCommand;
 
         private DelegateCommand itemCompartmentUpCommand;
@@ -155,6 +157,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
         }
 
         public bool IsNewLoadingUnit => this.currentLoadingUnitId != this.newLoadingUnitId;
+
+        public bool IsWaitingForNewOperation
+        {
+            get => this.isWaitingForNewOperation;
+            set => this.SetProperty(ref this.isWaitingForNewOperation, value);
+        }
 
         public ICommand ItemCompartmentDownCommand =>
               this.itemCompartmentDownCommand
@@ -274,22 +282,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
         }
 
-        public async override Task OnAppearedAsync()
+        public async Task LoadDataAsync()
         {
-            this.missionOperationToken = this.eventAggregator.GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>()
-                                 .Subscribe(this.MissionOperationUpdate);
-
-            this.bay = await this.bayManager.GetBayAsync();
-
-            this.newLoadingUnitId = this.GetLoadingUnitId();
-
-            if (this.CanReset)
-            {
-                this.Reset();
-            }
-
-            await base.OnAppearedAsync();
-
             if (this.Data is int loadingUnitId)
             {
                 this.LoadingUnit = this.MachineService.Loadunits.SingleOrDefault(l => l.Id == loadingUnitId);
@@ -313,6 +307,28 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
         }
 
+        public async override Task OnAppearedAsync()
+        {
+            this.missionOperationToken = this.eventAggregator.GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>()
+                                 .Subscribe(this.MissionOperationUpdate);
+
+            this.bay = await this.bayManager.GetBayAsync();
+
+            this.newLoadingUnitId = this.GetLoadingUnitId();
+
+            if (this.CanReset)
+            {
+                this.Reset();
+            }
+
+            await base.OnAppearedAsync();
+
+            if (!this.isWaitingForNewOperation)
+            {
+                await this.LoadDataAsync();
+            }
+        }
+
         public virtual void RaisePropertyChanged()
         {
             this.RaisePropertyChanged(nameof(this.SelectedCompartment));
@@ -325,7 +341,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             try
             {
-                this.IsWaitingForResponse = true;
+                this.isWaitingForNewOperation = true;
                 await this.machineLoadingUnitsWebService.RemoveFromBayAsync(this.LoadingUnit.Id);
 
                 this.NavigationService.GoBack();
@@ -336,9 +352,18 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
         }
 
+        public async Task ResetLoadData()
+        {
+            var lastCompartmentId = this.SelectedItemCompartment.Id;
+            var lastItemId = this.SelectedItemCompartment.ItemId;
+            await this.LoadDataAsync();
+            this.SelectedCompartment = this.Compartments.FirstOrDefault(ic => ic.Id == lastCompartmentId);
+            this.SelectedItem = this.Items.FirstOrDefault(ic => ic.ItemId == lastItemId);
+        }
+
         public virtual void ResetOperations()
         {
-            this.isWaitingForResponse = false;
+            this.isWaitingForNewOperation = false;
         }
 
         protected async override Task OnMachineModeChangedAsync(
@@ -378,7 +403,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private bool CanChangeListMode()
         {
-            if (this.isBusyConfirmingOperation
+            if (this.isWaitingForNewOperation
+                ||
+                this.isBusyConfirmingOperation
                 ||
                 this.isBusyConfirmingRecallOperation)
             {
@@ -397,7 +424,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private bool CanChangeLoadingUnitMode()
         {
-            if (this.isBusyConfirmingOperation
+            if (this.isWaitingForNewOperation
+                ||
+                this.isBusyConfirmingOperation
                 ||
                 this.isBusyConfirmingRecallOperation)
             {

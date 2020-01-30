@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.Simulator.Services.Models;
 
 namespace Ferretto.VW.Simulator.Services.Interfaces
@@ -27,6 +28,8 @@ namespace Ferretto.VW.Simulator.Services.Interfaces
         InverterModel Inverters07 { get; set; }
 
         bool IsStartedSimulator { get; }
+
+        Machine Machine { get; set; }
 
         IODeviceModel RemoteIOs01 { get; set; }
 
