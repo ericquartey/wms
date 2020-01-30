@@ -336,8 +336,13 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
         }
 
+        public virtual void ResetOperations()
+        {
+            this.isWaitingForResponse = false;
+        }
+
         protected async override Task OnMachineModeChangedAsync(
-                                                                                                                                                                                            MAS.AutomationService.Contracts.Hubs.MachineModeChangedEventArgs e)
+                                                                                                                                                                                                    MAS.AutomationService.Contracts.Hubs.MachineModeChangedEventArgs e)
         {
             await base.OnMachineModeChangedAsync(e);
 
@@ -509,10 +514,13 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
 
             this.SetItems();
+
             if (this.Items.Any() == true)
             {
                 this.SelectedItem = this.Items.First();
             }
+
+            this.ResetOperations();
 
             this.RaiseCanExecuteChanged();
         }

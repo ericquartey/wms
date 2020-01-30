@@ -204,6 +204,16 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
         }
 
+        public override void ResetOperations()
+        {
+            base.ResetOperations();
+
+            this.IsOperationVisible = false;
+            this.IsPickVisible = false;
+            this.IsPutVisible = false;
+            this.IsAdjustmentVisible = false;
+        }
+
         protected async override Task OnMachineModeChangedAsync(MAS.AutomationService.Contracts.Hubs.MachineModeChangedEventArgs e)
         {
             await base.OnMachineModeChangedAsync(e);
@@ -302,15 +312,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             var item = await this.itemsWmsWebService.GetByIdAsync(this.SelectedItemCompartment.ItemId.Value);
             this.QuantityTolerance = item.PickTolerance ?? 0;
             this.MeasureUnit = item.MeasureUnitDescription;
-        }
-
-        private void ResetOperations()
-        {
-            this.IsOperationVisible = false;
-            this.IsPickVisible = false;
-            this.IsPutVisible = false;
-            this.IsAdjustmentVisible = false;
-            this.isWaitingForResponse = false;
         }
 
         private async Task SetTypeOperationAsync(string param)
