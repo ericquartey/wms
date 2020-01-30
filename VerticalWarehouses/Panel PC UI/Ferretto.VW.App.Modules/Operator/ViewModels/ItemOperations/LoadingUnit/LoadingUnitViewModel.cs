@@ -47,7 +47,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private double quantityIncrement;
 
-        private int quantityTolerance;
+        private int? quantityTolerance;
 
         private DelegateCommand recallLoadingUnitCommand;
 
@@ -143,14 +143,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
             set => this.SetProperty(ref this.quantityIncrement, value);
         }
 
-        public int QuantityTolerance
+        public int? QuantityTolerance
         {
             get => this.quantityTolerance;
             set
             {
                 if (this.SetProperty(ref this.quantityTolerance, value))
                 {
-                    this.QuantityIncrement = Math.Pow(10, -this.quantityTolerance);
+                    this.QuantityIncrement = Math.Pow(10, -this.quantityTolerance.Value);
                 }
             }
         }
@@ -318,6 +318,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.IsOperationVisible = true;
             this.IsListVisibile = false;
 
+            await this.GetItemInfoAsync();
+
             if (param == OperatorApp.Pick)
             {
                 this.InputQuantity = null;
@@ -337,7 +339,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.InputQuantityInfo = string.Format(OperatorApp.AdjustmentQuantity, this.MeasureUnit);
             }
 
-            await this.GetItemInfoAsync();
 
             this.CanInputQuantity = true;
 

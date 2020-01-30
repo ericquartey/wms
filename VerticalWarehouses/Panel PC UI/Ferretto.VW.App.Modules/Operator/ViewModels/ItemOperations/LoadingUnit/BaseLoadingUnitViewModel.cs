@@ -325,7 +325,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             if (!this.isWaitingForNewOperation)
             {
-                await this.LoadDataAsync();
+                this.ResetLoadData();                
             }
         }
 
@@ -354,11 +354,20 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public async Task ResetLoadData()
         {
-            var lastCompartmentId = this.SelectedItemCompartment.Id;
-            var lastItemId = this.SelectedItemCompartment.ItemId;
+            var lastCompartmentId = this.SelectedItemCompartment?.Id;
+            var lastItemId = this.SelectedItemCompartment?.ItemId;
+
             await this.LoadDataAsync();
-            this.SelectedCompartment = this.Compartments.FirstOrDefault(ic => ic.Id == lastCompartmentId);
-            this.SelectedItem = this.Items.FirstOrDefault(ic => ic.ItemId == lastItemId);
+
+            if (!(lastCompartmentId is null))
+            {
+                this.SelectedCompartment = this.Compartments.FirstOrDefault(ic => ic.Id == lastCompartmentId);
+            }
+
+            if (!(lastItemId is null))
+            {
+                this.SelectedItem = this.Items.FirstOrDefault(ic => ic.ItemId == lastItemId);
+            }
         }
 
         public virtual void ResetOperations()
