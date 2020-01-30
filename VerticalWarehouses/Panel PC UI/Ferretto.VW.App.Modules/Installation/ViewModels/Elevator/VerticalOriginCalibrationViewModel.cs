@@ -44,7 +44,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken receiveHomingUpdateToken;
 
-        private decimal resolution;
+        private double resolution;
 
         private DelegateCommand startCommand;
 
@@ -101,7 +101,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.offset, value);
         }
 
-        public decimal Resolution
+        public double Resolution
         {
             get => this.resolution;
             set => this.SetProperty(ref this.resolution, value);

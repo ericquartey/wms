@@ -8,7 +8,7 @@
 
         double ReadFinalPosition { get; }
 
-        decimal Resolution { get; set; }
+        double Resolution { get; set; }
 
         #endregion
     }
