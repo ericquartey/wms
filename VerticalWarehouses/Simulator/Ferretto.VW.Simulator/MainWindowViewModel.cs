@@ -19,6 +19,8 @@ namespace Ferretto.VW.Simulator
 
         private readonly IThemeService themeService;
 
+        private string configurationName;
+
         private string errorMessage;
 
         private ICommand importConfigurationCommand;
@@ -49,12 +51,24 @@ namespace Ferretto.VW.Simulator
 
         #region Properties
 
+        public string ConfigurationName
+        {
+            get => this.configurationName;
+            private set
+            {
+                if (this.configurationName != value)
+                {
+                    this.SetProperty(ref this.configurationName, value);
+                }
+            }
+        }
+
         public string ErrorMessage { get => this.errorMessage; set => this.SetProperty(ref this.errorMessage, value); }
 
         public ICommand ImportConfigurationCommand =>
             this.importConfigurationCommand
             ??
-            (this.importConfigurationCommand = new DelegateCommand(async () => await this.ImportConfigurationAsync()));
+            (this.importConfigurationCommand = new DelegateCommand(this.ImportConfiguration));
 
         public bool IsBusy
         {
@@ -89,7 +103,7 @@ namespace Ferretto.VW.Simulator
 
         #region Methods
 
-        public async Task ImportConfigurationAsync()
+        public void ImportConfiguration()
         {
             try
             {
@@ -97,7 +111,7 @@ namespace Ferretto.VW.Simulator
                 openFileDialog.Filter = "Json files (*.json)|*.json|All files (*.*)|*.*";
                 openFileDialog.DefaultExt = "json";
 
-                string dir = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\..\Machine Automation Service\Ferretto.VW.MAS.AutomationService\Configuration"));
+                var dir = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\..\Machine Automation Service\Ferretto.VW.MAS.AutomationService\Configuration"));
                 if (Directory.Exists(dir))
                 {
                     openFileDialog.InitialDirectory = dir;
@@ -109,24 +123,41 @@ namespace Ferretto.VW.Simulator
 
                 if (openFileDialog.ShowDialog() == true)
                 {
-                    string fileContents;
-
-                    using (var streamReader = new StreamReader(openFileDialog.FileName))
-                    {
-                        fileContents = await streamReader.ReadToEndAsync();
-                    }
-
-                    var settings = new JsonSerializerSettings();
-                    settings.Converters.Add(new IPAddressConverter());
-                    settings.MissingMemberHandling = MissingMemberHandling.Ignore;
-
-                    var vertimagConfiguration = JsonConvert.DeserializeObject<VertimagConfiguration>(fileContents, settings);
-
-                    this.machineService.Machine = vertimagConfiguration?.Machine;
+                    this.LoadConfiguration(openFileDialog.FileName);
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                this.ErrorMessage = ex.Message;
+            }
+        }
+
+        public void LoadConfiguration(string fileName)
+        {
+            try
+            {
+                if (!File.Exists(fileName))
+                {
+                }
+
+                string fileContents;
+                using (var streamReader = new StreamReader(fileName))
+                {
+                    fileContents = streamReader.ReadToEnd();
+                }
+
+                var settings = new JsonSerializerSettings();
+                settings.Converters.Add(new IPAddressConverter());
+                settings.MissingMemberHandling = MissingMemberHandling.Ignore;
+
+                var vertimagConfiguration = JsonConvert.DeserializeObject<VertimagConfiguration>(fileContents, settings);
+
+                this.machineService.Machine = vertimagConfiguration?.Machine;
+                this.ConfigurationName = new FileInfo(fileName).Name;
+            }
+            catch (Exception ex)
+            {
+                this.ErrorMessage = ex.Message;
             }
         }
 

@@ -23,6 +23,8 @@ namespace Ferretto.VW.App.Keyboards
                 Thickness? keyMargin = row.KeyMargin ?? keyboard.KeyMargin,
                     keyPadding = row.KeyPadding ?? keyboard.KeyPadding;
 
+                string styleResource = row.KeyStyleResource ?? keyboard.KeyStyleResource;
+
                 KeyboardCell[] cells = row.Cells?.ToArray() ?? Array.Empty<KeyboardCell>();
                 int cellCount = cells.Length;
                 grid.RowDefinitions.Add(new RowDefinition
@@ -44,8 +46,11 @@ namespace Ferretto.VW.App.Keyboards
                     var cell = cells[j];
                     var key = cell.Key;
 
-                    Thickness padding = cell.Padding ?? keyPadding ?? default,
-                        margin = cell.Margin ?? keyMargin ?? default;
+                    Thickness padding = cell.KeyPadding ?? keyPadding ?? default,
+                        margin = cell.KeyMargin ?? keyMargin ?? default;
+
+                    styleResource = cell.KeyStyleResource ?? styleResource;
+
                     if (key != null)
                     {
                         KeyboardButton btn = new KeyboardButton
@@ -53,10 +58,13 @@ namespace Ferretto.VW.App.Keyboards
                             Padding = padding,
                             Margin = margin,
                             Key = key,
-                            // TODO: set IsInShiftMode Binding
                         };
                         Grid.SetColumn(btn, j);
                         rowGrid.Children.Add(btn);
+                        if (!string.IsNullOrEmpty(styleResource))
+                        {
+                            btn.SetResourceReference(FrameworkElement.StyleProperty, styleResource);
+                        }
                     }
                     else
                     {

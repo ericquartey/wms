@@ -35,7 +35,6 @@
     <SolidColorBrush x:Key="PpcForeground"
                      Color="{DynamicResource ColorFerrettoPureWhite}" />
 
-
     <LinearGradientBrush x:Key="PpcBackgroundDisabled" MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="0,0" EndPoint="10,10">
         <GradientStop Offset="0" Color="Transparent" />
         <GradientStop Offset="0.5" Color="Transparent" />

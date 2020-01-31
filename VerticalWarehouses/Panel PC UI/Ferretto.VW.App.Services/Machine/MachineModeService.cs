@@ -183,9 +183,9 @@ namespace Ferretto.VW.App.Services
 
         private async Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
         {
-            if (e.HealthStatus == HealthStatus.Healthy
+            if (e.HealthMasStatus == HealthStatus.Healthy
                 ||
-                e.HealthStatus == HealthStatus.Degraded)
+                e.HealthMasStatus == HealthStatus.Degraded)
             {
                 await this.GetMachineStatusAsync();
             }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Resources;
@@ -250,7 +249,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
                    &&
                    !this.IsBusyConfirmingRecallOperation
                    &&
-                   !this.IsBusyConfirmingOperation;
+                   !this.IsBusyConfirmingOperation
+                   &&
+                   this.IsWmsHealthy;
         }
 
         private bool CanRecallLoadingUnit()
@@ -291,7 +292,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
                     var newItemCompartment = await this.compartmentsWmsWebService.UpdateAsync(compartment, this.SelectedItemCompartment.Id);
 
-                    await this.ResetLoadData();
+                    await this.ResetLoadDataAsync();
                 }
             }
             catch (Exception ex)
@@ -338,7 +339,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.IsAdjustmentVisible = true;
                 this.InputQuantityInfo = string.Format(OperatorApp.AdjustmentQuantity, this.MeasureUnit);
             }
-
 
             this.CanInputQuantity = true;
 

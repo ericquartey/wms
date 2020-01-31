@@ -45,7 +45,7 @@ namespace Ferretto.VW.App.Services
 
         private async Task OnHealthStatusChanged(HealthStatusChangedEventArgs e)
         {
-            if (e.HealthStatus == HealthStatus.Unhealthy
+            if (e.HealthMasStatus == HealthStatus.Unhealthy
                 &&
                 ConfigurationManager.AppSettings.LogoutWhenUnhealthy())
             {

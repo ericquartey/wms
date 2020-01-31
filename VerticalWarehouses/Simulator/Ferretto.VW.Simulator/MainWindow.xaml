@@ -411,6 +411,8 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <Grid.ColumnDefinitions />
+
         <!--  Header  -->
 
         <Grid Grid.Row="0"
@@ -515,62 +517,71 @@
 
         </Grid>
 
-        <Button Grid.Row="0"
-                Grid.Column="2"
-                Margin="0,0,15,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Command="{Binding ToggleThemeCommand}">
-            <Button.Content>
-                <StackPanel Orientation="Horizontal">
-                    <controls:PpcIcon Height="36"
-                                      Margin="10"
-                                      ColorizeBrush="{DynamicResource PpcButtonForeground}"
-                                      Source="pack://application:,,,/Ferretto.VW.Simulator;Component/Icons/theme_dark.png"
-                                      Visibility="{Binding IsDarkThemeActive, Converter={StaticResource BTVC}}" />
+        <Grid Grid.Row="0"
+              Grid.Column="2"
+              HorizontalAlignment="Right"
+              VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <TextBlock VerticalAlignment="Center"
+                       Foreground="White"
+                       Text="{Binding ConfigurationName}" />
 
-                    <controls:PpcIcon Height="36"
-                                      Margin="10"
-                                      ColorizeBrush="{DynamicResource PpcButtonForeground}"
-                                      Source="pack://application:,,,/Ferretto.VW.Simulator;Component/Icons/theme_light.png"
-                                      Visibility="{Binding IsDarkThemeActive, Converter={StaticResource BTVIC}}" />
+            <Button Grid.Column="1"
+                    Margin="0,0,15,0"
+                    Command="{Binding ToggleThemeCommand}">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <controls:PpcIcon Height="36"
+                                          Margin="10"
+                                          ColorizeBrush="{DynamicResource PpcButtonForeground}"
+                                          Source="pack://application:,,,/Ferretto.VW.Simulator;Component/Icons/theme_dark.png"
+                                          Visibility="{Binding IsDarkThemeActive, Converter={StaticResource BTVC}}" />
 
-                    <TextBlock Margin="0,0,10,0"
-                               VerticalAlignment="Center">
-                        <TextBlock.Style>
-                            <Style>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsDarkThemeActive}"
-                                                 Value="True">
-                                        <Setter Property="TextBlock.Text" Value="Tema Scuro" />
-                                        <Setter Property="TextBlock.Foreground" Value="White" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsDarkThemeActive}"
-                                                 Value="False">
-                                        <Setter Property="TextBlock.Text" Value="Tema Chiaro" />
-                                        <Setter Property="TextBlock.Foreground" Value="Black" />
-                                    </DataTrigger>
+                        <controls:PpcIcon Height="36"
+                                          Margin="10"
+                                          ColorizeBrush="{DynamicResource PpcButtonForeground}"
+                                          Source="pack://application:,,,/Ferretto.VW.Simulator;Component/Icons/theme_light.png"
+                                          Visibility="{Binding IsDarkThemeActive, Converter={StaticResource BTVIC}}" />
 
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </StackPanel>
-            </Button.Content>
-            <Button.Style>
-                <Style TargetType="Button">
-                    <Setter Property="Background" Value="Transparent" />
-                    <Setter Property="BorderBrush" Value="Transparent" />
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="Transparent" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
+                        <TextBlock Margin="0,0,10,0"
+                                   VerticalAlignment="Center">
+                            <TextBlock.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsDarkThemeActive}"
+                                                     Value="True">
+                                            <Setter Property="TextBlock.Text" Value="Tema Scuro" />
+                                            <Setter Property="TextBlock.Foreground" Value="White" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsDarkThemeActive}"
+                                                     Value="False">
+                                            <Setter Property="TextBlock.Text" Value="Tema Chiaro" />
+                                            <Setter Property="TextBlock.Foreground" Value="Black" />
+                                        </DataTrigger>
 
-            </Button.Style>
-        </Button>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </StackPanel>
+                </Button.Content>
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderBrush" Value="Transparent" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="Transparent" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
 
+                </Button.Style>
+            </Button>
+        </Grid>
         <!--  Body  -->
 
         <ScrollViewer Grid.Row="1"

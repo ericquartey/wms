@@ -162,6 +162,18 @@
                                                Text="{Binding ElementName=MenuButton, Path=Description, FallbackValue='bla bla bla bla bla'}"
                                                TextWrapping="Wrap" />
                                 </Grid>
+
+                                <Border x:Name="MenuDisabled"
+                                        Grid.ColumnSpan="2"
+                                        BorderBrush="{DynamicResource FerrettoDarkGray}"
+                                        BorderThickness="0"
+                                        Visibility="Collapsed">
+                                    <Border.Background>
+                                        <SolidColorBrush Opacity="0.5"
+                                                         Color="Black" />
+                                    </Border.Background>
+                                </Border>
+
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -170,34 +182,7 @@
                                 <Setter Property="Cursor" Value="Hand" />
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
-                                <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
-                                <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
-                                <Setter TargetName="Grid_MenuButton" Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
-                                <Setter TargetName="Grid_MenuButton_Title" Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
-                                <Setter TargetName="Grid_MenuButton_Description" Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
-                                <Setter TargetName="Grid_MenuButton_Icon" Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
-                                <Setter TargetName="Grid_MenuButton_Ellipse" Property="Stroke" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
-                                <Setter TargetName="Grid_MenuButton_DrawingBrush" Property="BorderBrush">
-                                    <Setter.Value>
-                                        <DrawingBrush TileMode="Tile"
-                                                      Viewport="0,0,8,8"
-                                                      ViewportUnits="Absolute">
-                                            <DrawingBrush.Drawing>
-                                                <DrawingGroup>
-                                                    <GeometryDrawing Brush="{DynamicResource PpcButtonForegroundDisabled}">
-                                                        <GeometryDrawing.Geometry>
-                                                            <GeometryGroup>
-                                                                <RectangleGeometry Rect="0,0,50,50" />
-                                                                <RectangleGeometry Rect="50,50,50,50" />
-                                                            </GeometryGroup>
-                                                        </GeometryDrawing.Geometry>
-                                                    </GeometryDrawing>
-                                                </DrawingGroup>
-                                            </DrawingBrush.Drawing>
-                                        </DrawingBrush>
-                                    </Setter.Value>
-                                </Setter>
+                                <Setter TargetName="MenuDisabled" Property="Visibility" Value="Visible" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>

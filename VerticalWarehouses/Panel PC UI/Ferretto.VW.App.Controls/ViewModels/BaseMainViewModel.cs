@@ -44,6 +44,8 @@ namespace Ferretto.VW.App.Controls
 
         private bool isKeyboardOpened;
 
+        private bool isWmsHealthy;
+
         private DelegateCommand keyboardCloseCommand;
 
         private DelegateCommand keyboardOpenCommand;
@@ -97,6 +99,12 @@ namespace Ferretto.VW.App.Controls
             protected set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
         }
 
+        public virtual bool IsWmsHealthy
+        {
+            get => this.isWmsHealthy;
+            set => this.SetProperty(ref this.isWmsHealthy, value);
+        }
+
         public virtual bool KeepAlive => true;
 
         public ICommand KeyboardCloseCommand =>
@@ -127,7 +135,7 @@ namespace Ferretto.VW.App.Controls
 
         public ISensorsService SensorsService => this.sensorsService;
 
-        protected bool IsConnectedByMAS => (this.healthProbeService.HealthStatus == HealthStatus.Healthy || this.healthProbeService.HealthStatus == HealthStatus.Degraded);
+        protected bool IsConnectedByMAS => (this.healthProbeService.HealthMasStatus == HealthStatus.Healthy || this.healthProbeService.HealthMasStatus == HealthStatus.Degraded);
 
         protected virtual bool IsDataRefreshSyncronous => false;
 
@@ -171,7 +179,7 @@ namespace Ferretto.VW.App.Controls
                 this.machineModeChangedToken?.Dispose();
                 this.machineModeChangedToken = null;
             }
-            
+
             //this.ClearSteps();
 
             /*
@@ -219,7 +227,7 @@ namespace Ferretto.VW.App.Controls
             this.UpdateIsEnabled(
                 this.machineModeService.MachinePower,
                 this.machineModeService.MachineMode,
-                this.healthProbeService.HealthStatus);
+                this.healthProbeService.HealthMasStatus);
 
             await base.OnAppearedAsync();
 
@@ -331,7 +339,7 @@ namespace Ferretto.VW.App.Controls
             this.UpdateIsEnabled(
                 this.machineModeService.MachinePower,
                 this.machineModeService.MachineMode,
-                this.healthProbeService.HealthStatus);
+                this.healthProbeService.HealthMasStatus);
 
             return Task.CompletedTask;
         }
@@ -341,7 +349,9 @@ namespace Ferretto.VW.App.Controls
             this.UpdateIsEnabled(
                 this.machineModeService.MachinePower,
                 this.machineModeService.MachineMode,
-                e.HealthStatus);
+                e.HealthMasStatus);
+
+            this.IsWmsHealthy = e.HealthWmsStatus == HealthStatus.Healthy;
 
             this.RaiseCanExecuteChanged();
 
@@ -353,7 +363,7 @@ namespace Ferretto.VW.App.Controls
             this.UpdateIsEnabled(
                 this.machineModeService.MachinePower,
                 e.MachineMode,
-                this.healthProbeService.HealthStatus);
+                this.healthProbeService.HealthMasStatus);
 
             this.RaiseCanExecuteChanged();
 
@@ -365,7 +375,7 @@ namespace Ferretto.VW.App.Controls
             this.UpdateIsEnabled(
                 e.MachinePowerState,
                 this.machineModeService.MachineMode,
-                this.healthProbeService.HealthStatus);
+                this.healthProbeService.HealthMasStatus);
 
             this.RaiseCanExecuteChanged();
 
@@ -377,7 +387,7 @@ namespace Ferretto.VW.App.Controls
             this.UpdateIsEnabled(
                 this.machineModeService.MachinePower,
                 this.machineModeService.MachineMode,
-                this.healthProbeService.HealthStatus);
+                this.healthProbeService.HealthMasStatus);
 
             this.RaiseCanExecuteChanged();
 
@@ -406,7 +416,7 @@ namespace Ferretto.VW.App.Controls
             this.UpdateIsEnabled(
                 this.machineModeService.MachinePower,
                 this.machineModeService.MachineMode,
-                this.healthProbeService.HealthStatus);
+                this.healthProbeService.HealthMasStatus);
         }
 
         private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
@@ -462,7 +472,7 @@ namespace Ferretto.VW.App.Controls
                             this.UpdateIsEnabled(
                                 this.machineModeService.MachinePower,
                                 this.machineModeService.MachineMode,
-                                this.healthProbeService.HealthStatus);
+                                this.healthProbeService.HealthMasStatus);
                         },
                         ThreadOption.UIThread,
                         false);
