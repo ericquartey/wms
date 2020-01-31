@@ -271,7 +271,7 @@
   <data name="ConfirmMachineModeSwitchAutomatic" xml:space="preserve">
     <value>Are you sure you want to automatic mode the machine?</value>
   </data>
-  <data name="MachineModeSwitch" xml:space="preserve">
-    <value>Mode</value>
+  <data name="Automatic" xml:space="preserve">
+    <value>Automatic</value>
   </data>
 </root>

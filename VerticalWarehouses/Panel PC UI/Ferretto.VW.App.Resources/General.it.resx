@@ -255,7 +255,7 @@
   <data name="ConfirmMachineModeSwitchAutomatic" xml:space="preserve">
     <value>Sei sicuro di voler mettere la macchina in automatico?</value>
   </data>
-  <data name="MachineModeSwitch" xml:space="preserve">
-    <value>Modalità</value>
+  <data name="Automatic" xml:space="preserve">
+    <value>Automatico</value>
   </data>
 </root>
