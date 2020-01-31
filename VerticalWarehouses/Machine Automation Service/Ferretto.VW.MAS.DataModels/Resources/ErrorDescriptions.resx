@@ -306,14 +306,8 @@
   <data name="WarehouseIsFull" xml:space="preserve">
     <value>Magazzino pieno</value>
   </data>
-  <data name="LoadUnitMissingOnBay1" xml:space="preserve">
-    <value>Bay 1 occupied with unknown loading unit</value>
-  </data>
-  <data name="LoadUnitMissingOnBay2" xml:space="preserve">
-    <value>Bay 2 occupied with unknown loading unit</value>
-  </data>
-  <data name="LoadUnitMissingOnBay3" xml:space="preserve">
-    <value>Bay 3 busy with unknown loading unit</value>
+  <data name="LoadUnitMissingOnBay" xml:space="preserve">
+    <value>Bay occupied with unknown loading unit</value>
   </data>
   <data name="LoadUnitMissingOnElevator" xml:space="preserve">
     <value>Elevator occupied with unknown loading unit</value>

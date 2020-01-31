@@ -108,18 +108,18 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 if (this.Mission.OpenShutterPosition != ShutterPosition.NotSpecified)
                 {
-                    this.Logger.LogDebug($"Open Shutter");
+                    this.Logger.LogInformation($"Open Shutter Mission:Id={this.Mission.Id}");
                     this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.Mission.OpenShutterPosition, this.Mission.TargetBay, this.Mission.RestoreConditions);
                 }
                 else
                 {
-                    this.Logger.LogDebug($"Manual Horizontal forward positioning start");
+                    this.Logger.LogInformation($"Manual Horizontal forward positioning start Mission:Id={this.Mission.Id}");
                     this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, true, false, this.Mission.LoadUnitId, null, MessageActor.MachineManager, this.Mission.TargetBay);
                 }
             }
             else
             {
-                this.Logger.LogDebug($"MoveLoadingUnit start: direction {this.Mission.Direction}, openShutter {this.Mission.OpenShutterPosition}");
+                this.Logger.LogInformation($"MoveLoadingUnit start: direction {this.Mission.Direction}, openShutter {this.Mission.OpenShutterPosition} Mission:Id={this.Mission.Id}");
                 this.LoadingUnitMovementProvider.MoveLoadingUnit(this.Mission.Direction, false, this.Mission.OpenShutterPosition, false, MessageActor.MachineManager, bayNumber, null, null);
             }
             this.Mission.RestoreConditions = false;
@@ -153,12 +153,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         {
                             if (this.Mission.NeedHomingAxis == Axis.Horizontal)
                             {
-                                this.Logger.LogDebug($"Manual Horizontal forward positioning start");
+                                this.Logger.LogInformation($"Manual Horizontal forward positioning start Mission:Id={this.Mission.Id}");
                                 this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, true, false, this.Mission.LoadUnitId, null, MessageActor.MachineManager, this.Mission.TargetBay);
                             }
                             else
                             {
-                                this.Logger.LogDebug($"ContinuePositioning");
+                                this.Logger.LogDebug($"ContinuePositioning Mission:Id={this.Mission.Id}");
                                 this.LoadingUnitMovementProvider.ContinuePositioning(MessageActor.MachineManager, notification.RequestingBay);
                             }
                         }

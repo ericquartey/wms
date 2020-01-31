@@ -525,6 +525,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         }
                     }
                     missionsDataProvider.Complete(mission.Id);
+                    this.NotifyAssignedMissionOperationChanged(mission.TargetBay, null, null);
                 }
                 else if (mission.LoadUnitDestination != LoadingUnitLocation.Cell
                     && mission.LoadUnitDestination != LoadingUnitLocation.Elevator
@@ -550,7 +551,6 @@ namespace Ferretto.VW.MAS.MissionManager
                     }
                     else
                     {
-                        baysDataProvider.AssignWmsMission(mission.TargetBay, mission, null);
                         this.NotifyAssignedMissionOperationChanged(mission.TargetBay, null, null);
                     }
                 }
@@ -558,6 +558,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 // any other mission type
                 {
                     missionsDataProvider.Complete(mission.Id);
+                    this.NotifyAssignedMissionOperationChanged(mission.TargetBay, null, null);
                 }
             }
             catch (Exception ex)
@@ -601,7 +602,7 @@ namespace Ferretto.VW.MAS.MissionManager
             else
             {
                 // close operation and schedule next
-                baysDataProvider.ClearMission(bay.Number);
+                //baysDataProvider.ClearMission(bay.Number);
 
                 var currentMode = serviceProvider
                     .GetRequiredService<IMachineModeProvider>()
