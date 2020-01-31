@@ -17,17 +17,9 @@ namespace Ferretto.VW.MAS.AutomationService
     {
         #region Fields
 
-        internal const string ServiceConsoleArgument = "--service";
-
         private const int NoError = 0;
 
-        private const string PasswordConsoleArgument = "--password";
-
-        private const string RegisterAsServiceConsoleArgument = "--register-as-service";
-
-        private const string ServiceName = "Ferretto Machine Automation Service";
-
-        private const string UserConsoleArgument = "--user";
+        private const string ServiceConsoleArgument = "--service";
 
         #endregion
 
@@ -40,25 +32,14 @@ namespace Ferretto.VW.MAS.AutomationService
 
         public static int Main(string[] args)
         {
-            ILogger<Startup> logger = null;
+            ILogger logger = null;
             try
             {
-                var pathToContentRoot = Directory.GetCurrentDirectory();
-
-                if (args.Contains(RegisterAsServiceConsoleArgument))
-                {
-                    return new ServiceBuilder(ServiceName)
-                        .Register(
-                            userName: GetArgumentValue(args, UserConsoleArgument),
-                            password: GetArgumentValue(args, PasswordConsoleArgument));
-                }
-
                 var isService = !Debugger.IsAttached && args.Contains(ServiceConsoleArgument);
-                if (isService)
-                {
-                    var pathToExe = Process.GetCurrentProcess().MainModule.FileName;
-                    pathToContentRoot = Path.GetDirectoryName(pathToExe);
-                }
+
+                var pathToContentRoot = isService
+                    ? Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)
+                    : Directory.GetCurrentDirectory();
 
                 var webHostArgs = args.Where(arg => arg != ServiceConsoleArgument).ToArray();
 
@@ -67,12 +48,12 @@ namespace Ferretto.VW.MAS.AutomationService
                     .Build();
 
                 logger = host.Services.GetRequiredService<ILogger<Startup>>();
-                var versionString = GetVersion();
 
-                logger.LogInformation($"VertiMag Automation Service version {versionString}");
+                logger.LogInformation($"VertiMag Automation Service version {GetVersion()}");
 
                 if (isService)
                 {
+                    Directory.SetCurrentDirectory(pathToContentRoot);
                     host.RunAsService();
                 }
                 else
@@ -88,14 +69,9 @@ namespace Ferretto.VW.MAS.AutomationService
                 return -1;
             }
 
-            logger.LogInformation("Application terminated.");
+            logger?.LogInformation("Application terminated.");
 
             return NoError;
-        }
-
-        private static string GetArgumentValue(string[] args, string argumentName)
-        {
-            return args.SkipWhile(a => a != argumentName).Skip(1).First();
         }
 
         private static string GetVersion()
