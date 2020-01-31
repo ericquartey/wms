@@ -306,14 +306,8 @@
   <data name="WarehouseIsFull" xml:space="preserve">
     <value>Il magazzino risulta pieno e non è possibile determinare una cella libera per il cassetto selezionato.</value>
   </data>
-  <data name="LoadUnitMissingOnBay1" xml:space="preserve">
-    <value>Check the loading unit id on the bay 1. Check that the loading unit presence sensors are working properly. Put the machine in Automatic.</value>
-  </data>
-  <data name="LoadUnitMissingOnBay2" xml:space="preserve">
-    <value>Check the loading unit id on the bay 2. Check that the loading unit presence sensors are working correctly. Put the machine in Automatic.</value>
-  </data>
-  <data name="LoadUnitMissingOnBay3" xml:space="preserve">
-    <value>Check the loading unit id on the bay 3. Check that the loading unit presence sensors are working correctly. Put the machine in Automatic.</value>
+  <data name="LoadUnitMissingOnBay" xml:space="preserve">
+    <value>Check the loading unit id on the bay. Check that the loading unit presence sensors are working properly. Put the machine in Automatic.</value>
   </data>
   <data name="LoadUnitMissingOnElevator" xml:space="preserve">
     <value>Check the id of the loading unit on the elevator. Check that the loading unit presence sensors on the elevator are working properly. Put the machine in Automatic.</value>

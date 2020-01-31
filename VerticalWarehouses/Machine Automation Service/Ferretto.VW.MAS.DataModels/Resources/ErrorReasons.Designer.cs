@@ -448,29 +448,11 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check the loading unit id on the bay 1. Check that the loading unit presence sensors are working properly. Put the machine in Automatic..
+        ///   Looks up a localized string similar to Check the loading unit id on the bay. Check that the loading unit presence sensors are working properly. Put the machine in Automatic..
         /// </summary>
-        public static string LoadUnitMissingOnBay1 {
+        public static string LoadUnitMissingOnBay {
             get {
-                return ResourceManager.GetString("LoadUnitMissingOnBay1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Check the loading unit id on the bay 2. Check that the loading unit presence sensors are working correctly. Put the machine in Automatic..
-        /// </summary>
-        public static string LoadUnitMissingOnBay2 {
-            get {
-                return ResourceManager.GetString("LoadUnitMissingOnBay2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Check the loading unit id on the bay 3. Check that the loading unit presence sensors are working correctly. Put the machine in Automatic..
-        /// </summary>
-        public static string LoadUnitMissingOnBay3 {
-            get {
-                return ResourceManager.GetString("LoadUnitMissingOnBay3", resourceCulture);
+                return ResourceManager.GetString("LoadUnitMissingOnBay", resourceCulture);
             }
         }
         
