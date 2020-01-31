@@ -4932,14 +4932,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task MoveToVerticalPositionAsync(double targetPosition, bool performWeighting, bool computeElongation)
+        public System.Threading.Tasks.Task MoveToVerticalPositionAsync(double targetPosition, bool performWeighting)
         {
-            return MoveToVerticalPositionAsync(targetPosition, performWeighting, computeElongation, System.Threading.CancellationToken.None);
+            return MoveToVerticalPositionAsync(targetPosition, performWeighting, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task MoveToVerticalPositionAsync(double targetPosition, bool performWeighting, bool computeElongation, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task MoveToVerticalPositionAsync(double targetPosition, bool performWeighting, System.Threading.CancellationToken cancellationToken)
         {
             if (targetPosition == null)
                 throw new System.ArgumentNullException("targetPosition");
@@ -4947,14 +4947,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             if (performWeighting == null)
                 throw new System.ArgumentNullException("performWeighting");
     
-            if (computeElongation == null)
-                throw new System.ArgumentNullException("computeElongation");
-    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/vertical/move-to?");
             urlBuilder_.Append(System.Uri.EscapeDataString("targetPosition") + "=").Append(System.Uri.EscapeDataString(ConvertToString(targetPosition, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("performWeighting") + "=").Append(System.Uri.EscapeDataString(ConvertToString(performWeighting, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Append(System.Uri.EscapeDataString("computeElongation") + "=").Append(System.Uri.EscapeDataString(ConvertToString(computeElongation, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
             var client_ = _httpClient;
