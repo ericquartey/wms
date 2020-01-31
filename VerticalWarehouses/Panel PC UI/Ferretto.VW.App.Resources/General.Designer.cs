@@ -79,6 +79,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Automatic.
+        /// </summary>
+        public static string Automatic {
+            get {
+                return ResourceManager.GetString("Automatic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
         public static string Back {
@@ -120,6 +129,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Code {
             get {
                 return ResourceManager.GetString("Code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to automatic mode the machine?.
+        /// </summary>
+        public static string ConfirmMachineModeSwitchAutomatic {
+            get {
+                return ResourceManager.GetString("ConfirmMachineModeSwitchAutomatic", resourceCulture);
             }
         }
         

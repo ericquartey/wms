@@ -838,6 +838,8 @@ namespace Ferretto.VW.Simulator.Services
             {
                 this.Inverters.ToList().ForEach(x => x.EmergencyStop());
             }
+            this.RemoteIOs01.Inputs[(int)IoPorts.ElevatorMotorFeedback].Value = this.RemoteIOs01.Outputs[(int)IoPorts.ElevatorMotor].Value;
+            this.RemoteIOs01.Inputs[(int)IoPorts.CradleMotorFeedback].Value = this.RemoteIOs01.Outputs[(int)IoPorts.CradleMotor].Value;
         }
 
         #endregion

@@ -110,8 +110,7 @@ namespace Ferretto.VW.MAS.MachineManager
                     }
                     else
                     {
-                        this.Logger.LogError("Failed to create Change Running State machine mission");
-                        this.NotifyCommandError(command);
+                        this.Logger.LogWarning("Failed to create Change Running State machine mission");
                     }
                 }
             }
