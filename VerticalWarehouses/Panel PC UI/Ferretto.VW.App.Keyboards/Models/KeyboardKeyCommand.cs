@@ -9,7 +9,7 @@
         /// </summary>
         public string Caption { get; set; }
 
-        public string Command { get; set; }
+        public string CommandText { get; set; }
 
         #endregion
     }
