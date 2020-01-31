@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.Common.Controls.WPF;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
@@ -91,6 +92,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.loadingUnitsWmsWebService = loadingUnitsWmsWebService;
+
+            this.CompartmentColoringFunction = (compartment, selectedCompartment) => compartment == selectedCompartment ? "#0288f7" : "#444444";
         }
 
         #endregion
@@ -125,6 +128,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
                this.changeModeLoadingUnitCommand
                ??
                (this.changeModeLoadingUnitCommand = new DelegateCommand(() => this.ChangeMode(), this.CanChangeLoadingUnitMode));
+
+        public Func<IDrawableCompartment, IDrawableCompartment, string> CompartmentColoringFunction { get; }
 
         public IEnumerable<TrayControlCompartment> Compartments
         {
@@ -325,7 +330,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             if (!this.isWaitingForNewOperation)
             {
-                this.ResetLoadData();                
+                this.ResetLoadData();
             }
         }
 
