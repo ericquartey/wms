@@ -1,8 +1,8 @@
 trigger:
-  batch: true
   branches:
     include:
-    - develop
+    - release
+    - master
   paths:
     exclude:
     - VerticalWarehouses/Installer/*
@@ -15,7 +15,7 @@ steps:
 
 - template: azure-pipeline-vw-services-template.yml
   parameters:
-    BuildConfiguration: 'debug'
+    BuildConfiguration: 'release'
     RestoreBuildProjects: '**/Ferretto.VW.MAS.AutomationService.csproj'
     TestProjects: 'VerticalWarehouses/Machine Automation Service/**/*.Tests.csproj'
     TargetFramework: 'netcoreapp2.2'

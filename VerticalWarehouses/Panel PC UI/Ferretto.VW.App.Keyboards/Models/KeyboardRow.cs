@@ -4,7 +4,7 @@ using System.Windows;
 
 namespace Ferretto.VW.App.Keyboards
 {
-    public class KeyboardRow
+    public class KeyboardRow : KeyboardKeyContainer
     {
         #region Properties
 
@@ -13,10 +13,6 @@ namespace Ferretto.VW.App.Keyboards
         public GridLength Height { get; set; } = GridLength.Auto;
 
         public HorizontalAlignment HorizontalAlignment { get; set; } = HorizontalAlignment.Stretch;
-
-        public Thickness? KeyMargin { get; set; }
-
-        public Thickness? KeyPadding { get; set; }
 
         public VerticalAlignment VerticalAlignment { get; set; }
 
