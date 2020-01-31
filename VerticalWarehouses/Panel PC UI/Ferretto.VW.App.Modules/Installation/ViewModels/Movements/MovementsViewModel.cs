@@ -79,6 +79,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand stopMovingCommand;
 
+        private DelegateCommand stopMovingReleaseCommand;
+
         private string title;
 
         #endregion
@@ -197,6 +199,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.stopMovingCommand = new DelegateCommand(
                 async () => await this.StopMovingAsync(),
                 this.CanStopMoving));
+
+        public ICommand StopMovingReleaseCommand =>
+            this.stopMovingReleaseCommand
+            ??
+            (this.stopMovingReleaseCommand = new DelegateCommand(
+                async () => await this.StopMovingReleaseAsync()));
 
         public string Title
         {
@@ -657,9 +665,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task StopMovingAsync()
         {
+            Debug.WriteLine($"Command fired");
+
             // In caso di fine operazione
             if (this.IsMovementsManual && this.isManualMovementCompleted)
             {
+                Debug.WriteLine($"-- Command rejected");
                 return;
             }
 
@@ -667,6 +678,31 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
                 await this.MachineService.StopMovingByAllAsync();
+
+                Debug.WriteLine($"-- Command executed");
+            }
+            catch (Exception ex)
+            {
+                this.CloseOperation();
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.StopMoving();
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task StopMovingReleaseAsync()
+        {
+            Debug.WriteLine($"Command Release fired");
+
+            try
+            {
+                this.IsWaitingForResponse = true;
+                await this.MachineService.StopMovingByAllAsync();
+
+                Debug.WriteLine($"-- Command Release executed");
             }
             catch (Exception ex)
             {

@@ -1498,4 +1498,8 @@ Please put back any moved pieces in their original position.</value>
     <value>Stock</value>
     <comment>Label text</comment>
   </data>
+  <data name="LoadingUnitPresenceId" xml:space="preserve">
+    <value>Loading unit present {0}</value>
+    <comment>Label text</comment>
+  </data>
 </root>

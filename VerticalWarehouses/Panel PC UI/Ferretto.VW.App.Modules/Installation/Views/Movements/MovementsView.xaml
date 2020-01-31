@@ -562,7 +562,7 @@
                                                            IsEnabled="{Binding CanMoveElevatorUp}"
                                                            Kind="ArrowUp"
                                                            PressCommand="{Binding MoveElevatorUpCommand}"
-                                                           ReleaseCommand="{Binding StopMovingCommand}" />
+                                                           ReleaseCommand="{Binding StopMovingReleaseCommand}" />
 
                         <controls:PpcPressAndReleaseButton Grid.Row="1"
                                                            Grid.Column="1"
@@ -572,7 +572,7 @@
                                                            IsEnabled="{Binding CanMoveElevatorDown}"
                                                            Kind="ArrowDown"
                                                            PressCommand="{Binding MoveElevatorDownCommand}"
-                                                           ReleaseCommand="{Binding StopMovingCommand}" />
+                                                           ReleaseCommand="{Binding StopMovingReleaseCommand}" />
 
                         <controls:PpcPressAndReleaseButton Grid.Row="0"
                                                            Grid.RowSpan="2"
@@ -583,7 +583,7 @@
                                                            IsEnabled="{Binding CanMoveElevatorBackwards}"
                                                            Kind="ArrowLeft"
                                                            PressCommand="{Binding MoveElevatorBackwardsCommand}"
-                                                           ReleaseCommand="{Binding StopMovingCommand}" />
+                                                           ReleaseCommand="{Binding StopMovingReleaseCommand}" />
 
                         <controls:PpcPressAndReleaseButton Grid.Row="0"
                                                            Grid.RowSpan="2"
@@ -594,7 +594,7 @@
                                                            IsEnabled="{Binding CanMoveElevatorForwards}"
                                                            Kind="ArrowRight"
                                                            PressCommand="{Binding MoveElevatorForwardsCommand}"
-                                                           ReleaseCommand="{Binding StopMovingCommand}" />
+                                                           ReleaseCommand="{Binding StopMovingReleaseCommand}" />
 
                     </Grid>
 
@@ -623,7 +623,7 @@
                                                            IsEnabled="{Binding CanShutterMoveUpCommand}"
                                                            Kind="ArrowUp"
                                                            PressCommand="{Binding ShutterMoveUpCommand}"
-                                                           ReleaseCommand="{Binding StopMovingCommand}"
+                                                           ReleaseCommand="{Binding StopMovingReleaseCommand}"
                                                            Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" />
 
                         <controls:PpcPressAndReleaseButton Grid.Row="0"
@@ -634,7 +634,7 @@
                                                            IsEnabled="{Binding CanMoveCarouselOpenCommand}"
                                                            Kind="ArrowUp"
                                                            PressCommand="{Binding MoveCarouselOpenCommand}"
-                                                           ReleaseCommand="{Binding StopMovingCommand}"
+                                                           ReleaseCommand="{Binding StopMovingReleaseCommand}"
                                                            Visibility="{Binding HasCarousel, Converter={StaticResource BTVC}}" />
 
                         <controls:PpcPressAndReleaseButton Grid.Row="0"
@@ -645,7 +645,7 @@
                                                            IsEnabled="False"
                                                            Kind="ArrowUp"
                                                            PressCommand="{Binding MoveForwardsCommand}"
-                                                           ReleaseCommand="{Binding StopMovingCommand}"
+                                                           ReleaseCommand="{Binding StopMovingReleaseCommand}"
                                                            Visibility="{Binding HasBayExternal, Converter={StaticResource BTVC}}" />
 
                         <controls:PpcPressAndReleaseButton Grid.Row="1"
@@ -656,7 +656,7 @@
                                                            IsEnabled="{Binding CanShutterMoveDownCommand}"
                                                            Kind="ArrowDown"
                                                            PressCommand="{Binding ShutterMoveDownCommand}"
-                                                           ReleaseCommand="{Binding StopMovingCommand}"
+                                                           ReleaseCommand="{Binding StopMovingReleaseCommand}"
                                                            Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" />
 
                         <controls:PpcPressAndReleaseButton Grid.Row="1"
@@ -667,7 +667,7 @@
                                                            IsEnabled="{Binding CanMoveCarouselCloseCommand}"
                                                            Kind="ArrowDown"
                                                            PressCommand="{Binding MoveCarouselCloseCommand}"
-                                                           ReleaseCommand="{Binding StopMovingCommand}"
+                                                           ReleaseCommand="{Binding StopMovingReleaseCommand}"
                                                            Visibility="{Binding HasCarousel, Converter={StaticResource BTVC}}" />
 
                         <controls:PpcPressAndReleaseButton Grid.Row="1"
@@ -678,7 +678,7 @@
                                                            IsEnabled="False"
                                                            Kind="ArrowDown"
                                                            PressCommand="{Binding MoveBackwardsCommand}"
-                                                           ReleaseCommand="{Binding StopMovingCommand}"
+                                                           ReleaseCommand="{Binding StopMovingReleaseCommand}"
                                                            Visibility="{Binding HasBayExternal, Converter={StaticResource BTVC}}" />
 
                     </Grid>

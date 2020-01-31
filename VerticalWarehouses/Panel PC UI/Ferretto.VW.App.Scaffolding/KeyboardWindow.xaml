@@ -16,20 +16,8 @@
 
         <TextBox />
 
-        <Grid Grid.Row="1" Margin="0,15,0,0" x:Name="keyboard">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <keyboards:KeyboardButton x:Name="dotCom" />
-            <keyboards:KeyboardButton Grid.Column="1" x:Name="backSpace" />
-        </Grid>
+        <keyboards:Keyboard Grid.Row="1" LayoutChangeRequest="Keyboard_LayoutChangeRequest" x:Name="keyboard" />
 
-        <Button Content="QWERTY" Grid.Row="2" Padding="15" Click="Button_Click" />
+        <Button Content="Serialize" Click="Button_Click" Grid.Row="2" />
     </Grid>
 </Window>

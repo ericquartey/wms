@@ -2,15 +2,11 @@
 
 namespace Ferretto.VW.App.Keyboards
 {
-    public class KeyboardCell
+    public class KeyboardCell : KeyboardKeyContainer
     {
         #region Properties
 
         public KeyboardKey Key { get; set; }
-
-        public Thickness? Margin { get; set; }
-
-        public Thickness? Padding { get; set; }
 
         #endregion
     }

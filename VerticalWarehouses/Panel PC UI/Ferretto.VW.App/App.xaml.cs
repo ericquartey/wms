@@ -105,10 +105,11 @@ namespace Ferretto.VW.App
 
             // App services
             var serviceUrl = ConfigurationManager.AppSettings.GetAutomationServiceUrl();
+            var serviceWmsUrl = ConfigurationManager.AppSettings.GetWMSDataServiceUrl();
             var serviceLiveHealthPath = ConfigurationManager.AppSettings.GetAutomationServiceLiveHealthPath();
             var serviceReadyHealthPath = ConfigurationManager.AppSettings.GetAutomationServiceReadyHealthPath();
 
-            containerRegistry.RegisterAppServices(serviceUrl, serviceLiveHealthPath, serviceReadyHealthPath);
+            containerRegistry.RegisterAppServices(serviceUrl, serviceWmsUrl, serviceLiveHealthPath, serviceReadyHealthPath);
 
             // MAS Web API services
             var operatorHubPath = ConfigurationManager.AppSettings.GetAutomationServiceOperatorHubPath();

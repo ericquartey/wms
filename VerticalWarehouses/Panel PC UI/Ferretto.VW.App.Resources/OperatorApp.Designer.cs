@@ -1817,6 +1817,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading unit present {0}.
+        /// </summary>
+        public static string LoadingUnitPresenceId {
+            get {
+                return ResourceManager.GetString("LoadingUnitPresenceId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There is 1 loading unit send to bay.
         /// </summary>
         public static string LoadingUnitSendToBay {
