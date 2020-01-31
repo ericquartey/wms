@@ -287,16 +287,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult MoveToVerticalPosition(
             double targetPosition,
-            bool performWeighting,
-            bool computeElongation)
+            bool performWeighting)
         {
             this.elevatorProvider.MoveToAbsoluteVerticalPosition(
                 manualMovment: false,
                 targetPosition,
-                computeElongation,
+                false,
                 performWeighting,
-                targetBayPositionId: null,
-                targetCellId: null,
+                targetBayPositionId: this.elevatorDataProvider.GetCachedCurrentBayPosition()?.Id,
+                targetCellId: this.elevatorDataProvider.GetCachedCurrentCell()?.Id,
                 checkHomingDone: true,
                 waitContinue: false,
                 this.BayNumber,

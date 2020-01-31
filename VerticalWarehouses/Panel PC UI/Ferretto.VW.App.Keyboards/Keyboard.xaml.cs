@@ -33,6 +33,12 @@ namespace Ferretto.VW.App.Keyboards
 
         #endregion
 
+        #region Events
+
+        public event EventHandler<KeyboardLayoutChangeRequestEventArgs> LayoutChangeRequest;
+
+        #endregion
+
         #region Properties
 
         public KeyboardLayout Layout
@@ -44,6 +50,13 @@ namespace Ferretto.VW.App.Keyboards
         #endregion
 
         #region Methods
+
+        internal void RequestLayoutChange(string layoutCode) => this.OnLayoutChangeRequest(new KeyboardLayoutChangeRequestEventArgs(layoutCode));
+
+        protected virtual void OnLayoutChangeRequest(KeyboardLayoutChangeRequestEventArgs e)
+        {
+            this.LayoutChangeRequest?.Invoke(this, e);
+        }
 
         private static void OnLayoutPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

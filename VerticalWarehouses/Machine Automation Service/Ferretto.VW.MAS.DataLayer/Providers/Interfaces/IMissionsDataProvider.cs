@@ -12,6 +12,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool CanCreateMission(int loadingUnitId, BayNumber targetBay);
 
+        void CheckPendingChanges();
+
         Mission Complete(int id);
 
         Mission CreateBayMission(int loadingUnitId, BayNumber bayNumber, MissionType missionType);
@@ -43,9 +45,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool IsMissionInWaitState(BayNumber bayNumber, int loadingUnitId);
 
+        void Reload(Mission mission);
+
         void ResetMachine(MessageActor sender);
 
-        void CheckPendingChanges();
         void Update(Mission mission);
 
         void UpdateHomingMissions(BayNumber bayNumber, Axis axis);

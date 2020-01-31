@@ -25,31 +25,7 @@ namespace Ferretto.VW.App.Scaffolding
         public KeyboardWindow()
         {
             this.InitializeComponent();
-
-            this.dotCom.Key = new Keyboards.KeyboardKey
-            {
-                Command = new Keyboards.KeyboardKeyCommand
-                {
-                    Command = ".com"
-                }
-            };
-            this.backSpace.Key = new Keyboards.KeyboardKey
-            {
-                Command = new Keyboards.KeyboardKeyCommand
-                {
-                    Command = "{Back}",
-                    Caption = "{icon:BackspaceSolid}"
-                }
-            };
-        }
-
-        #endregion
-
-        #region Methods
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            this.keyboard.GenerateKeyboard(new KeyboardLayout
+            this.keyboard.Layout = new KeyboardLayout
             {
                 KeyMargin = new Thickness(5),
                 KeyPadding = new Thickness(15, 5, 15, 5),
@@ -61,105 +37,51 @@ namespace Ferretto.VW.App.Scaffolding
                           {
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = @"\" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = @"\" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "1" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "1" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "2" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "2" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "3" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "3" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "4" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "4" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "5" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "5" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "6" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "6" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "7" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "7" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "8" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "8" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "9" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "9" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "0" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "0" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "{Back}", Caption = "{icon:BackspaceSolid}" }}
-                              },
-                          }
-                      },
-                      new KeyboardRow
-                      {
-                          Cells = new[]
-                          {
-                              new KeyboardCell
-                              {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "q" }}
-                              },
-                              new KeyboardCell
-                              {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "w" }}
-                              },
-                              new KeyboardCell
-                              {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "e" }}
-                              },
-                              new KeyboardCell
-                              {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "r" }}
-                              },
-                              new KeyboardCell
-                              {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "t" }}
-                              },
-                              new KeyboardCell
-                              {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "y" }}
-                              },
-                              new KeyboardCell
-                              {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "u" }}
-                              },
-                              new KeyboardCell
-                              {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "i" }}
-                              },
-                              new KeyboardCell
-                              {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "o" }}
-                              },
-                              new KeyboardCell
-                              {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "p" }}
-                              },
-                              new KeyboardCell
-                              {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "è" }}
-                              },
-                              new KeyboardCell
-                              {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "+" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "{Back}", Caption = "{icon:BackspaceSolid}" }}
                               },
                           }
                       },
@@ -169,51 +91,51 @@ namespace Ferretto.VW.App.Scaffolding
                           {
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "a" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "q" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "s" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "w" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "d" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "e" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "f" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "r" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "g" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "t" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "h" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "y" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "j" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "u" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "k" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "i" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "l" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "o" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "ò" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "p" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "à" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "è" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "ù" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "+" }}
                               },
                           }
                       },
@@ -221,54 +143,116 @@ namespace Ferretto.VW.App.Scaffolding
                       {
                           Cells = new[]
                           {
-                              //new KeyboardCell
-                              //{
-                              //    Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "{CapsLock}", Caption="{icon:CaretSquareUpSolid}" }}
-                              //},
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "z" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "a" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "x" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "s" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "c" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "d" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "v" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "f" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "b" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "g" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "n" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "h" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "m" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "j" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "," }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "k" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "." }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "l" }}
                               },
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ Command = "-" }}
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "ò" }}
+                              },
+                              new KeyboardCell
+                              {
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "à" }}
+                              },
+                              new KeyboardCell
+                              {
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "ù" }}
+                              },
+                          }
+                      },
+                      new KeyboardRow
+                      {
+                          Cells = new[]
+                          {
+                              new KeyboardCell
+                              {
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "{layout:Uppercase}", Caption="{icon:CaretSquareUpSolid}" }}
+                              },
+                              new KeyboardCell
+                              {
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "z" }}
+                              },
+                              new KeyboardCell
+                              {
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "x" }}
+                              },
+                              new KeyboardCell
+                              {
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "c" }}
+                              },
+                              new KeyboardCell
+                              {
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "v" }}
+                              },
+                              new KeyboardCell
+                              {
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "b" }}
+                              },
+                              new KeyboardCell
+                              {
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "n" }}
+                              },
+                              new KeyboardCell
+                              {
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "m" }}
+                              },
+                              new KeyboardCell
+                              {
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "," }}
+                              },
+                              new KeyboardCell
+                              {
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "." }}
+                              },
+                              new KeyboardCell
+                              {
+                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "-" }}
                               },
                           }
                       }
                   }
-            });
+            };
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void Keyboard_LayoutChangeRequest(object sender, KeyboardLayoutChangeRequestEventArgs e)
+        {
         }
 
         #endregion
