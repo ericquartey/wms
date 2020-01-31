@@ -144,7 +144,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             }
             else if (this.machineMode is MachineMode.Manual || this.machineMode is MachineMode.Test)
             {
-                var messageBoxResult = this.dialogService.ShowMessage(General.ConfirmMachineModeSwitchAutomatic, General.MachineModeSwitch, DialogType.Question, DialogButtons.YesNo);
+                var messageBoxResult = this.dialogService.ShowMessage(General.ConfirmMachineModeSwitchAutomatic, General.Automatic, DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     await this.machineModeWebService.SetAutomaticAsync();
