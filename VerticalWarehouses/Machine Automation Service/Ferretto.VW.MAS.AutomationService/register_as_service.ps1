@@ -36,7 +36,7 @@ while(-not($null -eq (Get-Service $serviceName -ErrorAction SilentlyContinue)))
 }
 
 $absoluteBinaryPath = Resolve-Path $relativeBinaryPath
-$absoluteBinaryPath = $absoluteBinaryPath.Path + " --environment Simulation --service"
+$absoluteBinaryPath = $absoluteBinaryPath.Path + " --service"
 Write-Host "Creazione nuovo servizio ..."
 
 New-Service -BinaryPathName $absoluteBinaryPath -Name $serviceName -DisplayName $serviceDisplayName -StartupType Automatic

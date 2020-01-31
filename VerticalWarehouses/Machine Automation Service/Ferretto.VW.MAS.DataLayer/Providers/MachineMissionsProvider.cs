@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly List<IMission> machineMissions = new List<IMission>();
+        private readonly IMachineMissionsVolatileProvider machineMissionsVolatileProvider;
 
         private readonly IServiceScopeFactory serviceScopeFactory;
 
@@ -33,12 +33,21 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         #region Constructors
 
         public MachineMissionsProvider(
+            IMachineMissionsVolatileProvider machineMissionsVolatileProvider,
             IEventAggregator eventAggregator,
             IServiceScopeFactory serviceScopeFactory)
         {
             this.eventAggregator = eventAggregator;
             this.serviceScopeFactory = serviceScopeFactory;
+
+            this.machineMissionsVolatileProvider = machineMissionsVolatileProvider ?? throw new ArgumentNullException(nameof(machineMissionsVolatileProvider));
         }
+
+        #endregion
+
+        #region Properties
+
+        private List<IMission> machineMissions => this.machineMissionsVolatileProvider.MachineMissions;
 
         #endregion
 
@@ -152,6 +161,10 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
                             return true;
                         }
+                    }
+                    else
+                    {
+                        return false;
                     }
                     break;
             }

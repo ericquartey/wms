@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <summary>
         /// The position tolerance, in millimeters, used to validate the logical position of the elevator when located opposite a bay or a cell.
         /// </summary>
-        private const double VerticalPositionValidationTolerance = CellHeight / 2.0;
+        private const double VerticalPositionValidationTolerance = 7.5;
 
         private readonly IMemoryCache cache;
 
@@ -151,6 +151,18 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public BayPosition GetCachedCurrentBayPosition()
+        {
+            this.cache.TryGetValue(ElevatorCurrentBayPositionCacheKey, out BayPosition cacheEntry);
+            return cacheEntry;
+        }
+
+        public Cell GetCachedCurrentCell()
+        {
+            this.cache.TryGetValue(ElevatorCurrentCellCacheKey, out Cell cacheEntry);
+            return cacheEntry;
+        }
+
         public IDbContextTransaction GetContextTransaction()
         {
             return this.dataContext.Database.BeginTransaction();
@@ -250,6 +262,14 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.SaveChanges();
             }
+        }
+
+        public bool IsVerticalPositionWithinTolerance(double position)
+        {
+            return
+                this.machineVolatileDataProvider.ElevatorVerticalPosition - VerticalPositionValidationTolerance < position
+                &&
+                this.machineVolatileDataProvider.ElevatorVerticalPosition + VerticalPositionValidationTolerance > position;
         }
 
         public void LoadLoadingUnit(int id)
@@ -446,14 +466,6 @@ namespace Ferretto.VW.MAS.DataLayer
         internal static string GetAxesCacheKey() => $"{nameof(GetElevatorAxes)}";
 
         internal static string GetAxisCacheKey(Orientation orientation) => $"{nameof(GetAxis)}{orientation}";
-
-        private bool IsVerticalPositionWithinTolerance(double position)
-        {
-            return
-                this.machineVolatileDataProvider.ElevatorVerticalPosition - VerticalPositionValidationTolerance < position
-                &&
-                this.machineVolatileDataProvider.ElevatorVerticalPosition + VerticalPositionValidationTolerance > position;
-        }
 
         private void NotifyElevatorPositionChanged(bool useCachedValue = false)
         {
