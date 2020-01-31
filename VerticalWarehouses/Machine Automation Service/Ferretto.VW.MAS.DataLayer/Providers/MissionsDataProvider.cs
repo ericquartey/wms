@@ -81,6 +81,32 @@ namespace Ferretto.VW.MAS.DataLayer
             return returnValue;
         }
 
+        public void CheckPendingChanges()
+        {
+            if (this.dataContext.ChangeTracker.HasChanges())
+            {
+                if (System.Diagnostics.Debugger.IsAttached)
+                {
+                    var entities = this.dataContext.ChangeTracker.Entries().Where(x => x.State == EntityState.Added || x.State == EntityState.Modified || x.State == EntityState.Deleted).ToList();
+                    foreach (var entry in entities)
+                    {
+                        this.logger.LogError($"Entity {entry.Entity.GetType().Name} was not saved");
+
+                        var properties = entry.Properties.Where(x => x.IsModified).ToList();
+
+                        foreach (var property in properties)
+                        {
+                            this.logger.LogError($"Property {property.Metadata.Name} is modified Current Value: '{property.CurrentValue}' Original value: '{property.OriginalValue}'");
+                        }
+                    }
+
+                    System.Diagnostics.Debugger.Break();
+                }
+
+                //throw new Exception("Missing SaveChanges");
+            }
+        }
+
         public Mission Complete(int id)
         {
             lock (this.dataContext)
@@ -300,6 +326,11 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void Reload(Mission mission)
+        {
+            this.dataContext.Entry(mission).Reload();
+        }
+
         public void ResetMachine(MessageActor sender)
         {
             var messageData = new MoveLoadingUnitMessageData(
@@ -324,33 +355,6 @@ namespace Ferretto.VW.MAS.DataLayer
                         MessageType.MoveLoadingUnit,
                         BayNumber.BayOne,
                         BayNumber.BayOne));
-        }
-
-        public void CheckPendingChanges()
-        {
-            if (this.dataContext.ChangeTracker.HasChanges())
-            {
-                if (System.Diagnostics.Debugger.IsAttached)
-                {
-                    var entities = this.dataContext.ChangeTracker.Entries().Where(x => x.State == EntityState.Added || x.State == EntityState.Modified || x.State == EntityState.Deleted).ToList();
-                    foreach (var entry in entities)
-                    {                       
-                        this.logger.LogError($"Entity {entry.Entity.GetType().Name} was not saved");
-
-                        var properties = entry.Properties.Where(x => x.IsModified).ToList();
-
-                        foreach (var property in properties)
-                        {
-                            this.logger.LogError($"Property {property.Metadata.Name} is modified Current Value: '{property.CurrentValue}' Original value: '{property.OriginalValue}'");
-                        }
-                    }
-
-                    System.Diagnostics.Debugger.Break();
-                }
-
-                //throw new Exception("Missing SaveChanges");
-
-            }
         }
 
         public void Update(Mission mission)

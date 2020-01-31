@@ -288,7 +288,8 @@ namespace Ferretto.VW.MAS.MissionManager
                 var bayNumber = bays.FirstOrDefault(x => this.machineVolatileDataProvider.IsBayHomingExecuted.ContainsKey(x.Number)
                     && !this.machineVolatileDataProvider.IsBayHomingExecuted[x.Number]
                     && x.Carousel != null
-                    && x.CurrentMission == null)?.Number ?? BayNumber.None;
+                    && x.CurrentMission == null
+                    && x.Positions.All(p => p.LoadingUnit == null))?.Number ?? BayNumber.None;
                 if (bayNumber != BayNumber.None)
                 {
                     IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, Calibration.FindSensor, null, false);
