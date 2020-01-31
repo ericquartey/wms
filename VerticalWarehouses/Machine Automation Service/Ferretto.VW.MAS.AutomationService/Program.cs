@@ -21,13 +21,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private const int NoError = 0;
 
-        private const string PasswordConsoleArgument = "--password";
-
-        private const string RegisterAsServiceConsoleArgument = "--register-as-service";
-
         private const string ServiceName = "Ferretto Machine Automation Service";
-
-        private const string UserConsoleArgument = "--user";
 
         #endregion
 
@@ -45,19 +39,12 @@ namespace Ferretto.VW.MAS.AutomationService
             {
                 var pathToContentRoot = Directory.GetCurrentDirectory();
 
-                if (args.Contains(RegisterAsServiceConsoleArgument))
-                {
-                    return new ServiceBuilder(ServiceName)
-                        .Register(
-                            userName: GetArgumentValue(args, UserConsoleArgument),
-                            password: GetArgumentValue(args, PasswordConsoleArgument));
-                }
-
                 var isService = !Debugger.IsAttached && args.Contains(ServiceConsoleArgument);
                 if (isService)
                 {
                     var pathToExe = Process.GetCurrentProcess().MainModule.FileName;
                     pathToContentRoot = Path.GetDirectoryName(pathToExe);
+                    Directory.SetCurrentDirectory(pathToContentRoot);
                 }
 
                 var webHostArgs = args.Where(arg => arg != ServiceConsoleArgument).ToArray();
@@ -91,11 +78,6 @@ namespace Ferretto.VW.MAS.AutomationService
             logger.LogInformation("Application terminated.");
 
             return NoError;
-        }
-
-        private static string GetArgumentValue(string[] args, string argumentName)
-        {
-            return args.SkipWhile(a => a != argumentName).Skip(1).First();
         }
 
         private static string GetVersion()
