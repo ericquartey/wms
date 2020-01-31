@@ -219,7 +219,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public ICommand LightCommand =>
             this.lightCommand
             ??
-            (this.lightCommand = new DelegateCommand(async () => await this.LightAsync(), !this.IsMoving));
+            (this.lightCommand = new DelegateCommand(
+                async () => await this.LightAsync(),
+                () => !this.IsMoving &&
+                      this.MachineModeService?.MachineMode == MachineMode.Manual));
 
         public string LightIcon
         {
@@ -424,8 +427,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.machineElevatorWebService.MoveToVerticalPositionAsync(
                     this.InputHeight.Value,
-                    this.isUseWeightControl,
-                    false);
+                    this.isUseWeightControl);
 
                 this.IsElevatorMovingToHeight = true;
                 this.IsExecutingProcedure = true;

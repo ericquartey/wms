@@ -364,10 +364,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.RaiseCanExecuteChanged();
 
-            //this.InputLoadingUnitIdPropertyChanged();
-
-            //this.InputCellIdPropertyChanged();
-
             this.OnGuidedRaiseCanExecuteChanged();
             this.OnManualRaiseCanExecuteChanged();
 
@@ -375,6 +371,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.goToMovementsManualCommand?.RaiseCanExecuteChanged();
             this.stopMovingCommand?.RaiseCanExecuteChanged();
             this.resetCommand?.RaiseCanExecuteChanged();
+            this.lightCommand?.RaiseCanExecuteChanged();
 
             if (this.MachineStatus.EmbarkedLoadingUnit != null)
             {
@@ -395,7 +392,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanBaseExecute()
         {
-            return !this.IsKeyboardOpened &&
+            return this.MachineModeService?.MachineMode == MachineMode.Manual &&
+                   !this.IsKeyboardOpened &&
                    !this.IsExecutingProcedure &&
                    !this.IsMoving;
         }
@@ -414,7 +412,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanGoToMovementsGuidedExecuteCommand()
         {
-            return true;
+            return this.MachineModeService?.MachineMode == MachineMode.Manual;
         }
 
         private bool CanGoToMovementsManualExecuteCommand()

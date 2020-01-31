@@ -252,4 +252,10 @@
   <data name="MachineRun" xml:space="preserve">
     <value>Marcia</value>
   </data>
+  <data name="ConfirmMachineModeSwitchAutomatic" xml:space="preserve">
+    <value>Sei sicuro di voler mettere la macchina in automatico?</value>
+  </data>
+  <data name="Automatic" xml:space="preserve">
+    <value>Automatico</value>
+  </data>
 </root>
