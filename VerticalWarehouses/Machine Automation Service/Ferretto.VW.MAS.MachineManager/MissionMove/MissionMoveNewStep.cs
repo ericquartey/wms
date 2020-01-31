@@ -59,6 +59,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 this.MissionsDataProvider.Delete(this.Mission.Id);
             }
+            else
+            {
+                this.MissionsDataProvider.Reload(this.Mission);
+            }
 
             return returnValue;
         }
@@ -149,33 +153,21 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if (commandMessage != null
                 && commandMessage.Data is IMoveLoadingUnitMessageData messageData)
             {
-                using (var transaction = this.ElevatorDataProvider.GetContextTransaction())
+                returnValue = this.IsMachineOk(messageData, showErrors);
+
+                if (returnValue)
                 {
-                    returnValue = this.IsMachineOk(messageData, showErrors);
+                    returnValue = this.IsSourceOk(mission, messageData, commandMessage.RequestingBay, showErrors);
+                }
 
-                    if (returnValue)
-                    {
-                        returnValue = this.IsSourceOk(mission, messageData, commandMessage.RequestingBay, showErrors);
-                    }
+                if (returnValue)
+                {
+                    returnValue = this.IsDestinationOk(mission, messageData, commandMessage.RequestingBay, showErrors);
+                }
 
-                    if (returnValue)
-                    {
-                        returnValue = this.IsDestinationOk(mission, messageData, commandMessage.RequestingBay, showErrors);
-                    }
-
-                    if (returnValue)
-                    {
-                        returnValue = this.IsElevatorOk(mission, showErrors);
-                    }
-
-                    if(returnValue)
-                    {
-                        transaction.Commit();
-                    }
-                    else
-                    {
-                        transaction.Rollback();
-                    }
+                if (returnValue)
+                {
+                    returnValue = this.IsElevatorOk(mission, showErrors);
                 }
             }
             else
