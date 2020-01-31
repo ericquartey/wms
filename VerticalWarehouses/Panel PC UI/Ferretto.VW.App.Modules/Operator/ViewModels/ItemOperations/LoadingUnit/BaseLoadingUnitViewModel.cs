@@ -376,7 +376,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         }
 
         public virtual void ResetOperations()
-        {
+        {            
             this.isWaitingForNewOperation = false;
         }
 
@@ -562,6 +562,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 this.SelectedItem = this.Items.First();
             }
+
+            this.currentItemIndex = 0;
 
             this.ResetOperations();
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Resources;
@@ -212,7 +211,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.IsOperationVisible = false;
             this.IsPickVisible = false;
             this.IsPutVisible = false;
-            this.IsAdjustmentVisible = false;
+            this.IsAdjustmentVisible = false;            
         }
 
         protected async override Task OnMachineModeChangedAsync(MAS.AutomationService.Contracts.Hubs.MachineModeChangedEventArgs e)
