@@ -80,11 +80,18 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 do
                 {
-                    await this.CheckForNewOperationCount();
                     await Task.Delay(5000);
+                    await this.CheckForNewOperationCount();
                 }
                 while (this.IsVisible);
             });
+        }
+
+        protected override async Task OnDataRefreshAsync()
+        {
+            await base.OnDataRefreshAsync();
+
+            await this.CheckForNewOperationCount();
         }
 
         private async Task CheckForNewOperationCount()

@@ -1,10 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 using Prism.Events;
@@ -103,7 +102,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private async Task PartiallyCompleteOnEmptyCompartmentAsync()
         {
-            await this.MissionOperationsService.PartiallyCompleteCurrentAsync(this.InputQuantity.Value);
+            try
+            {
+                await this.MissionOperationsService.PartiallyCompleteCurrentAsync(this.InputQuantity.Value);
+            }
+            catch (MasWebApiException ex)
+            {
+                this.ShowNotification(ex);
+            }
         }
 
         #endregion

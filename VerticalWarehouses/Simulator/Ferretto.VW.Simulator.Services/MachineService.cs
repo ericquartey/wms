@@ -51,7 +51,7 @@ namespace Ferretto.VW.Simulator.Services
 
         private DateTime heartBeatTime;
 
-        private bool isInverterConnect;
+        private bool isInverterConnected;
 
         private Machine machine;
 
@@ -64,17 +64,20 @@ namespace Ferretto.VW.Simulator.Services
             this.heartBeatTime = DateTime.UtcNow;
             this.remoteIOs.Add(new IODeviceModel() { Id = 0 });
             this.remoteIOs.Add(new IODeviceModel() { Id = 1 });
-            this.remoteIOs.Add(new IODeviceModel() { Id = 2, Enabled = false });
+            this.remoteIOs.Add(new IODeviceModel() { Id = 2 });
 
             this.Inverters = new ObservableCollection<InverterModel>();
-            this.Inverters.Add(new InverterModel(Models.InverterType.Ang) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 0, IMPULSES_ENCODER_PER_ROUND = 77.61182 });
-            this.Inverters.Add(new InverterModel(Models.InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 1, IMPULSES_ENCODER_PER_ROUND = 77.6722 });
+            this.Inverters.Add(new InverterModel(Models.InverterType.Ang) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 0, ImpulsesEncoderPerRound = 77.61182 });
+            this.Inverters.Add(new InverterModel(Models.InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 1, ImpulsesEncoderPerRound = 77.6722 });
             this.Inverters.Add(new InverterModel(Models.InverterType.Agl) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 2 });
-            this.Inverters.Add(new InverterModel(Models.InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 3, IMPULSES_ENCODER_PER_ROUND = 369.8453 });
+            this.Inverters.Add(new InverterModel(Models.InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 3, ImpulsesEncoderPerRound = 369.8453 });
             this.Inverters.Add(new InverterModel(Models.InverterType.Agl) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 4 });
-            this.Inverters.Add(new InverterModel(Models.InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 5, IMPULSES_ENCODER_PER_ROUND = 369.8453 });
-            this.Inverters.Add(new InverterModel(Models.InverterType.Agl) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 6, Enabled = false }); //da sistemare
-            this.Inverters.Add(new InverterModel(Models.InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 7, Enabled = false }); //da sistemare
+            this.Inverters.Add(new InverterModel(Models.InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 5, ImpulsesEncoderPerRound = 369.8453 });
+            this.Inverters.Add(new InverterModel(Models.InverterType.Agl) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 6 });
+            this.Inverters.Add(new InverterModel(Models.InverterType.Acu) { ioDevice = this.remoteIOs[0].Inputs.ToArray(), Id = 7 });
+
+            this.Inverters00.OnHorizontalMovementComplete += this.OnHorizontalMovementCompleted;
+            this.Inverters01.OnHorizontalMovementComplete += this.OnHorizontalMovementCompleted;
         }
 
         #endregion
@@ -292,6 +295,63 @@ namespace Ferretto.VW.Simulator.Services
             }
         }
 
+        private void OnHorizontalMovementCompleted(object sender, HorizontalMovementEventArgs e)
+        {
+            if (this.Machine == null)
+            {
+                return;
+            }
+
+            // Check if movement was executed on a bay (use coordinate to determine position)
+            var bay = this.Machine.Bays.FirstOrDefault(x => x.Positions.Any(y => Math.Abs(y.Height - this.Inverters00.AxisPositionY - this.Machine.Elevator.Axes.First().Offset) <= 2));
+            if (bay != null)
+            {
+                bool isCarousel = bay.Carousel != null;
+
+                // Retrieve bay position (upper/lower position)
+                var bayPosition = bay.Positions.FirstOrDefault(x => Math.Abs(x.Height - this.Inverters00.AxisPositionY - this.Machine.Elevator.Axes.First().Offset) <= 2);
+                if (bayPosition != null)
+                {
+                    // Set/Reset bay presence
+                    switch (bay.Number)
+                    {
+                        case BayNumber.BayOne:
+                            if (bayPosition.IsUpper)
+                            {
+                                this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading ? true : false;
+                            }
+                            else
+                            {
+                                this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = (isCarousel && e.IsLoading) ? false : true;
+                            }
+                            break;
+
+                        case BayNumber.BayTwo:
+                            if (bayPosition.IsUpper)
+                            {
+                                this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading ? true : false;
+                            }
+                            else
+                            {
+                                this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = (isCarousel && e.IsLoading) ? false : true;
+                            }
+                            break;
+
+                        case BayNumber.BayThree:
+                            if (bayPosition.IsUpper)
+                            {
+                                this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading ? true : false;
+                            }
+                            else
+                            {
+                                this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = (isCarousel && e.IsLoading) ? false : true;
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+
         private void ReplyInverter(TcpClient client, byte[] incomingBytes)
         {
             const int headerLenght = 6;
@@ -399,11 +459,11 @@ namespace Ferretto.VW.Simulator.Services
         private void ReplyToInverterMessage(TcpClient client, InverterMessage message)
         {
             var inverter = this.Inverters.First(x => x.InverterRole == (InverterRole)message.SystemIndex);
-            if (!this.isInverterConnect)
+            if (!this.isInverterConnected)
             {
                 this.heartBeatTime = DateTime.UtcNow;
             }
-            this.isInverterConnect = true;
+            this.isInverterConnected = true;
 
             if (DateTime.UtcNow.Subtract(this.heartBeatTime).TotalMilliseconds > this.DELAY_HEARTBEAT)
             {
@@ -723,7 +783,7 @@ namespace Ferretto.VW.Simulator.Services
 
             // Quick Stop
             inverter.IsQuickStopTrue = (inverter.ControlWord & 0x0004) > 0;
-            if (!inverter.IsQuickStopTrue)                      // Quick stop
+            if (!inverter.IsQuickStopTrue)
             {
                 inverter.IsOperationEnabled = false;
             }
@@ -743,7 +803,7 @@ namespace Ferretto.VW.Simulator.Services
 
         private void UpdateRemoteIO(IODeviceModel device)
         {
-            // Logic
+            // If any security signal is received, reset run status
             if (!this.RemoteIOs01.Outputs[(int)IoPorts.PowerEnable].Value ||
                 !device.Inputs[(int)IoPorts.MushroomEmergency].Value ||
                 !device.Inputs[(int)IoPorts.MicroCarterLeftSideBay].Value ||
@@ -754,6 +814,7 @@ namespace Ferretto.VW.Simulator.Services
                 // Reset run status
                 this.remoteIOs.ToList().ForEach(x => x.Inputs[(int)IoPorts.NormalState].Value = false);
             }
+            // If reset security impulse is received and there are no emergency button pushed, set run status
             else if (this.RemoteIOs01.Outputs[(int)IoPorts.ResetSecurity].Value && this.remoteIOs.All(x => x.Inputs[(int)IoPorts.MushroomEmergency].Value))
             {
                 if (!this.Inverters.Any(x => x.IsFault))
@@ -769,7 +830,14 @@ namespace Ferretto.VW.Simulator.Services
                 }
             }
 
+            // Set inverter cumulative fault if any inverter is in fault
             this.remoteIOs[0].Inputs[(int)IoPorts.InverterInFault].Value = this.Inverters.Any(x => x.IsFault);
+
+            // If run status is off, trigger emergency stop on inverters
+            if (!this.RemoteIOs01.Inputs[(int)IoPorts.NormalState].Value)
+            {
+                this.Inverters.ToList().ForEach(x => x.EmergencyStop());
+            }
         }
 
         #endregion

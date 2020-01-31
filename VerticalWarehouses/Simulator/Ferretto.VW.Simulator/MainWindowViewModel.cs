@@ -23,9 +23,9 @@ namespace Ferretto.VW.Simulator
 
         private ICommand importConfigurationCommand;
 
-        private IMachineService inverterService;
-
         private bool isBusy;
+
+        private IMachineService machineService;
 
         private ICommand startSimulatorCommand;
 
@@ -41,7 +41,7 @@ namespace Ferretto.VW.Simulator
             IMachineService inverterService,
             IThemeService themeService)
         {
-            this.inverterService = inverterService ?? throw new ArgumentNullException(nameof(inverterService));
+            this.machineService = inverterService ?? throw new ArgumentNullException(nameof(inverterService));
             this.themeService = themeService ?? throw new ArgumentNullException(nameof(themeService));
         }
 
@@ -56,12 +56,6 @@ namespace Ferretto.VW.Simulator
             ??
             (this.importConfigurationCommand = new DelegateCommand(async () => await this.ImportConfigurationAsync()));
 
-        public IMachineService InverterService
-        {
-            get => this.inverterService;
-            set => this.SetProperty(ref this.inverterService, value);
-        }
-
         public bool IsBusy
         {
             get => this.isBusy;
@@ -70,15 +64,21 @@ namespace Ferretto.VW.Simulator
 
         public bool IsDarkThemeActive => this.themeService.ActiveTheme == ApplicationTheme.Dark;
 
+        public IMachineService MachineService
+        {
+            get => this.machineService;
+            set => this.SetProperty(ref this.machineService, value);
+        }
+
         public ICommand StartSimulatorCommand =>
             this.startSimulatorCommand
             ??
-            (this.startSimulatorCommand = new DelegateCommand(async () => await this.inverterService.ProcessStartSimulatorAsync()));
+            (this.startSimulatorCommand = new DelegateCommand(async () => await this.machineService.ProcessStartSimulatorAsync()));
 
         public ICommand StopSimulatorCommand =>
             this.stopSimulatorCommand
             ??
-            (this.stopSimulatorCommand = new DelegateCommand(async () => await this.inverterService.ProcessStopSimulatorAsync()));
+            (this.stopSimulatorCommand = new DelegateCommand(async () => await this.machineService.ProcessStopSimulatorAsync()));
 
         public ICommand ToggleThemeCommand =>
             this.toggleThemeCommand
@@ -111,7 +111,6 @@ namespace Ferretto.VW.Simulator
                 {
                     string fileContents;
 
-                    Directory.SetCurrentDirectory(openFileDialog.InitialDirectory);
                     using (var streamReader = new StreamReader(openFileDialog.FileName))
                     {
                         fileContents = await streamReader.ReadToEndAsync();
@@ -123,7 +122,7 @@ namespace Ferretto.VW.Simulator
 
                     var vertimagConfiguration = JsonConvert.DeserializeObject<VertimagConfiguration>(fileContents, settings);
 
-                    this.inverterService.Machine = vertimagConfiguration?.Machine;
+                    this.machineService.Machine = vertimagConfiguration?.Machine;
                 }
             }
             catch (Exception e)
