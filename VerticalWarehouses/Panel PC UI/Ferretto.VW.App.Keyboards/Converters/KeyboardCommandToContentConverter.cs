@@ -40,7 +40,7 @@ namespace Ferretto.VW.App.Keyboards.Converters
                     }
                     return command.Caption;
                 }
-                return command.Command;
+                return command.CommandText;
             }
 
             return value?.ToString();
