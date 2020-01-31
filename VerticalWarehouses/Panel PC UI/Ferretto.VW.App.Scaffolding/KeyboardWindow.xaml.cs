@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Ferretto.VW.App.Keyboards;
+using Microsoft.Win32;
 
 namespace Ferretto.VW.App.Scaffolding
 {
@@ -250,6 +252,19 @@ namespace Ferretto.VW.App.Scaffolding
         #endregion
 
         #region Methods
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                FileName = "layout.json",
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                File.WriteAllText(saveFileDialog.FileName, this.keyboard.Layout.ToJson());
+            }
+        }
 
         private void Keyboard_LayoutChangeRequest(object sender, KeyboardLayoutChangeRequestEventArgs e)
         {

@@ -3,16 +3,23 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Ferretto.VW.App.Keyboards
 {
-    public class KeyboardLayout
+    public class KeyboardLayout : KeyboardKeyContainer
     {
+        #region Fields
+
+        private static readonly JsonSerializerSettings _jsonSettings = new JsonSerializerSettings
+        {
+            Formatting = Formatting.Indented,
+            NullValueHandling = NullValueHandling.Ignore
+        };
+
+        #endregion
+
         #region Properties
-
-        public Thickness? KeyMargin { get; set; }
-
-        public Thickness? KeyPadding { get; set; }
 
         public IEnumerable<KeyboardRow> Rows { get; set; } = Array.Empty<KeyboardRow>();
 
@@ -21,10 +28,10 @@ namespace Ferretto.VW.App.Keyboards
         #region Methods
 
         public static KeyboardLayout FromJson(string json)
-            => JsonConvert.DeserializeObject<KeyboardLayout>(json);
+            => JsonConvert.DeserializeObject<KeyboardLayout>(json, _jsonSettings);
 
         public string ToJson()
-            => JsonConvert.SerializeObject(this);
+            => JsonConvert.SerializeObject(this, _jsonSettings);
 
         #endregion
     }

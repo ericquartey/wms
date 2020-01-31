@@ -11,10 +11,13 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBox />
 
         <keyboards:Keyboard Grid.Row="1" LayoutChangeRequest="Keyboard_LayoutChangeRequest" x:Name="keyboard" />
+
+        <Button Content="Serialize" Click="Button_Click" Grid.Row="2" />
     </Grid>
 </Window>
