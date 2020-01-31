@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.Common.Controls.WPF;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
@@ -91,6 +92,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.loadingUnitsWmsWebService = loadingUnitsWmsWebService;
+
+            this.CompartmentColoringFunction = (compartment, selectedCompartment) => compartment == selectedCompartment ? "#0288f7" : "#444444";
         }
 
         #endregion
@@ -125,6 +128,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
                this.changeModeLoadingUnitCommand
                ??
                (this.changeModeLoadingUnitCommand = new DelegateCommand(() => this.ChangeMode(), this.CanChangeLoadingUnitMode));
+
+        public Func<IDrawableCompartment, IDrawableCompartment, string> CompartmentColoringFunction { get; }
 
         public IEnumerable<TrayControlCompartment> Compartments
         {
@@ -162,6 +167,19 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             get => this.isWaitingForNewOperation;
             set => this.SetProperty(ref this.isWaitingForNewOperation, value);
+        }
+
+        public override bool IsWmsHealthy
+        {
+            get => base.IsWmsHealthy;
+            set
+            {
+                if (value != base.IsWmsHealthy)
+                {
+                    base.IsWmsHealthy = value;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
         }
 
         public ICommand ItemCompartmentDownCommand =>
@@ -268,6 +286,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
 
             this.SelectItemCompartment();
+            this.ResetOperations();
         }
 
         public override void Disappear()
@@ -289,13 +308,16 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.LoadingUnit = this.MachineService.Loadunits.SingleOrDefault(l => l.Id == loadingUnitId);
                 try
                 {
-                    var wmsLoadingUnit = await this.loadingUnitsWmsWebService.GetByIdAsync(loadingUnitId);
-                    this.LoadingUnitWidth = wmsLoadingUnit.Width;
-                    this.LoadingUnitDepth = wmsLoadingUnit.Depth;
+                    if (this.IsWmsHealthy)
+                    {
+                        var wmsLoadingUnit = await this.loadingUnitsWmsWebService.GetByIdAsync(loadingUnitId);
+                        this.LoadingUnitWidth = wmsLoadingUnit.Width;
+                        this.LoadingUnitDepth = wmsLoadingUnit.Depth;
 
-                    this.ItemsCompartments = await this.loadingUnitsWmsWebService.GetCompartmentsAsync(loadingUnitId);
+                        this.ItemsCompartments = await this.loadingUnitsWmsWebService.GetCompartmentsAsync(loadingUnitId);
 
-                    this.Compartments = MapCompartments(this.ItemsCompartments);
+                        this.Compartments = MapCompartments(this.ItemsCompartments);
+                    }
                 }
                 catch
                 {
@@ -325,7 +347,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             if (!this.isWaitingForNewOperation)
             {
-                this.ResetLoadData();                
+                await this.ResetLoadDataAsync();
             }
         }
 
@@ -352,7 +374,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
         }
 
-        public async Task ResetLoadData()
+        public async Task ResetLoadDataAsync()
         {
             var lastCompartmentId = this.SelectedItemCompartment?.Id;
             var lastItemId = this.SelectedItemCompartment?.ItemId;
@@ -557,6 +579,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 this.SelectedItem = this.Items.First();
             }
+
+            this.currentItemIndex = 0;
 
             this.ResetOperations();
 

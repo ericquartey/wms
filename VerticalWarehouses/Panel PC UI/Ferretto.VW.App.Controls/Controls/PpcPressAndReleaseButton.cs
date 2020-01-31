@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,14 +20,12 @@ namespace Ferretto.VW.App.Controls.Controls
             DependencyProperty.Register(nameof(Kind), typeof(PackIconMaterialKind?), typeof(PpcPressAndReleaseButton), new PropertyMetadata(null));
 
         public static readonly DependencyProperty PressCommandProperty =
-                    DependencyProperty.Register(nameof(PressCommand), typeof(ICommand), typeof(PpcPressAndReleaseButton), new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(PressCommand), typeof(ICommand), typeof(PpcPressAndReleaseButton), new PropertyMetadata(null));
 
         public static readonly DependencyProperty ReleaseCommandProperty =
             DependencyProperty.Register(nameof(ReleaseCommand), typeof(ICommand), typeof(PpcPressAndReleaseButton), new PropertyMetadata(null));
 
         #endregion
-
-        //private readonly DelegateCommand command;
 
         #region Constructors
 
@@ -51,8 +50,6 @@ namespace Ferretto.VW.App.Controls.Controls
             };
 
             this.Style = Application.Current.FindResource("PpcPressAndReleaseButtonStyle") as Style;
-
-            //this.Command = new DelegateCommand(() => { }, this.CanExecuteCommand);
         }
 
         #endregion
@@ -81,17 +78,12 @@ namespace Ferretto.VW.App.Controls.Controls
 
         #endregion
 
-        //private bool CanExecuteCommand
-        //{
-        //    return this.PressCommand.CanExecute(null);
-        //}
-
-        //protected override bool IsEnabledCore => this.PressCommand.CanExecute(null);
-
         #region Methods
 
         private void OnButtonDown()
         {
+            Debug.WriteLine($"Pressed");
+
             if (this.PressCommand?.CanExecute(null) == true)
             {
                 this.PressCommand.Execute(null);
@@ -100,10 +92,9 @@ namespace Ferretto.VW.App.Controls.Controls
 
         private void OnButtonUp()
         {
-            if (this.ReleaseCommand?.CanExecute(null) == true)
-            {
-                this.ReleaseCommand.Execute(null);
-            }
+            Debug.WriteLine($"Release");
+
+            this.ReleaseCommand.Execute(null);
         }
 
         #endregion

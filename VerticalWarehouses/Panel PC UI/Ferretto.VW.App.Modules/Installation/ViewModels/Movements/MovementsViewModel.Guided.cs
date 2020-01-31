@@ -400,8 +400,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.MachineStatus.EmbarkedLoadingUnit is null;
 
             if (!this.IsMoving &&
-                (this.HealthProbeService.HealthStatus == HealthStatus.Healthy ||
-                 this.HealthProbeService.HealthStatus == HealthStatus.Degraded))
+                (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy ||
+                 this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded))
             {
 #if DEBUG
                 StackTrace stackTrace = new StackTrace();

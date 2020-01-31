@@ -105,7 +105,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         {
             await Task.Delay(FirewallCheckDelay);
 
-            if (this.healthProbeService.HealthStatus == HealthStatus.Unknown)
+            if (this.healthProbeService.HealthMasStatus == HealthStatus.Unknown)
             {
                 try
                 {
@@ -145,9 +145,9 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private async Task RetrieveMachineInfoAsync()
         {
-            this.logger.Info($"Status of machine automation service is '{this.healthProbeService.HealthStatus}'.");
+            this.logger.Info($"Status of machine automation service is '{this.healthProbeService.HealthMasStatus}'.");
 
-            switch (this.healthProbeService.HealthStatus)
+            switch (this.healthProbeService.HealthMasStatus)
             {
                 case HealthStatus.Initialized:
                 case HealthStatus.Initializing:

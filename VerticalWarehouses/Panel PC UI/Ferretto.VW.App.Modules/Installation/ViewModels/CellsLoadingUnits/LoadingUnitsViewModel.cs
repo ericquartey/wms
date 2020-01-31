@@ -149,7 +149,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                if (this.healthProbeService.HealthStatus == HealthStatus.Healthy || this.healthProbeService.HealthStatus == HealthStatus.Degraded)
+                if (this.healthProbeService.HealthMasStatus == HealthStatus.Healthy || this.healthProbeService.HealthMasStatus == HealthStatus.Degraded)
                 {
                     this.LoadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
                     this.SelectedLU = this.LoadingUnits?.ToList()[0];

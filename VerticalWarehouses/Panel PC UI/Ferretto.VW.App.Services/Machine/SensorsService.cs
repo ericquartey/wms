@@ -206,7 +206,7 @@ namespace Ferretto.VW.App.Services
 
         public ShutterSensors ShutterSensors => this.shutterSensors;
 
-        private bool IsHealthy => this.healthProbeService?.HealthStatus == HealthStatus.Healthy || this.healthProbeService?.HealthStatus == HealthStatus.Degraded;
+        private bool IsHealthy => this.healthProbeService?.HealthMasStatus == HealthStatus.Healthy || this.healthProbeService?.HealthMasStatus == HealthStatus.Degraded;
 
         #endregion
 
@@ -308,7 +308,7 @@ namespace Ferretto.VW.App.Services
 
         private async void OnHealthStatusChanged(HealthStatusChangedEventArgs status)
         {
-            if (status.HealthStatus == HealthStatus.Healthy || status.HealthStatus == HealthStatus.Degraded)
+            if (status.HealthMasStatus == HealthStatus.Healthy || status.HealthMasStatus == HealthStatus.Degraded)
             {
                 await this.RefreshAsync(true);
             }

@@ -169,7 +169,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.menuMovementsCommand = new DelegateCommand(
                 () => this.MovementsCommand(),
                 () => this.MachineModeService.MachinePower == MachinePowerState.Powered &&
-                     (this.HealthProbeService.HealthStatus == HealthStatus.Healthy || this.HealthProbeService.HealthStatus == HealthStatus.Degraded)));
+                     (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded)));
 
         public ICommand MenuOtherCommand =>
             this.menuOtherCommand
@@ -242,7 +242,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
         {
             return (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Test) &&
                    this.MachineModeService.MachinePower == MachinePowerState.Powered &&
-                   (this.HealthProbeService.HealthStatus == HealthStatus.Healthy || this.HealthProbeService.HealthStatus == HealthStatus.Degraded);
+                   (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
         }
 
         protected override async Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
@@ -277,7 +277,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
         {
             return this.MachineModeService.MachineMode == MachineMode.Manual &&
                    this.MachineModeService.MachinePower == MachinePowerState.Powered &&
-                   (this.HealthProbeService.HealthStatus == HealthStatus.Healthy || this.HealthProbeService.HealthStatus == HealthStatus.Degraded);
+                   (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
         }
 
         private void MenuCommand(Menu menu)

@@ -4,16 +4,19 @@
     {
         #region Constructors
 
-        public HealthStatusChangedEventArgs(HealthStatus healthStatus)
+        public HealthStatusChangedEventArgs(HealthStatus healthStatus, HealthStatus healthWmsStatus)
         {
-            this.HealthStatus = healthStatus;
+            this.HealthMasStatus = healthStatus;
+            this.HealthWmsStatus = healthWmsStatus;
         }
 
         #endregion
 
         #region Properties
 
-        public HealthStatus HealthStatus { get; }
+        public HealthStatus HealthMasStatus { get; }
+
+        public HealthStatus HealthWmsStatus { get; }
 
         #endregion
     }
