@@ -18,13 +18,6 @@
         "ASPNETCORE_ENVIRONMENT": "Prototype2"
       }
     },
-    "MAS (Register as Windows Service)": {
-      "commandName": "Project",
-      "commandLineArgs": "--register-as-service --user .\\itadmin --password *****",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Production"
-      }
-    },
     "MAS (EjLog)": {
       "commandName": "Project",
       "environmentVariables": {
