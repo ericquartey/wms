@@ -169,6 +169,19 @@ namespace Ferretto.VW.App.Operator.ViewModels
             set => this.SetProperty(ref this.isWaitingForNewOperation, value);
         }
 
+        public override bool IsWmsHealthy
+        {
+            get => base.IsWmsHealthy;
+            set
+            {
+                if (value != base.IsWmsHealthy)
+                {
+                    base.IsWmsHealthy = value;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public ICommand ItemCompartmentDownCommand =>
               this.itemCompartmentDownCommand
               ??
@@ -295,13 +308,16 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.LoadingUnit = this.MachineService.Loadunits.SingleOrDefault(l => l.Id == loadingUnitId);
                 try
                 {
-                    var wmsLoadingUnit = await this.loadingUnitsWmsWebService.GetByIdAsync(loadingUnitId);
-                    this.LoadingUnitWidth = wmsLoadingUnit.Width;
-                    this.LoadingUnitDepth = wmsLoadingUnit.Depth;
+                    if (this.IsWmsHealthy)
+                    {
+                        var wmsLoadingUnit = await this.loadingUnitsWmsWebService.GetByIdAsync(loadingUnitId);
+                        this.LoadingUnitWidth = wmsLoadingUnit.Width;
+                        this.LoadingUnitDepth = wmsLoadingUnit.Depth;
 
-                    this.ItemsCompartments = await this.loadingUnitsWmsWebService.GetCompartmentsAsync(loadingUnitId);
+                        this.ItemsCompartments = await this.loadingUnitsWmsWebService.GetCompartmentsAsync(loadingUnitId);
 
-                    this.Compartments = MapCompartments(this.ItemsCompartments);
+                        this.Compartments = MapCompartments(this.ItemsCompartments);
+                    }
                 }
                 catch
                 {
@@ -331,7 +347,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             if (!this.isWaitingForNewOperation)
             {
-                this.ResetLoadData();
+                await this.ResetLoadDataAsync();
             }
         }
 
@@ -358,7 +374,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
         }
 
-        public async Task ResetLoadData()
+        public async Task ResetLoadDataAsync()
         {
             var lastCompartmentId = this.SelectedItemCompartment?.Id;
             var lastItemId = this.SelectedItemCompartment?.ItemId;
@@ -377,7 +393,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         }
 
         public virtual void ResetOperations()
-        {            
+        {
             this.isWaitingForNewOperation = false;
         }
 

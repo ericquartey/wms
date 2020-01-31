@@ -211,7 +211,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.IsOperationVisible = false;
             this.IsPickVisible = false;
             this.IsPutVisible = false;
-            this.IsAdjustmentVisible = false;            
+            this.IsAdjustmentVisible = false;
         }
 
         protected async override Task OnMachineModeChangedAsync(MAS.AutomationService.Contracts.Hubs.MachineModeChangedEventArgs e)
@@ -249,7 +249,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
                    &&
                    !this.IsBusyConfirmingRecallOperation
                    &&
-                   !this.IsBusyConfirmingOperation;
+                   !this.IsBusyConfirmingOperation
+                   &&
+                   this.IsWmsHealthy;
         }
 
         private bool CanRecallLoadingUnit()
@@ -290,7 +292,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
                     var newItemCompartment = await this.compartmentsWmsWebService.UpdateAsync(compartment, this.SelectedItemCompartment.Id);
 
-                    await this.ResetLoadData();
+                    await this.ResetLoadDataAsync();
                 }
             }
             catch (Exception ex)
@@ -337,7 +339,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.IsAdjustmentVisible = true;
                 this.InputQuantityInfo = string.Format(OperatorApp.AdjustmentQuantity, this.MeasureUnit);
             }
-
 
             this.CanInputQuantity = true;
 

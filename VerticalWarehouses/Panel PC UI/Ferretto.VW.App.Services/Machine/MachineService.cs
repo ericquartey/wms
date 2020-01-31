@@ -279,9 +279,9 @@ namespace Ferretto.VW.App.Services
 
         public async Task OnInitializationServiceAsync()
         {
-            if (this.healthProbeService.HealthStatus is HealthStatus.Healthy
+            if (this.healthProbeService.HealthMasStatus is HealthStatus.Healthy
                 ||
-                this.healthProbeService.HealthStatus is HealthStatus.Degraded)
+                this.healthProbeService.HealthMasStatus is HealthStatus.Degraded)
             {
                 try
                 {

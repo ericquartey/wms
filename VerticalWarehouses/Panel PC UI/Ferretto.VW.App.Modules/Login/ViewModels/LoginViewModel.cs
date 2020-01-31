@@ -57,7 +57,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
-            this.ServiceHealthStatus = this.healthProbeService.HealthStatus;
+            this.ServiceHealthStatus = this.healthProbeService.HealthMasStatus;
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
 
             this.UserLogin = new UserLogin
@@ -169,7 +169,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 throw new ArgumentNullException(nameof(e));
             }
 
-            this.ServiceHealthStatus = e.HealthStatus;
+            this.ServiceHealthStatus = e.HealthMasStatus;
 
             if (this.ServiceHealthStatus == HealthStatus.Degraded
                 ||

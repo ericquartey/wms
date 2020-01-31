@@ -184,7 +184,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private void OnHealthStatusChanged(HealthStatusChangedEventArgs e)
         {
-            this.HealthStatus = e.HealthStatus;
+            this.HealthStatus = e.HealthMasStatus;
         }
 
         private void OnHealthStatusPropertyChanged()

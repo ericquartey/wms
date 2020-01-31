@@ -131,9 +131,9 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         private void OnHealthStatusChanged(HealthStatusChangedEventArgs e)
         {
             this.IsUnknownState =
-                e.HealthStatus != HealthStatus.Healthy
+                e.HealthMasStatus != HealthStatus.Healthy
                 &&
-                e.HealthStatus != HealthStatus.Degraded;
+                e.HealthMasStatus != HealthStatus.Degraded;
         }
 
         private void OnMachinePowerChanged(MachinePowerChangedEventArgs e)

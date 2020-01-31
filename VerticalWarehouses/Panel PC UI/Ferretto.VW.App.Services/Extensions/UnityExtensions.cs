@@ -13,12 +13,13 @@ namespace Ferretto.VW.App.Services
 
         public static IContainerRegistry RegisterAppServices(
             this IContainerRegistry containerRegistry,
-            System.Uri serviceUrl,
+            System.Uri serviceMasUrl,
+            System.Uri serviceWmsUrl,
             string serviceLiveHealthPath,
             string serviceReadyHealthPath)
         {
             _ = containerRegistry ?? throw new ArgumentNullException(nameof(containerRegistry));
-            _ = serviceUrl ?? throw new ArgumentNullException(nameof(serviceUrl));
+            _ = serviceMasUrl ?? throw new ArgumentNullException(nameof(serviceMasUrl));
 
             containerRegistry.RegisterSingleton<IAuthenticationService, AuthenticationService>();
             containerRegistry.RegisterSingleton<IBayManager, BayManager>();
@@ -42,7 +43,8 @@ namespace Ferretto.VW.App.Services
             _ = containerRegistry.GetContainer().RegisterSingleton<IHealthProbeService>(
                  new InjectionFactory(c =>
                      new HealthProbeService(
-                         serviceUrl,
+                         serviceMasUrl,
+                         serviceWmsUrl,
                          serviceLiveHealthPath,
                          serviceReadyHealthPath,
                          c.Resolve<IEventAggregator>())));

@@ -21,9 +21,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IMachineProvider machineProvider;
 
-        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
-
         private readonly IMachinesWmsWebService machinesWmsWebService;
+
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
         private readonly IServicingProvider servicingProvider;
 
@@ -63,8 +63,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             int? areaId = null;
             if (this.configuration.IsWmsEnabled())
             {
-                var area = await this.machinesWmsWebService.GetAreaByIdAsync(machine.Id);
-                areaId = area.Id;
+                try
+                {
+                    var area = await this.machinesWmsWebService.GetAreaByIdAsync(machine.Id);
+                    areaId = area.Id;
+                }
+                catch
+                {
+                }
             }
 
             var machineInfo = new MachineIdentity

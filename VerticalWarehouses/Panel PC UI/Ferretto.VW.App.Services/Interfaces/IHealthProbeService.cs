@@ -6,7 +6,7 @@ namespace Ferretto.VW.App.Services
     {
         #region Properties
 
-        HealthStatus HealthStatus { get; }
+        HealthStatus HealthMasStatus { get; }
 
         PubSubEvent<HealthStatusChangedEventArgs> HealthStatusChanged { get; }
 
