@@ -273,6 +273,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
 
             this.SelectItemCompartment();
+            this.ResetOperations();
         }
 
         public override void Disappear()
