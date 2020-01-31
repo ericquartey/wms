@@ -18,13 +18,10 @@ namespace Ferretto.VW.App.Keyboards
     {
         #region Fields
 
-        public static readonly DependencyPropertyKey CurrentCommandPropertyKey =
-                                    DependencyProperty.RegisterReadOnly(nameof(CurrentCommand), typeof(KeyboardKeyCommand), typeof(KeyboardButton), null);
+        public static readonly DependencyPropertyKey KeyCommandPropertyKey =
+                                    DependencyProperty.RegisterReadOnly(nameof(KeyCommand), typeof(KeyboardKeyCommand), typeof(KeyboardButton), null);
 
-        public static readonly DependencyProperty CurrentCommandProperty = CurrentCommandPropertyKey.DependencyProperty;
-
-        public static readonly DependencyProperty IsInShiftModeProperty =
-                    DependencyProperty.Register(nameof(IsInShiftMode), typeof(bool), typeof(KeyboardButton), new PropertyMetadata(false, OnIsInShiftModePropertyChanged));
+        public static readonly DependencyProperty KeyCommandProperty = KeyCommandPropertyKey.DependencyProperty;
 
         public static readonly DependencyProperty KeyProperty =
             DependencyProperty.Register(nameof(Key), typeof(KeyboardKey), typeof(KeyboardButton), new PropertyMetadata(OnKeyPropertyChanged));
@@ -42,16 +39,10 @@ namespace Ferretto.VW.App.Keyboards
 
         #region Properties
 
-        public KeyboardKeyCommand CurrentCommand
+        public KeyboardKeyCommand KeyCommand
         {
-            get => (KeyboardKeyCommand)this.GetValue(CurrentCommandProperty);
-            private set => this.SetValue(CurrentCommandPropertyKey, value);
-        }
-
-        public bool IsInShiftMode
-        {
-            get => (bool)this.GetValue(IsInShiftModeProperty);
-            set => this.SetValue(IsInShiftModeProperty, value);
+            get => (KeyboardKeyCommand)this.GetValue(KeyCommandProperty);
+            private set => this.SetValue(KeyCommandPropertyKey, value);
         }
 
         public KeyboardKey Key
@@ -64,11 +55,6 @@ namespace Ferretto.VW.App.Keyboards
 
         #region Methods
 
-        private static void OnIsInShiftModePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((KeyboardButton)d).SynchronizeLayout();
-        }
-
         private static void OnKeyPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((KeyboardButton)d).SynchronizeLayout();
@@ -76,7 +62,7 @@ namespace Ferretto.VW.App.Keyboards
 
         private void Btn_Click(object sender, RoutedEventArgs e)
         {
-            this.CurrentCommand?.SendKeys();
+            this.ExecuteKeyCommand();
         }
 
         private void SynchronizeLayout()
@@ -86,14 +72,9 @@ namespace Ferretto.VW.App.Keyboards
             if (this.Key?.Command != null)
             {
                 command = this.Key.Command;
-
-                if (this.IsInShiftMode && this.Key?.ShiftCommand != null)
-                {
-                    command = this.Key.ShiftCommand;
-                }
             }
 
-            this.CurrentCommand = command;
+            this.KeyCommand = command;
         }
 
         #endregion

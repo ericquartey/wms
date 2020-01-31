@@ -25,7 +25,8 @@ namespace Ferretto.VW.MAS.DataLayer
         ElevatorAxisManualParameters GetAssistedMovementsAxis(Orientation orientation);
 
         ElevatorAxis GetAxis(Orientation orientation);
-
+        BayPosition GetCachedCurrentBayPosition();
+        Cell GetCachedCurrentCell();
         IDbContextTransaction GetContextTransaction();
 
         /// <summary>
@@ -45,7 +46,7 @@ namespace Ferretto.VW.MAS.DataLayer
         ElevatorAxisManualParameters GetManualMovementsAxis(Orientation orientation);
 
         ElevatorStructuralProperties GetStructuralProperties();
-
+        bool IsVerticalPositionWithinTolerance(double position);
         void ResetMachine();
 
         MovementParameters ScaleMovementsByWeight(Orientation orientation, bool isLoadingUnitOnBoard);

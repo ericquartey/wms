@@ -83,7 +83,6 @@ namespace Ferretto.VW.MAS.MachineManager
                         else
                         {
                             this.Logger.LogWarning("Failed to create Change Running State machine mission");
-                            //this.NotifyCommandError(command);
                         }
 
                         break;
@@ -97,19 +96,7 @@ namespace Ferretto.VW.MAS.MachineManager
                         break;
 
                     case CommandAction.Stop:
-                        /*
-                        if (messageData.MissionId != null)
-                        {
-                            this.machineMissionsProvider.StopMachineMission(messageData.MissionId.Value, StopRequestReason.Stop);
-                        }
-                        else
-                        {
-                            foreach (var mission in this.machineMissionsProvider.GetMissionsByType(MissionType.ChangeRunningType))
-                            {
-                                mission.StopMachine(StopRequestReason.Stop);
-                            }
-                        }
-                        */
+                        this.Logger.LogError($"Invalid command action {messageData.CommandAction} for Change Running State Mission");
                         break;
                 }
             }

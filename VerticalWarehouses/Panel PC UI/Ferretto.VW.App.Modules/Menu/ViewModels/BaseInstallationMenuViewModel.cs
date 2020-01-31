@@ -168,7 +168,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.menuMovementsCommand = new DelegateCommand(
                 () => this.MovementsCommand(),
-                this.CanExecuteMovementsCommand));
+                () => this.MachineModeService.MachinePower == MachinePowerState.Powered &&
+                     (this.HealthProbeService.HealthStatus == HealthStatus.Healthy || this.HealthProbeService.HealthStatus == HealthStatus.Degraded)));
 
         public ICommand MenuOtherCommand =>
             this.menuOtherCommand

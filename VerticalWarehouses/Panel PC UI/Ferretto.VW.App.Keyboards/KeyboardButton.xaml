@@ -28,7 +28,7 @@
                     Background="{DynamicResource PpcButtonBackground}"
                     Foreground="{DynamicResource FerrettoLightGray}"
                     FontSize="{DynamicResource FontSize_High}">
-                <ContentPresenter Content="{Binding Path=CurrentCommand, Converter={StaticResource KeyboardCommandToContentConverter}}" />
+                <ContentPresenter Content="{Binding Path=KeyCommand, Converter={StaticResource KeyboardCommandToContentConverter}}" />
             </Button>
         </ControlTemplate>
     </UserControl.Template>

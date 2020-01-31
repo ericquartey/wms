@@ -175,6 +175,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 this.UpdateLoadingUnitLocation();
             }
 
+            if (this.machineData.MessageData.AxisMovement is Axis.Vertical)
+            {
+                this.PersistElevatorPosition(
+                    this.machineData.MessageData.TargetBayPositionId,
+                    this.machineData.MessageData.TargetCellId,
+                    this.machineData.MessageData.TargetPosition);
+            }
+
             var inverterIndex = this.machineData.CurrentInverterIndex;
             if (this.stateData.StopRequestReason != StopRequestReason.NoReason)
             {
@@ -190,14 +198,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             }
             else
             {
-                if (this.machineData.MessageData.AxisMovement is Axis.Vertical)
-                {
-                    this.PersistElevatorPosition(
-                        this.machineData.MessageData.TargetBayPositionId,
-                        this.machineData.MessageData.TargetCellId,
-                        this.machineData.MessageData.TargetPosition);
-                }
-                else if (this.machineData.MessageData.AxisMovement is Axis.Horizontal &&
+                if (this.machineData.MessageData.AxisMovement is Axis.Horizontal &&
                         this.machineData.MessageData.MovementType == MovementType.TableTarget)
                 {
                     this.UpdateLastIdealPosition(this.machineData.MessageData.AxisMovement);
@@ -265,11 +266,37 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             {
                 var elevatorDataProvider = scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
 
+                var previousCell = this.elevatorDataProvider.GetCachedCurrentCell();
+                var previousBayPosition = this.elevatorDataProvider.GetCachedCurrentBayPosition();
+
                 using (var transaction = elevatorDataProvider.GetContextTransaction())
                 {
-                    elevatorDataProvider.SetCurrentBayPosition(targetBayPositionId);
-                    elevatorDataProvider.SetCurrentCell(targetCellId);
-                    elevatorDataProvider.UpdateLastIdealPosition(targetPosition, Orientation.Vertical);
+                    if ((previousCell?.Id != targetCellId) || (previousBayPosition?.Id != targetBayPositionId))
+                    {
+                        // se uno dei due target è null e il suo previous non è null e se è dentro la tolleranza non setto null
+                        if ((targetBayPositionId != null && targetCellId != null) ||
+                            (previousBayPosition == null && previousCell == null) ||                            
+                            (targetCellId == null && previousCell != null && !elevatorDataProvider.IsVerticalPositionWithinTolerance(previousCell.Position)) ||
+                            (targetBayPositionId == null && previousBayPosition != null && !elevatorDataProvider.IsVerticalPositionWithinTolerance(previousBayPosition.Height)) ||
+                            (targetCellId != null && previousCell != null && targetCellId != previousCell.Id) ||
+                            (targetBayPositionId != null && previousBayPosition != null && targetBayPositionId != previousBayPosition.Id)
+                            )
+                        {
+                            elevatorDataProvider.SetCurrentBayPosition(targetBayPositionId);
+                            elevatorDataProvider.SetCurrentCell(targetCellId);
+                            elevatorDataProvider.UpdateLastIdealPosition(targetPosition, Orientation.Vertical);
+                        }
+                    }
+                    else
+                    {
+                        if ((previousCell != null && !elevatorDataProvider.IsVerticalPositionWithinTolerance(previousCell.Position)) ||
+                            (previousBayPosition != null && !elevatorDataProvider.IsVerticalPositionWithinTolerance(previousBayPosition.Height)))
+                        {
+                            elevatorDataProvider.SetCurrentBayPosition(null);
+                            elevatorDataProvider.SetCurrentCell(null);
+                        }
+                    }
+                    
                     transaction.Commit();
                 }
             }

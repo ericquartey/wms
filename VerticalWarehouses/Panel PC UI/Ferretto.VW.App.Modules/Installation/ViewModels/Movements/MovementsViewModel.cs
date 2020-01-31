@@ -79,6 +79,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand stopMovingCommand;
 
+        private DelegateCommand stopMovingReleaseCommand;
+
         private string title;
 
         #endregion
@@ -197,6 +199,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.stopMovingCommand = new DelegateCommand(
                 async () => await this.StopMovingAsync(),
                 this.CanStopMoving));
+
+        public ICommand StopMovingReleaseCommand =>
+            this.stopMovingReleaseCommand
+            ??
+            (this.stopMovingReleaseCommand = new DelegateCommand(
+                async () => await this.StopMovingReleaseAsync()));
 
         public string Title
         {
@@ -364,10 +372,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.RaiseCanExecuteChanged();
 
-            //this.InputLoadingUnitIdPropertyChanged();
-
-            //this.InputCellIdPropertyChanged();
-
             this.OnGuidedRaiseCanExecuteChanged();
             this.OnManualRaiseCanExecuteChanged();
 
@@ -375,6 +379,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.goToMovementsManualCommand?.RaiseCanExecuteChanged();
             this.stopMovingCommand?.RaiseCanExecuteChanged();
             this.resetCommand?.RaiseCanExecuteChanged();
+            this.lightCommand?.RaiseCanExecuteChanged();
 
             if (this.MachineStatus.EmbarkedLoadingUnit != null)
             {
@@ -395,7 +400,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanBaseExecute()
         {
-            return !this.IsKeyboardOpened &&
+            return this.MachineModeService?.MachineMode == MachineMode.Manual &&
+                   !this.IsKeyboardOpened &&
                    !this.IsExecutingProcedure &&
                    !this.IsMoving;
         }
@@ -414,7 +420,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanGoToMovementsGuidedExecuteCommand()
         {
-            return true;
+            return this.MachineModeService?.MachineMode == MachineMode.Manual;
         }
 
         private bool CanGoToMovementsManualExecuteCommand()
@@ -659,9 +665,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task StopMovingAsync()
         {
+            Debug.WriteLine($"Command fired");
+
             // In caso di fine operazione
             if (this.IsMovementsManual && this.isManualMovementCompleted)
             {
+                Debug.WriteLine($"-- Command rejected");
                 return;
             }
 
@@ -669,6 +678,31 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
                 await this.MachineService.StopMovingByAllAsync();
+
+                Debug.WriteLine($"-- Command executed");
+            }
+            catch (Exception ex)
+            {
+                this.CloseOperation();
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.StopMoving();
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task StopMovingReleaseAsync()
+        {
+            Debug.WriteLine($"Command Release fired");
+
+            try
+            {
+                this.IsWaitingForResponse = true;
+                await this.MachineService.StopMovingByAllAsync();
+
+                Debug.WriteLine($"-- Command Release executed");
             }
             catch (Exception ex)
             {

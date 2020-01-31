@@ -48,6 +48,17 @@ namespace Ferretto.VW.Simulator
             var application = Application.Current as App;
             application.MainWindow.DataContext = mainWindowViewModel;
 
+            if (System.Environment.GetCommandLineArgs().Any(a => a.Equals("--configuration", System.StringComparison.InvariantCultureIgnoreCase)))
+            {
+                var filePath = System.Environment
+                    .GetCommandLineArgs()
+                    .SkipWhile(a => !a.Equals("--configuration", System.StringComparison.InvariantCultureIgnoreCase))
+                    .Skip(1)
+                    .FirstOrDefault();
+
+                mainWindowViewModel.LoadConfiguration(filePath);
+            }
+
             if (System.Environment.GetCommandLineArgs().Any(a => a.Equals("--autostart", System.StringComparison.InvariantCultureIgnoreCase)))
             {
                 mainWindowViewModel.StartSimulatorCommand.Execute(null);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
@@ -11,6 +12,8 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
     public class PresentationMachineModeSwitch : BasePresentationViewModel, IDisposable
     {
         #region Fields
+
+        private readonly IDialogService dialogService;
 
         private readonly SubscriptionToken healthStatusChangedToken;
 
@@ -44,11 +47,13 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         public PresentationMachineModeSwitch(
             IMachineModeService machineModeService,
-            IMachineModeWebService machineModeWebService)
+            IMachineModeWebService machineModeWebService,
+            IDialogService dialogService)
             : base(PresentationTypes.MachineMode)
         {
             this.machineModeService = machineModeService ?? throw new ArgumentNullException(nameof(machineModeService));
             this.machineModeWebService = machineModeWebService ?? throw new ArgumentNullException(nameof(machineModeWebService));
+            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
 
             this.machineModeChangedToken = this.EventAggregator
               .GetEvent<PubSubEvent<MachineModeChangedEventArgs>>()
@@ -139,7 +144,11 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             }
             else if (this.machineMode is MachineMode.Manual || this.machineMode is MachineMode.Test)
             {
-                await this.machineModeWebService.SetAutomaticAsync();
+                var messageBoxResult = this.dialogService.ShowMessage(General.ConfirmMachineModeSwitchAutomatic, General.Automatic, DialogType.Question, DialogButtons.YesNo);
+                if (messageBoxResult == DialogResult.Yes)
+                {
+                    await this.machineModeWebService.SetAutomaticAsync();
+                }
             }
             else
             {

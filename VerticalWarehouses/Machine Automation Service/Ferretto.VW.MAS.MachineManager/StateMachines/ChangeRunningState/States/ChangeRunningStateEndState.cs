@@ -71,7 +71,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            this.Logger.LogDebug($"ChangeRunningStateEndState: received command {commandMessage.Type}, {commandMessage.Description}");
+            this.Logger.LogDebug($"ChangeRunningStateEndState: received command {commandMessage.Type}, {commandMessage.Description}, reason {this.StopRequestReason}");
             this.EndMessage = new NotificationMessage(
                 commandMessage.Data,
                 commandMessage.Description,
@@ -94,7 +94,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                     }
 
                     this.machineModeDataProvider.Mode = MachineMode.Manual;
-                    this.Logger.LogInformation($"Machine status switched to {this.machineModeDataProvider.Mode}");
+                    this.Logger.LogInformation($"Machine status switched to {this.machineModeDataProvider.Mode}; Running state {runningState.Enable}");
                 }
                 else
                 {

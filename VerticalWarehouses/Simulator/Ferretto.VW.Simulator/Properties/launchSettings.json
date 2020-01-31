@@ -6,6 +6,10 @@
     "Simulator (auto start)": {
       "commandName": "Project",
       "commandLineArgs": "--autostart"
+    },
+    "Simulator (EjLog)": {
+      "commandName": "Project",
+      "commandLineArgs": "--autostart --configuration \"..\\..\\..\\..\\..\\Machine Automation Service\\Ferretto.VW.MAS.AutomationService\\Configuration\\vertimag-configuration.EjLog.json\""
     }
   }
 }
