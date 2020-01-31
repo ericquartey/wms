@@ -123,23 +123,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 this.LoadingUnitMovementProvider.UpdateLastBayChainPosition(this.Mission.TargetBay);
                                 this.Mission.RestoreConditions = false;
                             }
-                            // TODO check if homing with carousel occupied is correct
-                            //if (this.Mission.NeedHomingAxis == Axis.BayChain)
-                            //{
-                            //    this.MissionsDataProvider.Update(this.Mission);
-                            //    this.Logger.LogInformation($"Homing Bay occupied start Mission:Id={this.Mission.Id}");
-                            //    this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, notification.RequestingBay, MessageActor.MachineManager);
-                            //}
-                            if (this.Mission.NeedHomingAxis == Axis.BayChain
-                                && !this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator)
-                                )
+                            if (this.Mission.NeedHomingAxis == Axis.BayChain)
                             {
-                                this.Mission.NeedHomingAxis = Axis.Horizontal;
                                 this.MissionsDataProvider.Update(this.Mission);
-                                this.Logger.LogDebug($"Homing elevator free start Mission:Id={this.Mission.Id}");
-                                this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, notification.RequestingBay, MessageActor.MachineManager);
+                                this.Logger.LogInformation($"Homing Bay occupied start Mission:Id={this.Mission.Id}");
+                                this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, notification.RequestingBay, MessageActor.MachineManager);
                             }
-                            // TODO end
                             else
                             {
                                 this.Mission.NeedHomingAxis = Axis.None;
