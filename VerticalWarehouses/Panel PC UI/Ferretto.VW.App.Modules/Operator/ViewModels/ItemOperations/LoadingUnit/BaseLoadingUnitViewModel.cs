@@ -65,7 +65,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private SubscriptionToken missionOperationToken;
 
-
         private TrayControlCompartment selectedCompartment;
 
         private CompartmentDetails selectedItem;
@@ -321,6 +320,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             if (this.Data is int loadingUnitId)
             {
                 this.LoadingUnit = this.MachineService.Loadunits.SingleOrDefault(l => l.Id == loadingUnitId);
+                this.RaisePropertyChanged(nameof(this.LoadingUnit));
             }
             else
             {

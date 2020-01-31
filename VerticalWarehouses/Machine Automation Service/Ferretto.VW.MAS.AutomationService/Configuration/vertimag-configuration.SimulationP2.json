@@ -2,68 +2,17 @@
   "$schema": "./schemas/vertimag-configuration-schema.json",
   "LoadingUnits": [
     {
-      "Cell": {
-        "BlockLevel": "None",
-        "PanelId": 1,
-        "Position": 2113.0,
-        "Priority": 51,
-        "Side": "Front",
-        "IsFree": false,
-        "Id": 51
-      },
-      "CellId": 51,
-      "Code": "001",
-      "GrossWeight": 520.095648,
-      "Height": 187.95625,
-      "IsIntoMachine": true,
       "MaxNetWeight": 930.0,
-      "MissionsCount": 0,
-      "NetWeight": 400.095648,
-      "Status": "InLocation",
       "Tare": 120.0,
       "Id": 1
     },
     {
-      "Cell": {
-        "BlockLevel": "None",
-        "PanelId": 2,
-        "Position": 1439.0,
-        "Priority": 2,
-        "Side": "Back",
-        "IsFree": false,
-        "Id": 2
-      },
-      "CellId": 2,
-      "Code": "002",
-      "GrossWeight": 762.038048,
-      "Height": 368.11875,
-      "IsIntoMachine": true,
       "MaxNetWeight": 930.0,
-      "MissionsCount": 0,
-      "NetWeight": 642.038048,
-      "Status": "InLocation",
       "Tare": 120.0,
       "Id": 2
     },
     {
-      "Cell": {
-        "BlockLevel": "None",
-        "PanelId": 1,
-        "Position": 1463.0,
-        "Priority": 3,
-        "Side": "Front",
-        "IsFree": false,
-        "Id": 3
-      },
-      "CellId": 3,
-      "Code": "003",
-      "GrossWeight": 235.3925,
-      "Height": 581.359375,
-      "IsIntoMachine": true,
       "MaxNetWeight": 930.0,
-      "MissionsCount": 0,
-      "NetWeight": 115.39250000000001,
-      "Status": "InLocation",
       "Tare": 120.0,
       "Id": 3
     },
