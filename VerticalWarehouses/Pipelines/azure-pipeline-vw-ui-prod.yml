@@ -1,8 +1,8 @@
 trigger:
-  batch: true
   branches:
     include:
-    - develop
+    - release
+    - master
   paths:
     exclude:
     - VerticalWarehouses/Installer/*
@@ -14,5 +14,5 @@ pool:
 steps:
 - template: azure-pipeline-vw-ui-template.yml
   parameters:
-    BuildConfiguration: 'debug'
+    BuildConfiguration: 'release'
     BuildPlatform: 'any cpu'
