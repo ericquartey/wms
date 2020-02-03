@@ -320,6 +320,7 @@ namespace Ferretto.VW.App.Services
                 await this.InitializationHoming();
                 await this.UpdateBay();
                 await this.InitializationLoadUnits();
+                await this.machineModeService.OnUpdateServiceAsync();
             }
         }
 
