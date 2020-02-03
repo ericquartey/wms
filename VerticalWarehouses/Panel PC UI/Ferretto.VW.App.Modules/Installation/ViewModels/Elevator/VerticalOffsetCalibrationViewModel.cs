@@ -205,7 +205,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 () =>
                 {
                     this.CurrentStep = VerticalOffsetCalibrationStep.Confirm;
-                    this.NewDisplacement = this.CurrentVerticalOffset.Value + (double)this.Displacement.Value;
+                    this.NewDisplacement = this.CurrentVerticalOffset.Value - (double)this.Displacement.Value;
                 },
                 this.CanMoveToConfirm));
 

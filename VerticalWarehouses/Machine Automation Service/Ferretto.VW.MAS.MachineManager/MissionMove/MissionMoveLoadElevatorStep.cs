@@ -111,25 +111,25 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             if (this.Mission.NeedHomingAxis == Axis.Horizontal)
             {
-                this.Logger.LogDebug($"Homing elevator free start");
+                this.Logger.LogInformation($"Homing elevator free start Mission:Id={this.Mission.Id}");
                 this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
             }
             else if (this.Mission.NeedHomingAxis == Axis.BayChain)
             {
                 if (this.Mission.OpenShutterPosition != ShutterPosition.NotSpecified)
                 {
-                    this.Logger.LogDebug($"OpenShutter start");
+                    this.Logger.LogInformation($"OpenShutter start Mission:Id={this.Mission.Id}");
                     this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.Mission.OpenShutterPosition, this.Mission.TargetBay, false);
                 }
                 else
                 {
-                    this.Logger.LogDebug($"MoveManualLoadingUnitForward start: direction {this.Mission.Direction}");
+                    this.Logger.LogInformation($"MoveManualLoadingUnitForward start: direction {this.Mission.Direction} Mission:Id={this.Mission.Id}");
                     this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, false, measure, this.Mission.LoadUnitId, positionId, MessageActor.MachineManager, this.Mission.TargetBay);
                 }
             }
             else
             {
-                this.Logger.LogDebug($"MoveLoadingUnit start: direction {this.Mission.Direction}, openShutter {this.Mission.OpenShutterPosition}, measure {measure}");
+                this.Logger.LogInformation($"MoveLoadingUnit start: direction {this.Mission.Direction}, openShutter {this.Mission.OpenShutterPosition}, measure {measure} Mission:Id={this.Mission.Id}");
                 this.LoadingUnitMovementProvider.MoveLoadingUnit(this.Mission.Direction, true, this.Mission.OpenShutterPosition, measure, MessageActor.MachineManager, this.Mission.TargetBay, this.Mission.LoadUnitId, positionId);
             }
             this.Mission.RestoreConditions = false;
@@ -175,7 +175,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         if (this.UpdateResponseList(notification.Type))
                         {
                             this.MissionsDataProvider.Update(this.Mission);
-                            this.Logger.LogDebug($"UpdateResponseList: {notification.Type}");
+                            this.Logger.LogTrace($"UpdateResponseList: {notification.Type} Mission:Id={this.Mission.Id}");
                             if (notification.Type == MessageType.Positioning)
                             {
                                 this.LoadUnitChangePosition();
@@ -206,12 +206,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                         measure = false;
                                     }
 
-                                    this.Logger.LogDebug($"MoveManualLoadingUnitForward start: direction {this.Mission.Direction}");
+                                    this.Logger.LogInformation($"MoveManualLoadingUnitForward start: direction {this.Mission.Direction} Mission:Id={this.Mission.Id}");
                                     this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, false, measure, this.Mission.LoadUnitId, positionId, MessageActor.MachineManager, this.Mission.TargetBay);
                                 }
                                 else
                                 {
-                                    this.Logger.LogDebug($"ContinuePositioning");
+                                    this.Logger.LogDebug($"ContinuePositioning Mission:Id={this.Mission.Id}");
                                     this.LoadingUnitMovementProvider.ContinuePositioning(MessageActor.MachineManager, notification.RequestingBay);
                                 }
                             }
@@ -232,7 +232,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             if (this.Mission.NeedHomingAxis == Axis.BayChain)
                             {
                                 this.MissionsDataProvider.Update(this.Mission);
-                                this.Logger.LogDebug($"Homing Bay free start");
+                                this.Logger.LogInformation($"Homing Bay free start Mission:Id={this.Mission.Id}");
                                 this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, notification.RequestingBay, MessageActor.MachineManager);
                             }
                             else

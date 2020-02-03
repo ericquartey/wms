@@ -376,7 +376,7 @@
                         "PanelId": 1,
                         "Priority": 1,
                         "IsFree": true,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 3,
@@ -384,7 +384,7 @@
                         "PanelId": 1,
                         "Priority": 3,
                         "IsFree": true,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 5,
@@ -392,7 +392,7 @@
                         "PanelId": 1,
                         "Priority": 5,
                         "IsFree": true,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 7,
@@ -400,7 +400,7 @@
                         "PanelId": 1,
                         "Priority": 7,
                         "IsFree": true,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 9,
@@ -408,7 +408,7 @@
                         "PanelId": 1,
                         "Priority": 9,
                         "IsFree": true,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 11,
@@ -416,7 +416,7 @@
                         "PanelId": 1,
                         "Priority": 11,
                         "IsFree": true,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 13,
@@ -424,7 +424,7 @@
                         "PanelId": 1,
                         "Priority": 13,
                         "IsFree": true,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 15,
@@ -432,7 +432,7 @@
                         "PanelId": 1,
                         "Priority": 15,
                         "IsFree": true,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 17,
@@ -440,7 +440,7 @@
                         "PanelId": 1,
                         "Priority": 17,
                         "IsFree": true,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 19,
@@ -448,7 +448,7 @@
                         "PanelId": 1,
                         "Priority": 19,
                         "IsFree": true,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     }
                 ],
                 "Id": 1
@@ -462,7 +462,7 @@
                         "PanelId": 2,
                         "Priority": 21,
                         "IsFree": true,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 23,
@@ -470,7 +470,7 @@
                         "PanelId": 2,
                         "Priority": 23,
                         "IsFree": true,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 25,
@@ -478,7 +478,7 @@
                         "PanelId": 2,
                         "Priority": 25,
                         "IsFree": true,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 27,
@@ -486,7 +486,7 @@
                         "PanelId": 2,
                         "Priority": 27,
                         "IsFree": true,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 29,
@@ -494,7 +494,7 @@
                         "PanelId": 2,
                         "Priority": 29,
                         "IsFree": true,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 31,
@@ -502,7 +502,7 @@
                         "PanelId": 2,
                         "Priority": 31,
                         "IsFree": true,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 33,
@@ -2970,7 +2970,7 @@
                         "PanelId": 32,
                         "Priority": 2,
                         "IsFree": false,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 4,
@@ -2978,7 +2978,7 @@
                         "PanelId": 32,
                         "Priority": 4,
                         "IsFree": false,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 6,
@@ -2986,7 +2986,7 @@
                         "PanelId": 32,
                         "Priority": 6,
                         "IsFree": false,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 8,
@@ -2994,7 +2994,7 @@
                         "PanelId": 32,
                         "Priority": 8,
                         "IsFree": false,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 10,
@@ -3002,7 +3002,7 @@
                         "PanelId": 32,
                         "Priority": 10,
                         "IsFree": false,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 12,
@@ -3010,7 +3010,7 @@
                         "PanelId": 32,
                         "Priority": 12,
                         "IsFree": false,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 14,
@@ -3018,7 +3018,7 @@
                         "PanelId": 32,
                         "Priority": 14,
                         "IsFree": false,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 16,
@@ -3026,7 +3026,7 @@
                         "PanelId": 32,
                         "Priority": 16,
                         "IsFree": false,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 18,
@@ -3034,7 +3034,7 @@
                         "PanelId": 32,
                         "Priority": 18,
                         "IsFree": false,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 20,
@@ -3042,7 +3042,7 @@
                         "PanelId": 32,
                         "Priority": 20,
                         "IsFree": false,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     }
                 ],
                 "Id": 32
@@ -3056,7 +3056,7 @@
                         "PanelId": 33,
                         "Priority": 22,
                         "IsFree": false,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 24,
@@ -3064,7 +3064,7 @@
                         "PanelId": 33,
                         "Priority": 24,
                         "IsFree": false,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 26,
@@ -3072,7 +3072,7 @@
                         "PanelId": 33,
                         "Priority": 26,
                         "IsFree": false,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 28,
@@ -3080,7 +3080,7 @@
                         "PanelId": 33,
                         "Priority": 28,
                         "IsFree": false,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 30,
@@ -3088,7 +3088,7 @@
                         "PanelId": 33,
                         "Priority": 30,
                         "IsFree": false,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 32,
@@ -3096,7 +3096,7 @@
                         "PanelId": 33,
                         "Priority": 32,
                         "IsFree": false,
-                        "BlockLevel": "None"
+                        "BlockLevel": "Blocked"
                     },
                     {
                         "Id": 34,

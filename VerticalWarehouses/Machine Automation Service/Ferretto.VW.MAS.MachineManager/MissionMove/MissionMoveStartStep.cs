@@ -66,7 +66,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 if (this.Mission.NeedHomingAxis == Axis.Horizontal)
                 {
-                    this.Logger.LogDebug($"Homing elevator free start");
+                    this.Logger.LogInformation($"Homing elevator free start Mission:Id={this.Mission.Id}");
                     this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
                 else
@@ -116,7 +116,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 if (this.Mission.NeedHomingAxis == Axis.Horizontal)
                 {
-                    this.Logger.LogDebug($"Homing elevator free start");
+                    this.Logger.LogInformation($"Homing elevator free start Mission:Id={this.Mission.Id}");
                     this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
                 else

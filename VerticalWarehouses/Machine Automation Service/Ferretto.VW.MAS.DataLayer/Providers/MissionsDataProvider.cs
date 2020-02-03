@@ -123,7 +123,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (mission.WmsId is null)
                 {
-                    this.baysDataProvider.ClearMission(mission.TargetBay);
+                    if (this.baysDataProvider.IsMissionInBay(mission))
+                    {
+                        this.baysDataProvider.ClearMission(mission.TargetBay);
+                    }
                     this.Delete(mission.Id);
                 }
                 else
