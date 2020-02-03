@@ -169,12 +169,17 @@ namespace Ferretto.VW.App
         private void DeactivateBay()
         {
             this.logger.Info("Deactivating bay on application exit.");
+            try
+            {
+                var baysWebService = this.Container.Resolve<IMachineBaysWebService>();
 
-            var baysWebService = this.Container.Resolve<IMachineBaysWebService>();
-
-            Task
-                .Run(async () => await baysWebService.DeactivateAsync())
-                .Wait();
+                Task
+                    .Run(async () => await baysWebService.DeactivateAsync().ConfigureAwait(false))
+                    .Wait();
+            }
+            catch (MasWebApiException)
+            {
+            }
         }
 
         private void HACK_ForceItalianLanguage()
