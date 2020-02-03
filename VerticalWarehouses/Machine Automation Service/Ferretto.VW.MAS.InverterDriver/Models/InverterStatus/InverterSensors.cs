@@ -30,29 +30,24 @@
         ANG_EncoderChannelACradle = 4,
 
         /// <summary>
-        /// S6IND-Encoder canale Z
-        /// </summary>
-        ANG_EncoderChannelZCradle = 5,
-
-        /// <summary>
-        /// MF3IND-Extracorsa elevatore
-        /// </summary>
-        ANG_OverrunElevatorSensor = 6,
-
-        /// <summary>
         /// S5IND-Taratura barriera
         /// </summary>
         //ANG_BarrierCalibration = 4,
 
         /// <summary>
-        /// MF2IND-Sensore zero culla
+        /// S6IND-Extracorsa elevatore
         /// </summary>
-        ANG_ZeroCradleSensor = 7,
+        ANG_OverrunElevatorSensor = 5,
 
         /// <summary>
         /// S7IND-STO (hardware)
         /// </summary>
         //ANG_HardwareSensorSTOB = 6,
+
+        /// <summary>
+        /// MF2IND-Sensore zero culla
+        /// </summary>
+        ANG_ZeroCradleSensor = 7,
 
         /// <summary>
         /// MFI1-Barriera ottica di misura
