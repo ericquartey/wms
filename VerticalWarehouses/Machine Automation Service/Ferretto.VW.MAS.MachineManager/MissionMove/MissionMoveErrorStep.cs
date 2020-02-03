@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                         else if (notification.Type == MessageType.ShutterPositioning)
                         {
-                            this.Logger.LogDebug($"{this.GetType().Name}: Manual Shutter positioning end");
+                            this.Logger.LogDebug($"{this.GetType().Name}: Manual Shutter positioning end Mission:Id={this.Mission.Id}");
                             var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(notification.RequestingBay);
                             var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
                             if (shutterPosition == this.Mission.OpenShutterPosition
@@ -71,7 +71,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 this.Mission.ErrorMovements &= ~MissionErrorMovements.MoveShutterOpen;
                                 if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveShutterClosed))
                                 {
-                                    this.Logger.LogDebug($"{this.GetType().Name}: Shutter Close start");
+                                    this.Logger.LogInformation($"{this.GetType().Name}: Shutter Close start Mission:Id={this.Mission.Id}");
                                     this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, this.Mission.TargetBay, false);
                                 }
                                 else
@@ -183,7 +183,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 this.Mission.RestoreConditions = true;
                 this.Mission.OpenShutterPosition = ShutterPosition.Opened;
-                this.Logger.LogDebug($"{this.GetType().Name}: Manual Shutter positioning start");
+                this.Logger.LogInformation($"{this.GetType().Name}: Manual Shutter positioning start Mission:Id={this.Mission.Id}");
                 this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.Mission.OpenShutterPosition, this.Mission.TargetBay, true);
                 this.Mission.ErrorMovements = MissionErrorMovements.MoveShutterOpen;
                 this.Mission.ErrorMovements |= MissionErrorMovements.MoveShutterClosed;
@@ -242,7 +242,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if (shutterPosition != ShutterPosition.Opened)
             {
                 this.Mission.OpenShutterPosition = ShutterPosition.Opened;
-                this.Logger.LogDebug($"{this.GetType().Name}: Manual Shutter positioning start");
+                this.Logger.LogInformation($"{this.GetType().Name}: Manual Shutter positioning start Mission:Id={this.Mission.Id}");
                 this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.Mission.OpenShutterPosition, this.Mission.TargetBay, true);
                 this.Mission.ErrorMovements = MissionErrorMovements.MoveShutterOpen;
                 this.MissionsDataProvider.Update(this.Mission);
@@ -277,7 +277,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     )
                 {
                     this.Mission.OpenShutterPosition = ShutterPosition.Opened;
-                    this.Logger.LogDebug($"{this.GetType().Name}: Manual Shutter positioning start");
+                    this.Logger.LogInformation($"{this.GetType().Name}: Manual Shutter positioning start Mission:Id={this.Mission.Id}");
                     this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.Mission.OpenShutterPosition, this.Mission.TargetBay, true);
                     this.Mission.ErrorMovements = MissionErrorMovements.MoveShutterOpen;
                     this.MissionsDataProvider.Update(this.Mission);
@@ -332,7 +332,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 this.Mission.RestoreConditions = true;
                 this.Mission.OpenShutterPosition = ShutterPosition.Opened;
-                this.Logger.LogDebug($"{this.GetType().Name}: Manual Shutter positioning start");
+                this.Logger.LogInformation($"{this.GetType().Name}: Manual Shutter positioning start Mission:Id={this.Mission.Id}");
                 this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.Mission.OpenShutterPosition, this.Mission.TargetBay, true);
                 this.Mission.ErrorMovements = MissionErrorMovements.MoveShutterOpen;
                 this.MissionsDataProvider.Update(this.Mission);
@@ -357,7 +357,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 this.Mission.RestoreConditions = true;
                 this.Mission.OpenShutterPosition = ShutterPosition.Opened;
-                this.Logger.LogDebug($"{this.GetType().Name}: Manual Shutter positioning start");
+                this.Logger.LogInformation($"{this.GetType().Name}: Manual Shutter positioning start Mission:Id={this.Mission.Id}");
                 this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.Mission.OpenShutterPosition, this.Mission.TargetBay, true);
                 this.Mission.ErrorMovements = MissionErrorMovements.MoveShutterOpen;
                 this.Mission.ErrorMovements |= MissionErrorMovements.MoveShutterClosed;
