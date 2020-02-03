@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Http;
@@ -13,7 +14,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : BaseWmsProxyController
+    public class UsersController : BaseWmsProxyController, IRequestingBayController
     {
         #region Fields
 
@@ -43,6 +44,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #endregion
 
+        #region Properties
+
+        public BayNumber BayNumber { get; set; }
+
+        #endregion
+
         #region Methods
 
         [HttpPost("authenticate")]
@@ -54,7 +61,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             string password,
             string supportToken)
         {
-            this.logger.LogDebug($"Login requested for user '{userName}'.");
+            this.logger.LogDebug($"Login requested for user '{userName}' by '{this.BayNumber}'.");
 
             if (string.IsNullOrEmpty(supportToken) && this.configuration.IsWmsEnabled())
             {
@@ -63,24 +70,24 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     var claims = await this.usersWmsWebService
                         .AuthenticateWithResourceOwnerPasswordAsync(userName, password);
 
-                    this.logger.LogInformation($"Login success for user '{userName}' through WMS.");
+                    this.logger.LogInformation($"Login success for user '{userName}' by '{this.BayNumber}' through WMS.");
 
                     return this.Ok(claims);
                 }
                 catch
                 {
-                    this.logger.LogWarning($"Unable to authenticate user '{userName}' through WMS.");
+                    this.logger.LogWarning($"Unable to authenticate user '{userName}' by '{this.BayNumber}' through WMS.");
                 }
             }
 
             var accessLevel = this.usersProvider.Authenticate(userName, password, supportToken);
             if (!accessLevel.HasValue)
             {
-                this.logger.LogWarning($"Login for '{userName}' failed.");
+                this.logger.LogWarning($"Login for '{userName}' by '{this.BayNumber}' failed.");
                 return this.Unauthorized();
             }
 
-            this.logger.LogInformation($"Login success for user '{userName}' using local credentials.");
+            this.logger.LogInformation($"Login success for user '{userName}' by '{this.BayNumber}' using local credentials.");
 
             return this.Ok(
                 new UserClaims
