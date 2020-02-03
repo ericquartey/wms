@@ -58,8 +58,6 @@ namespace Ferretto.VW.App.Services
 
         public WMS.Data.WebAPI.Contracts.MissionOperation CurrentMissionOperation { get; private set; }
 
-        public int PendingMissionOperationsCount { get; private set; }
-
         #endregion
 
         #region Methods
@@ -85,33 +83,30 @@ namespace Ferretto.VW.App.Services
                 ConfigurationManager.AppSettings.GetLabelPrinterName());
         }
 
-        private async Task OnAssignedMissionOperationChangedAsync(object sender, AssignedMissionOperationChangedEventArgs e)
+        public async Task StartAsync()
         {
-            if (this.bay is null)
-            {
-                this.bay = await this.bayManager.GetBayAsync();
-            }
+            await this.LoadCurrentMissionOperationAsync();
+        }
 
-            if (e.BayNumber != this.bay.Number)
-            {
-                return;
-            }
-
-            this.PendingMissionOperationsCount = e.PendingMissionOperationsCount;
+        private async Task LoadCurrentMissionOperationAsync()
+        {
+            var bay = await this.bayManager.GetBayAsync();
 
             var currentMissionOperation = this.CurrentMissionOperation;
 
-            if (e.MissionId.HasValue && e.MissionOperationId.HasValue)
+            if (!(bay.CurrentMission?.Id is null)
+                &&
+                bay.CurrentWmsMissionOperationId.HasValue)
             {
                 try
                 {
                     //var loadingUnitAccessibleInBay = this.bay.Positions.Where(p => p.LoadingUnit != null).OrderByDescending(p => p.Height).Select(p => p.LoadingUnit).FirstOrDefault();
-                    var currentMission = await this.missionsDataService.GetByIdAsync(e.MissionId.Value);
+                    var currentMission = await this.missionsDataService.GetByIdAsync(bay.CurrentMission.Id);
                     // if (loadingUnitAccessibleInBay?.Id == currentMission.LoadingUnitId)
                     //  {
                     this.CurrentMission = currentMission;
                     this.CurrentMissionOperation =
-                        await this.missionOperationsDataService.GetByIdAsync(e.MissionOperationId.Value);
+                        await this.missionOperationsDataService.GetByIdAsync(bay.CurrentWmsMissionOperationId.Value);
                     //}
                     // else
                     // {
@@ -133,10 +128,22 @@ namespace Ferretto.VW.App.Services
                 ||
                 currentMissionOperation?.RequestedQuantity != this.CurrentMissionOperation?.RequestedQuantity)
             {
+                var args = new AssignedMissionOperationChangedEventArgs(bay.Number, bay.CurrentMission?.Id, bay.CurrentWmsMissionOperationId);
                 this.eventAggregator
                        .GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>()
-                       .Publish(e);
+                       .Publish(args);
             }
+        }
+
+        private async Task OnAssignedMissionOperationChangedAsync(object sender, AssignedMissionOperationChangedEventArgs e)
+        {
+            var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
+            if (e.BayNumber == bayNumber)
+            {
+                await this.LoadCurrentMissionOperationAsync();
+            }
+
+            return;
         }
 
         #endregion

@@ -106,7 +106,13 @@ namespace Ferretto.VW.App.Modules.Operator.Services
 
         public async Task NavigateToOperatorMenuAsync()
         {
-            if (this.missionOperationsService.CurrentMissionOperation != null)
+            var machineMissions = await this.machineMissionsWebService.GetAllAsync();
+            var waitingMissions = machineMissions.Where(m =>
+                   m.Step == MissionStep.WaitPick
+                   &&
+                   m.TargetBay == this.machineService.BayNumber);
+            var currentWmsMission = waitingMissions.SingleOrDefault(m => m.MissionType == MissionType.WMS);
+            if (currentWmsMission != null)
             {
                 // TODO: remove doNotAppear parameter, then remove this call
                 this.navigationService.Appear(
@@ -120,13 +126,7 @@ namespace Ferretto.VW.App.Modules.Operator.Services
             }
             else
             {
-                var machineMissions = await this.machineMissionsWebService.GetAllAsync();
-                var currentMission = machineMissions.SingleOrDefault(m =>
-                    m.Step == MissionStep.WaitPick
-                    &&
-                    m.TargetBay == this.machineService.BayNumber
-                    &&
-                    m.MissionType != MissionType.WMS);
+                var currentMission = waitingMissions.SingleOrDefault(m => m.MissionType != MissionType.WMS);
                 var loadingUnit = this.machineService.Loadunits.SingleOrDefault(l => l.Id == currentMission?.LoadUnitId);
                 if (loadingUnit != null)
                 {

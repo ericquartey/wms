@@ -21,6 +21,27 @@
         "LOGOUT_WHEN_UNHEALTHY": "False"
       }
     },
+    "PanelPC_Bay_1": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "BAY_NUMBER": "1",
+        "LOGOUT_WHEN_UNHEALTHY": "False"
+      }
+    },
+    "PanelPC_Bay_2": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "BAY_NUMBER": "2",
+        "LOGOUT_WHEN_UNHEALTHY": "False"
+      }
+    },
+    "PanelPC_Bay_3": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "BAY_NUMBER": "3",
+        "LOGOUT_WHEN_UNHEALTHY": "False"
+      }
+    },
     "PanelPC (Bay 1 - EjLog - Localhost)": {
       "commandName": "Project",
       "environmentVariables": {

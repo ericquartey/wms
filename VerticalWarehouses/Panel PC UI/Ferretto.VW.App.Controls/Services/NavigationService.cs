@@ -102,11 +102,13 @@ namespace Ferretto.VW.App.Controls
                 var parameters = new NavigationParameters();
                 parameters.Add(viewModelName, data);
 
-                this.DisappearActiveView();
-
                 if(!doNotAppear)
                 { 
                     this.regionManager.RequestNavigate(this.MainContentRegionName, viewName, parameters);
+                }
+                else
+                {
+                    this.DisappearActiveView();
                 }
 
                 if (this.navigationStack.Count > 0)

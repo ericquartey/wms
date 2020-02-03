@@ -11,6 +11,8 @@ namespace Ferretto.VW.App.Services
 
         MachinePowerState MachinePower { get; }
 
+        Task OnUpdateServiceAsync();
+
         #endregion
 
         #region Methods

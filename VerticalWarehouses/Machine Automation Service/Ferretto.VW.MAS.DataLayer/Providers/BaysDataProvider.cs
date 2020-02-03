@@ -425,6 +425,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 var bay = this.dataContext.Bays
                     .Include(b => b.Inverter)
+                    .Include(b => b.CurrentMission)
                     .Include(b => b.Positions)
                         .ThenInclude(s => s.LoadingUnit)
                     .Include(b => b.Shutter)

@@ -48,8 +48,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
                 new AssignedMissionOperationChangedEventArgs(
                     bayNumber,
                     missionId,
-                    missionOperationId,
-                    pendingMissionOperationsCount));
+                    missionOperationId));
         }
 
         private void OnBayStatusChanged(BayNumber bayNumber, BayStatus bayStatus)
