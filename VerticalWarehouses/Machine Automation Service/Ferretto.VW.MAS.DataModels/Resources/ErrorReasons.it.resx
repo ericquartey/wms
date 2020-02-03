@@ -270,4 +270,7 @@
   <data name="LoadUnitShutterInvalid" xml:space="preserve">
     <value>Serranda non in posizione chiusa nè aperta. Verificare lo stato dei sensori.</value>
   </data>
+  <data name="DestinationBayNotCalibrated" xml:space="preserve">
+    <value>Baia di destinazione priva di taratura.</value>
+  </data>
 </root>

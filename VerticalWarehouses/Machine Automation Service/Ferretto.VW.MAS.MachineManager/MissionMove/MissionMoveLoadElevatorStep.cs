@@ -165,84 +165,96 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                         else if (this.Mission.NeedHomingAxis == Axis.BayChain)
                         {
-                            this.Mission.NeedHomingAxis = Axis.None;
-                            this.MissionsDataProvider.Update(this.Mission);
+                            var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
+                            if (bay != null
+                                && bay.Positions != null
+                                && bay.Positions.All(p => p.LoadingUnit is null))
+                            {
+                                this.Mission.NeedHomingAxis = Axis.None;
+                                this.MissionsDataProvider.Update(this.Mission);
+                                this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = true;
+                            }
                             this.LoadUnitEnd();
                         }
                     }
                     else
                     {
-                        if (this.UpdateResponseList(notification.Type))
+                        if (notification.Type == MessageType.ShutterPositioning
+                            || notification.TargetBay == BayNumber.ElevatorBay
+                            )
                         {
-                            this.MissionsDataProvider.Update(this.Mission);
-                            this.Logger.LogTrace($"UpdateResponseList: {notification.Type} Mission:Id={this.Mission.Id}");
-                            if (notification.Type == MessageType.Positioning)
+                            if (this.UpdateResponseList(notification.Type))
                             {
-                                this.LoadUnitChangePosition();
-                            }
-                        }
-
-                        if (notification.Type == MessageType.ShutterPositioning)
-                        {
-                            var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(notification.RequestingBay);
-                            var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
-                            if (shutterPosition == this.Mission.OpenShutterPosition)
-                            {
-                                if (this.Mission.NeedHomingAxis == Axis.BayChain)
+                                this.MissionsDataProvider.Update(this.Mission);
+                                this.Logger.LogTrace($"UpdateResponseList: {notification.Type} Mission:Id={this.Mission.Id}");
+                                if (notification.Type == MessageType.Positioning)
                                 {
-                                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
-                                    if (bay is null)
-                                    {
-                                        this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceBay, this.Mission.TargetBay);
-                                        throw new StateMachineException(ErrorDescriptions.LoadUnitSourceBay, this.Mission.TargetBay, MessageActor.MachineManager);
-                                    }
-                                    var bayPosition = bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitSource);
-                                    positionId = bayPosition.Id;
-                                    if (bay.Carousel != null
-                                        && !bayPosition.IsUpper
-                                        )
-                                    {
-                                        // in lower carousel position there is no profile check barrier
-                                        measure = false;
-                                    }
+                                    this.LoadUnitChangePosition();
+                                }
+                            }
 
-                                    this.Logger.LogInformation($"MoveManualLoadingUnitForward start: direction {this.Mission.Direction} Mission:Id={this.Mission.Id}");
-                                    this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, false, measure, this.Mission.LoadUnitId, positionId, MessageActor.MachineManager, this.Mission.TargetBay);
+                            if (notification.Type == MessageType.ShutterPositioning)
+                            {
+                                var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(notification.RequestingBay);
+                                var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
+                                if (shutterPosition == this.Mission.OpenShutterPosition)
+                                {
+                                    if (this.Mission.NeedHomingAxis == Axis.BayChain)
+                                    {
+                                        var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
+                                        if (bay is null)
+                                        {
+                                            this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceBay, this.Mission.TargetBay);
+                                            throw new StateMachineException(ErrorDescriptions.LoadUnitSourceBay, this.Mission.TargetBay, MessageActor.MachineManager);
+                                        }
+                                        var bayPosition = bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitSource);
+                                        positionId = bayPosition.Id;
+                                        if (bay.Carousel != null
+                                            && !bayPosition.IsUpper
+                                            )
+                                        {
+                                            // in lower carousel position there is no profile check barrier
+                                            measure = false;
+                                        }
+
+                                        this.Logger.LogInformation($"MoveManualLoadingUnitForward start: direction {this.Mission.Direction} Mission:Id={this.Mission.Id}");
+                                        this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, false, measure, this.Mission.LoadUnitId, positionId, MessageActor.MachineManager, this.Mission.TargetBay);
+                                    }
+                                    else
+                                    {
+                                        this.Logger.LogDebug($"ContinuePositioning Mission:Id={this.Mission.Id}");
+                                        this.LoadingUnitMovementProvider.ContinuePositioning(MessageActor.MachineManager, notification.RequestingBay);
+                                    }
                                 }
                                 else
                                 {
-                                    this.Logger.LogDebug($"ContinuePositioning Mission:Id={this.Mission.Id}");
-                                    this.LoadingUnitMovementProvider.ContinuePositioning(MessageActor.MachineManager, notification.RequestingBay);
+                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterClosed, notification.RequestingBay);
+
+                                    this.OnStop(StopRequestReason.Error, !this.ErrorsProvider.IsErrorSmall());
+                                    break;
                                 }
                             }
-                            else
-                            {
-                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterClosed, notification.RequestingBay);
-
-                                this.OnStop(StopRequestReason.Error, !this.ErrorsProvider.IsErrorSmall());
-                                break;
-                            }
-                        }
-                        if (this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Positioning)
-                            && (this.Mission.OpenShutterPosition == ShutterPosition.NotSpecified
-                                || this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Shutter))
-                            )
-                        {
-                            this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
-                            var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
-                            if (this.Mission.NeedHomingAxis == Axis.BayChain
-                                && bay != null
-                                && bay.Positions != null
-                                && bay.Positions.All(p => p.LoadingUnit is null)
+                            if (this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Positioning)
+                                && (this.Mission.OpenShutterPosition == ShutterPosition.NotSpecified
+                                    || this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Shutter))
                                 )
                             {
-                                this.MissionsDataProvider.Update(this.Mission);
-                                this.Logger.LogInformation($"Homing Bay free start Mission:Id={this.Mission.Id}");
-                                this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, notification.RequestingBay, MessageActor.MachineManager);
-                            }
-                            else
-                            {
-                                this.LoadUnitEnd();
+                                this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
+                                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
+                                if (this.Mission.NeedHomingAxis == Axis.BayChain
+                                    && bay != null
+                                    && bay.Positions != null
+                                    && bay.Positions.All(p => p.LoadingUnit is null)
+                                    )
+                                {
+                                    this.MissionsDataProvider.Update(this.Mission);
+                                    this.Logger.LogInformation($"Homing Bay free start Mission:Id={this.Mission.Id}");
+                                    this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, notification.RequestingBay, MessageActor.MachineManager);
+                                }
+                                else
+                                {
+                                    this.LoadUnitEnd();
+                                }
                             }
                         }
                     }

@@ -251,6 +251,20 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
+                        if(bay.Carousel != null
+                            && !this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number])
+                        {
+                            if (showErrors)
+                            {
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.DestinationBayNotCalibrated, this.Mission.TargetBay);
+                                throw new StateMachineException(ErrorDescriptions.DestinationBayNotCalibrated, this.Mission.TargetBay, MessageActor.MachineManager);
+                            }
+                            else
+                            {
+                                this.Logger.LogInformation(ErrorDescriptions.DestinationBayNotCalibrated);
+                                return false;
+                            }
+                        }
                         var upper = bay.Positions.FirstOrDefault(p => p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
                         if (upper is LoadingUnitLocation.NoLocation)
                         {

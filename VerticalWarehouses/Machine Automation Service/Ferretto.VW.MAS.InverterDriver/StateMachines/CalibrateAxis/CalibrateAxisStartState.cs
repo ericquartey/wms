@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         public override void Start()
         {
-            this.Logger.LogDebug($"Calibrate start axis {this.axisToCalibrate} inverter {this.InverterStatus.SystemIndex}");
+            this.Logger.LogInformation($"Calibrate start axis {this.axisToCalibrate} inverter {this.InverterStatus.SystemIndex}");
             this.InverterStatus.OperatingMode = (ushort)InverterOperationMode.Homing;
 
             this.ParentStateMachine.EnqueueCommandMessage(

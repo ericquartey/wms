@@ -125,7 +125,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 this.Mission.RestoreConditions = false;
                             }
                             if (this.Mission.NeedHomingAxis == Axis.BayChain
-                                && this.LoadingUnitMovementProvider.IsOnlyTopPositionOccupied(bay.Number)
+                                && bay.Positions.Count(p => p.LoadingUnit != null) < 2
                                 )
                             {
                                 this.MissionsDataProvider.Update(this.Mission);
@@ -166,7 +166,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         private void BayChainEnd()
         {
-            this.Mission.NeedHomingAxis = Axis.None;
             if (this.Mission.MissionType == MissionType.OUT
                 || this.Mission.MissionType == MissionType.WMS
                 )
