@@ -153,10 +153,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         if (this.Mission.NeedHomingAxis == Axis.Horizontal)
                         {
-                            this.MachineVolatileDataProvider.IsHomingExecuted = true;
                             if (!this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
                             {
                                 this.Mission.NeedHomingAxis = Axis.None;
+                                this.MachineVolatileDataProvider.IsHomingExecuted = true;
                                 this.MissionsDataProvider.Update(this.Mission);
                             }
                             // restart movement from the beginning!

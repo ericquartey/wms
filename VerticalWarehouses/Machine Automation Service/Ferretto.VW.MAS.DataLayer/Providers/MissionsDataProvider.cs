@@ -377,33 +377,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void UpdateHomingMissions(BayNumber bayNumber, Axis axis)
-        {
-            lock (this.dataContext)
-            {
-                if (axis == Axis.HorizontalAndVertical)
-                {
-                    axis = Axis.Horizontal;
-                }
-                var missions = this.dataContext.Missions.Where(m => m.NeedHomingAxis == axis
-                        && (bayNumber == BayNumber.ElevatorBay || m.TargetBay == bayNumber)
-                        );
-                if (missions.Any())
-                {
-                    foreach (var mission in missions)
-                    {
-                        mission.NeedHomingAxis = Axis.None;
-                        this.Update(mission);
-                        this.logger.LogDebug($"Elevator Homing executed for Load Unit {mission.LoadUnitId}");
-                    }
-                }
-                else
-                {
-                    this.logger.LogDebug($"No Homing missions waiting for Bay {bayNumber}, axis {axis}");
-                }
-            }
-        }
-
         #endregion
     }
 }

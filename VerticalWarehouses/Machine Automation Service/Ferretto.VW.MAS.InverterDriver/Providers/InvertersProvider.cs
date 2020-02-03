@@ -136,7 +136,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 if (axis.Orientation == Orientation.Vertical && positioningData.ComputeElongation)
                 {
                     var beltDisplacement = this.ComputeDisplacement(positioningData.TargetPosition);
-                    this.logger.LogInformation($"Belt elongation for height={positioningData.TargetPosition} is {beltDisplacement} [mm].");
+                    this.logger.LogInformation($"Belt elongation for height={positioningData.TargetPosition} is {beltDisplacement:0.00} [mm].");
                     position += beltDisplacement;
                 }
             }
@@ -201,7 +201,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 {
                     throw new InvalidOperationException($"The Deceleration of position {i} can not be zero.");
                 }
-                this.logger.LogDebug($"{positioningData.SwitchPosition[i]:0.00} mm,\t {positioningData.TargetSpeed[i]:0.00} mm/s,\t {positioningData.TargetAcceleration[i]} mm/s2,\t {positioningData.TargetDeceleration[i]} mm/s2");
+                this.logger.LogDebug($"{positioningData.SwitchPosition[i]:0.00} mm,\t {positioningData.TargetSpeed[i]:0.00} mm/s,\t {positioningData.TargetAcceleration[i]:0.00} mm/s2,\t {positioningData.TargetDeceleration[i]:0.00} mm/s2");
             }
 
             positioningFieldData = new InverterPositioningFieldMessageData(

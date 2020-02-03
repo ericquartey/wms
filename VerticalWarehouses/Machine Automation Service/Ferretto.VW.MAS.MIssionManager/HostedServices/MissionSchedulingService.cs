@@ -285,6 +285,10 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private bool GenerateHoming(IBaysDataProvider bayProvider, bool isHomingExecuted)
         {
+            if(this.machineVolatileDataProvider.IsHomingActive)
+            {
+                return true;
+            }
             var bays = bayProvider.GetAll();
             bool generated = false;
             if (this.machineVolatileDataProvider.IsBayHomingExecuted.Any(x => !x.Value)
@@ -330,6 +334,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 this.Logger.LogDebug($"GenerateHoming: Elevator");
                 generated = true;
             }
+            this.machineVolatileDataProvider.IsHomingActive = generated;
             return generated;
         }
 
