@@ -242,6 +242,10 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     {
                         baysDataProvider.ClearMission(mission.TargetBay);
                     }
+                    if (waitMission.NeedHomingAxis != Axis.None)
+                    {
+                        mission.NeedHomingAxis = waitMission.NeedHomingAxis;
+                    }
 
                     missionsDataProvider.Delete(waitMission.Id);
                     this.Logger.LogDebug($"{this.GetType().Name}: Delete {waitMission}");

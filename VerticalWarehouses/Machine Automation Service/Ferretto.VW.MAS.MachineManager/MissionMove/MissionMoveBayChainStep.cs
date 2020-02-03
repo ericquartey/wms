@@ -53,6 +53,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedUpper, this.Mission.TargetBay);
                 throw new StateMachineException(ErrorDescriptions.LoadUnitUndefinedUpper, this.Mission.TargetBay, MessageActor.MachineManager);
             }
+            this.Mission.NeedHomingAxis = (this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] ? Axis.None : Axis.BayChain);
 #if CHECK_BAY_SENSOR
             if (this.LoadingUnitMovementProvider.IsOnlyBottomPositionOccupied(bay.Number))
 #endif
@@ -123,7 +124,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 this.LoadingUnitMovementProvider.UpdateLastBayChainPosition(this.Mission.TargetBay);
                                 this.Mission.RestoreConditions = false;
                             }
-                            if (this.Mission.NeedHomingAxis == Axis.BayChain)
+                            if (this.Mission.NeedHomingAxis == Axis.BayChain
+                                && this.LoadingUnitMovementProvider.IsOnlyTopPositionOccupied(bay.Number)
+                                )
                             {
                                 this.MissionsDataProvider.Update(this.Mission);
                                 this.Logger.LogInformation($"Homing Bay occupied start Mission:Id={this.Mission.Id}");
@@ -131,31 +134,22 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                             else
                             {
-                                this.Mission.NeedHomingAxis = Axis.None;
                                 this.BayChainEnd();
                             }
                         }
                         else if (notification.Type == MessageType.Homing
                             && notification.Data is HomingMessageData messageData)
                         {
-                            if (messageData.AxisToCalibrate == Axis.BayChain)
-                            {
-                                if (!this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
-                                {
-                                    this.Mission.NeedHomingAxis = Axis.Horizontal;
-                                    this.MissionsDataProvider.Update(this.Mission);
-                                    this.Logger.LogDebug($"Homing elevator free start Mission:Id={this.Mission.Id}");
-                                    this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, notification.RequestingBay, MessageActor.MachineManager);
-                                }
-                                else
-                                {
-                                    this.Mission.NeedHomingAxis = Axis.None;
-                                    this.BayChainEnd();
-                                }
-                            }
-                            else if (this.Mission.NeedHomingAxis == Axis.Horizontal)
+                            if (messageData.AxisToCalibrate == Axis.Horizontal
+                                && !this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator)
+                                )
                             {
                                 this.MachineVolatileDataProvider.IsHomingExecuted = true;
+                            }
+                            if (messageData.AxisToCalibrate == Axis.BayChain
+                                && this.LoadingUnitMovementProvider.IsOnlyTopPositionOccupied(this.Mission.TargetBay)
+                                )
+                            {
                                 this.BayChainEnd();
                             }
                         }
@@ -199,6 +193,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 try
                 {
+                    this.Mission.NeedHomingAxis = (this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] ? Axis.None : Axis.BayChain);
                     this.Mission.Status = MissionStatus.Executing;
                     this.MissionsDataProvider.Update(this.Mission);
                     this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");

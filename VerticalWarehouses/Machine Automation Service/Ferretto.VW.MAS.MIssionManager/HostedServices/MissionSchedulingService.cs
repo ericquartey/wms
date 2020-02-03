@@ -240,7 +240,10 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 if (mission.Status == MissionStatus.New)
                 {
-                    missionsDataProvider.Delete(mission.Id);
+                    if (!mission.IsRestoringType())
+                    {
+                        missionsDataProvider.Delete(mission.Id);
+                    }
                 }
                 else if (mission.Status != MissionStatus.Completed
                     && mission.Status != MissionStatus.Aborted)
@@ -251,7 +254,9 @@ namespace Ferretto.VW.MAS.MissionManager
                     }
                     IMissionMoveBase newStep;
 
-                    if (mission.RestoreStep == MissionStep.BayChain)
+                    if (mission.RestoreStep == MissionStep.BayChain
+                        || mission.RestoreStep == MissionStep.WaitPick
+                        )
                     {
                         mission.NeedHomingAxis = Axis.BayChain;
                         newStep = new MissionMoveErrorStep(mission, serviceProvider, eventAggregator);
