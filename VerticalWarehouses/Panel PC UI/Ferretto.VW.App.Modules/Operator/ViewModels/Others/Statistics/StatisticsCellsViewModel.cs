@@ -7,11 +7,14 @@ using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class StatisticsCellsViewModel : BaseMainViewModel
+    [Warning(WarningsArea.Information)]
+    public class StatisticsCellsViewModel : BaseOperatorViewModel
     {
         #region Fields
 
@@ -95,7 +98,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
                 this.RaisePropertyChanged(nameof(this.DataGridViewModel));
             }
-            catch (SwaggerException ex)
+            catch (MasWebApiException ex)
             {
                 this.ShowNotification(ex);
             }

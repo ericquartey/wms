@@ -21,7 +21,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         double FeedRate { get; set; }
 
-        bool IsOneKMachine { get; set; }
+        bool IsOneTonMachine { get; set; }
 
         bool IsStartedOnBoard { get; set; }
 
@@ -51,7 +51,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         double[] TargetDeceleration { get; }
 
-        double TargetPosition { get; }
+        double TargetPosition { get; set; }
 
         double[] TargetSpeed { get; }
 

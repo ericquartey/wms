@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         IState Pause();
 
-        IState Resume();
+        IState Resume(CommandMessage commandMessage);
 
         IState Stop(StopRequestReason reason);
 

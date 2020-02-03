@@ -7,6 +7,9 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
+        [JsonIgnore]
+        public Bay Bay { get; set; }
+
         public double Height { get; set; }
 
         public bool IsUpper =>
@@ -31,6 +34,21 @@ namespace Ferretto.VW.MAS.DataModels
         public LoadingUnit LoadingUnit { get; set; }
 
         public LoadingUnitLocation Location { get; set; }
+
+        public double MaxDoubleHeight { get; set; }
+
+        public double MaxSingleHeight { get; set; }
+
+        public double ProfileOffset { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            return $"{this.Bay} {this.Location}";
+        }
 
         #endregion
     }

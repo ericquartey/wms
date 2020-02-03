@@ -29,25 +29,46 @@ namespace Ferretto.VW.MAS.DeviceManager
     {
         #region Methods
 
+        private void ProcessBayLight(CommandMessage message, IServiceProvider serviceProvider)
+        {
+            this.Logger.LogTrace("1:Method Start");
+
+            if (message.Data is IBayLightMessageData data)
+            {
+                var bayDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                var ioIndex = bayDataProvider.GetIoDevice(message.TargetBay);
+
+                // Send a field message to ligh the bay (via output line) to IoDevice
+                var bayLightDataMessage = new BayLightFieldMessageData(data.Enable);
+                var inverterMessage = new FieldCommandMessage(
+                    bayLightDataMessage,
+                    $"Bay Light={data.Enable}",
+                    FieldMessageActor.IoDriver,
+                    FieldMessageActor.DeviceManager,
+                    FieldMessageType.BayLight,
+                    (byte)ioIndex);
+                this.EventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
+            }
+        }
+
         private void ProcessCheckConditionMessage(CommandMessage message, IServiceProvider serviceProvider)
         {
             this.Logger.LogTrace($"1:Processing Command {message.Type} Source {message.Source}");
 
             if (message.Data is ICheckConditionMessageData data)
             {
-                var machineResourcesProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
                 switch (data.ConditionToCheck)
                 {
                     case ConditionToCheckType.MachineIsInEmergencyState:
-                        data.Result = machineResourcesProvider.IsMachineInEmergencyState;
+                        data.Result = this.machineResourcesProvider.IsMachineInEmergencyState;
                         break;
 
                     case ConditionToCheckType.DrawerIsCompletelyOnCradle:
-                        data.Result = machineResourcesProvider.IsDrawerCompletelyOnCradle;
+                        data.Result = this.machineResourcesProvider.IsDrawerCompletelyOnCradle;
                         break;
 
                     case ConditionToCheckType.DrawerIsPartiallyOnCradle:
-                        data.Result = machineResourcesProvider.IsDrawerPartiallyOnCradle;
+                        data.Result = this.machineResourcesProvider.IsDrawerPartiallyOnCradle;
                         break;
 
                         //TEMP Add here other condition getters
@@ -117,10 +138,12 @@ namespace Ferretto.VW.MAS.DeviceManager
                     currentStateMachine = new HomingStateMachine(
                         data.AxisToCalibrate,
                         data.CalibrationType,
-                        serviceProvider.GetRequiredService<IMachineProvider>().IsOneTonMachine(),
+                        data.LoadingUnitId,
+                        this.machineVolatileDataProvider.IsOneTonMachine.Value,
+                        data.ShowErrors,
                         receivedMessage.RequestingBay,
                         receivedMessage.TargetBay,
-                        serviceProvider.GetRequiredService<IMachineResourcesProvider>(),
+                        this.machineResourcesProvider,
                         this.EventAggregator,
                         this.Logger,
                         baysDataProvider,
@@ -213,8 +236,6 @@ namespace Ferretto.VW.MAS.DeviceManager
         private void ProcessPositioningMessage(CommandMessage message, IServiceProvider serviceProvider)
         {
             var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-            var machineProvider = serviceProvider.GetRequiredService<IMachineProvider>();
-            var machineResourcesProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
 
             System.Diagnostics.Debug.Assert(
                 message.Data is IPositioningMessageData,
@@ -234,15 +255,15 @@ namespace Ferretto.VW.MAS.DeviceManager
             }
             else
             {
-                data.IsOneKMachine = machineProvider.IsOneTonMachine();
-                data.IsStartedOnBoard = machineResourcesProvider.IsDrawerCompletelyOnCradle;
+                data.IsOneTonMachine = this.machineVolatileDataProvider.IsOneTonMachine.Value;
+                data.IsStartedOnBoard = this.machineResourcesProvider.IsDrawerCompletelyOnCradle;
 
                 currentStateMachine = new PositioningStateMachine(
                     message.Source,
                     message.RequestingBay,
                     targetBay,
                     data,
-                    machineResourcesProvider,
+                    this.machineResourcesProvider,
                     this.EventAggregator,
                     this.Logger,
                     baysDataProvider,
@@ -261,8 +282,6 @@ namespace Ferretto.VW.MAS.DeviceManager
 
             if (message.Data is IPowerEnableMessageData data)
             {
-                var machineResourcesProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
-
                 //TODO verify pre conditions (is this actually an error ?)
                 if (this.currentStateMachines.TryGetValue(BayNumber.BayOne, out var currentStateMachine))
                 {
@@ -283,14 +302,14 @@ namespace Ferretto.VW.MAS.DeviceManager
                 }
 
                 if (!data.Enable ||
-                    (!machineResourcesProvider.IsMachineInRunningState && data.Enable)
+                    (!this.machineResourcesProvider.IsMachineInRunningState && data.Enable)
                     )
                 {
                     message.TargetBay = BayNumber.BayOne;
 
                     currentStateMachine = new PowerEnableStateMachine(
                         message,
-                        machineResourcesProvider,
+                        this.machineResourcesProvider,
                         serviceProvider.GetRequiredService<IBaysDataProvider>(),
                         this.EventAggregator,
                         this.Logger,
@@ -303,7 +322,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                 else
                 {
                     this.Logger.LogDebug(
-                        $"Machine is already in the requested state [Actual State: {machineResourcesProvider.IsMachineInRunningState}] [Requested State: {data.Enable}]");
+                        $"Machine is already in the requested state [Actual State: {this.machineResourcesProvider.IsMachineInRunningState}] [Requested State: {data.Enable}]");
 
                     var notificationMessage = new NotificationMessage(
                         null,
@@ -416,7 +435,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                         message.RequestingBay,
                         message.TargetBay,
                         baysDataProvider.GetByNumber(message.RequestingBay).Shutter.Inverter.Index,
-                        serviceProvider.GetRequiredService<IMachineResourcesProvider>(),
+                        this.machineResourcesProvider,
                         this.EventAggregator,
                         this.Logger,
                         this.ServiceScopeFactory);

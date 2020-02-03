@@ -60,10 +60,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
-        [HttpGet("horizontal/can-load-from-bay/{bayPositionId}")]
-        public ActionResult<ActionPolicy> CanLoadFromBay(int bayPositionId)
+        [HttpGet("horizontal/can-extract-from-bay/{bayPositionId}")]
+        public ActionResult<ActionPolicy> CanExtractFromBay(int bayPositionId)
         {
-            return this.Ok(this.elevatorProvider.CanLoadFromBay(bayPositionId, this.BayNumber));
+            return this.Ok(this.elevatorProvider.CanExtractFromBay(bayPositionId, this.BayNumber));
+        }
+
+        [HttpGet("horizontal/can-load-from-bay/{bayPositionId}")]
+        public ActionResult<ActionPolicy> CanLoadFromBay(int bayPositionId, bool isGuided)
+        {
+            return this.Ok(this.elevatorProvider.CanLoadFromBay(bayPositionId, this.BayNumber, isGuided));
         }
 
         [HttpGet("horizontal/can-load-from-cell/{cellId}")]
@@ -85,9 +91,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpGet("horizontal/can-unload-to-bay/{bayPositionId}")]
-        public ActionResult<ActionPolicy> CanUnloadToBay(int bayPositionId)
+        public ActionResult<ActionPolicy> CanUnloadToBay(int bayPositionId, bool isGuided)
         {
-            return this.Ok(this.elevatorProvider.CanUnloadToBay(bayPositionId, this.BayNumber));
+            return this.Ok(this.elevatorProvider.CanUnloadToBay(bayPositionId, this.BayNumber, isGuided));
         }
 
         [HttpGet("horizontal/can-unload-to-cell/{cellId}")]
@@ -101,14 +107,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult FindZero()
         {
-            var homingData = new HomingMessageData(Axis.Horizontal, Calibration.FindSensor);
-
-            this.PublishCommand(
-                homingData,
-                "Execute FindZeroSensor Command",
-                MessageActor.DeviceManager,
-                MessageType.Homing);
-
+            this.elevatorProvider.Homing(Axis.Horizontal, Calibration.FindSensor, null, true, this.BayNumber, MessageActor.WebApi);
             return this.Accepted();
         }
 
@@ -133,12 +132,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("position")]
         public ActionResult<ElevatorPosition> GetPosition()
         {
+            var pos = this.elevatorDataProvider.GetCurrentBayPosition();
             var elevatorPosition = new ElevatorPosition
             {
                 Vertical = this.elevatorProvider.VerticalPosition,
                 Horizontal = this.elevatorProvider.HorizontalPosition,
                 CellId = this.elevatorDataProvider.GetCurrentCell()?.Id,
-                BayPositionId = this.elevatorDataProvider.GetCurrentBayPosition()?.Id
+                BayPositionId = pos?.Id,
+                BayPositionUpper = pos?.IsUpper
             };
 
             return this.Ok(elevatorPosition);
@@ -169,7 +170,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpGet("vertical/resolution")]
-        public ActionResult<decimal> GetVerticalResolution()
+        public ActionResult<double> GetVerticalResolution()
         {
             return this.Ok(this.elevatorDataProvider.GetAxis(Orientation.Vertical).Resolution);
         }
@@ -199,7 +200,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult MoveHorizontalManual(HorizontalMovementDirection direction)
         {
-            this.elevatorProvider.MoveHorizontalManual(direction, this.BayNumber, MessageActor.AutomationService);
+            this.elevatorProvider.MoveHorizontalManual(direction, -1, false, null, null, this.BayNumber, MessageActor.AutomationService);
             return this.Accepted();
         }
 
@@ -214,10 +215,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             bool computeElongation)
         {
             this.elevatorProvider.MoveToAbsoluteVerticalPosition(
-                true,
+                manualMovment: true,
                 targetPosition,
-                performWeighting,
                 computeElongation,
+                performWeighting,
+                targetBayPositionId: null,
+                targetCellId: null,
+                checkHomingDone: true,
+                waitContinue: false,
                 this.BayNumber,
                 MessageActor.AutomationService);
 
@@ -258,6 +263,23 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("vertical/move-to-free-cell")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesDefaultResponseType]
+        public IActionResult MoveToFreeCell(int loadUnitId, bool computeElongation, bool performWeighting)
+        {
+            this.elevatorProvider.MoveToFreeCell(
+                loadUnitId,
+                computeElongation,
+                performWeighting,
+                this.BayNumber,
+                MessageActor.AutomationService);
+
+            return this.Accepted();
+        }
+
         [HttpPost("vertical/move-to")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -265,14 +287,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult MoveToVerticalPosition(
             double targetPosition,
-            bool performWeighting,
-            bool computeElongation)
+            bool performWeighting)
         {
             this.elevatorProvider.MoveToAbsoluteVerticalPosition(
-                false,
+                manualMovment: false,
                 targetPosition,
-                computeElongation,
+                false,
                 performWeighting,
+                targetBayPositionId: this.elevatorDataProvider.GetCachedCurrentBayPosition()?.Id,
+                targetCellId: this.elevatorDataProvider.GetCachedCurrentCell()?.Id,
+                checkHomingDone: true,
+                waitContinue: false,
                 this.BayNumber,
                 MessageActor.AutomationService);
 
@@ -302,14 +327,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult SearchHorizontalZero()
         {
-            IHomingMessageData homingData = new HomingMessageData(Axis.Horizontal, Calibration.FindSensor);
-
-            this.PublishCommand(
-                homingData,
-                "Execute FindZeroSensor Command",
-                MessageActor.DeviceManager,
-                MessageType.Homing);
-
+            this.elevatorProvider.Homing(Axis.Horizontal, Calibration.FindSensor, null, true, this.BayNumber, MessageActor.WebApi);
             return this.Accepted();
         }
 
@@ -352,7 +370,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpPost("vertical/resolution")]
-        public IActionResult UpdateVerticalResolution(decimal newResolution)
+        public IActionResult UpdateVerticalResolution(double newResolution)
         {
             this.elevatorDataProvider.UpdateVerticalResolution(newResolution);
 

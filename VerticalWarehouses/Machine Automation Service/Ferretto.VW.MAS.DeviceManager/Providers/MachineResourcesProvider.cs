@@ -4,8 +4,10 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.SensorsStatus;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
@@ -20,17 +22,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private const int REMOTEIO_INPUTS = 16;
 
-        private readonly IBaysDataProvider baysDataProvider;
-
         private readonly ILogger<MachineResourcesProvider> logger;
 
-        private readonly IMachineProvider machineProvider;
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
         /// <summary>
         /// It contains the Remote IO sensor status between index 0 and 47
         /// followed by the Inverter sensor between index 48 and 111.
         /// </summary>
         private readonly bool[] sensorStatus = new bool[3 * REMOTEIO_INPUTS + INVERTER_INPUTS * 8];
+
+        private readonly IServiceScopeFactory serviceScopeFactory;
 
         private bool enableNotificatons;
 
@@ -39,12 +41,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         #region Constructors
 
         public MachineResourcesProvider(
-            IMachineProvider machineProvider,
-            IBaysDataProvider baysDataProvider,
+            IMachineVolatileDataProvider machineVolatileDataProvider,
+            IServiceScopeFactory serviceScopeFactory,
             ILogger<MachineResourcesProvider> logger)
         {
-            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
-            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
+            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
+            this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             this.logger = logger;
         }
 
@@ -93,7 +95,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool IsMachineInFaultState => this.sensorStatus[(int)IOMachineSensors.InverterInFault1];
 
-        public bool IsMachineInRunningState => this.machineProvider.IsMachineRunning;
+        public bool IsMachineInRunningState => this.machineVolatileDataProvider.IsMachineRunning;
 
         public bool IsMachineSecurityRunning => this.sensorStatus[(int)IOMachineSensors.RunningState];
 
@@ -119,7 +121,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool IsSensorZeroOnBay3 => this.sensorStatus[(int)IOMachineSensors.ACUBay3S3IND];
 
-        public bool IsSensorZeroOnCradle => (this.machineProvider.IsOneTonMachine() ? this.sensorStatus[(int)IOMachineSensors.ZeroPawlSensorOneK] : this.sensorStatus[(int)IOMachineSensors.ZeroPawlSensor]);
+        public bool IsSensorZeroOnCradle => (this.machineVolatileDataProvider.IsOneTonMachine.Value ? this.sensorStatus[(int)IOMachineSensors.ZeroPawlSensorOneTon] : this.sensorStatus[(int)IOMachineSensors.ZeroPawlSensor]);
 
         public bool IsSensorZeroOnElevator => this.sensorStatus[(int)IOMachineSensors.ZeroVerticalSensor];
 
@@ -137,26 +139,24 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return (bool[])this.sensorStatus.Clone();
         }
 
-        public ShutterPosition GetShutterPosition(BayNumber bayNumber)
+        public ShutterPosition GetShutterPosition(InverterIndex inverterIndex)
         {
-            var bay = this.baysDataProvider.GetByNumber(bayNumber);
-
-            if (bay.Shutter is null)
-            {
-                throw new ArgumentOutOfRangeException(nameof(bayNumber), "The specified bay has no shutter");
-            }
-            if (bay.Shutter.Type == ShutterType.NotSpecified)
-            {
-                return ShutterPosition.NotSpecified;
-            }
-
-            var inverterStatus = new AglInverterStatus(bay.Shutter.Inverter.Index);
+            var inverterStatus = new AglInverterStatus(inverterIndex, this.serviceScopeFactory);
 
             var sensorStart = (int)(IOMachineSensors.PowerOnOff + (byte)inverterStatus.SystemIndex * inverterStatus.Inputs.Length);
 
             Array.Copy(this.sensorStatus, sensorStart, inverterStatus.Inputs, 0, inverterStatus.Inputs.Length);
 
             return inverterStatus.CurrentShutterPosition;
+        }
+
+        public bool IsBayLightOn(BayNumber bayNumber)
+        {
+            if (this.machineVolatileDataProvider.IsBayLightOn.TryGetValue(bayNumber, out var isLight))
+            {
+                return isLight;
+            }
+            return false;
         }
 
         public bool IsDrawerInBayBottom(BayNumber bayNumber)
@@ -299,6 +299,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
         }
 
+        public void OnFaultStateChanged(StatusUpdateEventArgs e)
+        {
+            if (e.NewState != this.IsMachineInFaultState)
+            {
+                this.sensorStatus[(int)IOMachineSensors.InverterInFault1] = e.NewState;
+                var handler = this.FaultStateChanged;
+                handler?.Invoke(this, e);
+            }
+        }
+
         //INFO Inputs from the inverter
         public bool UpdateInputs(byte ioIndex, bool[] newSensorStatus, FieldMessageActor messageActor)
         {
@@ -390,12 +400,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 this.logger.LogError(ex, "Error while updating inputs");
                 return false;
             }
-        }
-
-        protected virtual void OnFaultStateChanged(StatusUpdateEventArgs e)
-        {
-            var handler = this.FaultStateChanged;
-            handler?.Invoke(this, e);
         }
 
         protected virtual void OnRunningStateChanged(StatusUpdateEventArgs e)

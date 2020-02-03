@@ -21,7 +21,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private readonly IBaysDataProvider baysDataProvider;
 
-        private readonly ILoadingUnitsProvider loadingUnitProvider;
+        private readonly IElevatorDataProvider elevatorDataProvider;
+
+        private readonly ILoadingUnitsDataProvider loadingUnitProvider;
 
         private readonly IPositioningMachineData machineData;
 
@@ -49,7 +51,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.machineData = stateData.MachineData as IPositioningMachineData;
             this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
             this.baysDataProvider = this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
-            this.loadingUnitProvider = this.scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>();
+            this.loadingUnitProvider = this.scope.ServiceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
+            this.elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
         }
 
         #endregion
@@ -72,7 +75,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     case MessageStatus.OperationEnd:
                         if (message.Data is MeasureProfileFieldMessageData data && message.Source == FieldMessageActor.InverterDriver)
                         {
-                            var profileHeight = this.baysDataProvider.ConvertProfileToHeight(data.Profile);
+                            var profileHeight = this.baysDataProvider.ConvertProfileToHeight(data.Profile, this.machineData.MessageData.SourceBayPositionId.Value);
                             this.Logger.LogInformation($"Height measured {profileHeight}mm. Profile {data.Profile / 100.0}%");
                             if (profileHeight < this.minHeight || data.Profile > 10000)
                             {
@@ -87,9 +90,23 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                 }
                                 break;
                             }
-                            if (this.machineData.MessageData.LoadingUnitId.HasValue)
+                            int? loadUnitId = this.machineData.MessageData.LoadingUnitId;
+                            if (!loadUnitId.HasValue)
                             {
-                                this.loadingUnitProvider.SetHeight(this.machineData.MessageData.LoadingUnitId.Value, profileHeight);
+                                var bayPosition = this.elevatorDataProvider.GetCurrentBayPosition();
+                                var loadingUnitOnElevator = this.elevatorDataProvider.GetLoadingUnitOnBoard();
+                                if (bayPosition != null
+                                    && bayPosition.LoadingUnit != null
+                                    && loadingUnitOnElevator is null
+                                    )
+                                {
+                                    // manual pickup from bay
+                                    loadUnitId = bayPosition.LoadingUnit.Id;
+                                }
+                            }
+                            if (loadUnitId.HasValue)
+                            {
+                                this.loadingUnitProvider.SetHeight(loadUnitId.Value, profileHeight);
                             }
                             this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
                         }
@@ -117,6 +134,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         public override void Start()
         {
             this.inverterIndex = this.baysDataProvider.GetInverterIndexByProfile(this.machineData.RequestingBay);
+            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.inverterIndex}");
         }
 
         public override void Stop(StopRequestReason reason)

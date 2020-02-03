@@ -3,6 +3,7 @@ using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DeviceManager.ShutterPositioning.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
@@ -10,6 +11,7 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
@@ -20,6 +22,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
         #region Fields
 
         private readonly IShutterPositioningMachineData machineData;
+
+        private readonly IServiceScope scope;
 
         private readonly IShutterPositioningStateData stateData;
 
@@ -32,6 +36,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IShutterPositioningMachineData;
+            this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
         }
 
         #endregion
@@ -57,7 +62,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                         case MessageStatus.OperationStop:
                         case MessageStatus.OperationEnd:
                             var notificationMessageData = new ShutterPositioningMessageData(this.machineData.PositioningMessageData);
-                            var inverterStatus = new AglInverterStatus((InverterIndex)message.DeviceIndex);
+                            var inverterStatus = new AglInverterStatus((InverterIndex)message.DeviceIndex, this.ParentStateMachine.ServiceScopeFactory);
                             var sensorStart = (int)(IOMachineSensors.PowerOnOff + message.DeviceIndex * inverterStatus.Inputs.Length);
                             Array.Copy(this.machineData.MachineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.Inputs, 0, inverterStatus.Inputs.Length);
                             notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
@@ -92,7 +97,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
         public override void Start()
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.InverterIndex}");
 
             var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.SensorStatus, true, SENSOR_UPDATE_SLOW);
             var inverterMessage = new FieldCommandMessage(
@@ -108,7 +113,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
             var notificationMessageData = new ShutterPositioningMessageData(this.machineData.PositioningMessageData);
-            var inverterStatus = new AglInverterStatus(this.machineData.InverterIndex);
+            var inverterStatus = new AglInverterStatus(this.machineData.InverterIndex, this.ParentStateMachine.ServiceScopeFactory);
             var sensorStart = (int)(IOMachineSensors.PowerOnOff + (int)this.machineData.InverterIndex * inverterStatus.Inputs.Length);
             Array.Copy(this.machineData.MachineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.Inputs, 0, inverterStatus.Inputs.Length);
             notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
@@ -138,6 +143,11 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                 this.Logger.LogDebug("FSM Shutter Positioning End");
+            }
+            if (this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterTest)
+            {
+                this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Manual;
+                this.Logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
             }
         }
 

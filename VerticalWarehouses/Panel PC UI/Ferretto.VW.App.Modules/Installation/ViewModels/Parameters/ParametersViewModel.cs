@@ -1,23 +1,39 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Services.IO;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
+    [Warning(WarningsArea.Installation)]
     internal sealed class ParametersViewModel : BaseMainViewModel
     {
         #region Fields
 
         private readonly IMachineConfigurationWebService machineConfigurationWebService;
 
+        private readonly UsbWatcherService usbWatcher;
+
         private VertimagConfiguration configuration;
+
+        private IEnumerable<DriveInfo> exportableDrives = Array.Empty<DriveInfo>();
 
         private DelegateCommand goToExport;
 
         private DelegateCommand goToImport;
+
+        private IEnumerable<FileInfo> importableFiles = Array.Empty<FileInfo>();
 
         private bool isBusy;
 
@@ -27,22 +43,25 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Constructors
 
-        public ParametersViewModel(IMachineConfigurationWebService machineConfigurationWebService)
+        public ParametersViewModel(IMachineConfigurationWebService machineConfigurationWebService, UsbWatcherService usb)
             : base(Services.PresentationMode.Installer)
         {
             this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
+            this.usbWatcher = usb;
         }
 
         #endregion
 
         #region Properties
 
+        public IEnumerable<DriveInfo> AvailableDrives => this.exportableDrives;
+
         public VertimagConfiguration Configuration => this.configuration;
 
         public override EnableMask EnableMask => EnableMask.Any;
 
         public ICommand GoToExport => this.goToExport
-            ??
+                    ??
             (this.goToExport = new DelegateCommand(
                 this.ShowExport, this.CanShowExport));
 
@@ -51,6 +70,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             (this.goToImport = new DelegateCommand(
                 this.ShowImport, this.CanShowImport));
 
+        public IEnumerable<FileInfo> ImportableFiles => this.importableFiles;
+
         public bool IsBusy
         {
             get => this.isBusy;
@@ -58,9 +79,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isBusy, value))
                 {
-                    ((DelegateCommand)this.goToExport).RaiseCanExecuteChanged();
-                    ((DelegateCommand)this.goToImport).RaiseCanExecuteChanged();
-                    ((DelegateCommand)this.saveCommand).RaiseCanExecuteChanged();
+                    this.goToExport?.RaiseCanExecuteChanged();
+                    this.goToImport?.RaiseCanExecuteChanged();
+                    this.saveCommand?.RaiseCanExecuteChanged();
                     this.IsBackNavigationAllowed = !this.isBusy;
                 }
             }
@@ -76,16 +97,27 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Methods
 
+        public override void Disappear()
+        {
+            this.usbWatcher.DrivesChange -= this.UsbWatcher_DrivesChange;
+            this.usbWatcher.Dispose();
+
+            base.Disappear();
+        }
+
         public override async Task OnAppearedAsync()
         {
-            await base.OnAppearedAsync();
-
             try
             {
                 this.IsBusy = true;
                 this.IsBackNavigationAllowed = true;
                 this.configuration = await this.machineConfigurationWebService.GetAsync();
                 this.RaisePropertyChanged(nameof(this.Configuration));
+
+                this.usbWatcher.DrivesChange += this.UsbWatcher_DrivesChange;
+                this.usbWatcher.Start();
+
+                await base.OnAppearedAsync();
             }
             catch (Exception ex)
             {
@@ -97,6 +129,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
+        protected override void OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs args)
+        {
+            base.OnPropertyChanged(args);
+            if (args.PropertyName == nameof(this.IsMoving))
+            {
+                this.goToImport?.RaiseCanExecuteChanged();
+            }
+        }
+
         private bool CanSave()
         {
             return !this.IsBusy;
@@ -104,12 +145,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private bool CanShowExport()
         {
-            return !this.IsBusy;
+            return !this.IsBusy && this.AvailableDrives.Any();
         }
 
         private bool CanShowImport()
         {
-            return !this.IsBusy;
+            return !this.IsBusy && !this.IsMoving && this.ImportableFiles.Any();
         }
 
         private async Task SaveAsync()
@@ -117,8 +158,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             try
             {
                 this.IsBusy = true;
-
-                this.ClearNotifications();
 
                 await this.machineConfigurationWebService.SetAsync(this.configuration);
 
@@ -152,9 +191,48 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Installation),
-                Utils.Modules.Installation.Parameters.PARAMETERSIMPORTSTEP1,
-                null,
+                // Utils.Modules.Installation.Parameters.PARAMETERSIMPORTSTEP1,
+                nameof(ParametersImportViewModel),
+                data: null,
                 trackCurrentView: true);
+        }
+
+        private void UsbWatcher_DrivesChange(object sender, DrivesChangeEventArgs e)
+        {
+            // exportable drives
+            var drives = ((UsbWatcherService)sender).Drives;
+            this.exportableDrives = new ReadOnlyCollection<DriveInfo>(drives.Writable().ToList());
+            this.RaisePropertyChanged(nameof(this.AvailableDrives));
+            this.goToExport?.RaiseCanExecuteChanged();
+
+            // importable files
+            var importables = drives.FindConfigurationFiles().ToList();
+            this.importableFiles = new ReadOnlyCollection<FileInfo>(importables);
+            this.RaisePropertyChanged(nameof(this.ImportableFiles));
+            this.goToImport?.RaiseCanExecuteChanged();
+
+            if (e.Attached.Any())
+            {
+                int count = importables.Count;
+                CultureInfo culture = System.Threading.Thread.CurrentThread.CurrentCulture;
+                string message = string.Format(culture, Resources.InstallationApp.MultipleConfigurationsDetected, count);
+                switch (count)
+                {
+                    case 1:
+                        message = string.Format(culture, Resources.InstallationApp.ConfigurationDetected, string.Concat(importables[0].Name));
+                        break;
+
+                    case 0:
+                        message = Resources.InstallationApp.ExportableDeviceDetected;
+                        break;
+                }
+
+                this.ShowNotification(message);
+            }
+            else
+            {
+                this.ClearNotifications();
+            }
         }
 
         #endregion

@@ -9,7 +9,7 @@
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="80,10">
+    <Grid Margin="80,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -33,7 +33,7 @@
                    Text="{x:Static res:InstallationApp.DLUTestHeader}" />
 
         <ctrls:SensorsPanel Grid.Row="1"
-                            Grid.RowSpan="3"/>
+                            Grid.RowSpan="4" />
 
         <StackPanel Grid.Row="1"
                     Grid.Column="1"
@@ -41,16 +41,16 @@
                     HorizontalAlignment="Center"
                     Orientation="Horizontal">
 
-            <controls:PpcButton Margin="5"
+            <controls:PpcButton Margin="5,0,5,5"
                                 HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
+                                VerticalAlignment="Top"
                                 Command="{Binding SelectBayPositionDownCommand}"
                                 Content="{x:Static res:InstallationApp.BayPositionDown}"
-                                IsActive="{Binding IsPositionDownSelected}"  />
+                                IsActive="{Binding IsPositionDownSelected}" />
 
-            <controls:PpcButton Margin="15 5"
+            <controls:PpcButton Margin="15,0,15,5"
                                 HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
+                                VerticalAlignment="Top"
                                 Command="{Binding SelectBayPositionUpCommand}"
                                 Content="{x:Static res:InstallationApp.BayPositionUp}"
                                 IsActive="{Binding IsPositionUpSelected}"
@@ -60,7 +60,7 @@
         <ctrls:PpcSpinEdit Grid.Row="2"
                            Grid.Column="1"
                            HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
+                           VerticalAlignment="Top"
                            EditValue="{Binding Tare, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='0'}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                            LabelText="{x:Static res:InstallationApp.TrayTare}" />
@@ -68,7 +68,7 @@
         <ctrls:PpcSpinEdit Grid.Row="2"
                            Grid.Column="2"
                            HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
+                           VerticalAlignment="Top"
                            EditValue="{Binding NetWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='2'}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                            LabelText="{x:Static res:InstallationApp.NetWeight}" />

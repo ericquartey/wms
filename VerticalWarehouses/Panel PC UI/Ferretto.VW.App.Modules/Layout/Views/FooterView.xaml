@@ -52,16 +52,16 @@
             <Setter Property="Height" Value="{DynamicResource PpcButtonHeight}" />
             <Setter Property="Background" Value="{DynamicResource PpcButtonBackground}" />
             <Setter Property="Foreground" Value="{DynamicResource PpcButtonForeground}" />
-            <Setter Property="FontSize" Value="{DynamicResource PpcButtonFontSize}" />
+            <Setter Property="FontSize" Value="{StaticResource FontSize_Normal}" />
             <Setter Property="Padding" Value="5,0,5,0" />
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
 
             <Style.Triggers>
-                <DataTrigger Binding="{Binding IsActive}"
+                <!--<DataTrigger Binding="{Binding IsActive}"
                              Value="True">
                     <Setter Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
-                </DataTrigger>
+                </DataTrigger>-->
                 <Trigger Property="IsPressed" Value="True">
                     <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
                     <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushPressed}" />
@@ -111,16 +111,16 @@
             <Setter Property="Height" Value="{DynamicResource PpcButtonHeight}" />
             <Setter Property="Background" Value="{DynamicResource PpcButtonBackground}" />
             <Setter Property="Foreground" Value="{DynamicResource PpcButtonForeground}" />
-            <Setter Property="FontSize" Value="{DynamicResource PpcButtonFontSize}" />
+            <Setter Property="FontSize" Value="{StaticResource FontSize_Normal}" />
             <Setter Property="Padding" Value="5,0,5,0" />
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
 
             <Style.Triggers>
-                <DataTrigger Binding="{Binding IsActive}"
+                <!--<DataTrigger Binding="{Binding IsActive}"
                              Value="True">
                     <Setter Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
-                </DataTrigger>
+                </DataTrigger>-->
                 <Trigger Property="IsPressed" Value="True">
                     <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
                     <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushPressed}" />
@@ -170,16 +170,16 @@
             <Setter Property="Height" Value="{DynamicResource PpcButtonHeight}" />
             <Setter Property="Background" Value="{DynamicResource PpcButtonBackground}" />
             <Setter Property="Foreground" Value="{DynamicResource PpcButtonForeground}" />
-            <Setter Property="FontSize" Value="{DynamicResource PpcButtonFontSize}" />
+            <Setter Property="FontSize" Value="{StaticResource FontSize_Normal}" />
             <Setter Property="Padding" Value="5,0,5,0" />
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
 
             <Style.Triggers>
-                <DataTrigger Binding="{Binding IsActive}"
+                <!--<DataTrigger Binding="{Binding IsActive}"
                              Value="True">
                     <Setter Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
-                </DataTrigger>
+                </DataTrigger>-->
                 <Trigger Property="IsPressed" Value="True">
                     <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
                     <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushPressed}" />
@@ -204,24 +204,26 @@
 
         <Grid.Resources>
             <converters:NotificationSeverityToBrushConverter x:Key="NSTBC" />
+            <converters:NotificationSeverityToForegroundConverter x:Key="NSTFC" />
             <converters:NotificationSeverityToIconNameConverter x:Key="NSTINC" />
         </Grid.Resources>
 
         <Border Margin="0,0,0,0"
-                Padding="20,10,20,10"
+                Padding="15,5"
                 Background="{Binding NotificationSeverity, Converter={StaticResource NSTBC}}"
                 Visibility="{Binding NotificationMessage, Converter={StaticResource RTVC}}">
             <StackPanel Orientation="Horizontal">
-                <iconPacks:PackIconModern Width="15"
-                                          Height="15"
+                <iconPacks:PackIconModern Width="32"
+                                          Height="32"
                                           Margin="0,0,15,0"
                                           HorizontalAlignment="Center"
                                           VerticalAlignment="Center"
-                                          Foreground="White"
+                                          Foreground="{Binding NotificationSeverity, Converter={StaticResource NSTFC}}"
                                           Kind="{Binding NotificationSeverity, Converter={StaticResource NSTINC}}" />
-                <TextBlock HorizontalAlignment="Left"
+                <TextBlock Margin="0"
+                           HorizontalAlignment="Left"
                            VerticalAlignment="Center"
-                           Foreground="White"
+                           Foreground="{Binding NotificationSeverity, Converter={StaticResource NSTFC}}"
                            Style="{StaticResource VWAPP_ViewErrorTextBlockStyle}"
                            Text="{Binding NotificationMessage}"
                            TextWrapping="WrapWithOverflow" />
@@ -233,6 +235,25 @@
                     HorizontalAlignment="Stretch"
                     DataContext="{Binding States}"
                     Orientation="Horizontal">
+
+            <ctrls:PpcControl Width="100"
+                              PresentationType="{x:Static enums:PresentationTypes.PrevStep}"
+                              Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
+                <controls:PpcButton Margin="15,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding ExecuteCommand}"
+                                    Style="{StaticResource PpcPrev}" />
+            </ctrls:PpcControl>
+
+            <ctrls:PpcControl Width="100"
+                              PresentationType="{x:Static enums:PresentationTypes.NextStep}"
+                              Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
+                <ctrls:PpcControl.Resources />
+                <controls:PpcButton Margin="15,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding ExecuteCommand}"
+                                    Style="{StaticResource PpcNext}" />
+            </ctrls:PpcControl>
 
             <ctrls:PpcControl Width="100"
                               PresentationType="{x:Static enums:PresentationTypes.Prev}"
@@ -268,7 +289,8 @@
                 <controls:PpcButton Margin="15,0,0,0"
                                     VerticalAlignment="Center"
                                     Command="{Binding ExecuteCommand}"
-                                    Content="{x:Static res:InstallationApp.Back}" />
+                                    Content="{x:Static res:InstallationApp.Back}"
+                                    Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
             </ctrls:PpcControl>
 
         </StackPanel>

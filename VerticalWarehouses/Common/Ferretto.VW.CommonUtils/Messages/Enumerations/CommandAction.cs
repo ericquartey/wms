@@ -4,11 +4,15 @@
     {
         Start,
 
+        Activate,
+
         Pause,
 
         Resume,
 
         Abort,
+
+        Test,
 
         Stop,
     }

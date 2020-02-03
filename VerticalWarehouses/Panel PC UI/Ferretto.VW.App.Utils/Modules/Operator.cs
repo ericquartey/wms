@@ -6,13 +6,30 @@
 
         public const string EMPTY = "EmptyViewModel";
 
-        public const string LOADING_UNIT = "LoadingUnitViewModel";
-
         public const string OPERATOR_MENU = "OperatorMenuViewModel";
 
         #endregion
 
         #region Classes
+
+        public static class About
+        {
+            #region Fields
+
+            public const string ALARM = "AlarmViewModel";
+
+            public const string COUNTERS = "CountersViewModel";
+
+            public const string DIAGNOSTICS = "DiagnosticsViewModel";
+
+            public const string GENERAL = "GeneralViewModel";
+
+            public const string NAVIGATION = "AboutMenuNavigationViewModel";
+
+            public const string STATISTICS = "StatisticsViewModel";
+
+            #endregion
+        }
 
         public static class ItemOperations
         {
@@ -21,6 +38,10 @@
             public const string INVENTORY = "ItemInventoryViewModel";
 
             public const string INVENTORY_DETAILS = "ItemInventoryDetailsViewModel";
+
+            public const string LOADING_UNIT = "LoadingUnitViewModel";
+
+            public const string LOADING_UNIT_CHECK = "LoadingUnitCheckViewModel";
 
             public const string PICK = "ItemPickViewModel";
 
@@ -50,7 +71,9 @@
         {
             #region Fields
 
-            public const string IMMEDIATEDRAWERCALL = "ImmediateDrawerCallViewModel";
+            public const string IMMEDIATELOADINGUNITCALL = "ImmediateLoadingUnitCallViewModel";
+
+            public const string LOADINGUNITSMISSIONS = "LoadingUnitsMissionsViewModel";
 
             public const string NAVIGATION = "OthersNavigationViewModel";
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Enumerations;
@@ -11,6 +12,7 @@ using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -19,6 +21,8 @@ namespace Ferretto.VW.MAS.InverterDriver
     internal class InvertersProvider : IInvertersProvider
     {
         #region Fields
+
+        private static IEnumerable<IInverterStatusBase> inverters;
 
         private readonly IBaysDataProvider baysDataProvider;
 
@@ -32,7 +36,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly IMachineProvider machineProvider;
 
-        private IEnumerable<IInverterStatusBase> inverters;
+        private readonly IServiceScopeFactory serviceScopeFactory;
 
         #endregion
 
@@ -45,6 +49,8 @@ namespace Ferretto.VW.MAS.InverterDriver
             IBaysDataProvider baysDataProvider,
             IDigitalDevicesDataProvider digitalDevicesDataProvider,
             IErrorsProvider errorsProvider,
+            IDataLayerService dataLayerService,
+            IServiceScopeFactory serviceScopeFactory,
             ILogger<InverterDriverService> logger
             )
         {
@@ -60,23 +66,19 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.digitalDevicesDataProvider = digitalDevicesDataProvider ?? throw new ArgumentNullException(nameof(digitalDevicesDataProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
+            this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
 
-            eventAggregator
-                .GetEvent<NotificationEvent>()
-                .Subscribe(
-                    m => this.OnDataLayerReady(),
-                    ThreadOption.PublisherThread,
-                    false,
-                    message => message.Type is MessageType.DataLayerReady);
-
-            try
+            if (dataLayerService.IsReady)
             {
                 this.OnDataLayerReady();
             }
-            catch
+            else
             {
-                // do nothing.
-                // it is ok to swallow the exception here.
+                eventAggregator.GetEvent<NotificationEvent>().Subscribe((x) =>
+                    this.OnDataLayerReady(),
+                    ThreadOption.PublisherThread,
+                    false,
+                    m => m.Type is MessageType.DataLayerReady);
             }
         }
 
@@ -121,13 +123,13 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (position < axis.LowerBound)
                 {
-                    this.errorsProvider.RecordNew(DataModels.MachineErrorCode.DestinationBelowLowerBound, this.baysDataProvider.GetByInverterIndex(inverter.SystemIndex));
-                    throw new Exception($"The requested position ({position}) is less than the axis lower bound ({axis.LowerBound}).");
+                    this.errorsProvider.RecordNew(MachineErrorCode.DestinationBelowLowerBound, this.baysDataProvider.GetByInverterIndex(inverter.SystemIndex));
+                    throw new InvalidOperationException($"The requested position ({position}) is less than the axis lower bound ({axis.LowerBound}).");
                 }
                 if (position > axis.UpperBound)
                 {
-                    this.errorsProvider.RecordNew(DataModels.MachineErrorCode.DestinationOverUpperBound, this.baysDataProvider.GetByInverterIndex(inverter.SystemIndex));
-                    throw new Exception($"The requested position ({position}) is greater than the axis upper bound ({axis.UpperBound}).");
+                    this.errorsProvider.RecordNew(MachineErrorCode.DestinationOverUpperBound, this.baysDataProvider.GetByInverterIndex(inverter.SystemIndex));
+                    throw new InvalidOperationException($"The requested position ({position}) is greater than the axis upper bound ({axis.UpperBound}).");
                 }
 
                 position -= axis.Offset;
@@ -187,6 +189,18 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.logger.LogDebug($"Position:\t    Speed\t    Acceleration\t    Deceleration");
             for (var i = 0; i < positioningData.SwitchPosition.Length; i++)
             {
+                if (positioningData.TargetSpeed[i] == 0)
+                {
+                    throw new InvalidOperationException($"The Speed of position {i} can not be zero.");
+                }
+                if (positioningData.TargetAcceleration[i] == 0)
+                {
+                    throw new InvalidOperationException($"The Acceleration of position {i} can not be zero.");
+                }
+                if (positioningData.TargetDeceleration[i] == 0)
+                {
+                    throw new InvalidOperationException($"The Deceleration of position {i} can not be zero.");
+                }
                 this.logger.LogDebug($"{positioningData.SwitchPosition[i]:0.00} mm,\t {positioningData.TargetSpeed[i]:0.00} mm/s,\t {positioningData.TargetAcceleration[i]} mm/s2,\t {positioningData.TargetDeceleration[i]} mm/s2");
             }
 
@@ -208,7 +222,12 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             var axis = this.elevatorDataProvider.GetAxis(orientation);
 
-            return (int)Math.Round(axis.Resolution * (decimal)millimeters);
+            return (int)Math.Round(axis.Resolution * millimeters);
+        }
+
+        public int ConvertMillimetersToPulses(double millimeters, IInverterStatusBase inverter)
+        {
+            return (int)Math.Round(this.baysDataProvider.GetResolution(inverter.SystemIndex) * millimeters);
         }
 
         public double ConvertPulsesToMillimeters(int pulses, Orientation orientation)
@@ -226,22 +245,40 @@ namespace Ferretto.VW.MAS.InverterDriver
                     $"Configured {orientation} axis resolution is zero, therefore it is not possible to convert pulses to millimeters.");
             }
 
-            return (double)(pulses / axis.Resolution);
+            return pulses / axis.Resolution;
+        }
+
+        public double ConvertPulsesToMillimeters(int pulses, IInverterStatusBase inverter)
+        {
+            if (pulses == 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(pulses), "Pulses must be different from zero.");
+            }
+
+            var resolution = this.baysDataProvider.GetResolution(inverter.SystemIndex);
+
+            if (resolution == 0)
+            {
+                throw new InvalidOperationException(
+                    $"Configured inverter {inverter.SystemIndex} encoder resolution is zero, therefore it is not possible to convert pulses to millimeters.");
+            }
+
+            return (pulses / resolution);
         }
 
         public IEnumerable<IInverterStatusBase> GetAll()
         {
-            if (this.inverters is null)
+            if (inverters is null)
             {
                 throw new InvalidOperationException("The inverter configuration is not yet loaded because data layer is not ready.");
             }
 
-            return this.inverters;
+            return inverters;
         }
 
         public IInverterStatusBase GetByIndex(InverterIndex index)
         {
-            var inverter = this.inverters.SingleOrDefault(i => i.SystemIndex == index);
+            var inverter = inverters.SingleOrDefault(i => i.SystemIndex == index);
 
             if (inverter is null)
             {
@@ -253,15 +290,15 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         public IAngInverterStatus GetMainInverter()
         {
-            System.Diagnostics.Debug.Assert(this.inverters.Any(i => i.SystemIndex == InverterIndex.MainInverter));
+            System.Diagnostics.Debug.Assert(inverters.Any(i => i.SystemIndex == InverterIndex.MainInverter));
 
-            return this.inverters.Single(i => i.SystemIndex == InverterIndex.MainInverter) as IAngInverterStatus;
+            return inverters.Single(i => i.SystemIndex == InverterIndex.MainInverter) as IAngInverterStatus;
         }
 
         public IInverterStatusBase GetShutterInverter(BayNumber bayNumber)
         {
             var index = this.baysDataProvider.GetByNumber(bayNumber).Shutter.Inverter.Index;
-            var inverter = this.inverters.SingleOrDefault(i => i.SystemIndex == index);
+            var inverter = inverters.SingleOrDefault(i => i.SystemIndex == index);
 
             if (inverter is null)
             {
@@ -312,32 +349,9 @@ namespace Ferretto.VW.MAS.InverterDriver
                 (Math.PI * Math.Pow(properties.ShaftDiameter, 4) * m * properties.ShaftElasticity);
         }
 
-        private int ConvertMillimetersToPulses(double millimeters, IInverterStatusBase inverter)
-        {
-            return (int)Math.Round(this.baysDataProvider.GetResolution(inverter.SystemIndex) * millimeters);
-        }
-
-        private double ConvertPulsesToMillimeters(int pulses, IInverterStatusBase inverter)
-        {
-            if (pulses == 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(pulses), "Pulses must be different from zero.");
-            }
-
-            var resolution = Math.Round(this.baysDataProvider.GetResolution(inverter.SystemIndex));
-
-            if (resolution == 0)
-            {
-                throw new InvalidOperationException(
-                    $"Configured inverter {inverter.SystemIndex} encoder resolution is zero, therefore it is not possible to convert pulses to millimeters.");
-            }
-
-            return pulses / resolution;
-        }
-
         private void OnDataLayerReady()
         {
-            this.inverters = this.digitalDevicesDataProvider
+            inverters = inverters ?? this.digitalDevicesDataProvider
              .GetAllInverters()
              .Select<Inverter, IInverterStatusBase>(i =>
              {
@@ -350,7 +364,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                          return new AngInverterStatus(i.Index);
 
                      case InverterType.Agl:
-                         return new AglInverterStatus(i.Index);
+                         return new AglInverterStatus(i.Index, this.serviceScopeFactory);
 
                      default:
                          throw new Exception();
@@ -358,7 +372,7 @@ namespace Ferretto.VW.MAS.InverterDriver
              })
              .ToArray();
 
-            if (this.inverters.SingleOrDefault(i => i.SystemIndex == InverterIndex.MainInverter) as IAngInverterStatus is null)
+            if (inverters.SingleOrDefault(i => i.SystemIndex == InverterIndex.MainInverter) as IAngInverterStatus is null)
             {
                 throw new Exception("No main inverter is configured in the system.");
             }

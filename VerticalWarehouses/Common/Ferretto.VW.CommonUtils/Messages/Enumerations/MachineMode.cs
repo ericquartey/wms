@@ -10,8 +10,14 @@
 
         Test,
 
+        Compact,
+
+        Restore,
+
         SwitchingToAutomatic,
 
         SwitchingToManual,
+
+        SwitchingToCompact
     }
 }

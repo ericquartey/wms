@@ -4,41 +4,41 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class WaitingListDetailViewModel : BaseMainViewModel
+    [Warning(WarningsArea.Picking)]
+    public class WaitingListDetailViewModel : BaseOperatorViewModel
     {
         #region Fields
 
         private readonly IMachineIdentityWebService identityService;
 
-        private readonly IItemListsDataService itemListsDataService;
+        private readonly IItemListsWmsWebService itemListsWmsWebService;
 
-        private readonly IWaitListSelectedModel waitListSelectedModel;
-
-        private int areaId;
+        private int? areaId;
 
         private int currentItemIndex;
 
-        private ICommand downDataGridButtonCommand;
+        private DelegateCommand downCommand;
 
         private ItemList list;
 
-        private ICommand listExecuteCommand;
+        private DelegateCommand listExecuteCommand;
 
-        private IList<ItemListRow> listRows;
+        private IEnumerable<ItemListRow> listRows;
 
-        private string machineId;
+        private int machineId;
 
         private ItemListRow selectedListRow;
 
-        private ICommand upDataGridButtonCommand;
+        private DelegateCommand upCommand;
 
         #endregion
 
@@ -46,13 +46,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public WaitingListDetailViewModel(
             IMachineIdentityWebService identityService,
-            IItemListsDataService itemListsDataService,
-            IWaitListSelectedModel waitListSelectedModel)
+            IItemListsWmsWebService itemListsWmsWebService)
             : base(PresentationMode.Operator)
         {
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
-            this.itemListsDataService = itemListsDataService ?? throw new ArgumentNullException(nameof(itemListsDataService));
-            this.waitListSelectedModel = waitListSelectedModel ?? throw new ArgumentNullException(nameof(waitListSelectedModel));
+            this.itemListsWmsWebService = itemListsWmsWebService ?? throw new ArgumentNullException(nameof(itemListsWmsWebService));
 
             this.listRows = new List<ItemListRow>();
         }
@@ -61,14 +59,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Properties
 
-        public ICommand DownDataGridButtonCommand =>
-            this.downDataGridButtonCommand
+        public ICommand DownCommand =>
+            this.downCommand
             ??
-            (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedListAsync(false)));
+            (this.downCommand = new DelegateCommand(() => this.ChangeSelectedListAsync(false), this.CanDown));
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public IItemListsDataService ItemListsDataService { get; }
+        public IItemListsWmsWebService ItemListsWmsWebService { get; }
 
         public ItemList List => this.list;
 
@@ -79,7 +77,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public IList<ItemListRow> ListRows => new List<ItemListRow>(this.listRows);
 
-        public string MachineId => this.machineId;
+        public int MachineId => this.machineId;
 
         public ItemListRow SelectedListRow
         {
@@ -87,10 +85,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
             set => this.SetProperty(ref this.selectedListRow, value);
         }
 
-        public ICommand UpDataGridButtonCommand =>
-            this.upDataGridButtonCommand
+        public ICommand UpCommand =>
+            this.upCommand
             ??
-            (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedListAsync(true)));
+            (this.upCommand = new DelegateCommand(() => this.ChangeSelectedListAsync(true), this.CanUp));
 
         #endregion
 
@@ -103,7 +101,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 return;
             }
 
-            if (this.listRows.Count() != 0)
+            if (this.listRows.Any())
             {
                 this.currentItemIndex = isUp ? --this.currentItemIndex : ++this.currentItemIndex;
                 if (this.currentItemIndex < 0 || this.currentItemIndex >= this.listRows.Count())
@@ -111,7 +109,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                     this.currentItemIndex = (this.currentItemIndex < 0) ? 0 : this.listRows.Count() - 1;
                 }
 
-                this.SelectedListRow = this.listRows[this.currentItemIndex];
+                this.SelectListRow();
             }
         }
 
@@ -119,7 +117,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             try
             {
-                await this.itemListsDataService.ExecuteAsync(this.list.Id, this.areaId);
+                if (!this.areaId.HasValue
+                     ||
+                     this.selectedListRow == null)
+                {
+                    return;
+                }
+
+                await this.itemListsWmsWebService.ExecuteAsync(this.selectedListRow.Id, this.areaId.Value);
                 await this.LoadListRowsAsync();
             }
             catch
@@ -140,31 +145,47 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 return;
             }
 
-            if (this.waitListSelectedModel == null &&
-                this.waitListSelectedModel.SelectedList == null)
+            if (this.Data is ItemList list)
             {
-                return;
+                this.list = list;
             }
 
-            this.list = this.waitListSelectedModel.SelectedList;
             this.RaisePropertyChanged(nameof(this.List));
 
-            this.machineId = machineIdentity.SerialNumber;
+            this.machineId = machineIdentity.Id;
             this.areaId = machineIdentity.AreaId;
 
             await this.LoadListRowsAsync();
 
             ((DelegateCommand)this.ListExecuteCommand).RaiseCanExecuteChanged();
+            this.SelectListRow();
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.upCommand?.RaiseCanExecuteChanged();
+            this.downCommand?.RaiseCanExecuteChanged();
+            this.listExecuteCommand?.RaiseCanExecuteChanged();
+        }
+
+        private bool CanDown()
+        {
+            return
+              this.currentItemIndex < this.listRows.Count() - 1;
         }
 
         private bool CanExecuteList()
         {
-            if (this.ListRows == null)
+            if (this.list == null
+                ||
+                this.ListRows == null)
             {
                 return false;
             }
 
-            if (this.ListRows.Any(r => r.Machines.Any(m => m.Id.ToString() == this.machineId)))
+            if (this.ListRows.Any(r => r.Machines.Any(m => m.Id == this.machineId)))
             {
                 return true;
             }
@@ -172,19 +193,30 @@ namespace Ferretto.VW.App.Operator.ViewModels
             return false;
         }
 
+        private bool CanUp()
+        {
+            return
+                this.currentItemIndex > 0;
+        }
+
         private async Task LoadListRowsAsync()
         {
             try
             {
-                this.listRows = await this.itemListsDataService.GetRowsAsync(this.list.Id);
+                this.listRows = await this.itemListsWmsWebService.GetRowsAsync(this.list.Id);
                 this.RaisePropertyChanged(nameof(this.ListRows));
-                this.currentItemIndex = 0;
                 this.SelectedListRow = this.listRows.FirstOrDefault();
             }
             catch (Exception ex)
             {
                 this.ShowNotification(ex.ToString(), Services.Models.NotificationSeverity.Error);
             }
+        }
+
+        private void SelectListRow()
+        {
+            this.SelectedListRow = this.listRows.ElementAt(this.currentItemIndex);
+            this.RaiseCanExecuteChanged();
         }
 
         #endregion

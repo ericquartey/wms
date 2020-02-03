@@ -1,8 +1,11 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
+    [Warning(WarningsArea.Installation)]
     internal sealed partial class DepositAndPickUpTestViewModel
     {
         #region Fields
@@ -86,7 +89,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 #if CHECK_BAY_SENSOR
                     && !this.sensorsService.IsLoadingUnitInBay
 #endif
+#pragma warning disable SA1009 // Closing parenthesis should be spaced correctly
                     )
+#pragma warning restore SA1009 // Closing parenthesis should be spaced correctly
                 {
                     this.IsExecutingProcedure = false;
                     this.ShowNotification($"Imbarco non eseguito causa Cassetto mancante");

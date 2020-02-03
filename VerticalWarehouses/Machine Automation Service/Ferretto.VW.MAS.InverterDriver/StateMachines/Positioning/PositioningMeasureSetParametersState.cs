@@ -81,7 +81,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
                     case InverterParameterId.PositionTargetSpeed:
                         this.ParentStateMachine.ChangeState(
-                            new PositioningEnableOperationState(
+                            new PositioningWaitState(
                                 this.ParentStateMachine,
                                 this.data,
                                 this.InverterStatus as IPositioningInverterStatus,

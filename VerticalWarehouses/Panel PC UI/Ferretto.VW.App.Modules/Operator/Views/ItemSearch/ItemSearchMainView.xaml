@@ -7,6 +7,7 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
+            xmlns:views="clr-namespace:Ferretto.VW.App.Operator.Views"
             d:DesignHeight="450"
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
@@ -22,6 +23,7 @@
             <RowDefinition Height="50" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.ColumnSpan="2"
@@ -30,10 +32,11 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static Resources:OperatorApp.ItemSearchHeader}" />
 
-        <controls:CustomControlArticleDataGrid Grid.Row="1"
-                                               Grid.Column="0"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Stretch" />
+        <views:ArticleDataGridView Grid.Row="1"
+                                   Grid.Column="0"
+                                   Height="340"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top" />
 
         <Grid Grid.Row="1"
               Grid.Column="1">
@@ -66,8 +69,14 @@
                                 Content="{x:Static Resources:OperatorApp.CommonButtonDetail}" />
         </Grid>
 
+        <controls:PpcLabeledText Grid.Row="2"
+                                 Margin="0,15,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding SelectedItem.MachinesInfo, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}"
+                                 LabelText="{x:Static Resources:OperatorApp.ItemMachinesAvailability}" />
+
         <Grid Grid.Row="3"
-              Grid.Column="0"
               Margin="0,15,0,0">
 
             <Grid.ColumnDefinitions>
@@ -77,23 +86,28 @@
             </Grid.ColumnDefinitions>
 
             <controls:PpcTextBox Grid.Column="0"
+                                 Width="100"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 InputText="{Binding SearchItemCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 InputText="{Binding SearchItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  LabelText="{x:Static Resources:OperatorApp.ItemSearchKeySearch}" />
 
 
             <controls:PpcLabeledText Grid.Column="1"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding SelectedItem.TotalAvailable, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}"
-                                     LabelText="{x:Static Resources:OperatorApp.ItemSearchQtyAvailable}" />
+                                     ContentText="{Binding AvailableQuantity, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}"
+                                     LabelText="{Binding SelectedItem.MeasureUnit, StringFormat={x:Static Resources:OperatorApp.AvailableQuantity}}" />
 
-            <controls:PpcTextBox Grid.Column="2"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 InputText="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 LabelText="{x:Static Resources:OperatorApp.ItemSearchQtyRequest}" />
+            <ctrls:PpcSpinEdit Grid.Column="2"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               Increment="{Binding SelectedItem.PickIncrement}"
+                               LabelText="{Binding SelectedItem.MeasureUnit, StringFormat={x:Static Resources:OperatorApp.RequestedQuantity}}"
+                               Mask="{Binding SelectedItem.PickTolerance, StringFormat=F{0}}"
+                               MinValue="0" />
+
 
         </Grid>
 

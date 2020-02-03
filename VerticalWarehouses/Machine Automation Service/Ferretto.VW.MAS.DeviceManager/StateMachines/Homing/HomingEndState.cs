@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     {
                         case MessageStatus.OperationStop:
                         case MessageStatus.OperationEnd:
-                            var notificationMessageData = new HomingMessageData(this.machineData.AxisToCalibrate, this.machineData.CalibrationType, MessageVerbosity.Info);
+                            var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, false, MessageVerbosity.Info);
 
                             var notificationMessage = new NotificationMessage(
                                 notificationMessageData,
@@ -103,6 +103,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
         /// <inheritdoc/>
         public override void Start()
         {
+            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.CurrentInverterIndex}");
             if (this.stateData.StopRequestReason != StopRequestReason.NoReason)
             {
                 var targetInverter = this.machineData.CurrentInverterIndex;
@@ -118,7 +119,20 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             }
             else
             {
-                var notificationMessageData = new HomingMessageData(this.machineData.AxisToCalibrate, this.machineData.CalibrationType, MessageVerbosity.Info);
+                if (this.machineData.AxisToCalibrate == Axis.Horizontal
+                    ||
+                    this.machineData.AxisToCalibrate == Axis.HorizontalAndVertical)
+                {
+                    var elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
+                    elevatorDataProvider.UpdateLastIdealPosition(0);
+                    elevatorDataProvider.SetCurrentBayPosition(null);
+                    elevatorDataProvider.SetCurrentCell(null);
+                }
+                else if (this.machineData.AxisToCalibrate == Axis.BayChain)
+                {
+                    this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>().UpdateLastIdealPosition(0, this.machineData.RequestingBay);
+                }
+                var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, false, MessageVerbosity.Info);
 
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
@@ -131,13 +145,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
 
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-
-                if (this.machineData.AxisToCalibrate == Axis.Horizontal
-                    ||
-                    this.machineData.AxisToCalibrate == Axis.HorizontalAndVertical)
-                {
-                    this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>().UpdateLastIdealPosition(0);
-                }
             }
 
             if (this.stateData.StopRequestReason == StopRequestReason.NoReason

@@ -1,4 +1,5 @@
-﻿using Prism.Ioc;
+﻿using System;
+using Prism.Ioc;
 using Prism.Unity;
 using Unity;
 using Unity.Injection;
@@ -9,20 +10,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     {
         private static readonly System.Func<IUnityContainer, RetryHttpClient> DefaultResolveHttpClientFunction = (IUnityContainer c) => c.Resolve<RetryHttpClient>();
 
-        public static IContainerRegistry RegisterMachineAutomationWebServices(
+        public static IContainerRegistry RegisterMasWebServices(
             this IContainerRegistry container,
             System.Uri webServiceUrl,
             System.Func<IUnityContainer, RetryHttpClient> resolveHttpClientFunction = null)
         {
-            if (container is null)
-            {
-                throw new System.ArgumentNullException(nameof(container));
-            }
-
-            if (webServiceUrl is null)
-            {
-                throw new System.ArgumentNullException(nameof(webServiceUrl));
-            }
+            _ = container ?? throw new ArgumentNullException(nameof(container));
+            _ = webServiceUrl ?? throw new ArgumentNullException(nameof(webServiceUrl));
 
             var urlString = webServiceUrl.ToString();
 
@@ -101,6 +95,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             container.GetContainer().RegisterType<IMachineConfigurationWebService>(
                 new InjectionFactory(c => new MachineConfigurationWebService(urlString, resolveFunction(c))));
+
+            container.GetContainer().RegisterType<IMachineUtcTimeWebService>(
+                new InjectionFactory(c => new MachineUtcTimeWebService(urlString, resolveFunction(c))));
+
+            container.GetContainer().RegisterType<IMachineProfileProcedureWebService>(
+                new InjectionFactory(c => new MachineProfileProcedureWebService(urlString, resolveFunction(c))));
+
+            container.GetContainer().RegisterType<IMachineCompactingWebService>(
+                new InjectionFactory(c => new MachineCompactingWebService(urlString, resolveFunction(c))));
+
+            container.GetContainer().RegisterType<IMachineMissionsWebService>(
+                new InjectionFactory(c => new MachineMissionsWebService(urlString, resolveFunction(c))));
+
+            container.GetContainer().RegisterType<IMachineFullTestWebService>(
+                new InjectionFactory(c => new MachineFullTestWebService(urlString, resolveFunction(c))));
 
             return container;
         }

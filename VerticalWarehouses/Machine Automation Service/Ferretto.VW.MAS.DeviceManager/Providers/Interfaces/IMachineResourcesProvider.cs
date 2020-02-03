@@ -1,6 +1,7 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DeviceManager.SensorsStatus;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 
 namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
@@ -75,7 +76,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void EnableNotification(bool enable);
 
-        ShutterPosition GetShutterPosition(BayNumber bayNumber);
+        ShutterPosition GetShutterPosition(InverterIndex inverterIndex);
 
         bool IsDrawerInBayBottom(BayNumber bayNumber);
 
@@ -84,6 +85,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
         bool IsProfileCalibratedBay(BayNumber bayNumber);
 
         bool IsSensorZeroOnBay(BayNumber bayNumber);
+
+        void OnFaultStateChanged(StatusUpdateEventArgs e);
 
         bool UpdateInputs(byte ioIndex, bool[] newRawInputs, FieldMessageActor messageActor);
 

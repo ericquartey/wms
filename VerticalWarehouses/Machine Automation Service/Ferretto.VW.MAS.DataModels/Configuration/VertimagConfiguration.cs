@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using Newtonsoft.Json;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace Ferretto.VW.MAS.DataModels
 {
-    public class VertimagConfiguration
+    public class VertimagConfiguration : IValidable
     {
         #region Properties
 
@@ -13,6 +13,16 @@ namespace Ferretto.VW.MAS.DataModels
         public Machine Machine { get; set; }
 
         public SetupProceduresSet SetupProcedures { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        public void Validate()
+        {
+            this.Machine.Validate();
+            this.LoadingUnits.ForEach(l => l.Validate());
+        }
 
         #endregion
     }

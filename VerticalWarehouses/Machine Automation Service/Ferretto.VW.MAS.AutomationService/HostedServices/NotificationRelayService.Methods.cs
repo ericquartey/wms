@@ -7,6 +7,8 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.Utils.Events;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable InconsistentNaming
@@ -17,63 +19,123 @@ namespace Ferretto.VW.MAS.AutomationService
     {
         #region Methods
 
-        private void CalibrateAxisMethod(NotificationMessage receivedMessage)
+        private async Task CalibrateAxisMethod(NotificationMessage receivedMessage)
         {
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
-            this.installationHub.Clients.All.CalibrateAxisNotify(message);
+            await this.installationHub.Clients.All.CalibrateAxisNotify(message);
         }
 
-        private void CurrentPositionMethod(NotificationMessage receivedMessage)
+        private void ChangeMachineMode()
         {
-            var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
-            this.installationHub.Clients.All.CurrentPositionChanged(message);
+            if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic
+                || this.machineVolatileDataProvider.Mode == MachineMode.Restore
+                )
+            {
+                this.machineVolatileDataProvider.Mode = MachineMode.Automatic;
+                this.Logger.LogInformation($"Automation Machine status switched to {this.machineVolatileDataProvider.Mode}");
+            }
         }
 
-        private void ElevatorWeightCheckMethod(NotificationMessage receivedMessage)
+        private async Task CurrentPositionMethod(NotificationMessage receivedMessage)
         {
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
-            this.installationHub.Clients.All.ElevatorWeightCheck(message);
+            await this.installationHub.Clients.All.CurrentPositionChanged(message);
+        }
+
+        private async Task ElevatorWeightCheckMethod(NotificationMessage receivedMessage)
+        {
+            var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+            await this.installationHub.Clients.All.ElevatorWeightCheck(message);
 
             this.Logger.LogTrace($"30:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
         }
 
-        private void HomingMethod(NotificationMessage receivedMessage)
+        private async Task HomingMethod(NotificationMessage receivedMessage, IServiceProvider serviceProvider)
         {
-            if (receivedMessage.Status == MessageStatus.OperationEnd)
+            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+            if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status != MissionStatus.Waiting && m.Status != MissionStatus.New))
             {
-                this.machineProvider.IsHomingExetuted = true;
+                if (receivedMessage.Status == MessageStatus.OperationEnd
+                    && receivedMessage.Data is IHomingMessageData data)
+                {
+                    if (data.AxisToCalibrate == Axis.BayChain)
+                    {
+                        this.machineVolatileDataProvider.IsBayHomingExecuted[receivedMessage.RequestingBay] = true;
+
+                        // the following message wakes up MissionSchedulingService
+                        this.EventAggregator
+                            .GetEvent<NotificationEvent>()
+                            .Publish(
+                                new NotificationMessage
+                                {
+                                    Data = new MachineModeMessageData(this.machineVolatileDataProvider.Mode),
+                                    Destination = MessageActor.MissionManager,
+                                    Source = MessageActor.AutomationService,
+                                    Type = MessageType.MachineMode,
+                                });
+                    }
+                    else
+                    {
+                        this.machineVolatileDataProvider.IsHomingExecuted = true;
+                        this.ChangeMachineMode();
+                    }
+                }
+                else if (receivedMessage.Status == MessageStatus.OperationError)
+                {
+                    this.ChangeMachineMode();
+                }
             }
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
-            this.installationHub.Clients.All.HomingProcedureStatusChanged(message);
+            await this.installationHub.Clients.All.HomingProcedureStatusChanged(message);
         }
 
-        private void MachineStateActiveMethod(NotificationMessage receivedMessage)
+        private async Task MachineStateActiveMethod(NotificationMessage receivedMessage)
         {
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
-            this.installationHub.Clients.All.MachineStateActiveNotify(message);
+            await this.installationHub.Clients.All.MachineStateActiveNotify(message);
         }
 
-        private void MachineStatusActiveMethod(NotificationMessage receivedMessage)
+        private async Task MachineStatusActiveMethod(NotificationMessage receivedMessage)
         {
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
-            this.installationHub.Clients.All.MachineStatusActiveNotify(message);
+            await this.installationHub.Clients.All.MachineStatusActiveNotify(message);
         }
 
-        private void OnBayChainPositionChanged(BayChainPositionMessageData data)
+        private async Task OnAssignedMissionOperationChanged(AssignedMissionOperationChangedMessageData e)
+        {
+            Contract.Requires(e != null);
+
+            await this.operatorHub.Clients.All.AssignedMissionOperationChanged(
+                e.BayNumber,
+                e.MissionId,
+                e.MissionOperationId,
+                e.PendingMissionsCount);
+        }
+
+        private async Task OnBayChainPositionChanged(BayChainPositionMessageData data)
         {
             Contract.Requires(data != null);
 
-            this.installationHub.Clients.All.BayChainPositionChanged(data.Position, data.BayNumber);
+            await this.installationHub.Clients.All.BayChainPositionChanged(data.Position, data.BayNumber);
         }
 
-        private void OnBayConnected(BayOperationalStatusChangedMessageData data)
+        private async Task OnBayConnected(BayOperationalStatusChangedMessageData data)
         {
             Contract.Requires(data != null);
 
-            this.operatorHub.Clients.All.BayStatusChanged(data.BayNumber, data.BayStatus);
+            await this.operatorHub.Clients.All.BayStatusChanged(data.BayNumber, data.BayStatus);
         }
 
-        private void OnChangeRunningState(NotificationMessage receivedMessage)
+        private async Task OnBayLight(NotificationMessage receivedMessage)
+        {
+            if (receivedMessage.Status == MessageStatus.OperationEnd
+                && this.machineVolatileDataProvider.IsBayLightOn.ContainsKey(receivedMessage.RequestingBay))
+            {
+                await this.installationHub.Clients.All.BayLightChanged(this.machineVolatileDataProvider.IsBayLightOn[receivedMessage.RequestingBay], receivedMessage.RequestingBay);
+            }
+        }
+
+        private async Task OnChangeRunningState(NotificationMessage receivedMessage)
         {
             if (receivedMessage.Data is ChangeRunningStateMessageData data)
             {
@@ -98,97 +160,106 @@ namespace Ferretto.VW.MAS.AutomationService
                         machinePowerState = data.Enable ? MachinePowerState.Unpowered : MachinePowerState.Powered;
                         break;
                 }
-                this.machineProvider.IsMachineRunning = (machinePowerState == MachinePowerState.Powered);
+                this.machineVolatileDataProvider.IsMachineRunning = (machinePowerState == MachinePowerState.Powered);
 
-                this.installationHub.Clients.All.MachinePowerChanged(machinePowerState);
+                await this.installationHub.Clients.All.MachinePowerChanged(machinePowerState);
             }
         }
 
-        private void OnDataLayerReady()
+        private void OnDataLayerReady(IServiceProvider serviceProvider)
         {
-            this.baysDataProvider.AddElevatorPseudoBay();
+            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+            var bays = baysDataProvider.GetAll().ToList();
+            foreach (var bay in bays.Where(b => b.Carousel == null))
+            {
+                this.machineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = true;
+            }
 
-            this.baysDataProvider.GetAll().ToList(); // HACK why is this call needed?
+            baysDataProvider.AddElevatorPseudoBay();
         }
 
-        private void OnElevatorPositionChanged(ElevatorPositionMessageData data)
+        private async Task OnElevatorPositionChanged(ElevatorPositionMessageData data)
         {
             Contract.Requires(data != null);
 
-            this.installationHub.Clients.All.ElevatorPositionChanged(
+            await this.installationHub.Clients.All.ElevatorPositionChanged(
                 data.VerticalPosition,
                 data.HorizontalPosition,
                 data.CellId,
-                data.BayPositionId);
+                data.BayPositionId,
+                data.BayPositionUpper);
         }
 
-        private void OnErrorStatusChanged(IErrorStatusMessageData machineErrorMessageData)
+        private async Task OnErrorStatusChanged(IErrorStatusMessageData machineErrorMessageData)
         {
             Contract.Requires(machineErrorMessageData != null);
 
-            this.operatorHub.Clients.All.ErrorStatusChanged(machineErrorMessageData.ErrorId);
+            await this.operatorHub.Clients.All.ErrorStatusChanged(machineErrorMessageData.ErrorId);
         }
 
-        private void OnInverterStatusWordChanged(NotificationMessage receivedMessage)
+        private async Task OnFsmException(NotificationMessage receivedMessage)
         {
-            var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
-            this.installationHub.Clients.All.InverterStatusWordChanged(message);
-        }
-
-        private void OnMachineModeChanged(NotificationMessage receivedMessage)
-        {
-            if (receivedMessage.Data is MachineModeMessageData data)
+            if (receivedMessage.Data is FsmExceptionMessageData)
             {
-                this.installationHub.Clients.All.MachineModeChanged(data.MachineMode);
+                var messageToUi = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+                await this.installationHub.Clients.All.FsmException(messageToUi);
             }
         }
 
-        private void OnMoveLoadingUnit(NotificationMessage receivedMessage)
+        private async Task OnInverterStatusWordChanged(NotificationMessage receivedMessage)
+        {
+            var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+            await this.installationHub.Clients.All.InverterStatusWordChanged(message);
+        }
+
+        private async Task OnMachineModeChanged(NotificationMessage receivedMessage)
+        {
+            if (receivedMessage.Data is MachineModeMessageData data)
+            {
+                await this.installationHub.Clients.All.MachineModeChanged(data.MachineMode);
+            }
+        }
+
+        private async Task OnMoveLoadingUnit(NotificationMessage receivedMessage)
         {
             var messageToUi = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
-            this.installationHub.Clients.All.MoveLoadingUnit(messageToUi);
+            await this.installationHub.Clients.All.MoveLoadingUnit(messageToUi);
         }
 
-        private async Task OnAssignedMissionOperationChanged(AssignedMissionOperationChangedMessageData e)
-        {
-            Contract.Requires(e != null);
-
-            await this.operatorHub.Clients.All.AssignedMissionOperationChanged(
-                e.BayNumber,
-                e.MissionId,
-                e.MissionOperationId,
-                e.PendingMissionsCount);
-        }
-
-        private void OnPositioningChanged(NotificationMessage receivedMessage)
+        private async Task OnPositioningChanged(NotificationMessage receivedMessage)
         {
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
 
-            this.installationHub.Clients.All.PositioningNotify(message);
+            await this.installationHub.Clients.All.PositioningNotify(message);
         }
 
-        private void OnSensorsChanged(NotificationMessage receivedMessage)
+        private async Task OnSensorsChanged(NotificationMessage receivedMessage)
         {
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
-            this.installationHub.Clients.All.SensorsChanged(message);
+            await this.installationHub.Clients.All.SensorsChanged(message);
         }
 
-        private void ResolutionCalibrationMethod(NotificationMessage receivedMessage)
+        private async Task OnSystemTimeChangedAsync()
         {
-            var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
-            this.installationHub.Clients.All.ResolutionCalibrationNotify(message);
+            await this.installationHub.Clients.All.SystemTimeChanged();
         }
 
-        private void ShutterPositioningMethod(NotificationMessage receivedMessage)
+        private async Task ResolutionCalibrationMethod(NotificationMessage receivedMessage)
         {
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
-            this.installationHub.Clients.All.ShutterPositioningNotify(message);
+            await this.installationHub.Clients.All.ResolutionCalibrationNotify(message);
         }
 
-        private void SwitchAxisMethod(NotificationMessage receivedMessage)
+        private async Task ShutterPositioningMethod(NotificationMessage receivedMessage)
         {
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
-            this.installationHub.Clients.All.SwitchAxisNotify(message);
+            await this.installationHub.Clients.All.ShutterPositioningNotify(message);
+        }
+
+        private async Task SwitchAxisMethod(NotificationMessage receivedMessage)
+        {
+            var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+            await this.installationHub.Clients.All.SwitchAxisNotify(message);
         }
 
         #endregion

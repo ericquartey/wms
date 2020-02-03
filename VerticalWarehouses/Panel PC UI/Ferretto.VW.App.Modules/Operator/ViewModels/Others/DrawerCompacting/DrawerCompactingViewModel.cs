@@ -1,41 +1,56 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class DrawerCompactingViewModel : BaseMainViewModel
+    [Warning(WarningsArea.Maintenance)]
+    public class DrawerCompactingViewModel : BaseOperatorViewModel
     {
         #region Fields
 
-        private ICommand drawerCompactingDetailButtonCommand;
+        private readonly IMachineCompactingWebService machineCompactingWebService;
 
-        private bool isWaitingForResponse;
+        private DelegateCommand compactingStartCommand;
+
+        private DelegateCommand compactingStopCommand;
+
+        private DelegateCommand detailButtonCommand;
 
         #endregion
 
         #region Constructors
 
-        public DrawerCompactingViewModel()
+        public DrawerCompactingViewModel(
+            IMachineCompactingWebService machineCompactingWebService)
             : base(PresentationMode.Operator)
         {
+            this.machineCompactingWebService = machineCompactingWebService ?? throw new ArgumentNullException(nameof(machineCompactingWebService));
         }
 
         #endregion
 
         #region Properties
 
-        public ICommand DrawerCompactingDetailButtonCommand => this.drawerCompactingDetailButtonCommand ?? (this.drawerCompactingDetailButtonCommand = new DelegateCommand(() => this.Detail(), this.CanDetailCommand));
+        public ICommand CompactingStartCommand =>
+            this.compactingStartCommand ??
+            (this.compactingStartCommand = new DelegateCommand(async () => this.StartAsync(), this.CanCompactingStart));
 
-        public override EnableMask EnableMask => EnableMask.Any;
+        public ICommand CompactingStopCommand =>
+            this.compactingStopCommand ??
+            (this.compactingStopCommand = new DelegateCommand(async () => this.StopAsync(), this.CanCompactingStop));
 
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            protected set => this.SetProperty(ref this.isWaitingForResponse, value);
-        }
+        public ICommand DetailButtonCommand =>
+                            this.detailButtonCommand ??
+            (this.detailButtonCommand = new DelegateCommand(() => this.Detail(), this.CanDetailCommand));
+
+        public override EnableMask EnableMask => EnableMask.MachineManualMode | EnableMask.MachinePoweredOn;
 
         #endregion
 
@@ -43,9 +58,32 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            this.IsWaitingForResponse = true;
+
             await base.OnAppearedAsync();
 
             this.IsBackNavigationAllowed = true;
+
+            this.IsWaitingForResponse = false;
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.detailButtonCommand?.RaiseCanExecuteChanged();
+            this.compactingStartCommand?.RaiseCanExecuteChanged();
+            this.compactingStopCommand?.RaiseCanExecuteChanged();
+        }
+
+        private bool CanCompactingStart()
+        {
+            return !this.IsWaitingForResponse;
+        }
+
+        private bool CanCompactingStop()
+        {
+            return !this.IsWaitingForResponse;
         }
 
         private bool CanDetailCommand()
@@ -66,6 +104,42 @@ namespace Ferretto.VW.App.Operator.ViewModels
                     trackCurrentView: true);
             }
             catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task StartAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                await this.machineCompactingWebService.CompactingAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task StopAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                await this.machineCompactingWebService.StopAsync();
+            }
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }

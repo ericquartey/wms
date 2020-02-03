@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -8,13 +9,16 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 using Prism.Events;
 using Axis = Ferretto.VW.CommonUtils.Messages.Enumerations.Axis;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    internal sealed class VerticalOriginCalibrationViewModel : BaseMainViewModel
+    [Warning(WarningsArea.Installation)]
+    public class VerticalOriginCalibrationViewModel : BaseMainViewModel
     {
         #region Fields
 
@@ -28,10 +32,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken elevatorPositionChangedToken;
 
-        private bool isExecutingProcedure;
-
-        private bool isWaitingForResponse;
-
         private double lowerBound;
 
         private string noteString;
@@ -44,7 +44,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken receiveHomingUpdateToken;
 
-        private decimal resolution;
+        private double resolution;
 
         private DelegateCommand startCommand;
 
@@ -81,34 +81,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.currentVerticalPosition, value);
         }
 
-        public bool IsExecutingProcedure
-        {
-            get => this.isExecutingProcedure;
-            set
-            {
-                if (this.SetProperty(ref this.isExecutingProcedure, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            set
-            {
-                if (this.SetProperty(ref this.isWaitingForResponse, value))
-                {
-                    if (this.isWaitingForResponse)
-                    {
-                        this.ClearNotifications();
-                    }
-
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
+        public override EnableMask EnableMask => EnableMask.MachineManualMode | EnableMask.MachinePoweredOn;
 
         public double LowerBound
         {
@@ -128,7 +101,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.offset, value);
         }
 
-        public decimal Resolution
+        public double Resolution
         {
             get => this.resolution;
             set => this.SetProperty(ref this.resolution, value);
@@ -158,34 +131,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public override void Disappear()
-        {
-            base.Disappear();
-
-            /*
-             * Avoid unsubscribing in case of navigation to error page.
-             * We may need to review this behaviour.
-             *
-            this.receivedSwitchAxisUpdateToken?.Dispose();
-            this.receivedSwitchAxisUpdateToken = null;
-
-            this.receivedCalibrateAxisUpdateToken?.Dispose();
-            this.receivedCalibrateAxisUpdateToken = null;
-
-            this.receiveHomingUpdateToken?.Dispose();
-            this.receiveHomingUpdateToken = null;
-            */
-        }
-
         public override async Task OnAppearedAsync()
         {
-            await base.OnAppearedAsync();
-
-            this.IsBackNavigationAllowed = true;
-
-            await this.RetrieveProcedureInformationAsync();
-
             this.SubscribeToEvents();
+
+            await base.OnAppearedAsync();
         }
 
         public async Task RetrieveProcedureInformationAsync()
@@ -202,37 +152,43 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CurrentVerticalPosition = this.machineElevatorService.Position.Vertical;
                 this.CurrentHorizontalPosition = this.machineElevatorService.Position.Horizontal;
             }
-            catch (Exception ex)
+            catch (HttpRequestException ex)
             {
                 this.ShowNotification(ex);
             }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
+        protected override async Task OnDataRefreshAsync()
         {
-            await base.OnMachinePowerChangedAsync(e);
+            await this.SensorsService.RefreshAsync(true);
 
-            if (e.MachinePowerState != MachinePowerState.Powered)
-            {
-                this.IsExecutingProcedure = false;
-                this.IsWaitingForResponse = false;
-            }
+            await this.RetrieveProcedureInformationAsync();
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.startCommand.RaiseCanExecuteChanged();
+            this.stopCommand.RaiseCanExecuteChanged();
         }
 
         private bool CanExecuteStartCommand()
         {
-            return
-                !this.isExecutingProcedure
-                &&
-                !this.IsWaitingForResponse;
+            return !this.MachineService.MachineStatus.IsMoving &&
+                   !this.MachineService.MachineStatus.IsMovingLoadingUnit &&
+                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh;
         }
 
         private bool CanExecuteStopCommand()
         {
             return
-                this.isExecutingProcedure
-                &&
-                !this.IsWaitingForResponse;
+                this.MachineService.MachineStatus.IsMoving;
         }
 
         private string GetStringByCalibrateAxisMessageData(Axis axisToCalibrate, MessageStatus status)
@@ -289,8 +245,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             else if (message.Status == MessageStatus.OperationError)
             {
                 this.ShowNotification(message.Description);
-
-                this.IsExecutingProcedure = false;
             }
         }
 
@@ -302,39 +256,30 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnHomingProcedureStatusChanged(NotificationMessageUI<HomingMessageData> message)
         {
-            switch (message.Status)
+            if (message.Data.AxisToCalibrate == Axis.HorizontalAndVertical)
             {
-                case MessageStatus.OperationStart:
-                    this.ShowNotification(VW.App.Resources.InstallationApp.HorizontalHomingStarted);
+                switch (message.Status)
+                {
+                    case MessageStatus.OperationStart:
+                        this.ShowNotification(VW.App.Resources.InstallationApp.HorizontalHomingStarted);
 
-                    this.IsWaitingForResponse = false;
-                    this.IsExecutingProcedure = true;
-                    break;
+                        break;
 
-                case MessageStatus.OperationEnd:
-                    this.ShowNotification(
-                        VW.App.Resources.InstallationApp.HorizontalHomingCompleted,
-                        Services.Models.NotificationSeverity.Success);
+                    case MessageStatus.OperationEnd:
+                        this.ShowNotification(
+                            VW.App.Resources.InstallationApp.HorizontalHomingCompleted,
+                            Services.Models.NotificationSeverity.Success);
 
-                    this.IsWaitingForResponse = false;
-                    this.IsExecutingProcedure = false;
-                    break;
+                        break;
 
-                case MessageStatus.OperationError:
-                    this.ShowNotification(
-                        VW.App.Resources.InstallationApp.HorizontalHomingError,
-                        Services.Models.NotificationSeverity.Error);
+                    case MessageStatus.OperationError:
+                        this.ShowNotification(
+                            VW.App.Resources.InstallationApp.HorizontalHomingError,
+                            Services.Models.NotificationSeverity.Error);
 
-                    this.IsWaitingForResponse = false;
-                    this.IsExecutingProcedure = false;
-                    break;
+                        break;
+                }
             }
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.startCommand.RaiseCanExecuteChanged();
-            this.stopCommand.RaiseCanExecuteChanged();
         }
 
         private async Task StartAsync()
@@ -344,13 +289,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
 
                 await this.verticalOriginProcedureWebService.StartAsync();
-
-                this.IsExecutingProcedure = true;
             }
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
-                this.IsExecutingProcedure = false;
             }
             finally
             {
@@ -364,7 +306,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.verticalOriginProcedureWebService.StopAsync();
+                await this.MachineService.StopMovingByAllAsync();
 
                 this.ShowNotification(
                     VW.App.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted,
@@ -373,12 +315,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
-                this.IsExecutingProcedure = false;
             }
             finally
             {
-                this.IsWaitingForResponse = false; // TODO missing notification from service, to confirm abort of operation
-                this.IsExecutingProcedure = false;
+                this.IsWaitingForResponse = false;
             }
         }
 

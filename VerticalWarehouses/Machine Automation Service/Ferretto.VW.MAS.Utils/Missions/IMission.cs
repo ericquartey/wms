@@ -10,9 +10,11 @@ namespace Ferretto.VW.MAS.Utils.Missions
     {
         #region Properties
 
-        Guid Id { get; }
+        Guid FsmId { get; set; }
 
-        FSMType Type { get; }
+        IFiniteStateMachineData MachineData { get; set; }
+
+        FsmType Type { get; }
 
         #endregion
 
@@ -28,7 +30,7 @@ namespace Ferretto.VW.MAS.Utils.Missions
 
         void RemoveHandler(EventHandler<FiniteStateMachinesEventArgs> endHandler);
 
-        void ResumeMachineMission();
+        void ResumeMachineMission(CommandMessage command);
 
         void StartMachine(CommandMessage command);
 

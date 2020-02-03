@@ -1,33 +1,64 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.VW.MAS.AutomationService.Hubs;
+using Prism.Commands;
 using Prism.Events;
 using Prism.Regions;
 
 namespace Ferretto.VW.App.Controls
 {
-    public abstract class BaseMainViewModel : BaseNavigationViewModel, IActivationViewModel
+    public abstract class BaseMainViewModel : BaseNavigationViewModel, IActivationViewModel, IRegionMemberLifetime
     {
         #region Fields
 
+        protected bool isWaitingForResponse;
+
+        private readonly IEventAggregator eventAggregator = CommonServiceLocator.ServiceLocator.Current.GetInstance<IEventAggregator>();
+
         private readonly IHealthProbeService healthProbeService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IHealthProbeService>();
+
+        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         private readonly IMachineErrorsService machineErrorsService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineErrorsService>();
 
         private readonly IMachineModeService machineModeService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineModeService>();
 
+        private readonly IMachineService machineService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineService>();
+
+        private readonly ISensorsService sensorsService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISensorsService>();
+
+        private SubscriptionToken bayChainPositionChangedToken;
+
         private SubscriptionToken healthStatusChangedToken;
 
+        private SubscriptionToken homingChangesToken;
+
         private bool isEnabled;
+
+        private bool isKeyboardOpened;
+
+        private bool isWmsHealthy;
+
+        private DelegateCommand keyboardCloseCommand;
+
+        private DelegateCommand keyboardOpenCommand;
 
         private SubscriptionToken machineModeChangedToken;
 
         private SubscriptionToken machinePowerChangedToken;
 
+        private SubscriptionToken machineStatusChangesToken;
+
         private PresentationMode mode;
+
+        private SubscriptionToken sensorsToken;
 
         #endregion
 
@@ -36,6 +67,8 @@ namespace Ferretto.VW.App.Controls
         protected BaseMainViewModel(PresentationMode mode)
         {
             this.mode = mode;
+
+            this.UpdateHealth();
         }
 
         #endregion
@@ -44,13 +77,57 @@ namespace Ferretto.VW.App.Controls
 
         public virtual EnableMask EnableMask => EnableMask.MachinePoweredOn;
 
+        public IEventAggregator EventAggregator => this.eventAggregator;
+
+        public IHealthProbeService HealthProbeService => this.healthProbeService;
+
         public bool IsEnabled
         {
             get => this.isEnabled;
             set => this.SetProperty(ref this.isEnabled, value);
         }
 
+        public bool IsKeyboardOpened
+        {
+            get => this.isKeyboardOpened;
+            set => this.SetProperty(ref this.isKeyboardOpened, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsMoving => (this.machineService?.MachineStatus?.IsMoving ?? true) || (this.machineService?.MachineStatus?.IsMovingLoadingUnit ?? true);
+
+        public virtual bool IsWaitingForResponse
+        {
+            get => this.isWaitingForResponse;
+            protected set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
+        }
+
+        public virtual bool IsWmsHealthy
+        {
+            get => this.isWmsHealthy;
+            set => this.SetProperty(ref this.isWmsHealthy, value);
+        }
+
+        public virtual bool KeepAlive => true;
+
+        public ICommand KeyboardCloseCommand =>
+                            this.keyboardCloseCommand
+            ??
+            (this.keyboardCloseCommand = new DelegateCommand(() => this.KeyboardClose()));
+
+        public ICommand KeyboardOpenCommand =>
+           this.keyboardOpenCommand
+           ??
+           (this.keyboardOpenCommand = new DelegateCommand(() => this.KeyboardOpen()));
+
+        protected NLog.Logger Logger => this.logger;
+
         public MachineError MachineError => this.machineErrorsService.ActiveError;
+
+        public IMachineModeService MachineModeService => this.machineModeService;
+
+        public IMachineService MachineService => this.machineService;
+
+        public MachineStatus MachineStatus => this.machineService.MachineStatus;
 
         public PresentationMode Mode
         {
@@ -58,20 +135,54 @@ namespace Ferretto.VW.App.Controls
             set => this.SetProperty(ref this.mode, value);
         }
 
+        public ISensorsService SensorsService => this.sensorsService;
+
+        protected bool IsConnectedByMAS => (this.healthProbeService.HealthMasStatus == HealthStatus.Healthy || this.healthProbeService.HealthMasStatus == HealthStatus.Degraded);
+
+        protected virtual bool IsDataRefreshSyncronous => false;
+
         #endregion
 
         #region Methods
 
         public void ClearNotifications()
         {
-            this.EventAggregator
-                .GetEvent<PresentationNotificationPubSubEvent>()
-                .Publish(new PresentationNotificationMessage(true));
+            this.MachineService?.ClearNotifications();
+        }
+
+        public void ClearSteps()
+        {
+            this.ShowPrevStepSinglePage(false, false);
+            this.ShowNextStepSinglePage(false, false);
+            this.ShowPrevStep(false, false);
+            this.ShowNextStep(false, false);
+            this.ShowAbortStep(false, false);
         }
 
         public override void Disappear()
         {
             base.Disappear();
+
+            this.IsWaitingForResponse = false;
+
+            this.sensorsToken?.Dispose();
+            this.sensorsToken = null;
+
+            if (this.machineStatusChangesToken != null)
+            {
+                this.EventAggregator?.GetEvent<MachineStatusChangedPubSubEvent>().Unsubscribe(this.machineStatusChangesToken);
+                this.machineStatusChangesToken?.Dispose();
+                this.machineStatusChangesToken = null;
+            }
+
+            if (this.machineModeChangedToken != null)
+            {
+                this.EventAggregator?.GetEvent<PubSubEvent<MachineModeChangedEventArgs>>().Unsubscribe(this.machineModeChangedToken);
+                this.machineModeChangedToken?.Dispose();
+                this.machineModeChangedToken = null;
+            }
+
+            //this.ClearSteps();
 
             /*
              * Avoid unsubscribing in case of navigation to error page.
@@ -85,26 +196,246 @@ namespace Ferretto.VW.App.Controls
             */
         }
 
-        public virtual void InitializeSteps()
-        {
-            this.ShowPrevStep(false, false);
-            this.ShowNextStep(false, false);
-            this.ShowAbortStep(false, false);
-        }
-
         public override async Task OnAppearedAsync()
         {
+            this.IsWaitingForResponse = true;
+
+            Task task = null;
+            Task dataTask = null;
+            try
+            {
+                if (!this.IsDataRefreshSyncronous)
+                {
+                    task = this.machineService.OnUpdateServiceAsync();
+                    dataTask = this.OnDataRefreshAsync();
+                }
+                else
+                {
+                    await this.machineService.OnUpdateServiceAsync();
+                    await this.OnDataRefreshAsync();
+                    this.IsWaitingForResponse = false;
+                }
+            }
+            catch (HttpRequestException)
+            {
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            this.SubscribeEvents();
+
+            this.UpdateIsEnabled(
+                this.machineModeService.MachinePower,
+                this.machineModeService.MachineMode,
+                this.healthProbeService.HealthMasStatus);
+
+            await base.OnAppearedAsync();
+
+            try
+            {
+                if (!this.IsDataRefreshSyncronous)
+                {
+                    await task;
+                    await dataTask;
+                }
+            }
+            catch (HttpRequestException)
+            {
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        public override void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            base.OnNavigatedTo(navigationContext);
             this.UpdatePresentation();
+        }
 
-            this.InitializeSteps();
+        public void ShowAbortStep(bool isEnabled, bool isVisible)
+        {
+            this.ShowStep(PresentationTypes.Abort, isEnabled, isVisible);
+        }
 
+        public void ShowNextStep(bool isEnabled, bool isVisible, string moduleName = null, string viewName = null)
+        {
+            this.ShowStep(PresentationTypes.Next, isEnabled, isVisible, moduleName, viewName);
+        }
+
+        public void ShowNextStepSinglePage(bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
+        {
+            this.ShowStep(PresentationTypes.NextStep, isVisible, isEnabled, moduleName, viewName);
+        }
+
+        public void ShowNotification(string message, NotificationSeverity severity = NotificationSeverity.Info)
+        {
+            this.EventAggregator
+                .GetEvent<PresentationNotificationPubSubEvent>()
+                .Publish(new PresentationNotificationMessage(message, severity));
+        }
+
+        public void ShowNotification(Exception exception)
+        {
+            if (exception is null)
+            {
+                throw new ArgumentNullException(nameof(exception));
+            }
+
+            this.Logger.Error(exception);
+
+            this.EventAggregator
+                .GetEvent<PresentationNotificationPubSubEvent>()
+                .Publish(new PresentationNotificationMessage(exception));
+        }
+
+        public void ShowPrevStep(bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
+        {
+            this.ShowStep(PresentationTypes.Prev, isVisible, isEnabled, moduleName, viewName);
+        }
+
+        public void ShowPrevStepSinglePage(bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
+        {
+            this.ShowStep(PresentationTypes.PrevStep, isVisible, isEnabled, moduleName, viewName);
+        }
+
+        public void ShowStep(PresentationTypes presentationType, bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
+        {
+            this.IsBackNavigationAllowed = !isVisible;
+
+            var presentationStep = new PresentationStep()
+            {
+                Type = presentationType,
+                IsEnabled = isEnabled,
+                IsVisible = isVisible,
+                ModuleName = moduleName,
+                ViewName = viewName
+            };
+
+            var presentationMessage = new PresentationChangedMessage(presentationStep);
+
+            this.EventAggregator
+                .GetEvent<PresentationChangedPubSubEvent>()
+                .Publish(presentationMessage);
+        }
+
+        public virtual void UpdateNotifications()
+        {
+            this.ClearNotifications();
+        }
+
+        protected virtual Task OnDataRefreshAsync()
+        {
+            return Task.CompletedTask;
+        }
+
+        protected virtual Task OnErrorStatusChangedAsync(MachineErrorEventArgs e)
+        {
+            this.UpdateIsEnabled(
+                this.machineModeService.MachinePower,
+                this.machineModeService.MachineMode,
+                this.healthProbeService.HealthMasStatus);
+
+            return Task.CompletedTask;
+        }
+
+        protected virtual Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
+        {
+            this.UpdateIsEnabled(
+                this.machineModeService.MachinePower,
+                this.machineModeService.MachineMode,
+                e.HealthMasStatus);
+
+            this.IsWmsHealthy = e.HealthWmsStatus == HealthStatus.Healthy;
+
+            this.RaiseCanExecuteChanged();
+
+            return Task.CompletedTask;
+        }
+
+        protected virtual Task OnMachineModeChangedAsync(MachineModeChangedEventArgs e)
+        {
+            this.UpdateIsEnabled(
+                this.machineModeService.MachinePower,
+                e.MachineMode,
+                this.healthProbeService.HealthMasStatus);
+
+            this.RaiseCanExecuteChanged();
+
+            return Task.CompletedTask;
+        }
+
+        protected virtual Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
+        {
+            this.UpdateIsEnabled(
+                e.MachinePowerState,
+                this.machineModeService.MachineMode,
+                this.healthProbeService.HealthMasStatus);
+
+            this.RaiseCanExecuteChanged();
+
+            return Task.CompletedTask;
+        }
+
+        protected virtual Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
+        {
+            this.UpdateIsEnabled(
+                this.machineModeService.MachinePower,
+                this.machineModeService.MachineMode,
+                this.healthProbeService.HealthMasStatus);
+
+            this.RaiseCanExecuteChanged();
+
+            return Task.CompletedTask;
+        }
+
+        protected virtual void RaiseCanExecuteChanged()
+        {
+            this.RaisePropertyChanged(nameof(this.IsMoving));
+            this.RaisePropertyChanged(nameof(this.MachineService));
+            this.RaisePropertyChanged(nameof(this.MachineStatus));
+        }
+
+        private void KeyboardClose()
+        {
+            this.IsKeyboardOpened = false;
+        }
+
+        private void KeyboardOpen()
+        {
+            this.IsKeyboardOpened = true;
+        }
+
+        private void OnBayChainPositionChanged(BayChainPositionChangedEventArgs e)
+        {
+            this.UpdateIsEnabled(
+                this.machineModeService.MachinePower,
+                this.machineModeService.MachineMode,
+                this.healthProbeService.HealthMasStatus);
+        }
+
+        private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
+        {
+            //this.RaiseCanExecuteChanged();
+        }
+
+        private void SubscribeEvents()
+        {
             this.healthStatusChangedToken = this.healthStatusChangedToken
-                ?? this.EventAggregator
-                .GetEvent<PubSubEvent<HealthStatusChangedEventArgs>>()
-                .Subscribe(
-                    async e => await this.OnHealthStatusChangedAsync(e),
-                    ThreadOption.UIThread,
-                    false);
+                ??
+                this.EventAggregator
+                    .GetEvent<PubSubEvent<HealthStatusChangedEventArgs>>()
+                    .Subscribe(
+                        async e => await this.OnHealthStatusChangedAsync(e),
+                        ThreadOption.UIThread,
+                        false);
 
             this.machineModeChangedToken = this.machineModeChangedToken
                 ??
@@ -124,149 +455,95 @@ namespace Ferretto.VW.App.Controls
                        ThreadOption.UIThread,
                        false);
 
+            this.bayChainPositionChangedToken = this.bayChainPositionChangedToken
+                ??
+                this.EventAggregator
+                    .GetEvent<PubSubEvent<BayChainPositionChangedEventArgs>>()
+                    .Subscribe(
+                        this.OnBayChainPositionChanged,
+                        ThreadOption.UIThread,
+                        false);
+
+            this.homingChangesToken = this.homingChangesToken
+                ??
+                this.EventAggregator
+                    .GetEvent<HomingChangedPubSubEvent>()
+                    .Subscribe(
+                        (m) =>
+                        {
+                            this.UpdateIsEnabled(
+                                this.machineModeService.MachinePower,
+                                this.machineModeService.MachineMode,
+                                this.healthProbeService.HealthMasStatus);
+                        },
+                        ThreadOption.UIThread,
+                        false);
+
+            this.machineStatusChangesToken = this.machineStatusChangesToken
+                ?? this.EventAggregator
+                    .GetEvent<MachineStatusChangedPubSubEvent>()
+                    .Subscribe(
+                        async (m) => await this.OnMachineStatusChangedAsync(m),
+                        ThreadOption.UIThread,
+                        false);
+
             this.machineErrorsService.ErrorStatusChanged += async (s, e) =>
             {
                 await this.OnErrorStatusChangedAsync(e);
             };
 
-            this.UpdateIsEnabled(
-                this.machineModeService.MachinePower,
-                this.machineModeService.MachineMode,
-                this.healthProbeService.HealthStatus);
-
-            this.UpdateNotifications();
-
-            await base.OnAppearedAsync();
-        }
-
-        public override void OnNavigatedFrom(NavigationContext navigationContext)
-        {
-            base.OnNavigatedFrom(navigationContext);
-            this.UpdatePresentation();
-        }
-
-        public void ShowAbortStep(bool isEnabled, bool isVisible)
-        {
-            this.ShowStep(PresentationTypes.Abort, isEnabled, isVisible);
-        }
-
-        public void ShowNextStep(bool isEnabled, bool isVisible, string moduleName = null, string viewName = null)
-        {
-            this.ShowStep(PresentationTypes.Next, isEnabled, isVisible, moduleName, viewName);
-        }
-
-        public void ShowNotification(string message, NotificationSeverity severity = NotificationSeverity.Info)
-        {
-            if (this.IsVisible)
-            {
+            this.sensorsToken = this.sensorsToken
+                ??
                 this.EventAggregator
-                 .GetEvent<PresentationNotificationPubSubEvent>()
-                 .Publish(new PresentationNotificationMessage(message, severity));
-            }
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Subscribe(
+                        this.OnSensorsChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data != null &&
+                             this.IsVisible);
         }
 
-        public void ShowNotification(Exception exception)
+        private void UpdateHealth()
         {
-            if (exception is null)
-            {
-                throw new ArgumentNullException(nameof(exception));
-            }
-
-            if (this.IsVisible)
-            {
-                this.EventAggregator
-                    .GetEvent<PresentationNotificationPubSubEvent>()
-                    .Publish(new PresentationNotificationMessage(exception));
-            }
+            this.IsWmsHealthy = this.healthProbeService.HealthWmsStatus == HealthStatus.Healthy;
         }
 
-        public void ShowPrevStep(bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
+        private void UpdateIsEnabled(
+            MachinePowerState machinePower,
+            MachineMode machineMode,
+            HealthStatus healthStatus)
         {
-            this.ShowStep(PresentationTypes.Prev, isVisible, isEnabled, moduleName, viewName);
-        }
-
-        public void ShowStep(PresentationTypes presentationType, bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
-        {
-            if (this.IsVisible)
+            bool result = true;
+            if (this.EnableMask != EnableMask.Any)
             {
-                var presentationStep = new PresentationStep()
+                foreach (EnableMask flag in Enum.GetValues(typeof(EnableMask)))
                 {
-                    Type = presentationType,
-                    IsEnabled = isEnabled,
-                    IsVisible = isVisible,
-                    ModuleName = moduleName,
-                    ViewName = viewName
-                };
+                    if (this.EnableMask.HasFlag(flag))
+                    {
+                        switch (flag)
+                        {
+                            case EnableMask.MachinePoweredOff:
+                                result &= machinePower == MachinePowerState.Unpowered;
+                                break;
 
-                var presentationMessage = new PresentationChangedMessage(presentationStep);
+                            case EnableMask.MachinePoweredOn:
+                                result &= machinePower == MachinePowerState.Powered;
+                                break;
 
-                this.EventAggregator
-                    .GetEvent<PresentationChangedPubSubEvent>()
-                    .Publish(presentationMessage);
+                            case EnableMask.MachineManualMode:
+                                result &= (machineMode == MachineMode.Manual || machineMode == MachineMode.Test);
+                                break;
+
+                            case EnableMask.MachineAutomaticMode:
+                                result &= (machineMode == MachineMode.Automatic || machineMode == MachineMode.Compact);
+                                break;
+                        }
+                    }
+                }
             }
-        }
 
-        public virtual void UpdateNotifications()
-        {
-            this.ClearNotifications();
-        }
-
-        protected virtual Task OnErrorStatusChangedAsync(MachineErrorEventArgs e)
-        {
-            this.UpdateIsEnabled(this.machineModeService.MachinePower, this.machineModeService.MachineMode, this.healthProbeService.HealthStatus);
-
-            return Task.CompletedTask;
-        }
-
-        protected virtual Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
-        {
-            this.UpdateIsEnabled(this.machineModeService.MachinePower, this.machineModeService.MachineMode, e.HealthStatus);
-
-            return Task.CompletedTask;
-        }
-
-        protected virtual Task OnMachineModeChangedAsync(MachineModeChangedEventArgs e)
-        {
-            this.UpdateIsEnabled(this.machineModeService.MachinePower, e.MachineMode, this.healthProbeService.HealthStatus);
-
-            return Task.CompletedTask;
-        }
-
-        protected virtual Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
-        {
-            this.UpdateIsEnabled(e.MachinePowerState, this.machineModeService.MachineMode, this.healthProbeService.HealthStatus);
-
-            return Task.CompletedTask;
-        }
-
-        private void UpdateIsEnabled(MachinePowerState machinePower, MachineMode machineMode, HealthStatus healthStatus)
-        {
-            var enabeIfPoweredOn = (this.EnableMask & EnableMask.MachinePoweredOn) == EnableMask.MachinePoweredOn;
-
-            var enableIfAutomatic = (this.EnableMask & EnableMask.MachineAutomaticMode) == EnableMask.MachineAutomaticMode;
-
-            var enableIfManual = (this.EnableMask & EnableMask.MachineManualMode) == EnableMask.MachineManualMode;
-
-            this.IsEnabled =
-                (this.EnableMask == EnableMask.Any) ||
-                //
-                (enabeIfPoweredOn &&
-                 machinePower == MachinePowerState.Powered &&
-                 healthStatus == HealthStatus.Healthy
-                 //&& this.MachineError is null
-                 ) ||
-                //
-                (enableIfAutomatic &&
-                 machinePower == MachinePowerState.Powered &&
-                 machineMode == MachineMode.Automatic
-                 //&& this.MachineError is null
-                 ) ||
-                //
-                (enableIfManual &&
-                 machinePower == MachinePowerState.Powered &&
-                 (machineMode == MachineMode.Manual || machineMode == MachineMode.Test)
-                 //&& this.MachineError is null
-                 );
+            this.IsEnabled = result;
         }
 
         private void UpdatePresentation()

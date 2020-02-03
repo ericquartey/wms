@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages;
+﻿using Ferretto.VW.CommonUtils;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DeviceManager.Homing.Interfaces;
@@ -43,7 +44,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
             if (message.Type == FieldMessageType.InverterPowerOff && message.Status != MessageStatus.OperationStart)
             {
-                var notificationMessageData = new HomingMessageData(this.machineData.AxisToCalibrate, this.machineData.CalibrationType, MessageVerbosity.Error);
+                var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, false, MessageVerbosity.Error);
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
                     "Homing Stopped due to an error",
@@ -69,9 +70,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
         public override void Start()
         {
             var currentInverterIndex = this.machineData.CurrentInverterIndex;
-            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {currentInverterIndex}");
+            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {currentInverterIndex} show errors {this.machineData.ShowErrors}");
 
-            var stopMessage = new FieldCommandMessage(
+            if (this.machineData.ShowErrors)
+            {
+                var stopMessage = new FieldCommandMessage(
                 null,
                 $"Reset Inverter Axis {this.machineData.AxisToCalibrate}",
                 FieldMessageActor.InverterDriver,
@@ -79,9 +82,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 FieldMessageType.InverterStop,
                 (byte)currentInverterIndex);
 
-            this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
+                this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
+            }
 
-            var notificationMessageData = new HomingMessageData(this.machineData.AxisToCalibrate, this.machineData.CalibrationType, MessageVerbosity.Info);
+            var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, false, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                                 notificationMessageData,
                                 "Homing Error",

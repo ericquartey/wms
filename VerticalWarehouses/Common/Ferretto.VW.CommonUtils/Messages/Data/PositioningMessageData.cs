@@ -118,7 +118,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public double FeedRate { get; set; }
 
-        public bool IsOneKMachine { get; set; }
+        public bool IsOneTonMachine { get; set; }
 
         public bool IsStartedOnBoard { get; set; }
 
@@ -133,6 +133,10 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public MovementType MovementType { get; set; }
 
         public int RequiredCycles { get; set; }
+
+        public int? SourceBayPositionId { get; set; }
+
+        public int? SourceCellId { get; set; }
 
         public double[] SwitchPosition { get; set; }
 
@@ -155,8 +159,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public MessageVerbosity Verbosity { get; set; } = MessageVerbosity.Debug;
 
         public bool WaitContinue { get; set; }
-        public int? SourceCellId { get; set; }
-        public int? SourceBayPositionId { get; set; }
 
         #endregion
 

@@ -26,6 +26,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
         private readonly IShutterPositioningMachineData machineData;
 
+        private readonly IServiceScope scope;
+
         private readonly IShutterPositioningStateData stateData;
 
         private bool disposed;
@@ -40,6 +42,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
             this.stateData = stateData;
+            this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
             this.machineData = stateData.MachineData as IShutterPositioningMachineData;
             this.delayTimerDown = new Timer(this.DelayTimerMethodDown, null, -1, Timeout.Infinite);
             this.delayTimerUp = new Timer(this.DelayTimerMethodUp, null, -1, Timeout.Infinite);
@@ -95,8 +98,10 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
         public override void Start()
         {
+            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.InverterIndex}");
+
             var notificationMessageData = new ShutterPositioningMessageData(this.machineData.PositioningMessageData);
-            var inverterStatus = new AglInverterStatus(this.machineData.InverterIndex);
+            var inverterStatus = new AglInverterStatus(this.machineData.InverterIndex, this.ParentStateMachine.ServiceScopeFactory);
             var sensorStart = (int)(IOMachineSensors.PowerOnOff + (int)this.machineData.InverterIndex * inverterStatus.Inputs.Length);
             Array.Copy(this.machineData.MachineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.Inputs, 0, inverterStatus.Inputs.Length);
             notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
@@ -140,6 +145,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             {
                 this.delayTimerDown?.Dispose();
                 this.delayTimerUp?.Dispose();
+                this.scope?.Dispose();
             }
 
             this.disposed = true;
@@ -165,46 +171,48 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
         private void OnShutterTestStageCompleted(FieldNotificationMessage message, InverterShutterPositioningFieldMessageData messageData)
         {
+            this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Test;
+            this.Logger.LogInformation($"Machine status switched to {MachineMode.Test}");
             switch (messageData.ShutterPosition)
             {
                 case ShutterPosition.Opened:
+                    if (this.machineData.PositioningMessageData.Delay > 0)
+                    {
+                        this.delayTimerUp.Change(this.machineData.PositioningMessageData.Delay, this.machineData.PositioningMessageData.Delay);
+                    }
+                    else
+                    {
+                        this.StartPositioning(ShutterPosition.Opened, ShutterMovementDirection.Down);
+                    }
 
+                    break;
+
+                case ShutterPosition.Closed:
                     var setupProceduresDataProvider = this.ParentStateMachine.ServiceScopeFactory
                         .CreateScope()
                         .ServiceProvider
                         .GetRequiredService<ISetupProceduresDataProvider>();
 
                     var testParameters = setupProceduresDataProvider.IncreasePerformedCycles(
-                        setupProceduresDataProvider.GetShutterTest());
+                        setupProceduresDataProvider.GetShutterTest(this.machineData.RequestingBay));
 
                     this.machineData.PositioningMessageData.PerformedCycles = testParameters.PerformedCycles;
 
                     if (testParameters.PerformedCycles >= testParameters.RequiredCycles)
                     {
+                        setupProceduresDataProvider.MarkAsCompleted(setupProceduresDataProvider.GetShutterTest(this.machineData.RequestingBay));
                         this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.stateData));
                     }
                     else
                     {
                         if (this.machineData.PositioningMessageData.Delay > 0)
                         {
-                            this.delayTimerUp.Change(this.machineData.PositioningMessageData.Delay, this.machineData.PositioningMessageData.Delay);
+                            this.delayTimerDown.Change(this.machineData.PositioningMessageData.Delay, this.machineData.PositioningMessageData.Delay);
                         }
                         else
                         {
-                            this.StartPositioning(ShutterPosition.Opened, ShutterMovementDirection.Down);
+                            this.StartPositioning(ShutterPosition.Closed, ShutterMovementDirection.Up);
                         }
-                    }
-
-                    break;
-
-                case ShutterPosition.Closed:
-                    if (this.machineData.PositioningMessageData.Delay > 0)
-                    {
-                        this.delayTimerDown.Change(this.machineData.PositioningMessageData.Delay, this.machineData.PositioningMessageData.Delay);
-                    }
-                    else
-                    {
-                        this.StartPositioning(ShutterPosition.Closed, ShutterMovementDirection.Up);
                     }
 
                     break;

@@ -11,7 +11,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         private double offset;
 
-        private decimal resolution;
+        private double resolution;
 
         private int totalCycles = 1;
 
@@ -32,6 +32,10 @@ namespace Ferretto.VW.MAS.DataModels
         public MovementParameters EmptyLoadMovement { get; set; }
 
         public MovementParameters FullLoadMovement { get; set; }
+
+        public double HomingCreepSpeed { get; set; }
+
+        public double HomingFastSpeed { get; set; }
 
         public Inverter Inverter { get; set; }
 
@@ -86,7 +90,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public IEnumerable<MovementProfile> Profiles { get; set; }
 
-        public decimal Resolution
+        public double Resolution
         {
             get => this.resolution;
             set
@@ -140,6 +144,18 @@ namespace Ferretto.VW.MAS.DataModels
             {
                 return isLoadingUnitOnBoard ? this.FullLoadMovement : this.EmptyLoadMovement;
             }
+            if (this.EmptyLoadMovement.Speed < this.FullLoadMovement.Speed)
+            {
+                throw new InvalidOperationException($"Invalid {this.Orientation} Axis movement Speed configuration");
+            }
+            if (this.EmptyLoadMovement.Acceleration < this.FullLoadMovement.Acceleration)
+            {
+                throw new InvalidOperationException($"Invalid {this.Orientation} Axis movement Acceleration configuration");
+            }
+            if (this.EmptyLoadMovement.Deceleration < this.FullLoadMovement.Deceleration)
+            {
+                throw new InvalidOperationException($"Invalid {this.Orientation} Axis movement Deceleration configuration");
+            }
 
             var maxGrossWeight = loadingUnit.MaxNetWeight + loadingUnit.Tare;
 
@@ -148,7 +164,7 @@ namespace Ferretto.VW.MAS.DataModels
                 "Max gross weight should always be positive (consistency ensured by LoadingUnit class).");
 
             // if weight is unknown we move as full weight
-            var scalingFactor = (loadingUnit.GrossWeight == 0) ? 1 : (loadingUnit.GrossWeight / maxGrossWeight);
+            var scalingFactor = (loadingUnit.GrossWeight == 0 || loadingUnit.GrossWeight > maxGrossWeight) ? 1 : (loadingUnit.GrossWeight / maxGrossWeight);
 
             return new MovementParameters
             {

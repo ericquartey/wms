@@ -58,8 +58,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DbSet<ElevatorStructuralProperties> ElevatorStructuralProperties { get; set; }
 
-        public DbSet<ErrorDefinition> ErrorDefinitions { get; set; }
-
         public DbSet<MachineError> Errors { get; set; }
 
         public DbSet<ErrorStatistic> ErrorStatistics { get; set; }
@@ -67,6 +65,8 @@ namespace Ferretto.VW.MAS.DataLayer
         public DbSet<Inverter> Inverters { get; set; }
 
         public DbSet<IoDevice> IoDevices { get; set; }
+
+        public DbSet<Laser> Lasers { get; set; }
 
         public DbSet<LoadingUnit> LoadingUnits { get; set; }
 
@@ -102,6 +102,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DbSet<WeightMeasurement> WeightMeasurements { get; set; }
 
+        public DbSet<WmsSettings> WmsSettings { get; set; }
+
         #endregion
 
         #region Methods
@@ -122,9 +124,9 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             var configurationBuilder = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile(DefaultApplicationSettingsFile, optional: false, reloadOnChange: false)
-            .Build();
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile(DefaultApplicationSettingsFile, optional: false, reloadOnChange: false)
+                .Build();
 
             var connectionString = configurationBuilder.GetConnectionString(ConnectionStringName);
 
@@ -146,28 +148,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new ArgumentNullException(nameof(modelBuilder));
             }
 
-            modelBuilder
-                .ApplyConfiguration(new BaysConfiguration())
-                .ApplyConfiguration(new BayPositionsConfiguration())
-                .ApplyConfiguration(new PanelsConfiguration())
-                .ApplyConfiguration(new CellsConfiguration())
-                .ApplyConfiguration(new TorqueCurrentSampleConfiguration())
-                .ApplyConfiguration(new ElevatorAxisManualParametersConfiguration())
-                .ApplyConfiguration(new CarouselManualParametersConfiguration())
-                .ApplyConfiguration(new ErrorDefinitionConfiguration())
-                .ApplyConfiguration(new ErrorConfiguration())
-                .ApplyConfiguration(new ErrorStatisticConfiguration())
-                .ApplyConfiguration(new InvertersConfiguration())
-                .ApplyConfiguration(new IoDevicesConfiguration())
-                .ApplyConfiguration(new LoadingUnitsConfiguration())
-                .ApplyConfiguration(new MachineStatisticsConfiguration())
-                .ApplyConfiguration(new MovementProfilesConfiguration())
-                .ApplyConfiguration(new ServicingInfoConfiguration())
-                .ApplyConfiguration(new SetupStatusConfiguration())
-                .ApplyConfiguration(new ShutterManualParametersConfiguration())
-                .ApplyConfiguration(new ShuttersConfiguration())
-                .ApplyConfiguration(new TorqueCurrentMeasurementSessionsConfiguration())
-                .ApplyConfiguration(new UsersConfiguration());
+            modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
         }
 
         #endregion

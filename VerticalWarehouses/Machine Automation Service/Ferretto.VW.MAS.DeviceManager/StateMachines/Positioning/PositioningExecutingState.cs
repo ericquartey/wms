@@ -6,7 +6,6 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.DataLayer.Providers;
 using Ferretto.VW.MAS.DeviceManager.Positioning.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
@@ -154,6 +153,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void Start()
         {
+            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.CurrentInverterIndex}");
             FieldCommandMessage commandMessage = null;
             var inverterIndex = (byte)this.machineData.CurrentInverterIndex;
 
@@ -162,7 +162,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             switch (this.machineData.MessageData.MovementMode)
             {
                 case MovementMode.Position:
-                case MovementMode.PositionAndMeasure:
+                case MovementMode.PositionAndMeasureWeight:
+                case MovementMode.PositionAndMeasureProfile:
                 case MovementMode.BayChain:
                 case MovementMode.BayChainManual:
                     {
@@ -176,8 +177,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             FieldMessageType.Positioning,
                             inverterIndex);
 
-                        if (this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasure &&
-                            this.machineData.MessageData.AxisMovement == Axis.Horizontal)
+                        if (this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasureProfile)
                         {
                             var ioCommandMessageData = new MeasureProfileFieldMessageData(true);
                             var ioCommandMessage = new FieldCommandMessage(
@@ -304,17 +304,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogDebug("1:Stop Method Start");
+            this.Logger.LogDebug($"1:Stop Method Start. Reason {reason}");
 
             // stop timers
             this.delayTimer?.Change(Timeout.Infinite, Timeout.Infinite);
 
             this.stateData.StopRequestReason = reason;
             this.machineData.ExecutedSteps = this.performedCycles;
-            if ((this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasure
+            if (this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasureProfile
                 || this.machineData.MessageData.MovementMode == MovementMode.ProfileCalibration
                 )
-                && this.machineData.MessageData.AxisMovement == Axis.Horizontal)
             {
                 var ioCommandMessageData = new MeasureProfileFieldMessageData(false);
                 var ioCommandMessage = new FieldCommandMessage(
@@ -330,7 +329,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
             }
 
-            this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+            if (reason == StopRequestReason.Error)
+            {
+                this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
+            }
+            else
+            {
+                this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+            }
         }
 
         protected void Dispose(bool disposing)
@@ -375,6 +381,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 : BeltBurnishingPosition.LowerBound;
 
             this.machineData.MessageData.BeltBurnishingPosition = beltBurnishingPosition;
+            this.machineData.MessageData.TargetPosition = this.beltBurnishingMovingUpwards
+                ? this.positioningUpFieldMessageData.TargetPosition
+                : this.positioningDownFieldMessageData.TargetPosition;
 
             this.Logger.LogTrace(
                 $"InverterStatusUpdate inverter={this.machineData.CurrentInverterIndex}; Movement={this.machineData.MessageData.AxisMovement};");
@@ -401,6 +410,21 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         private bool IsBracketSensorError()
         {
             return !this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay);
+        }
+
+        private bool IsHorizontalSensorsError()
+        {
+            if (this.machineData.MachineSensorStatus.IsSensorZeroOnCradle
+                && (this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradle
+                    || this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle
+                    )
+                )
+            {
+                //return true;
+                this.Logger.LogWarning("Sensors error during horizontal positioning");
+                return false;
+            }
+            return false;
         }
 
         private bool IsLoadingErrorDuringPickup()
@@ -431,6 +455,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             return false;
         }
 
+        private bool IsSensorsError(Axis axisMovement)
+        {
+            if (axisMovement == Axis.Horizontal)
+            {
+                return this.IsHorizontalSensorsError();
+            }
+            if (axisMovement == Axis.Vertical)
+            {
+                return this.IsVerticalSensorsError();
+            }
+            return false;
+        }
+
         private bool IsUnloadingErrorDuringDeposit()
         {
             if (this.machineData.MessageData.IsStartedOnBoard)
@@ -456,6 +493,24 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     }
                 }
             }
+            return false;
+        }
+
+        private bool IsVerticalSensorsError()
+        {
+            if (this.machineData.MessageData.IsStartedOnBoard
+                && !(this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle && !this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
+                )
+            {
+                return true;
+            }
+            if (!this.machineData.MessageData.IsStartedOnBoard
+                && !(this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle && this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
+                )
+            {
+                return true;
+            }
+
             return false;
         }
 
@@ -520,44 +575,79 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             //this.Stop(StopRequestReason.Stop);
                         }
 
+                        if (this.IsHorizontalSensorsError())
+                        {
+                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InvalidPresenceSensors, this.machineData.RequestingBay);
+
+                            this.stateData.FieldMessage = message;
+                            this.Stop(StopRequestReason.Error);
+                        }
+                        break;
+                    }
+
+                case MovementMode.Position when this.machineData.MessageData.MovementType == MovementType.Absolute:
+                case MovementMode.Position when this.machineData.MessageData.MovementType == MovementType.Relative:
+                case MovementMode.PositionAndMeasureProfile:
+                case MovementMode.PositionAndMeasureWeight:
+                    {
+                        if (this.IsSensorsError(this.machineData.MessageData.AxisMovement))
+                        {
+                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InvalidPresenceSensors, this.machineData.RequestingBay);
+
+                            this.stateData.FieldMessage = message;
+                            this.Stop(StopRequestReason.Error);
+                        }
                         break;
                     }
 
                 case MovementMode.ProfileCalibration:
                     {
-                        var machineResourcesProvider = this.scope.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
-                        if (machineResourcesProvider.IsProfileCalibratedBay(this.machineData.RequestingBay))
+                        if (message.DeviceIndex == (byte)this.machineData.CurrentInverterIndex)
                         {
-                            var bayNumber = this.baysDataProvider.GetByInverterIndex(this.machineData.CurrentInverterIndex);
-
-                            var chainPosition = this.baysDataProvider.GetChainPosition(bayNumber);
-
-                            if (this.countProfileCalibrated == 0
-                                && !this.profileStartPosition.HasValue)
+                            var machineResourcesProvider = this.scope.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
+                            if (machineResourcesProvider.IsProfileCalibratedBay(this.machineData.RequestingBay))
                             {
-                                this.profileStartPosition = chainPosition;
-                                this.Logger.LogDebug($"profileStartPosition = {this.profileStartPosition.Value}");
+                                var data = message.Data as InverterStatusUpdateFieldMessageData;
+                                var chainPosition = data.CurrentPosition;
+
+                                if (this.countProfileCalibrated == 0
+                                    && !this.profileStartPosition.HasValue)
+                                {
+                                    this.profileStartPosition = chainPosition;
+                                    this.Logger.LogDebug($"profileStartPosition = {this.profileStartPosition.Value}");
+                                }
+                                else if (this.countProfileCalibrated == 1
+                                    && !this.profileCalibratePosition.HasValue)
+                                {
+                                    this.profileCalibratePosition = chainPosition - this.profileStartPosition.Value;
+
+                                    // TODO - store the profileCalibratePosition in the corrisponding configuration parameter or send it to the UI?
+                                    this.Logger.LogInformation($"profileCalibratePosition Reached! Value {this.profileCalibratePosition.Value}");
+
+                                    this.Stop(StopRequestReason.Stop);
+
+                                    // TODO - go back to starting position (axis.LastIdealPosition)
+                                }
                             }
-                            else if (this.countProfileCalibrated == 1
-                                && !this.profileCalibratePosition.HasValue)
+                            else if (this.countProfileCalibrated == 0
+                                && this.profileStartPosition.HasValue)
                             {
-                                this.profileCalibratePosition = chainPosition - this.profileStartPosition.Value;
-
-                                // TODO - store the profileCalibratePosition in the corrisponding configuration parameter or send it to the UI?
-                                this.Logger.LogInformation($"profileCalibratePosition Reached! Value {this.profileCalibratePosition.Value}");
-
-                                this.Stop(StopRequestReason.Stop);
+                                // profileCalibrated signal is low after startPosition
+                                this.countProfileCalibrated = 1;
                             }
                         }
-                        else if (this.countProfileCalibrated == 0
-                            && this.profileStartPosition.HasValue)
-                        {
-                            // profileCalibrated signal is low after startPosion
-                            this.countProfileCalibrated = 1;
-                        }
-
                         break;
                     }
+
+                case MovementMode.BeltBurnishing:
+                    if (this.IsSensorsError(this.machineData.MessageData.AxisMovement))
+                    {
+                        this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InvalidPresenceSensors, this.machineData.RequestingBay);
+
+                        this.stateData.FieldMessage = message;
+                        this.Stop(StopRequestReason.Error);
+                    }
+                    break;
             }
 
             if (message.DeviceIndex == (byte)this.machineData.CurrentInverterIndex)
@@ -588,7 +678,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         /// <param name="message"></param>
         private void ProcessEndMeasureProfile(FieldNotificationMessage message)
         {
-            Debug.Assert(message.Data is MeasureProfileFieldMessageData);
+            Trace.Assert(message.Data is MeasureProfileFieldMessageData);
 
             if (this.machineData.MessageData.MovementMode == MovementMode.ProfileCalibration)
             {
@@ -596,7 +686,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                 if (message.Source == FieldMessageActor.InverterDriver)
                 {
-                    var profileHeight = this.baysDataProvider.ConvertProfileToHeight(data.Profile);
+                    var profileHeight = this.baysDataProvider.ConvertProfileToHeight(data.Profile, this.machineData.MessageData.SourceBayPositionId.Value);
                     this.Logger.LogInformation($"Height measured {profileHeight}mm. Profile {data.Profile / 100.0}%");
 
                     var bayNumber = this.baysDataProvider.GetByInverterIndex(this.machineData.CurrentInverterIndex);
@@ -618,7 +708,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             switch (this.machineData.MessageData.MovementMode)
             {
                 case MovementMode.Position:
-                case MovementMode.PositionAndMeasure:
+                case MovementMode.PositionAndMeasureProfile:
+                case MovementMode.PositionAndMeasureWeight:
                     this.Logger.LogDebug($"FSM Finished Executing State in {this.machineData.MessageData.MovementMode} Mode");
                     this.machineData.ExecutedSteps = this.performedCycles;
                     if (this.IsZeroSensorError())
@@ -626,37 +717,30 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         if (this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
                         {
                             this.errorsProvider.RecordNew(DataModels.MachineErrorCode.ZeroSensorErrorAfterPickup, this.machineData.RequestingBay);
-                            this.Logger.LogError($"Zero sensor error after pickup");
                         }
                         else
                         {
                             this.errorsProvider.RecordNew(DataModels.MachineErrorCode.ZeroSensorErrorAfterDeposit, this.machineData.RequestingBay);
-                            this.Logger.LogError($"Zero sensor error after deposit");
                         }
                         this.Stop(StopRequestReason.Stop);
                     }
-                    else if (this.machineData.MessageData.MovementMode == MovementMode.Position
-                        && this.machineData.MessageData.MovementType == MovementType.TableTarget
+                    else if (this.machineData.MessageData.MovementType == MovementType.TableTarget
                         && !this.machineData.MessageData.IsStartedOnBoard
                         && !this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
                     {
                         this.errorsProvider.RecordNew(DataModels.MachineErrorCode.CradleNotCorrectlyLoadedDuringPickup, this.machineData.RequestingBay);
-                        this.Logger.LogError("Cradle not correctly loaded after pickup");
                         this.Stop(StopRequestReason.Stop);
                     }
-                    else if (this.machineData.MessageData.MovementMode == MovementMode.Position
-                        && this.machineData.MessageData.MovementType == MovementType.TableTarget
+                    else if (this.machineData.MessageData.MovementType == MovementType.TableTarget
                         && this.machineData.MessageData.IsStartedOnBoard
                         && !this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle)
                     {
                         this.errorsProvider.RecordNew(DataModels.MachineErrorCode.CradleNotCorrectlyUnloadedDuringDeposit, this.machineData.RequestingBay);
-                        this.Logger.LogError("Cradle not correctly unloaded after deposit");
                         this.Stop(StopRequestReason.Stop);
                     }
                     else
                     {
-                        if (this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasure &&
-                            this.machineData.MessageData.AxisMovement == Axis.Horizontal)
+                        if (this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasureProfile)
                         {
                             var ioCommandMessageData = new MeasureProfileFieldMessageData(false);
                             var ioCommandMessage = new FieldCommandMessage(
@@ -683,6 +767,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     break;
 
                 case MovementMode.BeltBurnishing:
+                    this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Test;
+                    this.Logger.LogInformation($"Machine status switched to {MachineMode.Test}");
                     this.machineData.MessageData.ExecutedCycles = this.performedCycles;
 
                     if (this.performedCycles >= this.machineData.MessageData.RequiredCycles)

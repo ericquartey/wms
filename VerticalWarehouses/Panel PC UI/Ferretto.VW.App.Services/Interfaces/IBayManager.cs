@@ -15,8 +15,12 @@ namespace Ferretto.VW.App.Services
 
         #region Methods
 
+        Task<LoadingUnit> GetAccessibleLoadingUnitAsync();
+
+        /// <exception cref="MasWebApiException"></exception>
         Task<Bay> GetBayAsync();
 
+        /// <exception cref="MasWebApiException"></exception>
         Task InitializeAsync();
 
         #endregion

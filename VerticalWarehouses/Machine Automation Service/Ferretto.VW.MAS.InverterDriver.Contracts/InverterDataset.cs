@@ -10,6 +10,8 @@
 
         ShutterAbsoluteClose = 8,
 
+        HeartBeat = 6,
+
         HomingCalibrationElevator = 6,
 
         HomingCalibration = 7,

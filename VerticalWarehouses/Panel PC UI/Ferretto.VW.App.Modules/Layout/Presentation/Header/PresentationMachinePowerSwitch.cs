@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using CommonServiceLocator;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
@@ -13,6 +14,8 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
     public class PresentationMachinePowerSwitch : BasePresentationViewModel, IDisposable
     {
         #region Fields
+
+        private readonly IDialogService dialogService;
 
         private readonly SubscriptionToken healthStatusChangedToken;
 
@@ -33,10 +36,12 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         #region Constructors
 
         public PresentationMachinePowerSwitch(
-            IMachineModeService machineModeService)
+            IMachineModeService machineModeService,
+            IDialogService dialogService)
             : base(PresentationTypes.MachineMarch)
         {
             this.machineModeService = machineModeService ?? throw new ArgumentNullException(nameof(machineModeService));
+            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
 
             this.machinePowerChangedToken = this.EventAggregator
                 .GetEvent<PubSubEvent<MachinePowerChangedEventArgs>>()
@@ -94,8 +99,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             }
             else
             {
-                var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
-                var messageBoxResult = dialogService.ShowMessage("Confirmation operation?", "March", DialogType.Question, DialogButtons.YesNo);
+                var messageBoxResult = this.dialogService.ShowMessage(General.ConfirmMachineRun, General.MachineRun, DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     await this.machineModeService.PowerOnAsync();
@@ -130,9 +134,9 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         private void OnHealthStatusChanged(HealthStatusChangedEventArgs e)
         {
             this.IsUnknownState =
-                e.HealthStatus != HealthStatus.Healthy
+                e.HealthMasStatus != HealthStatus.Healthy
                 &&
-                e.HealthStatus != HealthStatus.Degraded;
+                e.HealthMasStatus != HealthStatus.Degraded;
         }
 
         private void OnMachinePowerChanged(MachinePowerChangedEventArgs e)

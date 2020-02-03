@@ -1,9 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -19,7 +21,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly IElevatorDataProvider elevatorDataProvider;
 
-        private readonly ILoadingUnitsProvider loadingUnitsProvider;
+        private readonly ILoadingUnitsDataProvider loadingUnitsDataProvider;
 
         private readonly ILogger<CarouselProvider> logger;
 
@@ -36,7 +38,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             IElevatorDataProvider elevatorDataProvider,
             IMachineResourcesProvider machineResourcesProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider,
-            ILoadingUnitsProvider loadingUnitsProvider,
+            ILoadingUnitsDataProvider loadingUnitsDataProvider,
             IEventAggregator eventAggregator,
             ILogger<CarouselProvider> logger)
             : base(eventAggregator)
@@ -45,13 +47,59 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.machineResourcesProvider = machineResourcesProvider ?? throw new ArgumentNullException(nameof(machineResourcesProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
-            this.loadingUnitsProvider = loadingUnitsProvider ?? throw new ArgumentNullException(nameof(loadingUnitsProvider));
+            this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #endregion
 
         #region Methods
+
+        public MachineErrorCode CanElevatorDeposit(BayPosition bayPosition)
+        {
+            var bayNumber = bayPosition.Bay.Number;
+            var returnValue = MachineErrorCode.NoError;
+            if (!this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber))
+            {
+                returnValue = MachineErrorCode.SensorZeroBayNotActiveAtStart;
+            }
+            else if (bayPosition.IsUpper
+                && this.machineResourcesProvider.IsDrawerInBayTop(bayNumber)
+                )
+            {
+                returnValue = MachineErrorCode.TopLevelBayOccupied;
+            }
+            else if (!bayPosition.IsUpper
+                && this.machineResourcesProvider.IsDrawerInBayBottom(bayNumber)
+                )
+            {
+                returnValue = MachineErrorCode.BottomLevelBayOccupied;
+            }
+            return returnValue;
+        }
+
+        public MachineErrorCode CanElevatorPickup(BayPosition bayPosition)
+        {
+            var bayNumber = bayPosition.Bay.Number;
+            var returnValue = MachineErrorCode.NoError;
+            if (!this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber))
+            {
+                returnValue = MachineErrorCode.SensorZeroBayNotActiveAtStart;
+            }
+            else if (bayPosition.IsUpper
+                && !this.machineResourcesProvider.IsDrawerInBayTop(bayNumber)
+                )
+            {
+                returnValue = MachineErrorCode.TopLevelBayEmpty;
+            }
+            else if (!bayPosition.IsUpper
+                && !this.machineResourcesProvider.IsDrawerInBayBottom(bayNumber)
+                )
+            {
+                returnValue = MachineErrorCode.BottomLevelBayEmpty;
+            }
+            return returnValue;
+        }
 
         public ActionPolicy CanMove(VerticalMovementDirection direction, BayNumber bayNumber, MovementCategory movementCategory)
         {
@@ -75,7 +123,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     break;
 
                 case VerticalMovementDirection.Up:
-                    if (isLoadingUnitInUpperPosition)
+                    if (
+#if CHECK_BAY_SENSOR
+                        isLoadingUnitInUpperPosition ||
+#endif
+                        bay.Positions.FirstOrDefault(p => p.IsUpper).LoadingUnit != null
+                        )
                     {
                         return new ActionPolicy { Reason = Resources.Bays.TheBayContainsALoadingUnitInItsUpperPosition };
                     }
@@ -99,9 +152,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return this.baysDataProvider.GetChainPosition(bayNumber);
         }
 
-        public void Homing(Calibration calibration, BayNumber bayNumber, MessageActor sender)
+        public void Homing(Calibration calibration, int? loadingUnitId, bool showErrors, BayNumber bayNumber, MessageActor sender)
         {
-            IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, calibration);
+            IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, calibration, loadingUnitId, showErrors);
             this.PublishCommand(
                 homingData,
                 $"Execute homing {calibration} Command",
@@ -112,6 +165,22 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.None);
         }
 
+        public bool IsOnlyBottomPositionOccupied(BayNumber bayNumber)
+        {
+            return (this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber)
+                && !this.machineResourcesProvider.IsDrawerInBayTop(bayNumber)
+                && this.machineResourcesProvider.IsDrawerInBayBottom(bayNumber)
+                );
+        }
+
+        public bool IsOnlyTopPositionOccupied(BayNumber bayNumber)
+        {
+            return (this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber)
+                && this.machineResourcesProvider.IsDrawerInBayTop(bayNumber)
+                && !this.machineResourcesProvider.IsDrawerInBayBottom(bayNumber)
+                );
+        }
+
         public void Move(VerticalMovementDirection direction, int? loadingUnitId, BayNumber bayNumber, MessageActor sender)
         {
             var policy = this.CanMove(direction, bayNumber, MovementCategory.Automatic);
@@ -119,17 +188,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 throw new InvalidOperationException(policy.Reason);
             }
-
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
-            var targetPosition = bay.Carousel.ElevatorDistance;
 
-            targetPosition *= direction is VerticalMovementDirection.Up ? 1 : -1;
+            var targetPosition = bay.Carousel.ElevatorDistance * (direction is VerticalMovementDirection.Up ? 1 : -1);
 
             // if weight is unknown we move as full weight
             double scalingFactor = 1;
             if (loadingUnitId.HasValue)
             {
-                var loadUnit = this.loadingUnitsProvider.GetById(loadingUnitId.Value);
+                var loadUnit = this.loadingUnitsDataProvider.GetById(loadingUnitId.Value);
                 if (loadUnit.MaxNetWeight + loadUnit.Tare > 0 && loadUnit.GrossWeight > 0)
                 {
                     scalingFactor = loadUnit.GrossWeight / (loadUnit.MaxNetWeight + loadUnit.Tare);
@@ -177,11 +244,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 throw new InvalidOperationException(policy.Reason);
             }
-
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
-            var targetPosition = bay.Carousel.ElevatorDistance;
 
-            targetPosition *= direction is VerticalMovementDirection.Up ? 1 : -1;
+            var targetPosition = bay.Carousel.ElevatorDistance * (direction is VerticalMovementDirection.Up ? 1 : -1);
 
             var procedureParameters = this.baysDataProvider.GetAssistedMovementsCarousel(bayNumber);
 
@@ -193,7 +258,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var messageData = new PositioningMessageData(
                 Axis.BayChain,
                 MovementType.Relative,
-                MovementMode.BayChainManual,
+                MovementMode.BayChain,
                 targetPosition,
                 speed,
                 acceleration,
@@ -221,7 +286,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.None);
         }
 
-        public void MoveManual(VerticalMovementDirection direction, BayNumber bayNumber, MessageActor sender)
+        public void MoveManual(VerticalMovementDirection direction, double distance, BayNumber bayNumber, MessageActor sender)
         {
             var policy = this.CanMove(direction, bayNumber, MovementCategory.Manual);
             if (!policy.IsAllowed)
@@ -231,6 +296,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
             var targetPosition = bay.Carousel.ElevatorDistance;
+            if (distance > 0 && distance < bay.Carousel.ElevatorDistance + Math.Abs(bay.ChainOffset))
+            {
+                targetPosition = distance;
+            }
 
             targetPosition *= direction is VerticalMovementDirection.Up ? 1 : -1;
 

@@ -8,6 +8,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         event EventHandler<BayChainPositionChangedEventArgs> BayChainPositionChanged;
 
+        event EventHandler<BayLightChangedEventArgs> BayLightChanged;
+
         event EventHandler<ElevatorPositionChangedEventArgs> ElevatorPositionChanged;
 
         event EventHandler<MachineModeChangedEventArgs> MachineModeChanged;
@@ -15,6 +17,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         event EventHandler<MachinePowerChangedEventArgs> MachinePowerChanged;
 
         event EventHandler<MessageNotifiedEventArgs> MessageReceived;
+
+        event EventHandler<SystemTimeChangedEventArgs> SystemTimeChanged;
 
         #endregion
     }

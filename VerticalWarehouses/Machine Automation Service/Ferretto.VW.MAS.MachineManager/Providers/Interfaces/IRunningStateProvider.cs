@@ -6,6 +6,8 @@ namespace Ferretto.VW.MAS.MachineManager.Providers.Interfaces
     {
         #region Properties
 
+        bool IsHoming { get; }
+
         bool IsRunning { get; }
 
         #endregion

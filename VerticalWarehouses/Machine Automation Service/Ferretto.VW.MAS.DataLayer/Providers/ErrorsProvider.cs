@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Transactions;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -15,7 +14,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
-    internal sealed class ErrorsProvider : IErrorsProvider, IDisposable
+    internal sealed class ErrorsProvider : IErrorsProvider
     {
         #region Fields
 
@@ -26,8 +25,6 @@ namespace Ferretto.VW.MAS.DataLayer
         private readonly NotificationEvent notificationEvent;
 
         private readonly IServiceScopeFactory serviceScopeFactory;
-
-        private bool isDisposed;
 
         #endregion
 
@@ -52,34 +49,13 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Methods
 
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-            this.Dispose(true);
-        }
-
         public MachineError GetCurrent()
         {
             lock (this.dataContext)
             {
                 return this.dataContext.Errors
                         .Where(e => !e.ResolutionDate.HasValue)
-                        .OrderBy(e => e.Definition.Severity)
-                        .ThenBy(e => e.OccurrenceDate)
-                        .Select(e => new MachineError
-                        {
-                            Id = e.Id,
-                            Code = e.Code,
-                            OccurrenceDate = e.OccurrenceDate,
-                            ResolutionDate = e.ResolutionDate,
-                            Definition = new ErrorDefinition
-                            {
-                                Code = e.Code,
-                                Description = e.Definition.Description,
-                                Reason = e.Definition.Reason,
-                                Severity = e.Definition.Severity,
-                            },
-                        })
+                        .OrderBy(e => e.OccurrenceDate)
                         .FirstOrDefault();
             }
         }
@@ -97,7 +73,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             new ErrorStatisticsDetail
                             {
                                 Code = s.Code,
-                                Description = s.Error.Description,
+                                Description = s.Description,
                                 Total = s.TotalErrors,
                                 RatioTotal = s.TotalErrors * 100.0 / totalErrors,
                             }),
@@ -118,13 +94,36 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool IsErrorSmall()
+        {
+            var error = this.GetCurrent();
+
+            if (error is null)
+            {
+                return true;
+            }
+            return (error.Code == (int)MachineErrorCode.SecurityWasTriggered
+                || error.Code == (int)MachineErrorCode.SecurityBarrierWasTriggered
+                || error.Code == (int)MachineErrorCode.SecurityButtonWasTriggered
+                || error.Code == (int)MachineErrorCode.SecuritySensorWasTriggered
+                || error.Code == (int)MachineErrorCode.InverterFaultStateDetected);
+        }
+
+        /// <summary>
+        /// Add a machine error to the db and notify the Automation Service about the error.
+        /// </summary>
+        /// <param name="code">The error code id.</param>
+        /// <param name="bayNumber">The bay number.</param>
+        /// <returns></returns>
         public MachineError RecordNew(MachineErrorCode code, BayNumber bayNumber = BayNumber.None)
         {
             var newError = new MachineError
             {
                 Code = (int)code,
                 OccurrenceDate = DateTime.Now,
-                BayNumber = bayNumber,
+                InverterIndex = 0,
+                DetailCode = 0,
+                BayNumber = bayNumber
             };
 
             lock (this.dataContext)
@@ -139,11 +138,64 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (existingUnresolvedError != null)
                 {
-                    this.logger.LogWarning($"User error {code} ({(int)code}) for {bayNumber} was not triggered because already present and still unresolved.");
+                    this.logger.LogWarning($"Machine error {code} ({(int)code}) for {bayNumber} was not triggered because already present and still unresolved.");
                     return existingUnresolvedError;
+                };
+
+                this.dataContext.Errors.Add(newError);
+
+                var errorStatistics = this.dataContext.ErrorStatistics.SingleOrDefault(e => e.Code == newError.Code);
+                if (errorStatistics != null)
+                {
+                    errorStatistics.TotalErrors++;
+                    this.dataContext.ErrorStatistics.Update(errorStatistics);
                 }
 
-                this.logger.LogError($"User error {code} ({(int)code}) for {bayNumber} was triggered.");
+                this.dataContext.SaveChanges();
+            }
+
+            this.NotifyErrorCreation(newError, bayNumber);
+
+            return newError;
+        }
+
+        /// <summary>
+        /// Add a machine error to the db and notify the Automation Service about the error.
+        /// Reserved for the MachineErrorCode.InverterFaultStateDetected.
+        /// </summary>
+        /// <param name="inverterIndex">The inverter index.</param>
+        /// <param name="detailCode">The detail code of the inverter error.</param>
+        /// <param name="bayNumber">The bay number.</param>
+        /// <returns></returns>
+        public MachineError RecordNew(int inverterIndex, ushort detailCode, BayNumber bayNumber = BayNumber.None)
+        {
+            var newError = new MachineError
+            {
+                Code = (int)MachineErrorCode.InverterFaultStateDetected,
+                OccurrenceDate = DateTime.Now,
+                InverterIndex = inverterIndex,
+                BayNumber = bayNumber,
+                DetailCode = detailCode
+            };
+
+            lock (this.dataContext)
+            {
+                var existingUnresolvedError = this.dataContext.Errors.FirstOrDefault(
+                    e =>
+                        e.Code == (int)MachineErrorCode.InverterFaultStateDetected
+                        &&
+                        e.ResolutionDate == null
+                        &&
+                        e.InverterIndex == inverterIndex
+                        &&
+                        e.DetailCode == detailCode);
+
+                if (existingUnresolvedError != null)
+                {
+                    this.logger.LogWarning($"Machine error {MachineErrorCode.InverterFaultStateDetected} (InverterIndex: {inverterIndex}; detail error code: {detailCode}) was not triggered because already present and still unresolved.");
+                    return existingUnresolvedError;
+                };
+
                 this.dataContext.Errors.Add(newError);
 
                 var errorStatistics = this.dataContext.ErrorStatistics.SingleOrDefault(e => e.Code == newError.Code);
@@ -198,16 +250,6 @@ namespace Ferretto.VW.MAS.DataLayer
                    .ToArray();
             }
             errors.ToList().ForEach(id => this.Resolve(id));
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (!this.isDisposed)
-            {
-                return;
-            }
-
-            this.isDisposed = true;
         }
 
         private bool IsErrorStillActive(int code)

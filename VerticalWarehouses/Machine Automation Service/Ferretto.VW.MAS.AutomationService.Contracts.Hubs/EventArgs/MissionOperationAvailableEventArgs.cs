@@ -6,14 +6,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         public AssignedMissionOperationChangedEventArgs(
             BayNumber bayNumber,
-            int missionId,
-            int missionOperationId,
-            int pendingMissionOperationsCount)
+            int? missionId,
+            int? missionOperationId)
         {
             this.BayNumber = bayNumber;
             this.MissionId = missionId;
             this.MissionOperationId = missionOperationId;
-            this.PendingMissionOperationsCount = pendingMissionOperationsCount;
         }
 
         #endregion
@@ -25,8 +23,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         public int? MissionId { get; }
 
         public int? MissionOperationId { get; }
-
-        public int PendingMissionOperationsCount { get; }
 
         #endregion
     }

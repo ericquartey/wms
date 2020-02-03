@@ -10,10 +10,9 @@
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:viewModels="clr-namespace:Ferretto.VW.App.Installation.ViewModels"
             xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
-            d:DataContext="{d:DesignInstance viewModels:IBaseSensorsViewModel}"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="0,30,0,0">
+    <Grid Margin="0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
@@ -22,11 +21,11 @@
         <views:SensorsNavigationView />
 
         <Grid Grid.Column="1"
-              Margin="130,0,130,10">
+              Margin="5,0,15,0">
 
             <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <StackPanel Orientation="Vertical">
@@ -34,7 +33,7 @@
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                            Text="{x:Static res:InstallationApp.VerticalAxis}" />
 
-                <controls:PpcSensorControl SensorState="{Binding Sensors.ExtraRunElevator}"
+                <controls:PpcSensorControl SensorState="{Binding Sensors.OverrunElevator}"
                                            Text="{x:Static res:InstallationApp.EmergencyEndRun}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.ZeroVerticalSensor}"
@@ -49,6 +48,7 @@
             </StackPanel>
 
             <StackPanel Grid.Row="1"
+                        Margin="0,15,0,0"
                         Orientation="Vertical">
                 <TextBlock VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
@@ -58,7 +58,7 @@
                                            Text="{x:Static res:InstallationApp.ZeroPawlSensor}"
                                            Visibility="{Binding IsOneTonMachine, Converter={StaticResource BTVIC}}" />
 
-                <controls:PpcSensorControl SensorState="{Binding Sensors.ZeroPawlSensorOneK}"
+                <controls:PpcSensorControl SensorState="{Binding Sensors.ZeroPawlSensorOneTon}"
                                            Text="{x:Static res:InstallationApp.ZeroPawlSensor}"
                                            Visibility="{Binding IsOneTonMachine, Converter={StaticResource BTVC}}" />
 

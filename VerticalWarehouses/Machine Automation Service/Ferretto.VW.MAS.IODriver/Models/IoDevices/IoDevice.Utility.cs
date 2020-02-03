@@ -62,7 +62,7 @@ namespace Ferretto.VW.MAS.IODriver
                                 var payloadOutput = telegram[4];
 
                                 outputs = new bool[N_BITS8];
-                                Array.Copy(this.ByteArrayToBoolArray(payloadOutput), outputs, N_BITS8);
+                                Array.Copy(ByteArrayToBoolArray(payloadOutput), outputs, N_BITS8);
 
                                 // Payload input (Low byte)
                                 var payloadInputLow = telegram[5];
@@ -71,8 +71,8 @@ namespace Ferretto.VW.MAS.IODriver
                                 var payloadInputHigh = telegram[6];
 
                                 inputs = new bool[N_BITS16];
-                                Array.Copy(this.ByteArrayToBoolArray(payloadInputLow), inputs, N_BITS8);
-                                Array.Copy(this.ByteArrayToBoolArray(payloadInputHigh), 0, inputs, N_BITS8, N_BITS8);
+                                Array.Copy(ByteArrayToBoolArray(payloadInputLow), inputs, N_BITS8);
+                                Array.Copy(ByteArrayToBoolArray(payloadInputHigh), 0, inputs, N_BITS8, N_BITS8);
 
                                 // Configuration data
                                 configurationData = new byte[N_BYTES8];
@@ -97,7 +97,8 @@ namespace Ferretto.VW.MAS.IODriver
 
                         break;
 
-                    case 0x11: // new release
+                    case 0x11:
+                    case 0x12: // new release
                         switch (nBytesReceived)
                         {
                             case NBYTES_TELEGRAM_DATA + 11: // 26
@@ -110,7 +111,7 @@ namespace Ferretto.VW.MAS.IODriver
                                 // Payload output
                                 var payloadOutput = telegram[5];
                                 outputs = new bool[N_BITS8];
-                                Array.Copy(this.ByteArrayToBoolArray(payloadOutput), outputs, N_BITS8);
+                                Array.Copy(ByteArrayToBoolArray(payloadOutput), outputs, N_BITS8);
 
                                 // Payload input (Low byte)
                                 var payloadInputLow = telegram[6];
@@ -119,8 +120,8 @@ namespace Ferretto.VW.MAS.IODriver
                                 var payloadInputHigh = telegram[7];
 
                                 inputs = new bool[N_BITS16];
-                                Array.Copy(this.ByteArrayToBoolArray(payloadInputLow), inputs, N_BITS8);
-                                Array.Copy(this.ByteArrayToBoolArray(payloadInputHigh), 0, inputs, N_BITS8, N_BITS8);
+                                Array.Copy(ByteArrayToBoolArray(payloadInputLow), inputs, N_BITS8);
+                                Array.Copy(ByteArrayToBoolArray(payloadInputHigh), 0, inputs, N_BITS8, N_BITS8);
 
                                 // Configuration data
                                 configurationData = new byte[17];
@@ -163,7 +164,7 @@ namespace Ferretto.VW.MAS.IODriver
             }
         }
 
-        private bool[] ByteArrayToBoolArray(byte b)
+        private static bool[] ByteArrayToBoolArray(byte b)
         {
             const int N_BITS8 = 8;
             var t = new BitArray(new byte[] { b });

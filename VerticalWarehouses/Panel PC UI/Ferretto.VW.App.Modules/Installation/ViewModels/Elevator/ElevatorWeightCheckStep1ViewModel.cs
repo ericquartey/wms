@@ -117,13 +117,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
-        public override void InitializeSteps()
-        {
-            this.ShowSteps();
-        }
-
         protected override void RaiseCanExecuteChanged()
         {
+            base.RaiseCanExecuteChanged();
+
             this.checkLoadingUnitCommand?.RaiseCanExecuteChanged();
         }
 

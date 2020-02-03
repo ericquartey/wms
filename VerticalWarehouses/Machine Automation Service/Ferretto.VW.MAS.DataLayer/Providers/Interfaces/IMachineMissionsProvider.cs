@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Missions;
@@ -12,23 +12,23 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
     {
         #region Methods
 
-        bool AbortMachineMission(Guid missionId);
+        bool AbortMachineMission(Guid fsmId);
 
-        IMission GetMissionById(Guid missionId);
+        IMission GetMissionById(Guid fsmId);
 
-        List<IMission> GetMissionsByType(FSMType type);
+        List<IMission> GetMissionsByFsmType(FsmType fsmType);
 
-        bool PauseMachineMission(Guid missionId);
+        IEnumerable<IMission> GetMissionsByType(FsmType fsmType, MissionType type);
 
-        bool ResumeMachineMission(Guid missionId);
+        bool PauseMachineMission(Guid fsmId);
 
-        bool StartMachineMission(Guid missionId, CommandMessage command);
+        bool ResumeMachineMission(Guid fsmId, CommandMessage command);
 
-        bool StopMachineMission(Guid missionId, StopRequestReason reason);
+        bool StartMachineMission(Guid fsmId, CommandMessage command);
 
-        bool TryCreateMachineMission(FSMType missionType, CommandMessage command, out Guid missionId);
+        bool StopMachineMission(Guid fsmId, StopRequestReason reason);
 
-        bool TryCreateMachineMission(FSMType missionType, MoveLoadingUnitMessageData command, BayNumber bayNumber, out Guid missionId);
+        bool TryCreateMachineMission(FsmType fsmType, CommandMessage command, out Guid missionId);
 
         #endregion
     }

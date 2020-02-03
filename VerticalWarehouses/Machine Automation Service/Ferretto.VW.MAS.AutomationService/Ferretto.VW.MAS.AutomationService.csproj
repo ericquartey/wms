@@ -8,12 +8,14 @@
     <Configurations>Debug;Release;Debug_no_autogen</Configurations>
     <LangVersion>latest</LangVersion>
     <ServerGarbageCollection>False</ServerGarbageCollection>
+    <ApplicationManifest>properties/app.manifest</ApplicationManifest>
+    <AssemblyName>Ferretto.VW.MAS.AutomationService</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'!='Release'">
     <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
-
+  
   <ItemGroup>
     <Content Remove="nlog.config" />
     <Content Remove="Configuration\**\*.json" />
@@ -30,34 +32,46 @@
     <None Include="Configuration\**\*.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+      <Content Update="appsettings.*.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Properties\register_as_service.ps1" />
+    <Content Include="register_as_service.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="[2.2.0]" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Api.Analyzers" Version="[2.2.6]" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="[2.2.0]" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="[2.2.6]" />
-    <PackageReference Include="NLog.Web.AspNetCore" Version="4.8.6" />
-    <PackageReference Include="NSwag.MSBuild" Version="13.1.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Api.Analyzers" Version="2.2.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.6" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.0" />
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.6">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="NSwag.MSBuild" Version="13.1.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Ferretto.VW.CommonUtils\Ferretto.VW.CommonUtils.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS.AutomationService.Hubs\Ferretto.VW.MAS.AutomationService.Hubs.csproj" />
+    <ProjectReference Include="..\Ferretto.VW.MAS.DateTime\Ferretto.VW.MAS.TimeManagement.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS.DeviceManager\Ferretto.VW.MAS.DeviceManager.csproj" />
+    <ProjectReference Include="..\Ferretto.VW.MAS.LaserDriver\Ferretto.VW.MAS.LaserDriver.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS.MachineManager\Ferretto.VW.MAS.MachineManager.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS.MIssionManager\Ferretto.VW.MAS.MissionManager.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS.Utils\Ferretto.VW.MAS.Utils.csproj" />
@@ -67,32 +81,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="appsettings.EjLog.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="appsettings.SimulationP2.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="appsettings.Bender.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="appsettings.Prototype2.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="appsettings.Prototype1.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="appsettings.Simulation.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Folder Include="Database\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Database\" />
-    <Folder Include="Properties\" />
+    <None Update="Properties\app.manifest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <Target Name="NSwag" AfterTargets="Build" Condition=" '$(Configuration)' == 'debug' and $(TargetFramework.StartsWith('netcore')) ">

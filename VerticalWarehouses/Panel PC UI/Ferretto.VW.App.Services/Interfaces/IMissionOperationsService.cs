@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Ferretto.VW.App.Services
 {
@@ -14,15 +10,20 @@ namespace Ferretto.VW.App.Services
 
         WMS.Data.WebAPI.Contracts.MissionOperation CurrentMissionOperation { get; }
 
-        int PendingMissionOperationsCount { get; }
-
         #endregion
 
         #region Methods
 
-        Task<bool> AbortCurrentMissionOperationAsync();
+        /// <exception cref="MasWebApiException"></exception>
+        Task CancelCurrentAsync();
 
-        Task CompleteCurrentMissionOperationAsync(double quantity);
+        /// <exception cref="MasWebApiException"></exception>
+        Task CompleteCurrentAsync(double quantity);
+
+        /// <exception cref="MasWebApiException"></exception>
+        Task PartiallyCompleteCurrentAsync(double quantity);
+
+        Task StartAsync();
 
         #endregion
     }

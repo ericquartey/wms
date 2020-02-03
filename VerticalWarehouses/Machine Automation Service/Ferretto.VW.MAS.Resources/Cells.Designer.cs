@@ -61,6 +61,15 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to NoEmptyCellsAvailable.
+        /// </summary>
+        public static string NoEmptyCellsAvailable {
+            get {
+                return ResourceManager.GetString("NoEmptyCellsAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The cell already contains another loading unit..
         /// </summary>
         public static string TheCellAlreadyContainsAnotherLoadingUnit {
@@ -88,11 +97,11 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The loading unit cannot be placed opposite a deactivated cell..
+        ///   Looks up a localized string similar to The loading unit cannot occupy a blocked cell..
         /// </summary>
-        public static string TheLoadingCannotBePlacedOppositeADeactivatedCell {
+        public static string TheLoadingCannotOccupyABlockedCell {
             get {
-                return ResourceManager.GetString("TheLoadingCannotBePlacedOppositeADeactivatedCell", resourceCulture);
+                return ResourceManager.GetString("TheLoadingCannotOccupyABlockedCell", resourceCulture);
             }
         }
         
@@ -133,20 +142,20 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The target cell is deactivated..
+        ///   Looks up a localized string similar to The target cell is blocked..
         /// </summary>
-        public static string TheTargetCellIsDeactivated {
+        public static string TheTargetCellIsBlocked {
             get {
-                return ResourceManager.GetString("TheTargetCellIsDeactivated", resourceCulture);
+                return ResourceManager.GetString("TheTargetCellIsBlocked", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The target cell is unusable..
+        ///   Looks up a localized string similar to The target cell is space only, it cannot support a load unit..
         /// </summary>
-        public static string TheTargetCellIsUnusable {
+        public static string TheTargetCellIsSpaceOnly {
             get {
-                return ResourceManager.GetString("TheTargetCellIsUnusable", resourceCulture);
+                return ResourceManager.GetString("TheTargetCellIsSpaceOnly", resourceCulture);
             }
         }
     }

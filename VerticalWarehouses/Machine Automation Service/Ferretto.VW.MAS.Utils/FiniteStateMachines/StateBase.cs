@@ -100,17 +100,18 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             return this.OnPause();
         }
 
-        public IState Resume()
+        public IState Resume(CommandMessage commandMessage)
         {
             this.Logger.LogDebug($"Resuming state {this.GetType().Name}.");
-            return this.OnResume();
+            return this.OnResume(commandMessage);
         }
 
         public IState Stop(StopRequestReason reason)
         {
             if (this.hasStopped)
             {
-                throw new InvalidOperationException($"FSM State {this.GetType().Name} was already stopped.");
+                //throw new InvalidOperationException($"FSM State {this.GetType().Name} was already stopped.");
+                this.Logger.LogDebug($"FSM State {this.GetType().Name} was already stopped.");
             }
 
             this.hasStopped = true;
@@ -153,7 +154,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             return this;
         }
 
-        protected virtual IState OnResume()
+        protected virtual IState OnResume(CommandMessage commandMessage)
         {
             return this;
         }

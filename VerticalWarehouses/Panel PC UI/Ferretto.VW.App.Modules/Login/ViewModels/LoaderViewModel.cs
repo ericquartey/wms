@@ -4,10 +4,13 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Login.ViewModels
 {
+    [Warning(WarningsArea.Login)]
     internal sealed class LoaderViewModel : BaseMainViewModel
     {
         #region Fields
@@ -67,6 +70,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
+        public override bool KeepAlive => false;
+
         #endregion
 
         #region Methods
@@ -75,32 +80,32 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         {
             base.Disappear();
 
-            if (this.subscriptionToken != null)
-            {
-                this.healthProbeService.HealthStatusChanged.Unsubscribe(this.subscriptionToken);
-
-                this.subscriptionToken = null;
-            }
+            this.subscriptionToken?.Dispose();
+            this.subscriptionToken = null;
         }
 
         public override async Task OnAppearedAsync()
         {
             SplashScreenService.Hide();
 
-            await base.OnAppearedAsync();
+            this.subscriptionToken = this.subscriptionToken
+                ??
+                this.healthProbeService.HealthStatusChanged
+                    .Subscribe(
+                        async (e) => await this.OnHealthStatusChangedAsync(e),
+                        ThreadOption.UIThread,
+                        false);
 
-            this.subscriptionToken = this.healthProbeService.HealthStatusChanged
-                .Subscribe(
-                    async (e) => await this.OnHealthStatusChanged(e),
-                    ThreadOption.UIThread,
-                    false);
+            this.OnHealthStatusChangedAsync(null);
+
+            await base.OnAppearedAsync();
         }
 
         private async Task CheckFirewallStatusAsync()
         {
             await Task.Delay(FirewallCheckDelay);
 
-            if (this.healthProbeService.HealthStatus == HealthStatus.Unknown)
+            if (this.healthProbeService.HealthMasStatus == HealthStatus.Unknown)
             {
                 try
                 {
@@ -133,16 +138,16 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 trackCurrentView: false);
         }
 
-        private async Task OnHealthStatusChanged(HealthStatusChangedEventArgs e)
+        private async Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
         {
             await this.RetrieveMachineInfoAsync();
         }
 
         private async Task RetrieveMachineInfoAsync()
         {
-            this.logger.Info($"Status of machine automation service is '{this.healthProbeService.HealthStatus}'.");
+            this.logger.Info($"Status of machine automation service is '{this.healthProbeService.HealthMasStatus}'.");
 
-            switch (this.healthProbeService.HealthStatus)
+            switch (this.healthProbeService.HealthMasStatus)
             {
                 case HealthStatus.Initialized:
                 case HealthStatus.Initializing:

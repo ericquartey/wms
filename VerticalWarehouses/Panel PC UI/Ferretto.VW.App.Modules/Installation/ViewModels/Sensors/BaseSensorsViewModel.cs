@@ -10,10 +10,13 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Hubs;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
+    [Warning(WarningsArea.Installation)]
     internal class BaseSensorsViewModel : BaseMainViewModel
     {
         #region Fields
@@ -39,6 +42,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool bay3HasShutter;
 
         private bool bay3ZeroChainIsVisible;
+
+        private bool isBay1PositionDownPresent;
+
+        private bool isBay1PositionUpPresent;
 
         private bool isBay2Present;
 
@@ -81,7 +88,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
+        public bool IsBay1PositionDownPresent { get => this.isBay1PositionDownPresent; private set => this.SetProperty(ref this.isBay1PositionDownPresent, value); }
+
+        public bool IsBay1PositionUpPresent { get => this.isBay1PositionUpPresent; private set => this.SetProperty(ref this.isBay1PositionUpPresent, value); }
+
+        public bool IsBay2PositionDownPresent { get => this.isBay1PositionDownPresent; private set => this.SetProperty(ref this.isBay1PositionDownPresent, value); }
+
+        public bool IsBay2PositionUpPresent { get => this.isBay1PositionUpPresent; private set => this.SetProperty(ref this.isBay1PositionUpPresent, value); }
+
         public bool IsBay2Present { get => this.isBay2Present; private set => this.SetProperty(ref this.isBay2Present, value); }
+
+        public bool IsBay3PositionDownPresent { get => this.isBay1PositionDownPresent; private set => this.SetProperty(ref this.isBay1PositionDownPresent, value); }
+
+        public bool IsBay3PositionUpPresent { get => this.isBay1PositionUpPresent; private set => this.SetProperty(ref this.isBay1PositionUpPresent, value); }
 
         public bool IsBay3Present { get => this.isBay3Present; private set => this.SetProperty(ref this.isBay3Present, value); }
 
@@ -110,52 +129,53 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            await base.OnAppearedAsync();
-
             this.IsBackNavigationAllowed = true;
 
-            this.subscriptionToken = this.subscriptionToken
-                ??
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-                    .Subscribe(
-                        this.OnSensorsChanged,
-                        ThreadOption.UIThread,
-                        false,
-                        m => m.Data?.SensorsStates != null);
+            this.SubscribeToEvents();
 
-            try
-            {
-                var sensorsStates = await this.machineSensorsWebService.GetAsync();
+            await base.OnAppearedAsync();
+        }
 
-                var bays = await this.machineBaysWebService.GetAllAsync();
+        protected override async Task OnDataRefreshAsync()
+        {
+            var sensorsStates = await this.machineSensorsWebService.GetAsync();
 
-                this.IsBay2Present = bays.Any(b => b.Number == BayNumber.BayTwo);
-                this.IsBay3Present = bays.Any(b => b.Number == BayNumber.BayThree);
+            var bays = await this.machineBaysWebService.GetAllAsync();
 
-                this.Bay1HasShutter = bays
-                    .Where(b => b.Number == BayNumber.BayOne)
-                    .Select(b => b.Shutter != null)
-                    .SingleOrDefault();
+            this.IsBay2Present = bays.Any(b => b.Number == BayNumber.BayTwo);
+            this.IsBay3Present = bays.Any(b => b.Number == BayNumber.BayThree);
 
-                this.Bay2HasShutter = bays
-                    .Where(b => b.Number == BayNumber.BayTwo)
-                    .Select(b => b.Shutter != null)
-                    .SingleOrDefault();
+            this.Bay1HasShutter = bays
+                .Where(b => b.Number == BayNumber.BayOne)
+                .Select(b => b.Shutter != null)
+                .SingleOrDefault();
 
-                this.Bay3HasShutter = bays
-                    .Where(b => b.Number == BayNumber.BayThree)
-                    .Select(b => b.Shutter != null)
-                    .SingleOrDefault();
+            this.Bay2HasShutter = bays
+                .Where(b => b.Number == BayNumber.BayTwo)
+                .Select(b => b.Shutter != null)
+                .SingleOrDefault();
 
-                this.CheckZeroChainOnBays(bays);
+            this.Bay3HasShutter = bays
+                .Where(b => b.Number == BayNumber.BayThree)
+                .Select(b => b.Shutter != null)
+                .SingleOrDefault();
 
-                this.sensors.Update(sensorsStates.ToArray());
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
+            this.CheckZeroChainOnBays(bays);
+
+            var bay1 = bays.FirstOrDefault(f => f.Number == BayNumber.BayOne);
+            var bay2 = bays.FirstOrDefault(f => f.Number == BayNumber.BayTwo);
+            var bay3 = bays.FirstOrDefault(f => f.Number == BayNumber.BayThree);
+
+            this.IsBay1PositionDownPresent = ((bay1?.IsDouble ?? false) || (!bay1?.Positions?.FirstOrDefault()?.IsUpper ?? false));
+            this.IsBay1PositionUpPresent = ((bay1?.IsDouble ?? false) || (bay1?.Positions?.FirstOrDefault()?.IsUpper ?? false));
+
+            this.IsBay2PositionDownPresent = ((bay2?.IsDouble ?? false) || (!bay2?.Positions?.FirstOrDefault()?.IsUpper ?? false));
+            this.IsBay2PositionUpPresent = ((bay2?.IsDouble ?? false) || (bay2?.Positions?.FirstOrDefault()?.IsUpper ?? false));
+
+            this.IsBay3PositionDownPresent = ((bay3?.IsDouble ?? false) || (!bay3?.Positions?.FirstOrDefault()?.IsUpper ?? false));
+            this.IsBay3PositionUpPresent = ((bay3?.IsDouble ?? false) || (bay3?.Positions?.FirstOrDefault()?.IsUpper ?? false));
+
+            this.sensors.Update(sensorsStates.ToArray());
         }
 
         private void CheckZeroChainOnBays(IEnumerable<Bay> bays)
@@ -180,6 +200,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.menuItems.Add(
                 new NavigationMenuItem(
+                    Utils.Modules.Installation.Sensors.SECURITY,
+                    nameof(Utils.Modules.Installation),
+                    VW.App.Resources.InstallationApp.Security,
+                    trackCurrentView: false));
+
+            this.menuItems.Add(
+                new NavigationMenuItem(
                     Utils.Modules.Installation.Sensors.VERTICALAXIS,
                     nameof(Utils.Modules.Installation),
                     VW.App.Resources.InstallationApp.VerticalAxisButton,
@@ -191,18 +218,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     nameof(Utils.Modules.Installation),
                     VW.App.Resources.InstallationApp.Bays,
                     trackCurrentView: false));
-
-            this.menuItems.Add(
-                new NavigationMenuItem(
-                    Utils.Modules.Installation.Sensors.OTHERS,
-                    nameof(Utils.Modules.Installation),
-                    VW.App.Resources.InstallationApp.Others,
-                    trackCurrentView: false));
         }
 
         private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
         {
             this.sensors.Update(message.Data.SensorsStates);
+        }
+
+        private void SubscribeToEvents()
+        {
+            this.subscriptionToken = this.subscriptionToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Subscribe(
+                        this.OnSensorsChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data?.SensorsStates != null);
         }
 
         #endregion

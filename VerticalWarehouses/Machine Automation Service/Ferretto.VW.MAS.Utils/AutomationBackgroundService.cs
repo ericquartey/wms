@@ -12,7 +12,7 @@ using Prism.Events;
 namespace Ferretto.VW.MAS.Utils
 {
     public abstract class AutomationBackgroundService<TCommandMessage, TNotificationMessage, TCommandEvent, TNotificationEvent> : BackgroundService
-        where TCommandMessage : class
+            where TCommandMessage : class
         where TNotificationMessage : class
         where TCommandEvent : PubSubEvent<TCommandMessage>, new()
         where TNotificationEvent : PubSubEvent<TNotificationMessage>, new()
@@ -152,8 +152,6 @@ namespace Ferretto.VW.MAS.Utils
                         &&
                         command != null)
                     {
-                        this.Logger.LogTrace($"Dequeued command {command}.");
-
                         using (var scope = this.ServiceScopeFactory.CreateScope())
                         {
                             this.OnCommandReceivedAsync(command, scope.ServiceProvider).Wait();
@@ -167,7 +165,7 @@ namespace Ferretto.VW.MAS.Utils
                 }
                 catch (Exception ex)
                 {
-                    this.Logger.LogError(ex, "Error while processing a command.");
+                    this.Logger.LogError("Error while processing a command: '{details}'.", ex);
                 }
             }
             while (!cancellationToken.IsCancellationRequested);
@@ -185,8 +183,6 @@ namespace Ferretto.VW.MAS.Utils
                         &&
                         notification != null)
                     {
-                        this.Logger.LogTrace($"Dequeued notification {notification}");
-
                         using (var scope = this.ServiceScopeFactory.CreateScope())
                         {
                             this.OnNotificationReceivedAsync(notification, scope.ServiceProvider).Wait();
@@ -200,7 +196,7 @@ namespace Ferretto.VW.MAS.Utils
                 }
                 catch (Exception ex)
                 {
-                    this.Logger.LogError(ex, "Error while processing a notification.");
+                    this.Logger.LogError("Error while processing a notification: '{details}'.", ex);
                 }
             }
             while (!cancellationToken.IsCancellationRequested);
@@ -217,11 +213,13 @@ namespace Ferretto.VW.MAS.Utils
             {
                 this.commandEventSubscriptionToken?.Dispose();
                 this.notificationEventSubscriptionToken?.Dispose();
+                this.commandQueue?.Dispose();
+                this.notificationQueue?.Dispose();
+
+                base.Dispose();
+
+                this.isDisposed = true;
             }
-
-            base.Dispose();
-
-            this.isDisposed = true;
         }
 
         private void InitializeSubscriptions()

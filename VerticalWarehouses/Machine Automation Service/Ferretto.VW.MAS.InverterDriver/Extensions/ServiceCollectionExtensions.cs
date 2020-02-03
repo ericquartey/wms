@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             services.AddHostedService<InverterDriverService>();
 
-            services.AddSingleton<IInvertersProvider, InvertersProvider>();
+            services.AddScoped<IInvertersProvider, InvertersProvider>();
 
             services.AddSingleton(s =>
             {

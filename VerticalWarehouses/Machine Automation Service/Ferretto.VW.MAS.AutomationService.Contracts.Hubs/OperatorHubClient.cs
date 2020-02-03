@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         protected override void RegisterEvents(HubConnection connection)
         {
-            connection.On<BayNumber, int, int, int>(
+            connection.On<BayNumber, int?, int?, int>(
                 nameof(AutomationService.Hubs.IOperatorHub.AssignedMissionOperationChanged),
                 this.OnAssignedMissionOperationChanged);
 
@@ -41,15 +41,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
                 this.OnErrorStatusChanged);
         }
 
-        private void OnAssignedMissionOperationChanged(BayNumber bayNumber, int missionId, int missionOperationId, int pendingMissionOperationsCount)
+        private void OnAssignedMissionOperationChanged(BayNumber bayNumber, int? missionId, int? missionOperationId, int pendingMissionOperationsCount)
         {
             this.AssignedMissionOperationChanged?.Invoke(
                 this,
                 new AssignedMissionOperationChangedEventArgs(
                     bayNumber,
                     missionId,
-                    missionOperationId,
-                    pendingMissionOperationsCount));
+                    missionOperationId));
         }
 
         private void OnBayStatusChanged(BayNumber bayNumber, BayStatus bayStatus)

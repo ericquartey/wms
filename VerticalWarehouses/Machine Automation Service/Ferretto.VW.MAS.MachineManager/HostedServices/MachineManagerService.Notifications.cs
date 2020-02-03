@@ -6,7 +6,10 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -16,6 +19,12 @@ namespace Ferretto.VW.MAS.MachineManager
 {
     internal partial class MachineManagerService
     {
+        #region Fields
+
+        private bool isDataLayerReady;
+
+        #endregion
+
         #region Methods
 
         protected override bool FilterNotification(NotificationMessage notification)
@@ -28,18 +37,42 @@ namespace Ferretto.VW.MAS.MachineManager
 
         protected override Task OnNotificationReceivedAsync(NotificationMessage message, IServiceProvider serviceProvider)
         {
+            var missionMoveProvider = serviceProvider.GetRequiredService<IMissionMoveProvider>();
             switch (message.Type)
             {
                 case MessageType.FaultStateChanged:
                 case MessageType.RunningStateChanged:
-                    this.OnMachineRunningStatusChange(message);
+                    this.OnMachineRunningStatusChange(message, serviceProvider);
+                    lock (this.syncObject)
+                    {
+                        missionMoveProvider.OnNotification(message, serviceProvider);
+                    }
+                    break;
+
+                case MessageType.DataLayerReady:
+                    // performance optimization
+                    serviceProvider.GetRequiredService<ICellsProvider>().GetAll();
+                    serviceProvider.GetRequiredService<IMachineProvider>().Get();
+
+                    this.isDataLayerReady = true;
+                    break;
+
+                case MessageType.Positioning:
+                case MessageType.Stop:
+                case MessageType.InverterStop:
+                case MessageType.ShutterPositioning:
+                case MessageType.Homing:
+                    lock (this.syncObject)
+                    {
+                        missionMoveProvider.OnNotification(message, serviceProvider);
+                    }
                     break;
             }
 
             return Task.CompletedTask;
         }
 
-        private void OnMachineRunningStatusChange(NotificationMessage message)
+        private void OnMachineRunningStatusChange(NotificationMessage message, IServiceProvider serviceProvider)
         {
             if (message is null)
             {
@@ -70,22 +103,14 @@ namespace Ferretto.VW.MAS.MachineManager
                         MessageType.ChangeRunningState,
                         message.RequestingBay);
 
-                    if (this.machineMissionsProvider.TryCreateMachineMission(FSMType.ChangeRunningType, command, out var missionId))
+                    var machineMissionsProvider = serviceProvider.GetRequiredService<IMachineMissionsProvider>();
+                    if (machineMissionsProvider.TryCreateMachineMission(FsmType.ChangeRunningType, command, out var missionId))
                     {
-                        var errorCode = reason == StopRequestReason.FaultStateChanged
-                            ? DataModels.MachineErrorCode.InverterFaultStateDetected
-                            : DataModels.MachineErrorCode.SecurityWasTriggered;
-
-                        this.serviceScope.ServiceProvider
-                            .GetRequiredService<IErrorsProvider>()
-                            .RecordNew(errorCode);
-
-                        this.machineMissionsProvider.StartMachineMission(missionId, command);
+                        machineMissionsProvider.StartMachineMission(missionId, command);
                     }
                     else
                     {
-                        this.Logger.LogError("Failed to create Change Running State machine mission");
-                        this.NotifyCommandError(command);
+                        this.Logger.LogWarning("Failed to create Change Running State machine mission");
                     }
                 }
             }

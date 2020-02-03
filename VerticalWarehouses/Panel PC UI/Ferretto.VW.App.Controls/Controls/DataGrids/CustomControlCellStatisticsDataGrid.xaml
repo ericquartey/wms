@@ -7,7 +7,7 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity">
 
     <UserControl.Resources>
-        <conv:EnumCellStatusConverter x:Key="ECSC" />
+        <conv:EnumBlockLevelConverter x:Key="EBLC" />
     </UserControl.Resources>
     <Grid>
         <DataGrid Name="DataGrid"
@@ -20,7 +20,7 @@
                   CanUserResizeColumns="False"
                   CanUserResizeRows="False"
                   CanUserSortColumns="False"
-                  FontSize="18"
+                  FontSize="{StaticResource FontSize_High}"
                   HeadersVisibility="Column"
                   HorizontalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
                   IsHitTestVisible="False"

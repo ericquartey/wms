@@ -12,6 +12,7 @@ namespace Ferretto.VW.MAS.Utils.Utilities
             switch (reason)
             {
                 case StopRequestReason.NoReason:
+                case StopRequestReason.Abort:
                     returnValue = MessageStatus.OperationEnd;
                     break;
 

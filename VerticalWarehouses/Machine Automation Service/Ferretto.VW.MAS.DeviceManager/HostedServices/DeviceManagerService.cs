@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -43,6 +44,10 @@ namespace Ferretto.VW.MAS.DeviceManager
 
         private readonly Task fieldNotificationReceiveTask;
 
+        private readonly IMachineResourcesProvider machineResourcesProvider;
+
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
+
         private bool forceInverterIoStatusPublish;
 
         private bool[] forceRemoteIoStatusPublish;
@@ -56,9 +61,15 @@ namespace Ferretto.VW.MAS.DeviceManager
         public DeviceManagerService(
             IEventAggregator eventAggregator,
             ILogger<DeviceManagerService> logger,
+            IMachineVolatileDataProvider machineVolatileDataProvider,
+            IMachineResourcesProvider machineResourcesProvider,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
+            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
+
+            this.machineResourcesProvider = machineResourcesProvider ?? throw new ArgumentNullException(nameof(machineResourcesProvider));
+
             this.fieldNotificationReceiveTask = new Task(this.DequeueFieldNotifications);
 
             this.InitializeMethodSubscriptions();
@@ -111,7 +122,8 @@ namespace Ferretto.VW.MAS.DeviceManager
                 && command.Type != MessageType.Stop
                 && command.Type != MessageType.SensorsChanged
                 && command.Type != MessageType.PowerEnable
-                && command.Type != MessageType.ContinueMovement)
+                && command.Type != MessageType.ContinueMovement
+                && command.Type != MessageType.BayLight)
             {
                 var errorNotification = new NotificationMessage(
                     command.Data,
@@ -132,12 +144,12 @@ namespace Ferretto.VW.MAS.DeviceManager
                     .Publish(errorNotification);
 
                 var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
-                errorsProvider.RecordNew(DataModels.MachineErrorCode.BayInvertersBusy, command.RequestingBay);
+                errorsProvider.RecordNew(MachineErrorCode.BayInvertersBusy, command.RequestingBay);
 
                 return Task.CompletedTask;
             }
 
-            this.Logger.LogInformation($"Processing command [{command.Type}] by {command.RequestingBay} for {command.TargetBay}");
+            this.Logger.LogInformation($"Processing command [{command.Type}] by {command.RequestingBay} for {command.TargetBay} from {command.Source}");
             switch (command.Type)
             {
                 case MessageType.ContinueMovement:
@@ -186,6 +198,10 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                 case MessageType.InverterPowerEnable:
                     this.ProcessInverterPowerEnable(command, serviceProvider);
+                    break;
+
+                case MessageType.BayLight:
+                    this.ProcessBayLight(command, serviceProvider);
                     break;
             }
 
@@ -320,6 +336,7 @@ namespace Ferretto.VW.MAS.DeviceManager
             if (e.NewState)
             {
                 this.Logger.LogError($"Inverter Fault signal detected! Begin Stop machine procedure.");
+
                 var messageData = new StateChangedMessageData(e.NewState);
                 var msg = new NotificationMessage(
                     messageData,
@@ -357,10 +374,46 @@ namespace Ferretto.VW.MAS.DeviceManager
                 this.Logger.LogError($"Running State signal fall detected! Begin Stop machine procedure.");
                 using (var scope = this.ServiceScopeFactory.CreateScope())
                 {
-                    var machineResourcesProvider = scope.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
-                    this.Logger.LogDebug($"Emergency button status are [1:{machineResourcesProvider.IsMushroomEmergencyButtonBay1}, 2:{machineResourcesProvider.IsMushroomEmergencyButtonBay2}, 3:{machineResourcesProvider.IsMushroomEmergencyButtonBay3}]");
-                    this.Logger.LogDebug($"Anti intrusion barrier status are [1:{machineResourcesProvider.IsAntiIntrusionBarrierBay1}, 2:{machineResourcesProvider.IsAntiIntrusionBarrierBay2}, 3:{machineResourcesProvider.IsAntiIntrusionBarrierBay3}]");
-                    this.Logger.LogDebug($"Micro carter status are [Left:{machineResourcesProvider.IsMicroCarterLeftSide}, Right:{machineResourcesProvider.IsMicroCarterRightSide}]");
+                    this.Logger.LogDebug($"Emergency button status are [1:{this.machineResourcesProvider.IsMushroomEmergencyButtonBay1}, 2:{this.machineResourcesProvider.IsMushroomEmergencyButtonBay2}, 3:{this.machineResourcesProvider.IsMushroomEmergencyButtonBay3}]");
+                    this.Logger.LogDebug($"Anti intrusion barrier status are [1:{this.machineResourcesProvider.IsAntiIntrusionBarrierBay1}, 2:{this.machineResourcesProvider.IsAntiIntrusionBarrierBay2}, 3:{this.machineResourcesProvider.IsAntiIntrusionBarrierBay3}]");
+                    this.Logger.LogDebug($"Micro carter status are [Left:{this.machineResourcesProvider.IsMicroCarterLeftSide}, Right:{this.machineResourcesProvider.IsMicroCarterRightSide}]");
+
+                    var errorCode = MachineErrorCode.SecurityWasTriggered;
+                    if (this.machineResourcesProvider.IsMushroomEmergencyButtonBay1
+                        || this.machineResourcesProvider.IsMushroomEmergencyButtonBay2
+                        || this.machineResourcesProvider.IsMushroomEmergencyButtonBay3
+                        )
+                    {
+                        errorCode = MachineErrorCode.SecurityButtonWasTriggered;
+                        scope.ServiceProvider
+                            .GetRequiredService<IErrorsProvider>()
+                            .RecordNew(errorCode);
+                    }
+                    if (this.machineResourcesProvider.IsAntiIntrusionBarrierBay1
+                        || this.machineResourcesProvider.IsAntiIntrusionBarrierBay2
+                        || this.machineResourcesProvider.IsAntiIntrusionBarrierBay3
+                        )
+                    {
+                        errorCode = MachineErrorCode.SecurityBarrierWasTriggered;
+                        scope.ServiceProvider
+                            .GetRequiredService<IErrorsProvider>()
+                            .RecordNew(errorCode);
+                    }
+                    if (this.machineResourcesProvider.IsMicroCarterLeftSide
+                        || this.machineResourcesProvider.IsMicroCarterRightSide
+                        )
+                    {
+                        errorCode = MachineErrorCode.SecuritySensorWasTriggered;
+                        scope.ServiceProvider
+                            .GetRequiredService<IErrorsProvider>()
+                            .RecordNew(errorCode);
+                    }
+                    if (errorCode == MachineErrorCode.SecurityWasTriggered)
+                    {
+                        scope.ServiceProvider
+                            .GetRequiredService<IErrorsProvider>()
+                            .RecordNew(errorCode);
+                    }
                 }
             }
 
@@ -418,7 +471,6 @@ namespace Ferretto.VW.MAS.DeviceManager
                     }
             }
 
-            var machineResourcesProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
             switch (receivedMessage.Type)
             {
                 case FieldMessageType.CalibrateAxis:
@@ -431,11 +483,11 @@ namespace Ferretto.VW.MAS.DeviceManager
                     var dataIOs = receivedMessage.Data as ISensorsChangedFieldMessageData;
 
                     var ioIndex = receivedMessage.DeviceIndex;
-                    if (machineResourcesProvider.UpdateInputs(ioIndex, dataIOs.SensorsStates, receivedMessage.Source) || this.forceRemoteIoStatusPublish[ioIndex])
+                    if (this.machineResourcesProvider.UpdateInputs(ioIndex, dataIOs.SensorsStates, receivedMessage.Source) || this.forceRemoteIoStatusPublish[ioIndex])
                     {
                         var msgData = new SensorsChangedMessageData
                         {
-                            SensorsStates = machineResourcesProvider.DisplayedInputs
+                            SensorsStates = this.machineResourcesProvider.DisplayedInputs
                         };
 
                         this.Logger.LogTrace($"FSM: IoIndex {ioIndex}, data {dataIOs.ToString()}");
@@ -513,11 +565,11 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                     var inverterIndex = receivedMessage.DeviceIndex;
 
-                    if (machineResourcesProvider.UpdateInputs(inverterIndex, inverterData.CurrentSensorStatus, receivedMessage.Source) || this.forceInverterIoStatusPublish)
+                    if (this.machineResourcesProvider.UpdateInputs(inverterIndex, inverterData.CurrentSensorStatus, receivedMessage.Source) || this.forceInverterIoStatusPublish)
                     {
                         var msgData = new SensorsChangedMessageData
                         {
-                            SensorsStates = machineResourcesProvider.DisplayedInputs
+                            SensorsStates = this.machineResourcesProvider.DisplayedInputs
                         };
 
                         var msg1 = new NotificationMessage(
@@ -573,6 +625,9 @@ namespace Ferretto.VW.MAS.DeviceManager
                                 MessageStatus.OperationError,
                                 receivedMessage.ErrorLevel));
 
+                    var args = new StatusUpdateEventArgs();
+                    args.NewState = true;
+                    this.machineResourcesProvider.OnFaultStateChanged(args);
                     break;
 
                 // INFO Catch Exception from IoDriver, to forward to the AS
@@ -592,6 +647,40 @@ namespace Ferretto.VW.MAS.DeviceManager
                                 bayNumber,
                                 MessageStatus.OperationError,
                                 receivedMessage.ErrorLevel));
+
+                    break;
+
+                case FieldMessageType.BayLight when receivedMessage.Source is FieldMessageActor.IoDriver &&
+                                                    receivedMessage.Data is IBayLightFieldMessageData:
+
+                    this.Logger.LogTrace($"3:BayLight received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}, data {receivedMessage.Data}");
+
+                    var enable = ((IBayLightFieldMessageData)receivedMessage.Data).Enable;
+
+                    if (receivedMessage.Status == MessageStatus.OperationEnd)
+                    {
+                        if (this.machineVolatileDataProvider.IsBayLightOn.ContainsKey(bayNumber))
+                        {
+                            this.machineVolatileDataProvider.IsBayLightOn[bayNumber] = enable;
+                        }
+                        else
+                        {
+                            this.machineVolatileDataProvider.IsBayLightOn.Add(bayNumber, enable);
+                        }
+                    }
+
+                    this.EventAggregator
+                        .GetEvent<NotificationEvent>()
+                        .Publish(
+                            new NotificationMessage(
+                                null,
+                                $"BayLight={enable} completed, Bay={bayNumber}",
+                                MessageActor.Any,
+                                MessageActor.DeviceManager,
+                                MessageType.BayLight,
+                                bayNumber,
+                                bayNumber,
+                                receivedMessage.Status));
 
                     break;
 
@@ -631,11 +720,8 @@ namespace Ferretto.VW.MAS.DeviceManager
 
             this.forceRemoteIoStatusPublish = new bool[ioDevices.Count()];
 
-            var machineResourcesProvider = serviceProvider
-                .GetRequiredService<IMachineResourcesProvider>();
-
-            machineResourcesProvider.RunningStateChanged += this.MachineSensorsStatusOnRunningStateChanged;
-            machineResourcesProvider.FaultStateChanged += this.MachineSensorsStatusOnFaultStateChanged;
+            this.machineResourcesProvider.RunningStateChanged += this.MachineSensorsStatusOnRunningStateChanged;
+            this.machineResourcesProvider.FaultStateChanged += this.MachineSensorsStatusOnFaultStateChanged;
         }
 
         private void SendCleanDebug()

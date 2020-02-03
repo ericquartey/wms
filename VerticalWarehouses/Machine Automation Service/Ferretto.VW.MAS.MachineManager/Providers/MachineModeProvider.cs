@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.MachineManager.Providers
@@ -10,18 +11,22 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
     {
         #region Fields
 
-        private readonly IMachineModeVolatileDataProvider machineModeDataProvider;
+        private readonly ILogger<MachineModeProvider> logger;
+
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
         #endregion
 
         #region Constructors
 
         public MachineModeProvider(
-            IMachineModeVolatileDataProvider machineModeDataProvider,
+            IMachineVolatileDataProvider machineVolatileDataProvider,
+            ILogger<MachineModeProvider> logger,
             IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
-            this.machineModeDataProvider = machineModeDataProvider ?? throw new ArgumentNullException(nameof(machineModeDataProvider));
+            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #endregion
@@ -30,12 +35,12 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         public MachineMode GetCurrent()
         {
-            return this.machineModeDataProvider.Mode;
+            return this.machineVolatileDataProvider.Mode;
         }
 
         public void RequestChange(MachineMode machineMode)
         {
-            if (machineMode == this.machineModeDataProvider.Mode)
+            if (machineMode == this.machineVolatileDataProvider.Mode)
             {
                 return;
             }
@@ -43,36 +48,30 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             switch (machineMode)
             {
                 case MachineMode.Automatic:
-                    this.machineModeDataProvider.Mode = MachineMode.SwitchingToAutomatic;
+                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToAutomatic;
+                    this.logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
                     break;
 
                 case MachineMode.Manual:
-                    this.machineModeDataProvider.Mode = MachineMode.SwitchingToManual;
+                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToManual;
+                    this.logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                    break;
+
+                case MachineMode.Compact:
+                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToCompact;
+                    this.logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
                     break;
 
                 default:
                     throw new ArgumentException($"The requested machine mode '{machineMode}' cannot be handled.", nameof(machineMode));
             }
 
-            this.SendCommandToMissionManager(
+            this.SendCommandToMachineManager(
                 new MachineModeMessageData(machineMode),
                 $"Request mode change to '{machineMode}'",
                 MessageActor.MissionManager,
                 MessageType.MachineMode,
                 BayNumber.All);
-
-            // HACK: this is a mocked implementation of the mode switch
-            // HACK: begin
-            if (this.machineModeDataProvider.Mode is MachineMode.SwitchingToAutomatic)
-            {
-                this.machineModeDataProvider.Mode = MachineMode.Automatic;
-            }
-            else if (this.machineModeDataProvider.Mode is MachineMode.SwitchingToManual)
-            {
-                this.machineModeDataProvider.Mode = MachineMode.Manual;
-            }
-
-            // HACK: end
         }
 
         #endregion

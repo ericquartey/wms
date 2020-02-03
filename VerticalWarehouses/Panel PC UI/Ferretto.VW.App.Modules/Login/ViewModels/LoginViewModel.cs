@@ -1,15 +1,20 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Login.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Login.ViewModels
 {
+    [Warning(WarningsArea.Login)]
     internal sealed class LoginViewModel : BaseMainViewModel
     {
         #region Fields
@@ -24,9 +29,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private readonly IMachineErrorsService machineErrorsService;
 
-        private int bayNumber;
-
-        private bool isWaitingForResponse;
+        private readonly ISessionService sessionService;
 
         private DelegateCommand loginCommand;
 
@@ -44,20 +47,17 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             IAuthenticationService authenticationService,
             IMachineErrorsService machineErrorsService,
             IHealthProbeService healthProbeService,
+            ISessionService sessionService,
             IBayManager bayManager,
             IMachineBaysWebService machineBaysWebService)
             : base(PresentationMode.Login)
         {
-            if (bayManager is null)
-            {
-                throw new ArgumentNullException(nameof(bayManager));
-            }
-
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
             this.machineErrorsService = machineErrorsService ?? throw new ArgumentNullException(nameof(machineErrorsService));
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
-            this.ServiceHealthStatus = this.healthProbeService.HealthStatus;
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
+            this.ServiceHealthStatus = this.healthProbeService.HealthMasStatus;
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
 
             this.UserLogin = new UserLogin
@@ -65,6 +65,9 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 UserName = "installer",
                 Password = "password",
             };
+
+            this.UserLogin.PropertyChanged += this.UserLogin_PropertyChanged;
+            this.MachineService.PropertyChanged += this.MachineService_PropertyChanged;
         }
 
         #endregion
@@ -73,26 +76,15 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         public int BayNumber
         {
-            get => this.bayNumber;
-            set => this.SetProperty(ref this.bayNumber, value);
+            get => (int)this.MachineService?.BayNumber;
         }
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            set
-            {
-                if (this.SetProperty(ref this.isWaitingForResponse, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
+        public override bool KeepAlive => false;
 
         public ICommand LoginCommand =>
-                    this.loginCommand
+            this.loginCommand
             ??
             (this.loginCommand = new DelegateCommand(
                 async () => await this.LoginAsync(),
@@ -124,6 +116,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         public UserLogin UserLogin { get; }
 
+        protected override bool IsDataRefreshSyncronous => true;
+
         #endregion
 
         #region Methods
@@ -145,39 +139,27 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            await base.OnAppearedAsync();
+            this.ClearNotifications();
 
-            try
-            {
-                this.subscriptionToken = this.healthProbeService.HealthStatusChanged
-                    .Subscribe(
-                        this.OnHealthStatusChanged,
-                        ThreadOption.UIThread,
-                        false);
-
-                this.IsWaitingForResponse = true;
-                var bay = await this.bayManager.GetBayAsync();
-                if (!(bay is null))
-                {
-                    this.BayNumber = (int)bay.Number;
-                    await this.machineBaysWebService.DeactivateAsync();
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
+            this.subscriptionToken = this.healthProbeService.HealthStatusChanged
+                .Subscribe(
+                    this.OnHealthStatusChanged,
+                    ThreadOption.UIThread,
+                    false);
 
             this.machineErrorsService.AutoNavigateOnError = false;
 
             if (this.Data is MachineIdentity machineIdentity)
             {
                 this.MachineIdentity = machineIdentity;
+                this.sessionService.MachineIdentity = machineIdentity;
             }
+            else
+            {
+                this.MachineIdentity = this.sessionService.MachineIdentity;
+            }
+
+            await base.OnAppearedAsync();
         }
 
         public void OnHealthStatusChanged(HealthStatusChangedEventArgs e)
@@ -187,7 +169,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 throw new ArgumentNullException(nameof(e));
             }
 
-            this.ServiceHealthStatus = e.HealthStatus;
+            this.ServiceHealthStatus = e.HealthMasStatus;
 
             if (this.ServiceHealthStatus == HealthStatus.Degraded
                 ||
@@ -195,15 +177,24 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             {
                 this.ClearNotifications();
             }
+            else
+            {
+                this.ShowNotification("Connection to Automation Service is lost, trying to resume...", Services.Models.NotificationSeverity.Error);
+                this.RaiseCanExecuteChanged();
+            }
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.loginCommand?.RaiseCanExecuteChanged();
         }
 
         private bool CanExecuteLogin()
         {
             return
                 this.machineIdentity != null
-
-                // &&
-                // string.IsNullOrEmpty(this.UserLogin.Error)
                 &&
                 !this.IsWaitingForResponse
                 &&
@@ -227,18 +218,20 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             {
                 var claims = await this.authenticationService.LogInAsync(
                    this.UserLogin.UserName,
-                   this.UserLogin.Password);
+                   this.UserLogin.Password,
+                   this.UserLogin.SupportToken);
 
                 if (claims != null)
                 {
-                    if (claims.AccessLevel == UserAccessLevel.SuperUser)
-                    {
-                        this.NavigateToInstallerMainView();
-                    }
-                    else
-                    {
-                        this.NavigateToOperatorMainView();
-                    }
+                    this.sessionService.SetUserAccessLevel(claims.AccessLevel);
+
+                    await this.machineBaysWebService.ActivateAsync();
+
+                    this.NavigationService.Appear(
+                        nameof(Utils.Modules.Menu),
+                        Utils.Modules.Menu.MAIN_MENU,
+                        data: this.Data,
+                        trackCurrentView: true);
 
                     this.machineErrorsService.AutoNavigateOnError = true;
                 }
@@ -257,27 +250,39 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
         }
 
-        private void NavigateToInstallerMainView()
+        private void MachineService_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            this.NavigationService.Appear(
-                nameof(Utils.Modules.Installation),
-                Utils.Modules.Installation.INSTALLATORMENU,
-                data: null,
-                trackCurrentView: true);
+            Application.Current.Dispatcher.BeginInvoke(new Action(async () =>
+            {
+                if (e.PropertyName == nameof(this.MachineService.BayNumber))
+                {
+                    try
+                    {
+                        this.RaisePropertyChanged(nameof(this.BayNumber));
+                    }
+                    catch (HttpRequestException)
+                    {
+                    }
+                }
+            }));
         }
 
-        private void NavigateToOperatorMainView()
+        private void UserLogin_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            this.NavigationService.Appear(
-                nameof(Utils.Modules.Operator),
-                Utils.Modules.Operator.OPERATOR_MENU,
-                data: null,
-                trackCurrentView: true);
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.loginCommand?.RaiseCanExecuteChanged();
+            Application.Current.Dispatcher.BeginInvoke(new Action(async () =>
+            {
+                if (e.PropertyName == nameof(this.UserLogin.UserName) && this.UserLogin.IsSupport)
+                {
+                    try
+                    {
+                        this.UserLogin.Password = string.Empty;
+                        this.UserLogin.SupportToken = await this.authenticationService.GetToken();
+                    }
+                    catch (HttpRequestException)
+                    {
+                    }
+                }
+            }));
         }
 
         #endregion

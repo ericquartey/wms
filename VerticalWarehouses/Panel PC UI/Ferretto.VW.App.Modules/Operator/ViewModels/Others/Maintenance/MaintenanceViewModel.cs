@@ -7,12 +7,15 @@ using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Controls.Utils;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class MaintenanceViewModel : BaseMainViewModel
+    [Warning(WarningsArea.Maintenance)]
+    public class MaintenanceViewModel : BaseOperatorViewModel
     {
         #region Fields
 
@@ -21,8 +24,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         private readonly CustomControlMaintenanceDataGridViewModel dataGridViewModelRef;
 
         private BindableBase dataGridViewModel;
-
-        private bool isWaitingForResponse;
 
         private ObservableCollection<DataGridKit> kits;
 
@@ -52,12 +53,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         }
 
         public override EnableMask EnableMask => EnableMask.Any;
-
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            protected set => this.SetProperty(ref this.isWaitingForResponse, value);
-        }
 
         public ICustomControlMaintenanceDataGridViewModel MaintenanceDataGridViewModel { get; }
 

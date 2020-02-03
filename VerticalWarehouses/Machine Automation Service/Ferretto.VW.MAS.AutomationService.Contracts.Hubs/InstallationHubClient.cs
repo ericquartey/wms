@@ -20,6 +20,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         public event EventHandler<BayChainPositionChangedEventArgs> BayChainPositionChanged;
 
+        public event EventHandler<BayLightChangedEventArgs> BayLightChanged;
+
         public event EventHandler<ElevatorPositionChangedEventArgs> ElevatorPositionChanged;
 
         public event EventHandler<MachineModeChangedEventArgs> MachineModeChanged;
@@ -27,6 +29,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         public event EventHandler<MachinePowerChangedEventArgs> MachinePowerChanged;
 
         public event EventHandler<MessageNotifiedEventArgs> MessageReceived;
+
+        public event EventHandler<SystemTimeChangedEventArgs> SystemTimeChanged;
 
         #endregion
 
@@ -43,7 +47,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             connection.On<MachinePowerState>(
                 nameof(IInstallationHub.MachinePowerChanged), this.OnMachinePowerChanged);
 
-            connection.On<double, double, int?, int?>(
+            connection.On<double, double, int?, int?, bool?>(
                 nameof(IInstallationHub.ElevatorPositionChanged), this.OnElevatorPositionChanged);
 
             connection.On<NotificationMessageUI<SensorsChangedMessageData>>(
@@ -84,13 +88,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
             connection.On<NotificationMessageUI<MoveLoadingUnitMessageData>>(
                 nameof(IInstallationHub.MoveLoadingUnit), this.OnMoveLoadingUnit);
+
+            connection.On<NotificationMessageUI<FsmExceptionMessageData>>(
+                nameof(IInstallationHub.FsmException), this.OnFsmException);
+
+            connection.On<bool, BayNumber>(
+                nameof(IInstallationHub.BayLightChanged), this.OnBayLightChanged);
+
+            connection.On(
+                nameof(IInstallationHub.SystemTimeChanged), this.OnSystemTimeChanged);
         }
 
         private void OnBayChainPositionChanged(double position, BayNumber bayNumber)
         {
-            this.BayChainPositionChanged?.Invoke(
-                this,
-                new BayChainPositionChangedEventArgs(position, bayNumber));
+            this.BayChainPositionChanged?.Invoke(this, new BayChainPositionChangedEventArgs(position, bayNumber));
+        }
+
+        private void OnBayLightChanged(bool isLightOn, BayNumber bayNumber)
+        {
+            this.BayLightChanged?.Invoke(this, new BayLightChangedEventArgs(isLightOn, bayNumber));
         }
 
         private void OnCalibrateAxisNotify(NotificationMessageUI<CalibrateAxisMessageData> message)
@@ -103,11 +119,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
-        private void OnElevatorPositionChanged(double verticalPosition, double horizontalPosition, int? cellId, int? bayPositionId)
+        private void OnElevatorPositionChanged(double verticalPosition, double horizontalPosition, int? cellId, int? bayPositionId, bool? bayPositionUpper)
         {
             this.ElevatorPositionChanged?.Invoke(
                 this,
-                new ElevatorPositionChangedEventArgs(verticalPosition, horizontalPosition, cellId, bayPositionId));
+                new ElevatorPositionChangedEventArgs(verticalPosition, horizontalPosition, cellId, bayPositionId, bayPositionUpper));
+        }
+
+        private void OnFsmException(NotificationMessageUI<FsmExceptionMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
         private void OnHomingProcedureStatusChanged(NotificationMessageUI<HomingMessageData> message)
@@ -173,6 +194,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         private void OnSwitchAxisNotify(NotificationMessageUI<SwitchAxisMessageData> message)
         {
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnSystemTimeChanged()
+        {
+            this.SystemTimeChanged?.Invoke(this, new SystemTimeChangedEventArgs());
         }
 
         #endregion

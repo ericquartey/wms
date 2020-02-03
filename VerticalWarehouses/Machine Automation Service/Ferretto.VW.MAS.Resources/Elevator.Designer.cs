@@ -115,11 +115,29 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No loading unit is waiting to be extracted in the specified bay position..
+        /// </summary>
+        public static string NoMissionIsWaitingInTheSpecifiedBayPosition {
+            get {
+                return ResourceManager.GetString("NoMissionIsWaitingInTheSpecifiedBayPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical axis offset ({0}mm) not valid: must be in the range [{1}mm; {2}mm]..
+        /// </summary>
+        public static string OffsetOutOfBounds {
+            get {
+                return ResourceManager.GetString("OffsetOutOfBounds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Target position ({0}mm) must be in the range [{1}mm; {2}mm]..
         /// </summary>
-        public static string TargetPositionMustBeInRange {
+        public static string TargetPositionOutOfBounds {
             get {
-                return ResourceManager.GetString("TargetPositionMustBeInRange", resourceCulture);
+                return ResourceManager.GetString("TargetPositionOutOfBounds", resourceCulture);
             }
         }
         

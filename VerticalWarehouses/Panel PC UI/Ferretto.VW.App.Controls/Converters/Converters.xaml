@@ -20,7 +20,7 @@
     <conv:ReferenceToVisibilityConverter x:Key="RTVIC"
                                          Invert="True" />
 
-    <conv:EnumCellStatusConverter x:Key="ECSC" />
+    <conv:EnumBlockLevelConverter x:Key="EBLC" />
     <conv:EnumWarehouseSideConverter x:Key="EWSC" />
     <conv:EnumItemManagementTypeConverter x:Key="EIMTC" />
     <conv:ImageToSourceConverter x:Key="ITSC" />
@@ -33,4 +33,9 @@
     <conv:MachinesToStringConverter x:Key="MTSC" />
     <conv:MultiValueConverterAdapter x:Key="MVC" />
 
+    <conv:DebugDummyConverter x:Key="DEBUG" />
+
+    <!-- truthy to ui -->
+    <conv:TruthyToUiConverter x:Key="TTUI" />
+    <conv:MultiBooleanToUiConverter x:Key="MBTUI" />
 </ResourceDictionary>

@@ -6,11 +6,11 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
+using Ferretto.VW.MAS.MissionManager;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -20,9 +20,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly ILoadingUnitsProvider loadingUnitsProvider;
+        private readonly ILoadingUnitsDataProvider loadingUnitsDataProvider;
 
-        private readonly IMachinesDataService machinesDataService;
+        private readonly IMachineProvider machineProvider;
+
+        private readonly IMachinesWmsWebService machinesWmsWebService;
+
+        private readonly IMissionSchedulingProvider missionSchedulingProvider;
 
         private readonly IMoveLoadingUnitProvider moveLoadingUnitProvider;
 
@@ -32,11 +36,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public LoadingUnitsController(
             IMoveLoadingUnitProvider moveLoadingUnitProvider,
-            ILoadingUnitsProvider loadingUnitsProvider,
-            IMachinesDataService machinesDataService)
+            ILoadingUnitsDataProvider loadingUnitsDataProvider,
+            IMachineProvider machineProvider,
+            IMissionSchedulingProvider missionSchedulingProvider,
+            IMachinesWmsWebService machinesWmsWebService)
         {
-            this.loadingUnitsProvider = loadingUnitsProvider ?? throw new ArgumentNullException(nameof(loadingUnitsProvider));
-            this.machinesDataService = machinesDataService ?? throw new ArgumentNullException(nameof(machinesDataService));
+            this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
+            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            this.missionSchedulingProvider = missionSchedulingProvider ?? throw new ArgumentNullException(nameof(missionSchedulingProvider));
+            this.machinesWmsWebService = machinesWmsWebService ?? throw new ArgumentNullException(nameof(machinesWmsWebService));
             this.moveLoadingUnitProvider = moveLoadingUnitProvider ?? throw new ArgumentNullException(nameof(moveLoadingUnitProvider));
         }
 
@@ -54,7 +62,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("abort-moving")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult Abort(Guid? missionId, BayNumber targetBay)
+        public IActionResult Abort(int? missionId, BayNumber targetBay)
         {
             this.moveLoadingUnitProvider.AbortMove(missionId, this.BayNumber, targetBay, MessageActor.AutomationService);
             return this.Accepted();
@@ -66,7 +74,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult EjectLoadingUnit(LoadingUnitLocation destination, int loadingUnitId)
         {
-            if (destination == LoadingUnitLocation.Cell || destination == LoadingUnitLocation.LoadingUnit)
+            if (destination == LoadingUnitLocation.Cell || destination == LoadingUnitLocation.LoadUnit)
             {
                 return this.BadRequest();
             }
@@ -79,22 +87,21 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<DataModels.LoadingUnit>> GetAll()
         {
-            var loadingUnits = this.loadingUnitsProvider.GetAll();
-            return this.Ok(loadingUnits);
+            return this.Ok(this.loadingUnitsDataProvider.GetAll());
         }
 
         [HttpGet("statistics/space")]
         public async Task<ActionResult<IEnumerable<LoadingUnitSpaceStatistics>>> GetSpaceStatisticsAsync(
             [FromServices] IConfiguration configuration)
         {
-            var statistics = this.loadingUnitsProvider.GetSpaceStatistics();
+            var statistics = this.loadingUnitsDataProvider.GetSpaceStatistics();
 
             if (configuration.IsWmsEnabled())
             {
                 try
                 {
-                    var machineId = 1; // TODO HACK remove this hardcoded value and use machine serial number
-                    var loadingUnits = await this.machinesDataService.GetLoadingUnitsByIdAsync(machineId);
+                    var machineId = this.machineProvider.GetIdentity();
+                    var loadingUnits = await this.machinesWmsWebService.GetLoadingUnitsByIdAsync(machineId);
                     foreach (var stat in statistics)
                     {
                         var loadingUnit = loadingUnits.SingleOrDefault(l => l.Code == stat.Code);
@@ -122,14 +129,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public async Task<ActionResult<IEnumerable<LoadingUnitWeightStatistics>>> GetWeightStatisticsAsync(
             [FromServices] IConfiguration configuration)
         {
-            var statistics = this.loadingUnitsProvider.GetWeightStatistics();
+            var statistics = this.loadingUnitsDataProvider.GetWeightStatistics();
 
             if (configuration.IsWmsEnabled())
             {
                 try
                 {
-                    var machineId = 1; // TODO HACK remove this hardcoded value
-                    var loadingUnits = await this.machinesDataService.GetLoadingUnitsByIdAsync(machineId);
+                    var machineId = this.machineProvider.GetIdentity();
+                    var loadingUnits = await this.machinesWmsWebService.GetLoadingUnitsByIdAsync(machineId);
                     foreach (var stat in statistics)
                     {
                         var loadingUnit = loadingUnits.SingleOrDefault(l => l.Code == stat.Code);
@@ -153,13 +160,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult InsertLoadingUnit(LoadingUnitLocation source, int destinationCellId, int loadingUnitId)
+        public IActionResult InsertLoadingUnit(LoadingUnitLocation source, int? destinationCellId, int loadingUnitId)
         {
-            if (source == LoadingUnitLocation.Cell || source == LoadingUnitLocation.LoadingUnit)
-            {
-                return this.BadRequest();
-            }
-
             this.moveLoadingUnitProvider.InsertToCell(MissionType.Manual, source, destinationCellId, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
@@ -171,25 +173,47 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         public IActionResult InsertLoadingUnitOnlyDb(int loadingUnitId)
         {
-            this.loadingUnitsProvider.Insert(loadingUnitId);
+            this.loadingUnitsDataProvider.Insert(loadingUnitId);
+            return this.Accepted();
+        }
+
+        [HttpPost("{id}/move-to-bay")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public IActionResult MoveToBay(int id)
+        {
+            this.missionSchedulingProvider.QueueBayMission(id, this.BayNumber);
+
             return this.Accepted();
         }
 
         [HttpGet("pause-moving")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult Pause(Guid? missionId, BayNumber targetBay)
+        public IActionResult Pause(int? missionId, BayNumber targetBay)
         {
             this.moveLoadingUnitProvider.PauseMove(missionId, this.BayNumber, targetBay, MessageActor.AutomationService);
+            return this.Accepted();
+        }
+
+        [HttpPost("{id}/recall")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public IActionResult RemoveFromBayAsync(int id)
+        {
+            this.missionSchedulingProvider.QueueRecallMission(id, this.BayNumber);
+
             return this.Accepted();
         }
 
         [HttpGet("resume-moving")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult Resume(Guid? missionId, BayNumber targetBay)
+        public IActionResult Resume(int? missionId, BayNumber targetBay)
         {
-            this.moveLoadingUnitProvider.ResumeMove(missionId, this.BayNumber, targetBay, MessageActor.AutomationService);
+            this.moveLoadingUnitProvider.RemoveLoadUnit(missionId, this.BayNumber, targetBay, MessageActor.AutomationService);
             return this.Accepted();
         }
 
@@ -199,11 +223,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult StartMovingLoadingUnitToBay(int loadingUnitId, LoadingUnitLocation destination)
         {
-            if (destination == LoadingUnitLocation.Cell)
-            {
-                return this.BadRequest();
-            }
-
             this.moveLoadingUnitProvider.MoveLoadingUnitToBay(MissionType.Manual, loadingUnitId, destination, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
@@ -245,11 +264,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
-        // Instantaneously interrupts current operation leaving machine in a potentially unsafe condition
+        /// <summary>
+        ///  Instantly stops the current operation leaving machine in a potentially unsafe condition.
+        /// </summary>
+        /// <param name="missionId"></param>
+        /// <param name="targetBay"></param>
+        /// <returns></returns>
         [HttpGet("stop-moving")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult Stop(Guid? missionId, BayNumber targetBay)
+        public IActionResult Stop(int? missionId, BayNumber targetBay)
         {
             this.moveLoadingUnitProvider.StopMove(missionId, this.BayNumber, targetBay, MessageActor.AutomationService);
             return this.Accepted();

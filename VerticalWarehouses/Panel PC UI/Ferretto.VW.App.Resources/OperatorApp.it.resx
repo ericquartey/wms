@@ -163,7 +163,7 @@
     <value>Quantità</value>
   </data>
   <data name="RequestedQuantity" xml:space="preserve">
-    <value>Quantità Richiesta</value>
+    <value>Quantità richiesta [{0}]</value>
   </data>
   <data name="SearchCode" xml:space="preserve">
     <value>Cerca per Codice</value>
@@ -247,16 +247,13 @@
     <value>Ricerca articolo per codice e descrizione.</value>
   </data>
   <data name="ItemSearchKeySearch" xml:space="preserve">
-    <value>Ricerca per codice</value>
+    <value>Ricerca</value>
   </data>
   <data name="ItemSearchSearch" xml:space="preserve">
     <value>Cerca articolo</value>
   </data>
-  <data name="ItemSearchQtyAvailable" xml:space="preserve">
-    <value>Quantità disponibile</value>
-  </data>
-  <data name="ItemSearchQtyRequest" xml:space="preserve">
-    <value>Quantità richiesta</value>
+  <data name="AvailableQuantity" xml:space="preserve">
+    <value>Quantità disponibile [{0}]</value>
   </data>
   <data name="ItemSearchDetail" xml:space="preserve">
     <value>Dettaglio articolo</value>
@@ -301,16 +298,16 @@
     <value>Versione software</value>
   </data>
   <data name="GeneralInfoInstallationDate" xml:space="preserve">
-    <value>Data di installazione</value>
+    <value>Collaudo</value>
   </data>
   <data name="GeneralInfoLastMaintenanceDate" xml:space="preserve">
-    <value>Data ultima manutenzione</value>
+    <value>Ultima manutenzione</value>
   </data>
   <data name="GeneralInfoNextMaintenanceDate" xml:space="preserve">
-    <value>Data prossima manutenzione:</value>
+    <value>Prossima manutenzione</value>
   </data>
   <data name="GeneralInfoOperativeStatus" xml:space="preserve">
-    <value>Stato operativo macchina</value>
+    <value>Stato macchina</value>
   </data>
   <data name="DrawerCompactingHeader" xml:space="preserve">
     <value>Procedura di compattazione cassetti.</value>
@@ -376,7 +373,7 @@
     <value>Totale cassetti</value>
   </data>
   <data name="DrawerSpaceSaturazionDrawerMeasure" xml:space="preserve">
-    <value>Dimensione cassetti [mm.]</value>
+    <value>Dimensione cassetti [mm]</value>
   </data>
   <data name="DrawerSpaceSaturazionFillingMachine" xml:space="preserve">
     <value>Riempimento macchina</value>
@@ -511,10 +508,10 @@
     <value>Operazione di versamento.</value>
   </data>
   <data name="DrawerActivityRefillingQtyToRefill" xml:space="preserve">
-    <value>Q.tà da versare [pz.]</value>
+    <value>Q.tà da versare  [{0}]</value>
   </data>
   <data name="DrawerActivityRefillingQtyRefilled" xml:space="preserve">
-    <value>Q.tà versata [pz.]</value>
+    <value>Q.tà versata  [{0}]</value>
   </data>
   <data name="DrawerActivityRefillingCapacityMaxAdjust" xml:space="preserve">
     <value>Aggiorna capacità massima</value>
@@ -601,7 +598,7 @@
     <value>Unità di misura</value>
   </data>
   <data name="ItemDetailWeight" xml:space="preserve">
-    <value>Peso medio [gr.]</value>
+    <value>Peso medio [gr]</value>
   </data>
   <data name="StatisticsNavigationMachine" xml:space="preserve">
     <value>Statistiche macchina</value>
@@ -667,7 +664,7 @@
     <value>Tipo lista</value>
   </data>
   <data name="GeneralInfoWmsStatus" xml:space="preserve">
-    <value>Stato del WMS</value>
+    <value>Stato WMS</value>
   </data>
   <data name="DrawerCompactingDetailHeader" xml:space="preserve">
     <value>Visualizza dettagli compattazione.</value>
@@ -715,16 +712,16 @@
     <value>Codice cassetto</value>
   </data>
   <data name="DrawerActivityLocalCallHeight" xml:space="preserve">
-    <value>Altezza attuale cassetto [mm.]</value>
+    <value>Altezza attuale cassetto [mm]</value>
   </data>
   <data name="DrawerActivityLocalCallGrossWeight" xml:space="preserve">
-    <value>Tara cassetto [Kg.]</value>
+    <value>Peso Lordo [kg]</value>
   </data>
   <data name="DrawerActivityLocalCallActualWeight" xml:space="preserve">
-    <value>Peso attuale [Kg.]</value>
+    <value>Peso attuale [kg]</value>
   </data>
   <data name="DrawerActivityLocalCallMaxCapacity" xml:space="preserve">
-    <value>Portata netta massima [Kg.]</value>
+    <value>Portata netta massima [kg]</value>
   </data>
   <data name="DrawerActivityLocalCallMissions" xml:space="preserve">
     <value>Numero missioni eseguite</value>
@@ -928,9 +925,271 @@
     <value>Quantità da prelevare</value>
   </data>
   <data name="PickedQuantity" xml:space="preserve">
-    <value>Quantità prelevata</value>
+    <value>Quantità prelevata [{0}]</value>
   </data>
   <data name="MaterialStatus" xml:space="preserve">
     <value>Stato merce</value>
+  </data>
+  <data name="InventoryOperation" xml:space="preserve">
+    <value>Operazione di inventario.</value>
+  </data>
+  <data name="InventoryQuantityDetected" xml:space="preserve">
+    <value>Quantità rilevata [{0}]</value>
+  </data>
+  <data name="PickRequestWasAccepted" xml:space="preserve">
+    <value>La richiesta di prelievo per l'articolo {0} (quantità {1}) è stata accettata.</value>
+  </data>
+  <data name="WaitingListDataGridHeaderExecutable" xml:space="preserve">
+    <value>Eseguibile</value>
+  </data>
+  <data name="Empty" xml:space="preserve">
+    <value>Vuoto</value>
+  </data>
+  <data name="Full" xml:space="preserve">
+    <value>Pieno</value>
+  </data>
+  <data name="CommonListRow" xml:space="preserve">
+    <value>Riga lista</value>
+  </data>
+  <data name="LoadingUnitId" xml:space="preserve">
+    <value>Id cassetto</value>
+  </data>
+  <data name="LoadingUnitWidth" xml:space="preserve">
+    <value>Larghezza</value>
+  </data>
+  <data name="LoadingUnitDepth" xml:space="preserve">
+    <value>Profondità</value>
+  </data>
+  <data name="LoadingUnit" xml:space="preserve">
+    <value>Cassetto</value>
+  </data>
+  <data name="Complete Check" xml:space="preserve">
+    <value>Completa Controllo</value>
+  </data>
+  <data name="LoadingUnitCheck" xml:space="preserve">
+    <value>Controllo cassetto</value>
+  </data>
+  <data name="ConfirmOnEmpty" xml:space="preserve">
+    <value>Conferma su vuoto</value>
+  </data>
+  <data name="ConfirmOnFull" xml:space="preserve">
+    <value>Conferma su pieno</value>
+  </data>
+  <data name="ItemMachinesAvailability" xml:space="preserve">
+    <value>Disponibilità su macchine</value>
+  </data>
+  <data name="CurrentOperationIsNoLongerAvailable" xml:space="preserve">
+    <value>L'operazione corrente è stata cancellata da remoto.
+Prego riportare gli eventuali articoli movimentati nella loro posizione originale.</value>
+  </data>
+  <data name="OperationCancelled" xml:space="preserve">
+    <value>Operazione annullata</value>
+  </data>
+  <data name="OperationConfirmed" xml:space="preserve">
+    <value>Operazione confermata.</value>
+  </data>
+  <data name="NoLoadingUnitsToMove" xml:space="preserve">
+    <value>Non ci sono cassetti da movimentare</value>
+  </data>
+  <data name="LoadingUnitsSendToBay" xml:space="preserve">
+    <value>Ci sono {0} cassetti da portare in baia</value>
+  </data>
+  <data name="LoadingUnitSendToBay" xml:space="preserve">
+    <value>C'è un cassetto da portare in baia</value>
+  </data>
+  <data name="RemoveAnySpilledItemsFromCompartment" xml:space="preserve">
+    <value>Rimuovere dallo scomparto gli eventuali articoli versati.</value>
+  </data>
+  <data name="IfPickedItemsPutThemBackInTheOriginalCompartment" xml:space="preserve">
+    <value>Rimuovere dallo scomparto gli eventuali articoli versati.</value>
+  </data>
+  <data name="CancelPut" xml:space="preserve">
+    <value>Annulla versamento</value>
+  </data>
+  <data name="CancelPick" xml:space="preserve">
+    <value>Annulla prelievo</value>
+  </data>
+  <data name="OperationCancelledConfirmed" xml:space="preserve">
+    <value>L'operazione annullata è confermata</value>
+  </data>
+  <data name="InventoryOperationCancelled" xml:space="preserve">
+    <value>L'operazione di inventario è stata annullata.</value>
+  </data>
+  <data name="Missions" xml:space="preserve">
+    <value>Missioni</value>
+  </data>
+  <data name="MissionsList" xml:space="preserve">
+    <value>Elenco missioni</value>
+  </data>
+  <data name="CreationDate" xml:space="preserve">
+    <value>Creazione</value>
+  </data>
+  <data name="MissionStep" xml:space="preserve">
+    <value>Step</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Baia</value>
+  </data>
+  <data name="BayNumberAll" xml:space="preserve">
+    <value>Tutti</value>
+  </data>
+  <data name="BayNumberElevatorBay" xml:space="preserve">
+    <value>Baia elevatore</value>
+  </data>
+  <data name="BayNumberBayThree" xml:space="preserve">
+    <value>Baia tre</value>
+  </data>
+  <data name="BayNumberBayTwo" xml:space="preserve">
+    <value>Baia due</value>
+  </data>
+  <data name="BlockLevelBlocked" xml:space="preserve">
+    <value>c</value>
+  </data>
+  <data name="BayNumberBayNone" xml:space="preserve">
+    <value>Nessuna baia</value>
+  </data>
+  <data name="StatusExecuting" xml:space="preserve">
+    <value>In esecuzione</value>
+  </data>
+  <data name="StatusNew" xml:space="preserve">
+    <value>Nuova</value>
+  </data>
+  <data name="StatusWaiting" xml:space="preserve">
+    <value>In attesa</value>
+  </data>
+  <data name="StatusCompleted" xml:space="preserve">
+    <value>Completata</value>
+  </data>
+  <data name="StatusAborted" xml:space="preserve">
+    <value>Abortita</value>
+  </data>
+  <data name="StatusCompleting" xml:space="preserve">
+    <value>In completamento</value>
+  </data>
+  <data name="BayNumberBayOne" xml:space="preserve">
+    <value>Baia uno</value>
+  </data>
+  <data name="MissionType" xml:space="preserve">
+    <value>Tipo missione</value>
+  </data>
+  <data name="MissionStatus" xml:space="preserve">
+    <value>Condizione</value>
+  </data>
+  <data name="BayTarget" xml:space="preserve">
+    <value>Baia</value>
+  </data>
+  <data name="MissionStateNew" xml:space="preserve">
+    <value>Nuovo</value>
+  </data>
+  <data name="MissionStateNotDefined" xml:space="preserve">
+    <value>Non definito</value>
+  </data>
+  <data name="MissionStateStart" xml:space="preserve">
+    <value>Inizio</value>
+  </data>
+  <data name="MissionStateToTarget" xml:space="preserve">
+    <value>A destinazione</value>
+  </data>
+  <data name="MissionStateWaitPick" xml:space="preserve">
+    <value>Attesa azione</value>
+  </data>
+  <data name="MissionStateCloseShutter" xml:space="preserve">
+    <value>Chiusura serranda</value>
+  </data>
+  <data name="MissionStateError" xml:space="preserve">
+    <value>Errore</value>
+  </data>
+  <data name="MissionStateEnd" xml:space="preserve">
+    <value>Fine</value>
+  </data>
+  <data name="MissionStateBayChain" xml:space="preserve">
+    <value>Taratura catena</value>
+  </data>
+  <data name="MissionStateDepositUnit" xml:space="preserve">
+    <value>Deposito unità</value>
+  </data>
+  <data name="MissionStateLoadElevator" xml:space="preserve">
+    <value>Carico elevatore</value>
+  </data>
+  <data name="MissionTypeManual" xml:space="preserve">
+    <value>Manuale</value>
+  </data>
+  <data name="MissionTypeIn" xml:space="preserve">
+    <value>Entrata</value>
+  </data>
+  <data name="MissionTypeFullTest" xml:space="preserve">
+    <value>Test completo</value>
+  </data>
+  <data name="MissionTypeCompact" xml:space="preserve">
+    <value>Compattazione</value>
+  </data>
+  <data name="MissionTypeWms" xml:space="preserve">
+    <value>Wms</value>
+  </data>
+  <data name="MissionTypeOut" xml:space="preserve">
+    <value>Uscita</value>
+  </data>
+  <data name="MissionTypeNoType" xml:space="preserve">
+    <value>Nessun tipo</value>
+  </data>
+  <data name="MisionStateNotDefined" xml:space="preserve">
+    <value>Non definito</value>
+  </data>
+  <data name="LoadingUnitInBay" xml:space="preserve">
+    <value>Cassetto in baia</value>
+  </data>
+  <data name="RecallDrawer" xml:space="preserve">
+    <value>Rientro Cassetto</value>
+  </data>
+  <data name="Pieces" xml:space="preserve">
+    <value>pezzi</value>
+  </data>
+  <data name="Pick" xml:space="preserve">
+    <value>Prelievo</value>
+  </data>
+  <data name="Put" xml:space="preserve">
+    <value>Versamento</value>
+  </data>
+  <data name="Adjustment" xml:space="preserve">
+    <value>Modifica</value>
+  </data>
+  <data name="CompartmentWidth" xml:space="preserve">
+    <value>Larghezza</value>
+  </data>
+  <data name="CompartmentDepth" xml:space="preserve">
+    <value>Prof.</value>
+  </data>
+  <data name="CompartmentStock" xml:space="preserve">
+    <value>Giacenza</value>
+  </data>
+  <data name="ItemDescription" xml:space="preserve">
+    <value>Descrizione articolo</value>
+  </data>
+  <data name="ItemCode" xml:space="preserve">
+    <value>Codice art.</value>
+  </data>
+  <data name="CompartmentId" xml:space="preserve">
+    <value>Id Scomp.</value>
+  </data>
+  <data name="AdjustmentQuantity" xml:space="preserve">
+    <value>Quantità da rettificare  [{0}]</value>
+  </data>
+  <data name="PutQuantity" xml:space="preserve">
+    <value>Quantità da versare [{0}]</value>
+  </data>
+  <data name="PickingQuantity" xml:space="preserve">
+    <value>Quantità da prelevare [{0}]</value>
+  </data>
+  <data name="NewOperationsAvailable" xml:space="preserve">
+    <value>Nuove operazioni disponibili</value>
+  </data>
+  <data name="ConfirmAndNewOperationsAvailable" xml:space="preserve">
+    <value>Conferma e nuove operazioni disponibili</value>
+  </data>
+  <data name="ItemStock" xml:space="preserve">
+    <value>Giacenza</value>
+  </data>
+  <data name="LoadingUnitPresenceId" xml:space="preserve">
+    <value>Cassetto presente {0}</value>
   </data>
 </root>

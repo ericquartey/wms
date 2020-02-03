@@ -61,7 +61,43 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BayInvertersBusy.
+        ///   Looks up a localized string similar to Errore esecuzione missione.
+        /// </summary>
+        public static string AnotherMissionIsActiveForThisBay {
+            get {
+                return ResourceManager.GetString("AnotherMissionIsActiveForThisBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errore esecuzione missione.
+        /// </summary>
+        public static string AnotherMissionIsActiveForThisLoadUnit {
+            get {
+                return ResourceManager.GetString("AnotherMissionIsActiveForThisLoadUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errore esecuzione missione.
+        /// </summary>
+        public static string AnotherMissionOfThisTypeIsActive {
+            get {
+                return ResourceManager.GetString("AnotherMissionOfThisTypeIsActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatic restore of the movement is not allowed.
+        /// </summary>
+        public static string AutomaticRestoreNotAllowed {
+            get {
+                return ResourceManager.GetString("AutomaticRestoreNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errore esecuzione comando.
         /// </summary>
         public static string BayInvertersBusy {
             get {
@@ -70,7 +106,16 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BottomLevelBayOccupied.
+        ///   Looks up a localized string similar to Errore esecuzione comando di prelievo.
+        /// </summary>
+        public static string BottomLevelBayEmpty {
+            get {
+                return ResourceManager.GetString("BottomLevelBayEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errore esecuzione comando di deposito.
         /// </summary>
         public static string BottomLevelBayOccupied {
             get {
@@ -79,7 +124,25 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Condizioni per il posizionamento non soddisfatte..
+        ///   Looks up a localized string similar to Update database failed. One or more destination cells are logically occupied.
+        /// </summary>
+        public static string CellLogicallyOccupied {
+            get {
+                return ResourceManager.GetString("CellLogicallyOccupied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Homing conditions not met..
+        /// </summary>
+        public static string ConditionsNotMetForHoming {
+            get {
+                return ResourceManager.GetString("ConditionsNotMetForHoming", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Positioning conditions not met..
         /// </summary>
         public static string ConditionsNotMetForPositioning {
             get {
@@ -88,7 +151,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Condizioni per la messa in marcia non soddisfatte..
+        ///   Looks up a localized string similar to Start conditions not met..
         /// </summary>
         public static string ConditionsNotMetForRunning {
             get {
@@ -97,7 +160,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cassetto non caricato completamente..
+        ///   Looks up a localized string similar to Loading unit not fully loaded..
         /// </summary>
         public static string CradleNotCompletelyLoaded {
             get {
@@ -106,7 +169,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CradleNotCorrectlyLoadedDuringPickup.
+        ///   Looks up a localized string similar to Inconsistenza sensori elevatore.
         /// </summary>
         public static string CradleNotCorrectlyLoadedDuringPickup {
             get {
@@ -115,7 +178,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CradleNotCorrectlyUnloadedDuringDeposit.
+        ///   Looks up a localized string similar to Inconsistenza sensori elevatore.
         /// </summary>
         public static string CradleNotCorrectlyUnloadedDuringDeposit {
             get {
@@ -124,7 +187,16 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DestinationBelowLowerBound.
+        ///   Looks up a localized string similar to Destination bay needs calibration.
+        /// </summary>
+        public static string DestinationBayNotCalibrated {
+            get {
+                return ResourceManager.GetString("DestinationBayNotCalibrated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destinazione non valida.
         /// </summary>
         public static string DestinationBelowLowerBound {
             get {
@@ -133,7 +205,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DestinationOverUpperBound.
+        ///   Looks up a localized string similar to Destinazione non valida.
         /// </summary>
         public static string DestinationOverUpperBound {
             get {
@@ -142,7 +214,16 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to InvalidPresenceSensors.
+        ///   Looks up a localized string similar to The destination type is not valid.
+        /// </summary>
+        public static string DestinationTypeNotValid {
+            get {
+                return ResourceManager.GetString("DestinationTypeNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inconsistenza stato sensori elevatore.
         /// </summary>
         public static string InvalidPresenceSensors {
             get {
@@ -151,7 +232,16 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore inverter..
+        ///   Looks up a localized string similar to Errore di connessione.
+        /// </summary>
+        public static string InverterConnectionError {
+            get {
+                return ResourceManager.GetString("InverterConnectionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errore generico inverter.
         /// </summary>
         public static string InverterErrorBaseCode {
             get {
@@ -160,7 +250,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Impossibile scrivere il parametro dell&apos;inverter durante l&apos;esecuzione..
+        ///   Looks up a localized string similar to The inverter parameter could not be written during execution..
         /// </summary>
         public static string InverterErrorCannotWriteParameterWhileRunning {
             get {
@@ -169,7 +259,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to I dati del dataset dell&apos;inverter non corrispondono..
+        ///   Looks up a localized string similar to The data of the inverter dataset do not match..
         /// </summary>
         public static string InverterErrorDatasetValuesAreDifferent {
             get {
@@ -178,7 +268,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore checksum EEPROM dell&apos;inverter..
+        ///   Looks up a localized string similar to Inverter EEPROM checksum error..
         /// </summary>
         public static string InverterErrorEepromChecksumError {
             get {
@@ -187,7 +277,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore lettura EEPROM dell&apos;inverter..
+        ///   Looks up a localized string similar to Inverter EEPROM reading error..
         /// </summary>
         public static string InverterErrorEepromReadError {
             get {
@@ -196,7 +286,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore scrittura EEPROM dell&apos;inverter..
+        ///   Looks up a localized string similar to Inverter EEPROM writing error..
         /// </summary>
         public static string InverterErrorEepromWriteError {
             get {
@@ -205,7 +295,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dataset inverter non valido..
+        ///   Looks up a localized string similar to Invalid inverter dataset..
         /// </summary>
         public static string InverterErrorInvalidDataset {
             get {
@@ -214,7 +304,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Paramentro inverter non valido..
+        ///   Looks up a localized string similar to Invalid inverter parameter..
         /// </summary>
         public static string InverterErrorInvalidParameter {
             get {
@@ -223,7 +313,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Il nodo specificato non è disponibile..
+        ///   Looks up a localized string similar to The specified node is not available..
         /// </summary>
         public static string InverterErrorNodeNotAvailable {
             get {
@@ -232,7 +322,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parametro inverter è in sola lettura..
+        ///   Looks up a localized string similar to Inverter parameter is read-only..
         /// </summary>
         public static string InverterErrorParameterIsReadOnly {
             get {
@@ -241,7 +331,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parametro inverter è in sola scrittura..
+        ///   Looks up a localized string similar to Inverter parameter is write-only..
         /// </summary>
         public static string InverterErrorParameterIsWriteOnly {
             get {
@@ -250,7 +340,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore di sintassi del messaggio inviato all&apos;inverter..
+        ///   Looks up a localized string similar to Syntax error of the message sent to the inverter..
         /// </summary>
         public static string InverterErrorSyntaxError {
             get {
@@ -259,7 +349,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parametro sconosciuto passato all&apos;inverter..
+        ///   Looks up a localized string similar to Unknown parameter passed to the inverter..
         /// </summary>
         public static string InverterErrorUnknownParameter {
             get {
@@ -268,7 +358,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Incoerenza tra la lunghezza del messaggio all&apos;inverter e il tipo di dato del messaggio..
+        ///   Looks up a localized string similar to Inconsistency between the length of the message to the inverter and the data type of the message.!.
         /// </summary>
         public static string InverterErrorWrongPayloadLength {
             get {
@@ -277,7 +367,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to È stato rilevato un errore in uno degli inverter..
+        ///   Looks up a localized string similar to An error has been detected in one of the inverters..
         /// </summary>
         public static string InverterFaultStateDetected {
             get {
@@ -286,7 +376,16 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IoDeviceError.
+        ///   Looks up a localized string similar to Errore di connessione.
+        /// </summary>
+        public static string IoDeviceConnectionError {
+            get {
+                return ResourceManager.GetString("IoDeviceConnectionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errore esecuzione comando.
         /// </summary>
         public static string IoDeviceError {
             get {
@@ -295,16 +394,115 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Il peso massimo caricato sul cassetto è eccessivo..
+        ///   Looks up a localized string similar to Errore di connessione.
         /// </summary>
-        public static string LoadingUnitWeightExceeded {
+        public static string LaserConnectionError {
             get {
-                return ResourceManager.GetString("LoadingUnitWeightExceeded", resourceCulture);
+                return ResourceManager.GetString("LaserConnectionError", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoadUnitPresentOnEmptyElevator.
+        ///   Looks up a localized string similar to Tray destination bay occupied.
+        /// </summary>
+        public static string LoadUnitDestinationBay {
+            get {
+                return ResourceManager.GetString("LoadUnitDestinationBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not valid destination cell.
+        /// </summary>
+        public static string LoadUnitDestinationCell {
+            get {
+                return ResourceManager.GetString("LoadUnitDestinationCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elevator cradle occupied.
+        /// </summary>
+        public static string LoadUnitElevator {
+            get {
+                return ResourceManager.GetString("LoadUnitElevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The height of the loading unit is over the maximum..
+        /// </summary>
+        public static string LoadUnitHeightExceeded {
+            get {
+                return ResourceManager.GetString("LoadUnitHeightExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay occupied with unknown loading unit.
+        /// </summary>
+        public static string LoadUnitMissingOnBay {
+            get {
+                return ResourceManager.GetString("LoadUnitMissingOnBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elevator occupied with unknown loading unit.
+        /// </summary>
+        public static string LoadUnitMissingOnElevator {
+            get {
+                return ResourceManager.GetString("LoadUnitMissingOnElevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading unit database inconsistency.
+        /// </summary>
+        public static string LoadUnitNotFound {
+            get {
+                return ResourceManager.GetString("LoadUnitNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The selected loading unit is not loaded in the warehouse.
+        /// </summary>
+        public static string LoadUnitNotLoaded {
+            get {
+                return ResourceManager.GetString("LoadUnitNotLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading unit detected in the extraction bay.
+        /// </summary>
+        public static string LoadUnitNotRemoved {
+            get {
+                return ResourceManager.GetString("LoadUnitNotRemoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errore cassetto in posizione inattesa.
+        /// </summary>
+        public static string LoadUnitOtherBay {
+            get {
+                return ResourceManager.GetString("LoadUnitOtherBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errore cassetto in posizione inattesa.
+        /// </summary>
+        public static string LoadUnitPresentInCell {
+            get {
+                return ResourceManager.GetString("LoadUnitPresentInCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inconsistenza stato sensori.
         /// </summary>
         public static string LoadUnitPresentOnEmptyElevator {
             get {
@@ -313,133 +511,106 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore Machine Manager.
+        ///   Looks up a localized string similar to Errore stato serranda.
         /// </summary>
-        public static string MachineManagerErrorBaseCode {
+        public static string LoadUnitShutterClosed {
             get {
-                return ResourceManager.GetString("MachineManagerErrorBaseCode", resourceCulture);
+                return ResourceManager.GetString("LoadUnitShutterClosed", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Baia di destinazione del cassetto occupata.
+        ///   Looks up a localized string similar to Errore stato serranda.
         /// </summary>
-        public static string MachineManagerErrorLoadingUnitDestinationBay {
+        public static string LoadUnitShutterInvalid {
             get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitDestinationBay", resourceCulture);
+                return ResourceManager.GetString("LoadUnitShutterInvalid", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inconsistenza database cella destinazione cassetto.
+        ///   Looks up a localized string similar to Errore stato serranda.
         /// </summary>
-        public static string MachineManagerErrorLoadingUnitDestinationCell {
+        public static string LoadUnitShutterOpen {
             get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitDestinationCell", resourceCulture);
+                return ResourceManager.GetString("LoadUnitShutterOpen", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Culla elevatore occupata.
+        ///   Looks up a localized string similar to Source bay of the empty loading unit.
         /// </summary>
-        public static string MachineManagerErrorLoadingUnitElevator {
+        public static string LoadUnitSourceBay {
             get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitElevator", resourceCulture);
+                return ResourceManager.GetString("LoadUnitSourceBay", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inconsistenza database cassetto.
+        ///   Looks up a localized string similar to Not valid source cell.
         /// </summary>
-        public static string MachineManagerErrorLoadingUnitNotFound {
+        public static string LoadUnitSourceCell {
             get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitNotFound", resourceCulture);
+                return ResourceManager.GetString("LoadUnitSourceCell", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Il cassetto selezionato non risulta caricato in magazzino.
+        ///   Looks up a localized string similar to Database source position inconsistency.
         /// </summary>
-        public static string MachineManagerErrorLoadingUnitNotLoaded {
+        public static string LoadUnitSourceDb {
             get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitNotLoaded", resourceCulture);
+                return ResourceManager.GetString("LoadUnitSourceDb", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cassetto rilevato nella baia di estrazione.
+        ///   Looks up a localized string similar to Drawer not present on the elevator.
         /// </summary>
-        public static string MachineManagerErrorLoadingUnitNotRemoved {
+        public static string LoadUnitSourceElevator {
             get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitNotRemoved", resourceCulture);
+                return ResourceManager.GetString("LoadUnitSourceElevator", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineManagerErrorLoadingUnitPresentInCell.
+        ///   Looks up a localized string similar to Undefined bay bottom position.
         /// </summary>
-        public static string MachineManagerErrorLoadingUnitPresentInCell {
+        public static string LoadUnitUndefinedBottom {
             get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitPresentInCell", resourceCulture);
+                return ResourceManager.GetString("LoadUnitUndefinedBottom", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineManagerErrorLoadingUnitShutterClosed.
+        ///   Looks up a localized string similar to Undefined bay upper position.
         /// </summary>
-        public static string MachineManagerErrorLoadingUnitShutterClosed {
+        public static string LoadUnitUndefinedUpper {
             get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitShutterClosed", resourceCulture);
+                return ResourceManager.GetString("LoadUnitUndefinedUpper", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineManagerErrorLoadingUnitShutterOpen.
+        ///   Looks up a localized string similar to The maximum weight loaded on the loading unit is excessive..
         /// </summary>
-        public static string MachineManagerErrorLoadingUnitShutterOpen {
+        public static string LoadUnitWeightExceeded {
             get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitShutterOpen", resourceCulture);
+                return ResourceManager.GetString("LoadUnitWeightExceeded", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Baia sorgente del cassetto vuota.
+        ///   Looks up a localized string similar to Errore peso.
         /// </summary>
-        public static string MachineManagerErrorLoadingUnitSourceBay {
+        public static string LoadUnitWeightTooLow {
             get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitSourceBay", resourceCulture);
+                return ResourceManager.GetString("LoadUnitWeightTooLow", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inconsistenza database cella sorgente cassetto.
-        /// </summary>
-        public static string MachineManagerErrorLoadingUnitSourceCell {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitSourceCell", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Inconsistenza database posizione sorgente cassetto.
-        /// </summary>
-        public static string MachineManagerErrorLoadingUnitSourceDb {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitSourceDb", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Nessun cassetto presente nella baia indicata.
-        /// </summary>
-        public static string MachineManagerErrorNoLoadingUnitInSource {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorNoLoadingUnitInSource", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to MachineModeNotValid.
+        ///   Looks up a localized string similar to Errore missione.
         /// </summary>
         public static string MachineModeNotValid {
             get {
@@ -448,7 +619,16 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MissingZeroSensorWithEmptyElevator.
+        ///   Looks up a localized string similar to Errore peso.
+        /// </summary>
+        public static string MachineWeightExceeded {
+            get {
+                return ResourceManager.GetString("MachineWeightExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inconsistenza stato sensori.
         /// </summary>
         public static string MissingZeroSensorWithEmptyElevator {
             get {
@@ -457,7 +637,79 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to È scattata la funzione di sicurezza..
+        ///   Looks up a localized string similar to The mission type is not valid.
+        /// </summary>
+        public static string MissionTypeNotValid {
+            get {
+                return ResourceManager.GetString("MissionTypeNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move Bay chain not allowed. Wait for another resume..
+        /// </summary>
+        public static string MoveBayChainNotAllowed {
+            get {
+                return ResourceManager.GetString("MoveBayChainNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NoError.
+        /// </summary>
+        public static string NoError {
+            get {
+                return ResourceManager.GetString("NoError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No loading unit present in the bay indicated.
+        /// </summary>
+        public static string NoLoadUnitInSource {
+            get {
+                return ResourceManager.GetString("NoLoadUnitInSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The picking confirmation command is not valid.
+        /// </summary>
+        public static string ResumeCommandNotValid {
+            get {
+                return ResourceManager.GetString("ResumeCommandNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Una barriera di sicurezza è stata interrotta.
+        /// </summary>
+        public static string SecurityBarrierWasTriggered {
+            get {
+                return ResourceManager.GetString("SecurityBarrierWasTriggered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Un pulsante di emergenza è stato premuto.
+        /// </summary>
+        public static string SecurityButtonWasTriggered {
+            get {
+                return ResourceManager.GetString("SecurityButtonWasTriggered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uno o più sensori dei pannelli laterali è stato interrotto.
+        /// </summary>
+        public static string SecuritySensorWasTriggered {
+            get {
+                return ResourceManager.GetString("SecuritySensorWasTriggered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Security function has triggered..
         /// </summary>
         public static string SecurityWasTriggered {
             get {
@@ -466,16 +718,25 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SensoZeroBayNotActiveAtStart.
+        ///   Looks up a localized string similar to Inconsistenza stato sensori baia.
         /// </summary>
-        public static string SensoZeroBayNotActiveAtStart {
+        public static string SensorZeroBayNotActiveAtStart {
             get {
-                return ResourceManager.GetString("SensoZeroBayNotActiveAtStart", resourceCulture);
+                return ResourceManager.GetString("SensorZeroBayNotActiveAtStart", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TopLevelBayOccupied.
+        ///   Looks up a localized string similar to Errore esecuzione comando di prelievo.
+        /// </summary>
+        public static string TopLevelBayEmpty {
+            get {
+                return ResourceManager.GetString("TopLevelBayEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errore esecuzione comando di deposito.
         /// </summary>
         public static string TopLevelBayOccupied {
             get {
@@ -484,7 +745,16 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ZeroSensorActiveWithFullElevator.
+        ///   Looks up a localized string similar to Magazzino pieno.
+        /// </summary>
+        public static string WarehouseIsFull {
+            get {
+                return ResourceManager.GetString("WarehouseIsFull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inconsistenza stato sensori elevatore.
         /// </summary>
         public static string ZeroSensorActiveWithFullElevator {
             get {
@@ -493,7 +763,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ZeroSensorErrorAfterDeposit.
+        ///   Looks up a localized string similar to Inconsistenza stato sensori elevatore.
         /// </summary>
         public static string ZeroSensorErrorAfterDeposit {
             get {
@@ -502,7 +772,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ZeroSensorErrorAfterPickup.
+        ///   Looks up a localized string similar to Inconsistenza stato sensori elevatore.
         /// </summary>
         public static string ZeroSensorErrorAfterPickup {
             get {

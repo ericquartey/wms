@@ -1,10 +1,14 @@
-﻿using Ferretto.VW.CommonUtils.Messages;
+﻿using Ferretto.VW.CommonUtils;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DeviceManager.Positioning.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
@@ -15,6 +19,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         #region Fields
 
         private readonly IPositioningMachineData machineData;
+
+        private readonly IServiceScope scope;
 
         private readonly IPositioningStateData stateData;
 
@@ -27,6 +33,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IPositioningMachineData;
+            this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
         }
 
         #endregion
@@ -66,6 +73,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void Start()
         {
+            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.CurrentInverterIndex}");
             var inverterIndex = this.machineData.CurrentInverterIndex;
             var description = this.machineData.MessageData.RequiredCycles == 0 ? $"Reset Inverter Axis {this.machineData.MessageData.AxisMovement}" : $"Reset Inverter Belt Burninshing";
             var stopMessage = new FieldCommandMessage(
@@ -116,6 +124,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 MessageStatus.OperationError);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+            if (this.machineData.MessageData.MovementMode == MovementMode.BeltBurnishing)
+            {
+                this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Manual;
+                this.Logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
+            }
         }
 
         public override void Stop(StopRequestReason reason)

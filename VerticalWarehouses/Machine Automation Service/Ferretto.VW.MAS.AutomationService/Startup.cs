@@ -4,7 +4,9 @@ using Ferretto.VW.MAS.AutomationService.Filters;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DeviceManager;
 using Ferretto.VW.MAS.InverterDriver;
+using Ferretto.VW.MAS.TimeManagement;
 using Ferretto.VW.MAS.IODriver;
+using Ferretto.VW.MAS.LaserDriver;
 using Ferretto.VW.MAS.MachineManager;
 using Ferretto.VW.MAS.MissionManager;
 using Ferretto.VW.MAS.Utils;
@@ -159,15 +161,17 @@ namespace Ferretto.VW.MAS.AutomationService
             services
                 .AddIODriver()
                 .AddInverterDriver()
+                .AddLaserDriver()
                 .AddFiniteStateMachines()
                 .AddMachineManager()
-                .AddMissionManager();
+                .AddMissionManager()
+                .AddTimeServices();
 
             services.AddHostedService<NotificationRelayService>();
 
-            services.AddTransient<IInverterProvider, InverterProvider>();
-            services.AddTransient<IIoDeviceProvider, IoDeviceProvider>();
-            services.AddTransient<IConfigurationProvider, ConfigurationProvider>();
+            services.AddScoped<IInverterProvider, InverterProvider>();
+            services.AddScoped<IIoDeviceProvider, IoDeviceProvider>();
+            services.AddScoped<IConfigurationProvider, ConfigurationProvider>();
         }
 
         private void InitialiseWmsInterfaces(IServiceCollection services)
@@ -178,7 +182,7 @@ namespace Ferretto.VW.MAS.AutomationService
             }
 
             var wmsServiceAddress = this.Configuration.GetWmsServiceUrl();
-            services.AddWebApiServices(wmsServiceAddress);
+            services.AddWmsWebServices(wmsServiceAddress);
 
             var wmsServiceAddressHubsEndpoint = this.Configuration.GetWmsServiceHubUrl();
             services.AddDataHub(wmsServiceAddressHubsEndpoint);

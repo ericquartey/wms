@@ -6,6 +6,7 @@
             xmlns:converter="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:localControls="clr-namespace:Ferretto.VW.App.Operator.Views"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
@@ -13,10 +14,7 @@
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="100,30,100,0">
-        <Grid.Resources>
-            <converter:ImageToSourceConverter x:Key="ImageToSourceConverter" />
-        </Grid.Resources>
+    <Grid Margin="50,30,50,0">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
@@ -29,21 +27,21 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static resources:OperatorApp.DrawerActivityRefillingHeader}" />
 
-        <WmsControls:TrayControl Grid.Row="1"
+        <WmsControls:TrayControl Name="TrayControl"
+                                 Grid.Row="1"
                                  Margin="0"
                                  HorizontalAlignment="Stretch"
                                  VerticalAlignment="Stretch"
-                                 Compartments="{Binding Compartments, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                 DefaultCompartmentColor="#0a0a0a"
-                                 DimensionHeight="650"
-                                 DimensionWidth="4250"
+                                 Compartments="{Binding Compartments}"
+                                 DefaultCompartmentColor="#444444"
+                                 DimensionHeight="{Binding LoadingUnitDepth}"
+                                 DimensionWidth="{Binding LoadingUnitWidth}"
+                                 GridLinesColor="#3c3c3c"
                                  IsEnabled="False"
-                                 IsReadOnly="True"
-                                 OriginHorizontal="Left"
-                                 OriginVertical="Bottom"
+                                 IsRotated="{Binding IsBaySideBack}"
                                  SelectedColorFilterFunc="{Binding CompartmentColoringFunction}"
-                                 SelectedItem="{Binding SelectedCompartment, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                 ShowBackground="True"
+                                 SelectedItem="{Binding SelectedCompartment, Mode=TwoWay}"
+                                 ShowBackground="False"
                                  ShowRuler="False" />
 
         <Grid Grid.Row="2"
@@ -63,89 +61,83 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <controls:PpcLabeledText HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding ListCode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                     LabelText="{x:Static resources:OperatorApp.CommonListCode}" />
-
-
-            <controls:PpcLabeledText Grid.Column="1"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding ListDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                     LabelText="{x:Static resources:OperatorApp.CommonListDescription}" />
+            <localControls:ItemInfoView Grid.RowSpan="5"
+                                        Grid.ColumnSpan="3" />
 
             <controls:PpcLabeledText Grid.Row="1"
-                                     Grid.Column="0"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding ItemCode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                     LabelText="{x:Static resources:OperatorApp.CommonItemCode}" />
-            <Image Grid.Row="2"
-                   Grid.Column="0"
-                   Width="180"
-                   Height="180"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Source="{Binding ItemImage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ImageToSourceConverter}}"
-                   Stretch="Uniform" />
-
-            <controls:PpcLabeledText Grid.Row="1"
-                                     Grid.Column="1"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding ItemDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                     LabelText="{x:Static resources:OperatorApp.CommonItemDescription}" />
-
-            <controls:PpcLabeledText Grid.Row="2"
-                                     Grid.Column="1"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding CompartmentPosition, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                     LabelText="{x:Static resources:OperatorApp.CommonCompartmentPosition}" />
-
-            <controls:PpcLabeledText Grid.Row="3"
-                                     Grid.Column="1"
+                                     Grid.Column="2"
                                      Grid.ColumnSpan="2"
-                                     HorizontalAlignment="Left"
+                                     Margin="0,5,150,0"
+                                     HorizontalAlignment="Right"
                                      VerticalAlignment="Top"
-                                     ContentText="Note inserite ad uso operatore in baia..."
-                                     LabelText="{x:Static resources:OperatorApp.CommonNote}" />
-
-            <controls:PpcLabeledText Grid.Row="1"
-                                     Grid.Column="3"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="12"
+                                     ContentText="{Binding MissionOperation.RequestedQuantity}"
                                      LabelText="{x:Static resources:OperatorApp.DrawerActivityRefillingQtyToRefill}" />
 
-            <controls:PpcTextBox Grid.Row="2"
-                                 Grid.Column="3"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 InputText="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 LabelText="{x:Static resources:OperatorApp.DrawerActivityRefillingQtyRefilled}" />
+            <ctrls:PpcSpinEdit Grid.Row="2"
+                               Grid.RowSpan="2"
+                               Grid.Column="2"
+                               Grid.ColumnSpan="2"
+                               Margin="0,0,10,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Top"
+                               EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               Increment="{Binding QuantityIncrement}"
+                               IsEnabled="{Binding CanInputQuantity}"
+                               LabelText="{Binding MeasureUnit, StringFormat={x:Static resources:OperatorApp.DrawerActivityRefillingQtyRefilled}}"
+                               Mask="{Binding QuantityTolerance, StringFormat=F{0}}" />
 
-            <controls:PpcButton Grid.Row="4"
-                                Grid.Column="1"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Top"
-                                Command="{Binding ShowDetailsCommand}"
-                                Content="{x:Static resources:OperatorApp.CommonButtonDetail}" />
+            <StackPanel Grid.Row="4"
+                        Grid.ColumnSpan="4"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
 
-            <controls:PpcButton Grid.Row="4"
-                                Grid.Column="2"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Top"
-                                Content="{x:Static resources:OperatorApp.DrawerActivityRefillingCapacityMaxAdjust}" />
+                <controls:PpcButton Grid.Row="4"
+                                    Grid.Column="1"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding ShowDetailsCommand}"
+                                    Content="{x:Static resources:OperatorApp.Details}"
+                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
-            <controls:PpcButton Grid.Row="4"
-                                Grid.Column="3"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Top"
-                                Command="{Binding ConfirmCommand}"
-                                Content="{x:Static resources:OperatorApp.CommonButtonConfirm}" />
+                <controls:PpcButton Grid.Row="4"
+                                    Grid.Column="2"
+                                    Margin="20,0,0,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Top"
+                                    Content="{x:Static resources:OperatorApp.DrawerActivityRefillingCapacityMaxAdjust}"
+                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
+                <controls:PpcButton Grid.Row="4"
+                                    Grid.Column="2"
+                                    Margin="20,0,0,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding FullOperationCommand}"
+                                    Content="{x:Static resources:OperatorApp.ConfirmOnFull}"
+                                    IsBusy="{Binding IsBusyConfirmingOperation}"
+                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
+
+                <controls:PpcButton Grid.Row="4"
+                                    Grid.Column="3"
+                                    Margin="20,0,40,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding ConfirmOperationCommand}"
+                                    Content="{x:Static resources:OperatorApp.Confirm}"
+                                    IsBusy="{Binding IsBusyConfirmingOperation}"
+                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
+
+                <controls:PpcButton Grid.Row="4"
+                                    Grid.Column="3"
+                                    Margin="20,0,40,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding ConfirmOperationCanceledCommand}"
+                                    Content="{x:Static resources:OperatorApp.CancelPut}"
+                                    IsBusy="{Binding IsBusyConfirmingOperation}"
+                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVC}}" />
+
+            </StackPanel>
         </Grid>
     </Grid>
 </ctrls:View>

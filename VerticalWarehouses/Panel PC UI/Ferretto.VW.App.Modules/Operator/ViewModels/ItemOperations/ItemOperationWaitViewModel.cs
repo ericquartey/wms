@@ -1,23 +1,30 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.VW.App.Controls;
+using DevExpress.Xpf.Data.Native;
+using Ferretto.VW.App.Modules.Operator.Services;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.VW.MAS.AutomationService.Hubs;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Events;
 using Prism.Regions;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class ItemOperationWaitViewModel : BaseMainViewModel
+    [Warning(WarningsArea.Picking)]
+    public class ItemOperationWaitViewModel : BaseOperatorViewModel
     {
         #region Fields
 
-        private readonly IEventAggregator eventAggregator;
+        private readonly IMachineMissionsWebService machineMissionsWebService;
 
-        private readonly IMissionOperationsService missionOperationsService;
-
-        private SubscriptionToken missionToken;
+        private int loadingUnitsMovements;
 
         private int pendingMissionOperationsCount;
 
@@ -25,20 +32,33 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Constructors
 
-        public ItemOperationWaitViewModel(
-            IMissionOperationsService missionOperationsService,
-            IEventAggregator eventAggregator)
+        public ItemOperationWaitViewModel(IMachineMissionsWebService machineMissionsWebService)
             : base(PresentationMode.Operator)
         {
-            this.missionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
-            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(missionOperationsService));
+            this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
         }
 
         #endregion
 
         #region Properties
 
-        public override EnableMask EnableMask => EnableMask.Any;
+        public string LoadingUnitsInfo
+        {
+            get
+            {
+                if (this.loadingUnitsMovements == 0)
+                {
+                    return OperatorApp.NoLoadingUnitsToMove;
+                }
+
+                if (this.loadingUnitsMovements == 1)
+                {
+                    return OperatorApp.LoadingUnitSendToBay;
+                }
+
+                return string.Format(OperatorApp.LoadingUnitsSendToBay, this.loadingUnitsMovements);
+            }
+        }
 
         public int PendingMissionOperationsCount
         {
@@ -50,73 +70,35 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Methods
 
-        public override void Disappear()
-        {
-            base.Disappear();
-
-            this.missionToken?.Dispose();
-            this.missionToken = null;
-        }
-
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
 
             this.IsBackNavigationAllowed = true;
 
-            this.missionToken = this.missionToken
-                ??
-                this.eventAggregator.GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>()
-                .Subscribe(
-                    this.OnAssignedMissionOperationChanged,
-                    ThreadOption.UIThread,
-                    false);
-
-            this.CheckForNewOperation();
+            Task.Run(async () =>
+            {
+                do
+                {
+                    await Task.Delay(5000);
+                    await this.CheckForNewOperationCount();
+                }
+                while (this.IsVisible);
+            });
         }
 
-        private void CheckForNewOperation()
+        protected override async Task OnDataRefreshAsync()
         {
-            this.PendingMissionOperationsCount = this.missionOperationsService.PendingMissionOperationsCount;
+            await base.OnDataRefreshAsync();
 
-            var missionOperation = this.missionOperationsService.CurrentMissionOperation;
-            if (missionOperation is null)
-            {
-                // do nothing
-                return;
-            }
-
-            switch (missionOperation.Type)
-            {
-                case MissionOperationType.Inventory:
-                    this.NavigationService.Appear(
-                        nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.ItemOperations.INVENTORY,
-                        null,
-                        trackCurrentView: false);
-                    break;
-
-                case MissionOperationType.Pick:
-                    this.NavigationService.Appear(
-                        nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.ItemOperations.PICK,
-                        null,
-                        trackCurrentView: false);
-                    break;
-
-                case MissionOperationType.Put:
-                    this.NavigationService.Appear(
-                        nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.ItemOperations.PUT,
-                        null,
-                        trackCurrentView: false);
-                    break;
-            }
+            await this.CheckForNewOperationCount();
         }
 
-        private void OnAssignedMissionOperationChanged(AssignedMissionOperationChangedEventArgs e)
+        private async Task CheckForNewOperationCount()
         {
-            this.CheckForNewOperation();
+            var missions = await this.machineMissionsWebService.GetAllAsync();
+            this.loadingUnitsMovements = missions.Count(m => m.MissionType == MissionType.OUT || m.MissionType == MissionType.WMS);
+            this.RaisePropertyChanged(nameof(this.LoadingUnitsInfo));
         }
 
         #endregion

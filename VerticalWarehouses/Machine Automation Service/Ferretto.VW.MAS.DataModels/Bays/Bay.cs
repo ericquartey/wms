@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
@@ -12,9 +13,9 @@ namespace Ferretto.VW.MAS.DataModels
 
         public double ChainOffset { get; set; }
 
-        public int? CurrentMissionId { get; set; }
+        public Mission CurrentMission { get; set; }
 
-        public int? CurrentMissionOperationId { get; set; }
+        public int? CurrentWmsMissionOperationId { get; set; }
 
         public MovementParameters EmptyLoadMovement { get; set; }
 
@@ -29,6 +30,8 @@ namespace Ferretto.VW.MAS.DataModels
         public bool IsDouble => this.Positions?.Count() == 2;
 
         public bool IsExternal { get; set; }
+
+        public Laser Laser { get; set; }
 
         public BayNumber Number { get; set; }
 
@@ -48,7 +51,7 @@ namespace Ferretto.VW.MAS.DataModels
             {
                 if (this.IsActive)
                 {
-                    return this.CurrentMissionOperationId.HasValue ? BayStatus.Busy : BayStatus.Idle;
+                    return this.CurrentWmsMissionOperationId.HasValue ? BayStatus.Busy : BayStatus.Idle;
                 }
 
                 return BayStatus.Disconnected;
@@ -62,6 +65,56 @@ namespace Ferretto.VW.MAS.DataModels
         public override string ToString()
         {
             return this.Number.ToString();
+        }
+
+        internal void Validate()
+        {
+            var positionsCount = this.Positions.Count();
+            switch (this.Positions.Count())
+            {
+                case 0:
+                    throw new Exception($"Baia {this.Number}: deve avere almeno una posizione.");
+                case 1:
+                    if (!this.Positions.Single().IsUpper)
+                    {
+                        throw new Exception($"Baia {this.Number}: ha una sola posizione, che dovrebbe essere marcata come 'upper'.");
+                    }
+                    break;
+
+                case 2:
+                    var upperPosition = this.Positions.Single(p => p.Height == this.Positions.Max(pos => pos.Height));
+                    var lowerPosition = this.Positions.Single(p => p.Height == this.Positions.Min(pos => pos.Height));
+
+                    if (!upperPosition.IsUpper)
+                    {
+                        throw new Exception($"Baia {this.Number}: la posizione con quota superiore non è marcata come 'upper'.");
+                    }
+
+                    if (lowerPosition.IsUpper)
+                    {
+                        throw new Exception($"Baia {this.Number}: la posizione con quota inferiore non è marcata come 'lower'.");
+                    }
+
+                    if (upperPosition.Height == lowerPosition.Height)
+                    {
+                        throw new Exception($"Baia {this.Number}: le due posizioni di baia non possono avere la stessa quota.");
+                    }
+
+                    break;
+
+                default:
+                    throw new Exception($"Baia {this.Number}: non può avere più di due posizioni.");
+            }
+
+            if (this.Carousel != null && positionsCount != 2)
+            {
+                throw new Exception($"Baia {this.Number}: la giostra è definita, ma la baia non ha due posizioni.");
+            }
+
+            if (this.IoDevice is null)
+            {
+                throw new Exception($"Baia {this.Number}: il dispositivo di IO non è definito.");
+            }
         }
 
         #endregion

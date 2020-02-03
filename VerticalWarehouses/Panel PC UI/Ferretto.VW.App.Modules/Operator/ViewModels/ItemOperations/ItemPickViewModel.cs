@@ -1,21 +1,34 @@
-﻿using System.Windows.Input;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
+using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
+using Prism.Events;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class ItemPickViewModel : BaseItemOperationMainViewModel
+    public class ItemPickViewModel : BaseItemOperationMainViewModel, IOperationalContextViewModel
     {
+        #region Fields
+
+        private DelegateCommand emptyOperationCommand;
+
+        #endregion
+
         #region Constructors
 
         public ItemPickViewModel(
             IWmsImagesProvider wmsImagesProvider,
-            IMissionsDataService missionsDataService,
+            IMissionsWmsWebService missionsWmsWebService,
+            IItemsWmsWebService itemsWmsWebService,
             IMissionOperationsService missionOperationsService,
-            IBayManager bayManager)
-            : base(wmsImagesProvider, missionsDataService, bayManager, missionOperationsService)
+            IEventAggregator eventAggregator,
+            IBayManager bayManager,
+            IDialogService dialogService)
+            : base(wmsImagesProvider, missionsWmsWebService, itemsWmsWebService, bayManager, eventAggregator, missionOperationsService, dialogService)
         {
         }
 
@@ -23,11 +36,42 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Properties
 
+        public string ActiveContextName => OperationalContext.ItemPick.ToString();
+
+        public ICommand EmptyOperationCommand =>
+            this.emptyOperationCommand
+            ??
+            (this.emptyOperationCommand = new DelegateCommand(
+                async () => await this.PartiallyCompleteOnEmptyCompartmentAsync(),
+                this.CanPartiallyCompleteOnEmptyCompartment));
+
         public override EnableMask EnableMask => EnableMask.Any;
 
         #endregion
 
         #region Methods
+
+        public async Task CommandUserActionAsync(UserActionEventArgs userAction)
+        {
+        }
+
+        public override Task OnAppearedAsync()
+        {
+            this.Compartments = null;
+            this.SelectedCompartment = null;
+            return base.OnAppearedAsync();
+        }
+
+        public override void OnMisionOperationRetrieved()
+        {
+            this.InputQuantity = this.MissionOperation.RequestedQuantity;
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+            this.emptyOperationCommand.RaiseCanExecuteChanged();
+        }
 
         protected override void ShowOperationDetails()
         {
@@ -36,6 +80,36 @@ namespace Ferretto.VW.App.Operator.ViewModels
                Utils.Modules.Operator.ItemOperations.PICK_DETAILS,
                null,
                trackCurrentView: true);
+        }
+
+        private bool CanPartiallyCompleteOnEmptyCompartment()
+        {
+            return
+                this.MissionOperation != null
+                &&
+                !this.IsWaitingForResponse
+                &&
+                !this.IsBusyAbortingOperation
+                &&
+                !this.IsBusyConfirmingOperation
+                &&
+                this.InputQuantity.HasValue
+                &&
+                this.InputQuantity.Value >= 0
+                &&
+                this.InputQuantity.Value < this.MissionOperation.RequestedQuantity;
+        }
+
+        private async Task PartiallyCompleteOnEmptyCompartmentAsync()
+        {
+            try
+            {
+                await this.MissionOperationsService.PartiallyCompleteCurrentAsync(this.InputQuantity.Value);
+            }
+            catch (MasWebApiException ex)
+            {
+                this.ShowNotification(ex);
+            }
         }
 
         #endregion

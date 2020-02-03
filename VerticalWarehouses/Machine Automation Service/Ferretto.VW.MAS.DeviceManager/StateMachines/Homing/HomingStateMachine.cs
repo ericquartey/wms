@@ -8,7 +8,6 @@ using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
-using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -33,7 +32,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
         public HomingStateMachine(
             Axis axisToCalibrate,
             Calibration calibration,
-            bool isOneKMachine,
+            int? loadingUnitId,
+            bool isOneTonMachine,
+            bool showErrors,
             BayNumber requestingBay,
             BayNumber targetBay,
             IMachineResourcesProvider machineResourcesProvider,
@@ -47,14 +48,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             this.calibration = calibration;
 
             this.machineData = new HomingMachineData(
-                isOneKMachine,
+                isOneTonMachine,
+                loadingUnitId,
                 requestingBay,
                 targetBay,
                 machineResourcesProvider,
                 baysDataProvider.GetInverterIndexByAxis(axisToCalibrate, targetBay),
+                showErrors,
                 eventAggregator,
                 logger,
                 serviceScopeFactory);
+            this.machineData.RequestedAxisToCalibrate = axisToCalibrate;
         }
 
         #endregion
@@ -115,7 +119,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                         this.machineData.CalibrationType = Calibration.Elevator;
                         this.machineData.CurrentInverterIndex = InverterIndex.MainInverter;
                     }
-                    else if (this.machineData.IsOneKMachine && this.machineData.AxisToCalibrate == Axis.Horizontal)
+                    else if (this.machineData.IsOneTonMachine && this.machineData.AxisToCalibrate == Axis.Horizontal)
                     {
                         this.machineData.CurrentInverterIndex = InverterIndex.Slave1;
                     }
@@ -204,11 +208,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
                     this.PublishNotificationMessage(notificationMessage);
 
-                    using (var scope = this.ServiceScopeFactory.CreateScope())
+                    if (this.machineData.ShowErrors)
                     {
-                        var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+                        using (var scope = this.ServiceScopeFactory.CreateScope())
+                        {
+                            var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
 
-                        errorsProvider.RecordNew(DataModels.MachineErrorCode.ConditionsNotMetForPositioning, this.machineData.RequestingBay);
+                            errorsProvider.RecordNew(DataModels.MachineErrorCode.ConditionsNotMetForHoming, this.machineData.RequestingBay);
+                        }
                     }
 
                     this.Logger.LogError($"Conditions not verified for homing: {errorText}");
@@ -240,41 +247,74 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             errorText = string.Empty;
             if (this.machineData.TargetBay == BayNumber.ElevatorBay)
             {
-                if (this.machineData.MaximumSteps > 1 &&
-                    !(this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle && !this.machineData.MachineSensorStatus.IsSensorZeroOnCradle) &&
-                    !(this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle && this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
+                if (this.machineData.MaximumSteps > 1
+                    && !(this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle && !this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
+                    && !(this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle && this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
                     )
                 {
                     ok = false;
                     errorText = "Invalid presence sensors";
                 }
-                else if (this.machineData.CalibrationType == Calibration.FindSensor &&
-                    !this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle
+                else if (this.machineData.CalibrationType == Calibration.FindSensor
+                    && !this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle
                     )
                 {
                     ok = false;
                     errorText = "Find Zero not possible with full elevator";
                 }
-            }
-#if CHECK_BAY_SENSOR
-            else
-            {
-                if (this.machineData.CalibrationType == Calibration.FindSensor &&
-                    this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay)
+                else if (this.machineData.RequestedAxisToCalibrate == Axis.Vertical
+                    || this.machineData.RequestedAxisToCalibrate == Axis.HorizontalAndVertical
                     )
                 {
-                    ok = false;
-                    errorText = "Find Zero not possible: Top position occupied";
+                    using (var scope = this.ServiceScopeFactory.CreateScope())
+                    {
+                        var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+                        var bays = baysDataProvider.GetAll();
+                        foreach (var bay in bays)
+                        {
+                            if (bay.Shutter != null)
+                            {
+                                var shutterInverter = bay.Shutter.Inverter.Index;
+                                var shutterPosition = this.machineData.MachineSensorStatus.GetShutterPosition(shutterInverter);
+                                if (shutterPosition == ShutterPosition.Intermediate || shutterPosition == ShutterPosition.Opened)
+                                {
+                                    ok = false;
+                                    errorText = "Homing not possible with open shutter";
+                                    break;
+                                }
+                            }
+                        }
+                    }
                 }
-                else if (this.machineData.CalibrationType == Calibration.FindSensor &&
-                    this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay)
+            }
+            else
+            {
+                if (this.machineData.CalibrationType == Calibration.FindSensor
+                    && !this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay))
+                {
+                    ok = false;
+                    errorText = "Find Zero not possible: Invalid Zero sensor";
+                }
+#if CHECK_BAY_SENSOR
+                //if (ok
+                //    && this.machineData.CalibrationType == Calibration.FindSensor
+                //    && this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay)
+                //    )
+                //{
+                //    ok = false;
+                //    errorText = "Find Zero not possible: Top position occupied";
+                //}
+                //else
+                if (ok
+                    && this.machineData.CalibrationType == Calibration.FindSensor
+                    && this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay)
                     )
                 {
                     ok = false;
                     errorText = "Find Zero not possible: Bottom position occupied";
                 }
-            }
 #endif
+            }
             return ok;
         }
 

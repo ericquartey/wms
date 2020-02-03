@@ -1,0 +1,21 @@
+trigger:
+  branches:
+    include:
+    - release
+    - master
+  paths:
+    exclude:
+    - VerticalWarehouses/Installer/*
+    - VerticalWarehouses/Simulator/*
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+
+- template: azure-pipeline-vw-services-template.yml
+  parameters:
+    BuildConfiguration: 'release'
+    RestoreBuildProjects: '**/Ferretto.VW.MAS.AutomationService.csproj'
+    TestProjects: 'VerticalWarehouses/Machine Automation Service/**/*.Tests.csproj'
+    TargetFramework: 'netcoreapp2.2'

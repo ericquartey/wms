@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
+﻿using System;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
 
@@ -8,6 +9,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
     internal class PositioningTableDisableOperationState : InverterStateBase
     {
         #region Fields
+
+        private readonly DateTime startTime;
 
         private bool stopRequested;
 
@@ -23,6 +26,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.stopRequested = stopRequested;
+            this.startTime = DateTime.UtcNow;
         }
 
         #endregion
@@ -76,16 +80,24 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
                 if (this.InverterStatus.CommonStatusWord.IsOperationEnabled)
                 {
-                    if (this.InverterStatus is IPositioningInverterStatus currentStatus)
+                    if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
                     {
-                        currentStatus.TableTravelControlWord.EnableOperation = false;
+                        this.Logger.LogError($"PositioningTableDisableOperationState timeout, inverter {this.InverterStatus.SystemIndex}");
+                        this.ParentStateMachine.ChangeState(new PositioningTableErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                     }
+                    else
+                    {
+                        if (this.InverterStatus is IPositioningInverterStatus currentStatus)
+                        {
+                            currentStatus.TableTravelControlWord.EnableOperation = false;
+                        }
 
-                    var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
+                        var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
 
-                    this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+                        this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
-                    this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+                        this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+                    }
                 }
                 else
                 {

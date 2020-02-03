@@ -26,9 +26,21 @@
 
         MachineStatusActive,
 
+        /// <summary>
+        /// A new WMS mission is available.
+        /// </summary>
+        /// <remarks>
+        /// The <see cref="Ferretto.VW.MAS.MissionManager.WmsMissionProxyService"/> reacts to this event by querying the WMS for the new missions.
+        /// </remarks>
         NewWmsMissionAvailable,
 
-        CreateMission,
+        /// <summary>
+        /// A new machine mission is available.
+        /// </summary>
+        /// <remarks>
+        /// The <see cref="Ferretto.VW.MAS.MissionManager.MissionSchedulingService"/> reacts to this event by checking the missions DB table.
+        /// </remarks>
+        NewMachineMissionAvailable,
 
         Positioning,
 
@@ -91,5 +103,9 @@
         ElevatorPosition,
 
         BayChainPosition,
+
+        BayLight,
+
+        FullTest
     }
 }

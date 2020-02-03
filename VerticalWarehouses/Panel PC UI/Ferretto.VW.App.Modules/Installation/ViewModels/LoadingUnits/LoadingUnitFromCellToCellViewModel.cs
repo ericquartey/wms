@@ -2,17 +2,20 @@
 using System.Threading.Tasks;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
-    public class LoadingUnitFromCellToCellViewModel : BaseCellMovementsViewModel
+    [Warning(WarningsArea.Installation)]
+    internal sealed class LoadingUnitFromCellToCellViewModel : BaseCellMovementsViewModel
     {
         #region Constructors
 
         public LoadingUnitFromCellToCellViewModel(
                     IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
                     IMachineCellsWebService machineCellsWebService,
-                    Controls.Interfaces.ISensorsService sensorsService,
+                    ISensorsService sensorsService,
                     IBayManager bayManagerService)
             : base(
                 machineLoadingUnitsWebService,
@@ -29,7 +32,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
-            await this.RetrieveLoadingUnitsAsync();
         }
 
         public override async Task StartAsync()
@@ -72,6 +74,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        protected override async Task OnDataRefreshAsync()
+        {
+            await this.SensorsService.RefreshAsync(true);
+
+            await this.RetrieveCellsAsync();
         }
 
         #endregion

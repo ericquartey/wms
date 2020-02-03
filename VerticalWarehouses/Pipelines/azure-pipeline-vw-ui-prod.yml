@@ -1,0 +1,18 @@
+trigger:
+  branches:
+    include:
+    - release
+    - master
+  paths:
+    exclude:
+    - VerticalWarehouses/Installer/*
+    - VerticalWarehouses/Simulator/*
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+- template: azure-pipeline-vw-ui-template.yml
+  parameters:
+    BuildConfiguration: 'release'
+    BuildPlatform: 'any cpu'

@@ -8,11 +8,23 @@
 
         public const string CELLPANELSCHECK = "CellPanelsCheckViewModel";
 
+        public const string CELLSHEIGHTCHECK = "CellsHeightCheckViewModel";
+
         public const string CELLSSIDECONTROL = "CellsSideControlViewModel";
 
-        public const string INSTALLATORMENU = "InstallatorMenuViewModel";
+        public const string COMUNICATIONWMS = "ComunicationWmsViewModel";
+
+        public const string DATETIME = "DateTimeViewModel";
+
+        public const string FULLTEST = "FullTestViewModel";
 
         public const string LOADFIRSTDRAWER = "LoadFirstDrawerViewModel";
+
+        public const string MOVEMENTS = "MovementsViewModel";
+
+        public const string PARAMETERINVERTER = "ParameterInverterViewModel";
+
+        public const string PROFILEHEIGHTCHECKVIEW = "ProfileHeightCheckViewModel";
 
         public const string SAVERESTORECONFIG = "SaveRestoreConfigViewModel";
 
@@ -22,7 +34,13 @@
 
         public const string SHUTTTERHEIGHTCONTROL = "ShutterHeightControlViewModel";
 
+        public const string USERS = "UsersViewModel";
+
+        public const string VERTICALOFFSETCALIBRATION = "VerticalOffsetCalibrationViewModel";
+
         public const string VERTICALORIGINCALIBRATION = "VerticalOriginCalibrationViewModel";
+
+        public const string VERTICALRESOLUTIONCALIBRATION = "VerticalResolutionCalibrationViewModel";
 
         public const string WEIGHTANALYSIS = "ElevatorWeightAnalysisViewModel";
 
@@ -34,6 +52,8 @@
         {
             #region Fields
 
+            public const string BAYCHECK = "BayCheckViewModel";
+
             public const string BAYHEIGHTCHECK = "BayHeightCheckViewModel";
 
             public const string DEPOSITANDPICKUPTEST = "DepositAndPickUpTestViewModel";
@@ -41,13 +61,15 @@
             #endregion
         }
 
-        public static class CellsHeightCheck
+        public static class CellsLoadingUnitsMenu
         {
             #region Fields
 
-            public const string STEP1 = "CellsHeightCheckStep1ViewModel";
+            public const string CELLES = "CellsViewModel";
 
-            public const string STEP2 = "CellsHeightCheckStep2ViewModel";
+            public const string LOADINGUNITS = "LoadingUnitsViewModel";
+
+            public const string MENU = "CellsLoadingUnitsMenuViewModel";
 
             #endregion
         }
@@ -82,6 +104,8 @@
         public static class LoadingUnits
         {
             #region Fields
+
+            public const string LOADINGUNITFROMBAYTOBAY = "LoadingUnitFromBayToBayViewModel";
 
             public const string LOADINGUNITFROMBAYTOCELL = "LoadingUnitFromBayToCellViewModel";
 
@@ -128,6 +152,25 @@
             #endregion
         }
 
+        public static class ProfileHeightCheck
+        {
+            #region Fields
+
+            public const string STEP1 = "ProfileHeightCheckStep1ViewModel";
+
+            public const string STEP2 = "ProfileHeightCheckStep2ViewModel";
+
+            public const string STEP3 = "ProfileHeightCheckStep3ViewModel";
+
+            public const string STEP4 = "ProfileHeightCheckStep4ViewModel";
+
+            public const string STEP5 = "ProfileHeightCheckStep5ViewModel";
+
+            public const string STEP6 = "ProfileHeightCheckStep6ViewModel";
+
+            #endregion
+        }
+
         public static class Sensors
         {
             #region Fields
@@ -136,33 +179,20 @@
 
             public const string NAVIGATION = "SensorsNavigationViewModel";
 
-            public const string OTHERS = "OtherSensorsViewModel";
+            public const string SECURITY = "OtherSensorsViewModel";
 
             public const string VERTICALAXIS = "VerticalAxisSensorsViewModel";
 
             #endregion
         }
 
-        public static class VerticalOffsetCalibration
+        public static class Update
         {
             #region Fields
 
-            public const string STEP1 = "VerticalOffsetCalibrationStep1ViewModel";
+            public const string STEP1 = "UpdateStep1ViewModel";
 
-            public const string STEP2 = "VerticalOffsetCalibrationStep2ViewModel";
-
-            #endregion
-        }
-
-        public static class VerticalResolutionCalibration
-        {
-            #region Fields
-
-            public const string STEP1 = "VerticalResolutionCalibrationStep1ViewModel";
-
-            public const string STEP2 = "VerticalResolutionCalibrationStep2ViewModel";
-
-            public const string STEP3 = "VerticalResolutionCalibrationStep3ViewModel";
+            public const string STEP2 = "UpdateStep2ViewModel";
 
             #endregion
         }

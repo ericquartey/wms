@@ -4,6 +4,7 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
 namespace Ferretto.VW.CommonUtils.Messages.Data
 {
+    [Serializable]
     public class MoveLoadingUnitMessageData : IMoveLoadingUnitMessageData
     {
         #region Constructors
@@ -14,12 +15,12 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             LoadingUnitLocation destination,
             int? sourceCellId,
             int? destinationCellId,
-            int? loadingUnitId,
-            bool insertLoadingUnit = false,
-            bool ejectLoadingUnit = false,
-            Guid? missionId = null,
+            int? loadUnitId,
+            bool insertLoadUnit = false,
+            int? missionId = null,
             CommandAction commandAction = CommandAction.Start,
             StopRequestReason stopReason = StopRequestReason.NoReason,
+            MissionStep step = MissionStep.NotDefined,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.MissionType = missionType;
@@ -27,12 +28,12 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.Destination = destination;
             this.SourceCellId = sourceCellId;
             this.DestinationCellId = destinationCellId;
-            this.LoadingUnitId = loadingUnitId;
-            this.InsertLoadingUnit = insertLoadingUnit;
-            this.EjectLoadingUnit = ejectLoadingUnit;
+            this.LoadUnitId = loadUnitId;
+            this.InsertLoadUnit = insertLoadUnit;
             this.MissionId = missionId;
             this.CommandAction = commandAction;
             this.StopReason = stopReason;
+            this.MissionStep = step;
             this.Verbosity = verbosity;
         }
 
@@ -44,25 +45,23 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public LoadingUnitLocation Destination { get; }
 
-        public int? DestinationCellId { get; }
+        public int? DestinationCellId { get; set; }
 
-        public bool EjectLoadingUnit { get; }
+        public bool InsertLoadUnit { get; }
 
-        public bool InsertLoadingUnit { get; }
+        public int? LoadUnitId { get; }
 
-        public int? LoadingUnitId { get; }
+        public int? MissionId { get; }
 
-        public Guid? MissionId { get; }
+        public MissionStep MissionStep { get; }
 
-        public MissionType MissionType { get; }
+        public MissionType MissionType { get; set; }
 
         public LoadingUnitLocation Source { get; }
 
         public int? SourceCellId { get; }
 
         public StopRequestReason StopReason { get; }
-
-        public BayNumber TargetBay { get; set; }
 
         public MessageVerbosity Verbosity { get; }
 

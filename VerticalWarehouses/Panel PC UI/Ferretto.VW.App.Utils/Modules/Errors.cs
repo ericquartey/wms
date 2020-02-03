@@ -6,6 +6,10 @@
 
         public const string ERRORDETAILSVIEW = "ErrorDetailsViewModel";
 
+        public const string ERRORINVERTERFAULT = "ErrorInverterFaultViewModel";
+
+        public const string ERRORLOADUNITMISSING = "ErrorLoadunitMissingViewModel";
+
         #endregion
     }
 }

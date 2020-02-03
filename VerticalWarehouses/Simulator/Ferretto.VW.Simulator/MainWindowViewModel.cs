@@ -1,7 +1,13 @@
 ﻿using System;
+using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.CommonUtils.Converters;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.Simulator.Services.Interfaces;
 using Ferretto.VW.Simulator.Services.Models;
+using Microsoft.Win32;
+using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Mvvm;
 
@@ -13,11 +19,15 @@ namespace Ferretto.VW.Simulator
 
         private readonly IThemeService themeService;
 
+        private string configurationName;
+
         private string errorMessage;
 
-        private IMachineService inverterService;
+        private ICommand importConfigurationCommand;
 
         private bool isBusy;
+
+        private IMachineService machineService;
 
         private ICommand startSimulatorCommand;
 
@@ -33,31 +43,32 @@ namespace Ferretto.VW.Simulator
             IMachineService inverterService,
             IThemeService themeService)
         {
-            if (inverterService == null)
-            {
-                throw new ArgumentNullException(nameof(inverterService));
-            }
-
-            if (themeService == null)
-            {
-                throw new ArgumentNullException(nameof(themeService));
-            }
-
-            this.inverterService = inverterService;
-            this.themeService = themeService;
+            this.machineService = inverterService ?? throw new ArgumentNullException(nameof(inverterService));
+            this.themeService = themeService ?? throw new ArgumentNullException(nameof(themeService));
         }
 
         #endregion
 
         #region Properties
 
+        public string ConfigurationName
+        {
+            get => this.configurationName;
+            private set
+            {
+                if (this.configurationName != value)
+                {
+                    this.SetProperty(ref this.configurationName, value);
+                }
+            }
+        }
+
         public string ErrorMessage { get => this.errorMessage; set => this.SetProperty(ref this.errorMessage, value); }
 
-        public IMachineService InverterService
-        {
-            get => this.inverterService;
-            set => this.SetProperty(ref this.inverterService, value);
-        }
+        public ICommand ImportConfigurationCommand =>
+            this.importConfigurationCommand
+            ??
+            (this.importConfigurationCommand = new DelegateCommand(this.ImportConfiguration));
 
         public bool IsBusy
         {
@@ -67,15 +78,21 @@ namespace Ferretto.VW.Simulator
 
         public bool IsDarkThemeActive => this.themeService.ActiveTheme == ApplicationTheme.Dark;
 
+        public IMachineService MachineService
+        {
+            get => this.machineService;
+            set => this.SetProperty(ref this.machineService, value);
+        }
+
         public ICommand StartSimulatorCommand =>
             this.startSimulatorCommand
             ??
-            (this.startSimulatorCommand = new DelegateCommand(async () => await this.inverterService.ProcessStartSimulatorAsync()));
+            (this.startSimulatorCommand = new DelegateCommand(async () => await this.machineService.ProcessStartSimulatorAsync()));
 
         public ICommand StopSimulatorCommand =>
             this.stopSimulatorCommand
             ??
-            (this.stopSimulatorCommand = new DelegateCommand(async () => await this.inverterService.ProcessStopSimulatorAsync()));
+            (this.stopSimulatorCommand = new DelegateCommand(async () => await this.machineService.ProcessStopSimulatorAsync()));
 
         public ICommand ToggleThemeCommand =>
             this.toggleThemeCommand
@@ -85,6 +102,64 @@ namespace Ferretto.VW.Simulator
         #endregion
 
         #region Methods
+
+        public void ImportConfiguration()
+        {
+            try
+            {
+                var openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "Json files (*.json)|*.json|All files (*.*)|*.*";
+                openFileDialog.DefaultExt = "json";
+
+                var dir = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\..\Machine Automation Service\Ferretto.VW.MAS.AutomationService\Configuration"));
+                if (Directory.Exists(dir))
+                {
+                    openFileDialog.InitialDirectory = dir;
+                }
+                else
+                {
+                    openFileDialog.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                }
+
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    this.LoadConfiguration(openFileDialog.FileName);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ErrorMessage = ex.Message;
+            }
+        }
+
+        public void LoadConfiguration(string fileName)
+        {
+            try
+            {
+                if (!File.Exists(fileName))
+                {
+                }
+
+                string fileContents;
+                using (var streamReader = new StreamReader(fileName))
+                {
+                    fileContents = streamReader.ReadToEnd();
+                }
+
+                var settings = new JsonSerializerSettings();
+                settings.Converters.Add(new IPAddressConverter());
+                settings.MissingMemberHandling = MissingMemberHandling.Ignore;
+
+                var vertimagConfiguration = JsonConvert.DeserializeObject<VertimagConfiguration>(fileContents, settings);
+
+                this.machineService.Machine = vertimagConfiguration?.Machine;
+                this.ConfigurationName = new FileInfo(fileName).Name;
+            }
+            catch (Exception ex)
+            {
+                this.ErrorMessage = ex.Message;
+            }
+        }
 
         private void ToggleTheme()
         {

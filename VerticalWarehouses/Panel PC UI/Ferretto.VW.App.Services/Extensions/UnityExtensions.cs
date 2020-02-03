@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.MAS.AutomationService.Contracts;
+﻿using System;
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Unity;
@@ -11,21 +11,15 @@ namespace Ferretto.VW.App.Services
     {
         #region Methods
 
-        public static IContainerRegistry RegisterUiServices(
+        public static IContainerRegistry RegisterAppServices(
             this IContainerRegistry containerRegistry,
-            System.Uri serviceUrl,
+            System.Uri serviceMasUrl,
+            System.Uri serviceWmsUrl,
             string serviceLiveHealthPath,
             string serviceReadyHealthPath)
         {
-            if (containerRegistry is null)
-            {
-                throw new System.ArgumentNullException(nameof(containerRegistry));
-            }
-
-            if (serviceUrl is null)
-            {
-                throw new System.ArgumentNullException(nameof(serviceUrl));
-            }
+            _ = containerRegistry ?? throw new ArgumentNullException(nameof(containerRegistry));
+            _ = serviceMasUrl ?? throw new ArgumentNullException(nameof(serviceMasUrl));
 
             containerRegistry.RegisterSingleton<IAuthenticationService, AuthenticationService>();
             containerRegistry.RegisterSingleton<IBayManager, BayManager>();
@@ -34,36 +28,43 @@ namespace Ferretto.VW.App.Services
             containerRegistry.RegisterSingleton<IHubNotificationService, HubNotificationService>();
             containerRegistry.RegisterSingleton<IMachineModeService, MachineModeService>();
             containerRegistry.RegisterSingleton<IMachineElevatorService, MachineElevatorService>();
+            containerRegistry.RegisterSingleton<ITimeSyncService, TimeSyncService>();
+
+            containerRegistry.RegisterSingleton<ISensorsService, SensorsService>();
+            containerRegistry.RegisterSingleton<IMachineService, MachineService>();
 
             containerRegistry.RegisterSingleton<IMachineErrorsService, MachineErrorsService>();
+
             // Operator
             containerRegistry.RegisterSingleton<IWmsDataProvider, WmsDataProvider>();
             containerRegistry.RegisterSingleton<IWmsImagesProvider, WmsImagesProvider>();
             containerRegistry.RegisterSingleton<IMissionOperationsService, MissionOperationsService>();
 
-            containerRegistry.GetContainer().RegisterSingleton<IHealthProbeService>(
-                new InjectionFactory(c =>
-                    new HealthProbeService(
-                        serviceUrl,
-                        serviceLiveHealthPath,
-                        serviceReadyHealthPath,
-                        c.Resolve<IEventAggregator>())));
+            _ = containerRegistry.GetContainer().RegisterSingleton<IHealthProbeService>(
+                 new InjectionFactory(c =>
+                     new HealthProbeService(
+                         serviceMasUrl,
+                         serviceWmsUrl,
+                         serviceLiveHealthPath,
+                         serviceReadyHealthPath,
+                         c.Resolve<IEventAggregator>())));
 
             return containerRegistry;
         }
 
         public static IContainerProvider UseUiServices(this IContainerProvider containerProvider)
         {
-            if (containerProvider is null)
-            {
-                throw new System.ArgumentNullException(nameof(containerProvider));
-            }
+            _ = containerProvider ?? throw new ArgumentNullException(nameof(containerProvider));
 
             // force the instantiation of the services
             _ = containerProvider.Resolve<IHubNotificationService>();
             _ = containerProvider.Resolve<IMachineModeService>();
+            _ = containerProvider.Resolve<IMachineService>();
 
             containerProvider.Resolve<IHealthProbeService>().Start();
+            containerProvider.Resolve<IMachineService>().Start();
+            containerProvider.Resolve<ITimeSyncService>().Start();
+            containerProvider.Resolve<IMissionOperationsService>().StartAsync();
 
             return containerProvider;
         }

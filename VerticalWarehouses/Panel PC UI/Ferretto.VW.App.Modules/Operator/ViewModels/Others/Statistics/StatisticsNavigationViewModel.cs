@@ -4,10 +4,13 @@ using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class StatisticsNavigationViewModel : BaseMainViewModel
+    [Warning(WarningsArea.Information)]
+    public class StatisticsNavigationViewModel : BaseOperatorViewModel
     {
         #region Fields
 

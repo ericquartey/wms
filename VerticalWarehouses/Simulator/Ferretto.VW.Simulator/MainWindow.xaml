@@ -8,17 +8,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:res="clr-namespace:Ferretto.VW.Simulator.Resources;assembly=Ferretto.VW.Simulator.Resources"
         Title="Simulator"
-        Width="1360"
-        Height="768"
-        MinWidth="800"
-        MinHeight="635"
+        Width="1345"
+        Height="835"
+        MinWidth="1345"
+        MinHeight="590"
         Icon="Resources/LogoFerrettoGroup2.png"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d">
 
     <Window.Resources>
         <converter:BooleanNegationConverter x:Key="BNC" />
-        <converter:BoolToVisibilityConverter x:Key="BTVC" />
+        <converter:BoolToVisibilityConverter x:Key="BTVC"
+                                             Hide="False" />
         <converter:BoolToVisibilityConverter x:Key="BTVIC"
                                              Invert="True" />
 
@@ -45,9 +46,11 @@
         </Style>
 
         <ControlTemplate x:Key="VWSIM_Grid_IoDriver">
-            <Border Style="{StaticResource ResourceKey=VWSIM_Border_IoDriver}">
+            <Border Width="420"
+                    Background="{StaticResource FerrettoMediumGray}"
+                    Style="{StaticResource ResourceKey=VWSIM_Border_IoDriver}">
                 <Grid Margin="-1"
-                      Background="{StaticResource FerrettoMediumGray}">
+                      Visibility="{Binding Enabled, Converter={StaticResource BTVC}}">
 
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -55,7 +58,7 @@
                     </Grid.RowDefinitions>
 
                     <Grid Grid.Row="0"
-                          Margin="5,5,5,0">
+                          Margin="5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
@@ -77,7 +80,7 @@
                                    Grid.Column="1"
                                    VerticalAlignment="Center"
                                    Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
-                                   Text="{Binding Id, StringFormat='IO DEVICE 0{0}'}"
+                                   Text="{Binding Id, StringFormat='IO DEVICE {0:00}'}"
                                    ToolTip="Id" />
 
                         <Grid Grid.Row="1"
@@ -129,7 +132,6 @@
 
                     </Grid>
 
-
                     <Grid Grid.Row="1"
                           Margin="5,5">
                         <Grid.RowDefinitions>
@@ -141,7 +143,6 @@
                                    VerticalAlignment="Center"
                                    Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
                                    Text="Input:" />
-
 
                         <ItemsControl Grid.Row="1"
                                       Margin="-2,3"
@@ -172,7 +173,8 @@
         </ControlTemplate>
 
         <ControlTemplate x:Key="VWSIM_Grid_Inverter">
-            <Border Style="{StaticResource ResourceKey=VWSIM_Border_Inverter}">
+            <Border Width="420"
+                    Style="{StaticResource ResourceKey=VWSIM_Border_Inverter}">
                 <Grid Margin="-1"
                       Background="{StaticResource FerrettoMediumGray}">
                     <Grid.RowDefinitions>
@@ -266,7 +268,7 @@
                     </Grid>
 
                     <Grid Grid.Row="1"
-                          Margin="5,1,5,1">
+                          Margin="5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
@@ -286,7 +288,7 @@
                         <ItemsControl Grid.Row="1"
                                       Grid.Column="0"
                                       Grid.ColumnSpan="2"
-                                      Margin="-2,0,0,0"
+                                      Margin="-2,3"
                                       ItemsSource="{Binding ControlWordArray}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
@@ -350,7 +352,7 @@
                     </Grid>
 
                     <Grid Grid.Row="3"
-                          Margin="5,1,5,5">
+                          Margin="5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
@@ -409,6 +411,10 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <Grid.ColumnDefinitions />
+
+        <!--  Header  -->
+
         <Grid Grid.Row="0"
               Grid.Column="0"
               Margin="15">
@@ -464,101 +470,119 @@
               Margin="5"
               HorizontalAlignment="Center">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Button Margin="10"
+            <Button Margin="5,10,5,10"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Command="{Binding StartSimulatorCommand}"
                     Content="{x:Static res:General.StartSimulatorCommand}"
-                    IsEnabled="{Binding InverterService.IsStartedSimulator, Converter={StaticResource BNC}}"
+                    FontFamily="{DynamicResource VWAPP_TitleFont}"
+                    FontSize="9"
+                    IsEnabled="{Binding MachineService.IsStartedSimulator, Converter={StaticResource BNC}}"
                     Template="{StaticResource VWSIM_ActionButton_ControlTemplate}"
-                    Visibility="{Binding InverterService.IsStartedSimulator, Converter={StaticResource BTVIC}}" />
+                    Visibility="{Binding MachineService.IsStartedSimulator, Converter={StaticResource BTVIC}}" />
 
-            <Button Margin="10"
+            <Button Margin="10,10,5,10"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Command="{Binding StopSimulatorCommand}"
                     Content="{x:Static res:General.StopSimulatorCommand}"
-                    IsEnabled="{Binding InverterService.IsStartedSimulator}"
+                    FontFamily="{DynamicResource VWAPP_TitleFont}"
+                    FontSize="9"
+                    IsEnabled="{Binding MachineService.IsStartedSimulator}"
                     Template="{StaticResource VWSIM_ActionButton_ControlTemplate}"
-                    Visibility="{Binding InverterService.IsStartedSimulator, Converter={StaticResource BTVC}}" />
+                    Visibility="{Binding MachineService.IsStartedSimulator, Converter={StaticResource BTVC}}" />
 
-            <controls:PpcSensorControl Grid.Column="1"
-                                       Margin="10"
-                                       HorizontalAlignment="Left"
-                                       VerticalAlignment="Center"
-                                       SensorState="{Binding InverterService.IsStartedSimulator}"
-                                       Text="{x:Static res:General.SimulatorStarted}"
-                                       Visibility="Collapsed" />
+            <Button Grid.Column="1"
+                    Margin="10"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Command="{Binding ImportConfigurationCommand}"
+                    Content="{x:Static res:General.ImportConfigurationCommand}"
+                    FontFamily="{DynamicResource VWAPP_TitleFont}"
+                    FontSize="9"
+                    IsEnabled="{Binding MachineService.IsStartedSimulator, Converter={StaticResource BNC}}"
+                    Template="{StaticResource VWSIM_ActionButton_ControlTemplate}" />
 
             <controls:PpcSensorControl Grid.Column="2"
                                        Margin="10"
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
-                                       SensorState="{Binding InverterService.RemoteIOs01.Inputs[0].Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       SensorState="{Binding MachineService.RemoteIOs01.Inputs[0].Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                        Text="Sicurezza" />
 
         </Grid>
 
-        <Button Grid.Row="0"
-                Grid.Column="2"
-                Margin="0,0,15,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Command="{Binding ToggleThemeCommand}">
-            <Button.Content>
-                <StackPanel Orientation="Horizontal">
-                    <controls:PpcIcon Height="36"
-                                      Margin="10"
-                                      ColorizeBrush="{DynamicResource PpcButtonForeground}"
-                                      Source="pack://application:,,,/Ferretto.VW.Simulator;Component/Icons/theme_dark.png"
-                                      Visibility="{Binding IsDarkThemeActive, Converter={StaticResource BTVC}}" />
+        <Grid Grid.Row="0"
+              Grid.Column="2"
+              HorizontalAlignment="Right"
+              VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <TextBlock VerticalAlignment="Center"
+                       Foreground="White"
+                       Text="{Binding ConfigurationName}" />
 
-                    <controls:PpcIcon Height="36"
-                                      Margin="10"
-                                      ColorizeBrush="{DynamicResource PpcButtonForeground}"
-                                      Source="pack://application:,,,/Ferretto.VW.Simulator;Component/Icons/theme_light.png"
-                                      Visibility="{Binding IsDarkThemeActive, Converter={StaticResource BTVIC}}" />
+            <Button Grid.Column="1"
+                    Margin="0,0,15,0"
+                    Command="{Binding ToggleThemeCommand}">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <controls:PpcIcon Height="36"
+                                          Margin="10"
+                                          ColorizeBrush="{DynamicResource PpcButtonForeground}"
+                                          Source="pack://application:,,,/Ferretto.VW.Simulator;Component/Icons/theme_dark.png"
+                                          Visibility="{Binding IsDarkThemeActive, Converter={StaticResource BTVC}}" />
 
-                    <TextBlock Margin="0,0,10,0"
-                               VerticalAlignment="Center">
-                        <TextBlock.Style>
-                            <Style>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsDarkThemeActive}"
-                                                 Value="True">
-                                        <Setter Property="TextBlock.Text" Value="Tema Scuro" />
-                                        <Setter Property="TextBlock.Foreground" Value="White" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsDarkThemeActive}"
-                                                 Value="False">
-                                        <Setter Property="TextBlock.Text" Value="Tema Chiaro" />
-                                        <Setter Property="TextBlock.Foreground" Value="Black" />
-                                    </DataTrigger>
+                        <controls:PpcIcon Height="36"
+                                          Margin="10"
+                                          ColorizeBrush="{DynamicResource PpcButtonForeground}"
+                                          Source="pack://application:,,,/Ferretto.VW.Simulator;Component/Icons/theme_light.png"
+                                          Visibility="{Binding IsDarkThemeActive, Converter={StaticResource BTVIC}}" />
 
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </StackPanel>
-            </Button.Content>
-            <Button.Style>
-                <Style TargetType="Button">
-                    <Setter Property="Background" Value="Transparent" />
-                    <Setter Property="BorderBrush" Value="Transparent" />
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="Transparent" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
+                        <TextBlock Margin="0,0,10,0"
+                                   VerticalAlignment="Center">
+                            <TextBlock.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsDarkThemeActive}"
+                                                     Value="True">
+                                            <Setter Property="TextBlock.Text" Value="Tema Scuro" />
+                                            <Setter Property="TextBlock.Foreground" Value="White" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsDarkThemeActive}"
+                                                     Value="False">
+                                            <Setter Property="TextBlock.Text" Value="Tema Chiaro" />
+                                            <Setter Property="TextBlock.Foreground" Value="Black" />
+                                        </DataTrigger>
 
-            </Button.Style>
-        </Button>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </StackPanel>
+                </Button.Content>
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderBrush" Value="Transparent" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="Transparent" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+
+                </Button.Style>
+            </Button>
+        </Grid>
+        <!--  Body  -->
 
         <ScrollViewer Grid.Row="1"
                       VerticalScrollBarVisibility="Auto">
@@ -567,106 +591,76 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-
-                <!--  IoDrive  -->
-                <Grid Grid.Row="3"
-                      Grid.Column="0"
-                      Grid.ColumnSpan="3"
-                      Margin="-5,0">
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
+                <!--  IoDrivers  -->
+                <WrapPanel Grid.Row="0"
+                           Grid.Column="0"
+                           Grid.ColumnSpan="3"
+                           Margin="-5,5,-5,0">
 
                     <ContentControl Grid.Column="0"
-                                    DataContext="{Binding InverterService.RemoteIOs01}"
+                                    DataContext="{Binding MachineService.RemoteIOs01}"
+                                    IsEnabled="{Binding Enabled}"
                                     Template="{StaticResource VWSIM_Grid_IoDriver}" />
 
                     <ContentControl Grid.Column="1"
-                                    DataContext="{Binding InverterService.RemoteIOs02}"
+                                    DataContext="{Binding MachineService.RemoteIOs02}"
+                                    IsEnabled="{Binding Enabled}"
                                     Template="{StaticResource VWSIM_Grid_IoDriver}" />
 
                     <ContentControl Grid.Column="2"
-                                    DataContext="{Binding InverterService.RemoteIOs03}"
+                                    DataContext="{Binding MachineService.RemoteIOs03}"
+                                    IsEnabled="{Binding Enabled}"
                                     Template="{StaticResource VWSIM_Grid_IoDriver}" />
 
-                </Grid>
-
+                </WrapPanel>
 
                 <!--  Inverter  -->
+                <WrapPanel Grid.Row="1"
+                           Grid.Column="0"
+                           Grid.ColumnSpan="3"
+                           Margin="-5,5,-5,0">
 
-                <Grid Grid.Row="4"
-                      Grid.Column="0"
-                      Grid.ColumnSpan="3"
-                      Margin="-5,5,-5,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
+                    <ContentControl DataContext="{Binding MachineService.Inverters00}"
+                                    Template="{StaticResource VWSIM_Grid_Inverter}"
+                                    Visibility="{Binding Enabled, Converter={StaticResource BTVC}}" />
 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
+                    <ContentControl DataContext="{Binding MachineService.Inverters01}"
+                                    Template="{StaticResource VWSIM_Grid_Inverter}"
+                                    Visibility="{Binding Enabled, Converter={StaticResource BTVC}}" />
 
-                    <ContentControl Grid.Row="0"
-                                    Grid.Column="0"
-                                    DataContext="{Binding InverterService.Inverters00}"
-                                    Template="{StaticResource VWSIM_Grid_Inverter}" />
+                    <ContentControl DataContext="{Binding MachineService.Inverters02}"
+                                    Template="{StaticResource VWSIM_Grid_Inverter}"
+                                    Visibility="{Binding Enabled, Converter={StaticResource BTVC}}" />
 
-                    <ContentControl Grid.Row="0"
-                                    Grid.Column="1"
-                                    DataContext="{Binding InverterService.Inverters01}"
-                                    Template="{StaticResource VWSIM_Grid_Inverter}" />
+                    <ContentControl DataContext="{Binding MachineService.Inverters03}"
+                                    Template="{StaticResource VWSIM_Grid_Inverter}"
+                                    Visibility="{Binding Enabled, Converter={StaticResource BTVC}}" />
 
-                    <ContentControl Grid.Row="0"
-                                    Grid.Column="2"
-                                    DataContext="{Binding InverterService.Inverters02}"
-                                    Template="{StaticResource VWSIM_Grid_Inverter}" />
+                    <ContentControl DataContext="{Binding MachineService.Inverters04}"
+                                    Template="{StaticResource VWSIM_Grid_Inverter}"
+                                    Visibility="{Binding Enabled, Converter={StaticResource BTVC}}" />
 
-                    <ContentControl Grid.Row="1"
-                                    Grid.Column="0"
-                                    DataContext="{Binding InverterService.Inverters03}"
-                                    Template="{StaticResource VWSIM_Grid_Inverter}" />
+                    <ContentControl DataContext="{Binding MachineService.Inverters05}"
+                                    Template="{StaticResource VWSIM_Grid_Inverter}"
+                                    Visibility="{Binding Enabled, Converter={StaticResource BTVC}}" />
 
-                    <ContentControl Grid.Row="1"
-                                    Grid.Column="1"
-                                    DataContext="{Binding InverterService.Inverters04}"
-                                    Template="{StaticResource VWSIM_Grid_Inverter}" />
+                    <ContentControl DataContext="{Binding MachineService.Inverters06}"
+                                    Template="{StaticResource VWSIM_Grid_Inverter}"
+                                    Visibility="{Binding Enabled, Converter={StaticResource BTVC}}" />
 
-                    <ContentControl Grid.Row="1"
-                                    Grid.Column="2"
-                                    DataContext="{Binding InverterService.Inverters05}"
-                                    Template="{StaticResource VWSIM_Grid_Inverter}" />
+                    <ContentControl DataContext="{Binding MachineService.Inverters07}"
+                                    Template="{StaticResource VWSIM_Grid_Inverter}"
+                                    Visibility="{Binding Enabled, Converter={StaticResource BTVC}}" />
 
-                    <ContentControl Grid.Row="2"
-                                    Grid.Column="0"
-                                    DataContext="{Binding InverterService.Inverters06}"
-                                    Template="{StaticResource VWSIM_Grid_Inverter}" />
-
-                    <ContentControl Grid.Row="2"
-                                    Grid.Column="1"
-                                    DataContext="{Binding InverterService.Inverters07}"
-                                    Template="{StaticResource VWSIM_Grid_Inverter}" />
-
-                </Grid>
+                </WrapPanel>
             </Grid>
 
         </ScrollViewer>
+
+        <!--  Footer  -->
+
         <TextBlock Grid.Row="2"
                    Margin="15,0,15,15"
                    HorizontalAlignment="Stretch"

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Drawing;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Operator.ViewModels
@@ -13,8 +11,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Fields
 
         private string batch;
-
-        private Image image;
 
         private string itemCode;
 
@@ -42,10 +38,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public ItemPutDetailsViewModel(
             IWmsImagesProvider wmsImagesProvider,
-            IMissionsDataService missionsDataService,
+            IItemsWmsWebService itemsWmsWebService,
+            IMissionsWmsWebService missionsWmsWebService,
             IMissionOperationsService missionOperationsService,
-            IBayManager bayManager)
-            : base(wmsImagesProvider, missionsDataService, bayManager, missionOperationsService)
+            IBayManager bayManager,
+            IDialogService dialogService)
+            : base(wmsImagesProvider, missionsWmsWebService, itemsWmsWebService, bayManager, missionOperationsService, dialogService)
         {
         }
 
@@ -56,8 +54,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public string Batch { get => this.batch; set => this.SetProperty(ref this.batch, value); }
 
         public override EnableMask EnableMask => EnableMask.Any;
-
-        public Image Image { get => this.image; set => this.SetProperty(ref this.image, value); }
 
         public string ItemCode { get => this.itemCode; set => this.SetProperty(ref this.itemCode, value); }
 
@@ -102,15 +98,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.Position = this.ItemDetail.Position;
             this.ProductionDate = this.ItemDetail.ProductionDate;
             this.RequestedQuantity = this.ItemDetail.RequestedQuantity;
-            try
-            {
-                var imageStream = await this.WmsImagesProvider.GetImageAsync(this.ItemDetail.Image);
-                this.Image = Image.FromStream(imageStream);
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
         }
 
         #endregion

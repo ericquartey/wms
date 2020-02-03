@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -31,17 +32,14 @@ namespace Ferretto.VW.MAS.AutomationService
 
         public static int Main(string[] args)
         {
-            ILogger<Startup> logger = null;
+            ILogger logger = null;
             try
             {
-                var pathToContentRoot = Directory.GetCurrentDirectory();
-
                 var isService = !Debugger.IsAttached && args.Contains(ServiceConsoleArgument);
-                if (isService)
-                {
-                    var pathToExe = Process.GetCurrentProcess().MainModule.FileName;
-                    pathToContentRoot = Path.GetDirectoryName(pathToExe);
-                }
+
+                var pathToContentRoot = isService
+                    ? Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)
+                    : Directory.GetCurrentDirectory();
 
                 var webHostArgs = args.Where(arg => arg != ServiceConsoleArgument).ToArray();
 
@@ -50,28 +48,28 @@ namespace Ferretto.VW.MAS.AutomationService
                     .Build();
 
                 logger = host.Services.GetRequiredService<ILogger<Startup>>();
-                var versionString = GetVersion();
 
-                logger.LogInformation($"VertiMag Automation Service version {versionString}");
+                logger.LogInformation($"VertiMag Automation Service version {GetVersion()}");
 
                 if (isService)
                 {
+                    Directory.SetCurrentDirectory(pathToContentRoot);
                     host.RunAsService();
                 }
                 else
                 {
-                    System.Console.Title = "Vertimag Automation Service";
+                    Console.Title = "Vertimag Automation Service";
                     host.Run();
                 }
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 logger?.LogError(ex, "Application terminated unexpectedly.");
 
                 return -1;
             }
 
-            logger.LogInformation("Application terminated.");
+            logger?.LogInformation("Application terminated.");
 
             return NoError;
         }

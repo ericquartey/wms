@@ -1,0 +1,66 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls"
+                    xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Styles">
+
+    <Style x:Key="{x:Type controls:PpcProgressBar}"
+           TargetType="{x:Type ProgressBar}">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="#424A50" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:PpcProgressBar}">
+                    <Grid Name="TemplateRoot"
+                          SnapsToDevicePixels="True"
+                          UseLayoutRounding="True">
+                        <Rectangle Fill="{TemplateBinding Background}"
+                                   RadiusX="{Binding Radius, RelativeSource={RelativeSource TemplatedParent}}"
+                                   RadiusY="{Binding Radius, RelativeSource={RelativeSource TemplatedParent}}"
+                                   StrokeThickness="0" />
+
+                        <Rectangle Name="PART_Track"
+                                   Margin="1,1,1,1"
+                                   StrokeThickness="0" />
+
+                        <Decorator Name="PART_Indicator"
+                                   Margin="1,1,1,1"
+                                   HorizontalAlignment="Left"
+                                   SnapsToDevicePixels="True">
+
+                            <Grid Name="Foreground">
+                                <Rectangle Name="Indicator"
+                                           RadiusX="{Binding Radius, RelativeSource={RelativeSource TemplatedParent}}"
+                                           RadiusY="{Binding Radius, RelativeSource={RelativeSource TemplatedParent}}"
+                                           SnapsToDevicePixels="True"
+                                           StrokeThickness="0">
+                                    <Rectangle.Fill>
+                                        <LinearGradientBrush MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="0,0" EndPoint="10,10">
+                                            <GradientStop Offset="0" Color="{Binding Color1.Color, RelativeSource={RelativeSource TemplatedParent}}" />
+                                            <GradientStop Offset="0.5" Color="{Binding Color1.Color, RelativeSource={RelativeSource TemplatedParent}}" />
+                                            <GradientStop Offset="0.5" Color="{Binding Color2.Color, RelativeSource={RelativeSource TemplatedParent}}" />
+                                            <GradientStop Offset="1" Color="{Binding Color2.Color, RelativeSource={RelativeSource TemplatedParent}}" />
+                                        </LinearGradientBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </Grid>
+                        </Decorator>
+
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}" />
+                    </Grid>
+
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Orientation" Value="Vertical">
+                            <Setter TargetName="TemplateRoot" Property="LayoutTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="-90" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

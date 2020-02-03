@@ -1,8 +1,0 @@
-﻿<UserControl x:Class="Ferretto.VW.App.Installation.Views.VerticalOffsetCalibrationNavigationView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls">
-    <Grid>
-        <ctrls:PpcStepsMenu ItemsSource="{Binding MenuItems}" />
-    </Grid>
-</UserControl>

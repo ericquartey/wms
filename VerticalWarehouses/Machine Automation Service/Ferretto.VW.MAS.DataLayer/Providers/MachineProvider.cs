@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 
@@ -35,14 +35,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #endregion
 
-        #region Properties
-
-        public bool IsHomingExetuted { get; set; }
-
-        public bool IsMachineRunning { get; set; }
-
-        #endregion
-
         #region Methods
 
         public void Add(Machine machine)
@@ -54,7 +46,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
-            this.cache.Remove(BaysDataProvider.GetElevatorAxesCacheKey());
+            this.cache.Remove(ElevatorDataProvider.GetAxesCacheKey());
 
             lock (this.dataContext)
             {
@@ -67,7 +59,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
-            this.cache.Remove(BaysDataProvider.GetElevatorAxesCacheKey());
+            this.cache.Remove(ElevatorDataProvider.GetAxesCacheKey());
 
             lock (this.dataContext)
             {
@@ -136,6 +128,8 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(m => m.Bays)
                         .ThenInclude(b => b.IoDevice)
                     .Include(m => m.Bays)
+                        .ThenInclude(b => b.Laser)
+                    .Include(m => m.Bays)
                         .ThenInclude(b => b.Shutter)
                             .ThenInclude(b => b.AssistedMovements)
                     .Include(m => m.Bays)
@@ -165,11 +159,19 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public int GetIdentity()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.Select(m => m.Id).Single();
+            }
+        }
+
         public MachineStatistics GetStatistics()
         {
             lock (this.dataContext)
             {
-                return this.dataContext.MachineStatistics.FirstOrDefault();
+                return this.dataContext.MachineStatistics.AsNoTracking().FirstOrDefault();
             }
         }
 
@@ -179,7 +181,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
-            this.cache.Remove(BaysDataProvider.GetElevatorAxesCacheKey());
+            this.cache.Remove(ElevatorDataProvider.GetAxesCacheKey());
 
             context.ElevatorAxisManualParameters.RemoveRange(context.ElevatorAxisManualParameters);
             context.ShutterManualParameters.RemoveRange(context.ShutterManualParameters);
@@ -222,11 +224,14 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             _ = machine ?? throw new System.ArgumentNullException(nameof(machine));
 
-            dataContext = dataContext ?? this.dataContext;
+            if (dataContext is null)
+            {
+                dataContext = this.dataContext;
+            }
 
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
-            this.cache.Remove(BaysDataProvider.GetElevatorAxesCacheKey());
+            this.cache.Remove(ElevatorDataProvider.GetAxesCacheKey());
 
             machine.Elevator?.Axes.ForEach((a) =>
             {
@@ -279,50 +284,31 @@ namespace Ferretto.VW.MAS.DataLayer
             dataContext.SaveChanges();
         }
 
-        private void DeleteBays(IEnumerable<Bay> bays)
+        public void UpdateWeightStatistics(DataLayerContext dataContext)
         {
-            if (bays is null)
+            var machineStat = dataContext.MachineStatistics.FirstOrDefault();
+            machineStat.TotalWeightFront = 0;
+            machineStat.TotalWeightBack = 0;
+            var loadingUnits = dataContext.LoadingUnits
+                .Include(i => i.Cell)
+                .ToList();
+            loadingUnits.ForEach((l) =>
             {
-                return;
-            }
-
-            foreach (var bay in bays)
-            {
-                bay.Inverter = null;
-                bay.IoDevice = null;
-                if (!(bay.Positions is null))
+                if (l.Cell != null)
                 {
-                    foreach (var position in bay.Positions)
+                    if (l.Cell.Side == WarehouseSide.Front)
                     {
-                        position.LoadingUnit = null;
+                        machineStat.TotalWeightFront += l.GrossWeight;
                     }
-                }
-                bay.Positions = null;
-                bay.Shutter = null;
-            }
-        }
-
-        private void DeleteElevators(Elevator elevator)
-        {
-            if (elevator is null)
-            {
-                return;
-            }
-            if (!(elevator.Axes is null))
-            {
-                foreach (var axes in elevator.Axes)
-                {
-                    axes.FullLoadMovement = null;
-                    axes.EmptyLoadMovement = null;
-                    axes.Inverter = null;
-                    foreach (var profile in axes.Profiles)
+                    else
                     {
-                        profile.Steps = null;
+                        machineStat.TotalWeightBack += l.GrossWeight;
                     }
-                    axes.WeightMeasurement = null;
+                    l.IsIntoMachine = true;
                 }
             }
-            elevator.StructuralProperties = null;
+            );
+            dataContext.SaveChanges();
         }
 
         #endregion

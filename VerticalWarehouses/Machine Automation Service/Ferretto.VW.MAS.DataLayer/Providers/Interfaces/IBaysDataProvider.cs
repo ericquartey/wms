@@ -11,21 +11,19 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
-        Bay Activate(BayNumber bayNumber);
-
         void AddElevatorPseudoBay();
 
-        Bay AssignMissionOperation(BayNumber bayNumber, int? missionId, int? missionOperationId);
+        Bay AssignWmsMission(BayNumber bayNumber, Mission mission, int? wmsMissionOperationId);
 
-        double ConvertProfileToHeight(ushort profile);
+        Bay ClearMission(BayNumber bayNumber);
 
-        double ConvertPulsesToMillimeters(double pulses, InverterIndex inverterIndex);
-
-        Bay Deactivate(BayNumber bayNumber);
+        double ConvertProfileToHeight(ushort profile, int positionId);
 
         void FindZero(BayNumber bayNumber);
 
         IEnumerable<Bay> GetAll();
+
+        int GetAllCount();
 
         CarouselManualParameters GetAssistedMovementsCarousel(BayNumber bayNumber);
 
@@ -34,6 +32,15 @@ namespace Ferretto.VW.MAS.DataLayer
         BayNumber GetByAxis(IHomingMessageData data);
 
         Bay GetByBayPositionId(int id);
+
+        Bay GetByCell(Cell cell);
+
+        /// <summary>
+        /// Gets the bay identified by the given identifier.
+        /// </summary>
+        /// <param name="id">The identifier of the bay to retrieve.</param>
+        /// <returns>The bay identified by the given identifier, or null if no bay with the given identifier exists.</returns>
+        Bay GetByIdOrDefault(int id);
 
         BayNumber GetByInverterIndex(InverterIndex inverterIndex);
 
@@ -45,6 +52,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         BayNumber GetByMovementType(IPositioningMessageData data);
 
+        /// <summary>
+        /// Gets the bay identified by the given number.
+        /// </summary>
+        /// <param name="bayNumber">The number of the bay to retrieve.</param>
+        /// <returns>The bay identified by the given number.</returns>
         Bay GetByNumber(BayNumber bayNumber);
 
         double GetChainOffset(InverterIndex inverterIndex);
@@ -59,6 +71,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IoIndex GetIoDevice(BayNumber bayNumber);
 
+        bool GetLightOn(BayNumber bayNumber);
+
         LoadingUnit GetLoadingUnitByDestination(LoadingUnitLocation location);
 
         double? GetLoadingUnitDestinationHeight(LoadingUnitLocation location);
@@ -69,11 +83,22 @@ namespace Ferretto.VW.MAS.DataLayer
 
         ShutterManualParameters GetManualMovementsShutter(BayNumber bayNumber);
 
+        /// <summary>
+        /// Gets the bay containing the specified bay position.
+        /// </summary>
+        /// <param name="bayPositionId">The id of the bay position contained in the bay to retrieve.</param>
+        /// <returns>The bay containing the specified bay position.</returns>
         BayPosition GetPositionById(int bayPositionId);
 
         BayPosition GetPositionByLocation(LoadingUnitLocation destination);
 
         double GetResolution(InverterIndex inverterIndex);
+
+        InverterIndex GetShutterInverterIndex(BayNumber bayNumber);
+
+        bool IsMissionInBay(Mission mission);
+
+        void Light(BayNumber bayNumber, bool enable);
 
         void PerformHoming(BayNumber bayNumber);
 
@@ -81,11 +106,22 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void ResetMachine();
 
+        Bay SetBayActive(BayNumber bayNumber, bool active);
+
         void SetChainPosition(BayNumber bayNumber, double value);
 
         Bay SetCurrentOperation(BayNumber bayNumber, BayOperation newOperation);
 
-        void SetLoadingUnit(int bayPositionId, int? loadingUnitId);
+        /// <summary>
+        /// Specifies that the given loading unit is now located in a bay position.
+        /// It updates bay and LoadUnit db tables.
+        /// </summary>
+        /// <param name="bayPositionId">The identifier of the bay position where the loading unit is now located.</param>
+        /// <param name="loadingUnitId">The identifier of the loading unit.</param>
+        /// <param name="height">"only when it is not null"</param>
+        void SetLoadingUnit(int bayPositionId, int? loadingUnitId, double? height = null);
+
+        void UpdateLastIdealPosition(double position, BayNumber bayNumber);
 
         Bay UpdatePosition(BayNumber bayNumber, int position, double height);
 

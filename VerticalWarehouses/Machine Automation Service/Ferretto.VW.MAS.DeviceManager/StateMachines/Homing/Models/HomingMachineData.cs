@@ -16,20 +16,24 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing.Models
         #region Constructors
 
         public HomingMachineData(
-            bool isOneKMachine,
+            bool isOneTonMachine,
+            int? loadingUnitId,
             BayNumber requestingBay,
             BayNumber targetBay,
             IMachineResourcesProvider machineResourcesProvider,
             InverterIndex inverterIndex,
+            bool showErrors,
             IEventAggregator eventAggregator,
             ILogger logger,
             IServiceScopeFactory serviceScopeFactory)
         {
-            this.IsOneKMachine = isOneKMachine;
+            this.IsOneTonMachine = isOneTonMachine;
+            this.LoadingUnitId = loadingUnitId;
             this.RequestingBay = requestingBay;
             this.TargetBay = targetBay;
             this.MachineSensorStatus = machineResourcesProvider;
             this.CurrentInverterIndex = inverterIndex;
+            this.ShowErrors = showErrors;
             this.EventAggregator = eventAggregator;
             this.Logger = logger;
             this.ServiceScopeFactory = serviceScopeFactory;
@@ -50,7 +54,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing.Models
 
         public InverterIndex InverterIndexOld { get; set; }
 
-        public bool IsOneKMachine { get; }
+        public bool IsOneTonMachine { get; }
+
+        public int? LoadingUnitId { get; }
 
         [Obsolete("Replace this reference with DI or ServiceProvider.")]
         public ILogger Logger { get; }
@@ -61,10 +67,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing.Models
 
         public int NumberOfExecutedSteps { get; set; }
 
+        public Axis RequestedAxisToCalibrate { get; set; }
+
         public BayNumber RequestingBay { get; set; }
 
         [Obsolete("Replace this reference with DI or ServiceProvider.")]
         public IServiceScopeFactory ServiceScopeFactory { get; }
+
+        public bool ShowErrors { get; }
 
         public BayNumber TargetBay { get; }
 

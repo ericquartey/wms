@@ -3,6 +3,7 @@ using System.Threading;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines.Interfaces;
@@ -16,8 +17,9 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 {
-    public abstract class FiniteStateMachine<TStartState> : IFiniteStateMachine, IDisposable
+    public abstract class FiniteStateMachine<TStartState, TErrorState> : IFiniteStateMachine, IDisposable
         where TStartState : IState
+        where TErrorState : IState
     {
         #region Fields
 
@@ -123,13 +125,23 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                     }
                     catch (StateMachineException ex)
                     {
-                        var eventArgs = new FiniteStateMachinesEventArgs
-                        {
-                            InstanceId = this.InstanceId,
-                            NotificationMessage = ex.NotificationMessage,
-                        };
+                        this.Logger.LogError(ex.NotificationMessage.Description, "Error while activating a State.");
+                        this.notificationEvent.Publish(ex.NotificationMessage);
 
-                        this.RaiseCompleted(eventArgs);
+                        if (this.activeState == null)
+                        {
+                            var eventArgs = new FiniteStateMachinesEventArgs
+                            {
+                                InstanceId = this.MachineData?.FsmId ?? this.InstanceId,
+                                NotificationMessage = ex.NotificationMessage,
+                            };
+                            this.RaiseCompleted(eventArgs);
+                        }
+                        else
+                        {
+                            this.activeState = this.activeState?.Stop(StopRequestReason.Error);
+                            this.activeState?.Enter(this.StartData, this.serviceProvider, this.MachineData);
+                        }
                     }
 
                     if (this.activeState is IStartMessageState startMessageState)
@@ -143,7 +155,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 {
                     var eventArgs = new FiniteStateMachinesEventArgs
                     {
-                        InstanceId = this.InstanceId,
+                        InstanceId = this.MachineData?.FsmId ?? this.InstanceId,
                         NotificationMessage = endState.EndMessage,
                     };
 
@@ -154,7 +166,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         public Guid InstanceId { get; }
 
-        public IFiniteStateMachineData MachineData { get; protected set; }
+        public IFiniteStateMachineData MachineData { get; set; }
 
         public CommandMessage StartData { get; private set; }
 
@@ -188,21 +200,38 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             this.activeState = this.OnPause();
         }
 
-        public void Resume()
+        public void Resume(CommandMessage commandMessage, IServiceProvider serviceProvider, CancellationToken cancellationToken)
         {
-            this.ActiveState = this.OnResume();
+            if (this.ActiveState is null)
+            {
+                this.isStarted = true;
+
+                this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+
+                this.StartData = commandMessage;
+
+                this.requestingBay = commandMessage.RequestingBay;
+
+                this.commandsDequeuingThread.Start(cancellationToken);
+                this.notificationsDequeuingThread.Start(cancellationToken);
+
+                this.InitializeSubscriptions();
+
+                this.ActiveState = this.GetState<TErrorState>();
+            }
+            this.ActiveState = this.OnResume(commandMessage);
         }
 
         public virtual void Start(CommandMessage commandMessage, IServiceProvider serviceProvider, CancellationToken cancellationToken)
         {
-            if (this.isStarted)
-            {
-                throw new InvalidOperationException($"The state machine {this.GetType().Name} was already started");
-            }
-
             if (commandMessage is null)
             {
                 throw new ArgumentNullException(nameof(commandMessage));
+            }
+
+            if (this.isStarted)
+            {
+                throw new InvalidOperationException($"The state machine {this.GetType().Name} was already started");
             }
 
             if (this.OnStart(commandMessage, cancellationToken))
@@ -226,7 +255,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             {
                 var eventArgs = new FiniteStateMachinesEventArgs
                 {
-                    InstanceId = this.InstanceId,
+                    InstanceId = this.MachineData?.FsmId ?? this.InstanceId,
                 };
                 this.RaiseCompleted(eventArgs);
             }
@@ -234,7 +263,18 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         public void Stop(StopRequestReason reason)
         {
-            this.ActiveState = this.OnStop(reason);
+            if (this.activeState is null)
+            {
+                var eventArgs = new FiniteStateMachinesEventArgs
+                {
+                    InstanceId = this.MachineData?.FsmId ?? this.InstanceId,
+                };
+                this.RaiseCompleted(eventArgs);
+            }
+            else
+            {
+                this.ActiveState = this.OnStop(reason);
+            }
         }
 
         protected virtual void Dispose(bool disposing)
@@ -249,6 +289,9 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
             this.notificationEventSubscriptionToken?.Dispose();
             this.notificationEventSubscriptionToken = null;
+
+            this.commandQueue?.Dispose();
+            this.notificationQueue?.Dispose();
 
             this.isDisposed = true;
         }
@@ -270,7 +313,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         protected virtual IState OnCommandReceived(CommandMessage command)
         {
-            this.Logger.LogDebug($"{this.GetType().Name}: received command {command?.Type}, {command?.Description}");
+            this.Logger.LogTrace($"{this.GetType().Name}: received command {command?.Type}, {command?.Description}");
 
             return this.ActiveState;
         }
@@ -287,9 +330,9 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             return this.ActiveState.Pause();
         }
 
-        protected virtual IState OnResume()
+        protected virtual IState OnResume(CommandMessage commandMessage)
         {
-            return this.ActiveState.Resume();
+            return this.ActiveState.Resume(commandMessage);
         }
 
         protected virtual bool OnStart(CommandMessage commandMessage, CancellationToken cancellationToken)
@@ -331,11 +374,18 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 {
                     this.Logger.LogError(ex, "Error while processing a command.");
                     this.NotifyError(ex);
-                    var eventArgs = new FiniteStateMachinesEventArgs
+                    if (this.activeState is null)
                     {
-                        InstanceId = this.InstanceId,
-                    };
-                    this.RaiseCompleted(eventArgs);
+                        var eventArgs = new FiniteStateMachinesEventArgs
+                        {
+                            InstanceId = this.MachineData?.FsmId ?? this.InstanceId,
+                        };
+                        this.RaiseCompleted(eventArgs);
+                    }
+                    else
+                    {
+                        this.ActiveState = this.activeState?.Stop(StopRequestReason.Error);
+                    }
                 }
             }
             while (!cancellationToken.IsCancellationRequested);
@@ -365,11 +415,18 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 {
                     this.Logger.LogError(ex, "Error while processing a notification.");
                     this.NotifyError(ex);
-                    var eventArgs = new FiniteStateMachinesEventArgs
+                    if (this.activeState is null)
                     {
-                        InstanceId = this.InstanceId,
-                    };
-                    this.RaiseCompleted(eventArgs);
+                        var eventArgs = new FiniteStateMachinesEventArgs
+                        {
+                            InstanceId = this.MachineData?.FsmId ?? this.InstanceId,
+                        };
+                        this.RaiseCompleted(eventArgs);
+                    }
+                    else
+                    {
+                        this.ActiveState = this.activeState?.Stop(StopRequestReason.Error);
+                    }
                 }
             }
             while (!cancellationToken.IsCancellationRequested);

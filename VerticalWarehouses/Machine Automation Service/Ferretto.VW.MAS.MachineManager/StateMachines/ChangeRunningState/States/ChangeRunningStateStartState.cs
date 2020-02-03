@@ -26,9 +26,15 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
 
         private readonly IMachineControlProvider machineControlProvider;
 
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
+
         private readonly Dictionary<BayNumber, MessageStatus> stateMachineResponses;
 
+        private BayNumber currentBay;
+
         private bool requestedState;
+
+        private StopRequestReason stopReason;
 
         #endregion
 
@@ -37,12 +43,14 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
         public ChangeRunningStateStartState(
             IBaysDataProvider baysDataProvider,
             IMachineControlProvider machineControlProvider,
+            IMachineVolatileDataProvider machineVolatileDataProvider,
             ILogger<StateBase> logger)
             : base(logger)
         {
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
 
             this.machineControlProvider = machineControlProvider ?? throw new ArgumentNullException(nameof(machineControlProvider));
+            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
 
             this.stateMachineResponses = new Dictionary<BayNumber, MessageStatus>();
         }
@@ -59,7 +67,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
+            this.Logger.LogDebug($"ChangeRunningStateStartState: received command {commandMessage.Type}, {commandMessage.Description}");
             if (commandMessage.Data is IChangeRunningStateMessageData messageData)
             {
                 if (messageData.Enable)
@@ -72,13 +80,18 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                 {
                     this.requestedState = false;
 
-                    var newMessageData = new StopMessageData(messageData.StopReason);
-                    this.machineControlProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MachineManager, commandMessage.RequestingBay);
+                    this.currentBay = this.baysDataProvider.GetAll().OrderBy(b => b.Number).First().Number;
+                    this.stopReason = messageData.StopReason;
+                    var newMessageData = new StopMessageData(this.stopReason);
+                    this.machineControlProvider.StopOperation(newMessageData, this.currentBay, MessageActor.MachineManager, commandMessage.RequestingBay);
+
+                    this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                    this.Logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
                 }
 
                 var notificationData = new ChangeRunningStateMessageData(
                     messageData.Enable,
-                    machineData.MachineId,
+                    machineData.FsmId,
                     messageData.CommandAction,
                     messageData.StopReason,
                     messageData.Verbosity);
@@ -132,6 +145,21 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                     {
                         case MessageStatus.OperationEnd:
                             this.UpdateResponseList(notificationStatus, notification.TargetBay);
+                            var bays = this.baysDataProvider.GetAll().OrderBy(b => b.Number).ToList();
+                            if (this.stateMachineResponses.Values.Count == bays.Count)
+                            {
+                                var messageData = new ChangeRunningStateMessageData(this.requestedState);
+                                this.machineControlProvider.StartChangePowerStatus(messageData, MessageActor.MachineManager, notification.RequestingBay);
+                            }
+                            else
+                            {
+                                this.currentBay = bays.FirstOrDefault(b => b.Number > this.currentBay)?.Number ?? BayNumber.None;
+                                if (this.currentBay != BayNumber.None)
+                                {
+                                    var newMessageData = new StopMessageData(this.stopReason);
+                                    this.machineControlProvider.StopOperation(newMessageData, this.currentBay, MessageActor.MachineManager, notification.RequestingBay);
+                                }
+                            }
                             break;
 
                         case MessageStatus.OperationError:
@@ -140,12 +168,6 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                             ((IEndState)returnValue).StopRequestReason = StopRequestReason.Error;
                             ((IEndState)returnValue).ErrorMessage = notification;
                             break;
-                    }
-
-                    if (this.stateMachineResponses.Values.Count == this.baysDataProvider.GetAll().Count())
-                    {
-                        var messageData = new ChangeRunningStateMessageData(this.requestedState);
-                        this.machineControlProvider.StartChangePowerStatus(messageData, MessageActor.MachineManager, notification.RequestingBay);
                     }
                 }
             }

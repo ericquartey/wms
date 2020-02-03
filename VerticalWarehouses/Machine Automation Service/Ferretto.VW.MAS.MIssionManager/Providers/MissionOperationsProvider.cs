@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -22,7 +21,9 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IMissionOperationsDataService missionOperationsDataService;
+        private readonly IMissionOperationsWmsWebService missionOperationsWmsWebService;
+
+        private readonly IMissionsDataProvider missionsDataProvider;
 
         #endregion
 
@@ -30,11 +31,13 @@ namespace Ferretto.VW.MAS.MissionManager
 
         public MissionOperationsProvider(
             IEventAggregator eventAggregator,
-            IMissionOperationsDataService missionOperationsDataService,
+            IMissionOperationsWmsWebService missionOperationsWmsWebService,
+            IMissionsDataProvider missionsDataProvider,
             IConfiguration configuration)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
-            this.missionOperationsDataService = missionOperationsDataService ?? throw new ArgumentNullException(nameof(missionOperationsDataService));
+            this.missionOperationsWmsWebService = missionOperationsWmsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWmsWebService));
+            this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
@@ -42,7 +45,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         #region Methods
 
-        public async Task AbortAsync(int id)
+        public async Task AbortAsync(int wmsId)
         {
             if (!this.configuration.IsWmsEnabled())
             {
@@ -51,15 +54,26 @@ namespace Ferretto.VW.MAS.MissionManager
 
             try
             {
-                await this.missionOperationsDataService.AbortAsync(id);
+                await this.missionOperationsWmsWebService.AbortAsync(wmsId);
             }
-            catch (SwaggerException ex)
+            catch (WmsWebApiException ex)
             {
                 this.NegativeResult(ex);
             }
         }
 
-        public async Task CompleteAsync(int id, double quantity)
+        public async Task CancelAsync()
+        {
+            // TODO implement missionOperationsDataService cancel
+        }
+
+        /// <summary>
+        /// the UI informs mission manager that the operation is completed
+        /// </summary>
+        /// <param name="id">operation id</param>
+        /// <param name="quantity"></param>
+        /// <returns></returns>
+        public async Task CompleteAsync(int wmsId, double quantity, string printerName)
         {
             if (!this.configuration.IsWmsEnabled())
             {
@@ -68,11 +82,11 @@ namespace Ferretto.VW.MAS.MissionManager
 
             try
             {
-                await this.missionOperationsDataService.CompleteItemAsync(id, quantity);
+                await this.missionOperationsWmsWebService.CompleteItemAsync(wmsId, quantity, printerName);
 
                 var messageData = new MissionOperationCompletedMessageData
                 {
-                    MissionOperationId = id,
+                    MissionOperationId = wmsId,
                 };
 
                 var notificationMessage = new NotificationMessage(
@@ -87,16 +101,69 @@ namespace Ferretto.VW.MAS.MissionManager
                     .GetEvent<NotificationEvent>()
                     .Publish(notificationMessage);
             }
-            catch (SwaggerException ex)
+            catch (WmsWebApiException ex)
             {
                 this.NegativeResult(ex);
             }
         }
 
-        private void NegativeResult(SwaggerException exception)
+        public async Task<MissionOperation> GetByIdAsync(int wmsId)
+        {
+            return await this.missionOperationsWmsWebService.GetByIdAsync(wmsId);
+        }
+
+        public int GetCountByBay(BayNumber bayNumber)
+        {
+            return this.missionsDataProvider
+                .GetAllActiveMissionsByBay(bayNumber)
+                .Where(m => m.Status != CommonUtils.Messages.Enumerations.MissionStatus.Completed)
+                .Count();
+        }
+
+        /// <summary>
+        /// the UI informs mission manager that the operation is completed
+        /// </summary>
+        /// <param name="id">operation id</param>
+        /// <param name="quantity"></param>
+        /// <returns></returns>
+        public async Task PartiallyCompleteAsync(int wmsId, double quantity, string printerName)
+        {
+            if (!this.configuration.IsWmsEnabled())
+            {
+                throw new InvalidOperationException("The machine is not configured to communicate with WMS.");
+            }
+
+            try
+            {
+                await this.missionOperationsWmsWebService.PartiallyCompleteAndRescheduleItemAsync(wmsId, quantity, printerName);
+
+                var messageData = new MissionOperationCompletedMessageData
+                {
+                    MissionOperationId = wmsId,
+                };
+
+                var notificationMessage = new NotificationMessage(
+                    messageData,
+                    "Mission Operation Partially Completed",
+                    MessageActor.MissionManager,
+                    MessageActor.WebApi,
+                    MessageType.MissionOperationCompleted,
+                    BayNumber.None);
+
+                this.eventAggregator
+                    .GetEvent<NotificationEvent>()
+                    .Publish(notificationMessage);
+            }
+            catch (WmsWebApiException ex)
+            {
+                this.NegativeResult(ex);
+            }
+        }
+
+        private void NegativeResult(WmsWebApiException exception)
         {
             var problemDetails = new ProblemDetails();
-            if (exception is SwaggerException<ProblemDetails> problemDetailsException)
+            if (exception is WmsWebApiException<ProblemDetails> problemDetailsException)
             {
                 problemDetails = problemDetailsException.Result;
             }
@@ -104,13 +171,13 @@ namespace Ferretto.VW.MAS.MissionManager
             switch (exception.StatusCode)
             {
                 case (int)HttpStatusCode.BadRequest:
-                    throw new ArgumentException(problemDetails.Detail);
+                    throw new ArgumentException(problemDetails?.Detail);
 
                 case (int)HttpStatusCode.NotFound:
                     throw new EntityNotFoundException();
 
                 case (int)HttpStatusCode.UnprocessableEntity:
-                    throw new InvalidOperationException(problemDetails.Detail);
+                    throw new InvalidOperationException(problemDetails?.Detail);
 
                 default:
                     throw exception;

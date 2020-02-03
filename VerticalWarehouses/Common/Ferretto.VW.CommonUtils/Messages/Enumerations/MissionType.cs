@@ -12,6 +12,8 @@
 
         OUT,
 
-        Test
+        FullTest,
+
+        Compact
     }
 }

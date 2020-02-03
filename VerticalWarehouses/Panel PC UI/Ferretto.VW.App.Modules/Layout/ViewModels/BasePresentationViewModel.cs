@@ -27,8 +27,8 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
         {
             this.currentPresentation = PresentationMode.None;
             this.states = new List<IPresentation>();
-            this.notificationEvent = this.EventAggregator.GetEvent<PresentationChangedPubSubEvent>();
 
+            this.notificationEvent = this.EventAggregator.GetEvent<PresentationChangedPubSubEvent>();
             this.presentationEventSubscription = this.notificationEvent.Subscribe(
                 this.OnPresentationChanged,
                 ThreadOption.UIThread,

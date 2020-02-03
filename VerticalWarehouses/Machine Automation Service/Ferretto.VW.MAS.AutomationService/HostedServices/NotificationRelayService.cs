@@ -5,6 +5,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.TimeManagement.Models;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -25,15 +26,13 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private readonly IApplicationLifetime applicationLifetime;
 
-        private readonly IBaysDataProvider baysDataProvider;
-
         private readonly IConfiguration configuration;
 
         private readonly IDataHubClient dataHubClient;
 
         private readonly IHubContext<InstallationHub, IInstallationHub> installationHub;
 
-        private readonly IMachineProvider machineProvider;
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
         private readonly IHubContext<OperatorHub, IOperatorHub> operatorHub;
 
@@ -49,8 +48,7 @@ namespace Ferretto.VW.MAS.AutomationService
             IHubContext<OperatorHub, IOperatorHub> operatorHub,
             IServiceScopeFactory serviceScopeFactory,
             IApplicationLifetime applicationLifetime,
-            IBaysDataProvider baysDataProvider,
-            IMachineProvider machineProvider,
+            IMachineVolatileDataProvider machineVolatileDataProvider,
             IConfiguration configuration)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
@@ -58,11 +56,14 @@ namespace Ferretto.VW.MAS.AutomationService
             this.dataHubClient = dataHubClient ?? throw new ArgumentNullException(nameof(dataHubClient));
             this.operatorHub = operatorHub ?? throw new ArgumentNullException(nameof(operatorHub));
             this.applicationLifetime = applicationLifetime ?? throw new ArgumentNullException(nameof(applicationLifetime));
-            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
 
             this.dataHubClient.EntityChanged += this.OnDataHubClientEntityChanged;
+
+            this.EventAggregator
+                .GetEvent<PubSubEvent<SystemTimeChangedEventArgs>>()
+                .Subscribe(async e => await this.OnSystemTimeChangedAsync(), ThreadOption.BackgroundThread, false);
         }
 
         #endregion
@@ -75,6 +76,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
             if (this.configuration.IsWmsEnabled())
             {
+                this.dataHubClient.ConnectionStatusChanged += this.DataHubClient_ConnectionStatusChanged;
                 await this.dataHubClient.ConnectAsync();
             }
         }
@@ -100,6 +102,19 @@ namespace Ferretto.VW.MAS.AutomationService
                 ErrorLevel.Error);
 
             this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+        }
+
+        private void DataHubClient_ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
+        {
+            this.Logger.LogTrace("Connection to WMS hub changed (connected={isConnected})", e.IsConnected);
+            if (e.IsConnected)
+            {
+                this.OnDataHubClientEntityChanged(this, new EntityChangedEventArgs(
+                    nameof(MissionOperation),
+                    null, WMS.Data.Hubs.Models.HubEntityOperation.Created,
+                    null,
+                    null));
+            }
         }
 
         private void OnDataHubClientEntityChanged(object sender, EntityChangedEventArgs e)

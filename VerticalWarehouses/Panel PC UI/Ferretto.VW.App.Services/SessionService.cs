@@ -1,13 +1,14 @@
-﻿using System;
-using System.Configuration;
-using System.Threading.Tasks;
-
-#if DEBUG
+﻿#if DEBUG
 using System.Windows;
-
 #else
 using System.Diagnostics;
 #endif
+
+using System;
+using System.Configuration;
+using System.Threading.Tasks;
+using Ferretto.VW.MAS.AutomationService.Contracts;
+using Prism.Events;
 
 namespace Ferretto.VW.App.Services
 {
@@ -19,12 +20,20 @@ namespace Ferretto.VW.App.Services
 
         private readonly INavigationService navigationService;
 
+        private readonly IEventAggregator eventAggregator;
+
+        public UserAccessLevel UserAccessLevel { get; private set; }
+
+        public MachineIdentity MachineIdentity { get; set; }
+
         public SessionService(
             IAuthenticationService autenticationService,
+            IEventAggregator eventAggregator,
             IHealthProbeService healthProbeService,
             INavigationService navigationService)
         {
             this.autenticationService = autenticationService ?? throw new ArgumentNullException(nameof(autenticationService));
+            this.eventAggregator = eventAggregator ?? throw new System.ArgumentNullException(nameof(eventAggregator));
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
 
@@ -36,7 +45,7 @@ namespace Ferretto.VW.App.Services
 
         private async Task OnHealthStatusChanged(HealthStatusChangedEventArgs e)
         {
-            if (e.HealthStatus == HealthStatus.Unhealthy
+            if (e.HealthMasStatus == HealthStatus.Unhealthy
                 &&
                 ConfigurationManager.AppSettings.LogoutWhenUnhealthy())
             {
@@ -65,6 +74,15 @@ namespace Ferretto.VW.App.Services
             {
                 return false;
             }
+        }
+
+        public void SetUserAccessLevel(UserAccessLevel userAccessLevel)
+        {
+            this.UserAccessLevel = userAccessLevel;
+
+            this.eventAggregator
+              .GetEvent<UserAccessLevelNotificationPubSubEvent>()
+              .Publish(new UserAccessLevelNotificationMessage(userAccessLevel));
         }
     }
 }

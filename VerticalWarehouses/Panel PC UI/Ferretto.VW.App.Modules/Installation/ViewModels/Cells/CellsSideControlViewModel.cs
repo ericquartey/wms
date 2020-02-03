@@ -5,10 +5,13 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
+    [Warning(WarningsArea.Installation)]
     internal sealed class CellsSideControlViewModel : BaseMainViewModel, IDataErrorInfo
     {
         #region Fields
@@ -26,8 +29,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isBackActive;
 
         private bool isFrontActive;
-
-        private bool isWaitingForResponse;
 
         private DelegateCommand sideBackCommand;
 
@@ -100,10 +101,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.isFrontActive, value);
         }
 
-        public bool IsWaitingForResponse
+        public override bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
-            private set
+            protected set
             {
                 if (this.SetProperty(ref this.isWaitingForResponse, value))
                 {
@@ -224,6 +225,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.ToggleSide();
         }
 
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.sideBackCommand?.RaiseCanExecuteChanged();
+            this.sideFrontCommand?.RaiseCanExecuteChanged();
+            this.correctCommand?.RaiseCanExecuteChanged();
+        }
+
         private bool CanCorrectCommand()
         {
             return string.IsNullOrEmpty(this.Error)
@@ -267,14 +277,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.ShowNotification(ex);
             }
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.sideBackCommand?.RaiseCanExecuteChanged();
-            this.sideFrontCommand?.RaiseCanExecuteChanged();
-            this.correctCommand?.RaiseCanExecuteChanged();
-            this.ClearNotifications();
         }
 
         private async Task RetrieveCellsAsync()

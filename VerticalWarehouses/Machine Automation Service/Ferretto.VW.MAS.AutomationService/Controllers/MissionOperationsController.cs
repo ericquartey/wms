@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.MissionManager;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MissionOperationsController : ControllerBase
+    public class MissionOperationsController : ControllerBase, IRequestingBayController
     {
         #region Fields
 
@@ -22,12 +22,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IMissionOperationsProvider missionOperationsProvider;
 
+        private readonly IMissionsDataProvider missionsDataProvider;
+
         #endregion
 
         #region Constructors
 
         public MissionOperationsController(
             ILogger<MissionOperationsController> logger,
+            IMissionsDataProvider missionsDataProvider,
             IMissionOperationsProvider missionOperationsProvider,
             IBaysDataProvider baysDataProvider,
             IElevatorDataProvider elevatorDataProvider)
@@ -36,7 +39,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.missionOperationsProvider = missionOperationsProvider ?? throw new ArgumentNullException(nameof(missionOperationsProvider));
+            this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
         }
+
+        #endregion
+
+        #region Properties
+
+        public BayNumber BayNumber { get; set; }
 
         #endregion
 
@@ -50,20 +60,45 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
-        [HttpPost("{id}/complete")]
-        public async Task<ActionResult> CompleteAsync(int id, double quantity)
+        [HttpPost("cancel")]
+        public async Task<ActionResult> CancelAsync()
         {
-            await this.missionOperationsProvider.CompleteAsync(id, quantity);
+            await this.missionOperationsProvider.CancelAsync();
+
+            return this.Ok();
+        }
+
+        [HttpPost("{id}/complete")]
+        public async Task<ActionResult> CompleteAsync(int id, double quantity, string printerName)
+        {
+            await this.missionOperationsProvider.CompleteAsync(id, quantity, printerName);
+
+            return this.Ok();
+        }
+
+        [HttpGet("count")]
+        public ActionResult<int> GetByBayCount()
+        {
+            var missionOperationsCount = this.missionOperationsProvider.GetCountByBay(this.BayNumber);
+
+            return this.Ok(missionOperationsCount);
+        }
+
+        [HttpPost("{id}/partially-complete")]
+        public async Task<ActionResult> PartiallyCompleteAsync(int id, double quantity, string printerName)
+        {
+            await this.missionOperationsProvider.PartiallyCompleteAsync(id, quantity, printerName);
 
             return this.Ok();
         }
 
         [HttpPost("reset-machine")]
-        [Obsolete("Vorrei capire se e' il punto giusto dove mettere il metodo, per oggi la lascio qui")]
+        [Obsolete("Vorrei capire se è il punto giusto dove mettere il metodo, per oggi la lascio qui")]
         public ActionResult ResetMachine()
         {
             this.baysDataProvider.ResetMachine();
             this.elevatorDataProvider.ResetMachine();
+            this.missionsDataProvider.ResetMachine(MessageActor.AutomationService);
 
             this.logger.LogInformation($"RESET MACHINE.");
 

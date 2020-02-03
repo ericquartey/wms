@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net471</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Prism.Core" Version="7.1.0.431" />
+    <PackageReference Include="Prism.Unity" Version="7.1.0.431" />
+    <PackageReference Include="Unity" Version="4.0.1" />
+    <PackageReference Include="Unity.Abstractions" Version="3.3.1" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Ferretto.VW.Devices.BarcodeReader\Ferretto.VW.Devices.BarcodeReader.csproj" />
+  </ItemGroup>
+
+</Project>

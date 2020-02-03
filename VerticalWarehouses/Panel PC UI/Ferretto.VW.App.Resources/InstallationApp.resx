@@ -346,7 +346,7 @@
     <value>Measured lenght [mm]</value>
   </data>
   <data name="NewResolution" xml:space="preserve">
-    <value>New resolution [imp/mm]</value>
+    <value>New resolution (imp/mm)</value>
   </data>
   <data name="RepositionLenght" xml:space="preserve">
     <value>Reposition lenght [mm]</value>
@@ -356,7 +356,7 @@
     <comment>Label text</comment>
   </data>
   <data name="CurrentResolution" xml:space="preserve">
-    <value>Current resolution [imp/mm]</value>
+    <value>Current resolution (imp/mm)</value>
   </data>
   <data name="DesiredMovement" xml:space="preserve">
     <value>Desired movement [mm]</value>
@@ -384,6 +384,9 @@
   </data>
   <data name="Closed" xml:space="preserve">
     <value>Closed</value>
+  </data>
+  <data name="CompletedCycles" xml:space="preserve">
+    <value>Completed cycles</value>
   </data>
   <data name="PerformedCyclesThisSession" xml:space="preserve">
     <value>Performed cycles (session)</value>
@@ -562,7 +565,7 @@
     <value>Shape gate 3</value>
   </data>
   <data name="VerticalAxisHomedDone" xml:space="preserve">
-    <value>Vertical axis homed</value>
+    <value>Vertical Origin Calibration</value>
   </data>
   <data name="VerticalResolutionDone" xml:space="preserve">
     <value>Vertical resolution</value>
@@ -617,7 +620,7 @@
     <comment>Sensor control text</comment>
   </data>
   <data name="ShutterSensorA" xml:space="preserve">
-    <value>Shutter  Sensor A</value>
+    <value>Shutter Sensor A</value>
     <comment>Sensor control text</comment>
   </data>
   <data name="ShutterSensorB" xml:space="preserve">
@@ -647,7 +650,7 @@
     <value>ReadFinalPosition</value>
   </data>
   <data name="Gate1HeightReached" xml:space="preserve">
-    <value>Gate1 Height Reached</value>
+    <value>Height Reached</value>
     <comment>Sensor</comment>
   </data>
   <data name="VerticalAxisButton" xml:space="preserve">
@@ -873,6 +876,9 @@
   <data name="ValueNotValid" xml:space="preserve">
     <value>Value inserted not valid</value>
   </data>
+  <data name="UpdateResolution" xml:space="preserve">
+    <value>Update Resolution</value>
+  </data>
   <data name="ManualDrawerStoreRecallButton" xml:space="preserve">
     <value>Store/recall drawer</value>
   </data>
@@ -987,6 +993,9 @@
   <data name="Elevator" xml:space="preserve">
     <value>Elevator</value>
   </data>
+  <data name="EmbarkedTray" xml:space="preserve">
+    <value>Embarked Tray</value>
+  </data>
   <data name="LoadedTray" xml:space="preserve">
     <value>Loaded Tray</value>
   </data>
@@ -1011,6 +1020,9 @@
   <data name="ProcedureWasStopped" xml:space="preserve">
     <value>The procedure was stopped.</value>
   </data>
+  <data name="VerticalAxisResolutionUpdated" xml:space="preserve">
+    <value>Vertical axis resolution updated.</value>
+  </data>
   <data name="SelectLowerBound" xml:space="preserve">
     <value>Select lower bound [mm]</value>
     <comment>Label text</comment>
@@ -1020,7 +1032,24 @@
     <comment>Label text</comment>
   </data>
   <data name="TimeDelay" xml:space="preserve">
-    <value>Select waiting time</value>
+    <value>Select waiting time [s]</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="SaveConfig" xml:space="preserve">
+    <value>Configuration Saving</value>
+  </data>
+  <data name="MachineNotManualModeWarning" xml:space="preserve">
+    <value>Attention!!! The machine must be manual mode</value>
+  </data>
+  <data name="MachineNotRunWarning" xml:space="preserve">
+    <value>Attention!!! The machine must be runed</value>
+  </data>
+  <data name="PHC4ComandNote" xml:space="preserve">
+    <value>Posizionare la sagoma sul lato corto del cassetto e posizionata in modo tale che la sua base sia allineata con il piano di riferimento verticale (vedi immagine), successivamente quando si è pronti premere il tasto avanti</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="PHC4NoteHeader" xml:space="preserve">
+    <value>Warning</value>
     <comment>Label text</comment>
   </data>
   <data name="ElevatorIsCellPosition" xml:space="preserve">
@@ -1039,6 +1068,52 @@
   <data name="Next" xml:space="preserve">
     <value>Next</value>
     <comment>Button text</comment>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Previous</value>
+  </data>
+  <data name="PHC2ComandNote" xml:space="preserve">
+    <value>Verificare il posizionamento dell'elevatore che sia in una posizione in cui è possibile effettuare il giro catena senza effettuare danni, se necessario chiudere o aprire la serranda.
+Una volta verificato proseguire premendo il tasto "Successivo"</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="PHC2NoteHeader" xml:space="preserve">
+    <value>Warning</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="PHC1ComandNote" xml:space="preserve">
+    <value>Caricare un cassetto in Baia.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="PHC1NoteHeader" xml:space="preserve">
+    <value>Warning</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ShutterState" xml:space="preserve">
+    <value>Shutter state</value>
+  </data>
+  <data name="Drawer" xml:space="preserve">
+    <value>Drawer</value>
+  </data>
+  <data name="PHC3ComandNote" xml:space="preserve">
+    <value>Posizionare una cassetto in baia per la regolazione dell'altezza.
+Una volta fatto proseguire premendo il tasto "Successivo"</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="PHC3NoteHeader" xml:space="preserve">
+    <value>Warning</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Shape" xml:space="preserve">
+    <value>Shape</value>
+  </data>
+  <data name="PHC6ComandNote" xml:space="preserve">
+    <value>Operazione terminata, rimuovere la sagoma dal cassetto</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="PHC6NoteHeader" xml:space="preserve">
+    <value>Warning</value>
+    <comment>Label text</comment>
   </data>
   <data name="Prev" xml:space="preserve">
     <value>Prev</value>
@@ -1122,9 +1197,6 @@
   </data>
   <data name="GoToDrawer" xml:space="preserve">
     <value>Go to drawer</value>
-  </data>
-  <data name="IntermediatePosition" xml:space="preserve">
-    <value>Intermediate position</value>
   </data>
   <data name="LuPresenceOnMachineCradle" xml:space="preserve">
     <value>LU Presence on Machine Side</value>
@@ -1285,5 +1357,126 @@
   </data>
   <data name="InBayWithNumber" xml:space="preserve">
     <value>in Bay {0}</value>
+  </data>
+  <data name="Test" xml:space="preserve">
+    <value>Test</value>
+  </data>
+  <data name="MovementsGuided" xml:space="preserve">
+    <value>Movimenti Guidati</value>
+  </data>
+  <data name="MovementsManual" xml:space="preserve">
+    <value>Movimenti Manuali</value>
+  </data>
+  <data name="Calibration" xml:space="preserve">
+    <value>Calibration</value>
+  </data>
+  <data name="HeightReaced" xml:space="preserve">
+    <value>Height reaced</value>
+  </data>
+  <data name="Result" xml:space="preserve">
+    <value>Risultato</value>
+  </data>
+  <data name="ResetMachine" xml:space="preserve">
+    <value>Reset machine</value>
+  </data>
+  <data name="ResetMachineSuccessfull" xml:space="preserve">
+    <value>Machine reset successful.</value>
+  </data>
+  <data name="ShutterDown" xml:space="preserve">
+    <value>Shutter down</value>
+  </data>
+  <data name="ShutterUp" xml:space="preserve">
+    <value>Shutter up</value>
+  </data>
+  <data name="BayPositionOnBotton" xml:space="preserve">
+    <value>On Bay botton</value>
+  </data>
+  <data name="BayPositionOnTop" xml:space="preserve">
+    <value>On Bay top</value>
+  </data>
+  <data name="PositionOnBotton" xml:space="preserve">
+    <value>Down</value>
+  </data>
+  <data name="PositionOnTop" xml:space="preserve">
+    <value>Up</value>
+  </data>
+  <data name="BarrierCalibration" xml:space="preserve">
+    <value>Barrier calibration</value>
+  </data>
+  <data name="Security" xml:space="preserve">
+    <value>Security</value>
+  </data>
+  <data name="SecuritySensors" xml:space="preserve">
+    <value>Security sensors</value>
+  </data>
+  <data name="Hour" xml:space="preserve">
+    <value>Hour</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="Month" xml:space="preserve">
+    <value>Month</value>
+  </data>
+  <data name="Day" xml:space="preserve">
+    <value>Day</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>Minutes</value>
+  </data>
+  <data name="SystemDateTime" xml:space="preserve">
+    <value>4.7.5 System date time</value>
+  </data>
+  <data name="WMSAutoSync" xml:space="preserve">
+    <value>WMS auto sync</value>
+  </data>
+  <data name="SetManualSystemDateTime" xml:space="preserve">
+    <value>Set manual system date time</value>
+  </data>
+  <data name="DateTimeEnteredIsInvalid" xml:space="preserve">
+    <value>Date e/o time entered are invalid.</value>
+  </data>
+  <data name="ConfirmUpdateVer" xml:space="preserve">
+    <value>Confirm update to {0} '{1}' ?</value>
+  </data>
+  <data name="ConfirmUpdate" xml:space="preserve">
+    <value>Confirm update</value>
+  </data>
+  <data name="UpdateSuccessfullyCompleted" xml:space="preserve">
+    <value>Update successfully completed.</value>
+  </data>
+  <data name="ErrorOnInitialPhaseUpdate" xml:space="preserve">
+    <value>Error during initial update phase.</value>
+  </data>
+  <data name="ConfigurationDetected" xml:space="preserve">
+    <value>Importable "{0}" configuration detected.</value>
+  </data>
+  <data name="ExportableDeviceDetected" xml:space="preserve">
+    <value>Detected device for configuration export.</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="MultipleConfigurationsDetected" xml:space="preserve">
+    <value>Detected {0} importable configurations.</value>
+  </data>
+  <data name="NoDevicesAvailableAnymore" xml:space="preserve">
+    <value>Device is not available anymore.</value>
+    <comment>Warning</comment>
+  </data>
+  <data name="RestoreNotPossible" xml:space="preserve">
+    <value>Restore is NOT possible.</value>
+  </data>
+  <data name="RestoreNotPossibleFromFile" xml:space="preserve">
+    <value>Restore is NOT possible from file {0}.</value>
+  </data>
+  <data name="RestorePossible" xml:space="preserve">
+    <value>Restore is possible.</value>
+  </data>
+  <data name="RestorePossibleFromFile" xml:space="preserve">
+    <value>Restore is possible from file {0}.</value>
   </data>
 </root>

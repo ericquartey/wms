@@ -26,9 +26,6 @@ namespace Ferretto.VW.App.Controls
             typeof(PpcDialogView),
             new PropertyMetadata(ClosedChanged));
 
-        private readonly INavigationService
-            navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
-
         #endregion
 
         #region Constructors
@@ -115,6 +112,7 @@ namespace Ferretto.VW.App.Controls
                 isChildOfMainWindow)
             {
                 ppcDialog.Owner = Application.Current.MainWindow;
+                ppcDialog.SetSize(new Size(1024, 768));
                 ppcDialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             }
             else
@@ -161,10 +159,6 @@ namespace Ferretto.VW.App.Controls
             {
                 dialogView.Disappear();
             }
-        }
-
-        private void CheckDataContext()
-        {
         }
 
         private string GetAttachedViewModel()

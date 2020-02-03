@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
-using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataLayer;
-using Ferretto.WMS.Data.WebAPI.Contracts;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.MissionManager
 {
@@ -18,86 +11,69 @@ namespace Ferretto.VW.MAS.MissionManager
 
         protected override bool FilterNotification(NotificationMessage notification)
         {
-            return true;
+            return
+                notification.Destination is MessageActor.Any
+                ||
+                notification.Destination is MessageActor.MissionManager;
         }
 
-        protected override Task OnNotificationReceivedAsync(NotificationMessage message, IServiceProvider serviceProvider)
+        protected override async Task OnNotificationReceivedAsync(NotificationMessage message, IServiceProvider serviceProvider)
         {
             switch (message.Type)
             {
                 case MessageType.MissionOperationCompleted:
-                    this.OnWmsMissionOperationCompleted(message.Data as MissionOperationCompletedMessageData);
+                    await this.OnMissionOperationCompletedAsync();
                     break;
 
                 case MessageType.BayOperationalStatusChanged:
-                    this.OnBayOperationalStatusChanged(message.Data as BayOperationalStatusChangedMessageData);
-                    break;
-
-                case MessageType.NewWmsMissionAvailable:
-                    this.OnNewWmsMissionAvailable();
+                    await this.OnBayOperationalStatusChangedAsync();
                     break;
 
                 case MessageType.MachineMode:
-                    this.OnMachineModeChanged();
+                    await this.OnMachineModeChangedAsync();
+                    break;
+
+                case MessageType.NewWmsMissionAvailable:
+                    await this.OnNewWmsMissionAvailable();
                     break;
 
                 case MessageType.DataLayerReady:
-                    this.OnDataLayerReady();
+                    await this.OnDataLayerReadyAsync();
                     break;
             }
-
-            return Task.CompletedTask;
         }
 
-        private void OnBayOperationalStatusChanged(BayOperationalStatusChangedMessageData data)
+        private async Task OnBayOperationalStatusChangedAsync()
         {
-            this.bayStatusChangedEvent.Set();
+            await this.RetrieveNewWmsMissionsAsync();
         }
 
-        private void OnDataLayerReady()
+        private async Task OnDataLayerReadyAsync()
         {
-            if (this.configuration.IsWmsEnabled())
+            if (this.dataLayerIsReady)
             {
-                this.scheduleMissionsOnBaysTask.Start();
+                return;
             }
+            this.dataLayerIsReady = true;
+
+            this.RetrieveMachineId();
+
+            await this.RetrieveNewWmsMissionsAsync();
         }
 
-        private void OnMachineModeChanged()
+        private async Task OnMachineModeChangedAsync()
         {
-            this.bayStatusChangedEvent.Set();
+            await this.RetrieveNewWmsMissionsAsync();
         }
 
-        private void OnNewWmsMissionAvailable()
+        private async Task OnMissionOperationCompletedAsync()
         {
-            this.bayStatusChangedEvent.Set();
+            await this.RetrieveNewWmsMissionsAsync();
         }
 
-        private void OnWmsMissionOperationCompleted(MissionOperationCompletedMessageData data)
+        private async Task OnNewWmsMissionAvailable()
         {
-            Contract.Requires(data != null);
-
-            using (var scope = this.ServiceScopeFactory.CreateScope())
-            {
-                var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
-
-                var bay = bayProvider
-                    .GetAll()
-                    .Where(b => b.CurrentMissionOperationId.HasValue && b.CurrentMissionId.HasValue)
-                    .SingleOrDefault(b => b.CurrentMissionOperationId == data.MissionOperationId);
-
-                if (bay != null && bay.CurrentMissionId != null)
-                {
-                    bayProvider.AssignMissionOperation(bay.Number, bay.CurrentMissionId.Value, null);
-
-                    this.Logger.LogDebug($"Bay {bay.Number}: operation id={data.MissionOperationId} competed.");
-
-                    this.bayStatusChangedEvent.Set();
-                }
-                else
-                {
-                    this.Logger.LogWarning($"None of the bays is currently executing operation id={data.MissionOperationId}.");
-                }
-            }
+            await this.RetrieveNewWmsMissionsAsync();
         }
 
         #endregion

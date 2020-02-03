@@ -1,13 +1,14 @@
 ﻿using System.Configuration;
+using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
-using Ferretto.VW.App.Modules.Operator.Interfaces;
-using Ferretto.VW.App.Modules.Operator.Models;
+using Ferretto.VW.App.Modules.Operator.Services;
 using Ferretto.VW.App.Operator.Views;
+using Ferretto.VW.App.Services;
+using Ferretto.VW.Devices.BarcodeReader.Newland;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Ioc;
 using Prism.Modularity;
-using Prism.Mvvm;
 using Unity;
 
 namespace Ferretto.VW.App.Modules.Operator
@@ -16,13 +17,11 @@ namespace Ferretto.VW.App.Modules.Operator
     "Major Code Smell",
     "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
     Justification = "This is a container initialization class, so it is ok to be coupled to many types.")]
-    [Module(ModuleName = nameof(Utils.Modules.Installation), OnDemand = true)]
+    [Module(ModuleName = nameof(Utils.Modules.Operator), OnDemand = true)]
     [ModuleDependency(nameof(Utils.Modules.Errors))]
     public class OperatorAppModule : IModule
     {
         #region Fields
-
-        private readonly string automationServiceUrl = ConfigurationManager.AppSettings.Get("AutomationService:Url");
 
         private readonly IUnityContainer container;
 
@@ -39,22 +38,23 @@ namespace Ferretto.VW.App.Modules.Operator
 
         #region Methods
 
-        public static void BindViewModelToView<TViewModel, TView>(IContainerProvider containerProvider)
-        {
-            ViewModelLocationProvider.Register(
-                typeof(TView).ToString(),
-                () => containerProvider.Resolve<TViewModel>());
-        }
-
         public void OnInitialized(IContainerProvider containerProvider)
         {
             containerProvider.UseMachineAutomationHubs();
+
+            if (ConfigurationManager.AppSettings.GetWmsDataServiceEnabled())
+            {
+                containerProvider.UseBarcodeReader();
+            }
+
+            containerProvider.Resolve<IOperatorNavigationService>();
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterSingleton<IItemSearchedModel, ItemSearchedModel>();
-            containerRegistry.RegisterSingleton<IWaitListSelectedModel, WaitListSelectedModel>();
+            ConfigureBarcodeReader(containerRegistry);
+
+            containerRegistry.RegisterSingleton<IOperatorNavigationService, OperatorNavigationService>();
 
             containerRegistry.RegisterForNavigation<OperatorMenuView>();
             containerRegistry.RegisterForNavigation<EmptyView>();
@@ -71,11 +71,14 @@ namespace Ferretto.VW.App.Modules.Operator
             containerRegistry.RegisterForNavigation<ItemSearchMainView>();
             containerRegistry.RegisterForNavigation<ItemSearchDetailView>();
 
+            containerRegistry.RegisterForNavigation<LoadingUnitCheckView>();
+
             containerRegistry.RegisterForNavigation<WaitingListsView>();
             containerRegistry.RegisterForNavigation<WaitingListDetailView>();
 
             containerRegistry.RegisterForNavigation<OthersNavigationView>();
-            containerRegistry.RegisterForNavigation<ImmediateDrawerCallView>();
+            containerRegistry.RegisterForNavigation<ImmediateLoadingUnitCallView>();
+            containerRegistry.RegisterForNavigation<LoadingUnitsMissionsView>();
             containerRegistry.RegisterForNavigation<DrawerCompactingView>();
             containerRegistry.RegisterForNavigation<DrawerCompactingDetailView>();
             containerRegistry.RegisterForNavigation<StatisticsNavigationView>();
@@ -88,13 +91,39 @@ namespace Ferretto.VW.App.Modules.Operator
             containerRegistry.RegisterForNavigation<MaintenanceView>();
             containerRegistry.RegisterForNavigation<MaintenanceDetailView>();
 
-            containerRegistry.Register<ICustomControlDrawerDataGridViewModel, CustomControlDrawerDataGridViewModel>();
+            containerRegistry.RegisterForNavigation<AlarmView>();
+            containerRegistry.RegisterForNavigation<CountersView>();
+            containerRegistry.RegisterForNavigation<GeneralView>();
+            containerRegistry.RegisterForNavigation<StatisticsView>();
+            containerRegistry.RegisterForNavigation<DiagnosticsView>();
+
             containerRegistry.Register<ICustomControlMaintenanceDataGridViewModel, CustomControlMaintenanceDataGridViewModel>();
             containerRegistry.Register<ICustomControlMaintenanceDetailDataGridViewModel, CustomControlMaintenanceDetailDataGridViewModel>();
             containerRegistry.Register<ICustomControlCellStatisticsDataGridViewModel, CustomControlCellStatisticsDataGridViewModel>();
             containerRegistry.Register<ICustomControlErrorsDataGridViewModel, CustomControlErrorsDataGridViewModel>();
             containerRegistry.Register<ICustomControlDrawerWeightSaturationDataGridViewModel, CustomControlDrawerWeightSaturationDataGridViewModel>();
             containerRegistry.Register<ICustomControlDrawerSaturationDataGridViewModel, CustomControlDrawerSaturationDataGridViewModel>();
+        }
+
+        private static void ConfigureBarcodeReader(IContainerRegistry containerRegistry)
+        {
+            var portName = ConfigurationManager.AppSettings.GetBarcodeReaderSerialPortName();
+            if (!string.IsNullOrEmpty(portName))
+            {
+                var options = new ConfigurationOptions
+                {
+                    PortName = portName,
+                };
+
+                var baudRate = ConfigurationManager.AppSettings.GetBarcodeReaderBaudRate();
+                if (baudRate.HasValue)
+                {
+                    options.BaudRate = baudRate.Value;
+                }
+
+                containerRegistry.ConfigureBarcodeReaderUiServices();
+                containerRegistry.ConfigureNewlandBarcodeReader(options);
+            }
         }
 
         #endregion

@@ -1,32 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Modules.Operator.Interfaces;
+using Ferretto.VW.App.Modules.Operator.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class ItemSearchMainViewModel : BaseMainViewModel
+    [Warning(WarningsArea.Picking)]
+    public class ItemSearchMainViewModel : BaseOperatorViewModel, IOperationalContextViewModel
     {
         #region Fields
 
         private const int DefaultPageSize = 20;
 
-        private readonly IAreasDataService areasDataService;
+        private const int ItemsToCheckBeforeLoad = 2;
+
+        private const int ItemsVisiblePageSize = 10;
+
+        private readonly IAreasWmsWebService areasWmsWebService;
+
+        private readonly IBarcodeReaderService barcodeReaderService;
+
+        private readonly IBayManager bayManager;
 
         private readonly IMachineIdentityWebService identityService;
 
-        private readonly List<Item> items = new List<Item>();
+        private readonly List<ItemInfo> items = new List<ItemInfo>();
 
-        private readonly IItemSearchedModel itemSearchViewModel;
+        private readonly IItemsWmsWebService itemsWmsWebService;
 
         private readonly IWmsDataProvider wmsDataProvider;
 
@@ -36,7 +47,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private int currentItemIndex;
 
-        private int? inputQuantity;
+        private double? inputQuantity;
 
         private bool isBusyLoadingNextPage;
 
@@ -44,13 +55,13 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private bool isSearching;
 
-        private bool isWaitingForResponse;
+        private int maxKnownIndexSelection;
 
         private DelegateCommand requestItemPickCommand;
 
-        private string searchItemCode;
+        private string searchItem;
 
-        private Item selectedItem;
+        private ItemInfo selectedItem;
 
         private DelegateCommand selectNextItemCommand;
 
@@ -67,19 +78,27 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public ItemSearchMainViewModel(
             IWmsDataProvider wmsDataProvider,
             IMachineIdentityWebService identityService,
-            IItemSearchedModel itemSearchedModel,
-            IAreasDataService areasDataService)
+            IItemsWmsWebService itemsWmsWebService,
+            IBayManager bayManager,
+            IAreasWmsWebService areasWmsWebService,
+            IBarcodeReaderService barcodeReaderService)
             : base(PresentationMode.Operator)
         {
             this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
-            this.itemSearchViewModel = itemSearchedModel ?? throw new ArgumentNullException(nameof(itemSearchedModel));
-            this.areasDataService = areasDataService ?? throw new ArgumentNullException(nameof(areasDataService));
+            this.itemsWmsWebService = itemsWmsWebService ?? throw new ArgumentNullException(nameof(itemsWmsWebService));
+            this.areasWmsWebService = areasWmsWebService ?? throw new ArgumentNullException(nameof(areasWmsWebService));
+            this.barcodeReaderService = barcodeReaderService ?? throw new ArgumentNullException(nameof(barcodeReaderService));
+            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
+
+            this.maxKnownIndexSelection = ItemsVisiblePageSize;
         }
 
         #endregion
 
         #region Properties
+
+        public string ActiveContextName => this.isBusyLoadingNextPage ? null : OperationalContext.ItemsSearch.ToString();
 
         public double? AvailableQuantity
         {
@@ -96,7 +115,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public int? InputQuantity
+        public double? InputQuantity
         {
             get => this.inputQuantity;
             set => this.SetProperty(ref this.inputQuantity, value, this.RaiseCanExecuteChanged);
@@ -120,10 +139,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
             set => this.SetProperty(ref this.isSearching, value, this.RaiseCanExecuteChanged);
         }
 
-        public bool IsWaitingForResponse
+        public override bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
-            private set
+            protected set
             {
                 if (this.SetProperty(ref this.isWaitingForResponse, value) && value)
                 {
@@ -140,7 +159,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.ShowItemDetails,
                 this.CanShowItemDetails));
 
-        public IEnumerable<Item> Items => new BindingList<Item>(this.items);
+        public IList<ItemInfo> Items => new List<ItemInfo>(this.items);
+
+        public override bool KeepAlive => true;
 
         public ICommand RequestItemPickCommand =>
             this.requestItemPickCommand
@@ -149,12 +170,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 async () => await this.RequestItemPickAsync(),
                 this.CanRequestItemPick));
 
-        public string SearchItemCode
+        public string SearchItem
         {
-            get => this.searchItemCode;
+            get => this.searchItem;
             set
             {
-                if (this.SetProperty(ref this.searchItemCode, value))
+                if (this.SetProperty(ref this.searchItem, value))
                 {
                     this.IsSearching = true;
                     this.TriggerSearchAsync().GetAwaiter();
@@ -162,16 +183,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
         }
 
-        public Item SelectedItem
+        public ItemInfo SelectedItem
         {
             get => this.selectedItem;
             set
             {
                 if (this.SetProperty(ref this.selectedItem, value))
                 {
-                    this.itemSearchViewModel.SelectedItem = this.selectedItem;
-                    this.AvailableQuantity = this.SelectedItem?.TotalAvailable;
-
+                    var machineId = this.bayManager.Identity.Id;
+                    this.AvailableQuantity = this.SelectedItem?.Machines.SingleOrDefault(m => m.Id == machineId)?.AvailableQuantityItem;
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -181,12 +201,36 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.selectPreviousItemCommand
             ??
             (this.selectPreviousItemCommand = new DelegateCommand(
-                async () => await this.SelectPreviousItemAsync(),
+                this.SelectPreviousItem,
                 this.CanSelectPreviousItem));
 
         #endregion
 
         #region Methods
+
+        public async Task CommandUserActionAsync(UserActionEventArgs e)
+        {
+            if (e is null)
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
+
+            if (Enum.TryParse<UserAction>(e.UserAction, out var userAction))
+            {
+                switch (userAction)
+                {
+                    case UserAction.FilterItems:
+                        await this.ShowItemDetailsByBarcodeAsync(e);
+
+                        break;
+
+                    case UserAction.PickItem:
+                        // TODO da definire con Danilo
+
+                        break;
+                }
+            }
+        }
 
         public override async Task OnAppearedAsync()
         {
@@ -194,16 +238,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
-            if (this.items != null
-               &&
-               this.selectedItem != null)
-            {
-                return;
-            }
-
-            this.currentItemIndex = 0;
             this.InputQuantity = null;
-            this.items.Clear();
+            this.SearchItem = null;
             var machineIdentity = await this.identityService.GetAsync();
             this.areaId = machineIdentity.AreaId;
             this.tokenSource = new CancellationTokenSource();
@@ -222,7 +258,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
                     this.SelectedItem.Id,
                     this.InputQuantity.Value);
 
-                this.ShowNotification($"TODO**Successfully requested {this.InputQuantity} pieces of item '{this.SelectedItem.Code}'.", Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(
+                    string.Format(
+                        Resources.OperatorApp.PickRequestWasAccepted,
+                        this.SelectedItem.Code,
+                        this.InputQuantity),
+                    Services.Models.NotificationSeverity.Success);
+
+                this.tokenSource = new CancellationTokenSource();
+                await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
             }
             catch (Exception ex)
             {
@@ -246,23 +290,23 @@ namespace Ferretto.VW.App.Operator.ViewModels
             if (skip == 0)
             {
                 this.items.Clear();
+                this.maxKnownIndexSelection = 0;
             }
+
+            var selectedItemId = this.SelectedItem?.Id;
 
             try
             {
-                var newItems = await this.areasDataService.GetItemsAsync(
+                var newItems = await this.areasWmsWebService.GetItemsAsync(
                     this.areaId.Value,
                     skip,
                     DefaultPageSize,
                     null,
                     null,
-                    this.searchItemCode,
+                    this.searchItem,
                     cancellationToken);
 
-                foreach (var item in newItems)
-                {
-                    this.items.Add(item);
-                }
+                this.items.AddRange(newItems.Select(i => new ItemInfo(i, this.bayManager.Identity.Id)));
             }
             catch (Exception ex)
             {
@@ -270,49 +314,74 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.items.Clear();
                 this.SelectedItem = null;
                 this.currentItemIndex = 0;
+                this.maxKnownIndexSelection = 0;
             }
             finally
             {
-                this.RaisePropertyChanged(nameof(this.Items));
-
-                if (skip == 0 || this.currentItemIndex >= this.items.Count - 1)
-                {
-                    this.SelectedItem = this.items?.FirstOrDefault();
-                    this.currentItemIndex = 0;
-                }
-
                 this.IsSearching = false;
                 this.IsBusyLoadingNextPage = false;
             }
+
+            this.RaisePropertyChanged(nameof(this.Items));
+
+            this.SetCurrentIndex(selectedItemId);
+            this.AdjustItemsAppearance();
+            this.SetSelectedItem();
         }
 
         public async Task SelectNextItemAsync()
         {
             this.currentItemIndex++;
+            if (this.currentItemIndex > this.maxKnownIndexSelection)
+            {
+                this.maxKnownIndexSelection = this.currentItemIndex;
+            }
 
-            if (this.currentItemIndex > Math.Max(this.items.Count - 2, DefaultPageSize - 2))
+            if (this.currentItemIndex > Math.Max(this.items.Count - ItemsToCheckBeforeLoad, DefaultPageSize - ItemsToCheckBeforeLoad))
             {
                 this.IsSearching = true;
                 this.tokenSource = new CancellationTokenSource();
                 this.IsBusyLoadingNextPage = true;
-                await this.SearchItemAsync(this.currentItemIndex + 2, this.tokenSource.Token);
+                await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
             }
 
-            this.SelectedItem = this.items.ElementAt(this.currentItemIndex);
+            this.SetSelectedItem();
         }
 
-        public async Task SelectPreviousItemAsync()
+        public void SelectPreviousItem()
         {
             this.currentItemIndex--;
-
-            if (this.currentItemIndex > (DefaultPageSize - 2))
+            if ((this.maxKnownIndexSelection - ItemsVisiblePageSize) > this.currentItemIndex)
             {
-                this.IsSearching = true;
-                this.tokenSource = new CancellationTokenSource();
-                await this.SearchItemAsync(this.currentItemIndex + 2, this.tokenSource.Token);
+                this.maxKnownIndexSelection--;
             }
 
-            this.SelectedItem = this.items.ElementAt(this.currentItemIndex);
+            this.SetSelectedItem();
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.requestItemPickCommand?.RaiseCanExecuteChanged();
+            this.showItemDetailsCommand?.RaiseCanExecuteChanged();
+            this.selectPreviousItemCommand?.RaiseCanExecuteChanged();
+            this.selectNextItemCommand?.RaiseCanExecuteChanged();
+        }
+
+        private void AdjustItemsAppearance()
+        {
+            if (this.maxKnownIndexSelection == 0)
+            {
+                this.maxKnownIndexSelection = Math.Min(this.items.Count, ItemsVisiblePageSize) - 1;
+            }
+
+            if (this.maxKnownIndexSelection >= ItemsVisiblePageSize
+                &&
+                this.Items.Count >= this.maxKnownIndexSelection)
+            {
+                this.SelectedItem = this.items?.ElementAt(this.maxKnownIndexSelection);
+            }
         }
 
         private bool CanRequestItemPick()
@@ -320,9 +389,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
             return
                 this.SelectedItem != null
                 &&
+                this.AvailableQuantity.HasValue
+                &&
+                this.AvailableQuantity.Value > 0
+                &&
                 this.InputQuantity.HasValue
                 &&
                 this.InputQuantity > 0
+                &&
+                this.InputQuantity <= this.AvailableQuantity.Value
                 &&
                 !this.IsWaitingForResponse;
         }
@@ -355,12 +430,30 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.SelectedItem != null;
         }
 
-        private void RaiseCanExecuteChanged()
+        private void SetCurrentIndex(int? itemId)
         {
-            this.requestItemPickCommand?.RaiseCanExecuteChanged();
-            this.showItemDetailsCommand?.RaiseCanExecuteChanged();
-            this.selectPreviousItemCommand?.RaiseCanExecuteChanged();
-            this.selectNextItemCommand?.RaiseCanExecuteChanged();
+            if (itemId.HasValue
+                &&
+                this.items.FirstOrDefault(l => l.Id == itemId.Value) is ItemInfo itemFound)
+            {
+                this.currentItemIndex = this.items.IndexOf(itemFound);
+            }
+            else
+            {
+                this.currentItemIndex = 0;
+                this.maxKnownIndexSelection = 0;
+            }
+        }
+
+        private void SetSelectedItem()
+        {
+            if (this.items.Count == 0)
+            {
+                this.SelectedItem = null;
+                return;
+            }
+
+            this.SelectedItem = this.items.ElementAt(this.currentItemIndex);
         }
 
         private void ShowItemDetails()
@@ -368,8 +461,26 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 Utils.Modules.Operator.ItemSearch.ITEM_DETAILS,
-                null,
+                this.SelectedItem,
                 trackCurrentView: true);
+        }
+
+        private async Task ShowItemDetailsByBarcodeAsync(UserActionEventArgs e)
+        {
+            var itemBarcode = e.GetItemId();
+            if (itemBarcode != null)
+            {
+                try
+                {
+                    // TODO when implemented GetByBarcodeAsync skip this
+                    this.SearchItem = itemBarcode;
+                    //var item = await this.itemsWmsWebService.GetByBarcodeAsync(itemBarcode);
+                }
+                catch (Exception ex)
+                {
+                    this.ShowNotification(ex);
+                }
+            }
         }
 
         private async Task TriggerSearchAsync()

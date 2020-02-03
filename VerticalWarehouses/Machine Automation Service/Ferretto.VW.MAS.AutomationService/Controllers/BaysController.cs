@@ -52,7 +52,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public ActionResult<Bay> ActivateAsync()
         {
-            var bay = this.baysDataProvider.Activate(this.BayNumber);
+            var bay = this.baysDataProvider.SetBayActive(this.BayNumber, active: true);
 
             return this.Ok(bay);
         }
@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public ActionResult<Bay> DeactivateAsync()
         {
-            var bay = this.baysDataProvider.Deactivate(this.BayNumber);
+            var bay = this.baysDataProvider.SetBayActive(this.BayNumber, active: false);
 
             return this.Ok(bay);
         }
@@ -102,7 +102,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("height-check-parameters")]
         public ActionResult<PositioningProcedure> GetHeightCheckParameters()
         {
-            return this.Ok(this.setupProceduresDataProvider.GetBayHeightCheck());
+            return this.Ok(this.setupProceduresDataProvider.GetBayHeightCheck(this.BayNumber));
+        }
+
+        [HttpPost("get-light")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public ActionResult<bool> GetLight()
+        {
+            return this.Ok(this.baysDataProvider.GetLightOn(this.BayNumber));
         }
 
         [HttpPost("homing")]
@@ -111,6 +120,25 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult Homing()
         {
             this.baysDataProvider.PerformHoming(this.BayNumber);
+
+            return this.Accepted();
+        }
+
+        [HttpGet("remove-load-unit")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult RemoveLoadUnit(int loadingUnitId)
+        {
+            this.baysDataProvider.RemoveLoadingUnit(loadingUnitId);
+            return this.Accepted();
+        }
+
+        [HttpPost("set-light")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult SetLight(bool enable)
+        {
+            this.baysDataProvider.Light(this.BayNumber, enable);
 
             return this.Accepted();
         }

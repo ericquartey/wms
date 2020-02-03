@@ -1,24 +1,25 @@
 using System;
 using System.Configuration;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
-using CommonServiceLocator;
-using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Controls.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.Utils;
 using Ferretto.WMS.Data.WebAPI.Contracts;
-using Prism.Events;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
-using Prism.Regions;
+using Prism.Unity;
 using Unity;
 
 namespace Ferretto.VW.App
 {
-    public partial class App
+    public partial class App : PrismApplication
     {
         #region Fields
 
@@ -73,6 +74,15 @@ namespace Ferretto.VW.App
             return this.Container.Resolve<Shell>();
         }
 
+        protected override void OnExit(ExitEventArgs e)
+        {
+            AppCheck.End();
+
+            this.DeactivateBay();
+
+            base.OnExit(e);
+        }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             if (!AppCheck.Start())
@@ -89,23 +99,22 @@ namespace Ferretto.VW.App
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            var navigationService = this.Container.Resolve<NavigationService>();
-            containerRegistry.RegisterInstance<INavigationService>(navigationService);
+            // UI controls services
+            containerRegistry.RegisterUiControlServices(
+                new NavigationOptions { MainContentRegionName = Utils.Modules.Layout.REGION_MAINCONTENT });
 
-            containerRegistry.RegisterSingleton<IEventAggregator, EventAggregator>();
-            containerRegistry.RegisterSingleton<IDialogService, DialogService>();
-
-            // UI services
+            // App services
             var serviceUrl = ConfigurationManager.AppSettings.GetAutomationServiceUrl();
+            var serviceWmsUrl = ConfigurationManager.AppSettings.GetWMSDataServiceUrl();
             var serviceLiveHealthPath = ConfigurationManager.AppSettings.GetAutomationServiceLiveHealthPath();
             var serviceReadyHealthPath = ConfigurationManager.AppSettings.GetAutomationServiceReadyHealthPath();
 
-            containerRegistry.RegisterUiServices(serviceUrl, serviceLiveHealthPath, serviceReadyHealthPath);
+            containerRegistry.RegisterAppServices(serviceUrl, serviceWmsUrl, serviceLiveHealthPath, serviceReadyHealthPath);
 
             // MAS Web API services
             var operatorHubPath = ConfigurationManager.AppSettings.GetAutomationServiceOperatorHubPath();
             var installationHubPath = ConfigurationManager.AppSettings.GetAutomationServiceInstallationHubPath();
-            containerRegistry.RegisterMachineAutomationWebServices(serviceUrl, c =>
+            containerRegistry.RegisterMasWebServices(serviceUrl, c =>
             {
                 var client = c.Resolve<RetryHttpClient>();
 
@@ -116,50 +125,61 @@ namespace Ferretto.VW.App
                 return client;
             });
 
-            containerRegistry.RegisterMachineAutomationHubs(serviceUrl, operatorHubPath, installationHubPath);
-
-            //var sensorsService = this.Container.Resolve<SensorsService>();
-            //containerRegistry.RegisterInstance<ISensorsService>(sensorsService);
-            containerRegistry.RegisterSingleton<ISensorsService, SensorsService>();
+            containerRegistry.RegisterMasHubs(serviceUrl, operatorHubPath, installationHubPath);
 
             // WMS Web API services
-            RegisterWmsHubs(containerRegistry);
-
             RegisterWmsProviders(containerRegistry);
+            var wmsHubPath = ConfigurationManager.AppSettings.GetWMSDataServiceHubDataPath();
+            containerRegistry.RegisterWmsHub(wmsHubPath);
+
+            // USB Watcher
+            RegisterUsbWatcher(containerRegistry);
         }
 
-        private static void RegisterWmsHubs(IContainerRegistry container)
+        private static void RegisterUsbWatcher(IContainerRegistry container)
         {
-            var wmsHubPath = ConfigurationManager.AppSettings.GetWMSDataServiceHubDataPath();
-            var hubClient = DataServiceFactory.GetService<IDataHubClient>(wmsHubPath);
-            container.RegisterInstance(hubClient);
+            container.Register<Ferretto.VW.App.Services.IO.UsbWatcherService>();
         }
 
         private static void RegisterWmsProviders(IContainerRegistry container)
         {
+            var wmsServiceEnabled = ConfigurationManager.AppSettings.GetWmsDataServiceEnabled();
             var wmsServiceUrl = ConfigurationManager.AppSettings.GetWMSDataServiceUrl();
 
-            container.RegisterInstance(DataServiceFactory.GetService<IBaysDataService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<IImagesDataService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<IMissionOperationsDataService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<IMissionsDataService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<ILoadingUnitsDataService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<IItemsDataService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<IItemListsDataService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<IAreasDataService>(wmsServiceUrl));
-        }
+            container.RegisterWmsWebServices(wmsServiceUrl, c =>
+            {
+                var client = c.Resolve<RetryHttpClient>();
 
-        private void Application_Exit(object sender, ExitEventArgs e)
-        {
-            AppCheck.End();
+                client.DefaultRequestHeaders.Add("Accept-Language", System.Globalization.CultureInfo.CurrentUICulture.Name);
+
+                return client;
+            });
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             this.logger.Error(e.ExceptionObject as Exception, "An unhandled exception was thrown.");
 
+            this.DeactivateBay();
+
             NLog.LogManager.Flush();
             NLog.LogManager.Shutdown();
+        }
+
+        private void DeactivateBay()
+        {
+            this.logger.Info("Deactivating bay on application exit.");
+            try
+            {
+                var baysWebService = this.Container.Resolve<IMachineBaysWebService>();
+
+                Task
+                    .Run(async () => await baysWebService.DeactivateAsync().ConfigureAwait(false))
+                    .Wait();
+            }
+            catch (MasWebApiException)
+            {
+            }
         }
 
         private void HACK_ForceItalianLanguage()

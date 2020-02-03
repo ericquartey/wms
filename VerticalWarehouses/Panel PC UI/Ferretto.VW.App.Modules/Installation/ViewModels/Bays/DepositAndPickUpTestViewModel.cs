@@ -9,11 +9,14 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
+    [Warning(WarningsArea.Installation)]
     internal sealed partial class DepositAndPickUpTestViewModel : BaseMainViewModel
     {
         #region Fields
@@ -26,7 +29,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineSensorsWebService machineSensorsWebService;
 
-        private readonly Controls.Interfaces.ISensorsService sensorsService;
+        private readonly ISensorsService sensorsService;
 
         private Bay bay;
 
@@ -41,8 +44,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isExecutingProcedure;
 
         private bool isStopping;
-
-        private bool isWaitingForResponse;
 
         private IEnumerable<LoadingUnit> loadingUnits;
 
@@ -70,7 +71,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineElevatorWebService machineElevatorWebService,
             IMachineDepositAndPickupProcedureWebService machineDepositPickupProcedure,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-            Controls.Interfaces.ISensorsService sensorsService,
+            ISensorsService sensorsService,
             IBayManager bayManagerService)
             : base(PresentationMode.Installer)
         {
@@ -184,10 +185,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.isStopping, value);
         }
 
-        public bool IsWaitingForResponse
+        public override bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
-            set
+            protected set
             {
                 if (this.SetProperty(ref this.isWaitingForResponse, value))
                 {
@@ -456,8 +457,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
-        private void RaiseCanExecuteChanged()
+        protected override void RaiseCanExecuteChanged()
         {
+            base.RaiseCanExecuteChanged();
+
             this.startCommand.RaiseCanExecuteChanged();
             this.stopCommand.RaiseCanExecuteChanged();
         }

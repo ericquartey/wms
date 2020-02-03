@@ -20,6 +20,8 @@ namespace Ferretto.VW.MAS.AutomationService
             Contract.Requires(notification != null);
 
             return
+                notification.Destination is MessageActor.WebApi
+                ||
                 notification.Destination is MessageActor.AutomationService
                 ||
                 notification.Destination is MessageActor.Any;
@@ -38,43 +40,43 @@ namespace Ferretto.VW.MAS.AutomationService
             switch (message.Type)
             {
                 case MessageType.SensorsChanged:
-                    this.OnSensorsChanged(message);
+                    await this.OnSensorsChanged(message);
                     break;
 
                 case MessageType.MachineMode:
-                    this.OnMachineModeChanged(message);
+                    await this.OnMachineModeChanged(message);
                     break;
 
                 case MessageType.Homing:
-                    this.HomingMethod(message);
+                    await this.HomingMethod(message, serviceProvider);
                     break;
 
                 case MessageType.SwitchAxis:
-                    this.SwitchAxisMethod(message);
+                    await this.SwitchAxisMethod(message);
                     break;
 
                 case MessageType.ShutterPositioning:
-                    this.ShutterPositioningMethod(message);
+                    await this.ShutterPositioningMethod(message);
                     break;
 
                 case MessageType.CalibrateAxis:
-                    this.CalibrateAxisMethod(message);
+                    await this.CalibrateAxisMethod(message);
                     break;
 
                 case MessageType.ElevatorPosition when message.Data is ElevatorPositionMessageData:
-                    this.OnElevatorPositionChanged(message.Data as ElevatorPositionMessageData);
+                    await this.OnElevatorPositionChanged(message.Data as ElevatorPositionMessageData);
                     break;
 
                 case MessageType.BayChainPosition when message.Data is BayChainPositionMessageData:
-                    this.OnBayChainPositionChanged(message.Data as BayChainPositionMessageData);
+                    await this.OnBayChainPositionChanged(message.Data as BayChainPositionMessageData);
                     break;
 
                 case MessageType.Positioning:
-                    this.OnPositioningChanged(message);
+                    await this.OnPositioningChanged(message);
                     break;
 
                 case MessageType.ResolutionCalibration:
-                    this.ResolutionCalibrationMethod(message);
+                    await this.ResolutionCalibrationMethod(message);
                     break;
 
                 case MessageType.AssignedMissionOperationChanged when message.Data is AssignedMissionOperationChangedMessageData:
@@ -82,39 +84,47 @@ namespace Ferretto.VW.MAS.AutomationService
                     break;
 
                 case MessageType.ElevatorWeightCheck:
-                    this.ElevatorWeightCheckMethod(message);
+                    await this.ElevatorWeightCheckMethod(message);
                     break;
 
                 case MessageType.BayOperationalStatusChanged when message.Data is BayOperationalStatusChangedMessageData:
-                    this.OnBayConnected(message.Data as BayOperationalStatusChangedMessageData);
+                    await this.OnBayConnected(message.Data as BayOperationalStatusChangedMessageData);
                     break;
 
                 case MessageType.ErrorStatusChanged when message.Data is IErrorStatusMessageData:
-                    this.OnErrorStatusChanged(message.Data as IErrorStatusMessageData);
+                    await this.OnErrorStatusChanged(message.Data as IErrorStatusMessageData);
                     break;
 
                 case MessageType.InverterStatusWord:
-                    this.OnInverterStatusWordChanged(message);
+                    await this.OnInverterStatusWordChanged(message);
                     break;
 
                 case MessageType.MachineStateActive:
-                    this.MachineStateActiveMethod(message);
+                    await this.MachineStateActiveMethod(message);
                     break;
 
                 case MessageType.MachineStatusActive:
-                    this.MachineStatusActiveMethod(message);
+                    await this.MachineStatusActiveMethod(message);
                     break;
 
                 case MessageType.DataLayerReady:
-                    this.OnDataLayerReady();
+                    this.OnDataLayerReady(serviceProvider);
                     break;
 
                 case MessageType.ChangeRunningState:
-                    this.OnChangeRunningState(message);
+                    await this.OnChangeRunningState(message);
                     break;
 
                 case MessageType.MoveLoadingUnit:
-                    this.OnMoveLoadingUnit(message);
+                    await this.OnMoveLoadingUnit(message);
+                    break;
+
+                case MessageType.FsmException:
+                    await this.OnFsmException(message);
+                    break;
+
+                case MessageType.BayLight:
+                    await this.OnBayLight(message);
                     break;
             }
         }

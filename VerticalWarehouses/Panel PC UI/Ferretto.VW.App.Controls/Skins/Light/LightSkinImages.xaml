@@ -14,9 +14,23 @@
                  UriSource="/Ferretto.VW.App.Controls;Component/Assets/ferrettogrouplogo_small_light.png" />
 
     <BitmapImage x:Key="SpinnerImageSource"
-                 UriSource="pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/spinner_black.gif" />
+                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/spinner_black.gif" />
 
     <BitmapImage x:Key="ThemeImageSource"
-                 UriSource="pack://application:,,,/Ferretto.VW.App.Themes;Component/Icons/theme_light.png" />
+                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/theme_light.png" />
 
+    <BitmapImage x:Key="PHCSagoma1"
+                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/sagoma.png" />
+
+    <BitmapImage x:Key="PHCCassetto1"
+                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/cassetto.jpg" />
+
+    <BitmapImage x:Key="LoginBackground"
+                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/bkg_login.jpg" />
+
+    <BitmapImage x:Key="Ferretto_Small_Logo_Inverse"
+                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/ferrettogrouplogo_small_dark.png" />
+
+    <BitmapImage x:Key="BgMilestone"
+                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/bg-milestone.jpg" />
 </ResourceDictionary>

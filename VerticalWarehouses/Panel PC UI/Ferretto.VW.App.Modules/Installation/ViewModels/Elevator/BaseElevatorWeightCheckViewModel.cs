@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
+    [Warning(WarningsArea.Installation)]
     internal abstract class BaseElevatorWeightCheckViewModel : BaseMainViewModel
     {
         #region Fields
@@ -36,7 +39,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             base.Disappear();
         }
 
-        protected abstract void RaiseCanExecuteChanged();
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+        }
 
         private void InitializeNavigationMenu()
         {

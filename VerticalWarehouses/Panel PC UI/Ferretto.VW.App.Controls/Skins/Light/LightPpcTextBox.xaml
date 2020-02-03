@@ -1,0 +1,38 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Skins"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:Double x:Key="VWAPP_PpcTextBox_TextBox_FontSize">20</sys:Double>
+    <sys:Double x:Key="VWAPP_PpcTextBox_TextBlock_FontSize">14</sys:Double>
+    <Thickness x:Key="VWAPP_PpcTextBox_TextBox_BorderThickness">1,1,1,1</Thickness>
+
+    <SolidColorBrush x:Key="VWAPP_PpcTextBox_Background_Normal"
+                     Color="Transparent" />
+    <SolidColorBrush x:Key="VWAPP_PpcTextBox_BorderColor_Normal"
+                     Color="{DynamicResource ColorFerrettoBlack}" />
+    <SolidColorBrush x:Key="VWAPP_PpcTextBox_TextBox_Foreground_Normal"
+                     Color="{DynamicResource ColorFerrettoBlack}" />
+    <SolidColorBrush x:Key="VWAPP_PpcTextBox_TextBlock_Foreground_Normal"
+                     Color="{DynamicResource ColorFerrettoBlack}" />
+
+    <SolidColorBrush x:Key="VWAPP_PpcTextBox_Background_Disabled"
+                     Color="Transparent" />
+    <SolidColorBrush x:Key="VWAPP_PpcTextBox_BorderColor_TextBox_Disabled"
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
+    <SolidColorBrush x:Key="VWAPP_PpcTextBox_TextBox_Foreground_Disabled"
+                     Color="{DynamicResource ColorFerrettoMediumGray}" />
+    <SolidColorBrush x:Key="VWAPP_PpcTextBox_TextBlock_Foreground_Disabled"
+                     Color="{DynamicResource ColorFerrettoMediumGray}" />
+
+    <SolidColorBrush x:Key="VWAPP_PpcTextBox_Background_TextBox_Readonly"
+                     Color="{DynamicResource ColorFerrettoLightGray}" />
+    <SolidColorBrush x:Key="VWAPP_PpcTextBox_BorderColor_TextBox_Readonly"
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
+    <SolidColorBrush x:Key="VWAPP_PpcTextBox_Foreground_TextBox_Readonly"
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
+
+    <SolidColorBrush x:Key="VWAPP_PpcTextBox_BorderColor_Highlighted"
+                     Color="{DynamicResource ColorFerrettoRed}" />
+
+</ResourceDictionary>

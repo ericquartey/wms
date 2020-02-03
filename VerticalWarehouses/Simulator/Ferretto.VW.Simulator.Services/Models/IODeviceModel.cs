@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.Simulator.Services.Models
@@ -73,6 +75,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private ObservableCollection<BitModel> inputs = new ObservableCollection<BitModel>();
 
+        private Machine machine;
+
         private List<BitModel> outputs;
 
         #endregion
@@ -142,6 +146,32 @@ namespace Ferretto.VW.Simulator.Services.Models
                     }
                 }
                 return result;
+            }
+        }
+
+        public Machine Machine
+        {
+            get { return this.machine; }
+            set
+            {
+                this.machine = value;
+
+                if (this.Machine != null)
+                {
+                    var bay = this.Machine.Bays.FirstOrDefault(x => (int)x.Number == this.Id + 1);
+                    if (bay != null)
+                    {
+                        bool hasCarousel = bay.Carousel != null;
+                        this.Enabled = true;
+
+                        // Set empty position on bay
+                        this.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = hasCarousel ? false : true;
+                    }
+                    else
+                    {
+                        this.Enabled = false;
+                    }
+                }
             }
         }
 

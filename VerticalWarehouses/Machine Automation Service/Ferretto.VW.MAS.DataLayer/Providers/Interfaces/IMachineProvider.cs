@@ -1,19 +1,11 @@
-using System.Threading.Tasks;
+using System.Collections.Generic;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
-using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
     public interface IMachineProvider
     {
-        #region Properties
-
-        bool IsHomingExetuted { get; set; }
-
-        bool IsMachineRunning { get; set; }
-
-        #endregion
-
         #region Methods
 
         void Add(Machine machine);
@@ -24,6 +16,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         double GetHeight();
 
+        int GetIdentity();
+
         MachineStatistics GetStatistics();
 
         void Import(Machine machine, DataLayerContext context);
@@ -31,6 +25,8 @@ namespace Ferretto.VW.MAS.DataLayer
         bool IsOneTonMachine();
 
         void Update(Machine machine, DataLayerContext context);
+
+        void UpdateWeightStatistics(DataLayerContext dataContext);
 
         #endregion
     }

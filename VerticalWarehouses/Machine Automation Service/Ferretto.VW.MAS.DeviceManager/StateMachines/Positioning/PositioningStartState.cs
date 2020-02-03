@@ -119,7 +119,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void Start()
         {
-            if (!this.machineData.MessageData.IsOneKMachine &&
+            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.CurrentInverterIndex}");
+            if (!this.machineData.MessageData.IsOneTonMachine &&
                 this.machineData.MessageData.MovementMode < MovementMode.ShutterPosition)
             {
                 var ioCommandMessageData = new SwitchAxisFieldMessageData(this.machineData.MessageData.AxisMovement);
@@ -179,7 +180,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         .GetBeltBurnishingTest()
                         .PerformedCycles;
 
-                    this.scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>().Mode = MachineMode.Test;
+                    this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Test;
+                    this.Logger.LogInformation($"Machine status switched to {MachineMode.Test}");
                 }
             }
 

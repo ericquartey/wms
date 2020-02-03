@@ -3,8 +3,12 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
@@ -27,21 +31,34 @@ namespace Ferretto.VW.MAS.MachineManager
             switch (command.Type)
             {
                 case MessageType.ChangeRunningState:
-                    this.OnChangeRunningStateCommandReceived(command);
+                    this.OnChangeRunningStateCommandReceived(command, serviceProvider);
                     break;
 
                 case MessageType.MoveLoadingUnit:
-                    this.OnMoveLoadingUnit(command);
+                    lock (this.syncObject)
+                    {
+                        this.OnMoveLoadingUnit(command, serviceProvider);
+                    }
+                    break;
+
+                case MessageType.FullTest:
+                    this.OnFullTest(command, serviceProvider);
                     break;
             }
-
             return Task.CompletedTask;
         }
 
-        private void OnChangeRunningStateCommandReceived(CommandMessage command)
+        private void OnChangeRunningStateCommandReceived(CommandMessage command, IServiceProvider serviceProvider)
         {
             if (command is null)
             {
+                return;
+            }
+
+            if (!this.isDataLayerReady)
+            {
+                this.Logger.LogError($"Failed to start Change Running State machine mission: DataLayer is not ready!");
+                this.NotifyCommandError(command);
                 return;
             }
 
@@ -50,11 +67,12 @@ namespace Ferretto.VW.MAS.MachineManager
                 switch (messageData.CommandAction)
                 {
                     case CommandAction.Start:
-                        if (this.machineMissionsProvider.TryCreateMachineMission(FSMType.ChangeRunningType, command, out var missionId))
+                        var machineMissionsProvider = serviceProvider.GetRequiredService<IMachineMissionsProvider>();
+                        if (machineMissionsProvider.TryCreateMachineMission(FsmType.ChangeRunningType, command, out var missionId))
                         {
                             try
                             {
-                                this.machineMissionsProvider.StartMachineMission(missionId, command);
+                                machineMissionsProvider.StartMachineMission(missionId, command);
                             }
                             catch (Exception ex)
                             {
@@ -64,8 +82,7 @@ namespace Ferretto.VW.MAS.MachineManager
                         }
                         else
                         {
-                            this.Logger.LogError("Failed to create Change Running State machine mission");
-                            this.NotifyCommandError(command);
+                            this.Logger.LogWarning("Failed to create Change Running State machine mission");
                         }
 
                         break;
@@ -79,19 +96,7 @@ namespace Ferretto.VW.MAS.MachineManager
                         break;
 
                     case CommandAction.Stop:
-                        /*
-                        if (messageData.MissionId != null)
-                        {
-                            this.machineMissionsProvider.StopMachineMission(messageData.MissionId.Value, StopRequestReason.Stop);
-                        }
-                        else
-                        {
-                            foreach (var mission in this.machineMissionsProvider.GetMissionsByType(MissionType.ChangeRunningType))
-                            {
-                                mission.StopMachine(StopRequestReason.Stop);
-                            }
-                        }
-                        */
+                        this.Logger.LogError($"Invalid command action {messageData.CommandAction} for Change Running State Mission");
                         break;
                 }
             }
@@ -102,109 +107,188 @@ namespace Ferretto.VW.MAS.MachineManager
             }
         }
 
-        private void OnMoveLoadingUnit(CommandMessage command)
+        private void OnFullTest(CommandMessage command, IServiceProvider serviceProvider)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void OnMoveLoadingUnit(CommandMessage command, IServiceProvider serviceProvider)
         {
             if (command is null)
             {
+                throw new ArgumentNullException(nameof(command));
+            }
+
+            if (serviceProvider is null)
+            {
+                throw new ArgumentNullException(nameof(serviceProvider));
+            }
+
+            if (!this.isDataLayerReady)
+            {
+                this.Logger.LogError($"Unable to start load unit movement: dataLayer is not ready.");
+                this.NotifyCommandError(command);
                 return;
             }
+            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+            var missionMoveProvider = serviceProvider.GetRequiredService<IMissionMoveProvider>();
 
             if (command.Data is MoveLoadingUnitMessageData messageData)
             {
                 switch (messageData.CommandAction)
                 {
                     case CommandAction.Start:
-                        if (this.machineMissionsProvider.TryCreateMachineMission(FSMType.MoveLoadingUnit, command, out var missionId))
                         {
-                            try
+                            if (missionMoveProvider.TryCreateMachineMission(command, serviceProvider, out var mission)
+                                && mission != null
+                                )
                             {
-                                this.machineMissionsProvider.StartMachineMission(missionId, command);
+                                try
+                                {
+                                    missionMoveProvider.StartMission(mission, command, serviceProvider, true);
+                                }
+                                catch (Exception ex)
+                                {
+                                    this.Logger.LogError($"Failed to start mission: {ex.Message}");
+                                    this.NotifyCommandError(command);
+                                }
                             }
-                            catch (Exception ex)
+                            else
                             {
-                                this.Logger.LogError($"Failed to start Move Loading Unit State machine mission: {ex.Message}");
+                                this.Logger.LogError("Failed to create Move mission");
                                 this.NotifyCommandError(command);
                             }
                         }
-                        else
-                        {
-                            this.Logger.LogError("Failed to create Move Loading Unit State machine mission");
-                            this.NotifyCommandError(command);
-                        }
 
+                        break;
+
+                    case CommandAction.Activate:
+                        try
+                        {
+                            var mission = missionsDataProvider.GetById(messageData.MissionId.Value);
+                            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                            if (!missionMoveProvider.UpdateWaitingMission(missionsDataProvider, baysDataProvider, mission)
+                                || !missionMoveProvider.StartMission(mission, command, serviceProvider, false)
+                                )
+                            {
+                                this.Logger.LogWarning($"Conditions not met to activate Mission {mission.Id}, Load Unit {mission.LoadUnitId} .");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            this.Logger.LogError($"Failed to activate mission: {ex.Message}");
+                        }
                         break;
 
                     case CommandAction.Abort:
-                        if (messageData.MissionId != null)
+                        try
                         {
-                            if (!this.machineMissionsProvider.AbortMachineMission(messageData.MissionId.Value))
+                            if (messageData.MissionId != null)
                             {
-                                this.Logger.LogError("Supplied mission Id to be aborted is no longer valid");
-                                this.NotifyCommandError(command);
+                                if (!missionMoveProvider.StopMission(messageData.MissionId.Value, StopRequestReason.Abort, serviceProvider))
+                                {
+                                    this.Logger.LogError("Supplied mission Id to be aborted is no longer valid");
+                                    this.NotifyCommandError(command);
+                                }
+                            }
+                            else
+                            {
+                                foreach (var mission in missionsDataProvider.GetAllMissions())
+                                {
+                                    missionMoveProvider.StopMission(mission.Id, StopRequestReason.Abort, serviceProvider);
+                                }
                             }
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            foreach (var mission in this.machineMissionsProvider.GetMissionsByType(FSMType.MoveLoadingUnit))
-                            {
-                                mission.AbortMachineMission();
-                            }
+                            this.Logger.LogError($"Failed to abort mission: {ex.Message}");
                         }
-
                         break;
 
                     case CommandAction.Stop:
-                        if (messageData.MissionId != null)
+                        try
                         {
-                            if (!this.machineMissionsProvider.StopMachineMission(messageData.MissionId.Value, StopRequestReason.Stop))
+                            if (messageData.MissionId != null)
                             {
-                                this.Logger.LogError("Supplied mission Id to be stopped is no longer valid");
-                                this.NotifyCommandError(command);
+                                if (!missionMoveProvider.StopMission(messageData.MissionId.Value, StopRequestReason.Stop, serviceProvider))
+                                {
+                                    this.Logger.LogError("Supplied mission Id to be stopped is no longer valid");
+                                    this.NotifyCommandError(command);
+                                }
+                            }
+                            else
+                            {
+                                foreach (var mission in missionsDataProvider.GetAllActiveMissions())
+                                {
+                                    missionMoveProvider.StopMission(mission.Id, StopRequestReason.Stop, serviceProvider);
+                                }
                             }
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            foreach (var mission in this.machineMissionsProvider.GetMissionsByType(FSMType.MoveLoadingUnit))
-                            {
-                                mission.StopMachine(StopRequestReason.Stop);
-                            }
+                            this.Logger.LogError($"Failed to stop mission: {ex.Message}");
                         }
-
                         break;
 
-                    case CommandAction.Pause:
-                        if (messageData.MissionId != null)
-                        {
-                            if (!this.machineMissionsProvider.PauseMachineMission(messageData.MissionId.Value))
-                            {
-                                this.Logger.LogError("Supplied mission Id to be stopped is no longer valid");
-                                this.NotifyCommandError(command);
-                            }
-                        }
-                        else
-                        {
-                            foreach (var mission in this.machineMissionsProvider.GetMissionsByType(FSMType.MoveLoadingUnit))
-                            {
-                                mission.PauseMachineMission();
-                            }
-                        }
+                    //case CommandAction.Pause:
+                    //    if (messageData.MissionId != null)
+                    //    {
+                    //        if (!this.machineMissionsProvider.PauseMachineMission(messageData.MissionId.Value))
+                    //        {
+                    //            this.Logger.LogError("Supplied mission Id to be stopped is no longer valid");
+                    //            this.NotifyCommandError(command);
+                    //        }
+                    //    }
+                    //    else
+                    //    {
+                    //        foreach (var mission in this.machineMissionsProvider.GetMissionsByFsmType(FsmType.MoveLoadingUnit))
+                    //        {
+                    //            mission.PauseMachineMission();
+                    //        }
+                    //    }
 
-                        break;
+                    //    break;
 
                     case CommandAction.Resume:
+                        try
+                        {
+                            if (messageData.MissionId != null)
+                            {
+                                if (!missionMoveProvider.ResumeMission(messageData.MissionId.Value, command, serviceProvider))
+                                {
+                                    this.Logger.LogError($"Supplied mission Id {messageData.MissionId} to be resumed is no longer valid");
+                                    this.NotifyCommandError(command);
+                                }
+                            }
+                            else
+                            {
+                                foreach (var mission in missionsDataProvider.GetAllActiveMissions())
+                                {
+                                    missionMoveProvider.ResumeMission(mission.Id, command, serviceProvider);
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            this.Logger.LogError($"Failed to resume mission: {ex}");
+                        }
+
+                        break;
+
+                    case CommandAction.Test:
                         if (messageData.MissionId != null)
                         {
-                            if (!this.machineMissionsProvider.ResumeMachineMission(messageData.MissionId.Value))
+                            if (!missionMoveProvider.TestMission(messageData.MissionId.Value, command, serviceProvider))
                             {
-                                this.Logger.LogError("Supplied mission Id to be stopped is no longer valid");
+                                this.Logger.LogError("Supplied mission Id to be tested is no longer valid");
                                 this.NotifyCommandError(command);
                             }
                         }
                         else
                         {
-                            foreach (var mission in this.machineMissionsProvider.GetMissionsByType(FSMType.MoveLoadingUnit))
+                            foreach (var mission in missionsDataProvider.GetAllActiveMissions())
                             {
-                                mission.ResumeMachineMission();
+                                missionMoveProvider.TestMission(mission.Id, command, serviceProvider);
                             }
                         }
 
@@ -216,6 +300,7 @@ namespace Ferretto.VW.MAS.MachineManager
                 this.Logger.LogError($"Invalid command message data {command.Data.GetType().Name} for Move Loading Unit Command");
                 this.NotifyCommandError(command);
             }
+            missionsDataProvider.CheckPendingChanges();
         }
 
         #endregion

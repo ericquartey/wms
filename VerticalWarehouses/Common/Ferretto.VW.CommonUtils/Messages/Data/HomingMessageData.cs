@@ -12,10 +12,12 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         {
         }
 
-        public HomingMessageData(Axis axisToCalibrate, Calibration calibration, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public HomingMessageData(Axis axisToCalibrate, Calibration calibration, int? loadingUnitId, bool showErrors, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.AxisToCalibrate = axisToCalibrate;
             this.CalibrationType = calibration;
+            this.LoadingUnitId = loadingUnitId;
+            this.ShowErrors = showErrors;
             this.Verbosity = verbosity;
         }
 
@@ -26,6 +28,10 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public Axis AxisToCalibrate { get; set; }
 
         public Calibration CalibrationType { get; set; }
+
+        public int? LoadingUnitId { get; set; }
+
+        public bool ShowErrors { get; }
 
         public MessageVerbosity Verbosity { get; set; }
 

@@ -1,14 +1,15 @@
 using System.Collections.Generic;
 using Ferretto.VW.MAS.DataModels;
-using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
-    public interface ILoadingUnitsProvider
+    public interface ILoadingUnitsDataProvider
     {
         #region Methods
 
         void Add(IEnumerable<LoadingUnit> loadingUnits);
+
+        MachineErrorCode CheckWeight(int id);
 
         IEnumerable<LoadingUnit> GetAll();
 

@@ -1,5 +1,6 @@
 using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataModels.Extensions;
 
 namespace Ferretto.VW.MAS.DataModels
 {
@@ -9,14 +10,32 @@ namespace Ferretto.VW.MAS.DataModels
 
         public BayNumber BayNumber { get; set; }
 
+        /// <summary>
+        /// Error code
+        /// See MachineErrorCode for reference.
+        /// </summary>
         public int Code { get; set; }
 
-        public ErrorDefinition Definition { get; set; }
+        public string Description => ((MachineErrorCode)this.Code).GetDescription();
+
+        /// <summary>
+        /// The detail error code related to the inverter.
+        /// Use with MachineErrorCode.InverterFaultStateDetected
+        /// </summary>
+        public int DetailCode { get; set; }
+
+        /// <summary>
+        /// The inverter index (integer)
+        /// Use with MachineErrorCode.InverterFaultStateDetected
+        /// </summary>
+        public int InverterIndex { get; set; }
 
         /// <summary>
         /// The occurrence date, in local time.
         /// </summary>
         public DateTime OccurrenceDate { get; set; }
+
+        public string Reason => ((MachineErrorCode)this.Code).GetReason();
 
         /// <summary>
         /// The resolution date, in local time.

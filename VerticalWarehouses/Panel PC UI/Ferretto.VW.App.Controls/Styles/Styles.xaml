@@ -3,6 +3,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/PpcButtonStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/PpcButtonKeyStyle.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/PpcPressAndReleaseButtonStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomMainWindowUserComboBoxItemStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/PpcSensorControlStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/PpcTextBoxStyles.xaml" />
@@ -12,7 +13,14 @@
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomMainWindowErrorButtonStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomControlArticleDataGridStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/NotificationSeverityStyle.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/General.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/Sensor/SensorStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/Sensor/SensorSquareStyle.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/ProgressBarStyle.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/ComboBoxStyle.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/PasswordBoxEditStyle.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/RadioButtonStyle.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/ScrollViewerStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
+
 </ResourceDictionary>

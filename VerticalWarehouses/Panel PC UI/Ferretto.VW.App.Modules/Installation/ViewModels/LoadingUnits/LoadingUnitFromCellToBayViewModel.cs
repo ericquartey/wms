@@ -1,15 +1,21 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
-    public class LoadingUnitFromCellToBayViewModel : BaseMovementsViewModel
+    [Warning(WarningsArea.Installation)]
+    internal sealed class LoadingUnitFromCellToBayViewModel : BaseMovementsViewModel
     {
         #region Fields
+
+        private readonly IMachineBaysWebService machineBaysWebService;
 
         private DelegateCommand confirmEjectLoadingUnitCommand;
 
@@ -20,12 +26,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Constructors
 
         public LoadingUnitFromCellToBayViewModel(
-                    IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-                    IBayManager bayManagerService)
-            : base(
-                machineLoadingUnitsWebService,
-                bayManagerService)
+                IMachineBaysWebService machineBaysWebService,
+                IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+                IBayManager bayManagerService)
+        : base(
+            machineLoadingUnitsWebService,
+            bayManagerService)
         {
+            this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
         }
 
         #endregion
@@ -33,27 +41,46 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Properties
 
         public ICommand ConfirmEjectLoadingUnitCommand =>
-                this.confirmEjectLoadingUnitCommand
-                ??
-                (this.confirmEjectLoadingUnitCommand = new DelegateCommand(async () => await this.ConfirmEjectLoadingUnit(), this.CanConfirmEjectLoadingUnit));
+        this.confirmEjectLoadingUnitCommand
+        ??
+        (this.confirmEjectLoadingUnitCommand = new DelegateCommand(
+            async () => await this.ConfirmEjectLoadingUnit(),
+                        this.CanConfirmEjectLoadingUnit));
 
         #endregion
 
         #region Methods
 
-        public override async Task OnAppearedAsync()
+        public override bool CanSelectBayPositionDown()
         {
-            await base.OnAppearedAsync();
-            await this.RetrieveLoadingUnitsAsync();
-            this.LoadingUnitId = null;
-            this.SelectBayPositionDown();
+            return !this.IsExecutingProcedure &&
+                   this.IsPositionUpSelected &&
+                   (this.MachineStatus.LoadingUnitPositionUpInBay is null ||
+                    this.MachineStatus.LoadingUnitPositionDownInBay is null);
         }
 
-        public override void RaiseCanExecuteChanged()
+        public override bool CanSelectBayPositionUp()
         {
-            base.RaiseCanExecuteChanged();
+            return !this.IsExecutingProcedure &&
+                   !this.IsPositionUpSelected &&
+                   (this.MachineStatus.LoadingUnitPositionUpInBay is null ||
+                    this.MachineStatus.LoadingUnitPositionDownInBay is null);
+        }
 
-            this.confirmEjectLoadingUnitCommand?.RaiseCanExecuteChanged();
+        public override bool CanStart()
+        {
+            return base.CanStart() &&
+                   this.LoadingUnitId.HasValue &&
+                   this.MachineService.Loadunits.Any(f => f.Id == this.LoadingUnitId && f.Status == LoadingUnitStatus.InLocation) &&
+                   (this.MachineStatus.LoadingUnitPositionUpInBay is null ||
+                    this.MachineStatus.LoadingUnitPositionDownInBay is null);
+        }
+
+        public override async Task OnAppearedAsync()
+        {
+            this.LoadingUnitId = null;
+
+            await base.OnAppearedAsync();
         }
 
         public override async Task StartAsync()
@@ -66,7 +93,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     return;
                 }
 
-                var destination = this.GetLoadingUnitSource();
+                var destination = this.GetLoadingUnitSource(this.IsPositionDownSelected);
 
                 if (destination == LoadingUnitLocation.NoLocation)
                 {
@@ -92,28 +119,72 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             base.Ended();
 
-            this.isEjectLoadingUnitConfirmationEnabled = false;
+            this.isEjectLoadingUnitConfirmationEnabled = true;
 
-            this.confirmEjectLoadingUnitCommand.RaiseCanExecuteChanged();
+            this.RaiseCanExecuteChanged();
+        }
+
+        protected override async Task OnDataRefreshAsync()
+        {
+            await this.SensorsService.RefreshAsync(true);
+
+            if (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper)
+            {
+                this.SelectBayPositionUp();
+            }
+            else
+            {
+                this.SelectBayPositionDown();
+            }
         }
 
         protected override void OnWaitResume()
         {
-            this.RaiseCanExecuteChanged();
-
             this.isEjectLoadingUnitConfirmationEnabled = true;
 
-            this.confirmEjectLoadingUnitCommand.RaiseCanExecuteChanged();
+            this.RaiseCanExecuteChanged();
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.confirmEjectLoadingUnitCommand?.RaiseCanExecuteChanged();
         }
 
         private bool CanConfirmEjectLoadingUnit()
         {
-            return this.isEjectLoadingUnitConfirmationEnabled;
+            return !this.IsMoving &&
+                   ((this.MachineStatus.LoadingUnitPositionUpInBay != null && this.IsPositionUpSelected) ||
+                    (this.MachineStatus.LoadingUnitPositionDownInBay != null && this.IsPositionDownSelected));
         }
 
         private async Task ConfirmEjectLoadingUnit()
         {
-            await this.MachineLoadingUnitsWebService.ResumeAsync(this.CurrentMissionId, this.Bay.Number);
+            try
+            {
+                int lu = 0;
+
+                if (this.IsPositionUpSelected)
+                {
+                    lu = this.MachineStatus.LoadingUnitPositionUpInBay.Id;
+                }
+                else
+                {
+                    lu = this.MachineStatus.LoadingUnitPositionDownInBay.Id;
+                }
+
+                await this.machineBaysWebService.RemoveLoadUnitAsync(lu);
+
+                this.SensorsService.RefreshAsync(true);
+                this.MachineService.OnUpdateServiceAsync();
+
+                this.ShowNotification($"Cassetto id {this.LoadingUnitId.Value} estratto", Services.Models.NotificationSeverity.Warning);
+            }
+            catch (Exception e)
+            {
+                this.ShowNotification(e);
+            }
         }
 
         #endregion

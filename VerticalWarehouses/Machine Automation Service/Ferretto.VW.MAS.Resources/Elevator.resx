@@ -135,7 +135,13 @@
   <data name="NoLoadingUnitIsPresentInTheSpecifiedCell" xml:space="preserve">
     <value>No loading unit is present in the specified cell.</value>
   </data>
-  <data name="TargetPositionMustBeInRange" xml:space="preserve">
+  <data name="NoMissionIsWaitingInTheSpecifiedBayPosition" xml:space="preserve">
+    <value>No loading unit is waiting to be extracted in the specified bay position.</value>
+  </data>
+  <data name="OffsetOutOfBounds" xml:space="preserve">
+    <value>Vertical axis offset ({0}mm) not valid: must be in the range [{1}mm; {2}mm].</value>
+  </data>
+  <data name="TargetPositionOutOfBounds" xml:space="preserve">
     <value>Target position ({0}mm) must be in the range [{1}mm; {2}mm].</value>
   </data>
   <data name="TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedBayPosition" xml:space="preserve">

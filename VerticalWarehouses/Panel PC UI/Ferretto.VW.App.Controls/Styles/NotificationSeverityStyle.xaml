@@ -9,5 +9,18 @@
                      Color="{DynamicResource ColorFerrettoOrange}" />
     <SolidColorBrush x:Key="NotificationSeveritySuccess"
                      Color="{DynamicResource ColorFerrettoGreen}" />
+    <SolidColorBrush x:Key="NotificationSeverityLow"
+                     Color="{DynamicResource ColorFerrettoYellow}" />
+
+    <SolidColorBrush x:Key="NotificationSeverityForegroundInfo"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+    <SolidColorBrush x:Key="NotificationSeverityForegroundError"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+    <SolidColorBrush x:Key="NotificationSeverityForegroundWarning"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+    <SolidColorBrush x:Key="NotificationSeverityForegroundSuccess"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+    <SolidColorBrush x:Key="NotificationSeverityForegroundLow"
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
 
 </ResourceDictionary>

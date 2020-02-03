@@ -1,24 +1,35 @@
 ﻿using System;
-using System.Drawing;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Ferretto.WMS.Data.WebAPI.Contracts;
-using Prism.Regions;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public abstract class BaseItemOperationViewModel : BaseMainViewModel, IRegionMemberLifetime
+    [Warning(WarningsArea.Picking)]
+    public abstract class BaseItemOperationViewModel : BaseOperatorViewModel
     {
         #region Fields
 
-        private readonly IMissionsDataService missionDataService;
+        private readonly IItemsWmsWebService itemsWmsWebService;
 
-        private System.Drawing.Image itemImage;
+        private readonly IMissionsWmsWebService missionWmsWebService;
+
+        private bool canInputQuantity;
+
+        private string measureUnit;
 
         private MissionWithLoadingUnitDetails mission;
 
         private MissionOperation missionOperation;
+
+        private double quantityIncrement;
+
+        private int quantityTolerance;
 
         #endregion
 
@@ -26,37 +37,40 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public BaseItemOperationViewModel(
             IWmsImagesProvider wmsImagesProvider,
-            IMissionsDataService missionsDataService,
+            IMissionsWmsWebService missionsWmsWebService,
+            IItemsWmsWebService itemsWmsWebService,
             IBayManager bayManager,
-            IMissionOperationsService missionOperationsService)
+            IMissionOperationsService missionOperationsService,
+            IDialogService dialogService)
             : base(PresentationMode.Operator)
         {
             this.WmsImagesProvider = wmsImagesProvider ?? throw new ArgumentNullException(nameof(wmsImagesProvider));
             this.BayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.MissionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
-            this.missionDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));
+            this.missionWmsWebService = missionsWmsWebService ?? throw new ArgumentNullException(nameof(missionsWmsWebService));
+            this.itemsWmsWebService = itemsWmsWebService ?? throw new ArgumentNullException(nameof(itemsWmsWebService));
+            this.DialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
         }
 
         #endregion
 
         #region Properties
 
-        public override EnableMask EnableMask => EnableMask.Any;
-
-        public Image ItemImage
+        public bool CanInputQuantity
         {
-            get => this.itemImage;
-            set
-            {
-                var oldImage = this.itemImage;
-                if (this.SetProperty(ref this.itemImage, value))
-                {
-                    oldImage?.Dispose();
-                }
-            }
+            get => this.canInputQuantity;
+            protected set => this.SetProperty(ref this.canInputQuantity, value, this.RaiseCanExecuteChanged);
         }
 
-        public bool KeepAlive => false;
+        public override EnableMask EnableMask => EnableMask.Any;
+
+        public string ItemId => this.MissionOperationsService.CurrentMissionOperation?.ItemId.ToString();
+
+        public string MeasureUnit
+        {
+            get => this.measureUnit;
+            set => this.SetProperty(ref this.measureUnit, value);
+        }
 
         public MissionWithLoadingUnitDetails Mission
         {
@@ -70,11 +84,31 @@ namespace Ferretto.VW.App.Operator.ViewModels
             set => this.SetProperty(ref this.missionOperation, value);
         }
 
+        public double QuantityIncrement
+        {
+            get => this.quantityIncrement;
+            set => this.SetProperty(ref this.quantityIncrement, value);
+        }
+
+        public int QuantityTolerance
+        {
+            get => this.quantityTolerance;
+            set
+            {
+                if (this.SetProperty(ref this.quantityTolerance, value))
+                {
+                    this.QuantityIncrement = Math.Pow(10, -this.quantityTolerance);
+                }
+            }
+        }
+
         public double? XPosition { get; set; }
 
         public double? YPosition { get; set; }
 
         protected IBayManager BayManager { get; }
+
+        protected IDialogService DialogService { get; private set; }
 
         protected IMissionOperationsService MissionOperationsService { get; }
 
@@ -84,41 +118,56 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Methods
 
-        public override void Disappear()
-        {
-            base.Disappear();
-
-            this.ItemImage?.Dispose();
-        }
-
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
 
-            await this.GetItemImageAsync();
+            await this.RetrieveMissionOperationAsync();
+
+            this.CanInputQuantity = true;
 
             this.IsBackNavigationAllowed = true;
         }
 
-        private async Task GetItemImageAsync()
+        public virtual void OnMisionOperationRetrieved()
+        {
+            // do nothing
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            // do nothing
+        }
+
+        protected async Task RetrieveMissionOperationAsync()
         {
             try
             {
-                this.Mission = await this.missionDataService.GetDetailsByIdAsync(this.MissionOperationsService.CurrentMission.Id);
-                await this.LoadImageAsync(this.MissionOperationsService.CurrentMissionOperation.ItemCode);
+                if (this.MissionOperationsService.CurrentMissionOperation is null)
+                {
+                    this.NavigationService.GoBack();
+                    return;
+                }
 
                 this.MissionOperation = this.MissionOperationsService.CurrentMissionOperation;
+
+                this.Mission = await this.missionWmsWebService.GetDetailsByIdAsync(this.MissionOperationsService.CurrentMission.Id);
+
+                var item = await this.itemsWmsWebService.GetByIdAsync(this.MissionOperation.ItemId);
+                this.QuantityTolerance = item.PickTolerance ?? 0;
+                this.MeasureUnit = item.MeasureUnitDescription;
+
+                this.RaisePropertyChanged(nameof(this.ItemId));
+
+                this.OnMisionOperationRetrieved();
             }
             catch (Exception ex)
             {
+                this.NavigationService.GoBack();
                 this.ShowNotification(ex);
             }
-        }
-
-        private async Task LoadImageAsync(string code)
-        {
-            var stream = await this.WmsImagesProvider.GetImageAsync(code);
-            this.ItemImage = Image.FromStream(stream);
         }
 
         #endregion

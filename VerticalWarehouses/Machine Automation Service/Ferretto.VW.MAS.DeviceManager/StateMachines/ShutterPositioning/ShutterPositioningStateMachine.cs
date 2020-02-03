@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.ShutterPositioning.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.ShutterPositioning.Models;
@@ -95,25 +96,28 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
         {
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
-                var setupProceduresProvider = scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
-                this.machineData.PositioningMessageData.PerformedCycles = setupProceduresProvider.GetShutterTest().PerformedCycles;
-            }
+                if (this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterTest)
+                {
+                    var setupProceduresProvider = scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
+                    this.machineData.PositioningMessageData.PerformedCycles = setupProceduresProvider.GetShutterTest(this.machineData.RequestingBay).PerformedCycles;
+                }
 
-            var stateData = new ShutterPositioningStateData(this, this.machineData);
+                var stateData = new ShutterPositioningStateData(this, this.machineData);
 
-            if (this.machineData.MachineSensorsStatus.IsDrawerPartiallyOnCradle)
-            {
-                this.Logger.LogError($"Invalid Elevator presence sensors before moving shutter");
-                this.ChangeState(new ShutterPositioningErrorState(stateData));
-            }
-            if (!(this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterPosition || this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterTest))
-            {
-                this.Logger.LogError($"Invalid positioning message");
-                this.ChangeState(new ShutterPositioningErrorState(stateData));
-            }
-            else
-            {
-                this.ChangeState(new ShutterPositioningStartState(stateData));
+                if (this.CheckConditions(out var errorText, out var errorCode))
+                {
+                    this.ChangeState(new ShutterPositioningStartState(stateData));
+                }
+                else
+                {
+                    var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+
+                    errorsProvider.RecordNew(errorCode, this.machineData.RequestingBay);
+
+                    this.Logger.LogError(errorText);
+
+                    this.ChangeState(new ShutterPositioningErrorState(stateData));
+                }
             }
         }
 
@@ -125,6 +129,34 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             {
                 this.CurrentState.Stop(reason);
             }
+        }
+
+        // return false in case of error
+        private bool CheckConditions(out string errorText, out DataModels.MachineErrorCode errorCode)
+        {
+            var ok = true;
+            errorText = string.Empty;
+            errorCode = DataModels.MachineErrorCode.ConditionsNotMetForPositioning;
+
+            if (this.machineData.MachineSensorsStatus.IsDrawerPartiallyOnCradle)
+            {
+                ok = false;
+                errorText = ErrorDescriptions.InvalidPresenceSensors;
+                errorCode = DataModels.MachineErrorCode.InvalidPresenceSensors;
+            }
+            else if (this.machineData.MachineSensorsStatus.IsDrawerCompletelyOffCradle && !this.machineData.MachineSensorsStatus.IsSensorZeroOnCradle)
+            {
+                ok = false;
+                errorText = ErrorDescriptions.MissingZeroSensorWithEmptyElevator;
+                errorCode = DataModels.MachineErrorCode.MissingZeroSensorWithEmptyElevator;
+            }
+            if (!(this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterPosition || this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterTest))
+            {
+                ok = false;
+                errorText = $"Invalid positioning message";
+            }
+
+            return ok;
         }
 
         #endregion

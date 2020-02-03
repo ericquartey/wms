@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         Guid InstanceId { get; }
 
+        IFiniteStateMachineData MachineData { get; set; }
+
         #endregion
 
         #region Methods
@@ -27,7 +29,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         void Pause();
 
-        void Resume();
+        void Resume(CommandMessage commandMessage, IServiceProvider serviceProvider, CancellationToken cancellationToken);
 
         void Start(CommandMessage commandMessage, IServiceProvider serviceProvider, CancellationToken cancellationToken);
 

@@ -7,15 +7,19 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
     {
         #region Methods
 
+        Task BayChainPositionChanged(double position, BayNumber bayNumber);
+
+        Task BayLightChanged(bool isLightOn, BayNumber bayNumber);
+
         Task CalibrateAxisNotify(IBaseNotificationMessageUI message);
 
         Task CurrentPositionChanged(IBaseNotificationMessageUI message);
 
-        Task ElevatorPositionChanged(double verticalPosition, double horizontalPosition, int? cellId, int? bayPositionId);
+        Task ElevatorPositionChanged(double verticalPosition, double horizontalPosition, int? cellId, int? bayPositionId, bool? bayPositionUpper);
 
         Task ElevatorWeightCheck(IBaseNotificationMessageUI message);
 
-        Task BayChainPositionChanged(double position, BayNumber bayNumber);
+        Task FsmException(IBaseNotificationMessageUI message);
 
         Task HomingProcedureStatusChanged(IBaseNotificationMessageUI message);
 
@@ -42,6 +46,8 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
         Task ShutterPositioningNotify(IBaseNotificationMessageUI message);
 
         Task SwitchAxisNotify(IBaseNotificationMessageUI message);
+
+        Task SystemTimeChanged();
 
         #endregion
     }

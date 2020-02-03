@@ -1,10 +1,17 @@
 ﻿using System;
-using Ferretto.VW.CommonUtils.Messages.Data;
+using System.Collections.Generic;
+using System.Linq;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
-using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
+using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 using Prism.Events;
+using Ferretto.VW.MAS.Utils.Enumerations;
 
 namespace Ferretto.VW.MAS.MissionManager
 {
@@ -12,51 +19,82 @@ namespace Ferretto.VW.MAS.MissionManager
     {
         #region Fields
 
-        private readonly IEventAggregator eventAggregator;
+        private readonly ICellsProvider cellsProvider;
 
-        private readonly ILogger<MissionSchedulingProvider> logger;
+        private readonly ILoadingUnitsDataProvider loadingUnitsDataProvider;
+
+        private readonly ILogger<MissionSchedulingService> logger;
 
         private readonly IMachineMissionsProvider machineMissionsProvider;
+
+        private readonly IMissionsDataProvider missionsDataProvider;
+
+        private readonly NotificationEvent notificationEvent;
 
         #endregion
 
         #region Constructors
 
         public MissionSchedulingProvider(
-            IMachineMissionsProvider missionsProvider,
+            ICellsProvider cellsProvider,
             IEventAggregator eventAggregator,
-            ILogger<MissionSchedulingProvider> logger)
+            ILoadingUnitsDataProvider loadingUnitsDataProvider,
+            IMachineMissionsProvider missionsProvider,
+            IMissionsDataProvider missionsDataProvider,
+            ILogger<MissionSchedulingService> logger)
         {
+            if (eventAggregator is null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
+            this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
+            this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
             this.machineMissionsProvider = missionsProvider ?? throw new ArgumentNullException(nameof(missionsProvider));
-            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
-            this.logger = logger ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
+            this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #endregion
 
         #region Methods
 
-        public void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber, int? wmsMissionId)
+        public void AbortMission(Mission mission)
         {
-            var data = new MoveLoadingUnitMessageData(
-                MissionType.WMS,
-                LoadingUnitLocation.LoadingUnit,
-                LoadingUnitLocation.NoLocation,
-                null,
-                null,
-                loadingUnitId);
-
-            data.WmsId = wmsMissionId;
-            data.TargetBay = targetBayNumber;
-
-            try
+            if (mission is null)
             {
-                this.machineMissionsProvider.TryCreateMachineMission(FSMType.MoveLoadingUnit, data, targetBayNumber, out var missionId);
+                throw new ArgumentNullException(nameof(mission));
             }
-            catch (Exception ex)
-            {
-                this.logger.LogError($"Failed to start Move Loading Unit Wms mission: {ex.Message}");
-            }
+
+            this.missionsDataProvider.Complete(mission.Id);
+
+            this.NotifyNewMachineMissionAvailable(mission);
+        }
+
+        public void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber)
+        {
+            this.logger.LogDebug(
+                "Queuing local mission for loading unit {loadingUnitId} to bay {targetBayNumber}.",
+                loadingUnitId,
+                targetBayNumber);
+
+            var mission = this.missionsDataProvider.CreateBayMission(loadingUnitId, targetBayNumber, MissionType.OUT);
+
+            this.NotifyNewMachineMissionAvailable(mission);
+        }
+
+        public void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber, int wmsMissionId, int wmsMissionPriority)
+        {
+            this.logger.LogDebug(
+                "Queuing WMS mission {wmsMissionId} for loading unit {loadingUnitId} to bay {targetBayNumber}.",
+                wmsMissionId,
+                loadingUnitId,
+                targetBayNumber);
+
+            var mission = this.missionsDataProvider.CreateBayMission(loadingUnitId, targetBayNumber, wmsMissionId, wmsMissionPriority);
+
+            this.NotifyNewMachineMissionAvailable(mission);
         }
 
         public void QueueCellMission(int loadingUnitId, int targetCellId)
@@ -64,9 +102,115 @@ namespace Ferretto.VW.MAS.MissionManager
             throw new NotImplementedException();
         }
 
-        public void QueueLoadingUnitCompactingMission()
+        /// <summary>
+        /// Search for a single compacting mission and activate it.
+        /// This method will be repeated after each mission has finished when machine is in Compact mode.
+        /// When no compacting mission is available machine returns to manual mode
+        /// </summary>
+        /// <param name="serviceProvider"></param>
+        public void QueueLoadingUnitCompactingMission(IServiceProvider serviceProvider)
         {
-            throw new NotImplementedException();
+            var loadUnits = this.loadingUnitsDataProvider.GetAll().Where(x => x.Cell != null);
+            int? cellId;
+            LoadingUnit loadUnit;
+            // first we try to find a lower place for each load unit, matching exactly the height
+            if (this.CompactFindEmptyCell(loadUnits, CompactingType.ExactMatchCompacting, out loadUnit, out cellId)
+                // then we try to find a lower place for each load unit
+                || this.CompactFindEmptyCell(loadUnits, CompactingType.AnySpaceCompacting, out loadUnit, out cellId)
+                // then we try to shift down the load units
+                || this.CompactDownCell(loadUnits, out loadUnit, out cellId)
+                )
+            {
+                var moveLoadingUnitProvider = serviceProvider.GetRequiredService<IMoveLoadingUnitProvider>();
+                moveLoadingUnitProvider.MoveFromCellToCell(MissionType.Compact, loadUnit.Cell.Id, cellId, BayNumber.BayOne, MessageActor.MissionManager);
+            }
+            else
+            {
+                // no more compacting is possible. Exit from compact mode
+                var machineModeDataProvider = serviceProvider.GetRequiredService<IMachineVolatileDataProvider>();
+                machineModeDataProvider.Mode = MachineMode.Manual;
+                this.logger.LogInformation($"Compacting terminated. Machine status switched to {machineModeDataProvider.Mode}");
+            }
+        }
+
+        public void QueueRecallMission(int loadingUnitId, BayNumber sourceBayNumber)
+        {
+            this.logger.LogDebug(
+              "Queuing local recall mission for loading unit {loadingUnitId} from bay {sourceBayNumber}.",
+              loadingUnitId,
+              sourceBayNumber);
+
+            var mission = this.missionsDataProvider.CreateRecallMission(loadingUnitId, sourceBayNumber);
+
+            this.NotifyNewMachineMissionAvailable(mission);
+        }
+
+        private bool CompactDownCell(IEnumerable<LoadingUnit> loadUnits, out LoadingUnit loadUnitOut, out int? cellId)
+        {
+            loadUnitOut = null;
+            cellId = null;
+            if (!loadUnits.Any())
+            {
+                return false;
+            }
+            this.logger.LogDebug("Compacting down cells");
+            foreach (var loadUnit in loadUnits.OrderBy(o => o.Cell.Position))
+            {
+                try
+                {
+                    cellId = this.cellsProvider.FindDownCell(loadUnit);
+                    loadUnitOut = loadUnit;
+                    return true;
+                }
+                catch (InvalidOperationException)
+                {
+                    // continue with next Load Unit
+                }
+            }
+            return false;
+        }
+
+        private bool CompactFindEmptyCell(IEnumerable<LoadingUnit> loadUnits, CompactingType compactingType, out LoadingUnit loadUnitOut, out int? cellId)
+        {
+            loadUnitOut = null;
+            cellId = null;
+            if (!loadUnits.Any())
+            {
+                return false;
+            }
+            this.logger.LogDebug($"Compacting empty cells {compactingType}");
+            foreach (var loadUnit in loadUnits.OrderByDescending(o => o.Cell.Position))
+            {
+                try
+                {
+                    cellId = this.cellsProvider.FindEmptyCell(loadUnit.Id, compactingType);
+                    loadUnitOut = loadUnit;
+                    return true;
+                }
+                catch (InvalidOperationException)
+                {
+                    // continue with next Load Unit
+                }
+            }
+            return false;
+        }
+
+        private void NotifyNewMachineMissionAvailable(Mission mission)
+        {
+            if (mission is null)
+            {
+                throw new ArgumentNullException(nameof(mission));
+            }
+
+            var notificationMessage = new NotificationMessage(
+                null,
+                $"New machine mission available for bay {mission.TargetBay}.",
+                MessageActor.MissionManager,
+                MessageActor.MissionManager,
+                MessageType.NewMachineMissionAvailable,
+                mission.TargetBay);
+
+            this.notificationEvent.Publish(notificationMessage);
         }
 
         #endregion

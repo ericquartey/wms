@@ -53,9 +53,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<CellPanel> UpdateHeight(int cellId, double newHeight)
+        public ActionResult<CellPanel> UpdateHeight(int cellPanelId, double heightDifference)
         {
-            var panel = this.cellPanelsProvider.UpdateHeight(cellId, newHeight);
+            var panel = this.cellPanelsProvider.UpdateHeight(cellPanelId, heightDifference);
 
             return this.Ok(panel);
         }

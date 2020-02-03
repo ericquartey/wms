@@ -1,14 +1,17 @@
 ﻿using System;
+using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DeviceManager.ShutterPositioning.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
@@ -19,6 +22,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
         #region Fields
 
         private readonly IShutterPositioningMachineData machineData;
+
+        private readonly IServiceScope scope;
 
         private readonly IShutterPositioningStateData stateData;
 
@@ -31,6 +36,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IShutterPositioningMachineData;
+            this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
         }
 
         #endregion
@@ -50,7 +56,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             if (message.Type == FieldMessageType.InverterStop && message.Status != MessageStatus.OperationStart)
             {
                 var notificationMessageData = new ShutterPositioningMessageData(this.machineData.PositioningMessageData);
-                var inverterStatus = new AglInverterStatus((InverterIndex)message.DeviceIndex);
+                var inverterStatus = new AglInverterStatus((InverterIndex)message.DeviceIndex, this.ParentStateMachine.ServiceScopeFactory);
                 var sensorStart = (int)(IOMachineSensors.PowerOnOff + message.DeviceIndex * inverterStatus.Inputs.Length);
                 Array.Copy(this.machineData.MachineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.Inputs, 0, inverterStatus.Inputs.Length);
                 notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
@@ -78,6 +84,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
         public override void Start()
         {
+            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.InverterIndex}");
+
             var stopMessage = new FieldCommandMessage(
                 null,
                 "Reset Inverter ShutterPositioning",
@@ -85,8 +93,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                 FieldMessageActor.DeviceManager,
                 FieldMessageType.InverterStop,
                 (byte)this.machineData.InverterIndex);
-
-            this.Logger.LogTrace($"1:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
 
@@ -102,6 +108,12 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             this.Logger.LogTrace($"2:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
+
+            if (this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterTest)
+            {
+                this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Manual;
+                this.Logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
+            }
         }
 
         public override void Stop(StopRequestReason reason)

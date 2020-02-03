@@ -54,6 +54,7 @@ namespace Ferretto.VW.MAS.DataLayer
             settings.Converters.Add(new IPAddressConverter());
 
             var vertimagConfiguration = JsonConvert.DeserializeObject<VertimagConfiguration>(jsonObject.ToString(), settings);
+            vertimagConfiguration.Validate();
 
             dataContext.Machines.Add(vertimagConfiguration.Machine);
             dataContext.LoadingUnits.AddRange(vertimagConfiguration.LoadingUnits);
@@ -64,6 +65,11 @@ namespace Ferretto.VW.MAS.DataLayer
             this.Logger.LogInformation($"First run: configuration loaded.");
 
             await this.LoadSeedsAsync();
+
+            using (var scope = this.ServiceScopeFactory.CreateScope())
+            {
+                scope.ServiceProvider.GetRequiredService<IMachineProvider>().UpdateWeightStatistics(dataContext);
+            }
         }
 
         private async Task LoadSeedsAsync()

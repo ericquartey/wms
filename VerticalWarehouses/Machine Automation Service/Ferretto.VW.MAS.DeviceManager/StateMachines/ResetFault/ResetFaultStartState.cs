@@ -86,6 +86,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetFault
 
         public override void Start()
         {
+            this.Logger.LogDebug($"Start {this.GetType().Name}");
             var commandMessage = new FieldCommandMessage(
                 null,
                 $"Reset Inverter Fault",

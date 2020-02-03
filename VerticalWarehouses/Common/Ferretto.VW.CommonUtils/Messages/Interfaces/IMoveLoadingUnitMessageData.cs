@@ -11,25 +11,23 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         LoadingUnitLocation Destination { get; }
 
-        int? DestinationCellId { get; }
+        int? DestinationCellId { get; set; }
 
-        bool EjectLoadingUnit { get; }
+        bool InsertLoadUnit { get; }
 
-        bool InsertLoadingUnit { get; }
+        int? LoadUnitId { get; }
 
-        int? LoadingUnitId { get; }
+        int? MissionId { get; }
 
-        Guid? MissionId { get; }
+        MissionStep MissionStep { get; }
 
-        MissionType MissionType { get; }
+        MissionType MissionType { get; set; }
 
         LoadingUnitLocation Source { get; }
 
         int? SourceCellId { get; }
 
         StopRequestReason StopReason { get; }
-
-        BayNumber TargetBay { get; set; }
 
         int? WmsId { get; set; }
 

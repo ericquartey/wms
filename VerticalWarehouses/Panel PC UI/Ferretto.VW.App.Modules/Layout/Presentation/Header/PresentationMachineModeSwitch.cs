@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
@@ -11,6 +12,8 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
     public class PresentationMachineModeSwitch : BasePresentationViewModel, IDisposable
     {
         #region Fields
+
+        private readonly IDialogService dialogService;
 
         private readonly SubscriptionToken healthStatusChangedToken;
 
@@ -30,6 +33,8 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private bool isMachineInAutomaticMode;
 
+        private bool isMachineInTestMode;
+
         private bool isUnknownState;
 
         private MachineMode machineMode;
@@ -42,11 +47,13 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         public PresentationMachineModeSwitch(
             IMachineModeService machineModeService,
-            IMachineModeWebService machineModeWebService)
+            IMachineModeWebService machineModeWebService,
+            IDialogService dialogService)
             : base(PresentationTypes.MachineMode)
         {
             this.machineModeService = machineModeService ?? throw new ArgumentNullException(nameof(machineModeService));
             this.machineModeWebService = machineModeWebService ?? throw new ArgumentNullException(nameof(machineModeWebService));
+            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
 
             this.machineModeChangedToken = this.EventAggregator
               .GetEvent<PubSubEvent<MachineModeChangedEventArgs>>()
@@ -87,6 +94,12 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         {
             get => this.isMachineInAutomaticMode;
             set => this.SetProperty(ref this.isMachineInAutomaticMode, value);
+        }
+
+        public bool IsMachineInTestMode
+        {
+            get => this.isMachineInTestMode;
+            set => this.SetProperty(ref this.isMachineInTestMode, value);
         }
 
         public bool IsUnknownState
@@ -131,7 +144,11 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             }
             else if (this.machineMode is MachineMode.Manual || this.machineMode is MachineMode.Test)
             {
-                await this.machineModeWebService.SetAutomaticAsync();
+                var messageBoxResult = this.dialogService.ShowMessage(General.ConfirmMachineModeSwitchAutomatic, General.Automatic, DialogType.Question, DialogButtons.YesNo);
+                if (messageBoxResult == DialogResult.Yes)
+                {
+                    await this.machineModeWebService.SetAutomaticAsync();
+                }
             }
             else
             {
@@ -147,10 +164,10 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                 !this.IsBusy
                 &&
                 (this.MachineMode is MachineMode.Automatic
-                ||
-                this.MachineMode is MachineMode.Manual
-                ||
-                this.MachineMode is MachineMode.Test)
+                    ||
+                    this.MachineMode is MachineMode.Manual
+                    ||
+                    this.MachineMode is MachineMode.Test)
                 &&
                 this.MachinePowerState is MachinePowerState.Powered
                 &&
@@ -176,7 +193,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private void OnHealthStatusChanged(HealthStatusChangedEventArgs e)
         {
-            this.HealthStatus = e.HealthStatus;
+            this.HealthStatus = e.HealthMasStatus;
         }
 
         private void OnHealthStatusPropertyChanged()
@@ -195,11 +212,16 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         private void OnMachineModePropertyChanged()
         {
             this.IsMachineInAutomaticMode = this.MachineMode is MachineMode.Automatic;
+            this.IsMachineInTestMode = this.MachineMode is MachineMode.Test;
 
             this.IsBusy =
+                this.MachineMode is MachineMode.Restore
+                ||
                 this.MachineMode is MachineMode.SwitchingToAutomatic
                 ||
-                this.MachineMode is MachineMode.SwitchingToManual;
+                this.MachineMode is MachineMode.SwitchingToManual
+                ||
+                this.MachineMode is MachineMode.Test;
         }
 
         private void OnMachinePowerChanged(MachinePowerChangedEventArgs e)

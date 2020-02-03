@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Errors.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -25,6 +32,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>InstallationApp.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Menu.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Menu.resx</DependentUpon>
     </Compile>
     <Compile Update="OperatorApp.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -54,6 +66,10 @@
     <EmbeddedResource Update="InstallationApp.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>InstallationApp.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Menu.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Menu.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="OperatorApp.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

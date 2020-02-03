@@ -18,8 +18,6 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         private string errorTime;
 
-        private bool isWaitingForResponse;
-
         private ICommand markAsResolvedCommand;
 
         #endregion
@@ -27,7 +25,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         #region Constructors
 
         public ErrorDetailsViewModel(IMachineErrorsWebService machineErrorsWebService)
-            : base(Services.PresentationMode.Installer)
+            : base(Services.PresentationMode.Menu | Services.PresentationMode.Installer | Services.PresentationMode.Operator)
         {
             this.machineErrorsWebService = machineErrorsWebService ?? throw new ArgumentNullException(nameof(machineErrorsWebService));
 
@@ -50,12 +48,6 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         {
             get => this.errorTime;
             set => this.SetProperty(ref this.errorTime, value);
-        }
-
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            set => this.SetProperty(ref this.isWaitingForResponse, value);
         }
 
         public ICommand MarkAsResolvedCommand =>
@@ -106,12 +98,12 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                // await this.machineErrorsWebService.ResolveAsync(this.Error.Id);
-                await this.machineErrorsWebService.ResolveAllAsync();
+                await this.machineErrorsWebService.ResolveAsync(this.Error.Id);
+                //await this.machineErrorsWebService.ResolveAllAsync();
 
                 this.Error = await this.machineErrorsWebService.GetCurrentAsync();
             }
-            catch (Exception ex)
+            catch (MasWebApiException ex)
             {
                 this.ShowNotification(ex);
             }
@@ -156,7 +148,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
                 this.Error = await this.machineErrorsWebService.GetCurrentAsync();
             }
-            catch (Exception ex)
+            catch (MasWebApiException ex)
             {
                 this.ShowNotification(ex);
             }

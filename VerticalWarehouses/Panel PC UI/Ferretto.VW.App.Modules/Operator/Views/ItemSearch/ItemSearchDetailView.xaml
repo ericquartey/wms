@@ -11,6 +11,7 @@
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
+    
     <Grid Margin="100,30,100,0">
 
         <Grid.RowDefinitions>
@@ -57,16 +58,16 @@
                                      ContentText="{Binding Item.Description}"
                                      LabelText="{x:Static Resources:OperatorApp.CommonItemDescription}" />
 
-            <Image Grid.Row="1"
+            <ctrls:PpcImage Grid.Row="1"
                    Grid.RowSpan="4"
                    Grid.Column="0"
                    Width="180"
                    Height="180"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
-                   Source="pack://application:,,,/Ferretto.VW.App.Controls;Component/Assets/Ingranaggio.jpg"
+                   Path="{Binding Item.Id}"                
                    Stretch="Uniform" />
-            <!--  {Binding Image, Converter={StaticResource ITSC}, Mode=OneWay}  -->
+            
 
             <controls:PpcLabeledText Grid.Row="1"
                                      Grid.Column="1"

@@ -1,44 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using DevExpress.Mvvm.POCO;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.Utils.Source.Filters;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
+using Prism.Events;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
+    [Warning(WarningsArea.Picking)]
     public abstract class BaseItemOperationMainViewModel : BaseItemOperationViewModel
     {
         #region Fields
 
-        private readonly IMissionsDataService missionDataService;
+        private readonly IEventAggregator eventAggregator;
 
-        private DelegateCommand abortOperationCommand;
+        private MAS.AutomationService.Contracts.Bay bay;
 
         private IEnumerable<TrayControlCompartment> compartments;
 
+        private DelegateCommand confirmOperationCanceledCommand;
+
         private DelegateCommand confirmOperationCommand;
 
-        private int? inputQuantity;
+        private double? inputQuantity;
 
         private bool isBusyAbortingOperation;
 
         private bool isBusyConfirmingOperation;
 
-        private bool isWaitingForResponse;
+        private bool isOperationCanceled;
+
+        private bool isOperationConfirmed;
 
         private double loadingUnitDepth;
 
         private double loadingUnitWidth;
+
+        private SubscriptionToken missionToken;
 
         private TrayControlCompartment selectedCompartment;
 
@@ -50,26 +58,22 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public BaseItemOperationMainViewModel(
             IWmsImagesProvider wmsImagesProvider,
-            IMissionsDataService missionsDataService,
+            IMissionsWmsWebService missionsWmsWebService,
+            IItemsWmsWebService itemsWmsWebService,
             IBayManager bayManager,
-            IMissionOperationsService missionOperationsService)
-            : base(wmsImagesProvider, missionsDataService, bayManager, missionOperationsService)
+            IEventAggregator eventAggregator,
+            IMissionOperationsService missionOperationsService,
+            IDialogService dialogService)
+            : base(wmsImagesProvider, missionsWmsWebService, itemsWmsWebService, bayManager, missionOperationsService, dialogService)
         {
-            this.missionDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));
+            this.eventAggregator = eventAggregator;
 
-            this.CompartmentColoringFunction = (c, selectedCompartment) => "#00FF00";
+            this.CompartmentColoringFunction = (compartment, selectedCompartment) => compartment == selectedCompartment ? "#0288f7" : "#444444";
         }
 
         #endregion
 
         #region Properties
-
-        public ICommand AbortOperationCommand =>
-            this.abortOperationCommand
-            ??
-            (this.abortOperationCommand = new DelegateCommand(
-                async () => await this.AbortOperationAsync(),
-                this.CanAbortOperation));
 
         public Func<IDrawableCompartment, IDrawableCompartment, string> CompartmentColoringFunction { get; }
 
@@ -78,6 +82,13 @@ namespace Ferretto.VW.App.Operator.ViewModels
             get => this.compartments;
             set => this.SetProperty(ref this.compartments, value);
         }
+
+        public ICommand ConfirmOperationCanceledCommand =>
+            this.confirmOperationCanceledCommand
+            ??
+            (this.confirmOperationCanceledCommand = new DelegateCommand(
+                async () => await this.ConfirmOperationCanceledAsync(),
+                this.CanConfirmOperationCanceled));
 
         public ICommand ConfirmOperationCommand =>
             this.confirmOperationCommand
@@ -88,11 +99,13 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public int? InputQuantity
+        public double? InputQuantity
         {
             get => this.inputQuantity;
             set => this.SetProperty(ref this.inputQuantity, value, this.RaiseCanExecuteChanged);
         }
+
+        public bool IsBaySideBack => this.bay?.Side == MAS.AutomationService.Contracts.WarehouseSide.Back;
 
         public bool IsBusyAbortingOperation
         {
@@ -106,10 +119,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
             set => this.SetProperty(ref this.isBusyConfirmingOperation, value, this.RaiseCanExecuteChanged);
         }
 
-        public bool IsWaitingForResponse
+        public bool IsOperationCanceled
         {
-            get => this.isWaitingForResponse;
-            set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
+            get => this.isOperationCanceled;
+            set => this.SetProperty(ref this.isOperationCanceled, value);
         }
 
         public double LoadingUnitDepth
@@ -139,6 +152,38 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Methods
 
+        public virtual bool CanConfirmOperation()
+        {
+            return
+                !this.IsWaitingForResponse
+                &&
+                this.MissionOperation != null
+                &&
+                !this.IsBusyAbortingOperation
+                &&
+                !this.IsBusyConfirmingOperation
+                &&
+                !this.isOperationConfirmed
+                &&
+                !this.isOperationCanceled
+                &&
+                this.InputQuantity.HasValue
+                &&
+                this.InputQuantity.Value >= 0
+                &&
+                this.InputQuantity.Value == this.MissionOperation.RequestedQuantity;
+        }
+
+        public virtual bool CanConfirmOperationCanceled()
+        {
+            return
+                !this.IsWaitingForResponse
+                &&
+                !this.isOperationConfirmed
+                &&
+                this.isOperationCanceled;
+        }
+
         public async Task ConfirmOperationAsync()
         {
             System.Diagnostics.Debug.Assert(
@@ -149,124 +194,97 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 this.IsBusyConfirmingOperation = true;
                 this.IsWaitingForResponse = true;
+                this.ClearNotifications();
 
-                await this.MissionOperationsService.CompleteCurrentMissionOperationAsync(this.InputQuantity.Value);
+                await this.MissionOperationsService.CompleteCurrentAsync(this.InputQuantity.Value);
 
-                await this.CheckOtherOperationsOnSameMissionAsync();
+                this.isOperationConfirmed = true;
+
+                this.ShowNotification(Resources.OperatorApp.OperationConfirmed);
             }
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
-            }
-            finally
-            {
                 this.IsBusyConfirmingOperation = false;
-                this.IsWaitingForResponse = true;
-            }
-        }
-
-        public override async Task OnAppearedAsync()
-        {
-            await base.OnAppearedAsync();
-
-            this.GetLoadingUnitDetails();
-        }
-
-        protected abstract void ShowOperationDetails();
-
-        private async Task AbortOperationAsync()
-        {
-            try
-            {
-                this.IsBusyAbortingOperation = true;
-                this.IsWaitingForResponse = true;
-
-                // TODO show prompt dialog "are you sure?"
-                var success = await this.MissionOperationsService.AbortCurrentMissionOperationAsync();
-                if (success)
-                {
-                    this.NavigationService.GoBack();
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
             }
             finally
             {
-                this.InputQuantity = null;
-                this.IsBusyAbortingOperation = false;
+                // Do not enable the interface. Wait for a new notification to arrive.
                 this.IsWaitingForResponse = false;
             }
         }
 
-        private bool CanAbortOperation()
-        {
-            return
-                !this.IsWaitingForResponse
-                &&
-                !this.IsBusyAbortingOperation
-                &&
-                !this.IsBusyConfirmingOperation;
-        }
-
-        private bool CanConfirmOperation()
-        {
-            return
-                !this.IsWaitingForResponse
-                &&
-                !this.IsBusyAbortingOperation
-                &&
-                !this.IsBusyConfirmingOperation
-                &&
-                this.InputQuantity.HasValue
-                &&
-                this.InputQuantity.Value >= 0;
-        }
-
-        private async Task CheckOtherOperationsOnSameMissionAsync()
+        public async Task ConfirmOperationCanceledAsync()
         {
             try
             {
-                var mission = await this.missionDataService.GetDetailsByIdAsync(this.MissionOperationsService.CurrentMission.Id);
-                if (mission.Operations?.Any(o => o.Status == MissionOperationStatus.New) == true)
-                {
-                    this.IsEnabled = false;
-                    this.InputQuantity = null;
-                    this.ItemImage = null;
-                }
-                else
-                {
-                    this.NavigationService.GoBack();
-                }
+                this.IsBusyConfirmingOperation = true;
+                this.IsWaitingForResponse = true;
+                this.ClearNotifications();
+
+                await this.MissionOperationsService.CancelCurrentAsync();
+
+                this.ShowNotification(Resources.OperatorApp.OperationCancelledConfirmed);
             }
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
+                this.IsBusyConfirmingOperation = false;
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
         }
 
-        private void GetLoadingUnitDetails()
+        public override void Disappear()
         {
-            try
-            {
-                System.Diagnostics.Debug.Assert(
-                    this.MissionOperationsService.CurrentMission != null,
-                    "This view model should not be opened if there is no current mission");
+            this.eventAggregator.GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>().Unsubscribe(this.missionToken);
+            this.missionToken?.Dispose();
+            this.missionToken = null;
 
-                this.Compartments = this.MapCompartments(this.Mission.LoadingUnit.Compartments);
-                this.LoadingUnitWidth = this.Mission.LoadingUnit.Width;
-                this.LoadingUnitDepth = this.Mission.LoadingUnit.Depth;
-                this.SelectedCompartment = this.Compartments.SingleOrDefault(c =>
-                    c.Id == this.MissionOperationsService.CurrentMissionOperation.CompartmentId);
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
+            base.Disappear();
         }
 
-        private IEnumerable<TrayControlCompartment> MapCompartments(IEnumerable<CompartmentMissionInfo> compartmentsFromMission)
+        public override async Task OnAppearedAsync()
+        {
+            this.IsWaitingForResponse = false;
+            this.IsBusyAbortingOperation = false;
+            this.IsBusyConfirmingOperation = false;
+            this.isOperationConfirmed = false;
+            this.IsOperationCanceled = false;
+            this.InputQuantity = null;
+            this.SelectedCompartment = null;
+
+            await base.OnAppearedAsync();
+
+            this.bay = await this.BayManager.GetBayAsync();
+
+            this.RaisePropertyChanged(nameof(this.IsBaySideBack));
+
+            this.missionToken = this.missionToken
+                ??
+                this.eventAggregator.GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>()
+                    .Subscribe(
+                        async e => await this.OnAssignedMissionOperationChangedAsync(e),
+                        ThreadOption.UIThread,
+                        false);
+
+            this.GetLoadingUnitDetails();
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.confirmOperationCommand?.RaiseCanExecuteChanged();
+            this.showDetailsCommand?.RaiseCanExecuteChanged();
+            this.confirmOperationCanceledCommand?.RaiseCanExecuteChanged();
+        }
+
+        protected abstract void ShowOperationDetails();
+
+        private static IEnumerable<TrayControlCompartment> MapCompartments(IEnumerable<CompartmentMissionInfo> compartmentsFromMission)
         {
             return compartmentsFromMission
                 .Where(c =>
@@ -287,11 +305,92 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 });
         }
 
-        private void RaiseCanExecuteChanged()
+        private void GetLoadingUnitDetails()
         {
-            this.abortOperationCommand?.RaiseCanExecuteChanged();
-            this.confirmOperationCommand?.RaiseCanExecuteChanged();
-            this.showDetailsCommand?.RaiseCanExecuteChanged();
+            if (this.Mission is null)
+            {
+                this.Compartments = null;
+                this.SelectedCompartment = null;
+                return;
+            }
+
+            try
+            {
+                this.Compartments = MapCompartments(this.Mission.LoadingUnit.Compartments);
+                this.LoadingUnitWidth = this.Mission.LoadingUnit.Width;
+                this.LoadingUnitDepth = this.Mission.LoadingUnit.Depth;
+                this.SelectedCompartment = this.Compartments.SingleOrDefault(c =>
+                    c.Id == this.MissionOperation.CompartmentId);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
+        private string GetNoLongerOperationMessageByType()
+        {
+            var noLongerOperationMsg = string.Empty;
+            switch (this.MissionOperation.Type)
+            {
+                case MissionOperationType.Pick:
+                    noLongerOperationMsg = OperatorApp.IfPickedItemsPutThemBackInTheOriginalCompartment;
+                    break;
+
+                case MissionOperationType.Put:
+                    noLongerOperationMsg = OperatorApp.RemoveAnySpilledItemsFromCompartment;
+                    break;
+
+                case MissionOperationType.Inventory:
+                    noLongerOperationMsg = OperatorApp.InventoryOperationCancelled;
+                    break;
+
+                default:
+                    break;
+            }
+
+            return noLongerOperationMsg;
+        }
+
+        private void HideNavigationBack()
+        {
+            switch (this.MissionOperation.Type)
+            {
+                case MissionOperationType.Pick:
+                    this.IsBackNavigationAllowed = false;
+                    break;
+
+                case MissionOperationType.Put:
+                    this.IsBackNavigationAllowed = false;
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        private async Task OnAssignedMissionOperationChangedAsync(AssignedMissionOperationChangedEventArgs e)
+        {
+            if (this.isOperationConfirmed)
+            {
+                this.isOperationConfirmed = false;
+
+                await this.RetrieveMissionOperationAsync();
+
+                this.GetLoadingUnitDetails();
+            }
+            else
+            {
+                this.IsOperationCanceled = true;
+                this.CanInputQuantity = false;
+                var msg = this.GetNoLongerOperationMessageByType();
+                this.DialogService.ShowMessage(msg, OperatorApp.OperationCancelled);
+                this.ShowNotification(msg, Services.Models.NotificationSeverity.Warning);
+                this.HideNavigationBack();
+            }
+
+            this.IsBusyConfirmingOperation = false;
+            this.IsWaitingForResponse = false;
         }
 
         #endregion

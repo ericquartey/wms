@@ -23,16 +23,20 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
+
         #endregion
 
         #region Constructors
 
         public VerticalOriginProcedureController(
             IEventAggregator eventAggregator,
-            IElevatorDataProvider elevatorDataProvider)
+            IElevatorDataProvider elevatorDataProvider,
+            ISetupProceduresDataProvider setupProceduresDataProvider)
         {
             this.eventAggregator = eventAggregator;
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
+            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
         }
 
         #endregion
@@ -50,12 +54,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             var axis = this.elevatorDataProvider.GetAxis(DataModels.Orientation.Vertical);
 
+            var procedureParameters = this.setupProceduresDataProvider.GetVerticalOriginCalibration();
+
             var parameters = new HomingProcedureParameters
             {
                 UpperBound = axis.UpperBound,
                 LowerBound = axis.LowerBound,
                 Offset = axis.Offset,
                 Resolution = axis.Resolution,
+                IsCompleted = procedureParameters.IsCompleted,
             };
 
             return this.Ok(parameters);
@@ -66,7 +73,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Start()
         {
-            IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical, Calibration.FindSensor);
+            IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical, Calibration.FindSensor, null, true);
 
             this.PublishCommand(
                 homingData,

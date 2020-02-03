@@ -14,6 +14,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
+using Axis = Ferretto.VW.CommonUtils.Messages.Enumerations.Axis;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -54,8 +55,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private double? inputNetWeight;
 
         private bool isExecutingProcedure;
-
-        private bool isWaitingForResponse;
 
         private LoadingUnit loadingUnit;
 
@@ -175,10 +174,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public bool IsWaitingForResponse
+        public override bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
-            private set
+            protected set
             {
                 if (this.SetProperty(ref this.isWaitingForResponse, value))
                 {
@@ -315,6 +314,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.RetrieveLoadingUnitsAsync();
         }
 
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.stopCommand?.RaiseCanExecuteChanged();
+            this.startCommand?.RaiseCanExecuteChanged();
+
+            this.CanInputNetWeight = this.loadingUnit != null;
+        }
+
         private bool CanMoveToBay()
         {
             return
@@ -416,14 +425,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     VW.App.Resources.InstallationApp.ProcedureCompleted,
                     Services.Models.NotificationSeverity.Success);
             }
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.stopCommand?.RaiseCanExecuteChanged();
-            this.startCommand?.RaiseCanExecuteChanged();
-
-            this.CanInputNetWeight = this.loadingUnit != null;
         }
 
         private async Task RetrieveCurrentPositionAsync()

@@ -13,9 +13,12 @@
     <ItemsControl.ItemTemplate>
         <DataTemplate>
             <controls:PpcButton Margin="15,0,15,15"
+                                BorderBrush="{DynamicResource FerrettoGreen}"
                                 Command="{Binding NavigateCommand}"
                                 Content="{Binding Description}"
+                                IsActive="{Binding IsActive}"
                                 IsEnabled="{Binding IsEnabled}"
+                                Style="{DynamicResource PpcButtonMenuStyle}"
                                 Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
         </DataTemplate>
     </ItemsControl.ItemTemplate>

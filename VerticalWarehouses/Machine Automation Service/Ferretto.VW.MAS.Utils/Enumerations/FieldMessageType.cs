@@ -61,5 +61,15 @@
         ContinueMovement,
 
         InverterCurrentError,
+
+        LaserOn,
+
+        LaserOff,
+
+        LaserMove,
+
+        LaserMoveAndSwitchOn,
+
+        BayLight
     }
 }

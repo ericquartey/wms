@@ -51,17 +51,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
             this.Dispose(true);
         }
 
-        public override void ProcessMessage(IoMessage message)
-        {
-            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset Security={message.ResetSecurity}");
-
-            if (message.ValidOutputs && !message.ResetSecurity)
-            {
-                this.ParentStateMachine.ChangeState(
-                    new ResetSecurityEndState(this.ParentStateMachine, this.status, this.index, hasError: false, this.Logger));
-            }
-        }
-
         public override void ProcessResponseMessage(IoReadMessage message)
         {
             this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset Security={message.ResetSecurity}");

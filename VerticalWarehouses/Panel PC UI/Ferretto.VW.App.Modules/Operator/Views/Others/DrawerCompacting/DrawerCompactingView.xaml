@@ -7,6 +7,9 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
+            xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Operator.ViewModels"
+            d:DataContext="{d:DesignInstance Type=viewmodels:DrawerCompactingViewModel,
+                                             IsDesignTimeCreatable=False}"
             d:DesignHeight="450"
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
@@ -118,16 +121,16 @@
                                 Grid.Column="0"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
-                                Content="{x:Static Resources:OperatorApp.DrawerCompactingAntStop}"
-                                IsEnabled="False" />
+                                Command="{Binding CompactingStopCommand}"
+                                Content="{x:Static Resources:OperatorApp.DrawerCompactingAntStop}" />
 
 
             <controls:PpcButton Grid.Row="5"
                                 Grid.Column="1"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
-                                Content="{x:Static Resources:OperatorApp.DrawerCompactingRearCompact}"
-                                IsEnabled="False" />
+                                Command="{Binding CompactingStartCommand}"
+                                Content="{x:Static Resources:OperatorApp.DrawerCompactingRearCompact}" />
 
         </Grid>
 
@@ -136,9 +139,8 @@
                             Margin="15,15,15,0"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Top"
-                            Command="{Binding DrawerCompactingDetailButtonCommand}"
-                            Content="{x:Static Resources:OperatorApp.CommonButtonDetail}"
-                            IsEnabled="True" />
+                            Command="{Binding DetailButtonCommand}"
+                            Content="{x:Static Resources:OperatorApp.CommonButtonDetail}" />
 
     </Grid>
 </ctrls:View>

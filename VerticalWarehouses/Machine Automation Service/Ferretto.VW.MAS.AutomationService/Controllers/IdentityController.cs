@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -14,11 +15,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly ILoadingUnitsProvider loadingUnitStatisticsProvider;
+        private readonly IConfiguration configuration;
+
+        private readonly ILoadingUnitsDataProvider loadingUnitStatisticsProvider;
 
         private readonly IMachineProvider machineProvider;
 
-        private readonly WMS.Data.WebAPI.Contracts.IMachinesDataService machinesDataService;
+        private readonly IMachinesWmsWebService machinesWmsWebService;
+
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
         private readonly IServicingProvider servicingProvider;
 
@@ -27,35 +32,19 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Constructors
 
         public IdentityController(
-            ILoadingUnitsProvider loadingUnitStatisticsProvider,
+            ILoadingUnitsDataProvider loadingUnitStatisticsProvider,
             IServicingProvider servicingProvider,
             IMachineProvider machineProvider,
-            WMS.Data.WebAPI.Contracts.IMachinesDataService machinesDataService)
+            IMachineVolatileDataProvider machineVolatileDataProvider,
+            IConfiguration configuration,
+            IMachinesWmsWebService machinesWmsWebService)
         {
-            if (loadingUnitStatisticsProvider is null)
-            {
-                throw new System.ArgumentNullException(nameof(loadingUnitStatisticsProvider));
-            }
-
-            if (servicingProvider is null)
-            {
-                throw new System.ArgumentNullException(nameof(servicingProvider));
-            }
-
-            if (machineProvider is null)
-            {
-                throw new System.ArgumentNullException(nameof(machineProvider));
-            }
-
-            if (machinesDataService is null)
-            {
-                throw new System.ArgumentNullException(nameof(machinesDataService));
-            }
-
-            this.loadingUnitStatisticsProvider = loadingUnitStatisticsProvider;
-            this.servicingProvider = servicingProvider;
-            this.machineProvider = machineProvider;
-            this.machinesDataService = machinesDataService;
+            this.loadingUnitStatisticsProvider = loadingUnitStatisticsProvider ?? throw new System.ArgumentNullException(nameof(loadingUnitStatisticsProvider));
+            this.servicingProvider = servicingProvider ?? throw new System.ArgumentNullException(nameof(servicingProvider));
+            this.machineProvider = machineProvider ?? throw new System.ArgumentNullException(nameof(machineProvider));
+            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new System.ArgumentNullException(nameof(machineVolatileDataProvider));
+            this.configuration = configuration ?? throw new System.ArgumentNullException(nameof(configuration));
+            this.machinesWmsWebService = machinesWmsWebService ?? throw new System.ArgumentNullException(nameof(machinesWmsWebService));
         }
 
         #endregion
@@ -63,18 +52,31 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Methods
 
         [HttpGet]
-        public ActionResult<MachineIdentity> Get()
+        public async Task<ActionResult<MachineIdentity>> Get()
         {
             var servicingInfo = this.servicingProvider.GetInfo();
 
             var loadingUnits = this.loadingUnitStatisticsProvider.GetWeightStatistics();
 
             var machine = this.machineProvider.Get();
+
+            int? areaId = null;
+            if (this.configuration.IsWmsEnabled())
+            {
+                try
+                {
+                    var area = await this.machinesWmsWebService.GetAreaByIdAsync(machine.Id);
+                    areaId = area.Id;
+                }
+                catch
+                {
+                }
+            }
+
             var machineInfo = new MachineIdentity
             {
-                AreaId = 2, // TODO remove this hardcoded value
-                Width = 3080, // TODO remove this hardcoded value
-                Depth = 500, // TODO remove this hardcoded value
+                AreaId = areaId,
+                Id = machine.Id,
                 ModelName = machine.ModelName,
                 SerialNumber = machine.SerialNumber,
                 TrayCount = loadingUnits.Count(),
@@ -82,7 +84,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 InstallationDate = servicingInfo.InstallationDate,
                 NextServiceDate = servicingInfo.NextServiceDate,
                 LastServiceDate = servicingInfo.LastServiceDate,
-                IsOneTonMachine = this.machineProvider.IsOneTonMachine(),
+                IsOneTonMachine = this.machineVolatileDataProvider.IsOneTonMachine.Value,
             };
 
             return this.Ok(machineInfo);
@@ -97,10 +99,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 try
                 {
-                    var machineId = 1; // TODO HACK remove this hardcoded value and use the machine serial number
-                    var machine = await this.machinesDataService.GetByIdAsync(machineId);
+                    var machine = this.machineProvider.Get();
+                    var wmsMachine = await this.machinesWmsWebService.GetByIdAsync(machine.Id);
 
-                    statistics.AreaFillPercentage = machine.AreaFillRate;
+                    statistics.AreaFillPercentage = wmsMachine.AreaFillRate;
                 }
                 catch (System.Exception)
                 {

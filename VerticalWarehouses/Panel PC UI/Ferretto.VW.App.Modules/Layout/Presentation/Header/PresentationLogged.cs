@@ -5,6 +5,7 @@ using DevExpress.Mvvm;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Modules.Layout
 {
@@ -13,6 +14,8 @@ namespace Ferretto.VW.App.Modules.Layout
         #region Fields
 
         private readonly IAuthenticationService authenticationService;
+
+        private readonly IMachineBaysWebService machineBaysWebService;
 
         private readonly Services.INavigationService navigationService;
 
@@ -33,6 +36,7 @@ namespace Ferretto.VW.App.Modules.Layout
         public PresentationLogged(
             IAuthenticationService authenticationService,
             Services.INavigationService navigationService,
+            IMachineBaysWebService machineBaysWebService,
             IThemeService themeService)
             : base(PresentationTypes.Logged)
         {
@@ -46,6 +50,11 @@ namespace Ferretto.VW.App.Modules.Layout
                 throw new ArgumentNullException(nameof(navigationService));
             }
 
+            if (machineBaysWebService is null)
+            {
+                throw new ArgumentNullException(nameof(machineBaysWebService));
+            }
+
             if (themeService is null)
             {
                 throw new ArgumentNullException(nameof(themeService));
@@ -53,6 +62,7 @@ namespace Ferretto.VW.App.Modules.Layout
 
             this.authenticationService = authenticationService;
             this.navigationService = navigationService;
+            this.machineBaysWebService = machineBaysWebService;
             this.themeService = themeService;
             this.Type = PresentationTypes.Logged;
 
@@ -78,7 +88,7 @@ namespace Ferretto.VW.App.Modules.Layout
         public ICommand LogOutCommand =>
             this.logOutCommand
             ??
-            (this.logOutCommand = new DelegateCommand(async() => await this.ExecuteLogOutCommand()));
+            (this.logOutCommand = new DelegateCommand(async () => await this.ExecuteLogOutCommand()));
 
         public ICommand ToggleThemeCommand =>
          this.toggleThemeCommand
@@ -111,6 +121,7 @@ namespace Ferretto.VW.App.Modules.Layout
         {
             this.IsPopupOpen = false;
             await this.authenticationService.LogOutAsync();
+            await this.machineBaysWebService.DeactivateAsync();
             this.navigationService.GoBackTo(nameof(Utils.Modules.Login), Utils.Modules.Login.LOGIN);
         }
 

@@ -7,11 +7,14 @@ using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class StatisticsWeightSaturationViewModel : BaseMainViewModel
+    [Warning(WarningsArea.Information)]
+    public class StatisticsWeightSaturationViewModel : BaseOperatorViewModel
     {
         #region Fields
 

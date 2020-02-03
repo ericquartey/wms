@@ -40,7 +40,13 @@ namespace Ferretto.VW.MAS.InverterDriver
             switch (receivedMessage.Type)
             {
                 case FieldMessageType.DataLayerReady:
+                    // performance optimization
+                    _ = serviceProvider.GetRequiredService<IInvertersProvider>();
+                    var elevator = serviceProvider.GetRequiredService<IElevatorDataProvider>();
+                    elevator.GetAxis(Orientation.Horizontal);
+                    elevator.GetAxis(Orientation.Vertical);
 
+                    // start communication
                     await this.StartHardwareCommunicationsAsync(serviceProvider);
                     this.InitializeTimers();
 
@@ -71,6 +77,9 @@ namespace Ferretto.VW.MAS.InverterDriver
                             this.Logger.LogTrace("4: Stop the timer for update shaft position");
                             this.axisPositionUpdateTimer[(int)inverterIndex]?.Change(100, 10000);
 
+                            this.Logger.LogTrace("Stop the timer for update status word");
+                            this.statusWordUpdateTimer[(int)inverterIndex]?.Change(100, 10000);
+
                             this.Logger.LogDebug($"4b: currentStateMachines count {this.currentStateMachines.Count}");
                         }
 
@@ -88,6 +97,9 @@ namespace Ferretto.VW.MAS.InverterDriver
                         {
                             this.axisPositionUpdateTimer[(int)inverterIndex]?.Change(100, 10000);
                             this.currentStateMachines.Remove(inverterIndex);
+
+                            this.Logger.LogTrace("Stop the timer for update status word");
+                            this.statusWordUpdateTimer[(int)inverterIndex]?.Change(100, 10000);
                         }
                         else
                         {
@@ -107,6 +119,9 @@ namespace Ferretto.VW.MAS.InverterDriver
                         if (messageCurrentStateMachine is ShutterPositioningStateMachine)
                         {
                             this.currentStateMachines.Remove(inverterIndex);
+
+                            this.Logger.LogTrace("Stop the timer for update status word");
+                            this.statusWordUpdateTimer[(int)inverterIndex]?.Change(100, 10000);
                         }
                         else
                         {
@@ -134,6 +149,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                         {
                             this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine.GetType().Name} Handling {receivedMessage.Type}");
                         }
+                        this.Logger.LogTrace("Stop the timer for update status word");
+                        this.statusWordUpdateTimer[(int)inverterIndex]?.Change(100, 10000);
                     }
 
                     break;
@@ -153,6 +170,9 @@ namespace Ferretto.VW.MAS.InverterDriver
                         {
                             this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine.GetType().Name} Handling {receivedMessage.Type}");
                         }
+
+                        this.Logger.LogTrace("Stop the timer for update status word");
+                        this.statusWordUpdateTimer[(int)inverterIndex]?.Change(100, 10000);
 
                         var nextMessage = ((InverterSwitchOffFieldMessageData)receivedMessage.Data).NextCommandMessage;
                         if (nextMessage != null)
@@ -179,6 +199,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                         {
                             this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine.GetType().Name} Handling {receivedMessage.Type}");
                         }
+                        this.Logger.LogTrace("Stop the timer for update status word");
+                        this.statusWordUpdateTimer[(int)inverterIndex]?.Change(100, 10000);
 
                         var nextMessage = ((InverterPowerOnFieldMessageData)receivedMessage.Data).NextCommandMessage;
                         if (nextMessage != null)
@@ -212,6 +234,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                         {
                             this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine.GetType().Name} Handling {receivedMessage.Type}");
                         }
+                        this.Logger.LogTrace("Stop the timer for update status word");
+                        this.statusWordUpdateTimer[(int)inverterIndex]?.Change(100, 10000);
 
                         var nextMessage = ((InverterPowerOffFieldMessageData)receivedMessage.Data).NextCommandMessage;
                         if (nextMessage != null)
@@ -238,6 +262,9 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 this.axisPositionUpdateTimer[(int)inverterIndex]?.Change(1000, 10000);
                             }
                             this.currentStateMachines.Remove(inverterIndex);
+
+                            this.Logger.LogTrace("Stop the timer for update status word");
+                            this.statusWordUpdateTimer[(int)inverterIndex]?.Change(100, 10000);
                         }
                         else
                         {
@@ -261,7 +288,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             var inverter = invertersProvider.GetByIndex(InverterIndex.MainInverter);
                             if (inverter is AngInverterStatus angInverter)
                             {
-                                ioStatuses[6] = angInverter.ANG_OverrunElevatorSensor;
+                                ioStatuses[5] = angInverter.ANG_OverrunElevatorSensor;
                                 if (angInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish[(int)InverterIndex.MainInverter])
                                 {
                                     this.Logger.LogTrace("Sensor Update");
@@ -284,12 +311,10 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
 
             if (receivedMessage.Source == FieldMessageActor.InverterDriver
-                &&
-                (receivedMessage.Status == MessageStatus.OperationEnd
-                ||
-                receivedMessage.Status == MessageStatus.OperationStop
-                ||
-                receivedMessage.Status == MessageStatus.OperationUpdateData))
+                && (receivedMessage.Status == MessageStatus.OperationEnd
+                    || receivedMessage.Status == MessageStatus.OperationStop
+                    )
+                )
             {
                 var notificationMessageToFsm = receivedMessage;
 

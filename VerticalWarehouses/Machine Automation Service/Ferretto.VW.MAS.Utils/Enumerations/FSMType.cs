@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.MAS.Utils.Enumerations
 {
-    public enum FSMType
+    public enum FsmType
     {
         NoType,
 

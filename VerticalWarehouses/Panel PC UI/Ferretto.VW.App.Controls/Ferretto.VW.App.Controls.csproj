@@ -1,40 +1,30 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
     <LanguageTargets>$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
-    <TargetFramework>net471</TargetFramework>
+    <TargetFrameworks>net471</TargetFrameworks>
+    <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="WindowsBase" />
+    <Reference Include="System.Web" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DevExpress.Wpf.Core" Version="19.1.6" />
-    <PackageReference Include="DevExpress.Wpf.Navigation" Version="19.1.6" />
-    <PackageReference Include="DevExpress.Wpf.PropertyGrid" Version="19.1.6" />
-    <PackageReference Include="DevExpress.Wpf.Themes.Office2016Black" Version="19.1.6" />
-    <PackageReference Include="DevExpress.Wpf.Themes.Office2016White" Version="19.1.6" />
+    <PackageReference Include="DevExpress.Wpf.Core" Version="19.2.4" />
+    <PackageReference Include="DevExpress.Wpf.Navigation" Version="19.2.4" />
+    <PackageReference Include="DevExpress.Wpf.PropertyGrid" Version="19.2.4" />
+    <PackageReference Include="DevExpress.Wpf.Themes.Office2016Black" Version="19.2.4" />
+    <PackageReference Include="DevExpress.Wpf.Themes.Office2016White" Version="19.2.4" />
     <PackageReference Include="MahApps.Metro.IconPacks" Version="2.3.0" />
-    <PackageReference Include="NLog" Version="4.6.7" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="NLog" Version="4.6.8" />
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
     <PackageReference Include="Prism.Wpf" Version="7.1.0.431" />
     <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
-    <PackageReference Include="Unity.Abstractions" Version="3.3.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="**\*.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="**\*.xaml" Exclude="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
 
   <ItemGroup>
@@ -45,79 +35,12 @@
   <ItemGroup>
     <Resource Include="Assets\*.*" />
     <Resource Include="Fonts\*.*" />
+    <EmbeddedResource Include="Resources\*.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Controls\Sensors\SensorsPanel.xaml" />
-    <None Remove="Controls\Views\MessagePopup\PpcMessagePopup.xaml" />
-    <None Remove="Skins\Dark\DarkDialogPopup.xaml" />
-    <None Remove="Skins\DXStyle.xaml" />
-    <None Remove="Skins\Light\LightDialogPopup.xaml" />
-    <None Remove="Styles\DevExpress\WinUIMessageBox.xaml" />
-    <None Remove="Styles\PpcButtonKeyStyle.xaml" />
-    <None Remove="Styles\PpcButtonStyle.xaml" />
-    <None Remove="Styles\PpcPressAndReleaseButton.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Machine Automation Service\Ferretto.VW.MAS.AutomationService.Contracts.Hubs\Ferretto.VW.MAS.AutomationService.Contracts.Hubs.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Resources\Ferretto.VW.App.Resources.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Controls\CustomMachinePowerToggleButton.xaml.cs">
-      <DependentUpon>CustomMachinePowerToggleButton.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Controls\Views\MessagePopup\PpcMessagePopup.xaml.cs">
-      <DependentUpon>PpcMessagePopup.xaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Controls\CustomMainWindowDebugButton.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Controls\Menu\PpcStepsMenu.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Controls\PpcSpinEdit\PpcSpinEdit.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Controls\Sensor\Sensor.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Controls\Sensor\SensorSquare.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Skins\Palette.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Styles\DevExpress\MessageBox\WinUIMessageBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Styles\DevExpress\SpinEdit\SpinEdit.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Styles\Sensor\SensorSquareStyle.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Styles\Sensor\SensorStyle.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Styles\Styles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Templates\PpcSensorControlTemplate.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Templates\Templates.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controls\Keyboards\" />
   </ItemGroup>
 
 </Project>

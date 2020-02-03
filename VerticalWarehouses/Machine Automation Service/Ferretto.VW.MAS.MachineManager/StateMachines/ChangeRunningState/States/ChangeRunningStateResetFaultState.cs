@@ -27,6 +27,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
 
         private readonly Dictionary<BayNumber, MessageStatus> stateMachineResponses;
 
+        private BayNumber currentBay;
+
         #endregion
 
         #region Constructors
@@ -51,12 +53,13 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
+            this.Logger.LogDebug($"ChangeRunningStateResetFaultState: received command {commandMessage.Type}, {commandMessage.Description}");
             if (commandMessage.Data is IChangeRunningStateMessageData messageData)
             {
                 if (messageData.Enable)
                 {
-                    this.machineControlProvider.ResetBayFault(BayNumber.All, MessageActor.MachineManager, commandMessage.RequestingBay);
+                    this.currentBay = this.baysDataProvider.GetAll().OrderBy(b => b.Number).First().Number;
+                    this.machineControlProvider.ResetBayFault(this.currentBay, MessageActor.MachineManager, commandMessage.RequestingBay);
                 }
                 else
                 {
@@ -84,6 +87,19 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                 {
                     case MessageStatus.OperationEnd:
                         this.UpdateResponseList(notificationStatus, notification.TargetBay);
+                        var bays = this.baysDataProvider.GetAll().OrderBy(b => b.Number).ToList();
+                        if (this.stateMachineResponses.Values.Count == bays.Count)
+                        {
+                            returnValue = this.GetState<IChangeRunningStateResetSecurity>();
+                        }
+                        else
+                        {
+                            this.currentBay = bays.FirstOrDefault(b => b.Number > this.currentBay)?.Number ?? BayNumber.None;
+                            if (this.currentBay != BayNumber.None)
+                            {
+                                this.machineControlProvider.ResetBayFault(this.currentBay, MessageActor.MachineManager, notification.RequestingBay);
+                            }
+                        }
                         break;
 
                     case MessageStatus.OperationError:
@@ -91,11 +107,6 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                         ((IEndState)returnValue).StopRequestReason = StopRequestReason.Error;
                         ((IEndState)returnValue).ErrorMessage = notification;
                         break;
-                }
-
-                if (this.stateMachineResponses.Values.Count == this.baysDataProvider.GetAll().Count())
-                {
-                    returnValue = this.GetState<IChangeRunningStateResetSecurity>();
                 }
             }
 

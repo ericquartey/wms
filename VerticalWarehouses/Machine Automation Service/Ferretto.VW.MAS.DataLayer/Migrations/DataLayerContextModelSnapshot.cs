@@ -27,7 +27,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("CurrentMissionId");
 
-                    b.Property<int?>("CurrentMissionOperationId");
+                    b.Property<int?>("CurrentWmsMissionOperationId");
 
                     b.Property<int?>("EmptyLoadMovementId");
 
@@ -51,13 +51,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("ShutterId");
 
-                    b.Property<string>("Side")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Side");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CarouselId");
+
+                    b.HasIndex("CurrentMissionId");
 
                     b.HasIndex("EmptyLoadMovementId");
 
@@ -92,6 +92,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<double>("MaxDoubleHeight");
+
+                    b.Property<double>("MaxSingleHeight");
+
+                    b.Property<double>("ProfileOffset");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BayId");
@@ -109,6 +115,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int?>("AssistedMovementsId");
 
                     b.Property<double>("ElevatorDistance");
+
+                    b.Property<double>("HomingCreepSpeed");
+
+                    b.Property<double>("HomingFastSpeed");
+
+                    b.Property<double>("LastIdealPosition");
 
                     b.Property<int?>("ManualMovementsId");
 
@@ -138,19 +150,15 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<bool>("IsDeactivated");
+                    b.Property<int>("BlockLevel");
 
-                    b.Property<bool>("IsUnusable");
+                    b.Property<bool>("IsFree");
 
                     b.Property<int>("PanelId");
 
                     b.Property<double>("Position");
 
                     b.Property<int>("Priority");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -164,11 +172,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<bool>("IsChecked");
+
                     b.Property<int?>("MachineId");
 
-                    b.Property<string>("Side")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Side");
 
                     b.HasKey("Id");
 
@@ -222,6 +230,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("FullLoadMovementId");
 
+                    b.Property<double>("HomingCreepSpeed");
+
+                    b.Property<double>("HomingFastSpeed");
+
                     b.Property<int?>("InverterId");
 
                     b.Property<double>("LastIdealPosition");
@@ -240,7 +252,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double>("ProfileCalibrateSpeed");
 
-                    b.Property<decimal>("Resolution");
+                    b.Property<double>("Resolution");
 
                     b.Property<int>("TotalCycles");
 
@@ -309,441 +321,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.ToTable("ElevatorStructuralProperties");
                 });
 
-            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ErrorDefinition", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("Code");
-
-                    b.Property<string>("Description")
-                        .IsRequired();
-
-                    b.Property<string>("Reason");
-
-                    b.Property<int>("Severity");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Code")
-                        .IsUnique();
-
-                    b.ToTable("ErrorDefinitions");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Code = 1,
-                            Description = "Cassetto non caricato completamente.",
-                            Reason = "Il cassetto potrebbe essersi incastrato.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Code = 2,
-                            Description = "Condizioni per il posizionamento non soddisfatte.",
-                            Reason = "Controllare che il nottolino sia a zero o che il cassetto sia completamente caricato a bordo elevatore.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Code = 3,
-                            Description = "Condizioni per la messa in marcia non soddisfatte.",
-                            Reason = "Controllare che i funghi di emergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Code = 4,
-                            Description = "È scattata la funzione di sicurezza.",
-                            Reason = "Controllare che i funghi di emergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Code = 5,
-                            Description = "È stato rilevato un errore in uno degli inverter.",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Code = 6,
-                            Description = "CradleNotCorrectlyLoadedDuringPickup",
-                            Reason = "Il cassetto sembra non essere completamente a bordo elevatore dopo la fase di carico.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Code = 7,
-                            Description = "CradleNotCorrectlyUnloadedDuringDeposit",
-                            Reason = "Il cassetto non sembra essere completamente fuori dall'elevatore dopo la fase di scarico.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Code = 8,
-                            Description = "ZeroSensorErrorAfterPickup",
-                            Reason = "ZeroSensorErrorAfterPickup",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Code = 9,
-                            Description = "ZeroSensorErrorAfterDeposit",
-                            Reason = "ZeroSensorErrorAfterDeposit",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Code = 10,
-                            Description = "InvalidPresenceSensors",
-                            Reason = "Sensori di presenza invalidi",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Code = 11,
-                            Description = "MissingZeroSensorWithEmptyElevator",
-                            Reason = "MissingZeroSensorWithEmptyElevator",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Code = 12,
-                            Description = "ZeroSensorActiveWithFullElevator",
-                            Reason = "ZeroSensorActiveWithFullElevator",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Code = 13,
-                            Description = "LoadUnitPresentOnEmptyElevator",
-                            Reason = "Presenza a bordo elevatore con elevatore logicamente scarico.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Code = 14,
-                            Description = "TopLevelBayOccupied",
-                            Reason = "Livello alto baia occupato",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 15,
-                            Code = 15,
-                            Description = "BottomLevelBayOccupied",
-                            Reason = "Livello basso baia occupato.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 16,
-                            Code = 16,
-                            Description = "SensoZeroBayNotActiveAtStart",
-                            Reason = "SensoZeroBayNotActiveAtStart",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 17,
-                            Code = 17,
-                            Description = "Il peso massimo caricato sul cassetto è eccessivo.",
-                            Reason = "Scaricare il cassetto in baia e rimuovere il peso in eccesso.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 18,
-                            Code = 18,
-                            Description = "DestinationBelowLowerBound",
-                            Reason = "DestinationBelowLowerBound",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 19,
-                            Code = 19,
-                            Description = "DestinationOverUpperBound",
-                            Reason = "DestinationOverUpperBound",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 20,
-                            Code = 20,
-                            Description = "BayInvertersBusy",
-                            Reason = "BayInvertersBusy",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 21,
-                            Code = 21,
-                            Description = "IoDeviceError",
-                            Reason = "IoDeviceError",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 22,
-                            Code = 22,
-                            Description = "MachineModeNotValid",
-                            Reason = "MachineModeNotValid",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200000,
-                            Code = 200000,
-                            Description = "Errore inverter.",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200001,
-                            Code = 200001,
-                            Description = "Paramentro inverter non valido.",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200002,
-                            Code = 200002,
-                            Description = "Dataset inverter non valido.",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200003,
-                            Code = 200003,
-                            Description = "Parametro inverter è in sola scrittura.",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200004,
-                            Code = 200004,
-                            Description = "Parametro inverter è in sola lettura.",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200005,
-                            Code = 200005,
-                            Description = "Errore lettura EEPROM dell'inverter.",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200006,
-                            Code = 200006,
-                            Description = "Errore scrittura EEPROM dell'inverter.",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200007,
-                            Code = 200007,
-                            Description = "Errore checksum EEPROM dell'inverter.",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200008,
-                            Code = 200008,
-                            Description = "Impossibile scrivere il parametro dell'inverter durante l'esecuzione.",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200009,
-                            Code = 200009,
-                            Description = "I dati del dataset dell'inverter non corrispondono.",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200011,
-                            Code = 200011,
-                            Description = "Parametro sconosciuto passato all'inverter.",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200013,
-                            Code = 200013,
-                            Description = "Errore di sintassi del messaggio inviato all'inverter.",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200014,
-                            Code = 200014,
-                            Description = "Incoerenza tra la lunghezza del messaggio all'inverter e il tipo di dato del messaggio.",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200020,
-                            Code = 200020,
-                            Description = "Il nodo specificato non è disponibile.",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200030,
-                            Code = 200030,
-                            Description = "Errore di sintassi del messaggio inviato all'inverter.",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300000,
-                            Code = 300000,
-                            Description = "Errore Machine Manager",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300001,
-                            Code = 300001,
-                            Description = "Nessun cassetto presente nella baia indicata",
-                            Reason = "Assicurarsi che un cassetto sia presente in baia e che i sensori di presenza funzionino correttamente",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300002,
-                            Code = 300002,
-                            Description = "Inconsistenza database posizione sorgente cassetto",
-                            Reason = "Verificare che la posizione sorgente del cassetto all'interno del database sia correttamente configurata",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300003,
-                            Code = 300003,
-                            Description = "Inconsistenza database cella destinazione cassetto",
-                            Reason = "Verificare che la cella destinazione del cassetto all'interno del database sia correttamente configurata",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300004,
-                            Code = 300004,
-                            Description = "Culla elevatore occupata",
-                            Reason = "Verificare che la culla elevatore sia vuota. Verificare il corretto funzionamento dei sensori di presenza cassetto sulla culla.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300005,
-                            Code = 300005,
-                            Description = "Cassetto rilevato nella baia di estrazione",
-                            Reason = "Se il cassetto è stato rimosso controllare i sensori di presenza cassetto in baia, altrimenti rimuovere il cassetto dalla baia.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300006,
-                            Code = 300006,
-                            Description = "Baia di destinazione del cassetto occupata",
-                            Reason = "Verificare che la baia di destinazione del cassetto sia effettivamente vuota. Verificare che i sensori di presenza cassetto in baia funzionino correttamente.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300007,
-                            Code = 300007,
-                            Description = "Inconsistenza database cella sorgente cassetto",
-                            Reason = "Verificare che la cella sorgent del cassetto all'interno del database sia correttamente configurata",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300008,
-                            Code = 300008,
-                            Description = "Inconsistenza database cassetto",
-                            Reason = "Il cassetto selezionato non è presente nel database. Verificare il numero cassetto inserito e la corretta configurazione del database.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300009,
-                            Code = 300009,
-                            Description = "Il cassetto selezionato non risulta caricato in magazzino",
-                            Reason = "Il cassetto selezionato risulta presente nel database ma non risulta caricato nel magazzino. Verificare la configurazione del database.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300010,
-                            Code = 300010,
-                            Description = "Baia sorgente del cassetto vuota",
-                            Reason = "Verificare che il cassetto sia effettivamente presente nella baia sorgente. Verificare che i sensori di presenza cassetto in baia funzionino correttamente.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300011,
-                            Code = 300011,
-                            Description = "MachineManagerErrorLoadingUnitShutterOpen",
-                            Reason = "MachineManagerErrorLoadingUnitShutterOpen",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300012,
-                            Code = 300012,
-                            Description = "MachineManagerErrorLoadingUnitShutterClosed",
-                            Reason = "MachineManagerErrorLoadingUnitShutterClosed",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300013,
-                            Code = 300013,
-                            Description = "MachineManagerErrorLoadingUnitPresentInCell",
-                            Reason = "MachineManagerErrorLoadingUnitPresentInCell",
-                            Severity = 1
-                        });
-                });
-
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ErrorStatistic", b =>
                 {
-                    b.Property<int>("Code");
+                    b.Property<int>("Code")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("TotalErrors");
 
@@ -864,147 +445,292 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
-                            Code = 200000,
+                            Code = 23,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 200001,
+                            Code = 24,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 200002,
+                            Code = 25,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 200003,
+                            Code = 26,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 200004,
+                            Code = 27,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 200005,
+                            Code = 28,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 200006,
+                            Code = 29,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 200007,
+                            Code = 30,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 200008,
+                            Code = 31,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 200009,
+                            Code = 32,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 200011,
+                            Code = 33,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 200013,
+                            Code = 34,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 200014,
+                            Code = 35,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 200020,
+                            Code = 36,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 200030,
+                            Code = 37,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300000,
+                            Code = 38,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300001,
+                            Code = 39,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300002,
+                            Code = 40,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300003,
+                            Code = 41,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300004,
+                            Code = 42,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300005,
+                            Code = 43,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300006,
+                            Code = 44,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300007,
+                            Code = 45,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300008,
+                            Code = 46,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300009,
+                            Code = 47,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300010,
+                            Code = 48,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300011,
+                            Code = 49,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300012,
+                            Code = 50,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 300013,
+                            Code = 51,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 52,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 53,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 54,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 55,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 56,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 57,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 58,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 59,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 60,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 61,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 62,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 63,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 64,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 1000,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 1001,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 1002,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 1003,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 1004,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 1005,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 1006,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 1007,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 1008,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 1009,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 1011,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 1013,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 1014,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 1020,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 1030,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = -1,
                             TotalErrors = 0
                         });
                 });
@@ -1053,6 +779,26 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.ToTable("IoDevices");
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Laser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("BayId");
+
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("text");
+
+                    b.Property<int>("TcpPort");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BayId")
+                        .IsUnique();
+
+                    b.ToTable("Lasers");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LoadingUnit", b =>
                 {
                     b.Property<int>("Id")
@@ -1072,7 +818,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("MissionsCount");
 
-                    b.Property<long>("Status");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<double>("Tare");
 
@@ -1121,6 +869,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double>("Height");
 
+                    b.Property<double>("LoadUnitMaxHeight");
+
+                    b.Property<double>("LoadUnitMaxNetWeight");
+
+                    b.Property<double>("LoadUnitTare");
+
                     b.Property<double>("MaxGrossWeight");
 
                     b.Property<string>("ModelName");
@@ -1143,13 +897,15 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("Code");
 
+                    b.Property<int>("DetailCode");
+
+                    b.Property<int>("InverterIndex");
+
                     b.Property<DateTime>("OccurrenceDate");
 
                     b.Property<DateTime?>("ResolutionDate");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Code");
 
                     b.ToTable("Errors");
                 });
@@ -1179,6 +935,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double>("TotalVerticalAxisKilometers");
 
+                    b.Property<double>("TotalWeightBack");
+
+                    b.Property<double>("TotalWeightFront");
+
                     b.Property<double>("WeightCapacityPercentage");
 
                     b.HasKey("Id");
@@ -1199,6 +959,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             TotalPowerOnTime = new TimeSpan(0, 0, 0, 0, 0),
                             TotalVerticalAxisCycles = 0,
                             TotalVerticalAxisKilometers = 0.0,
+                            TotalWeightBack = 0.0,
+                            TotalWeightFront = 0.0,
                             WeightCapacityPercentage = 0.0
                         });
                 });
@@ -1208,9 +970,61 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("Action");
+
+                    b.Property<int>("BayNotifications");
+
+                    b.Property<int>("CloseShutterBayNumber");
+
                     b.Property<DateTime>("CreationDate");
 
-                    b.Property<int>("MissionStatus");
+                    b.Property<int?>("DestinationCellId");
+
+                    b.Property<int>("DeviceNotifications");
+
+                    b.Property<int>("Direction");
+
+                    b.Property<bool>("EjectLoadUnit");
+
+                    b.Property<int>("ErrorMovements");
+
+                    b.Property<int?>("LoadUnitCellSourceId");
+
+                    b.Property<int>("LoadUnitDestination");
+
+                    b.Property<int>("LoadUnitId");
+
+                    b.Property<string>("LoadUnitSource")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("MissionType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("NeedHomingAxis");
+
+                    b.Property<bool>("NeedMovingBackward");
+
+                    b.Property<int>("OpenShutterPosition");
+
+                    b.Property<int>("Priority");
+
+                    b.Property<bool>("RestoreConditions");
+
+                    b.Property<int>("RestoreStep");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Step");
+
+                    b.Property<int>("StopReason");
+
+                    b.Property<string>("TargetBay")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int?>("WmsId");
 
@@ -1284,7 +1098,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 26, 9, 56, 4, 122, DateTimeKind.Local).AddTicks(320),
+                            InstallationDate = new DateTime(2017, 3, 30, 11, 41, 23, 499, DateTimeKind.Local).AddTicks(7545),
                             ServiceStatus = 86
                         });
                 });
@@ -1313,7 +1127,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("BayHeightCheckId");
+                    b.Property<int?>("Bay1HeightCheckId");
+
+                    b.Property<int?>("Bay1ShutterTestId");
+
+                    b.Property<int?>("Bay2HeightCheckId");
+
+                    b.Property<int?>("Bay2ShutterTestId");
+
+                    b.Property<int?>("Bay3HeightCheckId");
+
+                    b.Property<int?>("Bay3ShutterTestId");
 
                     b.Property<int?>("BeltBurnishingTestId");
 
@@ -1327,15 +1151,25 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("ShutterHeightCheckId");
 
-                    b.Property<int?>("ShutterTestId");
-
                     b.Property<int?>("VerticalOffsetCalibrationId");
+
+                    b.Property<int?>("VerticalOriginCalibrationId");
 
                     b.Property<int?>("VerticalResolutionCalibrationId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BayHeightCheckId");
+                    b.HasIndex("Bay1HeightCheckId");
+
+                    b.HasIndex("Bay1ShutterTestId");
+
+                    b.HasIndex("Bay2HeightCheckId");
+
+                    b.HasIndex("Bay2ShutterTestId");
+
+                    b.HasIndex("Bay3HeightCheckId");
+
+                    b.HasIndex("Bay3ShutterTestId");
 
                     b.HasIndex("BeltBurnishingTestId");
 
@@ -1349,9 +1183,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.HasIndex("ShutterHeightCheckId");
 
-                    b.HasIndex("ShutterTestId");
-
                     b.HasIndex("VerticalOffsetCalibrationId");
+
+                    b.HasIndex("VerticalOriginCalibrationId");
 
                     b.HasIndex("VerticalResolutionCalibrationId");
 
@@ -1373,8 +1207,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("Bay1Shape");
 
-                    b.Property<bool>("Bay1Shutter");
-
                     b.Property<bool>("Bay2FirstLoadingUnit");
 
                     b.Property<bool>("Bay2HeightCheck");
@@ -1383,8 +1215,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("Bay2Shape");
 
-                    b.Property<bool>("Bay2Shutter");
-
                     b.Property<bool>("Bay3FirstLoadingUnit");
 
                     b.Property<bool>("Bay3HeightCheck");
@@ -1392,8 +1222,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<bool>("Bay3Laser");
 
                     b.Property<bool>("Bay3Shape");
-
-                    b.Property<bool>("Bay3Shutter");
 
                     b.Property<DateTime?>("CompletedDate");
 
@@ -1414,17 +1242,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Bay1HeightCheck = false,
                             Bay1Laser = false,
                             Bay1Shape = false,
-                            Bay1Shutter = false,
                             Bay2FirstLoadingUnit = false,
                             Bay2HeightCheck = false,
                             Bay2Laser = false,
                             Bay2Shape = false,
-                            Bay2Shutter = false,
                             Bay3FirstLoadingUnit = false,
                             Bay3HeightCheck = false,
                             Bay3Laser = false,
                             Bay3Shape = false,
-                            Bay3Shutter = false,
                             HorizontalHoming = false,
                             WeightMeasurement = false
                         });
@@ -1531,24 +1356,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = -1,
-                            AccessLevel = 0,
-                            Name = "installer",
-                            PasswordHash = "DsWpG30CTZweMD4Q+LlgzrsGOWM/jx6enmP8O7RIrvU=",
-                            PasswordSalt = "2xw+hMIYBtLCoUqQGXSL0A=="
-                        },
-                        new
-                        {
-                            Id = -2,
-                            AccessLevel = 2,
-                            Name = "operator",
-                            PasswordHash = "e1IrRSpcUNLIQAmdtSzQqrKT4DLcMaYMh662pgMh2xY=",
-                            PasswordSalt = "iB+IdMnlzvXvitHWJff38A=="
-                        });
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.WeightMeasurement", b =>
@@ -1569,6 +1376,31 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("WeightMeasurements");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.WmsSettings", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("IsWmsTimeSyncEnabled");
+
+                    b.Property<DateTimeOffset>("LastWmsTimeSync");
+
+                    b.Property<int>("TimeSyncIntervalMilliseconds");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WmsSettings");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = -1,
+                            IsWmsTimeSyncEnabled = true,
+                            LastWmsTimeSync = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            TimeSyncIntervalMilliseconds = 10000
+                        });
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.StepMovementParameters", b =>
@@ -1592,6 +1424,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.SetupProcedure");
 
+                    b.Property<bool>("InProgress");
+
                     b.Property<double>("Step");
 
                     b.HasDiscriminator().HasValue("PositioningProcedure");
@@ -1600,6 +1434,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", b =>
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.SetupProcedure");
+
+                    b.Property<bool>("InProgress")
+                        .HasColumnName("RepeatedTestProcedure_InProgress");
 
                     b.Property<int>("PerformedCycles");
 
@@ -1615,6 +1452,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<double>("FinalPosition");
 
                     b.Property<double>("InitialPosition");
+
+                    b.Property<double>("StartPosition");
 
                     b.HasDiscriminator().HasValue("VerticalResolutionCalibrationProcedure");
                 });
@@ -1633,6 +1472,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.Carousel", "Carousel")
                         .WithMany()
                         .HasForeignKey("CarouselId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Mission", "CurrentMission")
+                        .WithMany()
+                        .HasForeignKey("CurrentMissionId");
 
                     b.HasOne("Ferretto.VW.MAS.DataModels.MovementParameters", "EmptyLoadMovement")
                         .WithMany()
@@ -1661,7 +1504,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.BayPosition", b =>
                 {
-                    b.HasOne("Ferretto.VW.MAS.DataModels.Bay")
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Bay", "Bay")
                         .WithMany("Positions")
                         .HasForeignKey("BayId");
 
@@ -1746,11 +1589,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .HasForeignKey("WeightMeasurementId");
                 });
 
-            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ErrorStatistic", b =>
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Laser", b =>
                 {
-                    b.HasOne("Ferretto.VW.MAS.DataModels.ErrorDefinition", "Error")
-                        .WithOne("Statistics")
-                        .HasForeignKey("Ferretto.VW.MAS.DataModels.ErrorStatistic", "Code");
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Bay", "Bay")
+                        .WithOne("Laser")
+                        .HasForeignKey("Ferretto.VW.MAS.DataModels.Laser", "BayId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LoadingUnit", b =>
@@ -1767,13 +1611,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .HasForeignKey("ElevatorId");
                 });
 
-            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.MachineError", b =>
-                {
-                    b.HasOne("Ferretto.VW.MAS.DataModels.ErrorDefinition", "Definition")
-                        .WithMany("Occurrences")
-                        .HasForeignKey("Code");
-                });
-
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.MovementProfile", b =>
                 {
                     b.HasOne("Ferretto.VW.MAS.DataModels.ElevatorAxis")
@@ -1783,9 +1620,29 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.SetupProceduresSet", b =>
                 {
-                    b.HasOne("Ferretto.VW.MAS.DataModels.PositioningProcedure", "BayHeightCheck")
+                    b.HasOne("Ferretto.VW.MAS.DataModels.PositioningProcedure", "Bay1HeightCheck")
                         .WithMany()
-                        .HasForeignKey("BayHeightCheckId");
+                        .HasForeignKey("Bay1HeightCheckId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "Bay1ShutterTest")
+                        .WithMany()
+                        .HasForeignKey("Bay1ShutterTestId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.PositioningProcedure", "Bay2HeightCheck")
+                        .WithMany()
+                        .HasForeignKey("Bay2HeightCheckId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "Bay2ShutterTest")
+                        .WithMany()
+                        .HasForeignKey("Bay2ShutterTestId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.PositioningProcedure", "Bay3HeightCheck")
+                        .WithMany()
+                        .HasForeignKey("Bay3HeightCheckId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "Bay3ShutterTest")
+                        .WithMany()
+                        .HasForeignKey("Bay3ShutterTestId");
 
                     b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "BeltBurnishingTest")
                         .WithMany()
@@ -1811,13 +1668,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .WithMany()
                         .HasForeignKey("ShutterHeightCheckId");
 
-                    b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "ShutterTest")
-                        .WithMany()
-                        .HasForeignKey("ShutterTestId");
-
                     b.HasOne("Ferretto.VW.MAS.DataModels.OffsetCalibrationProcedure", "VerticalOffsetCalibration")
                         .WithMany()
                         .HasForeignKey("VerticalOffsetCalibrationId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.SetupProcedure", "VerticalOriginCalibration")
+                        .WithMany()
+                        .HasForeignKey("VerticalOriginCalibrationId");
 
                     b.HasOne("Ferretto.VW.MAS.DataModels.VerticalResolutionCalibrationProcedure", "VerticalResolutionCalibration")
                         .WithMany()

@@ -11,12 +11,14 @@
 
     <Grid Name="LayoutRoot">
         <controls:PpcButton x:Name="ButtonRoot"
+                            Width="160"
                             Height="60"
-                            Background="Transparent"
+                            HorizontalAlignment="Stretch"
                             Command="{Binding ExecuteCommand}"
                             Content="{Binding UserName}"
                             ImageSource="/Ferretto.VW.App.Controls;Component/Assets/baseline_account_circle_black_18dp.png"
-                            IsActive="{Binding IsPopupOpen}" />
+                            IsActive="{Binding IsPopupOpen}"
+                            Style="{DynamicResource PpcHeaderButtonStyle}" />
 
         <Popup Width="{Binding ElementName=ButtonRoot, Path=ActualWidth}"
                Margin="0,20"
@@ -25,7 +27,6 @@
                IsOpen="{Binding IsPopupOpen}"
                PlacementTarget="{Binding ElementName=ButtonRoot}">
             <StackPanel>
-
                 <controls:PpcButton Width="{Binding ElementName=ButtonRoot, Path=ActualWidth}"
                                     Command="{Binding ToggleThemeCommand}"
                                     Content="Cambia Tema" />

@@ -5,7 +5,6 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Providers;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -14,7 +13,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
@@ -23,8 +21,6 @@ namespace Ferretto.VW.MAS.DataLayer
     internal sealed class BaysDataProvider : BaseProvider, IBaysDataProvider
     {
         #region Fields
-
-        private readonly IBayChainVolatileDataProvider bayChainVolatileDataProvider;
 
         private readonly IMemoryCache cache;
 
@@ -48,6 +44,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly IMachineProvider machineProvider;
 
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
+
         private readonly NotificationEvent notificationEvent;
 
         #endregion
@@ -58,17 +56,17 @@ namespace Ferretto.VW.MAS.DataLayer
             DataLayerContext dataContext,
             IEventAggregator eventAggregator,
             IMachineProvider machineProvider,
+            IMachineVolatileDataProvider machineVolatileDataProvider,
             IConfiguration configuration,
             IElevatorDataProvider elevatorDataProvider,
-            IBayChainVolatileDataProvider bayChainVolatileDataProvider,
             IMemoryCache memoryCache,
             ILogger<DataLayerContext> logger)
             : base(eventAggregator)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
-            this.bayChainVolatileDataProvider = bayChainVolatileDataProvider ?? throw new ArgumentNullException(nameof(bayChainVolatileDataProvider));
             this.cache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
@@ -79,29 +77,6 @@ namespace Ferretto.VW.MAS.DataLayer
         #endregion
 
         #region Methods
-
-        public Bay Activate(BayNumber bayNumber)
-        {
-            lock (this.dataContext)
-            {
-                var bay = this.GetByNumber(bayNumber);
-                if (bay is null)
-                {
-                    throw new EntityNotFoundException(bayNumber.ToString());
-                }
-
-                if (!bay.IsActive)
-                {
-                    bay.IsActive = true;
-
-                    this.logger.LogInformation($"The bay {bay.Number} is now active and ready to accept missions.");
-                }
-
-                this.Update(bay);
-
-                return bay;
-            }
-        }
 
         public void AddElevatorPseudoBay()
         {
@@ -121,18 +96,49 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public Bay AssignMissionOperation(BayNumber bayNumber, int? missionId, int? missionOperationId)
+        public Bay AssignWmsMission(BayNumber bayNumber, Mission mission, int? wmsMissionOperationId)
         {
+            if (mission is null)
+            {
+                throw new ArgumentNullException(nameof(mission));
+            }
+
             lock (this.dataContext)
             {
-                var bay = this.GetByNumber(bayNumber);
+                var bay = this.dataContext.Bays
+                    .Include(b => b.CurrentMission)
+                    .SingleOrDefault(b => b.Number == bayNumber);
+
                 if (bay is null)
                 {
                     throw new EntityNotFoundException(bayNumber.ToString());
                 }
 
-                bay.CurrentMissionId = missionId;
-                bay.CurrentMissionOperationId = missionOperationId;
+                bay.CurrentMission = this.dataContext.Missions.SingleOrDefault(m => m.Id == mission.Id);
+                if (bay.CurrentMission is null)
+                {
+                    throw new EntityNotFoundException(mission.Id);
+                }
+                bay.CurrentWmsMissionOperationId = wmsMissionOperationId;
+
+                this.Update(bay);
+
+                return bay;
+            }
+        }
+
+        public Bay ClearMission(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.dataContext.Bays.Include(b => b.CurrentMission).SingleOrDefault(b => b.Number == bayNumber);
+                if (bay is null)
+                {
+                    throw new EntityNotFoundException(bayNumber.ToString());
+                }
+
+                bay.CurrentMission = null;
+                bay.CurrentWmsMissionOperationId = null;
 
                 this.Update(bay);
 
@@ -147,66 +153,24 @@ namespace Ferretto.VW.MAS.DataLayer
         /// height = kMul * profile + kSum;
         /// </summary>
         [Obsolete("This method contains business logic. It should not be in the DataLayer.")]
-        public double ConvertProfileToHeight(ushort profile)
-        {
-            return (profile * this.kMul) + this.kSum;
-        }
-
-        [Obsolete("This method contains business logic. It should not be in the DataLayer.")]
-        public double ConvertPulsesToMillimeters(double pulses, InverterIndex inverterIndex)
-        {
-            if (pulses == 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(pulses), "Pulses must be different from zero.");
-            }
-
-            lock (this.dataContext)
-            {
-                var bay = this.dataContext.Bays
-                    .SingleOrDefault(b => b.Inverter.Index == inverterIndex);
-
-                if (bay is null)
-                {
-                    throw new EntityNotFoundException(inverterIndex.ToString());
-                }
-
-                if (bay.Resolution == 0)
-                {
-                    throw new InvalidOperationException(
-                        $"Configured inverter {inverterIndex} resolution is zero, therefore it is not possible to convert pulses to millimeters.");
-                }
-
-                return pulses / bay.Resolution;
-            }
-        }
-
-        public Bay Deactivate(BayNumber bayNumber)
+        public double ConvertProfileToHeight(ushort profile, int positionId)
         {
             lock (this.dataContext)
             {
-                var bay = this.GetByNumber(bayNumber);
+                var bay = this.GetByBayPositionId(positionId);
                 if (bay is null)
                 {
-                    throw new EntityNotFoundException(bayNumber.ToString());
+                    throw new EntityNotFoundException();
                 }
-
-                if (bay.IsActive)
-                {
-                    bay.IsActive = false;
-
-                    this.Update(bay);
-
-                    this.logger.LogInformation($"The bay {bay.Number} is now deactivated and can no longer accept missions.");
-                }
-
-                return bay;
+                var offset = bay.Positions.FirstOrDefault(x => x.Id == positionId)?.ProfileOffset ?? 0;
+                return (profile * this.kMul) + this.kSum + offset;
             }
         }
 
         public void FindZero(BayNumber bayNumber)
         {
             this.PublishCommand(
-                new HomingMessageData(Axis.BayChain, Calibration.FindSensor),
+                new HomingMessageData(Axis.BayChain, Calibration.FindSensor, null, true),
                 "Execute FindZeroSensor Command",
                 MessageActor.DeviceManager,
                 MessageType.Homing,
@@ -224,8 +188,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.Positions)
                         .ThenInclude(s => s.LoadingUnit)
                     .Include(b => b.Shutter)
-                        .ThenInclude(s => s.Inverter)
-                    .Include(b => b.Shutter)
                         .ThenInclude(s => s.AssistedMovements)
                     .Include(b => b.Shutter)
                         .ThenInclude(s => s.ManualMovements)
@@ -234,7 +196,16 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.Carousel)
                     .Include(b => b.EmptyLoadMovement)
                     .Include(b => b.FullLoadMovement)
+                    .Include(b => b.CurrentMission)
                     .ToArray();
+            }
+        }
+
+        public int GetAllCount()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Bays.Count();
             }
         }
 
@@ -266,7 +237,9 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var bay = this.dataContext.Bays.SingleOrDefault(b => b.Positions.Any(p => p.Id == bayPositionId));
+                var bay = this.dataContext.Bays
+                    .Include(b => b.Positions)
+                    .SingleOrDefault(b => b.Positions.Any(p => p.Id == bayPositionId));
                 if (bay is null)
                 {
                     throw new EntityNotFoundException(bayPositionId);
@@ -276,28 +249,65 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public Bay GetByCell(Cell cell)
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Bays
+                    .AsNoTracking()
+                    .Include(b => b.Shutter)
+                    .Include(b => b.Carousel)
+                    .Include(b => b.Positions)
+                    .Where(b => b.Side == cell.Side && b.Positions.First().Height < cell.Position)
+                    .OrderBy(o => cell.Position - o.Positions.First().Height)
+                    .FirstOrDefault();
+            }
+        }
+
+        public Bay GetByIdOrDefault(int id)
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Bays.AsNoTracking().SingleOrDefault(b => b.Id == id);
+            }
+        }
+
         public BayNumber GetByInverterIndex(InverterIndex inverterIndex)
         {
             lock (this.dataContext)
             {
-                var bay = this.dataContext.Bays.SingleOrDefault(b =>
-                    b.Inverter.Index == inverterIndex
-                    ||
-                    b.Shutter.Inverter.Index == inverterIndex);
-
-                if (bay is null)
+                var cacheKey = GetInverterIndexCacheKey(inverterIndex);
+                if (!this.cache.TryGetValue(cacheKey, out BayNumber cacheEntry))
                 {
-                    if (this.GetElevatorAxes().Any(a => a.Inverter.Index == inverterIndex))
+                    var bay = this.dataContext.Bays
+                        .Include(i => i.Inverter)
+                        .Include(i => i.Shutter)
+                            .ThenInclude(s => s.Inverter)
+                        .AsNoTracking()
+                        .SingleOrDefault(b =>
+                            b.Inverter.Index == inverterIndex
+                            ||
+                            b.Shutter.Inverter.Index == inverterIndex);
+
+                    if (bay is null)
                     {
-                        return BayNumber.ElevatorBay;
+                        if (this.elevatorDataProvider.GetElevatorAxes().Any(a => a.Inverter.Index == inverterIndex))
+                        {
+                            cacheEntry = BayNumber.ElevatorBay;
+                        }
+                        else
+                        {
+                            throw new EntityNotFoundException(inverterIndex.ToString());
+                        }
                     }
                     else
                     {
-                        throw new EntityNotFoundException(inverterIndex.ToString());
+                        cacheEntry = bay.Number;
                     }
-                }
 
-                return bay.Number;
+                    this.cache.Set(cacheKey, cacheEntry, this.cacheOptions);
+                }
+                return cacheEntry;
             }
         }
 
@@ -361,6 +371,11 @@ namespace Ferretto.VW.MAS.DataLayer
                 return this.dataContext.Bays
                     .AsNoTracking()
                      .Include(b => b.Shutter)
+                        .ThenInclude(i => i.Inverter)
+                     .Include(b => b.Carousel)
+                     .Include(b => b.Positions)
+                        .ThenInclude(t => t.LoadingUnit)
+                     .Include(b => b.CurrentMission)
                     .FirstOrDefault(b => b.Positions.Any(p => p.Location == location));
             }
         }
@@ -379,7 +394,8 @@ namespace Ferretto.VW.MAS.DataLayer
                     break;
 
                 case MovementMode.Position:
-                case MovementMode.PositionAndMeasure:
+                case MovementMode.PositionAndMeasureProfile:
+                case MovementMode.PositionAndMeasureWeight:
                     switch (data.AxisMovement)
                     {
                         case Axis.Horizontal:
@@ -409,6 +425,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 var bay = this.dataContext.Bays
                     .Include(b => b.Inverter)
+                    .Include(b => b.CurrentMission)
                     .Include(b => b.Positions)
                         .ThenInclude(s => s.LoadingUnit)
                     .Include(b => b.Shutter)
@@ -420,6 +437,9 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.Shutter)
                         .ThenInclude(s => s.Inverter)
                     .Include(b => b.Carousel)
+                        .ThenInclude(s => s.ManualMovements)
+                    .Include(b => b.Carousel)
+                        .ThenInclude(s => s.AssistedMovements)
                     .Include(b => b.EmptyLoadMovement)
                     .Include(b => b.FullLoadMovement)
                     .SingleOrDefault(b => b.Number == bayNumber);
@@ -454,31 +474,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public double GetChainPosition(BayNumber bayNumber)
         {
-            return this.bayChainVolatileDataProvider.GetPositionByBayNumber(bayNumber);
-        }
-
-        public IEnumerable<ElevatorAxis> GetElevatorAxes()
-        {
-            lock (this.dataContext)
-            {
-                var cacheKey = GetElevatorAxesCacheKey();
-                if (!this.cache.TryGetValue(cacheKey, out IEnumerable<ElevatorAxis> cacheEntry))
-                {
-                    cacheEntry = this.dataContext.ElevatorAxes
-                        .AsNoTracking()
-                        .Include(i => i.Inverter)
-                        .ToList();
-
-                    if (cacheEntry is null)
-                    {
-                        throw new EntityNotFoundException(string.Empty);
-                    }
-
-                    this.cache.Set(cacheKey, cacheEntry, this.cacheOptions);
-                }
-
-                return cacheEntry;
-            }
+            return this.machineVolatileDataProvider.GetBayEncoderPosition(bayNumber);
         }
 
         [Obsolete("This method contains business logic. It should not be in the DataLayer.")]
@@ -516,12 +512,13 @@ namespace Ferretto.VW.MAS.DataLayer
                     switch (data.MovementMode)
                     {
                         case MovementMode.Position:
-                        case MovementMode.PositionAndMeasure:
+                        case MovementMode.PositionAndMeasureProfile:
+                        case MovementMode.PositionAndMeasureWeight:
                         case MovementMode.ProfileCalibration:
                             switch (data.AxisMovement)
                             {
                                 case Axis.Horizontal:
-                                    returnValue = this.machineProvider.IsOneTonMachine() ? InverterIndex.Slave1 : InverterIndex.MainInverter;
+                                    returnValue = this.machineVolatileDataProvider.IsOneTonMachine.Value ? InverterIndex.Slave1 : InverterIndex.MainInverter;
                                     break;
 
                                 case Axis.Vertical:
@@ -540,7 +537,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             break;
 
                         case MovementMode.FindZero:
-                            returnValue = this.machineProvider.IsOneTonMachine() ? InverterIndex.Slave1 : InverterIndex.MainInverter;
+                            returnValue = this.machineVolatileDataProvider.IsOneTonMachine.Value ? InverterIndex.Slave1 : InverterIndex.MainInverter;
                             break;
 
                         default:
@@ -626,6 +623,11 @@ namespace Ferretto.VW.MAS.DataLayer
             return returnValue;
         }
 
+        public bool GetLightOn(BayNumber bayNumber)
+        {
+            return this.machineVolatileDataProvider.IsBayLightOn.GetValueOrDefault(bayNumber);
+        }
+
         public LoadingUnit GetLoadingUnitByDestination(LoadingUnitLocation location)
         {
             lock (this.dataContext)
@@ -683,7 +685,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public BayPosition GetPositionByLocation(LoadingUnitLocation location)
         {
-            var bayPosition = this.dataContext.BayPositions.SingleOrDefault(p => p.Location == location);
+            var bayPosition = this.dataContext.BayPositions
+                .Include(b => b.Bay)
+                    .ThenInclude(i => i.Carousel)
+                .Include(b => b.LoadingUnit)
+                .SingleOrDefault(p => p.Location == location);
             if (bayPosition is null)
             {
                 throw new EntityNotFoundException(location.ToString());
@@ -709,10 +715,31 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public InverterIndex GetShutterInverterIndex(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.Inverter.Index;
+
+        public bool IsMissionInBay(Mission mission)
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Bays.Include(b => b.CurrentMission).Any(b => b.CurrentMission.Id == mission.Id);
+            }
+        }
+
+        public void Light(BayNumber bayNumber, bool enable)
+        {
+            this.PublishCommand(
+                new BayLightMessageData(enable),
+                "Execute BayLigth Command",
+                MessageActor.DeviceManager,
+                MessageType.BayLight,
+                bayNumber,
+                bayNumber);
+        }
+
         public void PerformHoming(BayNumber bayNumber)
         {
             this.PublishCommand(
-                new HomingMessageData(Axis.BayChain, Calibration.ResetEncoder),
+                new HomingMessageData(Axis.BayChain, Calibration.ResetEncoder, null, true),
                 "Execute Homing Command",
                 MessageActor.DeviceManager,
                 MessageType.Homing,
@@ -728,36 +755,85 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new EntityNotFoundException($"LoadingUnit ID={loadingUnitId}");
             }
 
-            this.dataContext.LoadingUnits.Remove(lu);
-            this.dataContext.SaveChanges();
+            var sourceBay = this.GetLoadingUnitLocationByLoadingUnit(loadingUnitId);
+            if (sourceBay != LoadingUnitLocation.NoLocation)
+            {
+                var positionId = this.GetPositionByLocation(sourceBay).Id;
+                this.SetLoadingUnit(positionId, null);
+            }
+
+            lock (this.dataContext)
+            {
+                this.dataContext.LoadingUnits.Remove(lu);
+                this.dataContext.SaveChanges();
+            }
         }
 
         public void ResetMachine()
         {
             lock (this.dataContext)
             {
-                foreach (var bayPosition in this.dataContext.BayPositions
-                                            .Include(i => i.LoadingUnit))
+                foreach (var bayPosition in this.dataContext.BayPositions.Include(i => i.LoadingUnit))
                 {
                     if (bayPosition.LoadingUnit != null)
                     {
+                        var lu = this.dataContext.LoadingUnits.SingleOrDefault(l => l.Id == bayPosition.LoadingUnit.Id);
+                        if (lu != null)
+                        {
+                            lu.Status = DataModels.Enumerations.LoadingUnitStatus.Undefined;
+                            this.dataContext.LoadingUnits.Update(lu);
+                        }
+
                         bayPosition.LoadingUnit = null;
                         this.dataContext.BayPositions.Update(bayPosition);
                     }
                 }
 
-                foreach (var bay in this.dataContext.Bays)
+                foreach (var bay in this.dataContext.Bays.Include(i => i.CurrentMission))
                 {
-                    bay.CurrentMissionId = null;
-                    bay.CurrentMissionOperationId = null;
+                    bay.CurrentMission = null;
+                    bay.CurrentWmsMissionOperationId = null;
                     this.Update(bay);
                 }
             }
         }
 
+        public Bay SetBayActive(BayNumber bayNumber, bool active)
+        {
+            // TODO: Check bay activation logic
+
+            lock (this.dataContext)
+            {
+                var bay = this.GetByNumber(bayNumber);
+
+                if (bay is null)
+                {
+                    throw new EntityNotFoundException(bayNumber.ToString());
+                }
+
+                bay.IsActive = active;
+                this.dataContext.SaveChanges();
+
+                this.notificationEvent.Publish(
+                  new NotificationMessage(
+                      new BayOperationalStatusChangedMessageData
+                      {
+                          BayStatus = bay.Status,
+                      },
+                      $"Bay #{bay.Number} status changed to {bay.Status}",
+                      MessageActor.MissionManager,
+                      MessageActor.WebApi,
+                      MessageType.BayOperationalStatusChanged,
+                      bay.Number));
+
+                this.logger.LogInformation($"The bay {bay.Number} is now {(active ? "active" : "deactivated")}");
+                return bay;
+            }
+        }
+
         public void SetChainPosition(BayNumber bayNumber, double value)
         {
-            this.bayChainVolatileDataProvider.SetPosition(bayNumber, value);
+            this.machineVolatileDataProvider.SetBayEncoderPosition(bayNumber, value);
         }
 
         public Bay SetCurrentOperation(BayNumber targetBay, BayOperation newOperation)
@@ -778,9 +854,9 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void SetLoadingUnit(int bayPositionId, int? loadingUnitId)
+        public void SetLoadingUnit(int bayPositionId, int? loadingUnitId, double? height = null)
         {
-            var position = this.dataContext.BayPositions.SingleOrDefault(p => p.Id == bayPositionId);
+            var position = this.dataContext.BayPositions.Include(i => i.LoadingUnit).SingleOrDefault(p => p.Id == bayPositionId);
             if (position is null)
             {
                 throw new EntityNotFoundException($"BayPosition ID={bayPositionId}");
@@ -798,10 +874,32 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new EntityNotFoundException($"LoadingUnit ID={loadingUnitId}");
                 }
 
+                loadingUnit.Status = DataModels.Enumerations.LoadingUnitStatus.InBay;
+                if (height.HasValue)
+                {
+                    loadingUnit.Height = height.Value;
+                }
                 position.LoadingUnit = loadingUnit;
             }
 
             this.dataContext.SaveChanges();
+        }
+
+        public void UpdateLastIdealPosition(double position, BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.dataContext.Bays
+                    .Include(b => b.Carousel)
+                    .SingleOrDefault(b => b.Number == bayNumber);
+                if (bay is null)
+                {
+                    throw new EntityNotFoundException(bayNumber.ToString());
+                }
+
+                bay.Carousel.LastIdealPosition = position;
+                this.dataContext.SaveChanges();
+            }
         }
 
         public Bay UpdatePosition(BayNumber bayNumber, int positionIndex, double height)
@@ -835,13 +933,27 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 position.Height = height;
 
+                var status = this.dataContext.SetupStatus.FirstOrDefault();
+                if (bayNumber == BayNumber.BayOne)
+                {
+                    status.Bay1HeightCheck = true;
+                }
+                else if (bayNumber == BayNumber.BayTwo)
+                {
+                    status.Bay2HeightCheck = true;
+                }
+                else if (bayNumber == BayNumber.BayThree)
+                {
+                    status.Bay3HeightCheck = true;
+                }
+
                 this.dataContext.SaveChanges();
 
                 return this.GetByNumber(bayNumber);
             }
         }
 
-        internal static string GetElevatorAxesCacheKey() => $"{nameof(GetElevatorAxes)}";
+        internal static string GetInverterIndexCacheKey(InverterIndex inverterIndex) => $"{nameof(GetByInverterIndex)}{inverterIndex}";
 
         private void Update(Bay bay)
         {
@@ -850,21 +962,12 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new ArgumentNullException(nameof(bay));
             }
 
-            this.dataContext.Bays.Update(bay);
+            lock (this.dataContext)
+            {
+                this.dataContext.Bays.Update(bay);
 
-            this.dataContext.SaveChanges();
-
-            this.notificationEvent.Publish(
-                new NotificationMessage(
-                    new BayOperationalStatusChangedMessageData
-                    {
-                        BayStatus = bay.Status,
-                    },
-                    $"Bay #{bay.Number} status changed to {bay.Status}",
-                    MessageActor.MachineManager,
-                    MessageActor.WebApi,
-                    MessageType.BayOperationalStatusChanged,
-                    bay.Number));
+                this.dataContext.SaveChanges();
+            }
         }
 
         #endregion

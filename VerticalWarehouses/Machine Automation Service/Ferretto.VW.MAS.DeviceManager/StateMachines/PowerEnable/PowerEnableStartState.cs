@@ -71,6 +71,7 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
 
         public override void Start()
         {
+            this.Logger.LogDebug($"Start {this.GetType().Name}. Enable {this.machineData.Enable}");
             this.machineData.MachineSensorStatus.EnableNotification(this.machineData.Enable);
 
             var commandMessageData = new PowerEnableFieldMessageData(this.machineData.Enable);

@@ -1,0 +1,19 @@
+trigger:
+  batch: true
+  branches:
+    include:
+    - develop
+    - release
+    - master
+  paths:
+    include:
+    - VerticalWarehouses/Installer/*
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+- template: azure-pipeline-vw-installer-template.yml
+  parameters:
+    BuildConfiguration: 'debug'
+    BuildPlatform: 'any cpu'

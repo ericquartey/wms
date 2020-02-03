@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Services;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.Utils;
 using Prism.Events;
 using Prism.Modularity;
 using Prism.Regions;
 using Unity;
 
-namespace Ferretto.VW.App.Services
+namespace Ferretto.VW.App.Controls
 {
-    public class NavigationService : INavigationService
+    internal class NavigationService : INavigationService
     {
         #region Fields
 
@@ -70,11 +70,13 @@ namespace Ferretto.VW.App.Services
             }
         }
 
+        internal string MainContentRegionName { get; set; }
+
         #endregion
 
         #region Methods
 
-        public void Appear(string moduleName, string viewModelName, object data = null, bool trackCurrentView = true)
+        public void Appear(string moduleName, string viewModelName, object data = null, bool trackCurrentView = true, bool doNotAppear = false)
         {
             if (!MvvmNaming.IsViewModelNameValid(viewModelName))
             {
@@ -100,24 +102,29 @@ namespace Ferretto.VW.App.Services
                 var parameters = new NavigationParameters();
                 parameters.Add(viewModelName, data);
 
-                this.DisappearActiveView();
+                if(!doNotAppear)
+                { 
+                    this.regionManager.RequestNavigate(this.MainContentRegionName, viewName, parameters);
+                }
+                else
+                {
+                    this.DisappearActiveView();
+                }
 
-                this.regionManager.RequestNavigate(Utils.Modules.Layout.REGION_MAINCONTENT, viewName, parameters);
-
-                if (trackCurrentView)
+                if (this.navigationStack.Count > 0)
                 {
                     var currentViewRecord = this.navigationStack.Peek();
                     this.logger.Trace($"Marking view '{currentViewRecord.ModuleName}.{currentViewRecord.ViewModelName}' as trackable.");
-                    currentViewRecord.IsTrackable = true;
+                    currentViewRecord.IsTrackable = trackCurrentView;
                 }
 
                 this.navigationStack.Push(new NavigationHistoryRecord(moduleName, viewName, viewModelName));
-
-                this.eventAggregator
-                    .GetEvent<NavigationCompleted>()
-                    .Publish(new NavigationCompletedPubSubEventArgs(moduleName, viewModelName));
-
-                this.ClearNotifications();
+                if (!doNotAppear)
+                {
+                    this.eventAggregator
+                    .GetEvent<PubSubEvent<NavigationCompletedEventArgs>>()
+                    .Publish(new NavigationCompletedEventArgs(moduleName, viewModelName));
+                }
             }
             catch (Exception ex)
             {
@@ -142,6 +149,18 @@ namespace Ferretto.VW.App.Services
             }
         }
 
+        public INavigableViewModel GetActiveViewModel()
+        {
+            var activeView = this.regionManager.Regions[this.MainContentRegionName].ActiveViews.FirstOrDefault();
+
+            if (activeView is View view && view.DataContext is ViewModelBase viewModel)
+            {
+                return viewModel;
+            }
+
+            return null;
+        }
+
         public void GoBack()
         {
             if (!this.navigationStack.Any())
@@ -162,7 +181,10 @@ namespace Ferretto.VW.App.Services
                 this.navigationStack.Pop();
             }
 
-            this.NavigateBackTo(this.navigationStack.Peek());
+            if (this.navigationStack.Any())
+            {
+                this.NavigateBackTo(this.navigationStack.Peek());
+            }
         }
 
         public void GoBackTo(string modelName, string viewModelName)
@@ -195,7 +217,10 @@ namespace Ferretto.VW.App.Services
 
             this.ClearNotifications();
 
-            this.NavigateBackTo(this.navigationStack.Peek());
+            if (this.navigationStack.Any())
+            {
+                this.NavigateBackTo(this.navigationStack.Peek());
+            }
         }
 
         public bool IsActiveView(string moduleName, string viewModelName)
@@ -223,10 +248,10 @@ namespace Ferretto.VW.App.Services
             }
         }
 
-        public object SubscribeToNavigationCompleted(Action<NavigationCompletedPubSubEventArgs> action)
+        public object SubscribeToNavigationCompleted(Action<NavigationCompletedEventArgs> action)
         {
             return this.eventAggregator
-                .GetEvent<NavigationCompleted>()
+                .GetEvent<PubSubEvent<NavigationCompletedEventArgs>>()
                 .Subscribe(action);
         }
 
@@ -235,7 +260,7 @@ namespace Ferretto.VW.App.Services
             if (subscriptionToken is SubscriptionToken token)
             {
                 this.eventAggregator
-                    .GetEvent<NavigationCompleted>()
+                    .GetEvent<PubSubEvent<NavigationCompletedEventArgs>>()
                     .Unsubscribe(token);
             }
         }
@@ -252,18 +277,6 @@ namespace Ferretto.VW.App.Services
             this.GetActiveViewModel()?.Disappear();
         }
 
-        private ViewModelBase GetActiveViewModel()
-        {
-            var activeView = this.regionManager.Regions[Utils.Modules.Layout.REGION_MAINCONTENT].ActiveViews.FirstOrDefault();
-
-            if (activeView is View view && view.DataContext is ViewModelBase viewModel)
-            {
-                return viewModel;
-            }
-
-            return null;
-        }
-
         private IBusyViewModel GetBusyViewModel()
         {
             if (Application.Current.MainWindow.Descendants<View>().FirstOrDefault() is View view &&
@@ -277,18 +290,18 @@ namespace Ferretto.VW.App.Services
 
         private void NavigateBackTo(NavigationHistoryRecord historyRecord)
         {
-            this.DisappearActiveView();
-
             this.logger.Debug($"Navigating back to '{historyRecord.ModuleName}.{historyRecord.ViewName}'.");
 
+            this.DisappearActiveView();
+
             this.regionManager.RequestNavigate(
-                Utils.Modules.Layout.REGION_MAINCONTENT,
+                this.MainContentRegionName,
                 historyRecord.ViewName,
                 new NavigationParameters());
 
             this.eventAggregator
-                .GetEvent<NavigationCompleted>()
-                .Publish(new NavigationCompletedPubSubEventArgs(historyRecord.ModuleName, historyRecord.ViewModelName));
+                .GetEvent<PubSubEvent<NavigationCompletedEventArgs>>()
+                .Publish(new NavigationCompletedEventArgs(historyRecord.ModuleName, historyRecord.ViewModelName));
         }
 
         #endregion

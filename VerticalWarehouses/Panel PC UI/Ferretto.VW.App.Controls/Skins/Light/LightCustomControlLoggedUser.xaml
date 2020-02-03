@@ -4,7 +4,6 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
     <sys:Double x:Key="VWAPP_CustomControlLoggedUser_Width">120</sys:Double>
     <sys:Double x:Key="VWAPP_CustomControlLoggedUser_Height">80</sys:Double>
-    <sys:Double x:Key="VWAPP_CustomControlLoggedUser_FontSize_Normal">18</sys:Double>
     <SolidColorBrush x:Key="VWAPP_CustomControlLoggedUser_Foreground_Normal"
                      Color="{DynamicResource ColorFerrettoBlack}" />
 

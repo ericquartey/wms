@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.DataModels;
+﻿using System.Collections.Generic;
+using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Ferretto.VW.MAS.DataLayer
@@ -24,7 +25,8 @@ namespace Ferretto.VW.MAS.DataLayer
         ElevatorAxisManualParameters GetAssistedMovementsAxis(Orientation orientation);
 
         ElevatorAxis GetAxis(Orientation orientation);
-
+        BayPosition GetCachedCurrentBayPosition();
+        Cell GetCachedCurrentCell();
         IDbContextTransaction GetContextTransaction();
 
         /// <summary>
@@ -37,12 +39,14 @@ namespace Ferretto.VW.MAS.DataLayer
         /// </summary>
         Cell GetCurrentCell();
 
+        IEnumerable<ElevatorAxis> GetElevatorAxes();
+
         LoadingUnit GetLoadingUnitOnBoard();
 
         ElevatorAxisManualParameters GetManualMovementsAxis(Orientation orientation);
 
         ElevatorStructuralProperties GetStructuralProperties();
-
+        bool IsVerticalPositionWithinTolerance(double position);
         void ResetMachine();
 
         MovementParameters ScaleMovementsByWeight(Orientation orientation, bool isLoadingUnitOnBoard);
@@ -63,7 +67,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void UpdateVerticalOffset(double newOffset);
 
-        void UpdateVerticalResolution(decimal newResolution);
+        void UpdateVerticalResolution(double newResolution);
 
         #endregion
     }

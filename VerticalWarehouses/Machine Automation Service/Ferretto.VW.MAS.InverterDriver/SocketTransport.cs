@@ -18,8 +18,6 @@ namespace Ferretto.VW.MAS.InverterDriver
     {
         #region Fields
 
-        private readonly Stopwatch readStopwatch = new Stopwatch();
-
         /// <summary>
         /// The timeout for read operations on the socket.
         /// </summary>
@@ -29,8 +27,6 @@ namespace Ferretto.VW.MAS.InverterDriver
         private readonly int readTimeoutMilliseconds;
 
         private readonly byte[] receiveBuffer = new byte[1024];
-
-        private readonly Stopwatch roundTripStopwatch = new Stopwatch();
 
         private IPAddress inverterAddress;
 
@@ -57,10 +53,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         public bool IsConnected => this.transportClient?.Connected ?? false;
 
-        public InverterDiagnosticsData ReadWaitTimeData { get; } = new InverterDiagnosticsData();
-
-        public InverterDiagnosticsData WriteRoundtripTimeData { get; } = new InverterDiagnosticsData();
-
         #endregion
 
         #region Methods
@@ -75,40 +67,18 @@ namespace Ferretto.VW.MAS.InverterDriver
         /// <inheritdoc />
         public async Task ConnectAsync()
         {
-            if (this.inverterAddress is null)
-            {
-                throw new ArgumentNullException(
-                    nameof(this.inverterAddress),
-                    $"{nameof(this.inverterAddress)} can't be null");
-            }
+            Trace.Assert(this.inverterAddress != null, $"{nameof(this.inverterAddress)} can't be null");
 
-            if (this.inverterAddress.AddressFamily != AddressFamily.InterNetwork)
-            {
-                throw new ArgumentException(
-                    "Inverter Address is not a valid IPV4 address",
-                    nameof(this.inverterAddress));
-            }
+            Trace.Assert(this.inverterAddress.AddressFamily == AddressFamily.InterNetwork, "Inverter Address is not a valid IPV4 address");
 
-            if (this.sendPort == 0)
-            {
-                throw new ArgumentNullException(
-                    nameof(this.sendPort),
-                    $"{nameof(this.sendPort)} can't be zero");
-            }
+            Trace.Assert(this.sendPort != 0, $"{nameof(this.sendPort)} can't be zero");
 
-            if (this.sendPort < 1024 || this.sendPort > IPEndPoint.MaxPort)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(this.sendPort),
-                    $"{nameof(this.sendPort)} value must be between 1204 and {IPEndPoint.MaxPort}");
-            }
+            Trace.Assert(this.sendPort >= 1024 && this.sendPort <= IPEndPoint.MaxPort, $"{nameof(this.sendPort)} value must be between 1024 and {IPEndPoint.MaxPort}");
 
             if (this.transportClient != null || this.transportStream != null)
             {
                 this.transportClient?.Dispose();
-                this.transportStream?.Dispose();
                 this.transportClient = null;
-                this.transportStream = null;
             }
 
             try
@@ -204,20 +174,12 @@ namespace Ferretto.VW.MAS.InverterDriver
                     InverterDriverExceptionCode.NetworkStreamWriteFailure);
             }
 
-            byte[] receivedData = null;
+            byte[] receivedData;
             try
             {
-                this.readStopwatch.Reset();
-                this.readStopwatch.Start();
-
                 if (this.transportClient.Client?.Poll(this.readTimeoutMilliseconds * 1000, SelectMode.SelectRead) ?? false)
                 {
-                    var readBytes = await this.transportStream.ReadAsync(this.receiveBuffer, 0, this.receiveBuffer.Length, stoppingToken);
-
-                    this.readStopwatch.Stop();
-                    this.roundTripStopwatch.Stop();
-                    this.ReadWaitTimeData.AddValue(this.readStopwatch.ElapsedTicks);
-                    this.WriteRoundtripTimeData.AddValue(this.roundTripStopwatch.ElapsedTicks);
+                    var readBytes = await this.transportStream?.ReadAsync(this.receiveBuffer, 0, this.receiveBuffer?.Length ?? 0, stoppingToken);
 
                     if (readBytes > 0)
                     {
@@ -269,6 +231,13 @@ namespace Ferretto.VW.MAS.InverterDriver
                 throw new InvalidOperationException($"Cannot access the disposed instance of {this.GetType().Name}.");
             }
 
+            if (inverterMessage is null)
+            {
+                throw new InverterDriverException(
+                    "Inverter message is null",
+                    InverterDriverExceptionCode.InverterPacketMalformed);
+            }
+
             if (this.transportStream is null)
             {
                 throw new InverterDriverException(
@@ -294,8 +263,6 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 if (delay > 0)
                 {
-                    this.roundTripStopwatch.Reset();
-                    this.roundTripStopwatch.Start();
                     await Task.Delay(delay, stoppingToken);
                 }
 
