@@ -229,7 +229,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             )
                         {
                             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
-                            if (this.Mission.NeedHomingAxis == Axis.BayChain)
+                            var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
+                            if (this.Mission.NeedHomingAxis == Axis.BayChain
+                                && bay != null
+                                && bay.Positions != null
+                                && bay.Positions.All(p => p.LoadingUnit is null)
+                                )
                             {
                                 this.MissionsDataProvider.Update(this.Mission);
                                 this.Logger.LogInformation($"Homing Bay free start Mission:Id={this.Mission.Id}");

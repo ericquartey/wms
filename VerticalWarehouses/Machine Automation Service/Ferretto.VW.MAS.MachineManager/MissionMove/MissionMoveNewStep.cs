@@ -40,8 +40,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 this.Mission.Status = MissionStatus.New;
 
-                this.Mission.NeedHomingAxis = (this.MachineVolatileDataProvider.IsHomingExecuted ? Axis.None : Axis.Horizontal);
-
                 if (command != null
                     && command.Data is IMoveLoadingUnitMessageData messageData
                     )
