@@ -28,6 +28,7 @@ namespace Ferretto.VW.App
         {
             var canStart = true;
 
+#if !DEBUG
             // Get windows Product Type
             const string queryString = "SELECT ProductType FROM Win32_OperatingSystem";
             using (var managementObjectSearcher = new ManagementObjectSearcher(queryString))
@@ -55,6 +56,7 @@ namespace Ferretto.VW.App
                     }
                 }
             }
+#endif
 
             return canStart;
         }

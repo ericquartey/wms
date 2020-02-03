@@ -33,7 +33,7 @@ namespace Ferretto.VW.App.Controls.Controls
             nameof(IsBusy), typeof(bool), typeof(PpcButton), new PropertyMetadata(false));
 
         public static readonly DependencyProperty IsCompletedProperty = DependencyProperty.Register(
-                    nameof(IsCompleted), typeof(bool), typeof(PpcButton), new PropertyMetadata(false));
+            nameof(IsCompleted), typeof(bool), typeof(PpcButton), new PropertyMetadata(false));
 
         public static readonly DependencyProperty KindFontAwesomeProperty =
             DependencyProperty.Register(nameof(KindFontAwesome), typeof(PackIconFontAwesomeKind?), typeof(PpcButton), new PropertyMetadata(null));
@@ -42,7 +42,7 @@ namespace Ferretto.VW.App.Controls.Controls
             DependencyProperty.Register(nameof(KindMaterial), typeof(PackIconMaterialKind?), typeof(PpcButton), new PropertyMetadata(null));
 
         public static readonly DependencyProperty KindProperty =
-                    DependencyProperty.Register(nameof(Kind), typeof(PackIconMaterialLightKind?), typeof(PpcButton), new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(Kind), typeof(PackIconMaterialLightKind?), typeof(PpcButton), new PropertyMetadata(null));
 
         public static readonly DependencyProperty PermissionProperty = DependencyProperty.Register(
             nameof(Permission), typeof(UserAccessLevel), typeof(PpcButton), new PropertyMetadata(UserAccessLevel.NoAccess, new PropertyChangedCallback(PermissionChanged)));
@@ -165,19 +165,14 @@ namespace Ferretto.VW.App.Controls.Controls
             set { this.SetValue(VisibilityPermissionProperty, value); }
         }
 
-        //public Visibility Visibility
-        //{
-        //    get { return (Visibility)this.GetValue(VisibilityProperty); }
-        //    set { this.SetValue(VisibilityProperty, value); }
-        //}
         protected bool IsAdmin => this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
 
         protected bool IsInstaller => this.sessionService.UserAccessLevel == UserAccessLevel.Installer ||
                                       this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
 
         protected bool IsOperator => this.sessionService.UserAccessLevel == UserAccessLevel.Operator ||
-                                                 this.sessionService.UserAccessLevel == UserAccessLevel.Installer ||
-                                         this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
+                                     this.sessionService.UserAccessLevel == UserAccessLevel.Installer ||
+                                     this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
 
         #endregion
 
