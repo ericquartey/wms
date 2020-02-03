@@ -187,6 +187,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Destination bay needs calibration.
+        /// </summary>
+        public static string DestinationBayNotCalibrated {
+            get {
+                return ResourceManager.GetString("DestinationBayNotCalibrated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Destinazione non valida.
         /// </summary>
         public static string DestinationBelowLowerBound {

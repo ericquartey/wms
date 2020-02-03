@@ -354,4 +354,7 @@
   <data name="LoadUnitShutterInvalid" xml:space="preserve">
     <value>Errore stato serranda</value>
   </data>
+  <data name="DestinationBayNotCalibrated" xml:space="preserve">
+    <value>Destination bay needs calibration</value>
+  </data>
 </root>

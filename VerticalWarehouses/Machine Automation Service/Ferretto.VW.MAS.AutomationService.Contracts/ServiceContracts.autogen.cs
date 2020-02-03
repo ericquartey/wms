@@ -3211,45 +3211,47 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         ResumeCommandNotValid = 44,
     
-        NoLoadUnitInSource = 45,
+        DestinationBayNotCalibrated = 45,
     
-        LoadUnitSourceDb = 46,
+        NoLoadUnitInSource = 46,
     
-        LoadUnitDestinationCell = 47,
+        LoadUnitSourceDb = 47,
     
-        LoadUnitElevator = 48,
+        LoadUnitDestinationCell = 48,
     
-        LoadUnitNotRemoved = 49,
+        LoadUnitElevator = 49,
     
-        LoadUnitDestinationBay = 50,
+        LoadUnitNotRemoved = 50,
     
-        LoadUnitSourceCell = 51,
+        LoadUnitDestinationBay = 51,
     
-        LoadUnitNotFound = 52,
+        LoadUnitSourceCell = 52,
     
-        LoadUnitNotLoaded = 53,
+        LoadUnitNotFound = 53,
     
-        LoadUnitSourceBay = 54,
+        LoadUnitNotLoaded = 54,
     
-        LoadUnitShutterOpen = 55,
+        LoadUnitSourceBay = 55,
     
-        LoadUnitShutterInvalid = 56,
+        LoadUnitShutterOpen = 56,
     
-        LoadUnitShutterClosed = 57,
+        LoadUnitShutterInvalid = 57,
     
-        LoadUnitPresentInCell = 58,
+        LoadUnitShutterClosed = 58,
     
-        LoadUnitOtherBay = 59,
+        LoadUnitPresentInCell = 59,
     
-        LoadUnitSourceElevator = 60,
+        LoadUnitOtherBay = 60,
     
-        LoadUnitMissingOnElevator = 61,
+        LoadUnitSourceElevator = 61,
     
-        LoadUnitMissingOnBay = 62,
+        LoadUnitMissingOnElevator = 62,
     
-        LoadUnitUndefinedUpper = 63,
+        LoadUnitMissingOnBay = 63,
     
-        LoadUnitUndefinedBottom = 64,
+        LoadUnitUndefinedUpper = 64,
+    
+        LoadUnitUndefinedBottom = 65,
     
         InverterErrorBaseCode = 1000,
     

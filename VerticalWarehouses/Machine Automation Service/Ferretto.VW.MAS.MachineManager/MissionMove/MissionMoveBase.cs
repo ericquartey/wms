@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -329,13 +330,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
                 if (bay != null
-#if CHECK_BAY_SENSOR
-                    && this.LoadingUnitMovementProvider.CheckBaySensors(bay, this.Mission.LoadUnitDestination, deposit: true) == MachineErrorCode.NoError
-#endif
+                    && bay.Positions != null
+                    && bay.Positions.All(p => p.LoadingUnit is null)
                     )
                 {
                     this.Mission.NeedHomingAxis = Axis.None;
                     this.MissionsDataProvider.Update(this.Mission);
+                    this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = true;
                 }
             }
         }
