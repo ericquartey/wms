@@ -67,6 +67,8 @@ namespace Ferretto.VW.App.Controls
         protected BaseMainViewModel(PresentationMode mode)
         {
             this.mode = mode;
+
+            this.UpdateHealth();
         }
 
         #endregion
@@ -500,6 +502,11 @@ namespace Ferretto.VW.App.Controls
                         false,
                         m => m.Data != null &&
                              this.IsVisible);
+        }
+
+        private void UpdateHealth()
+        {
+            this.IsWmsHealthy = this.healthProbeService.HealthWmsStatus == HealthStatus.Healthy;
         }
 
         private void UpdateIsEnabled(

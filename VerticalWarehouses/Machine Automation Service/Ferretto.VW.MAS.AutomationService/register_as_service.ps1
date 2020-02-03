@@ -49,7 +49,7 @@ catch {
     throw "Impossibile avviare il servizio"
 }
 
-Write-Host "Attendo che il MAS sia pronto ..."
+Write-Host "Attendo che il servizio sia pronto ..."
 
 $isServiceHealthy = $false
 $retriesDone = 0
@@ -71,9 +71,9 @@ do {
 } while (-not($isServiceHealthy) -and $retriesDone -le $totalHealthRetries)
 
 if($isServiceHealthy) {
-    Write-Host "Il servizio MAS è pronto."
+    Write-Host "Il servizio è pronto."
 }
 else {
-    throw "Il servizio MAS non è pronto."
+    throw "Il servizio non è pronto."
 }
 
