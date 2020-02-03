@@ -1,21 +1,16 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <LanguageTargets>$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
     <TargetFramework>net471</TargetFramework>
+    <UseWPF>true</UseWPF>
     <OutputType>WinExe</OutputType>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <StartupObject>Ferretto.VW.Simulator.App</StartupObject>
-    <RunPostBuildEvent>Always</RunPostBuildEvent>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
     <ApplicationManifest>properties/app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="WindowsBase" />
+    <Reference Include="System.Web" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,21 +19,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </ApplicationDefinition>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="**\*.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="**\*.xaml" Exclude="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
+    <ProjectReference Include="..\..\Machine Automation Service\Ferretto.VW.MAS.DataModels\Ferretto.VW.MAS.DataModels.csproj" />
+    <ProjectReference Include="..\..\Panel PC UI\Ferretto.VW.App.Themes\Ferretto.VW.App.Themes.csproj" />
+    <ProjectReference Include="..\..\Panel PC UI\Ferretto.VW.App.Utils\Ferretto.VW.Utils.csproj" />
+    <ProjectReference Include="..\Ferretto.VW.Simulator.Controls\Ferretto.VW.Simulator.Controls.csproj" />
+    <ProjectReference Include="..\Ferretto.VW.Simulator.Extensions\Ferretto.VW.Simulator.Extensions.csproj" />
+    <ProjectReference Include="..\Ferretto.VW.Simulator.Resources\Ferretto.VW.Simulator.Resources.csproj" />
+    <ProjectReference Include="..\Ferretto.VW.Simulator.Services\Ferretto.VW.Simulator.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,9 +35,6 @@
     <Content Remove="Icons\*.*" />
     <Resource Include="Images\*.*" />
     <Resource Include="Icons\*.*" />
-  </ItemGroup>
-
-  <ItemGroup>
     <EmbeddedResource Remove="Fonts\**" />
     <EmbeddedResource Remove="publish\**" />
     <None Remove="Fonts\**" />
@@ -67,22 +51,15 @@
     <None Remove="favicon.ico" />
     <None Remove="Images\Divieto_Dark.png" />
     <None Remove="Images\Divieto_Light.png" />
-      <None Remove="Resources\LogoFerrettoGroup.png" />
-      <None Remove="Resources\LogoFerrettoGroup2.png" />
-      <Content Include="Images\Divieto_Dark.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-      <Content Include="Images\Divieto_Light.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-      <ProjectReference Include="..\..\Machine Automation Service\Ferretto.VW.MAS.DataModels\Ferretto.VW.MAS.DataModels.csproj" />
-      <ProjectReference Include="..\..\Panel PC UI\Ferretto.VW.App.Themes\Ferretto.VW.App.Themes.csproj" />
-      <ProjectReference Include="..\..\Panel PC UI\Ferretto.VW.App.Utils\Ferretto.VW.Utils.csproj" />
-      <ProjectReference Include="..\Ferretto.VW.Simulator.Controls\Ferretto.VW.Simulator.Controls.csproj" />
-      <ProjectReference Include="..\Ferretto.VW.Simulator.Extensions\Ferretto.VW.Simulator.Extensions.csproj" />
-      <ProjectReference Include="..\Ferretto.VW.Simulator.Resources\Ferretto.VW.Simulator.Resources.csproj" />
-      <ProjectReference Include="..\Ferretto.VW.Simulator.Services\Ferretto.VW.Simulator.Services.csproj" />
-      <None Update="nlog.config">
+    <None Remove="Resources\LogoFerrettoGroup.png" />
+    <None Remove="Resources\LogoFerrettoGroup2.png" />
+    <Content Include="Images\Divieto_Dark.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Divieto_Light.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Update="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -92,16 +69,6 @@
     <Resource Include="Resources\LogoFerrettoGroup.png" />
     <Resource Include="Resources\LogoFerrettoGroup2.png" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="CustomSensorControl.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="CustomSensorSquareControl.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
 
 </Project>
 
