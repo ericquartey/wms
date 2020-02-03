@@ -65,7 +65,7 @@ namespace Ferretto.VW.Installer
                 throw new ArgumentException("message", nameof(fileName));
             }
 
-            var stepsJsonFile = System.IO.File.ReadAllText(fileName);
+            var stepsJsonFile = File.ReadAllText(fileName);
 
             var serviceAnon = new { Steps = Array.Empty<Step>() };
             serviceAnon = JsonConvert.DeserializeAnonymousType(stepsJsonFile, serviceAnon, SerializerSettings);
@@ -111,7 +111,7 @@ namespace Ferretto.VW.Installer
                 throw new InvalidOperationException("Unable to continue with setup because execution was interrupted while one step was being rolled back.");
             }
 
-            await this.LoadSoftwareVersionAsync();
+            this.LoadSoftwareVersion();
 
             try
             {
@@ -165,7 +165,7 @@ namespace Ferretto.VW.Installer
             System.IO.File.WriteAllText("steps-snapshot.json", objectString);
         }
 
-        private async Task LoadSoftwareVersionAsync()
+        private void LoadSoftwareVersion()
         {
             var packagePath = ConfigurationManager.AppSettings.Get("Install:Package:Path");
 

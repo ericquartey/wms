@@ -1,27 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <LanguageTargets>$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
     <TargetFramework>net471</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <UseWPF>true</UseWPF>
     <StartupObject>Ferretto.VW.Installer.App</StartupObject>
-    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <ApplicationManifest>properties/app.manifest</ApplicationManifest>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System.Design" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="WindowsBase" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MahApps.Metro.IconPacks" Version="3.1.0" />
@@ -35,24 +20,7 @@
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
 
-  <ItemGroup>
-    <!-- entry point of the application-->
-    <ApplicationDefinition Include="App.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </ApplicationDefinition>
-  </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="**\*.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="**\*.xaml" Exclude="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="publish\**" />

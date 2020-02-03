@@ -33,7 +33,7 @@
                 CornerRadius="2,0,0,2"
                 Height="200"
                 Margin="0 0 35 0"
-                Visibility="{Binding IsWmsHealthy, Converter={StaticResource BTVIC}}">
+                Visibility="{Binding IsWmsEnabledAndHealthy, Converter={StaticResource BTVIC}}">
                 <TextBlock
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center"
@@ -43,7 +43,7 @@
 
         <localControls:LoadingUnitControlView Grid.Row="1"
                                               Margin="0,0,35,0"
-                                              Visibility="{Binding IsWmsHealthy, Converter={StaticResource BTVC}}"/>
+                                              Visibility="{Binding IsWmsEnabledAndHealthy, Converter={StaticResource BTVC}}"/>
 
         <StackPanel Grid.Row="2"
                     Margin="0 10 0 0"
