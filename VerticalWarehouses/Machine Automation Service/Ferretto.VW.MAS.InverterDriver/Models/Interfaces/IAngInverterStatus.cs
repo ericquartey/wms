@@ -12,9 +12,6 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
         [Column(Order = (int)InverterSensors.ANG_EncoderChannelBCradle)]
         bool ANG_EncoderChannelBCradle { get; }
 
-        [Column(Order = (int)InverterSensors.ANG_EncoderChannelZCradle)]
-        bool ANG_EncoderChannelZCradle { get; }
-
         [Column(Order = (int)InverterSensors.ANG_HardwareSensorSS1)]
         bool ANG_HardwareSensorSS1 { get; }
 

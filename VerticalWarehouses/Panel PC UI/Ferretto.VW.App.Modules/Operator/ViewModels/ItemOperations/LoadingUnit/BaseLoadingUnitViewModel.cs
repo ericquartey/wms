@@ -399,12 +399,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         protected override void RaiseCanExecuteChanged()
         {
-            this.changeModeLoadingUnitCommand.RaiseCanExecuteChanged();
-            this.changeModeListCommand.RaiseCanExecuteChanged();
-            this.itemCompartmentDownCommand.RaiseCanExecuteChanged();
-            this.itemCompartmentUpCommand.RaiseCanExecuteChanged();
-            this.itemDownCommand.RaiseCanExecuteChanged();
-            this.itemUpCommand.RaiseCanExecuteChanged();
+            this.changeModeLoadingUnitCommand?.RaiseCanExecuteChanged();
+            this.changeModeListCommand?.RaiseCanExecuteChanged();
+            this.itemCompartmentDownCommand?.RaiseCanExecuteChanged();
+            this.itemCompartmentUpCommand?.RaiseCanExecuteChanged();
+            this.itemDownCommand?.RaiseCanExecuteChanged();
+            this.itemUpCommand?.RaiseCanExecuteChanged();
 
             base.RaiseCanExecuteChanged();
         }

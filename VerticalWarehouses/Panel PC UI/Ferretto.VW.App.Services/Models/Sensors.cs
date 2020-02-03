@@ -129,7 +129,7 @@ namespace Ferretto.VW.App.Services
 
         private bool elevatorEngineSelectedBay1;
 
-        private bool extraRunElevator;
+        private bool overrunElevator;
 
         private bool fastStop;
 
@@ -355,7 +355,7 @@ namespace Ferretto.VW.App.Services
 
         public bool ElevatorEngineSelectedBay1 { get => this.elevatorEngineSelectedBay1; set => this.SetProperty(ref this.elevatorEngineSelectedBay1, value); }
 
-        public bool ExtraRunElevator { get => this.extraRunElevator; set => this.SetProperty(ref this.extraRunElevator, value); }
+        public bool OverrunElevator { get => this.overrunElevator; set => this.SetProperty(ref this.overrunElevator, value); }
 
         public bool FastStop { get => this.fastStop; set => this.SetProperty(ref this.fastStop, value); }
 

@@ -44,8 +44,6 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         public bool ANG_EncoderChannelBCradle => this.Inputs?[(int)InverterSensors.ANG_EncoderChannelBCradle] ?? false;
 
-        public bool ANG_EncoderChannelZCradle => this.Inputs?[(int)InverterSensors.ANG_EncoderChannelZCradle] ?? false;
-
         public bool ANG_HardwareSensorSS1 => this.Inputs?[(int)InverterSensors.ANG_HardwareSensorSS1] ?? false;
 
         public bool ANG_HardwareSensorSTO => this.Inputs?[(int)InverterSensors.ANG_HardwareSensorSTO] ?? false;

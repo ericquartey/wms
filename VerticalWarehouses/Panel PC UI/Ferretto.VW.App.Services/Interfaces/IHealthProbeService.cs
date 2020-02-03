@@ -10,6 +10,8 @@ namespace Ferretto.VW.App.Services
 
         PubSubEvent<HealthStatusChangedEventArgs> HealthStatusChanged { get; }
 
+        HealthStatus HealthWmsStatus { get; }
+
         #endregion
 
         #region Methods
