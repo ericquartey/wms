@@ -168,12 +168,18 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MessageStatus.OperationError:
                 case MessageStatus.OperationStop:
                 case MessageStatus.OperationRunningStop:
-                    if (this.Mission.EjectLoadUnit)
+                    if (this.Mission.EjectLoadUnit
+                        && (notification.Type == MessageType.ShutterPositioning
+                            || notification.TargetBay == BayNumber.ElevatorBay
+                            )
+                        )
                     {
                         if (this.UpdateResponseList(notification.Type))
                         {
                             this.MissionsDataProvider.Update(this.Mission);
                         }
+
+
                     }
                     else
                     {

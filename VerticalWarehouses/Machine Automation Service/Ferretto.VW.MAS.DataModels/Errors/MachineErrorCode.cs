@@ -143,6 +143,9 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ResumeCommandNotValid), 1)]
         ResumeCommandNotValid,
 
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(DestinationBayNotCalibrated), 1)]
+        DestinationBayNotCalibrated,
+
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(NoLoadUnitInSource), 1)]
         NoLoadUnitInSource,
 

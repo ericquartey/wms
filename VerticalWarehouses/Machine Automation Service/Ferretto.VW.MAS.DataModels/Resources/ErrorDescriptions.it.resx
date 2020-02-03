@@ -249,4 +249,7 @@
   <data name="LoadUnitShutterInvalid" xml:space="preserve">
     <value>Errore stato serranda</value>
   </data>
+  <data name="DestinationBayNotCalibrated" xml:space="preserve">
+    <value>Baia di destinazione priva di taratura.</value>
+  </data>
 </root>
