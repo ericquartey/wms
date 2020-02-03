@@ -224,9 +224,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             base.RaiseCanExecuteChanged();
 
-            this.operationCommand.RaiseCanExecuteChanged();
-            this.confirmOperationCommand.RaiseCanExecuteChanged();
-            this.recallLoadingUnitCommand.RaiseCanExecuteChanged();
+            this.operationCommand?.RaiseCanExecuteChanged();
+            this.confirmOperationCommand?.RaiseCanExecuteChanged();
+            this.recallLoadingUnitCommand?.RaiseCanExecuteChanged();
         }
 
         private bool CanConfirmOperation()
