@@ -34,7 +34,7 @@
 
         <views:ArticleDataGridView Grid.Row="1"
                                    Grid.Column="0"
-                                   Height="370"
+                                   Height="340"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Top" />
 

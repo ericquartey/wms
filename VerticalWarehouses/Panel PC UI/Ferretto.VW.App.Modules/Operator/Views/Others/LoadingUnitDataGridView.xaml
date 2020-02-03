@@ -78,6 +78,11 @@
                     <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
                 </Style>
             </DataGrid.RowStyle>
+            <DataGrid.ColumnHeaderStyle>
+                <Style  TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="{StaticResource VWAPP_BACKGROUND}" />
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
 
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="Column1"
@@ -113,11 +118,12 @@
                                     Header="{x:Static Resources:OperatorApp.OtherDrawerDataGridHeaderHeight}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Height" Value="40" />
+                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
                             <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
                             <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
-                            <Setter Property="BorderThickness" Value="0,0,0,1" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
                         </Style>
                     </DataGridTextColumn.HeaderStyle>
                     <DataGridTextColumn.CellStyle>
@@ -191,11 +197,11 @@
                                     Header="{x:Static Resources:OperatorApp.OtherDrawerDataGridHeaderSide}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="BorderThickness" Value="0,0,0,1" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
                             <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
                             <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
+                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
                         </Style>
                     </DataGridTextColumn.HeaderStyle>
                     <DataGridTextColumn.CellStyle>
@@ -217,13 +223,14 @@
                                     Header="{x:Static Resources:OperatorApp.OtherDrawerDataGridHeaderState}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="BorderThickness" Value="0,0,0,1" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
                             <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
                             <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
+                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
                         </Style>
                     </DataGridTextColumn.HeaderStyle>
+
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="BorderThickness" Value="0" />
