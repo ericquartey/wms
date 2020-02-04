@@ -459,6 +459,12 @@
                                TextWrapping="Wrap" />
                 </StackPanel>
 
+                <controls:PpcButton Grid.Row="1"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Bottom"
+                                    Command="{Binding MarkAsResolvedCommand}"
+                                    Content="{x:Static res:VWApp.MarkAsResolved}" />
+
                 <controls:PpcButton Grid.Row="3"
                                     Command="{Binding AutomaticCommand}"
                                     Content="Automatico"
