@@ -116,7 +116,9 @@ namespace Ferretto.VW.MAS.MissionManager
         {
             return this.missionsDataProvider
                 .GetAllActiveMissionsByBay(bayNumber)
-                .Where(m => m.Status != CommonUtils.Messages.Enumerations.MissionStatus.Completed)
+                .Where(m => m.Status != CommonUtils.Messages.Enumerations.MissionStatus.Completed
+                    && m.Status != CommonUtils.Messages.Enumerations.MissionStatus.Aborted
+                    )
                 .Count();
         }
 
