@@ -181,7 +181,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 );
         }
 
-        public void Move(VerticalMovementDirection direction, int? loadingUnitId, BayNumber bayNumber, MessageActor sender)
+        public void Move(VerticalMovementDirection direction, int? loadUnitId, BayNumber bayNumber, MessageActor sender)
         {
             var policy = this.CanMove(direction, bayNumber, MovementCategory.Automatic);
             if (!policy.IsAllowed)
@@ -194,9 +194,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             // if weight is unknown we move as full weight
             double scalingFactor = 1;
-            if (loadingUnitId.HasValue)
+            if (loadUnitId.HasValue)
             {
-                var loadUnit = this.loadingUnitsDataProvider.GetById(loadingUnitId.Value);
+                var loadUnit = this.loadingUnitsDataProvider.GetById(loadUnitId.Value);
                 if (loadUnit.MaxNetWeight + loadUnit.Tare > 0 && loadUnit.GrossWeight > 0)
                 {
                     scalingFactor = loadUnit.GrossWeight / (loadUnit.MaxNetWeight + loadUnit.Tare);
@@ -218,10 +218,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 switchPosition,
                 direction is VerticalMovementDirection.Up ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards);
 
+            if (loadUnitId.HasValue)
+            {
+                messageData.LoadingUnitId = loadUnitId;
+            }
+
             this.logger.LogDebug(
                 $"Move Carousel " +
                 $"bayNumber: {bayNumber}; " +
                 $"direction: {direction}; " +
+                $"LoadUnitId: {loadUnitId}; " +
                 $"targetPosition: {targetPosition}; " +
                 $"speed: {speed}; " +
                 $"acceleration: {acceleration}; " +
@@ -286,7 +292,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.None);
         }
 
-        public void MoveManual(VerticalMovementDirection direction, double distance, BayNumber bayNumber, MessageActor sender)
+        public void MoveManual(VerticalMovementDirection direction, double distance, int? loadUnitId, BayNumber bayNumber, MessageActor sender)
         {
             var policy = this.CanMove(direction, bayNumber, MovementCategory.Manual);
             if (!policy.IsAllowed)
@@ -321,10 +327,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 switchPosition,
                 direction is VerticalMovementDirection.Up ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards);
 
+            if (loadUnitId.HasValue)
+            {
+                messageData.LoadingUnitId = loadUnitId;
+            }
+
             this.logger.LogDebug(
                 $"Move Carousel Manual " +
                 $"bayNumber: {bayNumber}; " +
                 $"direction: {direction}; " +
+                $"LoadUnitId: {loadUnitId}; " +
                 $"targetPosition: {targetPosition}; " +
                 $"feedrate: {procedureParameters.FeedRate}; " +
                 $"speed: {speed}; " +

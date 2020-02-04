@@ -22,11 +22,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool IsOnlyTopPositionOccupied(BayNumber bayNumber);
 
-        void Move(VerticalMovementDirection direction, int? loadingUnitId, BayNumber bayNumber, MessageActor sender);
+        void Move(VerticalMovementDirection direction, int? loadUnitId, BayNumber bayNumber, MessageActor sender);
 
         void MoveAssisted(VerticalMovementDirection direction, BayNumber bayNumber, MessageActor sender);
 
-        void MoveManual(VerticalMovementDirection direction, double distance, BayNumber bayNumber, MessageActor sender);
+        void MoveManual(VerticalMovementDirection direction, double distance, int? loadUnitId, BayNumber bayNumber, MessageActor sender);
 
         void Stop(BayNumber bayNumber, MessageActor sender);
 
