@@ -24,6 +24,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private IEnumerable<DriveInfo> availableDrives = Array.Empty<DriveInfo>();
 
+        public override EnableMask EnableMask => EnableMask.Any;
+
         private object configuration = null;
 
         private DriveInfo drive = null;
