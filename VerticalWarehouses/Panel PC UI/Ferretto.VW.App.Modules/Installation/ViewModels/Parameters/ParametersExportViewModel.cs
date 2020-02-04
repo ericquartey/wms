@@ -54,10 +54,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public IEnumerable<DriveInfo> AvailableDrives => this.availableDrives;
 
         public ICommand ExportCommand =>
-                    this.exportCommand
-                    ??
-                    (this.exportCommand = new DelegateCommand(
-                    async () => await this.ExportAsync(), this.CanExport));
+            this.exportCommand ??
+            (this.exportCommand = new DelegateCommand(
+            async () => await this.ExportAsync(), this.CanExport));
 
         public object ExportingConfiguration
         {
@@ -128,13 +127,21 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             return base.OnAppearedAsync();
         }
 
+        protected override void RaiseCanExecuteChanged()
+        {
+            this.exportCommand?.RaiseCanExecuteChanged();
+
+            base.RaiseCanExecuteChanged();
+        }
+
         private bool CanExport()
         {
             return !this.IsBusy
                    &&
                    this.SelectedDrive != null
                    &&
-                   this.ExportingConfiguration != null;
+                   this.ExportingConfiguration != null
+                   ;
         }
 
         private async Task ExportAsync()
