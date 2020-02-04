@@ -148,19 +148,25 @@ namespace Ferretto.VW.MAS.InverterDriver
         /// <inheritdoc />
         public async ValueTask<byte[]> ReadAsync(CancellationToken stoppingToken)
         {
-            if (this.isDisposed)
+            if (stoppingToken.IsCancellationRequested)
             {
-                throw new InvalidOperationException($"Cannot access the disposed instance of {this.GetType().Name}.");
+                return Array.Empty<byte>();
             }
 
-            if (this.transportStream is null)
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException($"Cannot access the disposed instance of {this.GetType().Name}.");
+            }
+
+            var currentTransportStream = this.transportStream;
+            if (currentTransportStream is null)
             {
                 throw new InverterDriverException(
                     "Transport Stream is null",
                     InverterDriverExceptionCode.UninitializedNetworkStream);
             }
 
-            if (!this.transportStream.CanRead)
+            if (!currentTransportStream.CanRead)
             {
                 throw new InverterDriverException(
                     "Transport Stream not configured for reading data",
@@ -174,18 +180,26 @@ namespace Ferretto.VW.MAS.InverterDriver
                     InverterDriverExceptionCode.NetworkStreamWriteFailure);
             }
 
+            var currentReceiveBuffer = this.receiveBuffer;
+            if (currentReceiveBuffer is null)
+            {
+                throw new InverterDriverException(
+                    "Receive buffer is null",
+                    InverterDriverExceptionCode.UninitializedNetworkStream);
+            }
+
             byte[] receivedData;
             try
             {
                 if (this.transportClient.Client?.Poll(this.readTimeoutMilliseconds * 1000, SelectMode.SelectRead) ?? false)
                 {
-                    var readBytes = await this.transportStream?.ReadAsync(this.receiveBuffer, 0, this.receiveBuffer?.Length ?? 0, stoppingToken);
+                    var readBytes = await currentTransportStream.ReadAsync(currentReceiveBuffer, 0, currentReceiveBuffer.Length, stoppingToken);
 
                     if (readBytes > 0)
                     {
                         receivedData = new byte[readBytes];
 
-                        Array.Copy(this.receiveBuffer, receivedData, readBytes);
+                        Array.Copy(currentReceiveBuffer, receivedData, readBytes);
                     }
                     else
                     {
@@ -286,6 +300,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                 return;
             }
 
+            this.isDisposed = true;
+
             if (disposing)
             {
                 this.transportStream?.Close();
@@ -296,8 +312,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.transportClient?.Dispose();
                 this.transportClient = null;
             }
-
-            this.isDisposed = true;
         }
 
         #endregion
