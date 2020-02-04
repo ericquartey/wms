@@ -367,7 +367,9 @@ namespace Ferretto.VW.MAS.MissionManager
                             this.machineVolatileDataProvider.Mode = MachineMode.Restore;
                             this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                         }
-                        else if (!this.GenerateHoming(bayProvider, this.machineVolatileDataProvider.IsHomingExecuted))
+                        else if (!activeMissions.Any(m => m.Status == MissionStatus.Executing
+                                    && m.Step > MissionStep.New)
+                                && !this.GenerateHoming(bayProvider, this.machineVolatileDataProvider.IsHomingExecuted))
                         {
                             this.machineVolatileDataProvider.Mode = MachineMode.Automatic;
                             this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
