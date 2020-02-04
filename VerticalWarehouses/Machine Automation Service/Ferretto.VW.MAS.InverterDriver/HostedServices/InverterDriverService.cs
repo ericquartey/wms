@@ -209,121 +209,130 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             do
             {
-                using (var scope = this.ServiceScopeFactory.CreateScope())
+                try
                 {
-                    if (!this.socketTransport.IsConnected)
+                    using (var scope = this.ServiceScopeFactory.CreateScope())
                     {
+                        var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+                        if (!this.socketTransport.IsConnected)
+                        {
+                            try
+                            {
+                                this.receiveBuffer = null;
+                                await this.socketTransport.ConnectAsync();
+                            }
+                            catch (InverterDriverException ex)
+                            {
+                                this.Logger.LogError($"1: Exception {ex.Message}; Exception code={ex.InverterDriverExceptionCode};\nInner exception: {ex.InnerException.Message}");
+                            }
+                            catch (Exception ex)
+                            {
+                                this.Logger.LogError($"2:Exception {ex.Message} while Connecting Receiver Socket Transport");
+
+                                this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "while Connecting Receiver Socket Transport", 0), FieldMessageType.InverterException);
+                                throw new InverterDriverException($"Exception {ex.Message} ReceiveInverterData Failed 1", ex);
+                            }
+
+                            if (!this.socketTransport.IsConnected)
+                            {
+                                this.Logger.LogError("3:Socket Transport failed to connect");
+                                errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterConnectionError, BayNumber.BayOne);
+
+                                var ex = new Exception();
+                                this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "Socket Transport failed to connect", 0), FieldMessageType.InverterError);
+                                continue;
+                            }
+                            else
+                            {
+                                this.Logger.LogInformation($"Connected to inverter's TCP address {this.inverterAddress}:{this.inverterPort}");
+                                for (var i = 0; i < this.forceStatusPublish.Length; i++)
+                                {
+                                    this.forceStatusPublish[i] = true;
+                                }
+                            }
+
+                            this.writeEnableEvent.Set();
+                            this.Logger.LogTrace($"writeEnableEvent unlocked");
+                        }
+
+                        // socket connected
+                        byte[] inverterData;
                         try
                         {
-                            this.receiveBuffer = null;
-                            await this.socketTransport.ConnectAsync();
+                            inverterData = await this.socketTransport.ReadAsync(this.CancellationToken);
+                            if (inverterData == null || inverterData.Length == 0)
+                            {
+                                // connection error
+                                this.Logger.LogError($"2:Inverter message is null");
+                                errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterConnectionError, BayNumber.BayOne);
+                                this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(null, "Inverter Driver Connection Error", 0), FieldMessageType.InverterException);
+                                continue;
+                            }
+
+                            this.receiveBuffer = this.receiveBuffer.AppendArrays(inverterData, inverterData.Length);
+                        }
+                        catch (Exception ex) when (ex is OperationCanceledException || ex is ThreadAbortException)
+                        {
+                            this.Logger.LogDebug("Terminating inverter read task.");
+
+                            return;
                         }
                         catch (InverterDriverException ex)
                         {
-                            this.Logger.LogError($"1: Exception {ex.Message}; Exception code={ex.InverterDriverExceptionCode};\nInner exception: {ex.InnerException.Message}");
+                            this.Logger.LogCritical($"2A: Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
+
+                            this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "Inverter Driver Exception", (int)ex.InverterDriverExceptionCode), FieldMessageType.InverterException);
+
+                            throw new InverterDriverException($"Exception {ex.Message} ReceiveInverterData Failed 2", ex);
+                        }
+                        catch (InvalidOperationException ex)
+                        {
+                            // connection error
+                            this.Logger.LogError($"Exception {ex.Message}; InnerException {ex.InnerException?.Message}", ex);
+                            errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterConnectionError, BayNumber.BayOne);
+                            this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "Inverter Driver Connection Error", 0), FieldMessageType.InverterException);
+
+                            continue;
                         }
                         catch (Exception ex)
                         {
-                            this.Logger.LogError($"2:Exception {ex.Message} while Connecting Receiver Socket Transport");
+                            this.Logger.LogCritical(ex, "Error while reading from inverter socket.");
 
-                            this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "while Connecting Receiver Socket Transport", 0), FieldMessageType.InverterException);
-                            throw new InverterDriverException($"Exception {ex.Message} ReceiveInverterData Failed 1", ex);
+                            this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "Inverter Driver Exeption", 0), FieldMessageType.InverterException);
+
+                            return;
                         }
 
-                        if (!this.socketTransport.IsConnected)
+                        //INFO: Byte 1 of read data contains packet length
+                        if (this.receiveBuffer[1] == 0x00)
                         {
-                            this.Logger.LogError("3:Socket Transport failed to connect");
-                            scope.ServiceProvider.GetRequiredService<IErrorsProvider>().RecordNew(DataModels.MachineErrorCode.InverterConnectionError, BayNumber.BayOne);
-
-                            var ex = new Exception();
-                            this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "Socket Transport failed to connect", 0), FieldMessageType.InverterError);
-                            continue;
-                        }
-                        else
-                        {
-                            this.Logger.LogInformation($"Connected to inverter's TCP address {this.inverterAddress}:{this.inverterPort}");
-                            for (var i = 0; i < this.forceStatusPublish.Length; i++)
-                            {
-                                this.forceStatusPublish[i] = true;
-                            }
-                        }
-
-                        this.writeEnableEvent.Set();
-                        this.Logger.LogTrace($"writeEnableEvent unlocked");
-                    }
-
-                    // socket connected
-                    byte[] inverterData;
-                    try
-                    {
-                        inverterData = await this.socketTransport.ReadAsync(this.CancellationToken);
-                        if (inverterData == null || inverterData.Length == 0)
-                        {
-                            // connection error
-                            this.Logger.LogError($"2:Inverter message is null");
-                            scope.ServiceProvider.GetRequiredService<IErrorsProvider>().RecordNew(DataModels.MachineErrorCode.InverterConnectionError, BayNumber.BayOne);
+                            // message error
+                            this.Logger.LogError($"5:Inverter message length is zero: received {BitConverter.ToString(inverterData)}: message {BitConverter.ToString(this.receiveBuffer)}");
+                            errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterConnectionError, BayNumber.BayOne);
                             this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(null, "Inverter Driver Connection Error", 0), FieldMessageType.InverterException);
+                            this.socketTransport.Disconnect();
                             continue;
                         }
 
-                        this.receiveBuffer = this.receiveBuffer.AppendArrays(inverterData, inverterData.Length);
+                        if (this.receiveBuffer.Length < 2 || this.receiveBuffer.Length < this.receiveBuffer[1] + 2)
+                        {
+                            // this is not an error: we try to recover from messages received in more pieces
+                            this.Logger.LogTrace($"5:Inverter message is not complete: received {BitConverter.ToString(inverterData)}: message {BitConverter.ToString(this.receiveBuffer)}");
+                            continue;
+                        }
+
+                        var extractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref this.receiveBuffer, 4, 1, 2);
+
+                        foreach (var extractedMessage in extractedMessages)
+                        {
+                            this.OnInverterMessageReceived(extractedMessage, scope.ServiceProvider);
+                        }
                     }
-                    catch (Exception ex) when (ex is OperationCanceledException || ex is ThreadAbortException)
-                    {
-                        this.Logger.LogDebug("Terminating inverter read task.");
-
-                        return;
-                    }
-                    catch (InverterDriverException ex)
-                    {
-                        this.Logger.LogCritical($"2A: Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
-
-                        this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "Inverter Driver Exception", (int)ex.InverterDriverExceptionCode), FieldMessageType.InverterException);
-
-                        throw new InverterDriverException($"Exception {ex.Message} ReceiveInverterData Failed 2", ex);
-                    }
-                    catch (InvalidOperationException ex)
-                    {
-                        // connection error
-                        this.Logger.LogError($"Exception {ex.Message}; InnerException {ex.InnerException?.Message}", ex);
-                        scope.ServiceProvider.GetRequiredService<IErrorsProvider>().RecordNew(DataModels.MachineErrorCode.InverterConnectionError, BayNumber.BayOne);
-                        this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "Inverter Driver Connection Error", 0), FieldMessageType.InverterException);
-
-                        continue;
-                    }
-                    catch (Exception ex)
-                    {
-                        this.Logger.LogCritical(ex, "Error while reading from inverter socket.");
-
-                        this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "Inverter Driver Exeption", 0), FieldMessageType.InverterException);
-
-                        return;
-                    }
-
-                    //INFO: Byte 1 of read data contains packet length
-                    if (this.receiveBuffer[1] == 0x00)
-                    {
-                        // message error
-                        this.Logger.LogError($"5:Inverter message length is zero: received {BitConverter.ToString(inverterData)}: message {BitConverter.ToString(this.receiveBuffer)}");
-                        scope.ServiceProvider.GetRequiredService<IErrorsProvider>().RecordNew(DataModels.MachineErrorCode.InverterConnectionError, BayNumber.BayOne);
-                        this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(null, "Inverter Driver Connection Error", 0), FieldMessageType.InverterException);
-                        this.socketTransport.Disconnect();
-                        continue;
-                    }
-
-                    if (this.receiveBuffer.Length < 2 || this.receiveBuffer.Length < this.receiveBuffer[1] + 2)
-                    {
-                        // this is not an error: we try to recover from messages received in more pieces
-                        this.Logger.LogTrace($"5:Inverter message is not complete: received {BitConverter.ToString(inverterData)}: message {BitConverter.ToString(this.receiveBuffer)}");
-                        continue;
-                    }
-
-                    var extractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref this.receiveBuffer, 4, 1, 2);
-
-                    foreach (var extractedMessage in extractedMessages)
-                    {
-                        this.OnInverterMessageReceived(extractedMessage, scope.ServiceProvider);
-                    }
+                }
+                catch (Exception ex) when (ex is OperationCanceledException || this.CancellationToken.IsCancellationRequested)
+                {
+                    this.Logger.LogDebug("Stopping inverter driver.");
+                    return;
                 }
             }
 

@@ -94,7 +94,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                     + (current * this.verticalParams.WeightMeasurement.MeasureConst1)
                     + this.verticalParams.WeightMeasurement.MeasureConst0;
 
-                this.Logger.LogInformation($"Weight measured {this.data.MeasuredWeight}. Current {current}. k2 {this.verticalParams.WeightMeasurement.MeasureConst2}. k1 {this.verticalParams.WeightMeasurement.MeasureConst1}. k0 {this.verticalParams.WeightMeasurement.MeasureConst0}");
+                this.Logger.LogInformation($"Weight measured {this.data.MeasuredWeight:0.00}. Current {current}. k2 {this.verticalParams.WeightMeasurement.MeasureConst2}. k1 {this.verticalParams.WeightMeasurement.MeasureConst1}. k0 {this.verticalParams.WeightMeasurement.MeasureConst0}");
                 this.data.IsWeightMeasureDone = true;
 
                 if (this.data.LoadingUnitId.HasValue)

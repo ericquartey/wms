@@ -163,6 +163,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 this.ShowNotification(Resources.InstallationApp.SaveSuccessful);
 
+                this.configuration = await this.machineConfigurationWebService.GetAsync();
+                this.RaisePropertyChanged(nameof(this.Configuration));
+
                 this.IsBusy = false;
             }
             catch (Exception ex)

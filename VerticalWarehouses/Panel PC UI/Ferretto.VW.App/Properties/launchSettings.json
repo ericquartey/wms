@@ -4,42 +4,24 @@
       "commandName": "Project",
       "environmentVariables": {
         "BAY_NUMBER": "1",
-        "LOGOUT_WHEN_UNHEALTHY": "False"
+        "LOGOUT_WHEN_UNHEALTHY": "False",
+        "WMS_ENABLED": "false"
       }
     },
     "PanelPC (Bay 2)": {
       "commandName": "Project",
       "environmentVariables": {
         "BAY_NUMBER": "2",
-        "LOGOUT_WHEN_UNHEALTHY": "False"
+        "LOGOUT_WHEN_UNHEALTHY": "False",
+        "WMS_ENABLED": "false"
       }
     },
     "PanelPC (Bay 3)": {
       "commandName": "Project",
       "environmentVariables": {
         "BAY_NUMBER": "3",
-        "LOGOUT_WHEN_UNHEALTHY": "False"
-      }
-    },
-    "PanelPC_Bay_1": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "BAY_NUMBER": "1",
-        "LOGOUT_WHEN_UNHEALTHY": "False"
-      }
-    },
-    "PanelPC_Bay_2": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "BAY_NUMBER": "2",
-        "LOGOUT_WHEN_UNHEALTHY": "False"
-      }
-    },
-    "PanelPC_Bay_3": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "BAY_NUMBER": "3",
-        "LOGOUT_WHEN_UNHEALTHY": "False"
+        "LOGOUT_WHEN_UNHEALTHY": "False",
+        "WMS_ENABLED": "false"
       }
     },
     "PanelPC (Bay 1 - EjLog - Localhost)": {

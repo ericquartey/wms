@@ -93,12 +93,12 @@ namespace Ferretto.VW.Simulator.Services.Models
         /// <summary>
         /// S6IND-Encoder canale Z
         /// </summary>
-        ANG_EncoderChannelZCradle = 5,
+        ANG_OverrunElevatorSensor = 5,
 
         /// <summary>
         /// MF3IND-Extracorsa elevatore
         /// </summary>
-        ANG_OverrunElevatorSensor = 6,
+        //ANG_HardwareSensorSTO = 6,
 
         /// <summary>
         /// S5IND-Taratura barriera
@@ -900,11 +900,10 @@ namespace Ferretto.VW.Simulator.Services.Models
                     return inverterType == InverterType.Ang ? "Encoder canale A --- culla" : inverterType == InverterType.Agl ? "Libero" : "Encoder canale A";
 
                 case 5:
-                    return inverterType == InverterType.Ang ? "Encoder canale Z --- culla" : inverterType == InverterType.Agl ? "Libero" : "Encoder canale Z";
-
-                case 6:
                     return inverterType == InverterType.Ang ? "Extracorsa elevatore" : inverterType == InverterType.Agl ? "Libero" : "Libero";
 
+                case 6:
+                    return "Libero";
                 case 7:
                     return inverterType == InverterType.Ang ? "Sensore zero culla" : inverterType == InverterType.Agl ? "Libero" : "Libero";
 
