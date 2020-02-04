@@ -269,7 +269,7 @@
     <value>Run</value>
   </data>
   <data name="ConfirmMachineModeSwitchAutomatic" xml:space="preserve">
-    <value>Are you sure you want to automatic mode the machine?</value>
+    <value>Are you sure you want to automatic mode the machine and restore all pending movements?</value>
   </data>
   <data name="Automatic" xml:space="preserve">
     <value>Automatic</value>
