@@ -203,7 +203,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.SaveRestoreConfigPageHeader2}" />
+                   Text="{x:Static res:InstallationApp.SaveRestoreConfigPageHeader}" />
 
         <ListView Grid.Row="1"
                   Grid.Column="0"
