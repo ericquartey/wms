@@ -148,7 +148,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         throw new StateMachineException(ErrorDescriptions.LoadUnitDestinationCell, this.Mission.TargetBay, MessageActor.MachineManager);
                     }
                 }
-                else
+                else if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator)
                 {
                     var bayPosition = this.BaysDataProvider.GetPositionByLocation(this.Mission.LoadUnitDestination);
                     // we set LoadUnit height to zero, but not in lower carousel position, because there is not a profile check barrier
@@ -245,7 +245,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         throw new StateMachineException(ErrorDescriptions.LoadUnitSourceCell, this.Mission.TargetBay, MessageActor.MachineManager);
                     }
                 }
-                else
+                else if (this.Mission.LoadUnitSource != LoadingUnitLocation.Elevator)
                 {
                     var bayPosition = this.BaysDataProvider.GetPositionByLocation(this.Mission.LoadUnitSource);
                     this.BaysDataProvider.SetLoadingUnit(bayPosition.Id, null);
@@ -359,9 +359,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Mission.StopReason = reason;
 
                 IMissionMoveBase newStep;
-                if (this.Mission.Step >= MissionStep.Error
-                    && !this.Mission.IsRestoringType()
-                    )
+                if (!this.Mission.IsRestoringType())
                 {
                     newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     newStep.OnEnter(null);

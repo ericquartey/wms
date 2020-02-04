@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command, bool showErrors = true)
         {
-            var measure = (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell);
+            var measure = (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell && this.Mission.LoadUnitSource != LoadingUnitLocation.Elevator);
             var waitContinue = measure;
             this.Mission.EjectLoadUnit = false;
             this.Mission.RestoreStep = MissionStep.NotDefined;
@@ -50,7 +50,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.MissionsDataProvider.Update(this.Mission);
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
-            if (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell)
+            if (measure)
             {
                 var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
                 if (bay is null)
@@ -111,7 +111,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         public override void OnNotification(NotificationMessage notification)
         {
             var notificationStatus = this.LoadingUnitMovementProvider.PositionElevatorToPositionStatus(notification);
-            var measure = (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell);
+            var measure = (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell && this.Mission.LoadUnitSource != LoadingUnitLocation.Elevator);
 
             switch (notificationStatus)
             {
@@ -178,8 +178,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         {
                             this.MissionsDataProvider.Update(this.Mission);
                         }
-
-
                     }
                     else
                     {
