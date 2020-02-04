@@ -2,7 +2,6 @@ trigger:
   branches:
     include:
     - release
-    - master
   paths:
     exclude:
     - VerticalWarehouses/Installer/*
