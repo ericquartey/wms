@@ -173,6 +173,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     && m.WmsId == wmsId)
                     )
                 {
+                    transaction.Rollback();
                     throw new InvalidOperationException($"An active mission for WMS mission {wmsId} already exists.");
                 }
 

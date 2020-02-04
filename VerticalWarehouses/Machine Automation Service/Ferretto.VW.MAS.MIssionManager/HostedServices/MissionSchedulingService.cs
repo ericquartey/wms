@@ -285,7 +285,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private bool GenerateHoming(IBaysDataProvider bayProvider, bool isHomingExecuted)
         {
-            if(this.machineVolatileDataProvider.IsHomingActive)
+            if (this.machineVolatileDataProvider.IsHomingActive)
             {
                 return true;
             }
@@ -338,6 +338,11 @@ namespace Ferretto.VW.MAS.MissionManager
             return generated;
         }
 
+        /// <summary>
+        /// This method processes the Machine Mode changes and calls the mission scheduler
+        /// </summary>
+        /// <param name="serviceProvider"></param>
+        /// <returns></returns>
         private async Task InvokeSchedulerAsync(IServiceProvider serviceProvider)
         {
             if (!this.dataLayerIsReady)
@@ -352,6 +357,8 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 case MachineMode.SwitchingToAutomatic:
                     {
+                        // in this machine mode we generate homing for elevator and bays, but only if there are no missions to restore.
+                        // if homing is not possible we switch anyway to automatic mode
                         var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
                         var activeMissions = missionsDataProvider.GetAllActiveMissions();
 
@@ -421,6 +428,10 @@ namespace Ferretto.VW.MAS.MissionManager
 
                 case MachineMode.Restore:
                     {
+                        // in this machine mode we have to restore missions in error.
+                        // in restoring missions the "full load" homing are processed and, where possible, also some "empty load" homing.
+                        // after processing missions we have to generate homing for bays and elevator, if there are some left.
+                        // only empty load homings are counted in HomingExecuted properties.
                         var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
                         var activeMissions = missionsDataProvider.GetAllActiveMissions();
 
