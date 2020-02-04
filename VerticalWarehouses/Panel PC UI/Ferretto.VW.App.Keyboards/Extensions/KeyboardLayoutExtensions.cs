@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using Ferretto.VW.App.Keyboards.Controls;
 
 namespace Ferretto.VW.App.Keyboards
 {

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using Microsoft.Xaml.Behaviors;
+using System.Windows.Interactivity;
 
-namespace Ferretto.VW.App.Keyboards.Behaviors
+namespace Ferretto.VW.App.Controls.Behaviors
 {
-    public class KeyboardBehavior : Behavior<TextBox>
+    public class KeyboardPopupBehavior : Behavior<TextBox>
     {
         #region Fields
 
@@ -39,7 +39,6 @@ namespace Ferretto.VW.App.Keyboards.Behaviors
             if (this._isManipulating)
             {
                 // showkeyboard
-                // PpcMessagePopup.ShowDialog(ppcKeyboard);
             }
         }
 

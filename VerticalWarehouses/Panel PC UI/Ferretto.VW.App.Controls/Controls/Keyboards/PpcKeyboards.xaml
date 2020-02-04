@@ -1,0 +1,22 @@
+﻿<dialog:PpcDialogView x:Class="Ferretto.VW.App.Controls.Controls.Keyboards.PpcKeyboards"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:keyboards="http://ferrettogroup.com/vw/keyboards"
+        xmlns:dialog="clr-namespace:Ferretto.VW.App.Controls"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Controls.Keyboards"
+        mc:Ignorable="d"
+        Title="PpcKeyboards" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBox x:Name="textBox"></TextBox>
+        
+        <keyboards:Keyboard Grid.Row="1" KeyboardCommand="Keyboard_KeyboardCommand" />
+    </Grid>
+</dialog:PpcDialogView>
