@@ -234,6 +234,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     break;
                                 }
                             }
+                            else if (this.Mission.NeedHomingAxis == Axis.BayChain)
+                            {
+                                this.Logger.LogInformation($"{this.GetType().Name}: Manual Horizontal positioning end Mission:Id={this.Mission.Id}");
+                                this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, false);
+                            }
+
                             if (this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Positioning)
                                 && (this.Mission.OpenShutterPosition == ShutterPosition.NotSpecified
                                     || this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Shutter))

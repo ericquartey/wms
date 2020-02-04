@@ -175,6 +175,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 break;
                             }
                         }
+                        else if (this.Mission.NeedHomingAxis == Axis.Horizontal)
+                        {
+                            this.Logger.LogInformation($"{this.GetType().Name}: Manual Horizontal positioning end Mission:Id={this.Mission.Id}");
+                            this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, true);
+                        }
 
                         if (this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Positioning)
                             && (this.Mission.OpenShutterPosition == ShutterPosition.NotSpecified
