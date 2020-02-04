@@ -20,6 +20,8 @@ using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Prism.Events;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json.Converters;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService
@@ -120,7 +122,12 @@ namespace Ferretto.VW.MAS.AutomationService
                       new RouteTokenTransformerConvention(
                         new SlugifyParameterTransformer()));
               })
-              .AddJsonOptions(options => options.SerializerSettings.Converters.Add(new IPAddressConverter()))
+              .AddJsonOptions(options =>
+              {
+                  options.SerializerSettings.Converters.Add(new IPAddressConverter());
+                  options.SerializerSettings.Converters.Add(new StringEnumConverter());
+                  options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+              })
               .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSignalR();

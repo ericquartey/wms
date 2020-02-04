@@ -1164,63 +1164,69 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Bay : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("carousel", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Carousel", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Carousel Carousel { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("chainOffset", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("ChainOffset", Required = Newtonsoft.Json.Required.Always)]
         public double ChainOffset { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("currentMission", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("CurrentMission", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Mission CurrentMission { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("currentWmsMissionOperationId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("CurrentWmsMissionOperationId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? CurrentWmsMissionOperationId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("emptyLoadMovement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("EmptyLoadMovement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public MovementParameters EmptyLoadMovement { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("fullLoadMovement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("FullLoadMovement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public MovementParameters FullLoadMovement { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("inverter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Inverter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Inverter Inverter { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("ioDevice", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("IoDevice", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public IoDevice IoDevice { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("isActive", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("IsActive", Required = Newtonsoft.Json.Required.Always)]
         public bool IsActive { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("isDouble", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("IsDouble", Required = Newtonsoft.Json.Required.Always)]
         public bool IsDouble { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("isExternal", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("IsExternal", Required = Newtonsoft.Json.Required.Always)]
         public bool IsExternal { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("laser", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Laser", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Laser Laser { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("number", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Number", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public BayNumber Number { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("operation", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Operation", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public BayOperation Operation { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("positions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Positions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<BayPosition> Positions { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("resolution", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Resolution", Required = Newtonsoft.Json.Required.Always)]
         public double Resolution { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("shutter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Shutter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Shutter Shutter { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("side", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Side", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public WarehouseSide Side { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Status", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public BayStatus Status { get; set; }
     
         public string ToJson() 
@@ -1238,22 +1244,22 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Carousel : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("assistedMovements", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("AssistedMovements", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public CarouselManualParameters AssistedMovements { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("elevatorDistance", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("ElevatorDistance", Required = Newtonsoft.Json.Required.Always)]
         public double ElevatorDistance { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("homingCreepSpeed", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("HomingCreepSpeed", Required = Newtonsoft.Json.Required.Always)]
         public double HomingCreepSpeed { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("homingFastSpeed", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("HomingFastSpeed", Required = Newtonsoft.Json.Required.Always)]
         public double HomingFastSpeed { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("lastIdealPosition", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("LastIdealPosition", Required = Newtonsoft.Json.Required.Always)]
         public double LastIdealPosition { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("manualMovements", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("ManualMovements", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public CarouselManualParameters ManualMovements { get; set; }
     
         public string ToJson() 
@@ -1271,7 +1277,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class CarouselManualParameters : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("feedRate", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("FeedRate", Required = Newtonsoft.Json.Required.Always)]
         public double FeedRate { get; set; }
     
         public string ToJson() 
@@ -1289,7 +1295,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class DataModel 
     {
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Id", Required = Newtonsoft.Json.Required.Always)]
         public int Id { get; set; }
     
         public string ToJson() 
@@ -1307,88 +1313,112 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Mission : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("action", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Action", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public CommandAction Action { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("bayNotifications", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("BayNotifications", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public MissionBayNotifications BayNotifications { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("closeShutterBayNumber", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("CloseShutterBayNumber", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public BayNumber CloseShutterBayNumber { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("creationDate", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("CreationDate", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTimeOffset CreationDate { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("destinationCellId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("DestinationCellId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? DestinationCellId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("deviceNotifications", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("DeviceNotifications", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public MissionDeviceNotifications DeviceNotifications { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("direction", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Direction", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public HorizontalMovementDirection Direction { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("ejectLoadUnit", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("EjectLoadUnit", Required = Newtonsoft.Json.Required.Always)]
         public bool EjectLoadUnit { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("errorMovements", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("ErrorMovements", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public MissionErrorMovements ErrorMovements { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("loadUnitCellSourceId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("LoadUnitCellSourceId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? LoadUnitCellSourceId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("loadUnitDestination", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("LoadUnitDestination", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public LoadingUnitLocation LoadUnitDestination { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("loadUnitId", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("LoadUnitId", Required = Newtonsoft.Json.Required.Always)]
         public int LoadUnitId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("loadUnitSource", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("LoadUnitSource", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public LoadingUnitLocation LoadUnitSource { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("missionType", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("MissionType", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public MissionType MissionType { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("needHomingAxis", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("NeedHomingAxis", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public Axis NeedHomingAxis { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("needMovingBackward", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("NeedMovingBackward", Required = Newtonsoft.Json.Required.Always)]
         public bool NeedMovingBackward { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("openShutterPosition", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("OpenShutterPosition", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public ShutterPosition OpenShutterPosition { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("priority", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Priority", Required = Newtonsoft.Json.Required.Always)]
         public int Priority { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("restoreConditions", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("RestoreConditions", Required = Newtonsoft.Json.Required.Always)]
         public bool RestoreConditions { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("restoreStep", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("RestoreStep", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public MissionStep RestoreStep { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Status", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public MissionStatus Status { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("step", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Step", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public MissionStep Step { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("stopReason", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("StopReason", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public StopRequestReason StopReason { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("targetBay", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("TargetBay", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public BayNumber TargetBay { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("wmsId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("WmsId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? WmsId { get; set; }
     
         public string ToJson() 
@@ -1406,18 +1436,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum CommandAction
     {
+        [System.Runtime.Serialization.EnumMember(Value = @"Start")]
         Start = 0,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Activate")]
         Activate = 1,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Pause")]
         Pause = 2,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Resume")]
         Resume = 3,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Abort")]
         Abort = 4,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Test")]
         Test = 5,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Stop")]
         Stop = 6,
     
     }
@@ -1446,17 +1483,23 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum BayNumber
     {
+        [System.Runtime.Serialization.EnumMember(Value = @"None")]
         None = 0,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"BayOne")]
         BayOne = 1,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"BayTwo")]
         BayTwo = 2,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"BayThree")]
         BayThree = 3,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"ElevatorBay")]
         ElevatorBay = 4,
     
-        All = 10,
+        [System.Runtime.Serialization.EnumMember(Value = @"All")]
+        All = 5,
     
     }
     
@@ -1481,10 +1524,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum HorizontalMovementDirection
     {
+        [System.Runtime.Serialization.EnumMember(Value = @"NotSpecified")]
         NotSpecified = 0,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Forwards")]
         Forwards = 1,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Backwards")]
         Backwards = 2,
     
     }
@@ -1513,48 +1559,70 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum LoadingUnitLocation
     {
+        [System.Runtime.Serialization.EnumMember(Value = @"NoLocation")]
         NoLocation = 0,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"InternalBay1Up")]
         InternalBay1Up = 1,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"InternalBay1Down")]
         InternalBay1Down = 2,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"InternalBay2Up")]
         InternalBay2Up = 3,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"InternalBay2Down")]
         InternalBay2Down = 4,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"InternalBay3Up")]
         InternalBay3Up = 5,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"InternalBay3Down")]
         InternalBay3Down = 6,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"ExternalBay1Up")]
         ExternalBay1Up = 7,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"ExternalBay1Down")]
         ExternalBay1Down = 8,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"ExternalBay2Up")]
         ExternalBay2Up = 9,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"ExternalBay2Down")]
         ExternalBay2Down = 10,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"ExternalBay3Up")]
         ExternalBay3Up = 11,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"ExternalBay3Down")]
         ExternalBay3Down = 12,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"CarouselBay1Up")]
         CarouselBay1Up = 13,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"CarouselBay1Down")]
         CarouselBay1Down = 14,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"CarouselBay2Up")]
         CarouselBay2Up = 15,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"CarouselBay2Down")]
         CarouselBay2Down = 16,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"CarouselBay3Up")]
         CarouselBay3Up = 17,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"CarouselBay3Down")]
         CarouselBay3Down = 18,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Cell")]
         Cell = 19,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnit")]
         LoadUnit = 20,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Elevator")]
         Elevator = 21,
     
     }
@@ -1562,18 +1630,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MissionType
     {
+        [System.Runtime.Serialization.EnumMember(Value = @"NoType")]
         NoType = 0,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Manual")]
         Manual = 1,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"WMS")]
         WMS = 2,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"IN")]
         IN = 3,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"OUT")]
         OUT = 4,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"FullTest")]
         FullTest = 5,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Compact")]
         Compact = 6,
     
     }
@@ -1581,14 +1656,19 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum Axis
     {
+        [System.Runtime.Serialization.EnumMember(Value = @"None")]
         None = 0,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Horizontal")]
         Horizontal = 1,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Vertical")]
         Vertical = 2,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"HorizontalAndVertical")]
         HorizontalAndVertical = 3,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"BayChain")]
         BayChain = 4,
     
     }
@@ -1596,14 +1676,19 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum ShutterPosition
     {
+        [System.Runtime.Serialization.EnumMember(Value = @"NotSpecified")]
         NotSpecified = 0,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Opened")]
         Opened = 1,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Half")]
         Half = 2,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Closed")]
         Closed = 3,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Intermediate")]
         Intermediate = 4,
     
     }
@@ -1611,33 +1696,47 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MissionStep
     {
+        [System.Runtime.Serialization.EnumMember(Value = @"NotDefined")]
         NotDefined = 0,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"New")]
         New = 1,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Start")]
         Start = 2,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"LoadElevator")]
         LoadElevator = 3,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"ToTarget")]
         ToTarget = 4,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"DepositUnit")]
         DepositUnit = 5,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"WaitPick")]
         WaitPick = 6,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"BayChain")]
         BayChain = 7,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"CloseShutter")]
         CloseShutter = 8,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"BackToTarget")]
         BackToTarget = 9,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"End")]
         End = 10,
     
-        Error = 101,
+        [System.Runtime.Serialization.EnumMember(Value = @"Error")]
+        Error = 11,
     
-        ErrorLoad = 102,
+        [System.Runtime.Serialization.EnumMember(Value = @"ErrorLoad")]
+        ErrorLoad = 12,
     
-        ErrorDeposit = 103,
+        [System.Runtime.Serialization.EnumMember(Value = @"ErrorDeposit")]
+        ErrorDeposit = 13,
     
     }
     
@@ -1667,16 +1766,22 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum StopRequestReason
     {
+        [System.Runtime.Serialization.EnumMember(Value = @"NoReason")]
         NoReason = 0,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Stop")]
         Stop = 1,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Error")]
         Error = 2,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Abort")]
         Abort = 3,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"RunningStateChanged")]
         RunningStateChanged = 4,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"FaultStateChanged")]
         FaultStateChanged = 5,
     
     }
@@ -1684,13 +1789,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class MovementParameters : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("acceleration", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Acceleration", Required = Newtonsoft.Json.Required.Always)]
         public double Acceleration { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("deceleration", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Deceleration", Required = Newtonsoft.Json.Required.Always)]
         public double Deceleration { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("speed", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Speed", Required = Newtonsoft.Json.Required.Always)]
         public double Speed { get; set; }
     
         public string ToJson() 
@@ -1708,16 +1813,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Inverter : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("index", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Index", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public InverterIndex Index { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("ipAddress", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("IpAddress", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public IPAddress IpAddress { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("tcpPort", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("TcpPort", Required = Newtonsoft.Json.Required.Always)]
         public int TcpPort { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Type", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public InverterType Type { get; set; }
     
         public string ToJson() 
@@ -1735,104 +1844,149 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum InverterIndex
     {
+        [System.Runtime.Serialization.EnumMember(Value = @"MainInverter")]
         MainInverter = 0,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Slave1")]
         Slave1 = 1,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Slave2")]
         Slave2 = 2,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Slave3")]
         Slave3 = 3,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Slave4")]
         Slave4 = 4,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Slave5")]
         Slave5 = 5,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Slave6")]
         Slave6 = 6,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Slave7")]
         Slave7 = 7,
     
-        All = 16,
+        [System.Runtime.Serialization.EnumMember(Value = @"All")]
+        All = 8,
     
-        None = 255,
+        [System.Runtime.Serialization.EnumMember(Value = @"None")]
+        None = 9,
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum AddressFamily
     {
+        [System.Runtime.Serialization.EnumMember(Value = @"Unspecified")]
         Unspecified = 0,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Unix")]
         Unix = 1,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"InterNetwork")]
         InterNetwork = 2,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"ImpLink")]
         ImpLink = 3,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Pup")]
         Pup = 4,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Chaos")]
         Chaos = 5,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"NS")]
         Ipx = 6,
     
-        NS = 6,
+        [System.Runtime.Serialization.EnumMember(Value = @"NS")]
+        NS = 7,
     
-        Iso = 7,
+        [System.Runtime.Serialization.EnumMember(Value = @"Osi")]
+        Iso = 8,
     
-        Osi = 7,
+        [System.Runtime.Serialization.EnumMember(Value = @"Osi")]
+        Osi = 9,
     
-        Ecma = 8,
+        [System.Runtime.Serialization.EnumMember(Value = @"Ecma")]
+        Ecma = 10,
     
-        DataKit = 9,
+        [System.Runtime.Serialization.EnumMember(Value = @"DataKit")]
+        DataKit = 11,
     
-        Ccitt = 10,
+        [System.Runtime.Serialization.EnumMember(Value = @"Ccitt")]
+        Ccitt = 12,
     
-        Sna = 11,
+        [System.Runtime.Serialization.EnumMember(Value = @"Sna")]
+        Sna = 13,
     
-        DecNet = 12,
+        [System.Runtime.Serialization.EnumMember(Value = @"DecNet")]
+        DecNet = 14,
     
-        DataLink = 13,
+        [System.Runtime.Serialization.EnumMember(Value = @"DataLink")]
+        DataLink = 15,
     
-        Lat = 14,
+        [System.Runtime.Serialization.EnumMember(Value = @"Lat")]
+        Lat = 16,
     
-        HyperChannel = 15,
+        [System.Runtime.Serialization.EnumMember(Value = @"HyperChannel")]
+        HyperChannel = 17,
     
-        AppleTalk = 16,
+        [System.Runtime.Serialization.EnumMember(Value = @"AppleTalk")]
+        AppleTalk = 18,
     
-        NetBios = 17,
+        [System.Runtime.Serialization.EnumMember(Value = @"NetBios")]
+        NetBios = 19,
     
-        VoiceView = 18,
+        [System.Runtime.Serialization.EnumMember(Value = @"VoiceView")]
+        VoiceView = 20,
     
-        FireFox = 19,
+        [System.Runtime.Serialization.EnumMember(Value = @"FireFox")]
+        FireFox = 21,
     
-        Banyan = 21,
+        [System.Runtime.Serialization.EnumMember(Value = @"Banyan")]
+        Banyan = 22,
     
-        Atm = 22,
+        [System.Runtime.Serialization.EnumMember(Value = @"Atm")]
+        Atm = 23,
     
-        InterNetworkV6 = 23,
+        [System.Runtime.Serialization.EnumMember(Value = @"InterNetworkV6")]
+        InterNetworkV6 = 24,
     
-        Cluster = 24,
+        [System.Runtime.Serialization.EnumMember(Value = @"Cluster")]
+        Cluster = 25,
     
-        Ieee12844 = 25,
+        [System.Runtime.Serialization.EnumMember(Value = @"Ieee12844")]
+        Ieee12844 = 26,
     
-        Irda = 26,
+        [System.Runtime.Serialization.EnumMember(Value = @"Irda")]
+        Irda = 27,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"NetworkDesigners")]
         NetworkDesigners = 28,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Max")]
         Max = 29,
     
-        Unknown = -1,
+        [System.Runtime.Serialization.EnumMember(Value = @"Unknown")]
+        Unknown = 30,
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum InverterType
     {
+        [System.Runtime.Serialization.EnumMember(Value = @"Undefined")]
         Undefined = 0,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Ang")]
         Ang = 1,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Agl")]
         Agl = 2,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Acu")]
         Acu = 3,
     
     }
@@ -1840,13 +1994,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class IoDevice : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("index", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Index", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public IoIndex Index { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("ipAddress", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("IpAddress", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public IPAddress IpAddress { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("tcpPort", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("TcpPort", Required = Newtonsoft.Json.Required.Always)]
         public int TcpPort { get; set; }
     
         public string ToJson() 
@@ -1864,28 +2020,33 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum IoIndex
     {
+        [System.Runtime.Serialization.EnumMember(Value = @"IoDevice1")]
         IoDevice1 = 0,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"IoDevice2")]
         IoDevice2 = 1,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"IoDevice3")]
         IoDevice3 = 2,
     
-        All = 16,
+        [System.Runtime.Serialization.EnumMember(Value = @"All")]
+        All = 3,
     
-        None = 255,
+        [System.Runtime.Serialization.EnumMember(Value = @"None")]
+        None = 4,
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Laser : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("bayId", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("BayId", Required = Newtonsoft.Json.Required.Always)]
         public int BayId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("ipAddress", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("IpAddress", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public IPAddress IpAddress { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("tcpPort", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("TcpPort", Required = Newtonsoft.Json.Required.Always)]
         public int TcpPort { get; set; }
     
         public string ToJson() 
@@ -1903,8 +2064,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum BayOperation
     {
+        [System.Runtime.Serialization.EnumMember(Value = @"Idle")]
         Idle = 0,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"ExecutingMission")]
         ExecutingMission = 1,
     
     }
@@ -1912,25 +2075,27 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class BayPosition : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Height", Required = Newtonsoft.Json.Required.Always)]
         public double Height { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("isUpper", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("IsUpper", Required = Newtonsoft.Json.Required.Always)]
         public bool IsUpper { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("loadingUnit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("LoadingUnit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public LoadingUnit LoadingUnit { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("location", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Location", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public LoadingUnitLocation Location { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("maxDoubleHeight", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("MaxDoubleHeight", Required = Newtonsoft.Json.Required.Always)]
         public double MaxDoubleHeight { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("maxSingleHeight", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("MaxSingleHeight", Required = Newtonsoft.Json.Required.Always)]
         public double MaxSingleHeight { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("profileOffset", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("ProfileOffset", Required = Newtonsoft.Json.Required.Always)]
         public double ProfileOffset { get; set; }
     
         public string ToJson() 
@@ -1948,40 +2113,42 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class LoadingUnit : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("cell", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Cell", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Cell Cell { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("cellId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("CellId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? CellId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Code { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Description { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("grossWeight", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("GrossWeight", Required = Newtonsoft.Json.Required.Always)]
         public double GrossWeight { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Height", Required = Newtonsoft.Json.Required.Always)]
         public double Height { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("isIntoMachine", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("IsIntoMachine", Required = Newtonsoft.Json.Required.Always)]
         public bool IsIntoMachine { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("maxNetWeight", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("MaxNetWeight", Required = Newtonsoft.Json.Required.Always)]
         public double MaxNetWeight { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("missionsCount", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("MissionsCount", Required = Newtonsoft.Json.Required.Always)]
         public int MissionsCount { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("netWeight", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("NetWeight", Required = Newtonsoft.Json.Required.Always)]
         public double NetWeight { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Status", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public LoadingUnitStatus Status { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("tare", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Tare", Required = Newtonsoft.Json.Required.Always)]
         public double Tare { get; set; }
     
         public string ToJson() 
@@ -1999,24 +2166,24 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Cell : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("blockLevel", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("BlockLevel", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public BlockLevel BlockLevel { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("isFree", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("IsFree", Required = Newtonsoft.Json.Required.Always)]
         public bool IsFree { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("panelId", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("PanelId", Required = Newtonsoft.Json.Required.Always)]
         public int PanelId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("position", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Position", Required = Newtonsoft.Json.Required.Always)]
         public double Position { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("priority", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Priority", Required = Newtonsoft.Json.Required.Always)]
         public int Priority { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("side", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Side", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public WarehouseSide Side { get; set; }
@@ -2067,14 +2234,19 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum LoadingUnitStatus
     {
+        [System.Runtime.Serialization.EnumMember(Value = @"Undefined")]
         Undefined = 0,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"InBay")]
         InBay = 1,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"OnMovementToLocation")]
         OnMovementToLocation = 2,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"OnMovementToBay")]
         OnMovementToBay = 3,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"InLocation")]
         InLocation = 4,
     
     }
@@ -2082,16 +2254,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Shutter : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("assistedMovements", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("AssistedMovements", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public ShutterManualParameters AssistedMovements { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("inverter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Inverter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Inverter Inverter { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("manualMovements", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("ManualMovements", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public ShutterManualParameters ManualMovements { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Type", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public ShutterType Type { get; set; }
     
         public string ToJson() 
@@ -2109,19 +2283,19 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class ShutterManualParameters : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("feedRate", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("FeedRate", Required = Newtonsoft.Json.Required.Always)]
         public double FeedRate { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("highSpeedDurationClose", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("HighSpeedDurationClose", Required = Newtonsoft.Json.Required.Always)]
         public double HighSpeedDurationClose { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("highSpeedDurationOpen", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("HighSpeedDurationOpen", Required = Newtonsoft.Json.Required.Always)]
         public double HighSpeedDurationOpen { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("maxSpeed", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("MaxSpeed", Required = Newtonsoft.Json.Required.Always)]
         public double MaxSpeed { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("minSpeed", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("MinSpeed", Required = Newtonsoft.Json.Required.Always)]
         public double MinSpeed { get; set; }
     
         public string ToJson() 
@@ -2139,10 +2313,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum ShutterType
     {
+        [System.Runtime.Serialization.EnumMember(Value = @"NotSpecified")]
         NotSpecified = 0,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"TwoSensors")]
         TwoSensors = 1,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"ThreeSensors")]
         ThreeSensors = 2,
     
     }
@@ -2150,12 +2327,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum BayStatus
     {
+        [System.Runtime.Serialization.EnumMember(Value = @"Disconnected")]
         Disconnected = 0,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Idle")]
         Idle = 1,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Busy")]
         Busy = 2,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Errored")]
         Errored = 3,
     
     }
@@ -2202,10 +2383,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class PositioningProcedure : SetupProcedure
     {
-        [Newtonsoft.Json.JsonProperty("inProgress", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("InProgress", Required = Newtonsoft.Json.Required.Always)]
         public bool InProgress { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("step", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Step", Required = Newtonsoft.Json.Required.Always)]
         public double Step { get; set; }
     
         public string ToJson() 
@@ -2223,10 +2404,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class SetupProcedure : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("feedRate", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("FeedRate", Required = Newtonsoft.Json.Required.Always)]
         public double FeedRate { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("isCompleted", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("IsCompleted", Required = Newtonsoft.Json.Required.Always)]
         public bool IsCompleted { get; set; }
     
         public string ToJson() 
@@ -2244,13 +2425,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class ActionPolicy 
     {
-        [Newtonsoft.Json.JsonProperty("isAllowed", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("IsAllowed", Required = Newtonsoft.Json.Required.Always)]
         public bool IsAllowed { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("reason", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Reason", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Reason { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("reasonType", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("ReasonType", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public ReasonType ReasonType { get; set; }
     
         public string ToJson() 
@@ -2268,8 +2451,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum ReasonType
     {
+        [System.Runtime.Serialization.EnumMember(Value = @"None")]
         None = 0,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"ElevatorInPosition")]
         ElevatorInPosition = 1,
     
     }
@@ -2277,8 +2462,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum VerticalMovementDirection
     {
+        [System.Runtime.Serialization.EnumMember(Value = @"Up")]
         Up = 0,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Down")]
         Down = 1,
     
     }
@@ -2286,12 +2473,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MovementCategory
     {
+        [System.Runtime.Serialization.EnumMember(Value = @"None")]
         None = 0,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Manual")]
         Manual = 1,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Assisted")]
         Assisted = 2,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Automatic")]
         Automatic = 3,
     
     }
@@ -2299,13 +2490,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class CellPanel : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("cells", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Cells", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<Cell> Cells { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("isChecked", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("IsChecked", Required = Newtonsoft.Json.Required.Always)]
         public bool IsChecked { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("side", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Side", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public WarehouseSide Side { get; set; }
@@ -2325,19 +2516,19 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class CellStatisticsSummary 
     {
-        [Newtonsoft.Json.JsonProperty("cellOccupationPercentage", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("CellOccupationPercentage", Required = Newtonsoft.Json.Required.Always)]
         public double CellOccupationPercentage { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("cellStatusStatistics", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("CellStatusStatistics", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<CellStatusStatistics> CellStatusStatistics { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("totalBackCells", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("TotalBackCells", Required = Newtonsoft.Json.Required.Always)]
         public int TotalBackCells { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("totalCells", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("TotalCells", Required = Newtonsoft.Json.Required.Always)]
         public int TotalCells { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("totalFrontCells", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("TotalFrontCells", Required = Newtonsoft.Json.Required.Always)]
         public int TotalFrontCells { get; set; }
     
         public string ToJson() 
@@ -2355,19 +2546,19 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class CellStatusStatistics 
     {
-        [Newtonsoft.Json.JsonProperty("isFree", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("IsFree", Required = Newtonsoft.Json.Required.Always)]
         public bool IsFree { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("ratioBackCells", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("RatioBackCells", Required = Newtonsoft.Json.Required.Always)]
         public double RatioBackCells { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("ratioFrontCells", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("RatioFrontCells", Required = Newtonsoft.Json.Required.Always)]
         public double RatioFrontCells { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("totalBackCells", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("TotalBackCells", Required = Newtonsoft.Json.Required.Always)]
         public int TotalBackCells { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("totalFrontCells", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("TotalFrontCells", Required = Newtonsoft.Json.Required.Always)]
         public int TotalFrontCells { get; set; }
     
         public string ToJson() 
@@ -2385,13 +2576,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class VertimagConfiguration 
     {
-        [Newtonsoft.Json.JsonProperty("loadingUnits", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("LoadingUnits", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<LoadingUnit> LoadingUnits { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("machine", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Machine", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Machine Machine { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("setupProcedures", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("SetupProcedures", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupProceduresSet SetupProcedures { get; set; }
     
         public string ToJson() 
@@ -2409,34 +2600,34 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Machine : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("bays", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Bays", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<Bay> Bays { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("elevator", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Elevator", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Elevator Elevator { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Height", Required = Newtonsoft.Json.Required.Always)]
         public double Height { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("loadUnitMaxHeight", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("LoadUnitMaxHeight", Required = Newtonsoft.Json.Required.Always)]
         public double LoadUnitMaxHeight { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("loadUnitMaxNetWeight", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("LoadUnitMaxNetWeight", Required = Newtonsoft.Json.Required.Always)]
         public double LoadUnitMaxNetWeight { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("loadUnitTare", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("LoadUnitTare", Required = Newtonsoft.Json.Required.Always)]
         public double LoadUnitTare { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("maxGrossWeight", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("MaxGrossWeight", Required = Newtonsoft.Json.Required.Always)]
         public double MaxGrossWeight { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("modelName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("ModelName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ModelName { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("panels", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Panels", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<CellPanel> Panels { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("serialNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("SerialNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string SerialNumber { get; set; }
     
         public string ToJson() 
@@ -2454,22 +2645,22 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Elevator : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("axes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Axes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<ElevatorAxis> Axes { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("bayPosition", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("BayPosition", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public BayPosition BayPosition { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("cell", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Cell", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Cell Cell { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("loadingUnit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("LoadingUnit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public LoadingUnit LoadingUnit { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("loadingUnitId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("LoadingUnitId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? LoadingUnitId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("structuralProperties", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("StructuralProperties", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public ElevatorStructuralProperties StructuralProperties { get; set; }
     
         public string ToJson() 
@@ -2487,70 +2678,72 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class ElevatorAxis : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("assistedMovements", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("AssistedMovements", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public ElevatorAxisManualParameters AssistedMovements { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("brakeActivatePercent", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("BrakeActivatePercent", Required = Newtonsoft.Json.Required.Always)]
         public double BrakeActivatePercent { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("brakeReleaseTime", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("BrakeReleaseTime", Required = Newtonsoft.Json.Required.Always)]
         public double BrakeReleaseTime { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("chainOffset", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("ChainOffset", Required = Newtonsoft.Json.Required.Always)]
         public double ChainOffset { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("emptyLoadMovement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("EmptyLoadMovement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public MovementParameters EmptyLoadMovement { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("fullLoadMovement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("FullLoadMovement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public MovementParameters FullLoadMovement { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("homingCreepSpeed", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("HomingCreepSpeed", Required = Newtonsoft.Json.Required.Always)]
         public double HomingCreepSpeed { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("homingFastSpeed", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("HomingFastSpeed", Required = Newtonsoft.Json.Required.Always)]
         public double HomingFastSpeed { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("inverter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Inverter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Inverter Inverter { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("lastIdealPosition", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("LastIdealPosition", Required = Newtonsoft.Json.Required.Always)]
         public double LastIdealPosition { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("lowerBound", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("LowerBound", Required = Newtonsoft.Json.Required.Always)]
         public double LowerBound { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("manualMovements", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("ManualMovements", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public ElevatorAxisManualParameters ManualMovements { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("offset", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Offset", Required = Newtonsoft.Json.Required.Always)]
         public double Offset { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("orientation", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Orientation", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public Orientation Orientation { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("profileCalibrateLength", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("ProfileCalibrateLength", Required = Newtonsoft.Json.Required.Always)]
         public double ProfileCalibrateLength { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("profileCalibratePosition", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("ProfileCalibratePosition", Required = Newtonsoft.Json.Required.Always)]
         public int ProfileCalibratePosition { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("profileCalibrateSpeed", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("ProfileCalibrateSpeed", Required = Newtonsoft.Json.Required.Always)]
         public double ProfileCalibrateSpeed { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("profiles", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Profiles", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<MovementProfile> Profiles { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("resolution", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Resolution", Required = Newtonsoft.Json.Required.Always)]
         public double Resolution { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("totalCycles", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("TotalCycles", Required = Newtonsoft.Json.Required.Always)]
         public int TotalCycles { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("upperBound", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("UpperBound", Required = Newtonsoft.Json.Required.Always)]
         public double UpperBound { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("weightMeasurement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("WeightMeasurement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public WeightMeasurement WeightMeasurement { get; set; }
     
         public string ToJson() 
@@ -2568,16 +2761,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class ElevatorAxisManualParameters : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("feedRate", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("FeedRate", Required = Newtonsoft.Json.Required.Always)]
         public double FeedRate { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("feedRateAfterZero", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("FeedRateAfterZero", Required = Newtonsoft.Json.Required.Always)]
         public double FeedRateAfterZero { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("targetDistance", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("TargetDistance", Required = Newtonsoft.Json.Required.Always)]
         public double TargetDistance { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("targetDistanceAfterZero", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("TargetDistanceAfterZero", Required = Newtonsoft.Json.Required.Always)]
         public double TargetDistanceAfterZero { get; set; }
     
         public string ToJson() 
@@ -2595,10 +2788,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum Orientation
     {
+        [System.Runtime.Serialization.EnumMember(Value = @"Undefined")]
         Undefined = 0,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Vertical")]
         Vertical = 1,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Horizontal")]
         Horizontal = 2,
     
     }
@@ -2606,13 +2802,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class MovementProfile : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Name", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public MovementProfileType Name { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("steps", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Steps", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<StepMovementParameters> Steps { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("totalDistance", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("TotalDistance", Required = Newtonsoft.Json.Required.Always)]
         public double TotalDistance { get; set; }
     
         public string ToJson() 
@@ -2630,14 +2828,19 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MovementProfileType
     {
+        [System.Runtime.Serialization.EnumMember(Value = @"Undefined")]
         Undefined = 0,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"ShortPickup")]
         ShortPickup = 1,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"ShortDeposit")]
         ShortDeposit = 2,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"LongDeposit")]
         LongDeposit = 3,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"LongPickup")]
         LongPickup = 4,
     
     }
@@ -2645,13 +2848,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class StepMovementParameters : MovementParameters
     {
-        [Newtonsoft.Json.JsonProperty("adjustByWeight", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("AdjustByWeight", Required = Newtonsoft.Json.Required.Always)]
         public bool AdjustByWeight { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("number", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Number", Required = Newtonsoft.Json.Required.Always)]
         public int Number { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("position", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Position", Required = Newtonsoft.Json.Required.Always)]
         public double Position { get; set; }
     
         public string ToJson() 
@@ -2669,19 +2872,19 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class WeightMeasurement : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("measureConst0", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("MeasureConst0", Required = Newtonsoft.Json.Required.Always)]
         public double MeasureConst0 { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("measureConst1", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("MeasureConst1", Required = Newtonsoft.Json.Required.Always)]
         public double MeasureConst1 { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("measureConst2", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("MeasureConst2", Required = Newtonsoft.Json.Required.Always)]
         public double MeasureConst2 { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("measureSpeed", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("MeasureSpeed", Required = Newtonsoft.Json.Required.Always)]
         public double MeasureSpeed { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("measureTime", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("MeasureTime", Required = Newtonsoft.Json.Required.Always)]
         public int MeasureTime { get; set; }
     
         public string ToJson() 
@@ -2699,25 +2902,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class ElevatorStructuralProperties : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("beltRigidity", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("BeltRigidity", Required = Newtonsoft.Json.Required.Always)]
         public int BeltRigidity { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("beltSpacing", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("BeltSpacing", Required = Newtonsoft.Json.Required.Always)]
         public double BeltSpacing { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("elevatorWeight", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("ElevatorWeight", Required = Newtonsoft.Json.Required.Always)]
         public double ElevatorWeight { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("halfShaftLength", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("HalfShaftLength", Required = Newtonsoft.Json.Required.Always)]
         public double HalfShaftLength { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("pulleyDiameter", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("PulleyDiameter", Required = Newtonsoft.Json.Required.Always)]
         public double PulleyDiameter { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("shaftDiameter", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("ShaftDiameter", Required = Newtonsoft.Json.Required.Always)]
         public double ShaftDiameter { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("shaftElasticity", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("ShaftElasticity", Required = Newtonsoft.Json.Required.Always)]
         public double ShaftElasticity { get; set; }
     
         public string ToJson() 
@@ -2735,49 +2938,49 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class SetupProceduresSet : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("bay1HeightCheck", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Bay1HeightCheck", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public PositioningProcedure Bay1HeightCheck { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("bay1ShutterTest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Bay1ShutterTest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public RepeatedTestProcedure Bay1ShutterTest { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("bay2HeightCheck", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Bay2HeightCheck", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public PositioningProcedure Bay2HeightCheck { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("bay2ShutterTest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Bay2ShutterTest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public RepeatedTestProcedure Bay2ShutterTest { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("bay3HeightCheck", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Bay3HeightCheck", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public PositioningProcedure Bay3HeightCheck { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("bay3ShutterTest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Bay3ShutterTest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public RepeatedTestProcedure Bay3ShutterTest { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("beltBurnishingTest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("BeltBurnishingTest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public RepeatedTestProcedure BeltBurnishingTest { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("cellPanelsCheck", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("CellPanelsCheck", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public PositioningProcedure CellPanelsCheck { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("cellsHeightCheck", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("CellsHeightCheck", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public PositioningProcedure CellsHeightCheck { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("depositAndPickUpTest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("DepositAndPickUpTest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public RepeatedTestProcedure DepositAndPickUpTest { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("loadFirstDrawerTest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("LoadFirstDrawerTest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupProcedure LoadFirstDrawerTest { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("shutterHeightCheck", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("ShutterHeightCheck", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupProcedure ShutterHeightCheck { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("verticalOffsetCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("VerticalOffsetCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public OffsetCalibrationProcedure VerticalOffsetCalibration { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("verticalOriginCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("VerticalOriginCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupProcedure VerticalOriginCalibration { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("verticalResolutionCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("VerticalResolutionCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public VerticalResolutionCalibrationProcedure VerticalResolutionCalibration { get; set; }
     
         public string ToJson() 
@@ -2795,13 +2998,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class RepeatedTestProcedure : SetupProcedure
     {
-        [Newtonsoft.Json.JsonProperty("inProgress", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("InProgress", Required = Newtonsoft.Json.Required.Always)]
         public bool InProgress { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("performedCycles", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("PerformedCycles", Required = Newtonsoft.Json.Required.Always)]
         public int PerformedCycles { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("requiredCycles", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("RequiredCycles", Required = Newtonsoft.Json.Required.Always)]
         public int RequiredCycles { get; set; }
     
         public string ToJson() 
@@ -2819,7 +3022,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class OffsetCalibrationProcedure : PositioningProcedure
     {
-        [Newtonsoft.Json.JsonProperty("referenceCellId", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("ReferenceCellId", Required = Newtonsoft.Json.Required.Always)]
         public int ReferenceCellId { get; set; }
     
         public string ToJson() 
@@ -2837,13 +3040,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class VerticalResolutionCalibrationProcedure : SetupProcedure
     {
-        [Newtonsoft.Json.JsonProperty("finalPosition", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("FinalPosition", Required = Newtonsoft.Json.Required.Always)]
         public double FinalPosition { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("initialPosition", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("InitialPosition", Required = Newtonsoft.Json.Required.Always)]
         public double InitialPosition { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("startPosition", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("StartPosition", Required = Newtonsoft.Json.Required.Always)]
         public double StartPosition { get; set; }
     
         public string ToJson() 
@@ -2861,10 +3064,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class ValueTupleOfIEnumerableOfInverterDeviceInfoAndIEnumerableOfIoDeviceInfo 
     {
-        [Newtonsoft.Json.JsonProperty("item1", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Item1", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<InverterDeviceInfo> Item1 { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("item2", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Item2", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<IoDeviceInfo> Item2 { get; set; }
     
         public string ToJson() 
@@ -2882,13 +3085,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class InverterDeviceInfo : DeviceBase
     {
-        [Newtonsoft.Json.JsonProperty("controlWords", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("ControlWords", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<BitInfo> ControlWords { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("digitalInputs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("DigitalInputs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<BitInfo> DigitalInputs { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("statusWords", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("StatusWords", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<BitInfo> StatusWords { get; set; }
     
         public string ToJson() 
@@ -2906,16 +3109,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class BitInfo 
     {
-        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Description { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("isUsed", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("IsUsed", Required = Newtonsoft.Json.Required.Always)]
         public bool IsUsed { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Name { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Value", Required = Newtonsoft.Json.Required.Always)]
         public bool Value { get; set; }
     
         public string ToJson() 
@@ -2933,7 +3136,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class DeviceBase 
     {
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Id", Required = Newtonsoft.Json.Required.Always)]
         public int Id { get; set; }
     
         public string ToJson() 
@@ -2951,13 +3154,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class IoDeviceInfo : DeviceBase
     {
-        [Newtonsoft.Json.JsonProperty("inputs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Inputs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<BitInfo> Inputs { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("ioStatuses", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("IoStatuses", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<BitInfo> IoStatuses { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("outputs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Outputs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<BitInfo> Outputs { get; set; }
     
         public string ToJson() 
@@ -2975,19 +3178,19 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class ElevatorPosition 
     {
-        [Newtonsoft.Json.JsonProperty("bayPositionId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("BayPositionId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? BayPositionId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("bayPositionUpper", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("BayPositionUpper", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? BayPositionUpper { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("cellId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("CellId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? CellId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("horizontal", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Horizontal", Required = Newtonsoft.Json.Required.Always)]
         public double Horizontal { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("vertical", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Vertical", Required = Newtonsoft.Json.Required.Always)]
         public double Vertical { get; set; }
     
         public string ToJson() 
@@ -3005,10 +3208,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class AxisBounds 
     {
-        [Newtonsoft.Json.JsonProperty("lower", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Lower", Required = Newtonsoft.Json.Required.Always)]
         public double Lower { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("upper", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Upper", Required = Newtonsoft.Json.Required.Always)]
         public double Upper { get; set; }
     
         public string ToJson() 
@@ -3026,32 +3229,34 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class MachineError : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("bayNumber", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("BayNumber", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public BayNumber BayNumber { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Code", Required = Newtonsoft.Json.Required.Always)]
         public int Code { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Description { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("detailCode", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("DetailCode", Required = Newtonsoft.Json.Required.Always)]
         public int DetailCode { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("inverterIndex", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("InverterIndex", Required = Newtonsoft.Json.Required.Always)]
         public int InverterIndex { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("occurrenceDate", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("OccurrenceDate", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTimeOffset OccurrenceDate { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("reason", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Reason", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Reason { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("resolutionDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("ResolutionDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset? ResolutionDate { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("severity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Severity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? Severity { get; set; }
     
         public string ToJson() 
@@ -3069,19 +3274,19 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class ErrorStatisticsSummary 
     {
-        [Newtonsoft.Json.JsonProperty("errors", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Errors", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<ErrorStatisticsDetail> Errors { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("reliabilityPercentage", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("ReliabilityPercentage", Required = Newtonsoft.Json.Required.Always)]
         public double ReliabilityPercentage { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("totalErrors", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("TotalErrors", Required = Newtonsoft.Json.Required.Always)]
         public int TotalErrors { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("totalLoadingUnits", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("TotalLoadingUnits", Required = Newtonsoft.Json.Required.Always)]
         public int TotalLoadingUnits { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("totalLoadingUnitsBetweenErrors", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("TotalLoadingUnitsBetweenErrors", Required = Newtonsoft.Json.Required.Always)]
         public int TotalLoadingUnitsBetweenErrors { get; set; }
     
         public string ToJson() 
@@ -3099,16 +3304,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class ErrorStatisticsDetail 
     {
-        [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Code", Required = Newtonsoft.Json.Required.Always)]
         public int Code { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Description { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("ratioTotal", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("RatioTotal", Required = Newtonsoft.Json.Required.Always)]
         public double RatioTotal { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("total", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Total", Required = Newtonsoft.Json.Required.Always)]
         public int Total { get; set; }
     
         public string ToJson() 
@@ -3126,211 +3331,294 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MachineErrorCode
     {
-        CradleNotCompletelyLoaded = 1,
+        [System.Runtime.Serialization.EnumMember(Value = @"CradleNotCompletelyLoaded")]
+        CradleNotCompletelyLoaded = 0,
     
-        ConditionsNotMetForPositioning = 2,
+        [System.Runtime.Serialization.EnumMember(Value = @"ConditionsNotMetForPositioning")]
+        ConditionsNotMetForPositioning = 1,
     
-        ConditionsNotMetForRunning = 3,
+        [System.Runtime.Serialization.EnumMember(Value = @"ConditionsNotMetForRunning")]
+        ConditionsNotMetForRunning = 2,
     
-        ConditionsNotMetForHoming = 4,
+        [System.Runtime.Serialization.EnumMember(Value = @"ConditionsNotMetForHoming")]
+        ConditionsNotMetForHoming = 3,
     
-        SecurityWasTriggered = 5,
+        [System.Runtime.Serialization.EnumMember(Value = @"SecurityWasTriggered")]
+        SecurityWasTriggered = 4,
     
-        SecurityButtonWasTriggered = 6,
+        [System.Runtime.Serialization.EnumMember(Value = @"SecurityButtonWasTriggered")]
+        SecurityButtonWasTriggered = 5,
     
-        SecurityBarrierWasTriggered = 7,
+        [System.Runtime.Serialization.EnumMember(Value = @"SecurityBarrierWasTriggered")]
+        SecurityBarrierWasTriggered = 6,
     
-        SecuritySensorWasTriggered = 8,
+        [System.Runtime.Serialization.EnumMember(Value = @"SecuritySensorWasTriggered")]
+        SecuritySensorWasTriggered = 7,
     
-        InverterFaultStateDetected = 9,
+        [System.Runtime.Serialization.EnumMember(Value = @"InverterFaultStateDetected")]
+        InverterFaultStateDetected = 8,
     
-        CradleNotCorrectlyLoadedDuringPickup = 10,
+        [System.Runtime.Serialization.EnumMember(Value = @"CradleNotCorrectlyLoadedDuringPickup")]
+        CradleNotCorrectlyLoadedDuringPickup = 9,
     
-        CradleNotCorrectlyUnloadedDuringDeposit = 11,
+        [System.Runtime.Serialization.EnumMember(Value = @"CradleNotCorrectlyUnloadedDuringDeposit")]
+        CradleNotCorrectlyUnloadedDuringDeposit = 10,
     
-        ZeroSensorErrorAfterPickup = 12,
+        [System.Runtime.Serialization.EnumMember(Value = @"ZeroSensorErrorAfterPickup")]
+        ZeroSensorErrorAfterPickup = 11,
     
-        ZeroSensorErrorAfterDeposit = 13,
+        [System.Runtime.Serialization.EnumMember(Value = @"ZeroSensorErrorAfterDeposit")]
+        ZeroSensorErrorAfterDeposit = 12,
     
-        InvalidPresenceSensors = 14,
+        [System.Runtime.Serialization.EnumMember(Value = @"InvalidPresenceSensors")]
+        InvalidPresenceSensors = 13,
     
-        MissingZeroSensorWithEmptyElevator = 15,
+        [System.Runtime.Serialization.EnumMember(Value = @"MissingZeroSensorWithEmptyElevator")]
+        MissingZeroSensorWithEmptyElevator = 14,
     
-        ZeroSensorActiveWithFullElevator = 16,
+        [System.Runtime.Serialization.EnumMember(Value = @"ZeroSensorActiveWithFullElevator")]
+        ZeroSensorActiveWithFullElevator = 15,
     
-        LoadUnitPresentOnEmptyElevator = 17,
+        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitPresentOnEmptyElevator")]
+        LoadUnitPresentOnEmptyElevator = 16,
     
-        TopLevelBayOccupied = 18,
+        [System.Runtime.Serialization.EnumMember(Value = @"TopLevelBayOccupied")]
+        TopLevelBayOccupied = 17,
     
-        BottomLevelBayOccupied = 19,
+        [System.Runtime.Serialization.EnumMember(Value = @"BottomLevelBayOccupied")]
+        BottomLevelBayOccupied = 18,
     
-        TopLevelBayEmpty = 20,
+        [System.Runtime.Serialization.EnumMember(Value = @"TopLevelBayEmpty")]
+        TopLevelBayEmpty = 19,
     
-        BottomLevelBayEmpty = 21,
+        [System.Runtime.Serialization.EnumMember(Value = @"BottomLevelBayEmpty")]
+        BottomLevelBayEmpty = 20,
     
-        SensorZeroBayNotActiveAtStart = 22,
+        [System.Runtime.Serialization.EnumMember(Value = @"SensorZeroBayNotActiveAtStart")]
+        SensorZeroBayNotActiveAtStart = 21,
     
-        InverterConnectionError = 23,
+        [System.Runtime.Serialization.EnumMember(Value = @"InverterConnectionError")]
+        InverterConnectionError = 22,
     
-        IoDeviceConnectionError = 24,
+        [System.Runtime.Serialization.EnumMember(Value = @"IoDeviceConnectionError")]
+        IoDeviceConnectionError = 23,
     
-        LaserConnectionError = 25,
+        [System.Runtime.Serialization.EnumMember(Value = @"LaserConnectionError")]
+        LaserConnectionError = 24,
     
-        LoadUnitWeightExceeded = 26,
+        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitWeightExceeded")]
+        LoadUnitWeightExceeded = 25,
     
-        LoadUnitHeightExceeded = 27,
+        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitHeightExceeded")]
+        LoadUnitHeightExceeded = 26,
     
-        LoadUnitWeightTooLow = 28,
+        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitWeightTooLow")]
+        LoadUnitWeightTooLow = 27,
     
-        MachineWeightExceeded = 29,
+        [System.Runtime.Serialization.EnumMember(Value = @"MachineWeightExceeded")]
+        MachineWeightExceeded = 28,
     
-        DestinationBelowLowerBound = 30,
+        [System.Runtime.Serialization.EnumMember(Value = @"DestinationBelowLowerBound")]
+        DestinationBelowLowerBound = 29,
     
-        DestinationOverUpperBound = 31,
+        [System.Runtime.Serialization.EnumMember(Value = @"DestinationOverUpperBound")]
+        DestinationOverUpperBound = 30,
     
-        BayInvertersBusy = 32,
+        [System.Runtime.Serialization.EnumMember(Value = @"BayInvertersBusy")]
+        BayInvertersBusy = 31,
     
-        IoDeviceError = 33,
+        [System.Runtime.Serialization.EnumMember(Value = @"IoDeviceError")]
+        IoDeviceError = 32,
     
-        MachineModeNotValid = 34,
+        [System.Runtime.Serialization.EnumMember(Value = @"MachineModeNotValid")]
+        MachineModeNotValid = 33,
     
-        AnotherMissionIsActiveForThisLoadUnit = 35,
+        [System.Runtime.Serialization.EnumMember(Value = @"AnotherMissionIsActiveForThisLoadUnit")]
+        AnotherMissionIsActiveForThisLoadUnit = 34,
     
-        AnotherMissionIsActiveForThisBay = 36,
+        [System.Runtime.Serialization.EnumMember(Value = @"AnotherMissionIsActiveForThisBay")]
+        AnotherMissionIsActiveForThisBay = 35,
     
-        AnotherMissionOfThisTypeIsActive = 37,
+        [System.Runtime.Serialization.EnumMember(Value = @"AnotherMissionOfThisTypeIsActive")]
+        AnotherMissionOfThisTypeIsActive = 36,
     
-        WarehouseIsFull = 38,
+        [System.Runtime.Serialization.EnumMember(Value = @"WarehouseIsFull")]
+        WarehouseIsFull = 37,
     
-        CellLogicallyOccupied = 39,
+        [System.Runtime.Serialization.EnumMember(Value = @"CellLogicallyOccupied")]
+        CellLogicallyOccupied = 38,
     
-        MoveBayChainNotAllowed = 40,
+        [System.Runtime.Serialization.EnumMember(Value = @"MoveBayChainNotAllowed")]
+        MoveBayChainNotAllowed = 39,
     
-        AutomaticRestoreNotAllowed = 41,
+        [System.Runtime.Serialization.EnumMember(Value = @"AutomaticRestoreNotAllowed")]
+        AutomaticRestoreNotAllowed = 40,
     
-        DestinationTypeNotValid = 42,
+        [System.Runtime.Serialization.EnumMember(Value = @"DestinationTypeNotValid")]
+        DestinationTypeNotValid = 41,
     
-        MissionTypeNotValid = 43,
+        [System.Runtime.Serialization.EnumMember(Value = @"MissionTypeNotValid")]
+        MissionTypeNotValid = 42,
     
-        ResumeCommandNotValid = 44,
+        [System.Runtime.Serialization.EnumMember(Value = @"ResumeCommandNotValid")]
+        ResumeCommandNotValid = 43,
     
-        DestinationBayNotCalibrated = 45,
+        [System.Runtime.Serialization.EnumMember(Value = @"DestinationBayNotCalibrated")]
+        DestinationBayNotCalibrated = 44,
     
-        NoLoadUnitInSource = 46,
+        [System.Runtime.Serialization.EnumMember(Value = @"NoLoadUnitInSource")]
+        NoLoadUnitInSource = 45,
     
-        LoadUnitSourceDb = 47,
+        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitSourceDb")]
+        LoadUnitSourceDb = 46,
     
-        LoadUnitDestinationCell = 48,
+        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitDestinationCell")]
+        LoadUnitDestinationCell = 47,
     
-        LoadUnitElevator = 49,
+        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitElevator")]
+        LoadUnitElevator = 48,
     
-        LoadUnitNotRemoved = 50,
+        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitNotRemoved")]
+        LoadUnitNotRemoved = 49,
     
-        LoadUnitDestinationBay = 51,
+        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitDestinationBay")]
+        LoadUnitDestinationBay = 50,
     
-        LoadUnitSourceCell = 52,
+        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitSourceCell")]
+        LoadUnitSourceCell = 51,
     
-        LoadUnitNotFound = 53,
+        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitNotFound")]
+        LoadUnitNotFound = 52,
     
-        LoadUnitNotLoaded = 54,
+        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitNotLoaded")]
+        LoadUnitNotLoaded = 53,
     
-        LoadUnitSourceBay = 55,
+        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitSourceBay")]
+        LoadUnitSourceBay = 54,
     
-        LoadUnitShutterOpen = 56,
+        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitShutterOpen")]
+        LoadUnitShutterOpen = 55,
     
-        LoadUnitShutterInvalid = 57,
+        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitShutterInvalid")]
+        LoadUnitShutterInvalid = 56,
     
-        LoadUnitShutterClosed = 58,
+        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitShutterClosed")]
+        LoadUnitShutterClosed = 57,
     
-        LoadUnitPresentInCell = 59,
+        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitPresentInCell")]
+        LoadUnitPresentInCell = 58,
     
-        LoadUnitOtherBay = 60,
+        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitOtherBay")]
+        LoadUnitOtherBay = 59,
     
-        LoadUnitSourceElevator = 61,
+        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitSourceElevator")]
+        LoadUnitSourceElevator = 60,
     
-        LoadUnitMissingOnElevator = 62,
+        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitMissingOnElevator")]
+        LoadUnitMissingOnElevator = 61,
     
-        LoadUnitMissingOnBay = 63,
+        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitMissingOnBay")]
+        LoadUnitMissingOnBay = 62,
     
-        LoadUnitUndefinedUpper = 64,
+        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitUndefinedUpper")]
+        LoadUnitUndefinedUpper = 63,
     
-        LoadUnitUndefinedBottom = 65,
+        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitUndefinedBottom")]
+        LoadUnitUndefinedBottom = 64,
     
-        InverterErrorBaseCode = 1000,
+        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorBaseCode")]
+        InverterErrorBaseCode = 65,
     
-        InverterErrorInvalidParameter = 1001,
+        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorInvalidParameter")]
+        InverterErrorInvalidParameter = 66,
     
-        InverterErrorInvalidDataset = 1002,
+        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorInvalidDataset")]
+        InverterErrorInvalidDataset = 67,
     
-        InverterErrorParameterIsWriteOnly = 1003,
+        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorParameterIsWriteOnly")]
+        InverterErrorParameterIsWriteOnly = 68,
     
-        InverterErrorParameterIsReadOnly = 1004,
+        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorParameterIsReadOnly")]
+        InverterErrorParameterIsReadOnly = 69,
     
-        InverterErrorEepromReadError = 1005,
+        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorEepromReadError")]
+        InverterErrorEepromReadError = 70,
     
-        InverterErrorEepromWriteError = 1006,
+        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorEepromWriteError")]
+        InverterErrorEepromWriteError = 71,
     
-        InverterErrorEepromChecksumError = 1007,
+        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorEepromChecksumError")]
+        InverterErrorEepromChecksumError = 72,
     
-        InverterErrorCannotWriteParameterWhileRunning = 1008,
+        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorCannotWriteParameterWhileRunning")]
+        InverterErrorCannotWriteParameterWhileRunning = 73,
     
-        InverterErrorDatasetValuesAreDifferent = 1009,
+        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorDatasetValuesAreDifferent")]
+        InverterErrorDatasetValuesAreDifferent = 74,
     
-        InverterErrorUnknownParameter = 1011,
+        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorUnknownParameter")]
+        InverterErrorUnknownParameter = 75,
     
-        InverterErrorSyntaxError = 1013,
+        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorSyntaxError")]
+        InverterErrorSyntaxError = 76,
     
-        InverterErrorWrongPayloadLength = 1014,
+        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorWrongPayloadLength")]
+        InverterErrorWrongPayloadLength = 77,
     
-        InverterErrorNodeNotAvailable = 1020,
+        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorNodeNotAvailable")]
+        InverterErrorNodeNotAvailable = 78,
     
-        InverterErrorSyntaxError2 = 1030,
+        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorSyntaxError2")]
+        InverterErrorSyntaxError2 = 79,
     
-        NoError = -1,
+        [System.Runtime.Serialization.EnumMember(Value = @"NoError")]
+        NoError = 80,
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class MachineIdentity 
     {
-        [Newtonsoft.Json.JsonProperty("areaId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("AreaId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? AreaId { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("depth", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Depth", Required = Newtonsoft.Json.Required.Always)]
         public double Depth { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Id", Required = Newtonsoft.Json.Required.Always)]
         public int Id { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("installationDate", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("InstallationDate", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTimeOffset InstallationDate { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("isOneTonMachine", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("IsOneTonMachine", Required = Newtonsoft.Json.Required.Always)]
         public bool IsOneTonMachine { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("lastServiceDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("LastServiceDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset? LastServiceDate { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("maxGrossWeight", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("MaxGrossWeight", Required = Newtonsoft.Json.Required.Always)]
         public double MaxGrossWeight { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("modelName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("ModelName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ModelName { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("nextServiceDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("NextServiceDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset? NextServiceDate { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("serialNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("SerialNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string SerialNumber { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("serviceStatus", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("ServiceStatus", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public MachineServiceStatus ServiceStatus { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("trayCount", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("TrayCount", Required = Newtonsoft.Json.Required.Always)]
         public int TrayCount { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("width", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Width", Required = Newtonsoft.Json.Required.Always)]
         public double Width { get; set; }
     
         public string ToJson() 
@@ -3348,68 +3636,72 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MachineServiceStatus
     {
+        [System.Runtime.Serialization.EnumMember(Value = @"Undefined")]
         Undefined = 0,
     
-        Expiring = 71,
+        [System.Runtime.Serialization.EnumMember(Value = @"Expiring")]
+        Expiring = 1,
     
-        Valid = 86,
+        [System.Runtime.Serialization.EnumMember(Value = @"Valid")]
+        Valid = 2,
     
-        Expired = 88,
+        [System.Runtime.Serialization.EnumMember(Value = @"Expired")]
+        Expired = 3,
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class MachineStatistics : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("areaFillPercentage", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("AreaFillPercentage", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public double? AreaFillPercentage { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("automaticTimePercentage", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("AutomaticTimePercentage", Required = Newtonsoft.Json.Required.Always)]
         public double AutomaticTimePercentage { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("totalAutomaticTime", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("TotalAutomaticTime", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.TimeSpan TotalAutomaticTime { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("totalBeltCycles", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("TotalBeltCycles", Required = Newtonsoft.Json.Required.Always)]
         public int TotalBeltCycles { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("totalMissionTime", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("TotalMissionTime", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.TimeSpan TotalMissionTime { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("totalMovedTrays", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("TotalMovedTrays", Required = Newtonsoft.Json.Required.Always)]
         public int TotalMovedTrays { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("totalMovedTraysInBay1", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("TotalMovedTraysInBay1", Required = Newtonsoft.Json.Required.Always)]
         public int TotalMovedTraysInBay1 { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("totalMovedTraysInBay2", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("TotalMovedTraysInBay2", Required = Newtonsoft.Json.Required.Always)]
         public int TotalMovedTraysInBay2 { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("totalMovedTraysInBay3", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("TotalMovedTraysInBay3", Required = Newtonsoft.Json.Required.Always)]
         public int TotalMovedTraysInBay3 { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("totalPowerOnTime", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("TotalPowerOnTime", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.TimeSpan TotalPowerOnTime { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("totalVerticalAxisCycles", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("TotalVerticalAxisCycles", Required = Newtonsoft.Json.Required.Always)]
         public int TotalVerticalAxisCycles { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("totalVerticalAxisKilometers", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("TotalVerticalAxisKilometers", Required = Newtonsoft.Json.Required.Always)]
         public double TotalVerticalAxisKilometers { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("totalWeightBack", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("TotalWeightBack", Required = Newtonsoft.Json.Required.Always)]
         public double TotalWeightBack { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("totalWeightFront", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("TotalWeightFront", Required = Newtonsoft.Json.Required.Always)]
         public double TotalWeightFront { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("usageTimePercentage", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("UsageTimePercentage", Required = Newtonsoft.Json.Required.Always)]
         public double UsageTimePercentage { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("weightCapacityPercentage", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("WeightCapacityPercentage", Required = Newtonsoft.Json.Required.Always)]
         public double WeightCapacityPercentage { get; set; }
     
         public string ToJson() 
@@ -3427,16 +3719,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class LoadingUnitSpaceStatistics 
     {
-        [Newtonsoft.Json.JsonProperty("areaFillPercentage", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("AreaFillPercentage", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public double? AreaFillPercentage { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Code { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("compartmentsCount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("CompartmentsCount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? CompartmentsCount { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("missionsCount", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("MissionsCount", Required = Newtonsoft.Json.Required.Always)]
         public int MissionsCount { get; set; }
     
         public string ToJson() 
@@ -3454,25 +3746,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class LoadingUnitWeightStatistics 
     {
-        [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Code { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("compartmentsCount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("CompartmentsCount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? CompartmentsCount { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("grossWeight", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("GrossWeight", Required = Newtonsoft.Json.Required.Always)]
         public double GrossWeight { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Height", Required = Newtonsoft.Json.Required.Always)]
         public double Height { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("maxNetWeight", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("MaxNetWeight", Required = Newtonsoft.Json.Required.Always)]
         public double MaxNetWeight { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("maxWeightPercentage", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("MaxWeightPercentage", Required = Newtonsoft.Json.Required.Always)]
         public double MaxWeightPercentage { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("tare", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Tare", Required = Newtonsoft.Json.Required.Always)]
         public double Tare { get; set; }
     
         public string ToJson() 
@@ -3490,46 +3782,46 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class SetupStatusCapabilities 
     {
-        [Newtonsoft.Json.JsonProperty("allLoadingUnits", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("AllLoadingUnits", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupStepStatus AllLoadingUnits { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("bay1", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Bay1", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public BaySetupStatus Bay1 { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("bay2", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Bay2", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public BaySetupStatus Bay2 { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("bay3", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Bay3", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public BaySetupStatus Bay3 { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("beltBurnishing", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("BeltBurnishing", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupStepStatus BeltBurnishing { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("cellPanelsCheck", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("CellPanelsCheck", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupStepStatus CellPanelsCheck { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("cellsHeightCheck", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("CellsHeightCheck", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupStepStatus CellsHeightCheck { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("completedDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("CompletedDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset? CompletedDate { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("horizontalHoming", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("HorizontalHoming", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupStepStatus HorizontalHoming { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("isComplete", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("IsComplete", Required = Newtonsoft.Json.Required.Always)]
         public bool IsComplete { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("verticalOffsetCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("VerticalOffsetCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupStepStatus VerticalOffsetCalibration { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("verticalOriginCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("VerticalOriginCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupStepStatus VerticalOriginCalibration { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("verticalResolutionCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("VerticalResolutionCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupStepStatus VerticalResolutionCalibration { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("weightMeasurement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("WeightMeasurement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupStepStatus WeightMeasurement { get; set; }
     
         public string ToJson() 
@@ -3547,13 +3839,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class SetupStepStatus 
     {
-        [Newtonsoft.Json.JsonProperty("canBePerformed", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("CanBePerformed", Required = Newtonsoft.Json.Required.Always)]
         public bool CanBePerformed { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("inProgress", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("InProgress", Required = Newtonsoft.Json.Required.Always)]
         public bool InProgress { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("isCompleted", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("IsCompleted", Required = Newtonsoft.Json.Required.Always)]
         public bool IsCompleted { get; set; }
     
         public string ToJson() 
@@ -3571,22 +3863,22 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class BaySetupStatus 
     {
-        [Newtonsoft.Json.JsonProperty("allLoadingUnits", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("AllLoadingUnits", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupStepStatus AllLoadingUnits { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("check", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Check", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupStepStatus Check { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("firstLoadingUnit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("FirstLoadingUnit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupStepStatus FirstLoadingUnit { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("laser", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Laser", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupStepStatus Laser { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("shape", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Shape", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupStepStatus Shape { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("shutter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Shutter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupStepStatus Shutter { get; set; }
     
         public string ToJson() 
@@ -3604,19 +3896,19 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class HomingProcedureParameters 
     {
-        [Newtonsoft.Json.JsonProperty("isCompleted", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("IsCompleted", Required = Newtonsoft.Json.Required.Always)]
         public bool IsCompleted { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("lowerBound", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("LowerBound", Required = Newtonsoft.Json.Required.Always)]
         public double LowerBound { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("offset", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Offset", Required = Newtonsoft.Json.Required.Always)]
         public double Offset { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("resolution", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Resolution", Required = Newtonsoft.Json.Required.Always)]
         public double Resolution { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("upperBound", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("UpperBound", Required = Newtonsoft.Json.Required.Always)]
         public double UpperBound { get; set; }
     
         public string ToJson() 
@@ -3634,22 +3926,31 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MachineMode
     {
+        [System.Runtime.Serialization.EnumMember(Value = @"NotSpecified")]
         NotSpecified = 0,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Automatic")]
         Automatic = 1,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Manual")]
         Manual = 2,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Test")]
         Test = 3,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Compact")]
         Compact = 4,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Restore")]
         Restore = 5,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"SwitchingToAutomatic")]
         SwitchingToAutomatic = 6,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"SwitchingToManual")]
         SwitchingToManual = 7,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"SwitchingToCompact")]
         SwitchingToCompact = 8,
     
     }
@@ -3657,14 +3958,19 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MachinePowerState
     {
+        [System.Runtime.Serialization.EnumMember(Value = @"NotSpecified")]
         NotSpecified = 0,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Unpowered")]
         Unpowered = 1,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"PoweringUp")]
         PoweringUp = 2,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Powered")]
         Powered = 3,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"PoweringDown")]
         PoweringDown = 4,
     
     }
@@ -3672,10 +3978,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum ShutterMovementDirection
     {
+        [System.Runtime.Serialization.EnumMember(Value = @"NotSpecified")]
         NotSpecified = 0,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Up")]
         Up = 1,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Down")]
         Down = 2,
     
     }
@@ -3683,10 +3992,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class UserClaims 
     {
-        [Newtonsoft.Json.JsonProperty("accessLevel", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("AccessLevel", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public UserAccessLevel AccessLevel { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Name { get; set; }
     
         public string ToJson() 
@@ -3704,15 +4015,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum UserAccessLevel
     {
+        [System.Runtime.Serialization.EnumMember(Value = @"NoAccess")]
         NoAccess = 0,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Operator")]
         Operator = 1,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Installer")]
         Installer = 2,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Support")]
         Support = 3,
     
-        Admin = 99,
+        [System.Runtime.Serialization.EnumMember(Value = @"Admin")]
+        Admin = 4,
     
     }
 

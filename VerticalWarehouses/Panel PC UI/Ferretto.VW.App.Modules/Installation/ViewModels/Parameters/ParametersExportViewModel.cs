@@ -24,8 +24,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private IEnumerable<DriveInfo> availableDrives = Array.Empty<DriveInfo>();
 
-        public override EnableMask EnableMask => EnableMask.Any;
-
         private object configuration = null;
 
         private DriveInfo drive = null;
@@ -54,6 +52,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Properties
 
         public IEnumerable<DriveInfo> AvailableDrives => this.availableDrives;
+
+        public override EnableMask EnableMask => EnableMask.Any;
 
         public ICommand ExportCommand =>
             this.exportCommand ??
@@ -170,7 +170,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 var output = this.ExportingConfiguration;
                 var configuration = this.Data as VertimagConfiguration;
 
-                string json = Newtonsoft.Json.JsonConvert.SerializeObject(output, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+                string json = Newtonsoft.Json.JsonConvert.SerializeObject(output,
+                    new Newtonsoft.Json.JsonConverter[]
+                    {
+                        new CommonUtils.Converters.IPAddressConverter(),
+                        new Newtonsoft.Json.Converters.StringEnumConverter(),
+                    });
+
                 //configuration.ToJson();
                 string fullPath = configuration.Filename(this.SelectedDrive, !this.OverwriteTargetFile);
 
