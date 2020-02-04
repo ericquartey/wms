@@ -191,8 +191,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 if (!ok)
                 {
                     errorText = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards ?
-                            $"Top level Bay {(int)this.machineData.TargetBay} Occupied" :
-                            $"Bottom level Bay {(int)this.machineData.TargetBay} Occupied");
+                            ErrorDescriptions.TopLevelBayOccupied :
+                            ErrorDescriptions.BottomLevelBayOccupied);
                     errorCode = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards ?
                         DataModels.MachineErrorCode.TopLevelBayOccupied :
                         DataModels.MachineErrorCode.BottomLevelBayOccupied);
