@@ -10,8 +10,6 @@ namespace Ferretto.VW.App.Services
 
         WMS.Data.WebAPI.Contracts.MissionOperation CurrentMissionOperation { get; }
 
-        int PendingMissionOperationsCount { get; }
-
         #endregion
 
         #region Methods
@@ -24,6 +22,8 @@ namespace Ferretto.VW.App.Services
 
         /// <exception cref="MasWebApiException"></exception>
         Task PartiallyCompleteCurrentAsync(double quantity);
+
+        Task StartAsync();
 
         #endregion
     }

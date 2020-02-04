@@ -40,8 +40,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 this.Mission.Status = MissionStatus.New;
 
-                this.Mission.NeedHomingAxis = (this.MachineVolatileDataProvider.IsHomingExecuted ? Axis.None : Axis.Horizontal);
-
                 if (command != null
                     && command.Data is IMoveLoadingUnitMessageData messageData
                     )
@@ -253,6 +251,20 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
+                        if(bay.Carousel != null
+                            && !this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number])
+                        {
+                            if (showErrors)
+                            {
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.DestinationBayNotCalibrated, this.Mission.TargetBay);
+                                throw new StateMachineException(ErrorDescriptions.DestinationBayNotCalibrated, this.Mission.TargetBay, MessageActor.MachineManager);
+                            }
+                            else
+                            {
+                                this.Logger.LogInformation(ErrorDescriptions.DestinationBayNotCalibrated);
+                                return false;
+                            }
+                        }
                         var upper = bay.Positions.FirstOrDefault(p => p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
                         if (upper is LoadingUnitLocation.NoLocation)
                         {

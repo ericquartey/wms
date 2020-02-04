@@ -189,14 +189,8 @@
   <data name="LoadUnitElevator" xml:space="preserve">
     <value>Culla elevatore occupata</value>
   </data>
-  <data name="LoadUnitMissingOnBay1" xml:space="preserve">
-    <value>Baia 1 occupato con cassetto sconosciuto</value>
-  </data>
-  <data name="LoadUnitMissingOnBay2" xml:space="preserve">
-    <value>Baia 2 occupato con cassetto sconosciuto</value>
-  </data>
-  <data name="LoadUnitMissingOnBay3" xml:space="preserve">
-    <value>Baia 3 occupato con cassetto sconosciuto</value>
+  <data name="LoadUnitMissingOnBay" xml:space="preserve">
+    <value>Baia occupata con cassetto sconosciuto</value>
   </data>
   <data name="LoadUnitMissingOnElevator" xml:space="preserve">
     <value>Elevatore occupato con cassetto sconosciuto</value>
@@ -254,5 +248,8 @@
   </data>
   <data name="LoadUnitShutterInvalid" xml:space="preserve">
     <value>Errore stato serranda</value>
+  </data>
+  <data name="DestinationBayNotCalibrated" xml:space="preserve">
+    <value>Baia di destinazione priva di taratura.</value>
   </data>
 </root>

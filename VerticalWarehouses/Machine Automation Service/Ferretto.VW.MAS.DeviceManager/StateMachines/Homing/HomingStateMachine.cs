@@ -296,15 +296,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     errorText = "Find Zero not possible: Invalid Zero sensor";
                 }
 #if CHECK_BAY_SENSOR
+                //if (ok
+                //    && this.machineData.CalibrationType == Calibration.FindSensor
+                //    && this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay)
+                //    )
+                //{
+                //    ok = false;
+                //    errorText = "Find Zero not possible: Top position occupied";
+                //}
+                //else
                 if (ok
                     && this.machineData.CalibrationType == Calibration.FindSensor
-                    && this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay)
-                    )
-                {
-                    ok = false;
-                    errorText = "Find Zero not possible: Top position occupied";
-                }
-                else if (this.machineData.CalibrationType == Calibration.FindSensor
                     && this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay)
                     )
                 {

@@ -96,33 +96,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public Bay AssignMission(BayNumber bayNumber, Mission mission)
-        {
-            if (mission is null)
-            {
-                throw new ArgumentNullException(nameof(mission));
-            }
-
-            lock (this.dataContext)
-            {
-                var bay = this.dataContext.Bays
-                    .Include(b => b.CurrentMission)
-                    .SingleOrDefault(b => b.Number == bayNumber);
-
-                if (bay is null)
-                {
-                    throw new EntityNotFoundException(bayNumber.ToString());
-                }
-
-                bay.CurrentMission = this.dataContext.Missions.SingleOrDefault(m => m.Id == mission.Id) ?? mission;
-                bay.CurrentWmsMissionOperationId = null;
-
-                this.Update(bay);
-
-                return bay;
-            }
-        }
-
         public Bay AssignWmsMission(BayNumber bayNumber, Mission mission, int? wmsMissionOperationId)
         {
             if (mission is null)
@@ -141,7 +114,11 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new EntityNotFoundException(bayNumber.ToString());
                 }
 
-                bay.CurrentMission = this.dataContext.Missions.SingleOrDefault(m => m.Id == mission.Id) ?? mission;
+                bay.CurrentMission = this.dataContext.Missions.SingleOrDefault(m => m.Id == mission.Id);
+                if (bay.CurrentMission is null)
+                {
+                    throw new EntityNotFoundException(mission.Id);
+                }
                 bay.CurrentWmsMissionOperationId = wmsMissionOperationId;
 
                 this.Update(bay);
@@ -448,6 +425,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 var bay = this.dataContext.Bays
                     .Include(b => b.Inverter)
+                    .Include(b => b.CurrentMission)
                     .Include(b => b.Positions)
                         .ThenInclude(s => s.LoadingUnit)
                     .Include(b => b.Shutter)

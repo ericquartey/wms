@@ -123,7 +123,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (mission.WmsId is null)
                 {
-                    this.baysDataProvider.ClearMission(mission.TargetBay);
+                    if (this.baysDataProvider.IsMissionInBay(mission))
+                    {
+                        this.baysDataProvider.ClearMission(mission.TargetBay);
+                    }
                     this.Delete(mission.Id);
                 }
                 else
@@ -170,6 +173,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     && m.WmsId == wmsId)
                     )
                 {
+                    transaction.Rollback();
                     throw new InvalidOperationException($"An active mission for WMS mission {wmsId} already exists.");
                 }
 
@@ -371,33 +375,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.dataContext.SaveChanges();
 
                 this.CheckPendingChanges();
-            }
-        }
-
-        public void UpdateHomingMissions(BayNumber bayNumber, Axis axis)
-        {
-            lock (this.dataContext)
-            {
-                if (axis == Axis.HorizontalAndVertical)
-                {
-                    axis = Axis.Horizontal;
-                }
-                var missions = this.dataContext.Missions.Where(m => m.NeedHomingAxis == axis
-                        && (bayNumber == BayNumber.ElevatorBay || m.TargetBay == bayNumber)
-                        );
-                if (missions.Any())
-                {
-                    foreach (var mission in missions)
-                    {
-                        mission.NeedHomingAxis = Axis.None;
-                        this.Update(mission);
-                        this.logger.LogDebug($"Elevator Homing executed for Load Unit {mission.LoadUnitId}");
-                    }
-                }
-                else
-                {
-                    this.logger.LogDebug($"No Homing missions waiting for Bay {bayNumber}, axis {axis}");
-                }
             }
         }
 

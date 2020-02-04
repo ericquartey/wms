@@ -210,14 +210,8 @@
   <data name="LoadUnitElevator" xml:space="preserve">
     <value>Verificare che la culla elevatore sia vuota. Verificare il corretto funzionamento dei sensori di presenza cassetto sulla culla.</value>
   </data>
-  <data name="LoadUnitMissingOnBay1" xml:space="preserve">
-    <value>Verificare l'id del cassetto sulla baia 1. Verificare che i sensori di presenza cassetto funzionino correttamente. Mettere la macchina in Automatico.</value>
-  </data>
-  <data name="LoadUnitMissingOnBay2" xml:space="preserve">
-    <value>Verificare l'id del cassetto sulla baia 2. Verificare che i sensori di presenza cassetto funzionino correttamente. Mettere la macchina in Automatico.</value>
-  </data>
-  <data name="LoadUnitMissingOnBay3" xml:space="preserve">
-    <value>Verificare l'id del cassetto sulla baia 3. Verificare che i sensori di presenza cassetto funzionino correttamente. Mettere la macchina in Automatico.</value>
+  <data name="LoadUnitMissingOnBay" xml:space="preserve">
+    <value>Verificare l'id del cassetto in baia. Verificare che i sensori di presenza cassetto in baia funzionino correttamente. Mettere la macchina in Automatico.</value>
   </data>
   <data name="LoadUnitMissingOnElevator" xml:space="preserve">
     <value>Verificare l'id del cassetto sull'elevatore. Verificare che i sensori di presenza cassetto sull'elevatore funzionino correttamente. Mettere la macchina in Automatico.</value>
@@ -275,5 +269,8 @@
   </data>
   <data name="LoadUnitShutterInvalid" xml:space="preserve">
     <value>Serranda non in posizione chiusa nè aperta. Verificare lo stato dei sensori.</value>
+  </data>
+  <data name="DestinationBayNotCalibrated" xml:space="preserve">
+    <value>Baia di destinazione priva di taratura.</value>
   </data>
 </root>

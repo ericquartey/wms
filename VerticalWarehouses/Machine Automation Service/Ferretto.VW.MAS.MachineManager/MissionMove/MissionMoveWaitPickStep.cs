@@ -48,7 +48,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             else
             {
-                this.BaysDataProvider.AssignMission(this.Mission.TargetBay, this.Mission);
+                this.BaysDataProvider.AssignWmsMission(this.Mission.TargetBay, this.Mission, null);
             }
 
             if (this.Mission.LoadUnitId > 0)
@@ -62,6 +62,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             var description = $"Load Unit {this.Mission.LoadUnitId} placed on bay {bay.Number}";
             this.SendMoveNotification(bay.Number, description, MessageStatus.OperationWaitResume);
+            this.BaysDataProvider.Light(this.Mission.TargetBay, true);
             return true;
         }
 
@@ -74,7 +75,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var ejectBayLocation = this.Mission.LoadUnitDestination;
             var bayPosition = this.BaysDataProvider.GetPositionByLocation(ejectBayLocation);
 #if CHECK_BAY_SENSOR
-            if (!this.SensorsProvider.IsLoadingUnitInLocation(ejectBayLocation))
+            if (this.SensorsProvider.IsLoadingUnitInLocation(ejectBayLocation))
 #endif
             {
                 if (command != null
@@ -123,8 +124,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 #if CHECK_BAY_SENSOR
             else
             {
-                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotRemoved, this.Mission.TargetBay);
-                throw new StateMachineException(ErrorDescriptions.LoadUnitNotRemoved, this.Mission.TargetBay, MessageActor.MachineManager);
+                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnBay, this.Mission.TargetBay);
+                throw new StateMachineException(ErrorDescriptions.LoadUnitMissingOnBay, this.Mission.TargetBay, MessageActor.MachineManager);
             }
 #endif
         }

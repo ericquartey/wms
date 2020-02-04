@@ -187,6 +187,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Destination bay needs calibration.
+        /// </summary>
+        public static string DestinationBayNotCalibrated {
+            get {
+                return ResourceManager.GetString("DestinationBayNotCalibrated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Destinazione non valida.
         /// </summary>
         public static string DestinationBelowLowerBound {
@@ -430,29 +439,11 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bay 1 occupied with unknown loading unit.
+        ///   Looks up a localized string similar to Bay occupied with unknown loading unit.
         /// </summary>
-        public static string LoadUnitMissingOnBay1 {
+        public static string LoadUnitMissingOnBay {
             get {
-                return ResourceManager.GetString("LoadUnitMissingOnBay1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Bay 2 occupied with unknown loading unit.
-        /// </summary>
-        public static string LoadUnitMissingOnBay2 {
-            get {
-                return ResourceManager.GetString("LoadUnitMissingOnBay2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Bay 3 busy with unknown loading unit.
-        /// </summary>
-        public static string LoadUnitMissingOnBay3 {
-            get {
-                return ResourceManager.GetString("LoadUnitMissingOnBay3", resourceCulture);
+                return ResourceManager.GetString("LoadUnitMissingOnBay", resourceCulture);
             }
         }
         

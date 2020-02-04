@@ -36,6 +36,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.Mission.CloseShutterBayNumber = BayNumber.None;
             this.Mission.StopReason = StopRequestReason.NoReason;
+            if (this.Mission.NeedHomingAxis == Axis.None)
+            {
+                this.Mission.NeedHomingAxis = (this.MachineVolatileDataProvider.IsHomingExecuted ? Axis.None : Axis.Horizontal);
+            }
             this.MissionsDataProvider.Update(this.Mission);
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
@@ -66,7 +70,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 if (this.Mission.NeedHomingAxis == Axis.Horizontal)
                 {
-                    this.Logger.LogDebug($"Homing elevator free start");
+                    this.Logger.LogInformation($"Homing elevator free start Mission:Id={this.Mission.Id}");
                     this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
                 else
@@ -116,7 +120,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 if (this.Mission.NeedHomingAxis == Axis.Horizontal)
                 {
-                    this.Logger.LogDebug($"Homing elevator free start");
+                    this.Logger.LogInformation($"Homing elevator free start Mission:Id={this.Mission.Id}");
                     this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
                 else

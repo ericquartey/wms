@@ -240,7 +240,10 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 if (mission.Status == MissionStatus.New)
                 {
-                    missionsDataProvider.Delete(mission.Id);
+                    if (!mission.IsRestoringType())
+                    {
+                        missionsDataProvider.Delete(mission.Id);
+                    }
                 }
                 else if (mission.Status != MissionStatus.Completed
                     && mission.Status != MissionStatus.Aborted)
@@ -251,7 +254,9 @@ namespace Ferretto.VW.MAS.MissionManager
                     }
                     IMissionMoveBase newStep;
 
-                    if (mission.RestoreStep == MissionStep.BayChain)
+                    if (mission.RestoreStep == MissionStep.BayChain
+                        || mission.RestoreStep == MissionStep.WaitPick
+                        )
                     {
                         mission.NeedHomingAxis = Axis.BayChain;
                         newStep = new MissionMoveErrorStep(mission, serviceProvider, eventAggregator);
@@ -280,6 +285,10 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private bool GenerateHoming(IBaysDataProvider bayProvider, bool isHomingExecuted)
         {
+            if (this.machineVolatileDataProvider.IsHomingActive)
+            {
+                return true;
+            }
             var bays = bayProvider.GetAll();
             bool generated = false;
             if (this.machineVolatileDataProvider.IsBayHomingExecuted.Any(x => !x.Value)
@@ -325,9 +334,15 @@ namespace Ferretto.VW.MAS.MissionManager
                 this.Logger.LogDebug($"GenerateHoming: Elevator");
                 generated = true;
             }
+            this.machineVolatileDataProvider.IsHomingActive = generated;
             return generated;
         }
 
+        /// <summary>
+        /// This method processes the Machine Mode changes and calls the mission scheduler
+        /// </summary>
+        /// <param name="serviceProvider"></param>
+        /// <returns></returns>
         private async Task InvokeSchedulerAsync(IServiceProvider serviceProvider)
         {
             if (!this.dataLayerIsReady)
@@ -342,6 +357,8 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 case MachineMode.SwitchingToAutomatic:
                     {
+                        // in this machine mode we generate homing for elevator and bays, but only if there are no missions to restore.
+                        // if homing is not possible we switch anyway to automatic mode
                         var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
                         var activeMissions = missionsDataProvider.GetAllActiveMissions();
 
@@ -411,6 +428,10 @@ namespace Ferretto.VW.MAS.MissionManager
 
                 case MachineMode.Restore:
                     {
+                        // in this machine mode we have to restore missions in error.
+                        // in restoring missions the "full load" homing are processed and, where possible, also some "empty load" homing.
+                        // after processing missions we have to generate homing for bays and elevator, if there are some left.
+                        // only empty load homings are counted in HomingExecuted properties.
                         var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
                         var activeMissions = missionsDataProvider.GetAllActiveMissions();
 
@@ -525,6 +546,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         }
                     }
                     missionsDataProvider.Complete(mission.Id);
+                    this.NotifyAssignedMissionOperationChanged(mission.TargetBay, null, null);
                 }
                 else if (mission.LoadUnitDestination != LoadingUnitLocation.Cell
                     && mission.LoadUnitDestination != LoadingUnitLocation.Elevator
@@ -550,7 +572,6 @@ namespace Ferretto.VW.MAS.MissionManager
                     }
                     else
                     {
-                        baysDataProvider.AssignWmsMission(mission.TargetBay, mission, null);
                         this.NotifyAssignedMissionOperationChanged(mission.TargetBay, null, null);
                     }
                 }
@@ -558,6 +579,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 // any other mission type
                 {
                     missionsDataProvider.Complete(mission.Id);
+                    this.NotifyAssignedMissionOperationChanged(mission.TargetBay, null, null);
                 }
             }
             catch (Exception ex)
@@ -601,7 +623,7 @@ namespace Ferretto.VW.MAS.MissionManager
             else
             {
                 // close operation and schedule next
-                baysDataProvider.ClearMission(bay.Number);
+                //baysDataProvider.ClearMission(bay.Number);
 
                 var currentMode = serviceProvider
                     .GetRequiredService<IMachineModeProvider>()

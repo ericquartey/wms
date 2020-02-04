@@ -58,6 +58,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 if (receivedMessage.Status == MessageStatus.OperationEnd
                     && receivedMessage.Data is IHomingMessageData data)
                 {
+                    this.machineVolatileDataProvider.IsHomingActive = false;
                     if (data.AxisToCalibrate == Axis.BayChain)
                     {
                         this.machineVolatileDataProvider.IsBayHomingExecuted[receivedMessage.RequestingBay] = true;
@@ -82,6 +83,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 }
                 else if (receivedMessage.Status == MessageStatus.OperationError)
                 {
+                    this.machineVolatileDataProvider.IsHomingActive = false;
                     this.ChangeMachineMode();
                 }
             }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Resources;
@@ -55,7 +56,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Constructors
 
         public LoadingUnitViewModel(
-            IBayManager bayManager,
             IItemsWmsWebService itemsWmsWebService,
             ICompartmentsWmsWebService compartmentsWmsWebService,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
@@ -63,7 +63,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             ILoadingUnitsWmsWebService loadingUnitsWmsWebService,
             IEventAggregator eventAggregator,
             IWmsDataProvider wmsDataProvider)
-            : base(bayManager, machineLoadingUnitsWebService, loadingUnitsWmsWebService, eventAggregator)
+            : base(machineLoadingUnitsWebService, loadingUnitsWmsWebService, eventAggregator)
         {
             this.itemsWmsWebService = itemsWmsWebService ?? throw new ArgumentNullException(nameof(itemsWmsWebService));
             this.compartmentsWmsWebService = compartmentsWmsWebService ?? throw new ArgumentNullException(nameof(compartmentsWmsWebService));
@@ -155,7 +155,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         }
 
         public ICommand RecallLoadingUnitCommand =>
-                            this.recallLoadingUnitCommand
+            this.recallLoadingUnitCommand
             ??
             (this.recallLoadingUnitCommand = new DelegateCommand(
                 async () => await this.RecallLoadingUnitAsync(),
@@ -225,20 +225,23 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             base.RaiseCanExecuteChanged();
 
-            this.operationCommand.RaiseCanExecuteChanged();
-            this.confirmOperationCommand.RaiseCanExecuteChanged();
-            this.recallLoadingUnitCommand.RaiseCanExecuteChanged();
+            this.operationCommand?.RaiseCanExecuteChanged();
+            this.confirmOperationCommand?.RaiseCanExecuteChanged();
+            this.recallLoadingUnitCommand?.RaiseCanExecuteChanged();
         }
 
         private bool CanConfirmOperation()
         {
-            return !this.IsWaitingForNewOperation
-                   &&
-                   this.InputQuantity.HasValue
-                   &&
-                   !this.IsBusyConfirmingRecallOperation
-                   &&
-                   !this.IsBusyConfirmingOperation;
+            return
+                ConfigurationManager.AppSettings.GetWmsDataServiceEnabled()
+                &&
+                !this.IsWaitingForNewOperation
+                &&
+                this.InputQuantity.HasValue
+                &&
+                !this.IsBusyConfirmingRecallOperation
+                &&
+                !this.IsBusyConfirmingOperation;
         }
 
         private bool CanDoOperation(string param)
@@ -273,14 +276,18 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 if (this.IsPickVisible)
                 {
                     this.IsWaitingForNewOperation = true;
-                    await this.wmsDataProvider.PickAsync(this.SelectedItem.ItemId.Value,
-                                                         this.InputQuantity.Value);
+
+                    await this.wmsDataProvider.PickAsync(
+                        this.SelectedItem.ItemId.Value,
+                        this.InputQuantity.Value);
                 }
                 else if (this.IsPutVisible)
                 {
                     this.IsWaitingForNewOperation = true;
-                    await this.wmsDataProvider.PutAsync(this.SelectedItem.ItemId.Value,
-                                                        this.InputQuantity.Value);
+
+                    await this.wmsDataProvider.PutAsync(
+                        this.SelectedItem.ItemId.Value,
+                        this.InputQuantity.Value);
                 }
                 else if (this.IsAdjustmentVisible)
                 {

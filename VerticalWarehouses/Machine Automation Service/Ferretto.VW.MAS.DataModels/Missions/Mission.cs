@@ -71,7 +71,7 @@ namespace Ferretto.VW.MAS.DataModels
         {
             return this.MissionType == MissionType.WMS
                 || this.MissionType == MissionType.IN
-                || this.MissionType == MissionType.Manual
+                //|| this.MissionType == MissionType.Manual
                 || this.MissionType == MissionType.OUT;
         }
 
@@ -85,6 +85,7 @@ namespace Ferretto.VW.MAS.DataModels
                 $"Step={this.Step}; " +
                 $"Source={this.LoadUnitSource}; " +
                 $"Destination={this.LoadUnitDestination}; " +
+                $"CellDestinationId={this.DestinationCellId}; " +
                 $"CellSourceId={this.LoadUnitCellSourceId}; " +
                 $"RestoreStep={this.RestoreStep}; " +
                 $"MissionType={this.MissionType}; " +

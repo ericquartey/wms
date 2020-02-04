@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -19,15 +20,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
     {
         #region Fields
 
-        private readonly IBayManager bayManager;
-
         private readonly IEventAggregator eventAggregator;
 
         private readonly ILoadingUnitsWmsWebService loadingUnitsWmsWebService;
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
-
-        private MAS.AutomationService.Contracts.Bay bay;
 
         private DelegateCommand changeModeListCommand;
 
@@ -69,8 +66,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private SubscriptionToken missionOperationToken;
 
-        private int? newLoadingUnitId;
-
         private TrayControlCompartment selectedCompartment;
 
         private CompartmentDetails selectedItem;
@@ -82,14 +77,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Constructors
 
         public BaseLoadingUnitViewModel(
-            IBayManager bayManager,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             ILoadingUnitsWmsWebService loadingUnitsWmsWebService,
             IEventAggregator eventAggregator)
             : base(PresentationMode.Operator)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
-            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.loadingUnitsWmsWebService = loadingUnitsWmsWebService;
 
@@ -120,14 +113,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
         }
 
         public ICommand ChangeModeListCommand =>
-                    this.changeModeListCommand
+            this.changeModeListCommand
             ??
-            (this.changeModeListCommand = new DelegateCommand(() => this.ChangeMode(), this.CanChangeListMode));
+            (this.changeModeListCommand = new DelegateCommand(this.ChangeMode, this.CanChangeListMode));
 
         public ICommand ChangeModeLoadingUnitCommand =>
                this.changeModeLoadingUnitCommand
                ??
-               (this.changeModeLoadingUnitCommand = new DelegateCommand(() => this.ChangeMode(), this.CanChangeLoadingUnitMode));
+               (this.changeModeLoadingUnitCommand = new DelegateCommand(this.ChangeMode, this.CanChangeLoadingUnitMode));
 
         public Func<IDrawableCompartment, IDrawableCompartment, string> CompartmentColoringFunction { get; }
 
@@ -141,7 +134,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public bool IsBaySideBack => this.bay?.Side is WarehouseSide.Back;
+        public bool IsBaySideBack => this.MachineService.Bay.Side is WarehouseSide.Back;
 
         public bool IsBusyConfirmingOperation
         {
@@ -161,12 +154,17 @@ namespace Ferretto.VW.App.Operator.ViewModels
             set => this.SetProperty(ref this.isListVisibile, value, this.RaiseCanExecuteChanged);
         }
 
-        public bool IsNewLoadingUnit => this.currentLoadingUnitId != this.newLoadingUnitId;
+        public bool IsNewLoadingUnit => this.currentLoadingUnitId != this.LoadingUnit?.Id;
 
         public bool IsWaitingForNewOperation
         {
             get => this.isWaitingForNewOperation;
             set => this.SetProperty(ref this.isWaitingForNewOperation, value);
+        }
+
+        public bool IsWmsEnabledAndHealthy
+        {
+            get => this.IsWmsHealthy && ConfigurationManager.AppSettings.GetWmsDataServiceEnabled();
         }
 
         public override bool IsWmsHealthy
@@ -177,6 +175,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 if (value != base.IsWmsHealthy)
                 {
                     base.IsWmsHealthy = value;
+                    this.RaisePropertyChanged(nameof(this.IsWmsEnabledAndHealthy));
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -248,8 +247,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             set => this.SetProperty(ref this.selectedItemCompartment, value, this.SetSelectedItemAndCompartment);
         }
 
-        protected IBayManager BayManager => this.bayManager;
-
         #endregion
 
         #region Methods
@@ -303,40 +300,43 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public async Task LoadDataAsync()
         {
-            if (this.Data is int loadingUnitId)
+            try
             {
-                this.LoadingUnit = this.MachineService.Loadunits.SingleOrDefault(l => l.Id == loadingUnitId);
-                try
+                if (this.IsWmsHealthy && ConfigurationManager.AppSettings.GetWmsDataServiceEnabled())
                 {
-                    if (this.IsWmsHealthy)
-                    {
-                        var wmsLoadingUnit = await this.loadingUnitsWmsWebService.GetByIdAsync(loadingUnitId);
-                        this.LoadingUnitWidth = wmsLoadingUnit.Width;
-                        this.LoadingUnitDepth = wmsLoadingUnit.Depth;
+                    var wmsLoadingUnit = await this.loadingUnitsWmsWebService.GetByIdAsync(this.LoadingUnit.Id);
+                    this.LoadingUnitWidth = wmsLoadingUnit.Width;
+                    this.LoadingUnitDepth = wmsLoadingUnit.Depth;
 
-                        this.ItemsCompartments = await this.loadingUnitsWmsWebService.GetCompartmentsAsync(loadingUnitId);
+                    this.ItemsCompartments = await this.loadingUnitsWmsWebService.GetCompartmentsAsync(this.LoadingUnit.Id);
 
-                        this.Compartments = MapCompartments(this.ItemsCompartments);
-                    }
+                    this.Compartments = MapCompartments(this.ItemsCompartments);
                 }
-                catch
-                {
-                    // do nothing: details will not be shown
-                }
-
-                this.RaiseCanExecuteChanged();
-                this.RaisePropertyChanged();
             }
+            catch
+            {
+                // do nothing: details will not be shown
+            }
+
+            this.RaiseCanExecuteChanged();
+            this.RaisePropertyChanged();
         }
 
         public async override Task OnAppearedAsync()
         {
-            this.missionOperationToken = this.eventAggregator.GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>()
-                                 .Subscribe(this.MissionOperationUpdate);
+            if (this.Data is int loadingUnitId)
+            {
+                this.LoadingUnit = this.MachineService.Loadunits.SingleOrDefault(l => l.Id == loadingUnitId);
+                this.RaisePropertyChanged(nameof(this.LoadingUnit));
+            }
+            else
+            {
+                throw new Exception("The Data of this view model shall contain the loading unit identifier.");
+            }
 
-            this.bay = await this.bayManager.GetBayAsync();
-
-            this.newLoadingUnitId = this.GetLoadingUnitId();
+            this.missionOperationToken = this.eventAggregator
+                .GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>()
+                .Subscribe(this.MissionOperationUpdate);
 
             if (this.CanReset)
             {
@@ -397,8 +397,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.isWaitingForNewOperation = false;
         }
 
-        protected async override Task OnMachineModeChangedAsync(
-                                                                                                                                                                                                    MAS.AutomationService.Contracts.Hubs.MachineModeChangedEventArgs e)
+        protected async override Task OnMachineModeChangedAsync(MachineModeChangedEventArgs e)
         {
             await base.OnMachineModeChangedAsync(e);
 
@@ -407,18 +406,17 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         protected override void RaiseCanExecuteChanged()
         {
-            this.changeModeLoadingUnitCommand.RaiseCanExecuteChanged();
-            this.changeModeListCommand.RaiseCanExecuteChanged();
-            this.itemCompartmentDownCommand.RaiseCanExecuteChanged();
-            this.itemCompartmentUpCommand.RaiseCanExecuteChanged();
-            this.itemDownCommand.RaiseCanExecuteChanged();
-            this.itemUpCommand.RaiseCanExecuteChanged();
+            this.changeModeLoadingUnitCommand?.RaiseCanExecuteChanged();
+            this.changeModeListCommand?.RaiseCanExecuteChanged();
+            this.itemCompartmentDownCommand?.RaiseCanExecuteChanged();
+            this.itemCompartmentUpCommand?.RaiseCanExecuteChanged();
+            this.itemDownCommand?.RaiseCanExecuteChanged();
+            this.itemUpCommand?.RaiseCanExecuteChanged();
 
             base.RaiseCanExecuteChanged();
         }
 
-        private static IEnumerable<TrayControlCompartment> MapCompartments(
-                    IEnumerable<WMS.Data.WebAPI.Contracts.CompartmentDetails> compartmentsFromMission)
+        private static IEnumerable<TrayControlCompartment> MapCompartments(IEnumerable<CompartmentDetails> compartmentsFromMission)
         {
             return compartmentsFromMission
                 .GroupBy(c => c.Id)
@@ -486,12 +484,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.IsListVisibile = !this.IsListVisibile;
         }
 
-        private int? GetLoadingUnitId()
-        {
-            var loadingUnit = this.bay.Positions.Where(p => !(p.LoadingUnit is null)).OrderByDescending(p => p.Height).Select(p => p.LoadingUnit).FirstOrDefault();
-            return loadingUnit?.Id;
-        }
-
         private bool ItemCanDown()
         {
             if (this.items is null)
@@ -541,7 +533,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.SelectedItemCompartment = null;
             this.SelectedCompartment = null;
             this.SelectedItem = null;
-            this.currentLoadingUnitId = this.newLoadingUnitId;
+            this.currentLoadingUnitId = this.LoadingUnit?.Id;
             this.isNewOperationAvailable = false;
         }
 

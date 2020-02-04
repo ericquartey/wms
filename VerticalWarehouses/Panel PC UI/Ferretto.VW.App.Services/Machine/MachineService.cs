@@ -47,6 +47,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly IMachinePowerWebService machinePowerWebService;
 
+        private readonly IMachineMissionsWebService missionsWebService;
+
         private readonly INavigationService navigationService;
 
         private readonly IRegionManager regionManager;
@@ -82,6 +84,8 @@ namespace Ferretto.VW.App.Services
         private bool isDisposed;
 
         private bool isHoming;
+
+        private bool isMissionInError;
 
         private bool isShutterThreeSensors;
 
@@ -121,7 +125,8 @@ namespace Ferretto.VW.App.Services
             IMachineModeService machineModeService,
             ISensorsService sensorsService,
             IHealthProbeService healthProbeService,
-            IBayManager bayManagerService)
+            IBayManager bayManagerService,
+            IMachineMissionsWebService missionsWebService)
         {
             this.regionManager = regionManager ?? throw new ArgumentNullException(nameof(regionManager));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
@@ -137,6 +142,7 @@ namespace Ferretto.VW.App.Services
             this.bayManagerService = bayManagerService ?? throw new ArgumentNullException(nameof(bayManagerService));
             this.machineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
+            this.missionsWebService = missionsWebService ?? throw new ArgumentNullException(nameof(missionsWebService));
         }
 
         #endregion
@@ -188,6 +194,12 @@ namespace Ferretto.VW.App.Services
         {
             get => this.isHoming;
             set => this.SetProperty(ref this.isHoming, value);
+        }
+
+        public bool IsMissionInError
+        {
+            get => this.isMissionInError;
+            private set => this.SetProperty(ref this.isMissionInError, value);
         }
 
         public bool IsShutterThreeSensors
@@ -308,6 +320,7 @@ namespace Ferretto.VW.App.Services
                 await this.InitializationHoming();
                 await this.UpdateBay();
                 await this.InitializationLoadUnits();
+                await this.machineModeService.OnUpdateServiceAsync();
             }
         }
 
@@ -450,6 +463,8 @@ namespace Ferretto.VW.App.Services
 
         private async Task InitializationBay()
         {
+            this.IsMissionInError = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
+
             this.bays = await this.machineBaysWebService.GetAllAsync();
 
             this.cells = await this.machineCellsWebService.GetAllAsync();
@@ -720,6 +735,10 @@ namespace Ferretto.VW.App.Services
                                 this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
                                 this.Cells = await this.machineCellsWebService.GetAllAsync();
                                 this.Bay = await this.bayManagerService.GetBayAsync();
+                                if (this.MachineStatus.IsMovingLoadingUnit)
+                                {
+                                    this.IsMissionInError = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
+                                }
                             }).GetAwaiter().GetResult();
 
                             var ms = (MachineStatus)this.MachineStatus.Clone();
@@ -1016,6 +1035,8 @@ namespace Ferretto.VW.App.Services
 
         private async Task UpdateBay()
         {
+            this.IsMissionInError = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
+
             // Devo aggiornare i dati delle posizioni della baia
             this.Bay = await this.bayManagerService.GetBayAsync();
 
@@ -1208,6 +1229,10 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification("Serranda non completamente chiusa.", NotificationSeverity.Warning);
                         }
+                        else if (this.IsMissionInError)
+                        {
+                            this.ShowNotification("Missioni in errore...", NotificationSeverity.Warning);
+                        }
                         else
                         {
                             this.ClearNotifications();
@@ -1222,6 +1247,10 @@ namespace Ferretto.VW.App.Services
                         else if (this.machineModeService.MachineMode != MachineMode.Automatic)
                         {
                             this.ShowNotification("Manca automatico.", NotificationSeverity.Warning);
+                        }
+                        else if (this.IsMissionInError)
+                        {
+                            this.ShowNotification("Missioni in errore...", NotificationSeverity.Warning);
                         }
                         else
                         {
@@ -1238,7 +1267,14 @@ namespace Ferretto.VW.App.Services
 
                     case WarningsArea.Information:
                     case WarningsArea.Menu:
-                        this.ClearNotifications();
+                        if (this.IsMissionInError)
+                        {
+                            this.ShowNotification("Missioni in errore...", NotificationSeverity.Warning);
+                        }
+                        else
+                        {
+                            this.ClearNotifications();
+                        }
                         break;
 
                     default:

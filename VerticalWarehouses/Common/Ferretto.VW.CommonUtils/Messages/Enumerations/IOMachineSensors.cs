@@ -114,9 +114,9 @@
 
         FreeAng2 = 52,
 
-        FreeAng3 = 53,
+        OverrunElevator = 53,
 
-        ExtraRunElevator = 54,
+        FreeAng3 = 54,
 
         ZeroPawlSensor = 55,
 

@@ -74,7 +74,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 if (this.Mission.CloseShutterBayNumber == BayNumber.None)
                 {
-                    this.Logger.LogDebug($"Homing elevator occupied start");
+                    this.Logger.LogInformation($"Homing elevator occupied start Mission:Id={this.Mission.Id}");
                     this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
                 else
@@ -131,20 +131,25 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
-                        if (this.UpdateResponseList(notification.Type))
+                        if (notification.Type == MessageType.ShutterPositioning
+                            || notification.TargetBay == BayNumber.ElevatorBay
+                            )
                         {
-                            this.MissionsDataProvider.Update(this.Mission);
-                            if (notification.Type == MessageType.ShutterPositioning)
+                            if (this.UpdateResponseList(notification.Type))
                             {
-                                if (this.Mission.NeedHomingAxis == Axis.Horizontal)
+                                this.MissionsDataProvider.Update(this.Mission);
+                                if (notification.Type == MessageType.ShutterPositioning)
                                 {
-                                    this.Logger.LogDebug($"Homing elevator occupied start");
-                                    this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
-                                }
-                                else
-                                {
-                                    this.Logger.LogDebug($"ContinuePositioning");
-                                    this.LoadingUnitMovementProvider.ContinuePositioning(MessageActor.MachineManager, notification.RequestingBay);
+                                    if (this.Mission.NeedHomingAxis == Axis.Horizontal)
+                                    {
+                                        this.Logger.LogInformation($"Homing elevator occupied start Mission:Id={this.Mission.Id}");
+                                        this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
+                                    }
+                                    else
+                                    {
+                                        this.Logger.LogDebug($"ContinuePositioning Mission:Id={this.Mission.Id}");
+                                        this.LoadingUnitMovementProvider.ContinuePositioning(MessageActor.MachineManager, notification.RequestingBay);
+                                    }
                                 }
                             }
                         }

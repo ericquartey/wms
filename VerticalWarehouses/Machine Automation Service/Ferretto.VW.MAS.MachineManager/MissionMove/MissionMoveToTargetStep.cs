@@ -81,7 +81,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 if (this.Mission.CloseShutterBayNumber == BayNumber.None)
                 {
-                    this.Logger.LogDebug($"Homing elevator occupied start");
+                    this.Logger.LogInformation($"Homing elevator occupied start Mission:Id={this.Mission.Id}");
                     this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
                 else
@@ -151,12 +151,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 {
                                     if (this.Mission.NeedHomingAxis == Axis.Horizontal)
                                     {
-                                        this.Logger.LogDebug($"Homing elevator occupied start");
+                                        this.Logger.LogInformation($"Homing elevator occupied start Mission:Id={this.Mission.Id}");
                                         this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
                                     }
                                     else
                                     {
-                                        this.Logger.LogDebug($"ContinuePositioning");
+                                        this.Logger.LogDebug($"ContinuePositioning Mission:Id={this.Mission.Id}");
                                         this.LoadingUnitMovementProvider.ContinuePositioning(MessageActor.MachineManager, notification.RequestingBay);
                                     }
                                 }
@@ -168,12 +168,18 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MessageStatus.OperationError:
                 case MessageStatus.OperationStop:
                 case MessageStatus.OperationRunningStop:
-                    if (this.Mission.EjectLoadUnit)
+                    if (this.Mission.EjectLoadUnit
+                        && (notification.Type == MessageType.ShutterPositioning
+                            || notification.TargetBay == BayNumber.ElevatorBay
+                            )
+                        )
                     {
                         if (this.UpdateResponseList(notification.Type))
                         {
                             this.MissionsDataProvider.Update(this.Mission);
                         }
+
+
                     }
                     else
                     {
