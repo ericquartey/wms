@@ -21,6 +21,7 @@
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/PasswordBoxEditStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/RadioButtonStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/ScrollViewerStyle.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/DataGrid/DataGridStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary>
