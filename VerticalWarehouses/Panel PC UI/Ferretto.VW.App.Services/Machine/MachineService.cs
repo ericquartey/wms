@@ -401,6 +401,9 @@ namespace Ferretto.VW.App.Services
                 this.positioningOperationChangedToken?.Dispose();
                 this.positioningOperationChangedToken = null;
 
+                this.healthStatusChangedToken?.Dispose();
+                this.healthStatusChangedToken = null;
+
                 this.shutterPositionToken?.Dispose();
                 this.shutterPositionToken = null;
 
