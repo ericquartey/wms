@@ -6,11 +6,14 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:localControls="clr-namespace:Ferretto.VW.App.Operator.Views"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:modules="clr-namespace:Ferretto.VW.Utils.Modules;assembly=Ferretto.VW.Utils"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             d:DesignHeight="450"
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
+            ParentModuleName="{ctrls:NameOf Type={x:Type modules:Operator}}"           
+            ParentViewName="{x:Static modules:Operator.OPERATOR_MENU}"
             mc:Ignorable="d">
 
     <Grid Margin="50,0,15,0">

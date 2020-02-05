@@ -111,33 +111,15 @@ namespace Ferretto.VW.App.Modules.Operator.Services
                    m.Step == MissionStep.WaitPick
                    &&
                    m.TargetBay == this.machineService.BayNumber);
-            var currentWmsMission = waitingMissions.SingleOrDefault(m => m.MissionType == MissionType.WMS);
-            if (currentWmsMission != null)
+            if (waitingMissions.SingleOrDefault(m => m.MissionType == MissionType.WMS) != null)
             {
-                // TODO: remove doNotAppear parameter, then remove this call
-                this.navigationService.Appear(
-                      nameof(Utils.Modules.Operator),
-                      Utils.Modules.Operator.OPERATOR_MENU,
-                      null,
-                      true,
-                      doNotAppear: true);
-
                 this.NavigateToOperationDetails(this.missionOperationsService.CurrentMissionOperation.Type);
             }
             else
             {
                 var currentMission = waitingMissions.SingleOrDefault(m => m.MissionType != MissionType.WMS);
-                var loadingUnit = this.machineService.Loadunits.SingleOrDefault(l => l.Id == currentMission?.LoadUnitId);
-                if (loadingUnit != null)
+                if (this.machineService.Loadunits.SingleOrDefault(l => l.Id == currentMission?.LoadUnitId) is MAS.AutomationService.Contracts.LoadingUnit loadingUnit)
                 {
-                    // TODO: remove doNotAppear parameter, then remove this call
-                    this.navigationService.Appear(
-                      nameof(Utils.Modules.Operator),
-                      Utils.Modules.Operator.OPERATOR_MENU,
-                      null,
-                      true,
-                      doNotAppear: true);
-
                     this.NavigateToLoadingUnitDetails(loadingUnit.Id);
                 }
                 else
@@ -154,6 +136,12 @@ namespace Ferretto.VW.App.Modules.Operator.Services
         private string GetActiveViewModelName()
         {
             return this.navigationService.GetActiveViewModel().GetType().Name;
+        }
+
+        private bool isViewTrackable()
+        {
+            var activeViewModelName = this.GetActiveViewModelName();
+            return activeViewModelName != Utils.Modules.Operator.ItemOperations.WAIT;
         }
 
         private async Task NavigateToDrawerViewAsync(bool goToWaitViewIfBayIsEmpty)
@@ -192,7 +180,7 @@ namespace Ferretto.VW.App.Modules.Operator.Services
                         nameof(Utils.Modules.Operator),
                         Utils.Modules.Operator.ItemOperations.WAIT,
                         null,
-                        true);
+                        trackCurrentView: this.isViewTrackable());
                 }
             }
         }
@@ -207,7 +195,7 @@ namespace Ferretto.VW.App.Modules.Operator.Services
                 nameof(Utils.Modules.Operator),
                 Utils.Modules.Operator.ItemOperations.LOADING_UNIT,
                 loadingUnitId,
-                trackCurrentView: activeViewModelName != Utils.Modules.Operator.ItemOperations.WAIT);
+                trackCurrentView: this.isViewTrackable());
         }
 
         private void NavigateToOperationDetails(MissionOperationType operationType)
@@ -237,13 +225,11 @@ namespace Ferretto.VW.App.Modules.Operator.Services
 
             this.lastActiveMissionId = this.missionOperationsService.CurrentMission.Id;
 
-            var activeViewModelName = this.GetActiveViewModelName();
-
             this.navigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 viewModelName,
                 null,
-                trackCurrentView: activeViewModelName != Utils.Modules.Operator.ItemOperations.WAIT);
+                trackCurrentView: this.isViewTrackable());
         }
 
         private async Task OnAssignedMissionOperationChangedAsync(AssignedMissionOperationChangedEventArgs e)
