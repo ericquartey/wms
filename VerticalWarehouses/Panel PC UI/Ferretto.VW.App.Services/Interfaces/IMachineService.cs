@@ -52,7 +52,7 @@ namespace Ferretto.VW.App.Services
 
         Task OnUpdateServiceAsync();
 
-        void Start();
+        Task StartAsync();
 
         Task StopMovingByAllAsync();
 

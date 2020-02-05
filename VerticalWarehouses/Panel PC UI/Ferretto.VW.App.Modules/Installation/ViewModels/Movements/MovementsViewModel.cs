@@ -561,7 +561,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     Debug.WriteLine("-->:RefreshActionPoliciesAsync:selectedBayPosition");
 
-                    this.moveToBayPositionPolicy = await this.machineElevatorWebService.CanMoveToBayPositionAsync(selectedBayPosition.Id);
+                    this.moveToBayPositionPolicy = await this.machineElevatorWebService.CanMoveToBayPositionAsync(selectedBayPosition.Id).ConfigureAwait(false);
                     this.moveToBayPositionCommand?.RaiseCanExecuteChanged();
                 }
 
@@ -573,13 +573,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     if (selectedCell != null)
                     {
-                        this.moveToCellPolicy = await this.machineElevatorWebService.CanMoveToCellAsync(selectedCell.Id);
+                        this.moveToCellPolicy = await this.machineElevatorWebService.CanMoveToCellAsync(selectedCell.Id).ConfigureAwait(false);
                         this.moveToCellHeightCommand?.RaiseCanExecuteChanged();
                         this.moveToHeightCommand?.RaiseCanExecuteChanged();
                     }
                     else
                     {
-                        this.moveToCellPolicy = await this.machineElevatorWebService.CanMoveToCellAsync(selectedLoadunitCell.Id);
+                        this.moveToCellPolicy = await this.machineElevatorWebService.CanMoveToCellAsync(selectedLoadunitCell.Id).ConfigureAwait(false);
                         this.moveToLoadingUnitHeightCommand?.RaiseCanExecuteChanged();
                     }
                 }
@@ -588,12 +588,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     Debug.WriteLine("-->:RefreshActionPoliciesAsync:carousel");
 
-                    this.moveCarouselUpPolicy = await this.machineCarouselWebService.CanMoveAsync(VerticalMovementDirection.Up, this.IsMovementsManual ? MovementCategory.Manual : MovementCategory.Assisted);
+                    this.moveCarouselUpPolicy = await this.machineCarouselWebService.CanMoveAsync(VerticalMovementDirection.Up, this.IsMovementsManual ? MovementCategory.Manual : MovementCategory.Assisted).ConfigureAwait(false);
                     this.moveCarouselUpCommand?.RaiseCanExecuteChanged();
 
                     if (this.IsMovementsManual)
                     {
-                        this.moveCarouselDownPolicy = await this.machineCarouselWebService.CanMoveAsync(VerticalMovementDirection.Down, this.IsMovementsManual ? MovementCategory.Manual : MovementCategory.Assisted);
+                        this.moveCarouselDownPolicy = await this.machineCarouselWebService.CanMoveAsync(VerticalMovementDirection.Down, this.IsMovementsManual ? MovementCategory.Manual : MovementCategory.Assisted).ConfigureAwait(false);
                         this.moveCarouselDownCommand?.RaiseCanExecuteChanged();
                     }
                 }

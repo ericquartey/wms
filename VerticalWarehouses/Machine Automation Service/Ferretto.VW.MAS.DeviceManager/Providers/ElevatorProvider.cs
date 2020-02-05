@@ -637,20 +637,20 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var compensation = this.HorizontalPosition - axis.LastIdealPosition;
             if (Math.Abs(compensation) > Math.Abs(axis.ChainOffset))
             {
-                this.logger.LogWarning($"Do not use compensation for large errors {compensation} > offset {axis.ChainOffset}");
+                this.logger.LogWarning($"Do not use compensation for large errors {compensation:0.2} > offset {axis.ChainOffset}");
                 compensation = 0;
             }
             var switchPosition = profileSteps.Select(s => this.HorizontalPosition - compensation + (s.Position * directionMultiplier)).ToArray();
 
             var targetPosition = switchPosition.Last();
 
-            this.logger.LogDebug($"MoveHorizontalAuto: ProfileType: {profileType}; " +
+            this.logger.LogInformation($"MoveHorizontalAuto: ProfileType: {profileType}; " +
                 $"HorizontalPosition: {(int)this.HorizontalPosition}; " +
                 $"direction: {direction}; " +
                 $"measure: {measure}; " +
                 $"waitContinue: {waitContinue}; " +
                 $"loadUnitId: {loadingUnitId}; " +
-                $"scalingFactor: {scalingFactor}; " +
+                $"scalingFactor: {scalingFactor:0.4}; " +
                 $"compensation: {compensation}");
 
             var messageData = new PositioningMessageData(
@@ -1326,16 +1326,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 WaitContinue = waitContinue
             };
 
-            this.logger.LogDebug(
+            this.logger.LogInformation(
                 $"MoveToVerticalPosition: {movementMode}; " +
                 $"manualMovement: {manualMovement}; " +
                 $"targetPosition: {targetPosition}; " +
                 $"homing: {homingDone}; " +
                 $"feedRate: {(sender == MessageActor.AutomationService ? feedRate : 1)}; " +
-                $"speed: {speed[0]}; " +
-                $"acceleration: {acceleration[0]}; " +
-                $"deceleration: {deceleration[0]}; " +
-                $"speed w/o feedRate: {movementParameters.Speed}; " +
+                $"speed: {speed[0]:0.2}; " +
+                $"acceleration: {acceleration[0]:0.2}; " +
+                $"deceleration: {deceleration[0]:0.2}; " +
+                $"speed w/o feedRate: {movementParameters.Speed:0.2}; " +
                 $"LU id: {messageData.LoadingUnitId.GetValueOrDefault()}");
 
             this.PublishCommand(

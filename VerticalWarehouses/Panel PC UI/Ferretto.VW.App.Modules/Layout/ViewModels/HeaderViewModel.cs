@@ -69,6 +69,11 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
             {
                 case PresentationMode.Login:
                     this.Show(PresentationTypes.None, false);
+                    this.Show(PresentationTypes.Error, false);
+                    this.Show(PresentationTypes.Help, false);
+                    this.Show(PresentationTypes.Logged, false);
+                    this.Show(PresentationTypes.MachineMode, false);
+                    this.Show(PresentationTypes.MachineMarch, false);
                     this.Show(PresentationTypes.Theme, true);
 #if DEBUG
                     this.Show(PresentationTypes.Shutdown, true);

@@ -23,6 +23,14 @@ namespace Ferretto.VW.MAS.DataModels.Extensions
                                    .FirstOrDefault()?.Reason;
         }
 
+        public static int? GetSeverity(this MachineErrorCode machineErrorCode)
+        {
+            return machineErrorCode.GetType()
+                                   .GetField(machineErrorCode.ToString())
+                                   .GetCustomAttributes<ErrorDescriptionAttribute>(false)
+                                   .FirstOrDefault()?.Severity;
+        }
+
         #endregion
     }
 }

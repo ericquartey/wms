@@ -7,6 +7,8 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager;
 using Ferretto.VW.MAS.MachineManager.MissionMove;
 using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
@@ -258,7 +260,13 @@ namespace Ferretto.VW.MAS.MissionManager
                         || mission.RestoreStep == MissionStep.WaitPick
                         )
                     {
-                        mission.NeedHomingAxis = Axis.BayChain;
+                        var bayProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                        var bay = bayProvider.GetByNumber(mission.TargetBay);
+                        if (bay != null
+                            && bay.Carousel != null)
+                        {
+                            mission.NeedHomingAxis = Axis.BayChain;
+                        }
                         newStep = new MissionMoveErrorStep(mission, serviceProvider, eventAggregator);
                     }
                     else if (mission.RestoreStep == MissionStep.LoadElevator)
@@ -367,9 +375,27 @@ namespace Ferretto.VW.MAS.MissionManager
                             this.machineVolatileDataProvider.Mode = MachineMode.Restore;
                             this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                         }
-                        else if (!this.GenerateHoming(bayProvider, this.machineVolatileDataProvider.IsHomingExecuted))
+                        else if (!activeMissions.Any(m => m.Status == MissionStatus.Executing
+                                    && m.Step > MissionStep.New)
+                                && !this.GenerateHoming(bayProvider, this.machineVolatileDataProvider.IsHomingExecuted))
                         {
-                            this.machineVolatileDataProvider.Mode = MachineMode.Automatic;
+                            var sensorProvider = serviceProvider.GetRequiredService<ISensorsProvider>();
+                            var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
+                            var loadUnit = elevatorDataProvider.GetLoadingUnitOnBoard();
+                            if (sensorProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator)
+                                && (loadUnit == null
+                                    || !activeMissions.Any(m => m.LoadUnitId == loadUnit.Id)
+                                    )
+                                )
+                            {
+                                var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
+                                errorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnElevator);
+                                this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                            }
+                            else
+                            {
+                                this.machineVolatileDataProvider.Mode = MachineMode.Automatic;
+                            }
                             this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                         }
                     }
@@ -462,7 +488,7 @@ namespace Ferretto.VW.MAS.MissionManager
                                 && !this.GenerateHoming(bayProvider, this.machineVolatileDataProvider.IsHomingExecuted)
                                 )
                             {
-                                this.machineVolatileDataProvider.Mode = MachineMode.Automatic;
+                                this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToAutomatic;
                                 this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                             }
                         }

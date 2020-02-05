@@ -42,6 +42,8 @@ namespace Ferretto.VW.MAS.DataModels
         /// </summary>
         public DateTime? ResolutionDate { get; set; }
 
+        public int? Severity => ((MachineErrorCode)this.Code).GetSeverity();
+
         #endregion
     }
 }

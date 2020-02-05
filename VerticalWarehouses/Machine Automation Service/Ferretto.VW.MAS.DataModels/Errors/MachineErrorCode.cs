@@ -7,80 +7,80 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(NoError))]
         NoError = -1,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(CradleNotCompletelyLoaded))]
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(CradleNotCompletelyLoaded), 1)]
         CradleNotCompletelyLoaded = 1,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ConditionsNotMetForPositioning))]
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ConditionsNotMetForPositioning), 0)]
         [ErrorCondition(typeof(IElevatorHorizontalChainZeroConditionEvaluator))]
         ConditionsNotMetForPositioning,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ConditionsNotMetForRunning))]
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ConditionsNotMetForRunning), 0)]
         [ErrorCondition(typeof(ISecurityIsClearedConditionEvaluator))]
         ConditionsNotMetForRunning,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ConditionsNotMetForHoming))]
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ConditionsNotMetForHoming), 0)]
         [ErrorCondition(typeof(IElevatorHorizontalChainZeroConditionEvaluator))]
         ConditionsNotMetForHoming,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SecurityWasTriggered))]
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SecurityWasTriggered), 2)]
         [ErrorCondition(typeof(ISecurityIsClearedConditionEvaluator))]
         SecurityWasTriggered,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SecurityButtonWasTriggered))]
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SecurityButtonWasTriggered), 2)]
         SecurityButtonWasTriggered,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SecurityBarrierWasTriggered))]
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SecurityBarrierWasTriggered), 2)]
         SecurityBarrierWasTriggered,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SecuritySensorWasTriggered))]
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SecuritySensorWasTriggered), 2)]
         SecuritySensorWasTriggered,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterFaultStateDetected))]
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterFaultStateDetected), 2)]
         InverterFaultStateDetected,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(CradleNotCorrectlyLoadedDuringPickup))]
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(CradleNotCorrectlyLoadedDuringPickup), 1)]
         CradleNotCorrectlyLoadedDuringPickup,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(CradleNotCorrectlyUnloadedDuringDeposit))]
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(CradleNotCorrectlyUnloadedDuringDeposit), 1)]
         CradleNotCorrectlyUnloadedDuringDeposit,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ZeroSensorErrorAfterPickup))]
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ZeroSensorErrorAfterPickup), 1)]
         ZeroSensorErrorAfterPickup,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ZeroSensorErrorAfterDeposit))]
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ZeroSensorErrorAfterDeposit), 1)]
         ZeroSensorErrorAfterDeposit,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InvalidPresenceSensors))]
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InvalidPresenceSensors), 1)]
         InvalidPresenceSensors,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MissingZeroSensorWithEmptyElevator))]
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MissingZeroSensorWithEmptyElevator), 1)]
         MissingZeroSensorWithEmptyElevator,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ZeroSensorActiveWithFullElevator))]
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ZeroSensorActiveWithFullElevator), 1)]
         ZeroSensorActiveWithFullElevator,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitPresentOnEmptyElevator))]
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitPresentOnEmptyElevator), 1)]
         LoadUnitPresentOnEmptyElevator,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(TopLevelBayOccupied))]
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(TopLevelBayOccupied), 1)]
         TopLevelBayOccupied,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(BottomLevelBayOccupied))]
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(BottomLevelBayOccupied), 1)]
         BottomLevelBayOccupied,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(TopLevelBayEmpty))]
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(TopLevelBayEmpty), 1)]
         TopLevelBayEmpty,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(BottomLevelBayEmpty))]
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(BottomLevelBayEmpty), 1)]
         BottomLevelBayEmpty,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SensorZeroBayNotActiveAtStart))]
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SensorZeroBayNotActiveAtStart), 1)]
         SensorZeroBayNotActiveAtStart,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterConnectionError), 0)]
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterConnectionError), 2)]
         InverterConnectionError,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(IoDeviceConnectionError), 0)]
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(IoDeviceConnectionError), 2)]
         IoDeviceConnectionError,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LaserConnectionError), 0)]
