@@ -230,6 +230,13 @@ namespace Ferretto.VW.MAS.MissionManager
                         moveLoadingUnitProvider.ActivateMoveToCell(mission.Id, mission.MissionType, mission.LoadUnitId, bayNumber, MessageActor.MissionManager);
                     }
                 }
+                else if (mission.Status is MissionStatus.Waiting
+                    && mission.Step is MissionStep.BayChain
+                    )
+                {
+                    var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(mission.LoadUnitId);
+                    moveLoadingUnitProvider.ResumeMoveLoadUnit(mission.Id, loadingUnitSource, LoadingUnitLocation.Cell, bayNumber, null, MessageActor.MissionManager);
+                }
             }
         }
 
@@ -381,11 +388,8 @@ namespace Ferretto.VW.MAS.MissionManager
                         {
                             var sensorProvider = serviceProvider.GetRequiredService<ISensorsProvider>();
                             var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
-                            var loadUnit = elevatorDataProvider.GetLoadingUnitOnBoard();
                             if (sensorProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator)
-                                && (loadUnit == null
-                                    || !activeMissions.Any(m => m.LoadUnitId == loadUnit.Id)
-                                    )
+                                && elevatorDataProvider.GetLoadingUnitOnBoard() == null
                                 )
                             {
                                 var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
