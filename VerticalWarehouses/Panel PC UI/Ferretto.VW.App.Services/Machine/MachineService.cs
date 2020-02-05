@@ -688,6 +688,9 @@ namespace Ferretto.VW.App.Services
                             if (message?.Data is MoveLoadingUnitMessageData moveLoadingUnitMessageData)
                             {
                                 this.logger.Debug($"OnMoveLoadingUnitMessageData:{moveLoadingUnitMessageData.MissionStep};");
+                                var ms = (MachineStatus)this.MachineStatus.Clone();
+                                ms.CurrentMissionId = moveLoadingUnitMessageData.MissionId;
+                                this.MachineStatus = ms;
 
                                 // TODO use messageData.MissionStep instead of message.Description
                                 this.Notification = $"Movimento in corso... ({this.MachineStatus?.CurrentMissionId} - {message.Description})";
@@ -781,6 +784,7 @@ namespace Ferretto.VW.App.Services
                             if (message?.Data is MoveLoadingUnitMessageData)
                             {
                                 ms.IsMovingLoadingUnit = false;
+                                ms.CurrentMissionId = null;
                             }
 
                             if (!this.MachineStatus.IsMovingLoadingUnit)
