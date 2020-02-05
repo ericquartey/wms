@@ -20,6 +20,10 @@ namespace Ferretto.VW.App.Controls.Controls
         #region Fields
 
         [Browsable(false)]
+        public static readonly DependencyProperty BayNumberProperty =
+            DependencyProperty.Register(nameof(BayNumber), typeof(string), typeof(CardSensorBay));
+
+        [Browsable(false)]
         public static readonly DependencyProperty CardSensorLabel2Property =
             DependencyProperty.Register(nameof(CardSensorLabel2), typeof(string), typeof(CardSensorBay));
 
@@ -71,6 +75,12 @@ namespace Ferretto.VW.App.Controls.Controls
         #endregion
 
         #region Properties
+
+        public string BayNumber
+        {
+            get => (string)this.GetValue(BayNumberProperty);
+            set => this.SetValue(BayNumberProperty, value);
+        }
 
         public string CardSensorLabel2
         {
@@ -128,6 +138,8 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             this.SensorsService = this.sensorsService;
             this.MachineStatus = this.machineService.MachineStatus;
+
+            this.BayNumber = $"Baia {(int)this.machineService.Bay.Number}";
 
             if (this.machineService.Bay.IsDouble)
             {
