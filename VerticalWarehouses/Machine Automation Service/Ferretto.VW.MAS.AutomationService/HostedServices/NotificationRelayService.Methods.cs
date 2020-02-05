@@ -8,6 +8,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -79,10 +80,13 @@ namespace Ferretto.VW.MAS.AutomationService
                     else
                     {
                         this.machineVolatileDataProvider.IsHomingExecuted = true;
+                        var sensorProvider = serviceProvider.GetRequiredService<ISensorsProvider>();
                         var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
                         var loadUnit = elevatorDataProvider.GetLoadingUnitOnBoard();
-                        if (loadUnit == null
-                            || !missionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitId == loadUnit.Id)
+                        if (sensorProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator)
+                            && (loadUnit == null
+                                || !missionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitId == loadUnit.Id)
+                                )
                             )
                         {
                             var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
