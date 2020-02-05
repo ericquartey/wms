@@ -411,7 +411,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 Debug.WriteLine($"OnGuidedRaiseCanExecuteChanged: {method3} -> {method2} -> {method1}");
 #endif
 
-                Task.Run(async () => await this.RefreshActionPoliciesAsync()).GetAwaiter().GetResult();
+                Task.Run(async () => await this.RefreshActionPoliciesAsync().ConfigureAwait(false)).GetAwaiter().GetResult();
 
                 this.tuningBayCommand?.RaiseCanExecuteChanged();
                 this.tuningChainCommand?.RaiseCanExecuteChanged();
