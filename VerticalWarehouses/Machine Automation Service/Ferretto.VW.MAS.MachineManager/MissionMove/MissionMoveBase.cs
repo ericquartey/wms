@@ -334,10 +334,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 )
             {
                 var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
-                if (bay != null
-                    && bay.Positions != null
-                    && bay.Positions.All(p => p.LoadingUnit is null)
-                    )
+                if (bay != null)
                 {
                     this.Mission.NeedHomingAxis = Axis.None;
                     this.MissionsDataProvider.Update(this.Mission);

@@ -401,6 +401,9 @@ namespace Ferretto.VW.App.Services
                 this.positioningOperationChangedToken?.Dispose();
                 this.positioningOperationChangedToken = null;
 
+                this.healthStatusChangedToken?.Dispose();
+                this.healthStatusChangedToken = null;
+
                 this.shutterPositionToken?.Dispose();
                 this.shutterPositionToken = null;
 
@@ -538,7 +541,7 @@ namespace Ferretto.VW.App.Services
             }
         }
 
-        private void OnDataChanged<TData>(NotificationMessageUI<TData> message)
+        private async Task OnDataChangedAsync<TData>(NotificationMessageUI<TData> message)
             where TData : class, IMessageData
         {
             try
@@ -547,19 +550,16 @@ namespace Ferretto.VW.App.Services
                 {
                     this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status};");
 
-                    Task.Run(async () =>
-                            {
-                                var isHoming = await this.machinePowerWebService.GetIsHomingAsync();
-                                if (isHoming != this.IsHoming ||
-                                isHoming && message?.Status == MessageStatus.OperationEnd ||
-                                !isHoming && message?.Status == MessageStatus.OperationError)
-                                {
-                                    this.eventAggregator
-                                    .GetEvent<HomingChangedPubSubEvent>()
-                                    .Publish(new HomingChangedMessage(isHoming));
-                                }
-                                this.IsHoming = isHoming;
-                            }).GetAwaiter().GetResult();
+                    var isHoming = await this.machinePowerWebService.GetIsHomingAsync();
+                    if (isHoming != this.IsHoming ||
+                    isHoming && message?.Status == MessageStatus.OperationEnd ||
+                    !isHoming && message?.Status == MessageStatus.OperationError)
+                    {
+                        this.eventAggregator
+                        .GetEvent<HomingChangedPubSubEvent>()
+                        .Publish(new HomingChangedMessage(isHoming));
+                    }
+                    this.IsHoming = isHoming;
                 }
 
                 switch (message.Status)
@@ -703,17 +703,14 @@ namespace Ferretto.VW.App.Services
                         {
                             this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status};");
 
-                            Task.Run(async () =>
-                            {
-                                this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
-                                this.Cells = await this.machineCellsWebService.GetAllAsync();
-                            }).GetAwaiter().GetResult();
+                            this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
+                            this.Cells = await this.machineCellsWebService.GetAllAsync();
 
                             var ms = (MachineStatus)this.MachineStatus.Clone();
 
                             ms.MessageStatus = message.Status;
 
-                            Task.Run(async () => ms = await this.GetElevatorAsync(ms)).GetAwaiter().GetResult();
+                            await this.GetElevatorAsync(ms);
 
                             this.MachineStatus = ms;
 
@@ -733,16 +730,13 @@ namespace Ferretto.VW.App.Services
                                 this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status};");
                             }
 
-                            Task.Run(async () =>
+                            this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
+                            this.Cells = await this.machineCellsWebService.GetAllAsync();
+                            this.Bay = await this.bayManagerService.GetBayAsync();
+                            if (this.MachineStatus.IsMovingLoadingUnit)
                             {
-                                this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
-                                this.Cells = await this.machineCellsWebService.GetAllAsync();
-                                this.Bay = await this.bayManagerService.GetBayAsync();
-                                if (this.MachineStatus.IsMovingLoadingUnit)
-                                {
-                                    this.IsMissionInError = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
-                                }
-                            }).GetAwaiter().GetResult();
+                                this.IsMissionInError = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
+                            }
 
                             var ms = (MachineStatus)this.MachineStatus.Clone();
 
@@ -756,7 +750,7 @@ namespace Ferretto.VW.App.Services
 
                             if (message?.Data is PositioningMessageData dataPositioning)
                             {
-                                Task.Run(async () => ms = await this.GetElevatorAsync(ms)).GetAwaiter().GetResult();
+                                await this.GetElevatorAsync(ms);
 
                                 ms.IsMovingElevator = false;
                                 if (dataPositioning.AxisMovement == Axis.Vertical)
@@ -816,19 +810,16 @@ namespace Ferretto.VW.App.Services
                                 }
                             }
 
-                            Task.Run(async () =>
-                            {
-                                var pos = await this.machineElevatorWebService.GetPositionAsync();
+                            var pos = await this.machineElevatorWebService.GetPositionAsync();
 
-                                this.UpdateMachineStatusByElevatorPosition(
-                                    new ElevatorPositionChangedEventArgs(
-                                        pos.Vertical,
-                                        pos.Horizontal,
-                                        pos.CellId,
-                                        pos.BayPositionId,
-                                        pos.BayPositionUpper),
-                                    ms);
-                            }).GetAwaiter().GetResult();
+                            this.UpdateMachineStatusByElevatorPosition(
+                                new ElevatorPositionChangedEventArgs(
+                                    pos.Vertical,
+                                    pos.Horizontal,
+                                    pos.CellId,
+                                    pos.BayPositionId,
+                                    pos.BayPositionUpper),
+                                ms);
 
                             this.MachineStatus = ms;
 
@@ -955,7 +946,7 @@ namespace Ferretto.VW.App.Services
             this.receiveHomingUpdateToken = this.eventAggregator
                     .GetEvent<NotificationEventUI<HomingMessageData>>()
                     .Subscribe(
-                        this.OnDataChanged,
+                        async (e) => await this.OnDataChangedAsync(e),
                         ThreadOption.UIThread,
                         false);
 
@@ -982,7 +973,7 @@ namespace Ferretto.VW.App.Services
                 this.eventAggregator
                     .GetEvent<NotificationEventUI<PositioningMessageData>>()
                     .Subscribe(
-                        this.OnDataChanged,
+                        async (e) => await this.OnDataChangedAsync(e),
                         ThreadOption.UIThread,
                         false);
 
@@ -991,7 +982,7 @@ namespace Ferretto.VW.App.Services
                 this.eventAggregator
                     .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
                     .Subscribe(
-                        this.OnDataChanged,
+                        async (e) => await this.OnDataChangedAsync(e),
                         ThreadOption.UIThread,
                         false);
 
@@ -1021,7 +1012,7 @@ namespace Ferretto.VW.App.Services
                 this.eventAggregator
                     .GetEvent<NotificationEventUI<MoveLoadingUnitMessageData>>()
                     .Subscribe(
-                        this.OnDataChanged,
+                        async (e) => await this.OnDataChangedAsync(e),
                         ThreadOption.UIThread,
                         false);
 
@@ -1030,7 +1021,7 @@ namespace Ferretto.VW.App.Services
                 this.eventAggregator
                     .GetEvent<NotificationEventUI<FsmExceptionMessageData>>()
                     .Subscribe(
-                        this.OnDataChanged,
+                        async (e) => await this.OnDataChangedAsync(e),
                         ThreadOption.UIThread,
                         false);
 

@@ -138,11 +138,13 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (existingUnresolvedError.Any())
                 {
-                    if (existingUnresolvedError.Any(e => e.Code == (int)code))
-                    {
-                        this.logger.LogWarning($"Machine error {code} ({(int)code}) for {bayNumber} was not triggered because already active.");
-                        return existingUnresolvedError.First(e => e.Code == (int)code);
-                    }
+                    // TODO enable this call to discard only the same error
+                    //if (existingUnresolvedError.Any(e => e.Code == (int)code))
+                    //{
+                    //    this.logger.LogWarning($"Machine error {code} ({(int)code}) for {bayNumber} was not triggered because already active.");
+                    //    return existingUnresolvedError.First(e => e.Code == (int)code);
+                    //}
+
                     // there are active errors different from code
 
                     //// TODO enable this loop to discard subsequent errors of lower severity
@@ -155,9 +157,9 @@ namespace Ferretto.VW.MAS.DataLayer
                     //    }
                     //}
 
-                    //// TODO enable this call to discard all subsequent errors
-                    //this.logger.LogWarning($"Machine error {code} ({(int)code}) for {bayNumber} was not triggered because another error is already active.");
-                    //return newError;
+                    // discard all subsequent errors
+                    this.logger.LogWarning($"Machine error {code} ({(int)code}) for {bayNumber} was not triggered because another error is already active.");
+                    return newError;
                 };
 
                 this.dataContext.Errors.Add(newError);
