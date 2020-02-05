@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Data;
 using CommonServiceLocator;
 using DevExpress.Xpf.Core;
-using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.App.Controls
@@ -25,6 +24,16 @@ namespace Ferretto.VW.App.Controls
             typeof(bool),
             typeof(PpcDialogView),
             new PropertyMetadata(ClosedChanged));
+
+        public static readonly DependencyProperty ParentModuleNameProperty = DependencyProperty.Register(
+                            nameof(ParentModuleName),
+            typeof(string),
+            typeof(PpcDialogView));
+
+        public static readonly DependencyProperty ParentViewNameProperty = DependencyProperty.Register(
+            nameof(ParentViewName),
+            typeof(string),
+            typeof(PpcDialogView));
 
         #endregion
 
@@ -49,6 +58,18 @@ namespace Ferretto.VW.App.Controls
         {
             get => (bool)this.GetValue(IsClosedProperty);
             set => this.SetValue(IsClosedProperty, value);
+        }
+
+        public string ParentModuleName
+        {
+            get => (string)this.GetValue(ParentModuleNameProperty);
+            set => this.SetValue(ParentModuleNameProperty, value);
+        }
+
+        public string ParentViewName
+        {
+            get => (string)this.GetValue(ParentViewNameProperty);
+            set => this.SetValue(ParentViewNameProperty, value);
         }
 
         #endregion

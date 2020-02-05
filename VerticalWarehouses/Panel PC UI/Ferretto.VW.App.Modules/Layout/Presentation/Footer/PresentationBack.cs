@@ -36,7 +36,18 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         public override Task ExecuteAsync()
         {
-            this.navigationService.GoBack();
+            if (this.navigationService.GetActiveView() is INavigableView view
+                &&
+                !string.IsNullOrEmpty(view.ParentModuleName)
+                &&
+                !string.IsNullOrEmpty(view.ParentViewName))
+            {
+                this.navigationService.Appear(view.ParentModuleName, view.ParentViewName, null, false);
+            }
+            else
+            {
+                this.navigationService.GoBack();
+            }
 
             return Task.CompletedTask;
         }

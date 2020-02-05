@@ -10,9 +10,11 @@
 
         #region Methods
 
-        void Appear(string moduleName, string viewModelName, object data = null, bool trackCurrentView = true, bool doNotAppear = false);
+        void Appear(string moduleName, string viewModelName, object data = null, bool trackCurrentView = true);
 
         void Disappear(INavigableViewModel viewModel);
+
+        INavigableView GetActiveView();
 
         INavigableViewModel GetActiveViewModel();
 

@@ -82,11 +82,8 @@ namespace Ferretto.VW.MAS.AutomationService
                         this.machineVolatileDataProvider.IsHomingExecuted = true;
                         var sensorProvider = serviceProvider.GetRequiredService<ISensorsProvider>();
                         var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
-                        var loadUnit = elevatorDataProvider.GetLoadingUnitOnBoard();
                         if (sensorProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator)
-                            && (loadUnit == null
-                                || !missionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitId == loadUnit.Id)
-                                )
+                            && elevatorDataProvider.GetLoadingUnitOnBoard() == null
                             )
                         {
                             var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
