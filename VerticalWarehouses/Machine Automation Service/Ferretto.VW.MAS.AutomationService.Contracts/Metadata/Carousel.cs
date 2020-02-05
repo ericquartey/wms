@@ -7,9 +7,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [Ferretto.VW.MAS.Scaffolding.DataAnnotations.MetadataType(typeof(Carousel.Metadata))]
     public partial class Carousel
     {
-        class Metadata
+        #region Classes
+
+        private class Metadata
         {
+            #region Properties
+
             [Unfold]
+            [Id(4)]
             public CarouselManualParameters AssistedMovements { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Carousel_ElevatorDistance))]
@@ -31,7 +36,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public double LastIdealPosition { get; set; }
 
             [Unfold]
+            [Id(5)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.MovementParameters))]
             public CarouselManualParameters ManualMovements { get; set; }
+
+            #endregion
         }
+
+        #endregion
     }
 }

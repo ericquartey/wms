@@ -59,7 +59,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
 
             private readonly CultureInfo _culture;
 
-            private int idSeed = 0;
+            //private int idSeed = 0;
 
             #endregion
 
@@ -215,8 +215,8 @@ namespace Ferretto.VW.App.Scaffolding.Services
                                 Instance = instance,
                                 Property = actualProp,
                                 Metadata = prop.GetCustomAttributes<Attribute>(),
-                                //Id = target.Id + id,
-                                Id = ++this.idSeed
+                                Id = target.Id + id,
+                                //Id = ++this.idSeed
                             });
                         }
                         else if (instance != null)
