@@ -125,7 +125,6 @@ namespace Ferretto.VW.MAS.AutomationService
               .AddJsonOptions(options =>
               {
                   options.SerializerSettings.Converters.Add(new IPAddressConverter());
-                  options.SerializerSettings.Converters.Add(new StringEnumConverter());
                   options.SerializerSettings.ContractResolver = new DefaultContractResolver();
               })
               .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

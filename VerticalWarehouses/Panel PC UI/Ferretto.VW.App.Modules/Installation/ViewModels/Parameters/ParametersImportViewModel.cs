@@ -166,7 +166,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             if (!configurationFiles.Any())
             {
                 this.ShowNotification(Resources.InstallationApp.NoDevicesAvailableAnymore, Services.Models.NotificationSeverity.Warning);
-                this.NavigationService.GoBackSafelyAsync(); 
+                this.NavigationService.GoBackSafelyAsync();
             }
             this.IsBusy = false;
         }
@@ -184,7 +184,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     {
                         Machine = new Machine(),
                     }.ExtendWith(JObject.Parse(json));
-                    config = VertimagConfiguration.FromJson(source.ToString());
+
+                    config = Newtonsoft.Json.JsonConvert.DeserializeObject<VertimagConfiguration>(source.ToString(),
+                        new Newtonsoft.Json.JsonConverter[]
+                        {
+                            new CommonUtils.Converters.IPAddressConverter(),
+                            new Newtonsoft.Json.Converters.StringEnumConverter(),
+                        });
+
+                    //config = VertimagConfiguration.FromJson(source.ToString());
                 }
                 catch (Exception exc)
                 {

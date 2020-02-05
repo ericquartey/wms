@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             #region Properties
 
-            [Unfold]
+            [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.AssistedMovements))]
             [Id(4)]
             public CarouselManualParameters AssistedMovements { get; set; }
 
@@ -35,9 +35,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [ScaffoldColumn(false)]
             public double LastIdealPosition { get; set; }
 
-            [Unfold]
+            [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.ManualMovements))]
             [Id(5)]
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.MovementParameters))]
             public CarouselManualParameters ManualMovements { get; set; }
 
             #endregion

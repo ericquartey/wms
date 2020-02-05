@@ -11,7 +11,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             [Category(Category = nameof(Vertimag.Bay), ResourceType = typeof(Vertimag))]
             [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
-            [Id(100)]
+            [Id(200)]
             [Offset(100)]
             [PullToRoot, Unfold]
             public System.Collections.Generic.IEnumerable<Bay> Bays { get; set; }

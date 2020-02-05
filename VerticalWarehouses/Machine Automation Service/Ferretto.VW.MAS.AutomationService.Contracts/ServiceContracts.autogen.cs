@@ -1201,13 +1201,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public Laser Laser { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Number", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public BayNumber Number { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Operation", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public BayOperation Operation { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Positions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -1225,8 +1221,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public WarehouseSide Side { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Status", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public BayStatus Status { get; set; }
     
         public string ToJson() 
@@ -1314,8 +1308,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial class Mission : DataModel
     {
         [Newtonsoft.Json.JsonProperty("Action", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public CommandAction Action { get; set; }
     
         [Newtonsoft.Json.JsonProperty("BayNotifications", Required = Newtonsoft.Json.Required.Always)]
@@ -1324,8 +1316,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public MissionBayNotifications BayNotifications { get; set; }
     
         [Newtonsoft.Json.JsonProperty("CloseShutterBayNumber", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public BayNumber CloseShutterBayNumber { get; set; }
     
         [Newtonsoft.Json.JsonProperty("CreationDate", Required = Newtonsoft.Json.Required.Always)]
@@ -1341,8 +1331,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public MissionDeviceNotifications DeviceNotifications { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Direction", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public HorizontalMovementDirection Direction { get; set; }
     
         [Newtonsoft.Json.JsonProperty("EjectLoadUnit", Required = Newtonsoft.Json.Required.Always)]
@@ -1357,34 +1345,24 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public int? LoadUnitCellSourceId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("LoadUnitDestination", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public LoadingUnitLocation LoadUnitDestination { get; set; }
     
         [Newtonsoft.Json.JsonProperty("LoadUnitId", Required = Newtonsoft.Json.Required.Always)]
         public int LoadUnitId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("LoadUnitSource", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public LoadingUnitLocation LoadUnitSource { get; set; }
     
         [Newtonsoft.Json.JsonProperty("MissionType", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public MissionType MissionType { get; set; }
     
         [Newtonsoft.Json.JsonProperty("NeedHomingAxis", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public Axis NeedHomingAxis { get; set; }
     
         [Newtonsoft.Json.JsonProperty("NeedMovingBackward", Required = Newtonsoft.Json.Required.Always)]
         public bool NeedMovingBackward { get; set; }
     
         [Newtonsoft.Json.JsonProperty("OpenShutterPosition", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public ShutterPosition OpenShutterPosition { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Priority", Required = Newtonsoft.Json.Required.Always)]
@@ -1394,8 +1372,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public bool RestoreConditions { get; set; }
     
         [Newtonsoft.Json.JsonProperty("RestoreStep", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public MissionStep RestoreStep { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Status", Required = Newtonsoft.Json.Required.Always)]
@@ -1404,18 +1380,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public MissionStatus Status { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Step", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public MissionStep Step { get; set; }
     
         [Newtonsoft.Json.JsonProperty("StopReason", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public StopRequestReason StopReason { get; set; }
     
         [Newtonsoft.Json.JsonProperty("TargetBay", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public BayNumber TargetBay { get; set; }
     
         [Newtonsoft.Json.JsonProperty("WmsId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -1436,25 +1406,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum CommandAction
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"Start")]
         Start = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Activate")]
         Activate = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Pause")]
         Pause = 2,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Resume")]
         Resume = 3,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Abort")]
         Abort = 4,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Test")]
         Test = 5,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Stop")]
         Stop = 6,
     
     }
@@ -1483,23 +1446,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum BayNumber
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"None")]
         None = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"BayOne")]
         BayOne = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"BayTwo")]
         BayTwo = 2,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"BayThree")]
         BayThree = 3,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ElevatorBay")]
         ElevatorBay = 4,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"All")]
-        All = 5,
+        All = 10,
     
     }
     
@@ -1524,13 +1481,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum HorizontalMovementDirection
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"NotSpecified")]
         NotSpecified = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Forwards")]
         Forwards = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Backwards")]
         Backwards = 2,
     
     }
@@ -1559,96 +1513,71 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum LoadingUnitLocation
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"NoLocation")]
         NoLocation = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InternalBay1Up")]
         InternalBay1Up = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InternalBay1Down")]
         InternalBay1Down = 2,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InternalBay2Up")]
         InternalBay2Up = 3,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InternalBay2Down")]
         InternalBay2Down = 4,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InternalBay3Up")]
         InternalBay3Up = 5,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InternalBay3Down")]
         InternalBay3Down = 6,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ExternalBay1Up")]
         ExternalBay1Up = 7,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ExternalBay1Down")]
         ExternalBay1Down = 8,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ExternalBay2Up")]
         ExternalBay2Up = 9,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ExternalBay2Down")]
         ExternalBay2Down = 10,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ExternalBay3Up")]
         ExternalBay3Up = 11,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ExternalBay3Down")]
         ExternalBay3Down = 12,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"CarouselBay1Up")]
         CarouselBay1Up = 13,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"CarouselBay1Down")]
         CarouselBay1Down = 14,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"CarouselBay2Up")]
         CarouselBay2Up = 15,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"CarouselBay2Down")]
         CarouselBay2Down = 16,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"CarouselBay3Up")]
         CarouselBay3Up = 17,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"CarouselBay3Down")]
         CarouselBay3Down = 18,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Cell")]
         Cell = 19,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnit")]
         LoadUnit = 20,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Elevator")]
         Elevator = 21,
+    
+        Up = 22,
+    
+        Down = 23,
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MissionType
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"NoType")]
         NoType = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Manual")]
         Manual = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"WMS")]
         WMS = 2,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"IN")]
         IN = 3,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"OUT")]
         OUT = 4,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"FullTest")]
         FullTest = 5,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Compact")]
         Compact = 6,
     
     }
@@ -1656,19 +1585,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum Axis
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"None")]
         None = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Horizontal")]
         Horizontal = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Vertical")]
         Vertical = 2,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"HorizontalAndVertical")]
         HorizontalAndVertical = 3,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"BayChain")]
         BayChain = 4,
     
     }
@@ -1676,19 +1600,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum ShutterPosition
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"NotSpecified")]
         NotSpecified = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Opened")]
         Opened = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Half")]
         Half = 2,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Closed")]
         Closed = 3,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Intermediate")]
         Intermediate = 4,
     
     }
@@ -1696,47 +1615,33 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MissionStep
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"NotDefined")]
         NotDefined = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"New")]
         New = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Start")]
         Start = 2,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"LoadElevator")]
         LoadElevator = 3,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ToTarget")]
         ToTarget = 4,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"DepositUnit")]
         DepositUnit = 5,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"WaitPick")]
         WaitPick = 6,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"BayChain")]
         BayChain = 7,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"CloseShutter")]
         CloseShutter = 8,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"BackToTarget")]
         BackToTarget = 9,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"End")]
         End = 10,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Error")]
-        Error = 11,
+        Error = 101,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ErrorLoad")]
-        ErrorLoad = 12,
+        ErrorLoad = 102,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ErrorDeposit")]
-        ErrorDeposit = 13,
+        ErrorDeposit = 103,
     
     }
     
@@ -1766,22 +1671,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum StopRequestReason
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"NoReason")]
         NoReason = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Stop")]
         Stop = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Error")]
         Error = 2,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Abort")]
         Abort = 3,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"RunningStateChanged")]
         RunningStateChanged = 4,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"FaultStateChanged")]
         FaultStateChanged = 5,
     
     }
@@ -1814,8 +1713,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial class Inverter : DataModel
     {
         [Newtonsoft.Json.JsonProperty("Index", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public InverterIndex Index { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IpAddress", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -1825,8 +1722,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public int TcpPort { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Type", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public InverterType Type { get; set; }
     
         public string ToJson() 
@@ -1844,149 +1739,104 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum InverterIndex
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"MainInverter")]
         MainInverter = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Slave1")]
         Slave1 = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Slave2")]
         Slave2 = 2,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Slave3")]
         Slave3 = 3,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Slave4")]
         Slave4 = 4,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Slave5")]
         Slave5 = 5,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Slave6")]
         Slave6 = 6,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Slave7")]
         Slave7 = 7,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"All")]
-        All = 8,
+        All = 16,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"None")]
-        None = 9,
+        None = 255,
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum AddressFamily
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"Unspecified")]
         Unspecified = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Unix")]
         Unix = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InterNetwork")]
         InterNetwork = 2,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ImpLink")]
         ImpLink = 3,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Pup")]
         Pup = 4,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Chaos")]
         Chaos = 5,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"NS")]
         Ipx = 6,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"NS")]
-        NS = 7,
+        NS = 6,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Osi")]
-        Iso = 8,
+        Iso = 7,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Osi")]
-        Osi = 9,
+        Osi = 7,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Ecma")]
-        Ecma = 10,
+        Ecma = 8,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"DataKit")]
-        DataKit = 11,
+        DataKit = 9,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Ccitt")]
-        Ccitt = 12,
+        Ccitt = 10,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Sna")]
-        Sna = 13,
+        Sna = 11,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"DecNet")]
-        DecNet = 14,
+        DecNet = 12,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"DataLink")]
-        DataLink = 15,
+        DataLink = 13,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Lat")]
-        Lat = 16,
+        Lat = 14,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"HyperChannel")]
-        HyperChannel = 17,
+        HyperChannel = 15,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"AppleTalk")]
-        AppleTalk = 18,
+        AppleTalk = 16,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"NetBios")]
-        NetBios = 19,
+        NetBios = 17,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"VoiceView")]
-        VoiceView = 20,
+        VoiceView = 18,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"FireFox")]
-        FireFox = 21,
+        FireFox = 19,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Banyan")]
-        Banyan = 22,
+        Banyan = 21,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Atm")]
-        Atm = 23,
+        Atm = 22,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InterNetworkV6")]
-        InterNetworkV6 = 24,
+        InterNetworkV6 = 23,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Cluster")]
-        Cluster = 25,
+        Cluster = 24,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Ieee12844")]
-        Ieee12844 = 26,
+        Ieee12844 = 25,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Irda")]
-        Irda = 27,
+        Irda = 26,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"NetworkDesigners")]
         NetworkDesigners = 28,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Max")]
         Max = 29,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Unknown")]
-        Unknown = 30,
+        Unknown = -1,
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum InverterType
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"Undefined")]
         Undefined = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Ang")]
         Ang = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Agl")]
         Agl = 2,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Acu")]
         Acu = 3,
     
     }
@@ -1995,8 +1845,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial class IoDevice : DataModel
     {
         [Newtonsoft.Json.JsonProperty("Index", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public IoIndex Index { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IpAddress", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2020,20 +1868,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum IoIndex
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"IoDevice1")]
         IoDevice1 = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"IoDevice2")]
         IoDevice2 = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"IoDevice3")]
         IoDevice3 = 2,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"All")]
-        All = 3,
+        All = 16,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"None")]
-        None = 4,
+        None = 255,
     
     }
     
@@ -2064,10 +1907,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum BayOperation
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"Idle")]
         Idle = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ExecutingMission")]
         ExecutingMission = 1,
     
     }
@@ -2085,9 +1926,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public LoadingUnit LoadingUnit { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Location", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public LoadingUnitLocation Location { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("LocationUpDown", Required = Newtonsoft.Json.Required.Always)]
+        public LoadingUnitLocation LocationUpDown { get; set; }
     
         [Newtonsoft.Json.JsonProperty("MaxDoubleHeight", Required = Newtonsoft.Json.Required.Always)]
         public double MaxDoubleHeight { get; set; }
@@ -2144,8 +1986,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public double NetWeight { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Status", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public LoadingUnitStatus Status { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Tare", Required = Newtonsoft.Json.Required.Always)]
@@ -2234,19 +2074,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum LoadingUnitStatus
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"Undefined")]
         Undefined = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InBay")]
         InBay = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"OnMovementToLocation")]
         OnMovementToLocation = 2,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"OnMovementToBay")]
         OnMovementToBay = 3,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InLocation")]
         InLocation = 4,
     
     }
@@ -2264,8 +2099,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public ShutterManualParameters ManualMovements { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Type", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public ShutterType Type { get; set; }
     
         public string ToJson() 
@@ -2313,13 +2146,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum ShutterType
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"NotSpecified")]
         NotSpecified = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"TwoSensors")]
         TwoSensors = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ThreeSensors")]
         ThreeSensors = 2,
     
     }
@@ -2327,16 +2157,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum BayStatus
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"Disconnected")]
         Disconnected = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Idle")]
         Idle = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Busy")]
         Busy = 2,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Errored")]
         Errored = 3,
     
     }
@@ -2432,8 +2258,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public string Reason { get; set; }
     
         [Newtonsoft.Json.JsonProperty("ReasonType", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public ReasonType ReasonType { get; set; }
     
         public string ToJson() 
@@ -2451,10 +2275,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum ReasonType
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"None")]
         None = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ElevatorInPosition")]
         ElevatorInPosition = 1,
     
     }
@@ -2462,10 +2284,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum VerticalMovementDirection
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"Up")]
         Up = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Down")]
         Down = 1,
     
     }
@@ -2473,16 +2293,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MovementCategory
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"None")]
         None = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Manual")]
         Manual = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Assisted")]
         Assisted = 2,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Automatic")]
         Automatic = 3,
     
     }
@@ -2718,8 +2534,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public double Offset { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Orientation", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public Orientation Orientation { get; set; }
     
         [Newtonsoft.Json.JsonProperty("ProfileCalibrateLength", Required = Newtonsoft.Json.Required.Always)]
@@ -2788,13 +2602,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum Orientation
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"Undefined")]
         Undefined = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Vertical")]
         Vertical = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Horizontal")]
         Horizontal = 2,
     
     }
@@ -2803,8 +2614,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial class MovementProfile : DataModel
     {
         [Newtonsoft.Json.JsonProperty("Name", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public MovementProfileType Name { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Steps", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2828,19 +2637,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MovementProfileType
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"Undefined")]
         Undefined = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ShortPickup")]
         ShortPickup = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ShortDeposit")]
         ShortDeposit = 2,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"LongDeposit")]
         LongDeposit = 3,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"LongPickup")]
         LongPickup = 4,
     
     }
@@ -3230,8 +3034,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial class MachineError : DataModel
     {
         [Newtonsoft.Json.JsonProperty("BayNumber", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public BayNumber BayNumber { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Code", Required = Newtonsoft.Json.Required.Always)]
@@ -3331,248 +3133,167 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MachineErrorCode
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"CradleNotCompletelyLoaded")]
-        CradleNotCompletelyLoaded = 0,
+        CradleNotCompletelyLoaded = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ConditionsNotMetForPositioning")]
-        ConditionsNotMetForPositioning = 1,
+        ConditionsNotMetForPositioning = 2,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ConditionsNotMetForRunning")]
-        ConditionsNotMetForRunning = 2,
+        ConditionsNotMetForRunning = 3,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ConditionsNotMetForHoming")]
-        ConditionsNotMetForHoming = 3,
+        ConditionsNotMetForHoming = 4,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"SecurityWasTriggered")]
-        SecurityWasTriggered = 4,
+        SecurityWasTriggered = 5,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"SecurityButtonWasTriggered")]
-        SecurityButtonWasTriggered = 5,
+        SecurityButtonWasTriggered = 6,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"SecurityBarrierWasTriggered")]
-        SecurityBarrierWasTriggered = 6,
+        SecurityBarrierWasTriggered = 7,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"SecuritySensorWasTriggered")]
-        SecuritySensorWasTriggered = 7,
+        SecuritySensorWasTriggered = 8,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InverterFaultStateDetected")]
-        InverterFaultStateDetected = 8,
+        InverterFaultStateDetected = 9,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"CradleNotCorrectlyLoadedDuringPickup")]
-        CradleNotCorrectlyLoadedDuringPickup = 9,
+        CradleNotCorrectlyLoadedDuringPickup = 10,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"CradleNotCorrectlyUnloadedDuringDeposit")]
-        CradleNotCorrectlyUnloadedDuringDeposit = 10,
+        CradleNotCorrectlyUnloadedDuringDeposit = 11,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ZeroSensorErrorAfterPickup")]
-        ZeroSensorErrorAfterPickup = 11,
+        ZeroSensorErrorAfterPickup = 12,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ZeroSensorErrorAfterDeposit")]
-        ZeroSensorErrorAfterDeposit = 12,
+        ZeroSensorErrorAfterDeposit = 13,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InvalidPresenceSensors")]
-        InvalidPresenceSensors = 13,
+        InvalidPresenceSensors = 14,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"MissingZeroSensorWithEmptyElevator")]
-        MissingZeroSensorWithEmptyElevator = 14,
+        MissingZeroSensorWithEmptyElevator = 15,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ZeroSensorActiveWithFullElevator")]
-        ZeroSensorActiveWithFullElevator = 15,
+        ZeroSensorActiveWithFullElevator = 16,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitPresentOnEmptyElevator")]
-        LoadUnitPresentOnEmptyElevator = 16,
+        LoadUnitPresentOnEmptyElevator = 17,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"TopLevelBayOccupied")]
-        TopLevelBayOccupied = 17,
+        TopLevelBayOccupied = 18,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"BottomLevelBayOccupied")]
-        BottomLevelBayOccupied = 18,
+        BottomLevelBayOccupied = 19,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"TopLevelBayEmpty")]
-        TopLevelBayEmpty = 19,
+        TopLevelBayEmpty = 20,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"BottomLevelBayEmpty")]
-        BottomLevelBayEmpty = 20,
+        BottomLevelBayEmpty = 21,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"SensorZeroBayNotActiveAtStart")]
-        SensorZeroBayNotActiveAtStart = 21,
+        SensorZeroBayNotActiveAtStart = 22,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InverterConnectionError")]
-        InverterConnectionError = 22,
+        InverterConnectionError = 23,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"IoDeviceConnectionError")]
-        IoDeviceConnectionError = 23,
+        IoDeviceConnectionError = 24,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"LaserConnectionError")]
-        LaserConnectionError = 24,
+        LaserConnectionError = 25,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitWeightExceeded")]
-        LoadUnitWeightExceeded = 25,
+        LoadUnitWeightExceeded = 26,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitHeightExceeded")]
-        LoadUnitHeightExceeded = 26,
+        LoadUnitHeightExceeded = 27,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitWeightTooLow")]
-        LoadUnitWeightTooLow = 27,
+        LoadUnitWeightTooLow = 28,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"MachineWeightExceeded")]
-        MachineWeightExceeded = 28,
+        MachineWeightExceeded = 29,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"DestinationBelowLowerBound")]
-        DestinationBelowLowerBound = 29,
+        DestinationBelowLowerBound = 30,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"DestinationOverUpperBound")]
-        DestinationOverUpperBound = 30,
+        DestinationOverUpperBound = 31,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"BayInvertersBusy")]
-        BayInvertersBusy = 31,
+        BayInvertersBusy = 32,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"IoDeviceError")]
-        IoDeviceError = 32,
+        IoDeviceError = 33,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"MachineModeNotValid")]
-        MachineModeNotValid = 33,
+        MachineModeNotValid = 34,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"AnotherMissionIsActiveForThisLoadUnit")]
-        AnotherMissionIsActiveForThisLoadUnit = 34,
+        AnotherMissionIsActiveForThisLoadUnit = 35,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"AnotherMissionIsActiveForThisBay")]
-        AnotherMissionIsActiveForThisBay = 35,
+        AnotherMissionIsActiveForThisBay = 36,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"AnotherMissionOfThisTypeIsActive")]
-        AnotherMissionOfThisTypeIsActive = 36,
+        AnotherMissionOfThisTypeIsActive = 37,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"WarehouseIsFull")]
-        WarehouseIsFull = 37,
+        WarehouseIsFull = 38,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"CellLogicallyOccupied")]
-        CellLogicallyOccupied = 38,
+        CellLogicallyOccupied = 39,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"MoveBayChainNotAllowed")]
-        MoveBayChainNotAllowed = 39,
+        MoveBayChainNotAllowed = 40,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"AutomaticRestoreNotAllowed")]
-        AutomaticRestoreNotAllowed = 40,
+        AutomaticRestoreNotAllowed = 41,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"DestinationTypeNotValid")]
-        DestinationTypeNotValid = 41,
+        DestinationTypeNotValid = 42,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"MissionTypeNotValid")]
-        MissionTypeNotValid = 42,
+        MissionTypeNotValid = 43,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ResumeCommandNotValid")]
-        ResumeCommandNotValid = 43,
+        ResumeCommandNotValid = 44,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"DestinationBayNotCalibrated")]
-        DestinationBayNotCalibrated = 44,
+        DestinationBayNotCalibrated = 45,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"NoLoadUnitInSource")]
-        NoLoadUnitInSource = 45,
+        NoLoadUnitInSource = 46,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitSourceDb")]
-        LoadUnitSourceDb = 46,
+        LoadUnitSourceDb = 47,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitDestinationCell")]
-        LoadUnitDestinationCell = 47,
+        LoadUnitDestinationCell = 48,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitElevator")]
-        LoadUnitElevator = 48,
+        LoadUnitElevator = 49,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitNotRemoved")]
-        LoadUnitNotRemoved = 49,
+        LoadUnitNotRemoved = 50,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitDestinationBay")]
-        LoadUnitDestinationBay = 50,
+        LoadUnitDestinationBay = 51,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitSourceCell")]
-        LoadUnitSourceCell = 51,
+        LoadUnitSourceCell = 52,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitNotFound")]
-        LoadUnitNotFound = 52,
+        LoadUnitNotFound = 53,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitNotLoaded")]
-        LoadUnitNotLoaded = 53,
+        LoadUnitNotLoaded = 54,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitSourceBay")]
-        LoadUnitSourceBay = 54,
+        LoadUnitSourceBay = 55,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitShutterOpen")]
-        LoadUnitShutterOpen = 55,
+        LoadUnitShutterOpen = 56,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitShutterInvalid")]
-        LoadUnitShutterInvalid = 56,
+        LoadUnitShutterInvalid = 57,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitShutterClosed")]
-        LoadUnitShutterClosed = 57,
+        LoadUnitShutterClosed = 58,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitPresentInCell")]
-        LoadUnitPresentInCell = 58,
+        LoadUnitPresentInCell = 59,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitOtherBay")]
-        LoadUnitOtherBay = 59,
+        LoadUnitOtherBay = 60,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitSourceElevator")]
-        LoadUnitSourceElevator = 60,
+        LoadUnitSourceElevator = 61,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitMissingOnElevator")]
-        LoadUnitMissingOnElevator = 61,
+        LoadUnitMissingOnElevator = 62,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitMissingOnBay")]
-        LoadUnitMissingOnBay = 62,
+        LoadUnitMissingOnBay = 63,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitUndefinedUpper")]
-        LoadUnitUndefinedUpper = 63,
+        LoadUnitUndefinedUpper = 64,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"LoadUnitUndefinedBottom")]
-        LoadUnitUndefinedBottom = 64,
+        LoadUnitUndefinedBottom = 65,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorBaseCode")]
-        InverterErrorBaseCode = 65,
+        InverterErrorBaseCode = 1000,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorInvalidParameter")]
-        InverterErrorInvalidParameter = 66,
+        InverterErrorInvalidParameter = 1001,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorInvalidDataset")]
-        InverterErrorInvalidDataset = 67,
+        InverterErrorInvalidDataset = 1002,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorParameterIsWriteOnly")]
-        InverterErrorParameterIsWriteOnly = 68,
+        InverterErrorParameterIsWriteOnly = 1003,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorParameterIsReadOnly")]
-        InverterErrorParameterIsReadOnly = 69,
+        InverterErrorParameterIsReadOnly = 1004,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorEepromReadError")]
-        InverterErrorEepromReadError = 70,
+        InverterErrorEepromReadError = 1005,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorEepromWriteError")]
-        InverterErrorEepromWriteError = 71,
+        InverterErrorEepromWriteError = 1006,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorEepromChecksumError")]
-        InverterErrorEepromChecksumError = 72,
+        InverterErrorEepromChecksumError = 1007,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorCannotWriteParameterWhileRunning")]
-        InverterErrorCannotWriteParameterWhileRunning = 73,
+        InverterErrorCannotWriteParameterWhileRunning = 1008,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorDatasetValuesAreDifferent")]
-        InverterErrorDatasetValuesAreDifferent = 74,
+        InverterErrorDatasetValuesAreDifferent = 1009,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorUnknownParameter")]
-        InverterErrorUnknownParameter = 75,
+        InverterErrorUnknownParameter = 1011,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorSyntaxError")]
-        InverterErrorSyntaxError = 76,
+        InverterErrorSyntaxError = 1013,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorWrongPayloadLength")]
-        InverterErrorWrongPayloadLength = 77,
+        InverterErrorWrongPayloadLength = 1014,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorNodeNotAvailable")]
-        InverterErrorNodeNotAvailable = 78,
+        InverterErrorNodeNotAvailable = 1020,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"InverterErrorSyntaxError2")]
-        InverterErrorSyntaxError2 = 79,
+        InverterErrorSyntaxError2 = 1030,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"NoError")]
-        NoError = 80,
+        NoError = -1,
     
     }
     
@@ -3611,8 +3332,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public string SerialNumber { get; set; }
     
         [Newtonsoft.Json.JsonProperty("ServiceStatus", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public MachineServiceStatus ServiceStatus { get; set; }
     
         [Newtonsoft.Json.JsonProperty("TrayCount", Required = Newtonsoft.Json.Required.Always)]
@@ -3636,17 +3355,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MachineServiceStatus
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"Undefined")]
         Undefined = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Expiring")]
-        Expiring = 1,
+        Expiring = 71,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Valid")]
-        Valid = 2,
+        Valid = 86,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Expired")]
-        Expired = 3,
+        Expired = 88,
     
     }
     
@@ -3926,31 +3641,22 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MachineMode
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"NotSpecified")]
         NotSpecified = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Automatic")]
         Automatic = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Manual")]
         Manual = 2,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Test")]
         Test = 3,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Compact")]
         Compact = 4,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Restore")]
         Restore = 5,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"SwitchingToAutomatic")]
         SwitchingToAutomatic = 6,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"SwitchingToManual")]
         SwitchingToManual = 7,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"SwitchingToCompact")]
         SwitchingToCompact = 8,
     
     }
@@ -3958,19 +3664,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MachinePowerState
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"NotSpecified")]
         NotSpecified = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Unpowered")]
         Unpowered = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"PoweringUp")]
         PoweringUp = 2,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Powered")]
         Powered = 3,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"PoweringDown")]
         PoweringDown = 4,
     
     }
@@ -3978,13 +3679,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum ShutterMovementDirection
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"NotSpecified")]
         NotSpecified = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Up")]
         Up = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Down")]
         Down = 2,
     
     }
@@ -3993,8 +3691,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial class UserClaims 
     {
         [Newtonsoft.Json.JsonProperty("AccessLevel", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public UserAccessLevel AccessLevel { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -4015,20 +3711,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum UserAccessLevel
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"NoAccess")]
         NoAccess = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Operator")]
         Operator = 1,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Installer")]
         Installer = 2,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Support")]
         Support = 3,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Admin")]
-        Admin = 4,
+        Admin = 99,
     
     }
 

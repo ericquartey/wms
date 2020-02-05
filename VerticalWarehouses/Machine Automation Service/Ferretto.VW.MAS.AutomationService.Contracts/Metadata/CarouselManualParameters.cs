@@ -16,6 +16,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             #region Properties
 
+            [Id(1)]
             public double FeedRate { get; set; }
 
             [ScaffoldColumn(false)]

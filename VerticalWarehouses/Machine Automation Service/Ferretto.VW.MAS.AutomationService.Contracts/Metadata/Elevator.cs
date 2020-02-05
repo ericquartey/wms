@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Category(Category = nameof(Vertimag.ElevatorAxis), ResourceType = typeof(Vertimag))]
             [CategoryParameter(nameof(ElevatorAxis.Orientation), ValueStringifierType = typeof(EnumValueStringifier))]
-            [Offset(30)]
+            [Offset(40)]
             [Id(20)]
             public System.Collections.Generic.IEnumerable<ElevatorAxis> Axes { get; set; }
 
