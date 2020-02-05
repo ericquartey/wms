@@ -62,7 +62,7 @@ namespace Ferretto.VW.App.Services
             _ = containerProvider.Resolve<IMachineService>();
 
             containerProvider.Resolve<IHealthProbeService>().Start();
-            containerProvider.Resolve<IMachineService>().Start();
+            containerProvider.Resolve<IMachineService>().StartAsync();
             containerProvider.Resolve<ITimeSyncService>().Start();
             containerProvider.Resolve<IMissionOperationsService>().StartAsync();
 

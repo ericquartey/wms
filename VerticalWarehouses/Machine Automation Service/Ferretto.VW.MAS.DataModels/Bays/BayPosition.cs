@@ -35,6 +35,27 @@ namespace Ferretto.VW.MAS.DataModels
 
         public LoadingUnitLocation Location { get; set; }
 
+        public LoadingUnitLocation LocationUpDown =>
+            (this.Location is LoadingUnitLocation.CarouselBay1Up
+             ||
+             this.Location is LoadingUnitLocation.CarouselBay2Up
+             ||
+             this.Location is LoadingUnitLocation.CarouselBay3Up
+             ||
+             this.Location is LoadingUnitLocation.ExternalBay1Up
+             ||
+             this.Location is LoadingUnitLocation.ExternalBay2Up
+             ||
+             this.Location is LoadingUnitLocation.ExternalBay3Up
+             ||
+             this.Location is LoadingUnitLocation.InternalBay1Up
+             ||
+             this.Location is LoadingUnitLocation.InternalBay2Up
+             ||
+             this.Location is LoadingUnitLocation.InternalBay3Up) ?
+            LoadingUnitLocation.Up :
+            LoadingUnitLocation.Down;
+
         public double MaxDoubleHeight { get; set; }
 
         public double MaxSingleHeight { get; set; }

@@ -59,9 +59,9 @@ namespace Ferretto.VW.App.Scaffolding.Services
 
             private readonly CultureInfo _culture;
 
-            private int idSeed = 0;
-
             #endregion
+
+            //private int idSeed = 0;
 
             #region Constructors
 
@@ -162,10 +162,16 @@ namespace Ferretto.VW.App.Scaffolding.Services
                                     throw new ScaffoldingException($"A category with the name {category.Name} already exists.");
                                 }
 
-                                int p = 1;
-                                if (!int.TryParse(category.FirstParameter, out p))
+                                // find to index
+                                int index = 0;
+                                foreach (var i in collection)
                                 {
-                                    p = 1;
+                                    if (item.Equals(i))
+                                    {
+                                        break;
+                                    }
+
+                                    index++;
                                 }
 
                                 newBranch = new ScaffoldedStructureInternal
@@ -174,7 +180,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                                     Parent = target,
                                     Description = categoryDescription,
                                     CategoryParameter = category.FirstParameter,
-                                    Id = target.Id + id + (offset * p)
+                                    Id = target.Id + id + (offset * index)
                                 };
                                 target.Children.Add(newBranch);
                                 this.ScaffoldTypeInternal(elementType, item, newBranch, root);
@@ -210,14 +216,15 @@ namespace Ferretto.VW.App.Scaffolding.Services
 
                         if (isSimpleType)
                         {
-                            target.Entities.Add(new ScaffoldedEntityInternal
+                            var t = new ScaffoldedEntityInternal
                             {
                                 Instance = instance,
                                 Property = actualProp,
                                 Metadata = prop.GetCustomAttributes<Attribute>(),
-                                //Id = target.Id + id,
-                                Id = ++this.idSeed
-                            });
+                                Id = target.Id + id,
+                                //Id = ++this.idSeed
+                            };
+                            target.Entities.Add(t);
                         }
                         else if (instance != null)
                         {

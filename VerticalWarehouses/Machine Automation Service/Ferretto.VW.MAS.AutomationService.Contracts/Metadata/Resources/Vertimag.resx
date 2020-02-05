@@ -333,6 +333,9 @@
   <data name="Orientation.Vertical" xml:space="preserve">
     <value>verticale</value>
   </data>
+  <data name="Position" xml:space="preserve">
+    <value>Posizione {0}</value>
+  </data>
   <data name="PulleyDiameter" xml:space="preserve">
     <value>PulleyDiameter</value>
   </data>

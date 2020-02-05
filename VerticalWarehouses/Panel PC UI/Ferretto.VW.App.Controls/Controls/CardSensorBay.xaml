@@ -15,7 +15,7 @@
                       CardSensorLabel1="Zero"
                       CardSensorLabel2="{Binding CardSensorLabel2}"
                       CardSensorLabel3="{Binding CardSensorLabel3}"
-                      CardText="Baia"
+                      CardText="{Binding BayNumber}"
                       CardValue="{Binding MachineStatus.BayChainPosition, StringFormat={}{0:F2}}"
                       Sensor1="{Binding SensorsService.BayZeroChain}"
                       Sensor2="{Binding SensorsService.IsLoadingUnitInBay}"

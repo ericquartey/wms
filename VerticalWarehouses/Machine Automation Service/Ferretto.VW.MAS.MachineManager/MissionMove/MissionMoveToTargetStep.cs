@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command, bool showErrors = true)
         {
-            var measure = (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell);
+            var measure = (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell && this.Mission.LoadUnitSource != LoadingUnitLocation.Elevator);
             var waitContinue = measure;
             this.Mission.EjectLoadUnit = false;
             this.Mission.RestoreStep = MissionStep.NotDefined;
@@ -50,7 +50,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.MissionsDataProvider.Update(this.Mission);
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
-            if (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell)
+            if (measure)
             {
                 var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
                 if (bay is null)
@@ -91,6 +91,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             else
             {
+                this.Logger.LogInformation($"PositionElevatorToPosition start: target {destinationHeight.Value}, closeShutterBay {this.Mission.CloseShutterBayNumber}, measure {measure}, waitContinue {waitContinue}, Mission:Id={this.Mission.Id}");
                 this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value,
                     this.Mission.CloseShutterBayNumber,
                     measure,
@@ -111,7 +112,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         public override void OnNotification(NotificationMessage notification)
         {
             var notificationStatus = this.LoadingUnitMovementProvider.PositionElevatorToPositionStatus(notification);
-            var measure = (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell);
+            var measure = (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell && this.Mission.LoadUnitSource != LoadingUnitLocation.Elevator);
 
             switch (notificationStatus)
             {
@@ -131,6 +132,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                             var destinationHeight = this.LoadingUnitMovementProvider.GetDestinationHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
 
+                            this.Logger.LogInformation($"PositionElevatorToPosition start: target {destinationHeight.Value}, closeShutterBay {BayNumber.None}, measure {measure}, waitContinue {false}, Mission:Id={this.Mission.Id}");
                             this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value,
                                 BayNumber.None,
                                 measure,
@@ -178,8 +180,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         {
                             this.MissionsDataProvider.Update(this.Mission);
                         }
-
-
                     }
                     else
                     {

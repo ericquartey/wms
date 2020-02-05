@@ -16,6 +16,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.BayCarousel))]
             [CategoryDescription(ResourceType = typeof(Vertimag), Description = nameof(Vertimag.BayCarousel_Description))]
             [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
+            [Offset(10)]
             public Carousel Carousel { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_MaxGrossWeight))]
@@ -37,12 +38,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.BayInverter))]
             [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
-            [Id(2)]
+            [Id(20)]
             public Inverter Inverter { get; set; }
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.BayIoDevice))]
             [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
-            //[PullToRoot, Unfold]
+            [Id(25)]
             public IoDevice IoDevice { get; set; }
 
             [Editable(false)]
@@ -62,7 +63,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.BayLaser))]
             [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
-            //[PullToRoot, Unfold]
+            [Id(30)]
             public Laser Laser { get; set; }
 
             [Editable(false)]
@@ -73,7 +74,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [ScaffoldColumn(false)]
             public BayOperation Operation { get; set; }
 
-            [ScaffoldColumn(false)]
+            [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.Position))]
+            [CategoryParameter(nameof(BayPosition.LocationUpDown), ValueStringifierType = typeof(EnumValueStringifier))]
+            [Id(70)]
+            [Offset(10)]
             public System.Collections.Generic.IEnumerable<BayPosition> Positions { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Bay_Resolution))]
@@ -82,7 +86,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.BayShutter))]
             [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
-            //[PullToRoot, Unfold]
+            [Id(40)]
             public Shutter Shutter { get; set; }
 
             [Editable(false)]

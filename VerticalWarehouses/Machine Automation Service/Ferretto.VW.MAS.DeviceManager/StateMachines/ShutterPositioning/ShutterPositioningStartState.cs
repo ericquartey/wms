@@ -158,7 +158,10 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
         public override void Start()
         {
-            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.InverterIndex}");
+            this.Logger.LogInformation($"Start {this.GetType().Name}, " +
+                $"Inverter {this.machineData.InverterIndex}, " +
+                $"mode {this.machineData.PositioningMessageData.MovementMode}, " +
+                $"position {this.machineData.PositioningMessageData.ShutterPosition}, direction {this.machineData.PositioningMessageData.ShutterMovementDirection} ");
 
             var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.StatusWord, false, 0);
             var inverterMessage = new FieldCommandMessage(

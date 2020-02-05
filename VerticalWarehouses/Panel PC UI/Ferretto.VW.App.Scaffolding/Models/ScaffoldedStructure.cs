@@ -19,9 +19,9 @@ namespace Ferretto.VW.App.Scaffolding.Models
 
         #region Properties
 
-        public string AbbrevationCategory => this.Category?.Substring(0, 2);
+        //public string AbbrevationCategory => this.Category?.Substring(0, 2);
 
-        //public string AbbrevationCategory => this.Id > 0 ? this.Id.ToString() : this.Category?.Substring(0, 2) ?? null;
+        public string AbbrevationCategory => this.Id > 0 ? this.Id.ToString() : this.Category?.Substring(0, 3) ?? null;
 
         public string Category { get; }
 

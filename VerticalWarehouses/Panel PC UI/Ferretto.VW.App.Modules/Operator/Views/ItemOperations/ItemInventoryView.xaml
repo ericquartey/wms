@@ -7,6 +7,7 @@
             xmlns:wpf="clr-namespace:Ferretto.Common.Controls.WPF;assembly=Ferretto.Common.Controls.WPF"
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:modules="clr-namespace:Ferretto.VW.Utils.Modules;assembly=Ferretto.VW.Utils"
             xmlns:localControls="clr-namespace:Ferretto.VW.App.Operator.Views"
             xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             d:DesignHeight="450"
