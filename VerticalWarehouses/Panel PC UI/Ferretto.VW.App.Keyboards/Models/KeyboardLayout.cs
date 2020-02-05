@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Windows;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -16,6 +15,15 @@ namespace Ferretto.VW.App.Keyboards
             Formatting = Formatting.Indented,
             NullValueHandling = NullValueHandling.Ignore
         };
+
+        #endregion
+
+        #region Constructors
+
+        static KeyboardLayout()
+        {
+            _jsonSettings.Converters.Add(new Serialization.JsonGridLengthConverter());
+        }
 
         #endregion
 

@@ -3,11 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Ferretto.VW.App.Keyboards"
+             xmlns:local="clr-namespace:Ferretto.VW.App.Keyboards.Controls"
              xmlns:converters="clr-namespace:Ferretto.VW.App.Keyboards.Converters"
              xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d"
-              DataContext="{Binding Path=., RelativeSource={RelativeSource Mode=Self}}"
+             ButtonBase.Click="Btn_Click"
+             DataContext="{Binding Path=., RelativeSource={RelativeSource Mode=Self}}"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <Style TargetType="icons:PackIconFontAwesome">
@@ -16,20 +17,68 @@
         </Style>
 
         <converters:KeyboardCommandToContentConverter x:Key="KeyboardCommandToContentConverter" />
+        <converters:NegateConverter x:Key="NegateConverter" />
+
+        <Style TargetType="Button" x:Key="DefaultKeyboardButtonStyle"
+               BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Width="{TemplateBinding Width}"
+                                MinWidth="{TemplateBinding MinWidth}"
+                                Height="{TemplateBinding Height}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{DynamicResource PpcCornerRadius}"
+                                Cursor="Hand"
+                                FlowDirection="LeftToRight">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Setter Property="MinWidth" Value="{DynamicResource PpcButtonHeight}" />
+            <Setter Property="MinHeight" Value="{DynamicResource PpcButtonHeight}" />
+            <Setter Property="Background" Value="{DynamicResource PpcButtonBackground}" />
+            <Setter Property="Foreground" Value="{DynamicResource PpcButtonForeground}" />
+            <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
+            <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
+                    <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundPressed}" />
+                    <Setter Property="Cursor" Value="Hand" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
+                    <Setter Property="Foreground" Value="{DynamicResource PpcButtonForeground}" />
+                    <Setter Property="Cursor" Value="Hand" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
+                    <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- accented overall style -->
+        <Style TargetType="Button" x:Key="AccentKeyboardButtonStyle"
+               BasedOn="{StaticResource DefaultKeyboardButtonStyle}">
+            <Setter Property="Background" Value="{DynamicResource FerrettoBlack}" />
+        </Style>
+
     </UserControl.Resources>
-    <UserControl.Template>
-        <ControlTemplate TargetType="UserControl">
-            <Button Focusable="False"
-                    Click="Btn_Click"
-                    VerticalContentAlignment="Center"
-                    HorizontalContentAlignment="Center"
-                    Margin="{TemplateBinding Margin}"
-                    Padding="{TemplateBinding Padding}"
-                    Background="{DynamicResource PpcButtonBackground}"
-                    Foreground="{DynamicResource FerrettoLightGray}"
-                    FontSize="{DynamicResource FontSize_High}">
-                <ContentPresenter Content="{Binding Path=KeyCommand, Converter={StaticResource KeyboardCommandToContentConverter}}" />
-            </Button>
-        </ControlTemplate>
-    </UserControl.Template>
+    <Button Focusable="False" x:Name="Btn"
+            VerticalContentAlignment="Center"
+            HorizontalContentAlignment="Center"
+            Margin="{Binding Path=Padding, Converter={StaticResource NegateConverter}}"
+            Padding="{Binding Path=Padding}"
+            Style="{StaticResource DefaultKeyboardButtonStyle}">
+        <ContentControl Content="{Binding Path=KeyCommand, Converter={StaticResource KeyboardCommandToContentConverter}}" />
+    </Button>
 </UserControl>

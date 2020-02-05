@@ -1,0 +1,52 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Ferretto.VW.App.Controls.Keyboards
+{
+    public class PpcKeyboardsViewModel : BaseNavigationViewModel
+    {
+        #region Fields
+
+        private string inputText;
+
+        private bool isClosed = false;
+
+        private string keyboardLayoutCode = "lowercase";
+
+        #endregion
+
+        #region Constructors
+
+        public PpcKeyboardsViewModel(string layoutCode) : base()
+        {
+            this.keyboardLayoutCode = layoutCode ?? throw new ArgumentNullException(nameof(layoutCode));
+        }
+
+        #endregion
+
+        #region Properties
+
+        public string InputText
+        {
+            get => this.inputText;
+            set => this.SetProperty(ref this.inputText, value);
+        }
+
+        public bool IsClosed
+        {
+            get => this.isClosed;
+            set => this.SetProperty(ref this.isClosed, value);
+        }
+
+        public string KeyboardLayoutCode
+        {
+            get => this.keyboardLayoutCode;
+            set => this.SetProperty(ref this.keyboardLayoutCode, value);
+        }
+
+        #endregion
+    }
+}

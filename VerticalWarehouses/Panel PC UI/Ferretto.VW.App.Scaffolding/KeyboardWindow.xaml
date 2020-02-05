@@ -4,7 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ferretto.VW.App.Scaffolding"
-        xmlns:keyboards="clr-namespace:Ferretto.VW.App.Keyboards;assembly=Ferretto.VW.App.Keyboards"
+        xmlns:keyboards="http://ferrettogroup.com/vw/keyboards"
+        xmlns:interactivity="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:behaviors="clr-namespace:Ferretto.VW.App.Controls.Behaviors;assembly=Ferretto.VW.App.Controls"
         mc:Ignorable="d"
         Title="KeyboardWindow" Height="450" Width="800">
     <Grid>
@@ -14,9 +16,13 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBox />
+        <TextBox>
+            <interactivity:Interaction.Behaviors>
+                <behaviors:KeyboardPopupBehavior />
+            </interactivity:Interaction.Behaviors>
+        </TextBox>
 
-        <keyboards:Keyboard Grid.Row="1" LayoutChangeRequest="Keyboard_LayoutChangeRequest" x:Name="keyboard" />
+        <keyboards:Keyboard Grid.Row="1" KeyboardLayoutChangeRequest="Keyboard_LayoutChangeRequest" x:Name="keyboard" />
 
         <Button Content="Serialize" Click="Button_Click" Grid.Row="2" />
     </Grid>

@@ -18,8 +18,11 @@ namespace Ferretto.VW.App.Keyboards.Controls
     {
         #region Fields
 
+        public static readonly DependencyProperty KeyButtonStyleProperty =
+            DependencyProperty.Register(nameof(KeyButtonStyle), typeof(Style), typeof(KeyboardButton), new PropertyMetadata(OnKeyButtonStylePropertyChanged));
+
         public static readonly DependencyPropertyKey KeyCommandPropertyKey =
-                                    DependencyProperty.RegisterReadOnly(nameof(KeyCommand), typeof(KeyboardKeyCommand), typeof(KeyboardButton), null);
+                                                    DependencyProperty.RegisterReadOnly(nameof(KeyCommand), typeof(KeyboardKeyCommand), typeof(KeyboardButton), null);
 
         public static readonly DependencyProperty KeyCommandProperty = KeyCommandPropertyKey.DependencyProperty;
 
@@ -39,21 +42,32 @@ namespace Ferretto.VW.App.Keyboards.Controls
 
         #region Properties
 
-        public KeyboardKeyCommand KeyCommand
-        {
-            get => (KeyboardKeyCommand)this.GetValue(KeyCommandProperty);
-            private set => this.SetValue(KeyCommandPropertyKey, value);
-        }
-
         public KeyboardKey Key
         {
             get => (KeyboardKey)this.GetValue(KeyProperty);
             set => this.SetValue(KeyProperty, value);
         }
 
+        public Style KeyButtonStyle
+        {
+            get => (Style)this.GetValue(KeyButtonStyleProperty);
+            private set => this.SetValue(KeyButtonStyleProperty, value);
+        }
+
+        public KeyboardKeyCommand KeyCommand
+        {
+            get => (KeyboardKeyCommand)this.GetValue(KeyCommandProperty);
+            private set => this.SetValue(KeyCommandPropertyKey, value);
+        }
+
         #endregion
 
         #region Methods
+
+        private static void OnKeyButtonStylePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((KeyboardButton)d).SynchronizeButtonStyle();
+        }
 
         private static void OnKeyPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -65,10 +79,14 @@ namespace Ferretto.VW.App.Keyboards.Controls
             this.ExecuteKeyCommand();
         }
 
+        private void SynchronizeButtonStyle()
+        {
+            this.Btn.Style = this.KeyButtonStyle ?? (Style)this.Resources.FindName("DefaultKeyboardButtonStyle");
+        }
+
         private void SynchronizeLayout()
         {
             KeyboardKeyCommand command = default;
-
             if (this.Key?.Command != null)
             {
                 command = this.Key.Command;

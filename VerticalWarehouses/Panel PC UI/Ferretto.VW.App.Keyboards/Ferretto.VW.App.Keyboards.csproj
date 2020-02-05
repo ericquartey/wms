@@ -7,6 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\it-lowercase.json" />
+    <None Remove="Resources\it-numeric.json" />
+    <None Remove="Resources\it-uppercase.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\it-numeric.json" />
+    <Resource Include="Resources\it-uppercase.json" />
+    <Resource Include="Resources\it-lowercase.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MahApps.Metro.IconPacks" Version="2.3.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>

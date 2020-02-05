@@ -8,15 +8,13 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Ferretto.VW.App.Controls.Controls.Keyboards
+namespace Ferretto.VW.App.Controls.Keyboards
 {
-    /// <summary>
-    /// Interaction logic for PpcKeyboards.xaml
-    /// </summary>
     public partial class PpcKeyboards : PpcDialogView
     {
         #region Fields
@@ -27,10 +25,10 @@ namespace Ferretto.VW.App.Controls.Controls.Keyboards
 
         #region Constructors
 
-        public PpcKeyboards(TextBox textBox) : this()
+        public PpcKeyboards(TextBox tget) : this()
         {
-            this._textBox = textBox;
-            var srcValidationRules = this.textBox.GetBindingExpression(TextBox.TextProperty)?.ParentBinding.ValidationRules;
+            this._textBox = tget ?? throw new ArgumentNullException(nameof(tget));
+            var srcValidationRules = tget.GetBindingExpression(TextBox.TextProperty)?.ParentBinding.ValidationRules;
             if (srcValidationRules?.Count > 0)
             {
                 var tgetRules = this.textBox.GetBindingExpression(TextBox.TextProperty)?.ParentBinding.ValidationRules;
@@ -46,8 +44,17 @@ namespace Ferretto.VW.App.Controls.Controls.Keyboards
 
         public PpcKeyboards()
         {
+            this.Language = XmlLanguage.GetLanguage(System.Threading.Thread.CurrentThread.CurrentCulture.Name);
             this.InitializeComponent();
+            this.textBox.Focus();
+            this.Loaded += this.PpcKeyboards_Loaded;
         }
+
+        #endregion
+
+        #region Properties
+
+        private PpcKeyboardsViewModel ViewModel => this.DataContext as PpcKeyboardsViewModel;
 
         #endregion
 
@@ -55,18 +62,32 @@ namespace Ferretto.VW.App.Controls.Controls.Keyboards
 
         private void Keyboard_KeyboardCommand(object sender, App.Keyboards.Controls.KeyboardCommandEventArgs e)
         {
+            // assign
             if (e.CommandKey == System.Windows.Input.Key.Enter)
             {
                 if (this._textBox != null)
                 {
                     this._textBox.Text = this.textBox.Text;
                 }
-                this.Hide();
             }
-            else if (e.CommandKey == System.Windows.Input.Key.Escape)
+
+            // close
+            if (e.CommandKey == System.Windows.Input.Key.Escape
+                || e.CommandKey == System.Windows.Input.Key.Enter)
             {
-                this.Hide();
+                this.ViewModel.IsClosed = true;
             }
+        }
+
+        private void Keyboard_KeyboardLayoutChangeRequest(object sender, App.Keyboards.Controls.KeyboardLayoutChangeRequestEventArgs e)
+        {
+            this.ViewModel.KeyboardLayoutCode = e.LayoutCode;
+        }
+
+        private void PpcKeyboards_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.Loaded -= this.PpcKeyboards_Loaded;
+            this.textBox.SelectAll();
         }
 
         #endregion

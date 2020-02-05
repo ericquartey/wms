@@ -10,8 +10,17 @@ namespace Ferretto.VW.App
         #region Methods
 
         public static IEnumerable<FileInfo> FindConfigurationFiles(this DriveInfo drive)
-        => (drive ?? throw new ArgumentNullException(nameof(drive)))
-                .RootDirectory.GetFiles("*.json", System.IO.SearchOption.AllDirectories);
+        {
+            try
+            {
+                return (drive ?? throw new ArgumentNullException(nameof(drive)))
+                       .RootDirectory.GetFiles("*.json", System.IO.SearchOption.AllDirectories);
+            }
+            catch
+            {
+                return Array.Empty<FileInfo>();
+            }
+        }
 
         public static IEnumerable<FileInfo> FindConfigurationFiles(this IEnumerable<DriveInfo> drives)
             => (drives ?? throw new ArgumentNullException(nameof(drives))).SelectMany(drive => drive.FindConfigurationFiles());
