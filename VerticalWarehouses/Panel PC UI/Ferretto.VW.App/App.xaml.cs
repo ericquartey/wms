@@ -1,5 +1,6 @@
 using System;
 using System.Configuration;
+using System.Net.Http;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -175,9 +176,9 @@ namespace Ferretto.VW.App
 
                 Task
                     .Run(async () => await baysWebService.DeactivateAsync().ConfigureAwait(false))
-                    .Wait();
+                    .GetAwaiter().GetResult();
             }
-            catch (AggregateException)
+            catch (HttpRequestException)
             {
             }
         }
