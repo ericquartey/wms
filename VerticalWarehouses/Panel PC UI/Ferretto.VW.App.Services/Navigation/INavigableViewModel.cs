@@ -20,8 +20,6 @@ namespace Ferretto.VW.App.Services
 
         Task OnAppearedAsync();
 
-        Task OnInitializedAsync();
-
         void OnNavigatedFrom(NavigationContext navigationContext);
 
         void OnNavigatedTo(NavigationContext navigationContext);

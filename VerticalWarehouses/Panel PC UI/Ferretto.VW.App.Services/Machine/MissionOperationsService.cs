@@ -26,8 +26,6 @@ namespace Ferretto.VW.App.Services
 
         private readonly IOperatorHubClient operatorHubClient;
 
-        private Bay bay;
-
         #endregion
 
         #region Constructors

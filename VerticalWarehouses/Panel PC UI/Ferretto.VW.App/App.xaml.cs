@@ -169,14 +169,19 @@ namespace Ferretto.VW.App
 
         private void DeactivateBay()
         {
-            this.logger.Info("Deactivating bay on application exit.");
             try
             {
-                var baysWebService = this.Container.Resolve<IMachineBaysWebService>();
+                var healthService = this.Container.Resolve<IHealthProbeService>();
+                if (healthService.HealthMasStatus != HealthStatus.Unhealthy && healthService.HealthMasStatus != HealthStatus.Unknown)
+                {
+                    this.logger.Info("Deactivating bay on application exit.");
 
-                Task
-                    .Run(async () => await baysWebService.DeactivateAsync().ConfigureAwait(false))
-                    .GetAwaiter().GetResult();
+                    var baysWebService = this.Container.Resolve<IMachineBaysWebService>();
+
+                    Task
+                        .Run(async () => await baysWebService.DeactivateAsync().ConfigureAwait(false))
+                        .GetAwaiter().GetResult();
+                }
             }
             catch (HttpRequestException)
             {

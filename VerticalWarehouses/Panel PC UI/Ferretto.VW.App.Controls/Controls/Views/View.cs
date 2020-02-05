@@ -1,41 +1,47 @@
 ﻿using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.App.Controls
 {
     public class View : UserControl, INavigableView
     {
+        #region Fields
+
+        public static readonly DependencyProperty ParentModuleNameProperty = DependencyProperty.Register(nameof(ParentModuleName), typeof(string), typeof(View));
+
+        public static readonly DependencyProperty ParentViewNameProperty = DependencyProperty.Register(nameof(ParentViewName), typeof(string), typeof(View));
+
+        #endregion
+
         #region Constructors
 
         public View()
         {
-            this.Initialized += async (sender, e) => await this.View_Initialized();
             this.Loaded += async (sender, e) => await this.View_Loaded(sender, e);
         }
 
         #endregion
 
-        #region Methods
+        #region Properties
 
-        private async Task View_Initialized()
+        public string ParentModuleName
         {
-            if (this.DataContext is INavigableViewModel viewModel)
-            {
-                try
-                {
-                    await viewModel.OnInitializedAsync();
-                }
-                catch (System.Exception ex)
-                {
-                    NLog.LogManager
-                        .GetCurrentClassLogger()
-                        .Error(ex, "An error occurred while initialing view.");
-                }
-            }
+            get => (string)this.GetValue(ParentModuleNameProperty);
+            set => this.SetValue(ParentModuleNameProperty, value);
         }
+
+        public string ParentViewName
+        {
+            get => (string)this.GetValue(ParentViewNameProperty);
+            set => this.SetValue(ParentViewNameProperty, value);
+        }
+
+        #endregion
+
+        #region Methods
 
         private async Task View_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
