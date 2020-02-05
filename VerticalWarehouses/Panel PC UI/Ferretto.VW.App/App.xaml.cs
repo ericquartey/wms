@@ -177,7 +177,7 @@ namespace Ferretto.VW.App
                     .Run(async () => await baysWebService.DeactivateAsync().ConfigureAwait(false))
                     .Wait();
             }
-            catch (MasWebApiException)
+            catch (AggregateException)
             {
             }
         }
