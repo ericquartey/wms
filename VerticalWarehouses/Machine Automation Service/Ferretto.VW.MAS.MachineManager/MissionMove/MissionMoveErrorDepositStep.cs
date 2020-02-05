@@ -117,7 +117,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward))
                             {
                                 this.Mission.NeedMovingBackward = false;
-                                this.LoadUnitChangePosition();
+                                //this.LoadUnitChangePosition();
                                 if (this.Mission.NeedHomingAxis == Axis.Horizontal)
                                 {
                                     this.Mission.RestoreStep = MissionStep.NotDefined;
