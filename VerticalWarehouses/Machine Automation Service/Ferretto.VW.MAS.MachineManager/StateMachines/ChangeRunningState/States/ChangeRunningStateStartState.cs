@@ -129,6 +129,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                         break;
 
                     case MessageStatus.OperationError:
+                    case MessageStatus.OperationFaultStop:
                         returnValue = this.GetState<IChangeRunningStateEndState>();
 
                         ((IEndState)returnValue).StopRequestReason = StopRequestReason.Error;
