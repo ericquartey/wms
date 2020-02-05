@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -123,6 +124,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             this.usbWatcherService.DrivesChange += this.UsbWatcherService_DrivesChange;
             this.usbWatcherService.Start();
+
+#if DEBUG
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                this.availableDrives = new ReadOnlyCollection<DriveInfo>(DriveInfo.GetDrives().ToList());
+                this.RaisePropertyChanged(nameof(this.AvailableDrives));
+            }
+#endif
 
             this.RaisePropertyChanged(nameof(this.Data));
 

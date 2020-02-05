@@ -75,6 +75,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
+                    this.Logger.LogInformation($"PositionElevatorToPosition start: target {destinationHeight.Value}, closeShutterBay {this.Mission.CloseShutterBayNumber}, measure {false}, waitContinue {false}, Mission:Id={this.Mission.Id}");
                     this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value,
                         this.Mission.CloseShutterBayNumber,
                         measure: false,
@@ -125,6 +126,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
+                    this.Logger.LogInformation($"PositionElevatorToPosition start: target {sourceHeight.Value}, closeShutterBay {this.Mission.CloseShutterBayNumber}, measure {false}, waitContinue {false}, Mission:Id={this.Mission.Id}");
                     this.LoadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight.Value,
                         this.Mission.CloseShutterBayNumber,
                         measure: false,
@@ -162,6 +164,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         {
                             var destinationHeight = this.LoadingUnitMovementProvider.GetDestinationHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
 
+                            this.Logger.LogInformation($"PositionElevatorToPosition start: target {destinationHeight.Value}, closeShutterBay {this.Mission.CloseShutterBayNumber}, measure {false}, waitContinue {false}, Mission:Id={this.Mission.Id}");
                             this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value,
                                 this.Mission.CloseShutterBayNumber,
                                 measure: false,
@@ -175,6 +178,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         {
                             var sourceHeight = this.LoadingUnitMovementProvider.GetSourceHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
 
+                            this.Logger.LogInformation($"PositionElevatorToPosition start: target {sourceHeight.Value}, closeShutterBay {this.Mission.CloseShutterBayNumber}, measure {false}, waitContinue {false}, Mission:Id={this.Mission.Id}");
                             this.LoadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight.Value,
                                 this.Mission.CloseShutterBayNumber,
                                 measure: false,
