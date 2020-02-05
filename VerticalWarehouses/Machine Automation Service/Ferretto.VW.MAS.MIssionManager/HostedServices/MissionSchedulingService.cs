@@ -8,6 +8,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager;
 using Ferretto.VW.MAS.MachineManager.MissionMove;
 using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
@@ -378,10 +379,13 @@ namespace Ferretto.VW.MAS.MissionManager
                                     && m.Step > MissionStep.New)
                                 && !this.GenerateHoming(bayProvider, this.machineVolatileDataProvider.IsHomingExecuted))
                         {
+                            var sensorProvider = serviceProvider.GetRequiredService<ISensorsProvider>();
                             var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
                             var loadUnit = elevatorDataProvider.GetLoadingUnitOnBoard();
-                            if (loadUnit == null
-                                || !activeMissions.Any(m => m.LoadUnitId == loadUnit.Id)
+                            if (sensorProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator)
+                                && (loadUnit == null
+                                    || !activeMissions.Any(m => m.LoadUnitId == loadUnit.Id)
+                                    )
                                 )
                             {
                                 var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
