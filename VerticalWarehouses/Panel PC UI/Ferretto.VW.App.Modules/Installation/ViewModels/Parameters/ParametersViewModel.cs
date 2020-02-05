@@ -118,10 +118,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 this.usbWatcher.Start();
 
 #if DEBUG
-                if (System.Diagnostics.Debugger.IsAttached)
-                {
-                    this.exportableDrives = new ReadOnlyCollection<DriveInfo>(DriveInfo.GetDrives().ToList());
-                }
+                this.exportableDrives = new ReadOnlyCollection<DriveInfo>(DriveInfo.GetDrives().ToList());
 #endif
                 await base.OnAppearedAsync();
             }

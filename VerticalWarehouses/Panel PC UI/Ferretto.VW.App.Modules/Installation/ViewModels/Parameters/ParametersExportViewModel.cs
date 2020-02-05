@@ -126,11 +126,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.usbWatcherService.Start();
 
 #if DEBUG
-            if (System.Diagnostics.Debugger.IsAttached)
-            {
-                this.availableDrives = new ReadOnlyCollection<DriveInfo>(DriveInfo.GetDrives().ToList());
-                this.RaisePropertyChanged(nameof(this.AvailableDrives));
-            }
+            this.availableDrives = new ReadOnlyCollection<DriveInfo>(DriveInfo.GetDrives().ToList());
+            this.RaisePropertyChanged(nameof(this.AvailableDrives));
 #endif
 
             this.RaisePropertyChanged(nameof(this.Data));
@@ -186,13 +183,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                         new Newtonsoft.Json.Converters.StringEnumConverter(),
                     });
 
-                //configuration.ToJson();
                 string fullPath = configuration.Filename(this.SelectedDrive, !this.OverwriteTargetFile);
-
                 File.WriteAllText(fullPath, json);
 
                 this.SelectedDrive = null;
-                this.ShowNotification(Resources.InstallationApp.ExportSuccessful, Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(InstallationApp.ExportSuccessful, Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex)
             {
