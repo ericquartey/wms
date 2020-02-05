@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -124,6 +125,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.usbWatcherService.DrivesChange += this.UsbWatcherService_DrivesChange;
             this.usbWatcherService.Start();
 
+#if DEBUG
+            this.availableDrives = new ReadOnlyCollection<DriveInfo>(DriveInfo.GetDrives().ToList());
+            this.RaisePropertyChanged(nameof(this.AvailableDrives));
+#endif
+
             this.RaisePropertyChanged(nameof(this.Data));
 
             return base.OnAppearedAsync();
@@ -177,13 +183,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                         new Newtonsoft.Json.Converters.StringEnumConverter(),
                     });
 
-                //configuration.ToJson();
                 string fullPath = configuration.Filename(this.SelectedDrive, !this.OverwriteTargetFile);
-
                 File.WriteAllText(fullPath, json);
 
                 this.SelectedDrive = null;
-                this.ShowNotification(Resources.InstallationApp.ExportSuccessful, Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(InstallationApp.ExportSuccessful, Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex)
             {
