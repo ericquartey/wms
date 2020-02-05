@@ -13,6 +13,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             #region Properties
 
+            [ScaffoldColumn(false)]
+            public int Id { get; set; }
+
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ShutterManualParameters_FeedRate))]
             [Id(1)]
             public double FeedRate { get; set; }

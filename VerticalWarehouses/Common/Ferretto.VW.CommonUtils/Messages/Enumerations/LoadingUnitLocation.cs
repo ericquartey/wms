@@ -44,6 +44,10 @@
 
         LoadUnit,
 
-        Elevator
+        Elevator,
+
+        Up,
+
+        Down,
     }
 }

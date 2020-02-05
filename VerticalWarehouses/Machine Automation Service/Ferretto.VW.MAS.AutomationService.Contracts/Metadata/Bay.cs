@@ -38,12 +38,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.BayInverter))]
             [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
-            [Offset(30)]
+            [Id(20)]
             public Inverter Inverter { get; set; }
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.BayIoDevice))]
             [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
-            [Offset(40)]
+            [Id(25)]
             public IoDevice IoDevice { get; set; }
 
             [Editable(false)]
@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.BayLaser))]
             [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
-            [Offset(50)]
+            [Id(30)]
             public Laser Laser { get; set; }
 
             [Editable(false)]
@@ -75,8 +75,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public BayOperation Operation { get; set; }
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.Position))]
-            [CategoryParameter(nameof(BayPosition.Location), ValueStringifierType = typeof(EnumValueStringifier))]
-            [Id(80)]
+            [CategoryParameter(nameof(BayPosition.LocationUpDown), ValueStringifierType = typeof(EnumValueStringifier))]
+            [Id(70)]
             [Offset(10)]
             public System.Collections.Generic.IEnumerable<BayPosition> Positions { get; set; }
 
@@ -86,7 +86,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.BayShutter))]
             [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
-            [Offset(60)]
+            [Id(40)]
             public Shutter Shutter { get; set; }
 
             [Editable(false)]

@@ -30,7 +30,7 @@
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
                 <DataGridTextColumn x:Name="Column2"
-                                    Width="130"
+                                    Width="120"
                                     Binding="{Binding Path=CreationDate, StringFormat=\{0:dd.MM.yy HH:mm:ss\}}"
                                     Header="{x:Static Res:OperatorApp.CreationDate}">
                     <DataGridTextColumn.ElementStyle>
@@ -41,7 +41,7 @@
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
                 <DataGridTemplateColumn x:Name="Column3"
-                                            Width="1*"
+                                            Width="119"
                                             Header="{x:Static Res:OperatorApp.MissionStep}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
