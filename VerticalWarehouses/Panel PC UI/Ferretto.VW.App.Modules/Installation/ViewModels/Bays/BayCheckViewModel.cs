@@ -150,9 +150,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     var res = this.CanMoveToBayPosition();
                     if (res)
                     {
-                        // TODO : Così lo faccio sono quando serve
-                        var policy = Task.Run(async () => await this.machineElevatorWebService.CanMoveToBayPositionAsync(this.BayPositionActive.Id)).GetAwaiter().GetResult();
-                        res &= policy?.IsAllowed == true;
+                        try
+                        {
+                            // TODO : Così lo faccio sono quando serve
+                            var policy = Task.Run(async () => await this.machineElevatorWebService.CanMoveToBayPositionAsync(this.BayPositionActive.Id)).GetAwaiter().GetResult();
+                            res &= policy?.IsAllowed == true;
+                        }
+                        catch (HttpRequestException ex)
+                        {
+                            res = false;
+                            this.ShowNotification(ex);
+                        }
+                        catch (Exception)
+                        {
+                            throw;
+                        }
                     }
 
                     return res;
