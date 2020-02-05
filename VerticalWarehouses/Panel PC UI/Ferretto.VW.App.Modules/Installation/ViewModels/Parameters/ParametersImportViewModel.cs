@@ -166,7 +166,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             if (!configurationFiles.Any())
             {
                 this.ShowNotification(Resources.InstallationApp.NoDevicesAvailableAnymore, Services.Models.NotificationSeverity.Warning);
-                this.NavigationService.GoBackSafelyAsync(); //.ConfigureAwait(false).GetAwaiter().GetResult();
+                this.NavigationService.GoBackSafelyAsync(); 
             }
             this.IsBusy = false;
         }

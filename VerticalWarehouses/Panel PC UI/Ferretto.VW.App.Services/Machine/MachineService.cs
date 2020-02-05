@@ -338,26 +338,23 @@ namespace Ferretto.VW.App.Services
                 .Publish(new PresentationNotificationMessage(exception));
         }
 
-        public void Start()
+        public async Task StartAsync()
         {
             this.machineStatus = new MachineStatus();
             this.loadingUnits = new List<LoadingUnit>();
 
             this.SubscribeToEvents();
 
-            Task.Run(async () =>
+            try
             {
-                try
-                {
-                    await this.OnInitializationServiceAsync();
-                }
-                catch (HttpRequestException)
-                {
-                }
-                catch (Exception)
-                {
-                }
-            }).GetAwaiter().GetResult();
+                await this.OnInitializationServiceAsync();
+            }
+            catch (HttpRequestException)
+            {
+            }
+            catch (Exception)
+            {
+            }
         }
 
         public async Task StopMovingByAllAsync()
