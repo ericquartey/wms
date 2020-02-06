@@ -10,7 +10,7 @@
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightNavigationButton.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightNavigationRepeatButton.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightMainWindowUserComboBox.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightCustomControlInputFieldFocusable.xaml" />
+        <!--<ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightCustomControlInputFieldFocusable.xaml" />-->
         <ResourceDictionary Source="/Ferretto.VW.Simulator.Controls;Component/Skins/LightCustomControlSensor.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightCustomLabelTextBlock.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.Simulator.Controls;Component/Skins/LightCustomLabelTextBlock.xaml" />
@@ -18,6 +18,9 @@
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightCustomMainWindowToggleButton.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightCustomControlLoggedUser.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightCustomControlDataGrid.xaml" />
+
+
+
 
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

@@ -16,6 +16,9 @@ namespace Ferretto.VW.Simulator.Services
 
                 case var service when service == typeof(IMachineService):
                     return new MachineService() as T;
+
+                case var service when service == typeof(ICultureService):
+                    return new CultureService() as T;
             }
 
             return null;

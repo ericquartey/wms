@@ -22,6 +22,7 @@ namespace Ferretto.VW.Simulator
         {
             this.Container.RegisterInstance(ServiceFactory.Get<IThemeService>());
             this.Container.RegisterInstance(ServiceFactory.Get<IMachineService>());
+            this.Container.RegisterInstance(ServiceFactory.Get<ICultureService>());
             //this.Container.RegisterInstance<IIdentityService>(new IdentityService(automationServiceUrl));
 
             this.Container.RegisterType<MainWindowViewModel>();
