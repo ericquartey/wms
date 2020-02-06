@@ -27,7 +27,7 @@ namespace Ferretto.VW.App.Scaffolding
         public KeyboardWindow()
         {
             this.InitializeComponent();
-            this.keyboard.Layout = new KeyboardLayout
+            this.keyboard.KeyboardLayout = new KeyboardLayout
             {
                 KeyMargin = new Thickness(5),
                 KeyPadding = new Thickness(15, 5, 15, 5),
@@ -201,7 +201,9 @@ namespace Ferretto.VW.App.Scaffolding
                           {
                               new KeyboardCell
                               {
-                                  Key = new KeyboardKey{ Command = new KeyboardKeyCommand{ CommandText = "{layout:Uppercase}", Caption="{icon:CaretSquareUpSolid}" }}
+                                  Width = new GridLength(2, GridUnitType.Star),
+                                  Key = new KeyboardKey{
+                                      Command = new KeyboardKeyCommand{ CommandText = "{layout:Uppercase}", Caption="{icon:CaretSquareUpSolid}" }}
                               },
                               new KeyboardCell
                               {
@@ -262,11 +264,11 @@ namespace Ferretto.VW.App.Scaffolding
 
             if (saveFileDialog.ShowDialog() == true)
             {
-                File.WriteAllText(saveFileDialog.FileName, this.keyboard.Layout.ToJson());
+                File.WriteAllText(saveFileDialog.FileName, this.keyboard.KeyboardLayout.ToJson());
             }
         }
 
-        private void Keyboard_LayoutChangeRequest(object sender, KeyboardLayoutChangeRequestEventArgs e)
+        private void Keyboard_LayoutChangeRequest(object sender, Keyboards.Controls.KeyboardLayoutChangeRequestEventArgs e)
         {
         }
 

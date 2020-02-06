@@ -8,6 +8,8 @@ namespace Ferretto.VW.App.Keyboards
 
         public KeyboardKey Key { get; set; }
 
+        public GridLength? Width { get; set; }
+
         #endregion
     }
 }

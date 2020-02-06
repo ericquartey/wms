@@ -1,0 +1,216 @@
+{
+  "Rows": [
+    {
+      "Cells": [
+        {
+          "KeyMinWidth": 100,
+          "Key": {
+            "Command": {
+              "CommandText": "1"
+            }
+          }
+        },
+        {
+          "KeyMinWidth": 100,
+          "Key": {
+            "Command": {
+              "CommandText": "2"
+            }
+          }
+        },
+        {
+          "KeyMinWidth": 100,
+          "Key": {
+            "Command": {
+              "CommandText": "3"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "("
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": ")"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": ","
+            }
+          }
+        }
+      ],
+      "Height": "Auto",
+      "HorizontalAlignment": "Center"
+    },
+    {
+      "Cells": [
+        {
+          "KeyMinWidth": 100,
+          "Key": {
+            "Command": {
+              "CommandText": "4"
+            }
+          }
+        },
+        {
+          "KeyMinWidth": 100,
+          "Key": {
+            "Command": {
+              "CommandText": "5"
+            }
+          }
+        },
+        {
+          "KeyMinWidth": 100,
+          "Key": {
+            "Command": {
+              "CommandText": "6"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "+"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "-"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": ";"
+            }
+          }
+        }
+      ],
+      "Height": "Auto",
+      "HorizontalAlignment": "Center"
+    },
+    {
+      "Cells": [
+        {
+          "KeyMinWidth": 100,
+          "Key": {
+            "Command": {
+              "CommandText": "7"
+            }
+          }
+        },
+        {
+          "KeyMinWidth": 100,
+          "Key": {
+            "Command": {
+              "CommandText": "8"
+            }
+          }
+        },
+        {
+          "KeyMinWidth": 100,
+          "Key": {
+            "Command": {
+              "CommandText": "9"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "/"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "N"
+            }
+          }
+        },
+        {
+          "KeyStyleResource": "AccentKeyboardButtonStyle",
+          "Key": {
+            "Command": {
+              "Caption": "{icon:BackspaceSolid}",
+              "CommandText": "{Back}"
+            }
+          }
+        }
+      ],
+      "Height": "Auto",
+      "HorizontalAlignment": "Center"
+    },
+    {
+      "Cells": [
+        {
+          "KeyMinWidth": 100,
+          "Key": {
+            "Command": {
+              "CommandText": "*"
+            }
+          }
+        },
+        {
+          "KeyMinWidth": 100,
+          "Key": {
+            "Command": {
+              "CommandText": "0"
+            }
+          }
+        },
+        {
+          "KeyMinWidth": 100,
+          "Key": {
+            "Command": {
+              "CommandText": "#"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "."
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "Caption": " ",
+              "CommandText": "{Space}"
+            }
+          }
+        },
+        {
+          "KeyStyleResource": "AccentKeyboardButtonStyle",
+          "Key": {
+            "Command": {
+              "CommandText": "{Enter}",
+              "Caption": "{icon:LevelDownAltSolid:90}"
+            }
+          }
+        }
+      ],
+      "Height": "Auto",
+      "HorizontalAlignment": "Center"
+    }
+
+  ],
+  "KeyMargin": "1",
+  "KeyPadding": "6,4"
+}

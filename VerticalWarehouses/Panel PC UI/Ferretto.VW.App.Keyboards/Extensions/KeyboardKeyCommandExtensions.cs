@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Media;
+using Ferretto.VW.App.Keyboards.Controls;
 
 namespace Ferretto.VW.App.Keyboards
 {
@@ -33,37 +34,22 @@ namespace Ferretto.VW.App.Keyboards
             }
             else
             {
-                command.SendKeys();
+                command.SendKeys(out System.Windows.Input.Key key, out string text);
+                if (key != System.Windows.Input.Key.None || !string.IsNullOrEmpty(text))
+                {
+                    button.FindKeyboard()?.FireKeyboardCommand(key, text);
+                }
             }
         }
 
         public static void ExecuteKeyCommand(this KeyboardButton button)
             => button.ExecuteKeyCommand(button.KeyCommand);
 
-        public static Ferretto.VW.App.Keyboards.Keyboard FindKeyboard(this KeyboardButton button)
+        public static Ferretto.VW.App.Keyboards.Controls.Keyboard FindKeyboard(this KeyboardButton button)
             => button.FindAncestor<Keyboard>();
 
         public static void SendKeys(this KeyboardKeyCommand command)
-        {
-            if (command == null)
-            {
-                throw new ArgumentNullException(nameof(command));
-            }
-
-            string text = command.CommandText;
-            if (Regex.IsMatch(text, KeyPattern))
-            {
-                string cmd = text.Substring(1, text.Length - 2);
-                if (Enum.TryParse<System.Windows.Input.Key>(cmd, out var key))
-                {
-                    Ferretto.VW.App.Keyboards.SendKeys.Send(key);
-                }
-            }
-            else if (!string.IsNullOrEmpty(text))
-            {
-                Ferretto.VW.App.Keyboards.SendKeys.Send(text);
-            }
-        }
+            => command.SendKeys(out System.Windows.Input.Key _0, out string _1);
 
         private static T FindAncestor<T>(this DependencyObject child) where T : DependencyObject
         {
@@ -74,6 +60,31 @@ namespace Ferretto.VW.App.Keyboards
                 return null;
             }
             return parent as T ?? FindAncestor<T>(parent);
+        }
+
+        private static void SendKeys(this KeyboardKeyCommand command, out System.Windows.Input.Key key, out string text)
+        {
+            if (command == null)
+            {
+                throw new ArgumentNullException(nameof(command));
+            }
+
+            key = System.Windows.Input.Key.None;
+            text = default;
+            string txt = command.CommandText;
+            if (Regex.IsMatch(txt, KeyPattern))
+            {
+                string cmd = txt.Substring(1, txt.Length - 2);
+                if (Enum.TryParse<System.Windows.Input.Key>(cmd, out key))
+                {
+                    Ferretto.VW.App.Keyboards.SendKeys.Send(key);
+                }
+            }
+            else if (!string.IsNullOrEmpty(txt))
+            {
+                text = txt;
+                Ferretto.VW.App.Keyboards.SendKeys.Send(txt);
+            }
         }
 
         #endregion

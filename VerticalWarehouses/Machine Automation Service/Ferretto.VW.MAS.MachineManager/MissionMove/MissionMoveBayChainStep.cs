@@ -113,6 +113,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             {
                                 this.BaysDataProvider.SetLoadingUnit(origin.Id, null);
                                 this.BaysDataProvider.SetLoadingUnit(destination.Id, this.Mission.LoadUnitId, 0);
+                                transaction.Commit();
                             }
                             this.Mission.LoadUnitDestination = destination.Location;
 

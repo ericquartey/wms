@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using Ferretto.VW.App.Keyboards.Controls;
 
 namespace Ferretto.VW.App.Keyboards
 {
@@ -23,7 +24,9 @@ namespace Ferretto.VW.App.Keyboards
                 Thickness? keyMargin = row.KeyMargin ?? keyboard.KeyMargin,
                     keyPadding = row.KeyPadding ?? keyboard.KeyPadding;
 
-                string styleResource = row.KeyStyleResource ?? keyboard.KeyStyleResource;
+                double? rowKeyMinWidth = row.KeyMinWidth ?? keyboard.KeyMinWidth;
+
+                string rowStyleResource = row.KeyStyleResource ?? keyboard.KeyStyleResource;
 
                 KeyboardCell[] cells = row.Cells?.ToArray() ?? Array.Empty<KeyboardCell>();
                 int cellCount = cells.Length;
@@ -42,14 +45,19 @@ namespace Ferretto.VW.App.Keyboards
 
                 for (int j = 0; j < cellCount; j++)
                 {
-                    rowGrid.ColumnDefinitions.Add(new ColumnDefinition());
                     var cell = cells[j];
+                    rowGrid.ColumnDefinitions.Add(new ColumnDefinition
+                    {
+                        Width = cell.Width ?? new GridLength(1, GridUnitType.Star)
+                    });
                     var key = cell.Key;
 
                     Thickness padding = cell.KeyPadding ?? keyPadding ?? default,
                         margin = cell.KeyMargin ?? keyMargin ?? default;
 
-                    styleResource = cell.KeyStyleResource ?? styleResource;
+                    string styleResource = cell.KeyStyleResource ?? rowStyleResource;
+
+                    double minWidth = cell.KeyMinWidth ?? rowKeyMinWidth ?? default;
 
                     if (key != null)
                     {
@@ -58,12 +66,13 @@ namespace Ferretto.VW.App.Keyboards
                             Padding = padding,
                             Margin = margin,
                             Key = key,
+                            MinWidth = minWidth,
                         };
                         Grid.SetColumn(btn, j);
                         rowGrid.Children.Add(btn);
                         if (!string.IsNullOrEmpty(styleResource))
                         {
-                            btn.SetResourceReference(FrameworkElement.StyleProperty, styleResource);
+                            btn.SetResourceReference(KeyboardButton.KeyButtonStyleProperty, styleResource);
                         }
                     }
                     else
@@ -72,6 +81,7 @@ namespace Ferretto.VW.App.Keyboards
                         {
                             Padding = padding,
                             Margin = margin,
+                            MinWidth = minWidth,
                         };
                         Grid.SetColumn(brd, j);
                         rowGrid.Children.Add(brd);
