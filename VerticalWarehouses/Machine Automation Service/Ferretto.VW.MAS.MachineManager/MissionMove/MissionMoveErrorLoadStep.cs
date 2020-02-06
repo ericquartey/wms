@@ -114,7 +114,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward))
                             {
                                 this.Mission.NeedMovingBackward = false;
-                                this.DepositUnitChangePosition();
                                 if (this.Mission.LoadUnitSource == LoadingUnitLocation.Cell)
                                 {
                                     this.RestoreOriginalStep();
@@ -193,6 +192,21 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         /// <returns></returns>
         private void RestoreLoadElevatorStart()
         {
+            if (this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
+            {
+                var loadUnitOnBoard = this.ElevatorDataProvider.GetLoadingUnitOnBoard();
+                if (loadUnitOnBoard != null
+                    && loadUnitOnBoard.Id == this.Mission.LoadUnitId
+                    )
+                {
+                    this.Logger.LogDebug($"{this.GetType().Name}: Load unit detected on board for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
+                    this.Mission.RestoreStep = MissionStep.ToTarget;
+                    var newStep = new MissionMoveErrorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    newStep.OnResume(null);
+
+                    return;
+                }
+            }
             this.Mission.StopReason = StopRequestReason.NoReason;
             var origin = this.LoadingUnitMovementProvider.GetLastVerticalPosition();
             var current = this.LoadingUnitMovementProvider.GetCurrentVerticalPosition();

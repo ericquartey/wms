@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -112,14 +113,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
         }
 
         public ICommand ChangeModeListCommand =>
-                    this.changeModeListCommand
+            this.changeModeListCommand
             ??
-            (this.changeModeListCommand = new DelegateCommand(() => this.ChangeMode(), this.CanChangeListMode));
+            (this.changeModeListCommand = new DelegateCommand(this.ChangeMode, this.CanChangeListMode));
 
         public ICommand ChangeModeLoadingUnitCommand =>
                this.changeModeLoadingUnitCommand
                ??
-               (this.changeModeLoadingUnitCommand = new DelegateCommand(() => this.ChangeMode(), this.CanChangeLoadingUnitMode));
+               (this.changeModeLoadingUnitCommand = new DelegateCommand(this.ChangeMode, this.CanChangeLoadingUnitMode));
 
         public Func<IDrawableCompartment, IDrawableCompartment, string> CompartmentColoringFunction { get; }
 
@@ -161,6 +162,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
             set => this.SetProperty(ref this.isWaitingForNewOperation, value);
         }
 
+        public bool IsWmsEnabledAndHealthy
+        {
+            get => this.IsWmsHealthy && ConfigurationManager.AppSettings.GetWmsDataServiceEnabled();
+        }
+
         public override bool IsWmsHealthy
         {
             get => base.IsWmsHealthy;
@@ -169,6 +175,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 if (value != base.IsWmsHealthy)
                 {
                     base.IsWmsHealthy = value;
+                    this.RaisePropertyChanged(nameof(this.IsWmsEnabledAndHealthy));
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -295,7 +302,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             try
             {
-                if (this.IsWmsHealthy)
+                if (this.IsWmsHealthy && ConfigurationManager.AppSettings.GetWmsDataServiceEnabled())
                 {
                     var wmsLoadingUnit = await this.loadingUnitsWmsWebService.GetByIdAsync(this.LoadingUnit.Id);
                     this.LoadingUnitWidth = wmsLoadingUnit.Width;
@@ -327,8 +334,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 throw new Exception("The Data of this view model shall contain the loading unit identifier.");
             }
 
-            this.missionOperationToken = this.eventAggregator.GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>()
-                                .Subscribe(this.MissionOperationUpdate);
+            this.missionOperationToken = this.eventAggregator
+                .GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>()
+                .Subscribe(this.MissionOperationUpdate);
 
             if (this.CanReset)
             {
@@ -389,8 +397,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.isWaitingForNewOperation = false;
         }
 
-        protected async override Task OnMachineModeChangedAsync(
-                                                                                                                                                                                                    MAS.AutomationService.Contracts.Hubs.MachineModeChangedEventArgs e)
+        protected async override Task OnMachineModeChangedAsync(MachineModeChangedEventArgs e)
         {
             await base.OnMachineModeChangedAsync(e);
 
@@ -409,8 +416,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             base.RaiseCanExecuteChanged();
         }
 
-        private static IEnumerable<TrayControlCompartment> MapCompartments(
-                    IEnumerable<WMS.Data.WebAPI.Contracts.CompartmentDetails> compartmentsFromMission)
+        private static IEnumerable<TrayControlCompartment> MapCompartments(IEnumerable<CompartmentDetails> compartmentsFromMission)
         {
             return compartmentsFromMission
                 .GroupBy(c => c.Id)

@@ -1,107 +1,22 @@
 <UserControl x:Class="Ferretto.VW.App.Operator.Views.ItemsDataGridView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:Behaviors="clr-namespace:Ferretto.VW.App.Controls.Behaviours;assembly=Ferretto.VW.App.Controls"
-             xmlns:conv="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
-             xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity">
-
-
-    <UserControl.Resources>
-        <conv:MachinesToStringConverter x:Key="MTSC" />
-    </UserControl.Resources>
+             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources">
 
     <Grid>
-        <DataGrid Name="DataGrid"
+        <ctrls:PpcDataGrid Name="DataGrid"
                   Width="auto"
                   Height="auto"
-                  AutoGenerateColumns="False"
-                  Background="{DynamicResource VWAPP_BACKGROUND}"
-                  BorderThickness="0"
-                  CanUserReorderColumns="False"
-                  CanUserResizeColumns="False"
-                  CanUserResizeRows="False"
-                  CanUserSortColumns="False"
-                  FontSize="{DynamicResource FontSize_High}"
-                  HeadersVisibility="Column"
-                  HorizontalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
-                  IsHitTestVisible="False"
-                  IsReadOnly="True"
                   ItemsSource="{Binding Items}"
-                  RowHeight="30"
-                  SelectedItem="{Binding SelectedItem, Mode=OneWay}"
-                  SelectionMode="Single"
-                  VerticalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
-                  VerticalScrollBarVisibility="Hidden">
-            <DataGrid.Style>
-                <Style TargetType="DataGrid">
-                    <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
-                    <Setter Property="FontFamily" Value="{StaticResource VWAPP_GridFont}" />
-                    <Setter Property="FontStyle" Value="Normal" />
-                </Style>
-            </DataGrid.Style>
-            <i:Interaction.Behaviors>
-                <Behaviors:ScrollIntoViewDataGridBehaviour />
-            </i:Interaction.Behaviors>
-
-            <DataGrid.CellStyle>
-                <Style TargetType="DataGridCell">
-                    <Style.Resources>
-                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                                         Color="{DynamicResource VWAPP_DataGrid_CellStyle_HighlightBrushKey}" />
-                        <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"
-                                         Color="{DynamicResource VWAPP_DataGrid_CellStyle_ControlBrushKey}" />
-                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
-                                         Color="{DynamicResource VWAPP_DataGrid_CellStyle_HighlightTextBrushKey}" />
-                        <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}"
-                                         Color="{DynamicResource VWAPP_DataGrid_CellStyle_ControlTextBrushKey}" />
-                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
-                                         Color="{DynamicResource VWAPP_DataGrid_CellStyle_InactiveSelectionHighlightBrushKey}" />
-                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
-                                         Color="{DynamicResource VWAPP_DataGrid_CellStyle_InactiveSelectionHighlightTextBrushKey}" />
-                    </Style.Resources>
-                    <Setter Property="HorizontalContentAlignment" Value="Center" />
-                    <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-                    <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
-                </Style>
-            </DataGrid.CellStyle>
-            <DataGrid.RowStyle>
-                <Style TargetType="DataGridRow">
-                    <Style.Resources>
-                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                                         Color="{DynamicResource VWAPP_DataGrid_CellStyle_HighlightBrushKey}" />
-                        <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"
-                                         Color="{DynamicResource VWAPP_DataGrid_CellStyle_ControlBrushKey}" />
-                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
-                                         Color="{DynamicResource VWAPP_DataGrid_CellStyle_HighlightTextBrushKey}" />
-                        <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}"
-                                         Color="{DynamicResource VWAPP_DataGrid_CellStyle_ControlTextBrushKey}" />
-                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
-                                         Color="{DynamicResource VWAPP_DataGrid_CellStyle_InactiveSelectionHighlightBrushKey}" />
-                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
-                                         Color="{DynamicResource VWAPP_DataGrid_CellStyle_InactiveSelectionHighlightTextBrushKey}" />
-                    </Style.Resources>
-                    <Setter Property="FontSize" Value="14" />
-                    <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
-                    <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
-                </Style>
-            </DataGrid.RowStyle>
+                  SelectedItem="{Binding SelectedItem, Mode=OneWay}">
 
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="Column1"
                                     Width="100"
                                     Binding="{Binding Path=ItemCode}"
                                     Header="{x:Static Resources:OperatorApp.ItemSearchGridItem}">
-                    <DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="Height" Value="40" />
-                            <Setter Property="BorderThickness" Value="0,0,0,1" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-                            <Setter Property="HorizontalContentAlignment" Value="Center" />
-                            <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
-                            <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
-                        </Style>
-                    </DataGridTextColumn.HeaderStyle>
+
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="BorderThickness" Value="1,0,0,0" />
@@ -119,22 +34,6 @@
                                     Width="530"
                                     Binding="{Binding Path=ItemDescription}"
                                     Header="{x:Static Resources:OperatorApp.ItemSearchGridDescription}">
-                    <DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="HorizontalContentAlignment" Value="Center" />
-                            <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
-                            <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
-                            <Setter Property="BorderThickness" Value="0,0,0,1" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-                        </Style>
-                    </DataGridTextColumn.HeaderStyle>
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="BorderThickness" Value="0" />
-
-                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="HorizontalAlignment" Value="Left" />
@@ -147,22 +46,6 @@
                                     Width="90"
                                     Binding="{Binding Path=Stock}"
                                     Header="{x:Static Resources:OperatorApp.CompartmentStock}">
-                    <DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="HorizontalContentAlignment" Value="Center" />
-                            <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
-                            <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
-                            <Setter Property="BorderThickness" Value="0,0,0,1" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-                        </Style>
-                    </DataGridTextColumn.HeaderStyle>
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="BorderThickness" Value="0" />
-
-                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="HorizontalAlignment" Value="Center" />
@@ -172,6 +55,6 @@
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
             </DataGrid.Columns>
-        </DataGrid>
+        </ctrls:PpcDataGrid>
     </Grid>
 </UserControl>

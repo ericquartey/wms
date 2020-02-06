@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -53,11 +54,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public IEnumerable<DriveInfo> AvailableDrives => this.availableDrives;
 
+        public override EnableMask EnableMask => EnableMask.Any;
+
         public ICommand ExportCommand =>
-                    this.exportCommand
-                    ??
-                    (this.exportCommand = new DelegateCommand(
-                    async () => await this.ExportAsync(), this.CanExport));
+            this.exportCommand ??
+            (this.exportCommand = new DelegateCommand(
+            async () => await this.ExportAsync(), this.CanExport));
 
         public object ExportingConfiguration
         {
@@ -123,9 +125,21 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.usbWatcherService.DrivesChange += this.UsbWatcherService_DrivesChange;
             this.usbWatcherService.Start();
 
+#if DEBUG
+            this.availableDrives = new ReadOnlyCollection<DriveInfo>(DriveInfo.GetDrives().ToList());
+            this.RaisePropertyChanged(nameof(this.AvailableDrives));
+#endif
+
             this.RaisePropertyChanged(nameof(this.Data));
 
             return base.OnAppearedAsync();
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            this.exportCommand?.RaiseCanExecuteChanged();
+
+            base.RaiseCanExecuteChanged();
         }
 
         private bool CanExport()
@@ -134,7 +148,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                    &&
                    this.SelectedDrive != null
                    &&
-                   this.ExportingConfiguration != null;
+                   this.ExportingConfiguration != null
+                   ;
         }
 
         private async Task ExportAsync()
@@ -161,14 +176,18 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 var output = this.ExportingConfiguration;
                 var configuration = this.Data as VertimagConfiguration;
 
-                string json = Newtonsoft.Json.JsonConvert.SerializeObject(output, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
-                //configuration.ToJson();
-                string fullPath = configuration.Filename(this.SelectedDrive, !this.OverwriteTargetFile);
+                string json = Newtonsoft.Json.JsonConvert.SerializeObject(output,
+                    new Newtonsoft.Json.JsonConverter[]
+                    {
+                        new CommonUtils.Converters.IPAddressConverter(),
+                        new Newtonsoft.Json.Converters.StringEnumConverter(),
+                    });
 
+                string fullPath = configuration.Filename(this.SelectedDrive, !this.OverwriteTargetFile);
                 File.WriteAllText(fullPath, json);
 
                 this.SelectedDrive = null;
-                this.ShowNotification(Resources.InstallationApp.ExportSuccessful, Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(InstallationApp.ExportSuccessful, Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex)
             {

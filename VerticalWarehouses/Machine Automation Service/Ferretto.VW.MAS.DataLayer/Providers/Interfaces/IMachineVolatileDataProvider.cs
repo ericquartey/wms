@@ -8,21 +8,23 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Properties
 
-        MachineMode Mode { get; set; }
-
-        Dictionary<BayNumber, bool> IsBayLightOn { get; }
-
-        bool IsHomingExecuted { get; set; }
-
-        bool IsMachineRunning { get; set; }
-
         double ElevatorHorizontalPosition { get; set; }
 
         double ElevatorVerticalPosition { get; set; }
 
         Dictionary<BayNumber, bool> IsBayHomingExecuted { get; set; }
 
+        Dictionary<BayNumber, bool> IsBayLightOn { get; }
+
+        bool IsHomingActive { get; set; }
+
+        bool IsHomingExecuted { get; set; }
+
+        bool IsMachineRunning { get; set; }
+
         bool? IsOneTonMachine { get; set; }
+
+        MachineMode Mode { get; set; }
 
         #endregion
 

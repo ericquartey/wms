@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts
 {
@@ -17,16 +18,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(2)]
             public bool AdjustByWeight { get; set; }
 
-            [Id(3)]
+            [ScaffoldColumn(false)]
             public double Deceleration { get; set; }
 
-            [Id(4)]
+            [Id(3)]
             public int Number { get; set; }
 
-            [Id(5)]
+            [Id(4)]
             public double Position { get; set; }
 
-            [Id(6)]
+            [Id(5)]
             public double Speed { get; set; }
 
             #endregion

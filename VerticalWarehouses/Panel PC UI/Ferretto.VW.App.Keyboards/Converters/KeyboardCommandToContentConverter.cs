@@ -13,7 +13,7 @@ namespace Ferretto.VW.App.Keyboards.Converters
     {
         #region Fields
 
-        private const string IconPattern = @"^\{icon:(?<Kind>[\w]+)\}$";
+        private const string IconPattern = @"^\{icon:(?<Kind>[\w]+)(:(?<Rotation>[\d]{1,3}))?\}$";
 
         #endregion
 
@@ -31,9 +31,16 @@ namespace Ferretto.VW.App.Keyboards.Converters
                         string kindString = match.Groups["Kind"].Value;
                         if (Enum.TryParse<MahApps.Metro.IconPacks.PackIconFontAwesomeKind>(kindString, out var kind))
                         {
+                            double rotation = 0D;
+                            string rotationStr = match.Groups["Rotation"]?.Value;
+                            if (!string.IsNullOrEmpty(rotationStr))
+                            {
+                                rotation = double.Parse(rotationStr);
+                            }
                             return new MahApps.Metro.IconPacks.PackIconFontAwesome
                             {
-                                Kind = kind
+                                Kind = kind,
+                                Rotation = rotation
                             };
                         }
                         return kindString;

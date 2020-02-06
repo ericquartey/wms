@@ -165,7 +165,9 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             var mission = missionsDataProvider.GetById(missionId);
             if (mission != null)
             {
-                if (mission.Status == MissionStatus.Completed)
+                if (mission.Status == MissionStatus.Completed
+                    || mission.Status == MissionStatus.Aborted
+                    )
                 {
                     missionsDataProvider.Complete(missionId);
                 }
@@ -232,7 +234,10 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 .FirstOrDefault(m => m.LoadUnitId == mission.LoadUnitId
                     && m.Id != mission.Id
                     && !m.WmsId.HasValue
-                    && (m.Status == MissionStatus.Waiting || m.Status == MissionStatus.New || m.Status == MissionStatus.Completed)
+                    && (m.Status == MissionStatus.Waiting
+                        || m.Status == MissionStatus.New
+                        || m.Status == MissionStatus.Completed
+                        || m.Status == MissionStatus.Aborted)
                 );
             if (waitMission != null)
             {
@@ -242,7 +247,11 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     {
                         baysDataProvider.ClearMission(mission.TargetBay);
                     }
-                    if (waitMission.NeedHomingAxis != Axis.None)
+                    if (waitMission.NeedHomingAxis != Axis.None
+                        && (waitMission.Status == MissionStatus.Waiting
+                            || waitMission.Status == MissionStatus.New
+                            )
+                        )
                     {
                         mission.NeedHomingAxis = waitMission.NeedHomingAxis;
                     }

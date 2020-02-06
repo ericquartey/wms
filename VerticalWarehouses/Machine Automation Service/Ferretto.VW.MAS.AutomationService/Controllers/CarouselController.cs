@@ -90,7 +90,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         public IActionResult MoveManual(VerticalMovementDirection direction)
         {
-            this.carouselProvider.MoveManual(direction, -1, this.BayNumber, MessageActor.AutomationService);
+            this.carouselProvider.MoveManual(direction, -1, null, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }

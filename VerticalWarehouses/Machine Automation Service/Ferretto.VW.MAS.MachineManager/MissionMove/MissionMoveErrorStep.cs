@@ -262,7 +262,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.RestoreConditions = true;
             this.Mission.NeedMovingBackward = false;
             this.Mission.StopReason = StopRequestReason.NoReason;
-            if (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell)
+            if (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell && this.Mission.LoadUnitSource != LoadingUnitLocation.Elevator)
             {
                 var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
                 if (bay is null)

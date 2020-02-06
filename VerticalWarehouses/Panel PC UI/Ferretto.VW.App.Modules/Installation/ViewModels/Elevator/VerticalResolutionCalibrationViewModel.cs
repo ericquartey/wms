@@ -448,7 +448,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.Disappear();
 
-            if (this.stepChangedToken != null)
+            if (this.sensorsToken != null)
             {
                 this.EventAggregator.GetEvent<StepChangedPubSubEvent>().Unsubscribe(this.sensorsToken);
                 this.sensorsToken?.Dispose();

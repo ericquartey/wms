@@ -253,7 +253,7 @@
     <value>Marcia</value>
   </data>
   <data name="ConfirmMachineModeSwitchAutomatic" xml:space="preserve">
-    <value>Sei sicuro di voler mettere la macchina in automatico?</value>
+    <value>Sei sicuro di voler mettere la macchina in automatico e ripristinare i movimenti in corso?</value>
   </data>
   <data name="Automatic" xml:space="preserve">
     <value>Automatico</value>

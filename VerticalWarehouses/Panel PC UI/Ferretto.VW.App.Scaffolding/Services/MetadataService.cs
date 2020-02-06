@@ -26,7 +26,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
         }
 
         private static Models.ScaffoldedEntity Publish(this ScaffoldedEntityInternal entity)
-                    => new Models.ScaffoldedEntity(entity.Property, entity.Instance, entity.Metadata, entity.Id);
+            => new Models.ScaffoldedEntity(entity.Property, entity.Instance, entity.Metadata, entity.Id);
 
         private static Models.ScaffoldedStructure Publish(this ScaffoldedStructureInternal tree)
         {
@@ -59,9 +59,9 @@ namespace Ferretto.VW.App.Scaffolding.Services
 
             private readonly CultureInfo _culture;
 
-            private int idSeed = 0;
-
             #endregion
+
+            //private int idSeed = 0;
 
             #region Constructors
 
@@ -74,7 +74,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
 
             #region Methods
 
-            public Models.ScaffoldedStructure ScaffoldTypeInternal(Type type, object instance, ScaffoldedStructureInternal branch, ScaffoldedStructureInternal root = default, bool unfoldingBranch = false)
+            public Models.ScaffoldedStructure ScaffoldTypeInternal(Type type, object instance, ScaffoldedStructureInternal branch, ScaffoldedStructureInternal root = default, MemberInfo porpParent = default, bool unfoldingBranch = false)
             {
                 root = root ?? branch;
                 if (instance != null && instance.GetType() != type)
@@ -162,10 +162,16 @@ namespace Ferretto.VW.App.Scaffolding.Services
                                     throw new ScaffoldingException($"A category with the name {category.Name} already exists.");
                                 }
 
-                                int p = 1;
-                                if (!int.TryParse(category.FirstParameter, out p))
+                                // find to index
+                                int index = 0;
+                                foreach (var i in collection)
                                 {
-                                    p = 1;
+                                    if (item.Equals(i))
+                                    {
+                                        break;
+                                    }
+
+                                    index++;
                                 }
 
                                 newBranch = new ScaffoldedStructureInternal
@@ -174,7 +180,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                                     Parent = target,
                                     Description = categoryDescription,
                                     CategoryParameter = category.FirstParameter,
-                                    Id = target.Id + id + (offset * p)
+                                    Id = target.Id + id + (offset * index)
                                 };
                                 target.Children.Add(newBranch);
                                 this.ScaffoldTypeInternal(elementType, item, newBranch, root);
@@ -210,21 +216,31 @@ namespace Ferretto.VW.App.Scaffolding.Services
 
                         if (isSimpleType)
                         {
-                            target.Entities.Add(new ScaffoldedEntityInternal
+                            int newId = target.Id + id;
+                            if (unfoldingBranch)
+                            {
+                                if (porpParent.TryGetCustomAttribute<IdAttribute>(out var parent))
+                                {
+                                    newId += parent.Id;
+                                }
+                            }
+
+                            var t = new ScaffoldedEntityInternal
                             {
                                 Instance = instance,
                                 Property = actualProp,
                                 Metadata = prop.GetCustomAttributes<Attribute>(),
-                                //Id = target.Id + id,
-                                Id = ++this.idSeed
-                            });
+                                Id = newId,
+                                //Id = ++this.idSeed
+                            };
+                            target.Entities.Add(t);
                         }
                         else if (instance != null)
                         {
                             object propertyValue = actualProp.GetValue(instance);
                             bool unfold = prop.GetCustomAttribute<UnfoldAttribute>() != null || unfoldingBranch;
                             // unfold complex type?
-                            this.ScaffoldTypeInternal(propertyType, propertyValue, target, root, unfold);
+                            this.ScaffoldTypeInternal(propertyType, propertyValue, target, root, prop, unfold);
                         }
                     }
                 }

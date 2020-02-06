@@ -13,8 +13,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             #region Properties
 
-            [Offset(20)]
-            [Unfold]
+            [Id(20)]
+            [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.AssistedMovements))]
             public ElevatorAxisManualParameters AssistedMovements { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_BrakeActivatePercent))]
@@ -32,12 +32,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(3)]
             public double ChainOffset { get; set; }
 
-            [Offset(50)]
-            [Unfold]
+            [Offset(35)]
+            [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.EmptyLoadMovement))]
             public MovementParameters EmptyLoadMovement { get; set; }
 
-            [Offset(60)]
-            [Unfold]
+            [Offset(40)]
+            [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.FullLoadMovement))]
             public MovementParameters FullLoadMovement { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_HomingCreepSpeed))]
@@ -50,7 +50,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(5)]
             public double HomingFastSpeed { get; set; }
 
-            [Offset(40)]
+            [Id(30)]
             [Unfold]
             public Inverter Inverter { get; set; }
 
@@ -62,8 +62,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(7)]
             public double LowerBound { get; set; }
 
-            [Offset(30)]
-            [Unfold]
+            [Id(25)]
+            [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.ManualMovements))]
             public ElevatorAxisManualParameters ManualMovements { get; set; }
 
             [ScaffoldColumn(false)]
@@ -98,7 +98,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public double UpperBound { get; set; }
 
             [Unfold]
-            [Offset(30)]
+            [Id(30)]
             public WeightMeasurement WeightMeasurement { get; set; }
 
             #endregion

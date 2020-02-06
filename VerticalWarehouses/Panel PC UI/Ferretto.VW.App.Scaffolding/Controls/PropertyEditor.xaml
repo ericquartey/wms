@@ -5,8 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:Ferretto.VW.App.Scaffolding.Controls"
              xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:ctrlConverters="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
              xmlns:converters="clr-namespace:Ferretto.VW.App.Scaffolding.Converters"
-             xmlns:behaviors="clr-namespace:Ferretto.VW.App.Scaffolding.Behaviors"
+             xmlns:behaviors="clr-namespace:Ferretto.VW.App.Controls.Behaviors;assembly=Ferretto.VW.App.Controls"
+             xmlns:behaviorsLocal="clr-namespace:Ferretto.VW.App.Scaffolding.Behaviors"
              xmlns:interactivity="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:selectors="clr-namespace:Ferretto.VW.App.Scaffolding.Selectors"
              xmlns:validation="clr-namespace:Ferretto.VW.App.Scaffolding.ValidationRules"
@@ -31,7 +33,10 @@
             <converters:ValidationRuleConverter x:Key="ValidationRuleConverter" />
             <converters:DefaultValueConverter x:Key="DefaultValueConverter" />
             <converters:TwoWayConverter x:Key="TwoWayConverter" />
+
             <converters:KeyboardTypeConverter x:Key="KeyboardTypeConverter" />
+            <converters:TypeToKeyboardLayoutCodeConverter x:Key="TypeToKeyboardLayoutCodeConverter" />
+
             <converters:EnumDatasourceConverter x:Key="EnumDatasourceConverter" />
             <converters:EnumValueToStringConverter x:Key="EnumValueToStringConverter" />
 
@@ -190,8 +195,9 @@
 
                     <!-- keyboard interactivity -->
                     <interactivity:Interaction.Behaviors>
-                        <behaviors:TextBoxKeyboardBehavior Keyboard="{Binding Converter={StaticResource KeyboardTypeConverter}}"
-                        KeyboardCaption="{Binding Converter={StaticResource DisplayNameConverter}}" />
+                        <!--<behaviors:KeyboardPopupBehavior KeyboardLayoutCode="{Binding Converter={StaticResource TypeToKeyboardLayoutCodeConverter}}" />-->
+                        <behaviorsLocal:TextBoxKeyboardBehavior Keyboard="{Binding Converter={StaticResource KeyboardTypeConverter}}"
+                            KeyboardCaption="{Binding Converter={StaticResource DisplayNameConverter}}" />
                     </interactivity:Interaction.Behaviors>
                 </TextBox>
             </DataTemplate>

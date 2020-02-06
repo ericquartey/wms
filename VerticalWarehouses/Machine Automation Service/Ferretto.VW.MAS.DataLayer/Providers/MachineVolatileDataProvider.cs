@@ -15,9 +15,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IServiceScopeFactory serviceScopeFactory;
-
         private readonly Dictionary<BayNumber, double> positions = new Dictionary<BayNumber, double>();
+
+        private readonly IServiceScopeFactory serviceScopeFactory;
 
         private MachineMode mode;
 
@@ -70,9 +70,13 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public Dictionary<BayNumber, bool> IsBayLightOn { get; set; }
 
+        public bool IsHomingActive { get; set; }
+
         public bool IsHomingExecuted { get; set; }
 
         public bool IsMachineRunning { get; set; }
+
+        public bool? IsOneTonMachine { get; set; }
 
         public MachineMode Mode
         {
@@ -97,16 +101,9 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public bool? IsOneTonMachine { get; set; }
-
         #endregion
 
         #region Methods
-
-        private void OnDataLayerReady()
-        {
-            this.IsOneTonMachine = this.IsOneTonMachine ?? this.serviceScopeFactory.CreateScope().ServiceProvider.GetService<IMachineProvider>().IsOneTonMachine();
-        }
 
         public double GetBayEncoderPosition(BayNumber bayNumber)
         {
@@ -140,6 +137,11 @@ namespace Ferretto.VW.MAS.DataLayer
                             Type = MessageType.BayChainPosition,
                         });
             }
+        }
+
+        private void OnDataLayerReady()
+        {
+            this.IsOneTonMachine = this.IsOneTonMachine ?? this.serviceScopeFactory.CreateScope().ServiceProvider.GetService<IMachineProvider>().IsOneTonMachine();
         }
 
         #endregion

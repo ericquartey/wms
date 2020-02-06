@@ -12,6 +12,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public string Reason => ((MachineErrorCode)this.Code).GetReason();
 
+        public int? Severity => ((MachineErrorCode)this.Code).GetSeverity();
+
         public int TotalErrors { get; set; }
 
         #endregion

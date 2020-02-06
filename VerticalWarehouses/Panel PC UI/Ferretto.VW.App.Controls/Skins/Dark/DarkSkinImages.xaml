@@ -25,6 +25,9 @@
     <BitmapImage x:Key="PHCCassetto1"
                  UriSource="/Ferretto.VW.App.Controls;Component/Assets/cassetto.jpg" />
 
+    <BitmapImage x:Key="UnknownDrawer"
+                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/cassetto.jpg" />
+
     <BitmapImage x:Key="LoginBackground"
                  UriSource="/Ferretto.VW.App.Controls;Component/Assets/bkg_login.jpg" />
 

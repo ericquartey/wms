@@ -149,7 +149,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                 return Task.CompletedTask;
             }
 
-            this.Logger.LogInformation($"Processing command [{command.Type}] by {command.RequestingBay} for {command.TargetBay} from {command.Source}");
+            this.Logger.LogDebug($"Processing command [{command.Type}] by {command.RequestingBay} for {command.TargetBay} from {command.Source}");
             switch (command.Type)
             {
                 case MessageType.ContinueMovement:

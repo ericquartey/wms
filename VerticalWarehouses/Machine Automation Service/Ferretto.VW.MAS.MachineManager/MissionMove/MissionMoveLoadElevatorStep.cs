@@ -153,10 +153,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         if (this.Mission.NeedHomingAxis == Axis.Horizontal)
                         {
-                            this.MachineVolatileDataProvider.IsHomingExecuted = true;
                             if (!this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
                             {
                                 this.Mission.NeedHomingAxis = Axis.None;
+                                this.MachineVolatileDataProvider.IsHomingExecuted = true;
                                 this.MissionsDataProvider.Update(this.Mission);
                             }
                             // restart movement from the beginning!
@@ -234,6 +234,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     break;
                                 }
                             }
+                            else if (this.Mission.NeedHomingAxis == Axis.BayChain)
+                            {
+                                this.Logger.LogInformation($"{this.GetType().Name}: Manual Horizontal positioning end Mission:Id={this.Mission.Id}");
+                                this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, false);
+                            }
+
                             if (this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Positioning)
                                 && (this.Mission.OpenShutterPosition == ShutterPosition.NotSpecified
                                     || this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Shutter))

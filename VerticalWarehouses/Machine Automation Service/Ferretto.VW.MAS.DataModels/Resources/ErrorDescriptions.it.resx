@@ -252,4 +252,7 @@
   <data name="DestinationBayNotCalibrated" xml:space="preserve">
     <value>Baia di destinazione priva di taratura.</value>
   </data>
+  <data name="SecuritySensorWasTriggered" xml:space="preserve">
+    <value>Uno o più sensori dei pannelli laterali è stato interrotto</value>
+  </data>
 </root>

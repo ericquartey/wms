@@ -76,7 +76,7 @@ namespace Ferretto.VW.App.Controls
 
         #region Methods
 
-        public void Appear(string moduleName, string viewModelName, object data = null, bool trackCurrentView = true, bool doNotAppear = false)
+        public void Appear(string moduleName, string viewModelName, object data = null, bool trackCurrentView = true)
         {
             if (!MvvmNaming.IsViewModelNameValid(viewModelName))
             {
@@ -102,29 +102,27 @@ namespace Ferretto.VW.App.Controls
                 var parameters = new NavigationParameters();
                 parameters.Add(viewModelName, data);
 
-                if(!doNotAppear)
-                { 
-                    this.regionManager.RequestNavigate(this.MainContentRegionName, viewName, parameters);
-                }
-                else
-                {
-                    this.DisappearActiveView();
-                }
+                this.DisappearActiveView();
+                this.regionManager.RequestNavigate(this.MainContentRegionName, viewName, parameters);
 
                 if (this.navigationStack.Count > 0)
                 {
                     var currentViewRecord = this.navigationStack.Peek();
                     this.logger.Trace($"Marking view '{currentViewRecord.ModuleName}.{currentViewRecord.ViewModelName}' as trackable.");
                     currentViewRecord.IsTrackable = trackCurrentView;
+
+                    this.navigationStack.Where(s => s.ModuleName == moduleName
+                                             &&
+                                             s.ViewName == viewName
+                                             &&
+                                             s.IsTrackable).All(ns => ns.IsTrackable = false);
                 }
 
                 this.navigationStack.Push(new NavigationHistoryRecord(moduleName, viewName, viewModelName));
-                if (!doNotAppear)
-                {
-                    this.eventAggregator
+
+                this.eventAggregator
                     .GetEvent<PubSubEvent<NavigationCompletedEventArgs>>()
                     .Publish(new NavigationCompletedEventArgs(moduleName, viewModelName));
-                }
             }
             catch (Exception ex)
             {
@@ -147,6 +145,18 @@ namespace Ferretto.VW.App.Controls
             {
                 this.logger.Error(ex, $"Cannot close view model '{viewModel.GetType().Name}'.");
             }
+        }
+
+        public INavigableView GetActiveView()
+        {
+            var activeView = this.regionManager.Regions[this.MainContentRegionName].ActiveViews.FirstOrDefault();
+
+            if (activeView is View view)
+            {
+                return view;
+            }
+
+            return null;
         }
 
         public INavigableViewModel GetActiveViewModel()

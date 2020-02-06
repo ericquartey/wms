@@ -128,23 +128,42 @@ namespace Ferretto.VW.MAS.DataLayer
 
             lock (this.dataContext)
             {
-                var existingUnresolvedError = this.dataContext.Errors.FirstOrDefault(
-                    e =>
-                        e.Code == (int)code
+                var existingUnresolvedError = this.dataContext.Errors.Where(
+                    e => e.ResolutionDate == null
                         &&
-                        e.ResolutionDate == null
-                        &&
-                        e.BayNumber == bayNumber);
+                        e.BayNumber == bayNumber)
+                    .ToList();
 
-                if (existingUnresolvedError != null)
+                var errorStatistics = this.dataContext.ErrorStatistics.SingleOrDefault(e => e.Code == newError.Code);
+
+                if (existingUnresolvedError.Any())
                 {
-                    this.logger.LogWarning($"Machine error {code} ({(int)code}) for {bayNumber} was not triggered because already present and still unresolved.");
-                    return existingUnresolvedError;
+                    // TODO enable this call to discard only the same error
+                    //if (existingUnresolvedError.Any(e => e.Code == (int)code))
+                    //{
+                    //    this.logger.LogWarning($"Machine error {code} ({(int)code}) for {bayNumber} was not triggered because already active.");
+                    //    return existingUnresolvedError.First(e => e.Code == (int)code);
+                    //}
+
+                    // there are active errors different from code
+
+                    //// TODO enable this loop to discard subsequent errors of lower severity
+                    //foreach (var activeError in existingUnresolvedError)
+                    //{
+                    //    if (activeError.Severity < errorStatistics.Severity && activeError.Code > 0)
+                    //    {
+                    //        this.logger.LogWarning($"Machine error {code} ({(int)code}) for {bayNumber} was not triggered because a higher severity error is already active.");
+                    //        return newError;
+                    //    }
+                    //}
+
+                    // discard all subsequent errors
+                    this.logger.LogWarning($"Machine error {code} ({(int)code}) for {bayNumber} was not triggered because another error is already active.");
+                    return newError;
                 };
 
                 this.dataContext.Errors.Add(newError);
 
-                var errorStatistics = this.dataContext.ErrorStatistics.SingleOrDefault(e => e.Code == newError.Code);
                 if (errorStatistics != null)
                 {
                     errorStatistics.TotalErrors++;
@@ -155,6 +174,8 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             this.NotifyErrorCreation(newError, bayNumber);
+
+            this.logger.LogError($"Error: {code} ({(int)code}); {newError.Description}");
 
             return newError;
         }

@@ -6,11 +6,14 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:localControls="clr-namespace:Ferretto.VW.App.Operator.Views"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:modules="clr-namespace:Ferretto.VW.Utils.Modules;assembly=Ferretto.VW.Utils"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             d:DesignHeight="450"
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
+            ParentModuleName="{ctrls:NameOf Type={x:Type modules:Operator}}"           
+            ParentViewName="{x:Static modules:Operator.OPERATOR_MENU}"
             mc:Ignorable="d">
 
     <Grid Margin="50,0,15,0">
@@ -33,7 +36,7 @@
                 CornerRadius="2,0,0,2"
                 Height="200"
                 Margin="0 0 35 0"
-                Visibility="{Binding IsWmsHealthy, Converter={StaticResource BTVIC}}">
+                Visibility="{Binding IsWmsEnabledAndHealthy, Converter={StaticResource BTVIC}}">
                 <TextBlock
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center"
@@ -43,7 +46,7 @@
 
         <localControls:LoadingUnitControlView Grid.Row="1"
                                               Margin="0,0,35,0"
-                                              Visibility="{Binding IsWmsHealthy, Converter={StaticResource BTVC}}"/>
+                                              Visibility="{Binding IsWmsEnabledAndHealthy, Converter={StaticResource BTVC}}"/>
 
         <StackPanel Grid.Row="2"
                     Margin="0 10 0 0"

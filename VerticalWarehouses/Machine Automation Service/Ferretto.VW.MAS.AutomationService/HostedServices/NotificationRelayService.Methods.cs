@@ -7,6 +7,8 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -58,6 +60,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 if (receivedMessage.Status == MessageStatus.OperationEnd
                     && receivedMessage.Data is IHomingMessageData data)
                 {
+                    this.machineVolatileDataProvider.IsHomingActive = false;
                     if (data.AxisToCalibrate == Axis.BayChain)
                     {
                         this.machineVolatileDataProvider.IsBayHomingExecuted[receivedMessage.RequestingBay] = true;
@@ -77,11 +80,26 @@ namespace Ferretto.VW.MAS.AutomationService
                     else
                     {
                         this.machineVolatileDataProvider.IsHomingExecuted = true;
-                        this.ChangeMachineMode();
+                        var sensorProvider = serviceProvider.GetRequiredService<ISensorsProvider>();
+                        var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
+                        if (sensorProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator)
+                            && elevatorDataProvider.GetLoadingUnitOnBoard() == null
+                            )
+                        {
+                            var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
+                            errorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnElevator);
+                            this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                            this.Logger.LogInformation($"Automation Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                        }
+                        else
+                        {
+                            this.ChangeMachineMode();
+                        }
                     }
                 }
                 else if (receivedMessage.Status == MessageStatus.OperationError)
                 {
+                    this.machineVolatileDataProvider.IsHomingActive = false;
                     this.ChangeMachineMode();
                 }
             }

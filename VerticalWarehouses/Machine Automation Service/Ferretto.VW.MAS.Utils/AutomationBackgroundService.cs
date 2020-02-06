@@ -154,7 +154,7 @@ namespace Ferretto.VW.MAS.Utils
                     {
                         using (var scope = this.ServiceScopeFactory.CreateScope())
                         {
-                            this.OnCommandReceivedAsync(command, scope.ServiceProvider).Wait();
+                            this.OnCommandReceivedAsync(command, scope.ServiceProvider).GetAwaiter().GetResult();
                         }
                     }
                 }

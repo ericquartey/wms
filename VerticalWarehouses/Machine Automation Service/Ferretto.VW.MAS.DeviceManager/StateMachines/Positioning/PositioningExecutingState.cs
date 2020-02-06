@@ -457,10 +457,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private bool IsSensorsError(Axis axisMovement)
         {
-            if (axisMovement == Axis.Horizontal)
-            {
-                return this.IsHorizontalSensorsError();
-            }
+            //if (axisMovement == Axis.Horizontal)
+            //{
+            //    return this.IsHorizontalSensorsError();
+            //}
             if (axisMovement == Axis.Vertical)
             {
                 return this.IsVerticalSensorsError();
@@ -575,13 +575,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             //this.Stop(StopRequestReason.Stop);
                         }
 
-                        if (this.IsHorizontalSensorsError())
-                        {
-                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InvalidPresenceSensors, this.machineData.RequestingBay);
+                        //if (this.IsHorizontalSensorsError())
+                        //{
+                        //    this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InvalidPresenceSensors, this.machineData.RequestingBay);
 
-                            this.stateData.FieldMessage = message;
-                            this.Stop(StopRequestReason.Error);
-                        }
+                        //    this.stateData.FieldMessage = message;
+                        //    this.Stop(StopRequestReason.Error);
+                        //}
                         break;
                     }
 

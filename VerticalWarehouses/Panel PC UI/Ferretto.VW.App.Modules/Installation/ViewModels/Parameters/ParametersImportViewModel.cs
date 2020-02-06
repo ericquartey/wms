@@ -55,6 +55,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public IEnumerable<FileInfo> ConfigurationFiles => this.configurationFiles;
 
+        public override EnableMask EnableMask => EnableMask.Any;
+
         /// <summary>
         /// Gets or sets the configuration ready to be imported, if any.
         /// </summary>
@@ -155,6 +157,20 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             return !this.IsBusy && !this.IsMoving && this.ImportingConfiguration != null;
         }
 
+        private void FindConfigurationFiles()
+        {
+            this.IsBusy = true;
+            UsbWatcherService usb = this._usbWatcher;
+            var configurationFiles = this.configurationFiles = usb.Drives.FindConfigurationFiles();
+            this.RaisePropertyChanged(nameof(this.ConfigurationFiles));
+            if (!configurationFiles.Any())
+            {
+                this.ShowNotification(Resources.InstallationApp.NoDevicesAvailableAnymore, Services.Models.NotificationSeverity.Warning);
+                this.NavigationService.GoBackSafelyAsync();
+            }
+            this.IsBusy = false;
+        }
+
         private void OnSelectedFileChanged(FileInfo _, FileInfo file)
         {
             VertimagConfiguration config = null;
@@ -168,7 +184,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     {
                         Machine = new Machine(),
                     }.ExtendWith(JObject.Parse(json));
-                    config = VertimagConfiguration.FromJson(source.ToString());
+
+                    config = Newtonsoft.Json.JsonConvert.DeserializeObject<VertimagConfiguration>(source.ToString(),
+                        new Newtonsoft.Json.JsonConverter[]
+                        {
+                            new CommonUtils.Converters.IPAddressConverter(),
+                            new Newtonsoft.Json.Converters.StringEnumConverter(),
+                        });
+
+                    //config = VertimagConfiguration.FromJson(source.ToString());
                 }
                 catch (Exception exc)
                 {
@@ -212,20 +236,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         private void UsbWatcher_DrivesChange(object sender, DrivesChangeEventArgs e)
         {
             this.FindConfigurationFiles();
-        }
-
-        private void FindConfigurationFiles()
-        {
-            this.IsBusy = true;
-            UsbWatcherService usb = this._usbWatcher;
-            var configurationFiles = this.configurationFiles = usb.Drives.FindConfigurationFiles();
-            this.RaisePropertyChanged(nameof(this.ConfigurationFiles));
-            if (!configurationFiles.Any())
-            {
-                this.ShowNotification(Resources.InstallationApp.NoDevicesAvailableAnymore, Services.Models.NotificationSeverity.Warning);
-                this.NavigationService.GoBackSafelyAsync(); //.ConfigureAwait(false).GetAwaiter().GetResult();
-            }
-            this.IsBusy = false;
         }
 
         #endregion
