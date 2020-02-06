@@ -225,11 +225,17 @@
   <data name="ElevatorWeight" xml:space="preserve">
     <value>ElevatorWeight</value>
   </data>
+  <data name="EmptyLoadMovement" xml:space="preserve">
+    <value>EmptyLoadMovement</value>
+  </data>
   <data name="FeedRate" xml:space="preserve">
     <value>FeedRate</value>
   </data>
   <data name="FeedRateAfterZero" xml:space="preserve">
     <value>FeedRateAfterZero</value>
+  </data>
+  <data name="FullLoadMovement" xml:space="preserve">
+    <value>FullLoadMovement</value>
   </data>
   <data name="HalfShaftLength" xml:space="preserve">
     <value>HalfShaftLength</value>

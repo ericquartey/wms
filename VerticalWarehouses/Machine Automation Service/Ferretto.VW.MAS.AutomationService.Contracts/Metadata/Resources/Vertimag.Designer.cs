@@ -385,6 +385,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to EmptyLoadMovement.
+        /// </summary>
+        public static string EmptyLoadMovement {
+            get {
+                return ResourceManager.GetString("EmptyLoadMovement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FeedRate.
         /// </summary>
         public static string FeedRate {
@@ -399,6 +408,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         public static string FeedRateAfterZero {
             get {
                 return ResourceManager.GetString("FeedRateAfterZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FullLoadMovement.
+        /// </summary>
+        public static string FullLoadMovement {
+            get {
+                return ResourceManager.GetString("FullLoadMovement", resourceCulture);
             }
         }
         
