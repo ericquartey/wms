@@ -191,7 +191,7 @@ namespace Ferretto.VW.App.Services
             var readinessResponse = await client.SendAsync(
                 new System.Net.Http.HttpRequestMessage
                 {
-                    RequestUri = new Uri(this.baseMasAddress, healthCheckPath),
+                    RequestUri = new Uri(client.BaseAddress, healthCheckPath),
                     Method = new System.Net.Http.HttpMethod("GET")
                 },
                 System.Net.Http.HttpCompletionOption.ResponseContentRead,
