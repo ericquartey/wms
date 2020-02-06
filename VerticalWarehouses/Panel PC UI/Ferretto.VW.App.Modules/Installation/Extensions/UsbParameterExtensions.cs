@@ -14,7 +14,7 @@ namespace Ferretto.VW.App
             try
             {
                 return (drive ?? throw new ArgumentNullException(nameof(drive)))
-                    .RootDirectory.GetFiles("*.json", System.IO.SearchOption.AllDirectories);
+                       .RootDirectory.GetFiles("*.json", System.IO.SearchOption.AllDirectories);
             }
             catch
             {

@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public double LastIdealPosition { get; set; }
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.ManualMovements))]
-            [Id(5)]
+            [Id(6)]
             public CarouselManualParameters ManualMovements { get; set; }
 
             #endregion

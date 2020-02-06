@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ferretto.VW.App.Keyboards
+namespace Ferretto.VW.App.Keyboards.Controls
 {
     public class KeyboardLayoutChangeRequestEventArgs : EventArgs
     {
