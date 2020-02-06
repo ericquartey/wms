@@ -117,40 +117,82 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ControlWord" xml:space="preserve">
-    <value>Control Word</value>
+  <data name="BayLightActivation" xml:space="preserve">
+    <value>Attivazione illuminazione baia</value>
   </data>
-  <data name="ImportConfigurationCommand" xml:space="preserve">
-    <value>Carica configurazione</value>
+  <data name="CarterSensorLeft" xml:space="preserve">
+    <value>Sensore carter protezione SX</value>
   </data>
-  <data name="Input" xml:space="preserve">
-    <value>Ingresso</value>
+  <data name="CarterSensorRight" xml:space="preserve">
+    <value>Sensore carter protezione DX</value>
   </data>
-  <data name="Inputs" xml:space="preserve">
-    <value>Ingressi</value>
+  <data name="EmergencyPB" xml:space="preserve">
+    <value>Fungo di emergenza</value>
   </data>
-  <data name="Output" xml:space="preserve">
-    <value>Uscita</value>
+  <data name="EnableRunConsole" xml:space="preserve">
+    <value>Abilitazione alla marcia dalla console</value>
   </data>
-  <data name="Outputs" xml:space="preserve">
-    <value>Uscite</value>
+  <data name="FeedbackElevatorChainMotorSelected" xml:space="preserve">
+    <value>Selezione motore culla (feedback)</value>
   </data>
-  <data name="Safety" xml:space="preserve">
-    <value>Sicurezze</value>
+  <data name="FeedbackElevatorMotorSelected" xml:space="preserve">
+    <value>Selezione motore elevatore (feedback)</value>
   </data>
-  <data name="SimulatorStarted" xml:space="preserve">
-    <value>Simulatore avviato</value>
+  <data name="Free" xml:space="preserve">
+    <value>Libero</value>
   </data>
-  <data name="StartSimulatorCommand" xml:space="preserve">
-    <value>Avvia simulazione</value>
+  <data name="HeightReadingActivation" xml:space="preserve">
+    <value>Attivazione lettura altezza (barriera di misura)</value>
   </data>
-  <data name="StatusWord" xml:space="preserve">
-    <value>Status Word</value>
+  <data name="InverterFaultSignal" xml:space="preserve">
+    <value>Cumulativo Inverter In Fault</value>
   </data>
-  <data name="StopSimulatorCommand" xml:space="preserve">
-    <value>Ferma simulazione</value>
+  <data name="IODeviceByID" xml:space="preserve">
+    <value>IO Device  {0:00}</value>
   </data>
-  <data name="Title" xml:space="preserve">
-    <value>VW Simulator</value>
+  <data name="IODeviceName" xml:space="preserve">
+    <value>IO Device Name</value>
+  </data>
+  <data name="LightCurtain" xml:space="preserve">
+    <value>Barriera ottica anti-intrusione</value>
+  </data>
+  <data name="LightCurtainCalibration" xml:space="preserve">
+    <value>Taratura barriera</value>
+  </data>
+  <data name="LowerBayBoxSensorPresence" xml:space="preserve">
+    <value>Sensore presenza cassetto inferiore / baia intermedia</value>
+  </data>
+  <data name="MachineSideElevatorChainBoxPresence" xml:space="preserve">
+    <value>Presenza cassetto su culla lato macchina</value>
+  </data>
+  <data name="MotorElevatorChainSelection" xml:space="preserve">
+    <value>Selezione motore culla</value>
+  </data>
+  <data name="MotorElevatorSelection" xml:space="preserve">
+    <value>Selezione motore elevatore</value>
+  </data>
+  <data name="OperatorSideElevatorChainBoxPresence" xml:space="preserve">
+    <value>Presenza cassetto su culla lato operatore</value>
+  </data>
+  <data name="ResetSafetyFunction" xml:space="preserve">
+    <value>Reset funzione sicurezza (impulso 300ms)</value>
+  </data>
+  <data name="RobotEndPicking" xml:space="preserve">
+    <value>Opzione robot - Tasto fine picking (oppure fine picking robot)</value>
+  </data>
+  <data name="RobotOptionMissionCompletedWarhouse" xml:space="preserve">
+    <value>Opzione robot - Missione terminata magazzino</value>
+  </data>
+  <data name="RobotOptionWarhouseReadyFault" xml:space="preserve">
+    <value>Opzione robot - Magazzino pronto/guasto</value>
+  </data>
+  <data name="SafetyStatus" xml:space="preserve">
+    <value>Stato funzione sicurezza</value>
+  </data>
+  <data name="TrolleyHook" xml:space="preserve">
+    <value>Opzione trolley - Aggancio trolley</value>
+  </data>
+  <data name="UpperBayBoxSensorPresence" xml:space="preserve">
+    <value>Sensore presenza cassetto in baia</value>
   </data>
 </root>

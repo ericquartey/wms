@@ -516,7 +516,7 @@
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        SensorState="{Binding MachineService.RemoteIOs01.Inputs[0].Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        Text="{x:Static res:General.Safety}" />
+                                       Text="{x:Static res:General.Safety}" />
 
         </Grid>
 

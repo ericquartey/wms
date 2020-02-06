@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Input;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataModels;
+//using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.Simulator.Resources;
 using Prism.Commands;
@@ -284,7 +284,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private InverterType inverterType;
 
-        private Machine machine;
+        private MAS.DataModels.Machine machine;
 
         private InverterOperationMode operationMode;
 
@@ -579,7 +579,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public bool IsWarning2 => (this.statusWord & 0x8000) > 0;
 
-        public Machine Machine
+        public MAS.DataModels.Machine Machine
         {
             get { return this.machine; }
             set
@@ -903,10 +903,10 @@ namespace Ferretto.VW.Simulator.Services.Models
                     return inverterType == InverterType.Ang ? Inverter.EncoderChannelAElevatorChain : inverterType == InverterType.Agl ? Inverter.Free : Inverter.EncoderChannelA;
 
                 case 5:
-                    return inverterType == InverterType.Ang ? "Extracorsa elevatore" : inverterType == InverterType.Agl ? "Libero" : "Libero";
+                    return inverterType == InverterType.Ang ? Inverter.ElevatorExtraStroke : inverterType == InverterType.Agl ? Inverter.Free : Inverter.Free;
 
                 case 6:
-                    return "Libero";
+                    return Inverter.Free;
 
                 case 7:
                     return inverterType == InverterType.Ang ? Inverter.SensorElevatorChainZero : inverterType == InverterType.Agl ? Inverter.Free : Inverter.Free;

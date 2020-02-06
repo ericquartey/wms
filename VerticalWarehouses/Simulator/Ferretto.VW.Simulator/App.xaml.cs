@@ -52,8 +52,8 @@ namespace Ferretto.VW.Simulator
 
         private void ForceLanguage()
         {
-            System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(this.Culture);
-            System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo(this.Culture);
+            System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(Settings.Default.Culture);
+            System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo(Settings.Default.Culture);
         }
 
         #endregion
