@@ -45,6 +45,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -503,7 +504,7 @@
                 </Border>
             </Border>
 
-            <controls:PpcButton Grid.Row="6"
+            <controls:PpcButton Grid.Row="7"
                                 Grid.Column="0"
                                 Grid.ColumnSpan="12"
                                 Width="60"

@@ -13,27 +13,27 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             #region Properties
 
-            [Id(10)]
+            [Id(1)]
             [Editable(false)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.MeasureConst0))]
             public double MeasureConst0 { get; set; }
 
-            [Id(11)]
+            [Id(2)]
             [Editable(false)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.MeasureConst1))]
             public double MeasureConst1 { get; set; }
 
-            [Id(12)]
+            [Id(3)]
             [Editable(false)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.MeasureConst2))]
             public double MeasureConst2 { get; set; }
 
-            [Id(13)]
+            [Id(4)]
             [Editable(false)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.MeasureSpeed))]
             public double MeasureSpeed { get; set; }
 
-            [Id(14)]
+            [Id(0)]
             [Editable(false)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.MeasureTime))]
             public int MeasureTime { get; set; }

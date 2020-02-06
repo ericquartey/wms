@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
+using Ferretto.VW.Installer.Core;
 
 namespace Ferretto.VW.Installer
 {
