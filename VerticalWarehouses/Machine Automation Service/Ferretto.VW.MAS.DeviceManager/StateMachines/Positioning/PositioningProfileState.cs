@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Positioning.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -24,6 +25,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         private readonly IElevatorDataProvider elevatorDataProvider;
 
         private readonly ILoadingUnitsDataProvider loadingUnitProvider;
+
+        private readonly Machine machineConfiguration;
 
         private readonly IPositioningMachineData machineData;
 
@@ -53,6 +56,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.baysDataProvider = this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
             this.loadingUnitProvider = this.scope.ServiceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
             this.elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
+            this.machineConfiguration = this.scope.ServiceProvider.GetRequiredService<IMachineProvider>().Get();
         }
 
         #endregion
@@ -77,9 +81,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         {
                             var profileHeight = this.baysDataProvider.ConvertProfileToHeight(data.Profile, this.machineData.MessageData.SourceBayPositionId.Value);
                             this.Logger.LogInformation($"Height measured {profileHeight}mm. Profile {data.Profile / 100.0}%");
-                            if (profileHeight < this.minHeight || data.Profile > 10000)
+                            if (profileHeight < this.minHeight
+                                || data.Profile > 10000
+                                || profileHeight < this.machineConfiguration.LoadUnitMinHeight
+                                || profileHeight > this.machineConfiguration.LoadUnitMaxHeight
+                                )
                             {
-                                this.Logger.LogError($"Measure Profile error {profileHeight}!");
+                                this.Logger.LogError($"Measure Profile error {profileHeight}! min height {this.machineConfiguration.LoadUnitMinHeight}, max height{this.machineConfiguration.LoadUnitMaxHeight}");
                                 if (++this.retry >= MAX_RETRIES)
                                 {
                                     this.Stop(StopRequestReason.Stop);

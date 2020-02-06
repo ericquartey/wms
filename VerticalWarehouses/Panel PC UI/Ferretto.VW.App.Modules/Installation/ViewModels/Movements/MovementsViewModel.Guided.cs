@@ -461,6 +461,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             var selectedBayPosition = this.SelectedBayPosition();
             return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
                    this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay &&
+                   this.MachineStatus.LogicalPositionId == this.Bay.Id &&
                    this.CanBaseExecute() &&
                    this.IsPositionUpSelected == this.MachineStatus.BayPositionUpper &&
                    selectedBayPosition != null &&
@@ -471,14 +472,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanLoadFromCell()
         {
             var cellPosition = this.Cells.FirstOrDefault(f => f.Id == this.MachineStatus?.LogicalPositionId);
-
             var res = (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
                    this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Cell &&
                    this.CanBaseExecute() &&
                    this.SelectedCell != null &&
                    !(cellPosition?.IsFree ?? true) &&
                    this.MachineStatus.EmbarkedLoadingUnit is null;
-
             return res;
         }
 
@@ -593,7 +592,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             var selectedBayPosition = this.SelectedBayPosition();
             var res = (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
                    this.CanBaseExecute() &&
-                   this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay &&
+                   this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay && 
+                   this.MachineStatus.LogicalPositionId == this.Bay.Id &&
                    this.IsPositionUpSelected == this.MachineStatus.BayPositionUpper &&
                    selectedBayPosition != null &&
                    selectedBayPosition.LoadingUnit == null &&

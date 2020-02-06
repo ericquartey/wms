@@ -582,6 +582,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Height = table.Column<double>(nullable: false),
                     LoadUnitMaxHeight = table.Column<double>(nullable: false),
                     LoadUnitMaxNetWeight = table.Column<double>(nullable: false),
+                    LoadUnitMinHeight = table.Column<double>(nullable: false),
                     LoadUnitTare = table.Column<double>(nullable: false),
                     MaxGrossWeight = table.Column<double>(nullable: false),
                     ModelName = table.Column<string>(nullable: true),
@@ -898,6 +899,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 60, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
                 values: new object[] { 59, 0 });
 
             migrationBuilder.InsertData(
@@ -928,17 +934,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 61, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
                 values: new object[] { 53, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 60, 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 52, 0 });
+                values: new object[] { 51, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
@@ -973,17 +979,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 44, 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 51, 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 61, 0 });
+                values: new object[] { 52, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
@@ -994,6 +990,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
                 values: new object[] { 63, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 64, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
@@ -1078,17 +1079,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 64, 0 });
+                values: new object[] { 65, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 43, 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 41, 0 });
+                values: new object[] { 44, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
@@ -1098,7 +1094,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 19, 0 });
+                values: new object[] { 43, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 40, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 18, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
@@ -1138,12 +1144,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 18, 0 });
+                values: new object[] { 10, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 10, 0 });
+                values: new object[] { 9, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
@@ -1183,12 +1189,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 9, 0 });
+                values: new object[] { 19, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 40, 0 });
+                values: new object[] { 41, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
@@ -1198,7 +1204,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 31, 0 });
+                values: new object[] { 22, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 39, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 38, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
@@ -1223,7 +1239,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 33, 0 });
+                values: new object[] { 21, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
@@ -1233,17 +1249,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 21, 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 38, 0 });
+                values: new object[] { 33, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
                 values: new object[] { 30, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 29, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
@@ -1278,17 +1294,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 22, 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 29, 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 39, 0 });
+                values: new object[] { 31, 0 });
 
             migrationBuilder.InsertData(
                 table: "MachineStatistics",
@@ -1298,7 +1304,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 3, 30, 11, 41, 23, 499, DateTimeKind.Local).AddTicks(7545), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 4, 6, 16, 17, 3, 44, DateTimeKind.Local).AddTicks(9348), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",

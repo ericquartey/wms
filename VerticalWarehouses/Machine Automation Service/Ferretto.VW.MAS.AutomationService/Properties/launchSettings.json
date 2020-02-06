@@ -35,6 +35,12 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "SimulationP2"
       }
+    },
+    "MAS (Eurofork)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Eurofork"
+      }
     }
   }
 }
