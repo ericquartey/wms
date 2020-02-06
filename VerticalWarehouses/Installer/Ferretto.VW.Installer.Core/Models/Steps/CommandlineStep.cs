@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Ferretto.VW.Installer
+namespace Ferretto.VW.Installer.Core
 {
     internal class CommandlineStep : ShellStep
     {

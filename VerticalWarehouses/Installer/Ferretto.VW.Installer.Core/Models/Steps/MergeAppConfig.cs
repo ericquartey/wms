@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace Ferretto.VW.Installer
+namespace Ferretto.VW.Installer.Core
 {
     internal class MergeAppConfig : Step
     {
@@ -78,7 +78,6 @@ namespace Ferretto.VW.Installer
             return targetNode;
         }
 
-      
         private static void MergeAttributes(XmlNode oldNode, XmlNode newNode, XmlDocument targetDoc, XmlNode targetNode)
         {
             IEnumerable<XmlNode> fromOld;
@@ -154,7 +153,6 @@ namespace Ferretto.VW.Installer
             var childsFromNew = newNode.ChildNodes.Cast<XmlNode>().ToArray();
             this.LogInformation($"Node {oldNode.Name}: old# {childsFromOld.Length} new {childsFromNew.Length}.");
 
-
             var uniquesFromOld = childsFromOld.Where(ch => !childsFromNew.Any(chb => chb.Name == ch.Name)).ToArray();
             var uniquesFromNew = childsFromNew.Where(ch => !childsFromOld.Any(chb => chb.Name == ch.Name)).ToArray();
 
@@ -170,7 +168,6 @@ namespace Ferretto.VW.Installer
 
             childsFromOld.Where(o => childsFromNew.Any(n => n.Name == o.Name));
             childsFromNew.Where(n => childsFromOld.Any(o => o.Name == n.Name));
-
 
             // discriminant is not the name of the node but its key!!!!
             var duplicateNodes = childsFromOld.Join(
