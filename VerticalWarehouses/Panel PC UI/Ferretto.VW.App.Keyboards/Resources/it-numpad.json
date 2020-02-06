@@ -3,41 +3,7 @@
     {
       "Cells": [
         {
-          "Key": {
-            "Command": {
-              "CommandText": "#"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "\u20ac"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "&"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "_"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "-"
-            }
-          }
-        },
-        {
+          "KeyMinWidth": 100,
           "Key": {
             "Command": {
               "CommandText": "1"
@@ -45,6 +11,7 @@
           }
         },
         {
+          "KeyMinWidth": 100,
           "Key": {
             "Command": {
               "CommandText": "2"
@@ -52,30 +19,10 @@
           }
         },
         {
+          "KeyMinWidth": 100,
           "Key": {
             "Command": {
               "CommandText": "3"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "?"
-            }
-          }
-        }
-      ],
-      "Height": "Auto",
-      "HorizontalAlignment": "Stretch"
-    },
-
-    {
-      "Cells": [
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "@"
             }
           }
         },
@@ -96,7 +43,37 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "="
+              "CommandText": ","
+            }
+          }
+        }
+      ],
+      "Height": "Auto",
+      "HorizontalAlignment": "Center"
+    },
+    {
+      "Cells": [
+        {
+          "KeyMinWidth": 100,
+          "Key": {
+            "Command": {
+              "CommandText": "4"
+            }
+          }
+        },
+        {
+          "KeyMinWidth": 100,
+          "Key": {
+            "Command": {
+              "CommandText": "5"
+            }
+          }
+        },
+        {
+          "KeyMinWidth": 100,
+          "Key": {
+            "Command": {
+              "CommandText": "6"
             }
           }
         },
@@ -110,65 +87,44 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "4"
+              "CommandText": "-"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "5"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "6"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "!"
+              "CommandText": ";"
             }
           }
         }
       ],
       "Height": "Auto",
-      "HorizontalAlignment": "Stretch"
+      "HorizontalAlignment": "Center"
     },
-
     {
       "Cells": [
         {
-          "KeyStyleResource": "AccentKeyboardButtonStyle",
+          "KeyMinWidth": 100,
           "Key": {
             "Command": {
-              "Caption": "{&=",
-              "CommandText": "{layout:Symbols}"
+              "CommandText": "7"
             }
           }
         },
         {
+          "KeyMinWidth": 100,
           "Key": {
             "Command": {
-              "CommandText": "'"
+              "CommandText": "8"
             }
           }
         },
         {
+          "KeyMinWidth": 100,
           "Key": {
             "Command": {
-              "CommandText": ":"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "%"
+              "CommandText": "9"
             }
           }
         },
@@ -182,21 +138,7 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "7"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "8"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "9"
+              "CommandText": "N"
             }
           }
         },
@@ -211,37 +153,12 @@
         }
       ],
       "Height": "Auto",
-      "HorizontalAlignment": "Stretch"
+      "HorizontalAlignment": "Center"
     },
-
     {
       "Cells": [
         {
-          "KeyStyleResource": "AccentKeyboardButtonStyle",
-          "Key": {
-            "Command": {
-              "Caption": "abc",
-              "CommandText": "{layout:Lowercase}"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "\""
-            }
-          }
-        },
-        {
-          "Width": "2*",
-          "Key": {
-            "Command": {
-              "Caption": " ",
-              "CommandText": "{Space}"
-            }
-          }
-        },
-        {
+          "KeyMinWidth": 100,
           "Key": {
             "Command": {
               "CommandText": "*"
@@ -249,13 +166,7 @@
           }
         },
         {
-          "Key": {
-            "Command": {
-              "CommandText": ","
-            }
-          }
-        },
-        {
+          "KeyMinWidth": 100,
           "Key": {
             "Command": {
               "CommandText": "0"
@@ -263,9 +174,25 @@
           }
         },
         {
+          "KeyMinWidth": 100,
+          "Key": {
+            "Command": {
+              "CommandText": "#"
+            }
+          }
+        },
+        {
           "Key": {
             "Command": {
               "CommandText": "."
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "Caption": " ",
+              "CommandText": "{Space}"
             }
           }
         },
@@ -280,9 +207,10 @@
         }
       ],
       "Height": "Auto",
-      "HorizontalAlignment": "Stretch"
+      "HorizontalAlignment": "Center"
     }
+
   ],
   "KeyMargin": "1",
-  "KeyPadding": "4"
+  "KeyPadding": "6,4"
 }

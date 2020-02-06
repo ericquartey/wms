@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Prism.Commands;
 
 namespace Ferretto.VW.App.Controls.Keyboards
 {
     public class PpcKeyboardsViewModel : BaseNavigationViewModel
     {
         #region Fields
+
+        private ICommand closeCommand;
 
         private string inputText;
 
@@ -28,6 +32,10 @@ namespace Ferretto.VW.App.Controls.Keyboards
         #endregion
 
         #region Properties
+
+        public ICommand CloseCommand =>
+            this.closeCommand ??
+            (this.closeCommand = new DelegateCommand(() => { this.IsClosed = true; }));
 
         public string InputText
         {

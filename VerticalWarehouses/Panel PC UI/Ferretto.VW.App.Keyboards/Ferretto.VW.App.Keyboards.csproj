@@ -9,10 +9,14 @@
   <ItemGroup>
     <None Remove="Resources\it-lowercase.json" />
     <None Remove="Resources\it-numeric.json" />
+    <None Remove="Resources\it-numpad.json" />
+    <None Remove="Resources\it-symbols.json" />
     <None Remove="Resources\it-uppercase.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\it-numpad.json" />
+    <Resource Include="Resources\it-symbols.json" />
     <Resource Include="Resources\it-numeric.json" />
     <Resource Include="Resources\it-uppercase.json" />
     <Resource Include="Resources\it-lowercase.json" />

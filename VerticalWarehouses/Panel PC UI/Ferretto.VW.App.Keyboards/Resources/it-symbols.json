@@ -5,7 +5,7 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "#"
+              "CommandText": "$"
             }
           }
         },
@@ -19,119 +19,49 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "&"
+              "CommandText": "\u00a5"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "_"
+              "CommandText": "\u00a2"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "-"
+              "CommandText": "\u00a9"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "1"
+              "CommandText": "\u00ae"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "2"
+              "CommandText": "\u2122"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "3"
+              "CommandText": "~"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "?"
-            }
-          }
-        }
-      ],
-      "Height": "Auto",
-      "HorizontalAlignment": "Stretch"
-    },
-
-    {
-      "Cells": [
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "@"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "("
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": ")"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "="
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "+"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "4"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "5"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "6"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "!"
+              "CommandText": "\u00bf"
             }
           }
         }
@@ -146,57 +76,129 @@
           "KeyStyleResource": "AccentKeyboardButtonStyle",
           "Key": {
             "Command": {
-              "Caption": "{&=",
-              "CommandText": "{layout:Symbols}"
+              "Caption": "{icon:LongArrowAltRightSolid}",
+              "CommandText": "{Tab}"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "'"
+              "CommandText": "["
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": ":"
+              "CommandText": "]"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "%"
+              "CommandText": "{"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "/"
+              "CommandText": "}"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "7"
+              "CommandText": "<"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "8"
+              "CommandText": ">"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "9"
+              "CommandText": "^"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u00ee"
+            }
+          }
+        }
+      ],
+      "Height": "Auto",
+      "HorizontalAlignment": "Stretch"
+    },
+
+    {
+      "Cells": [
+        {
+          "KeyStyleResource": "AccentKeyboardButtonStyle",
+          "Key": {
+            "Command": {
+              "Caption": "123",
+              "CommandText": "{layout:Numeric}"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "`"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": ";"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u00f7"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\\"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "|"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u00a6"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u00ac"
             }
           }
         },
@@ -226,14 +228,7 @@
           }
         },
         {
-          "Key": {
-            "Command": {
-              "CommandText": "\""
-            }
-          }
-        },
-        {
-          "Width": "2*",
+          "Width": "3*",
           "Key": {
             "Command": {
               "Caption": " ",
@@ -244,28 +239,28 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "*"
+              "CommandText": "\u00a4"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": ","
+              "CommandText": "\u00a7"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "0"
+              "CommandText": "\u00b6"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "."
+              "CommandText": "\u00b0"
             }
           }
         },

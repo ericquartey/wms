@@ -68,6 +68,7 @@
             <RowDefinition />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
@@ -78,5 +79,16 @@
         <keyboards:Keyboard Grid.Row="2"
                             KeyboardLayout="{Binding Path=KeyboardLayoutCode, Converter={StaticResource LayoutCodeToKeyboardLayoutConverter}}"
                             KeyboardCommand="Keyboard_KeyboardCommand" KeyboardLayoutChangeRequest="Keyboard_KeyboardLayoutChangeRequest" />
+
+        <Button Command="{Binding CloseCommand}" Grid.Row="3"
+                Margin="0,15,0,0"
+                Padding="5"
+                HorizontalAlignment="Center"
+                Background="Transparent" Style="{StaticResource {x:Type Button}}">
+            <iconPacks:PackIconFontAwesome Kind="ChevronDownSolid"
+                                           Width="32" Height="32"
+                                           Foreground="{DynamicResource FerrettoDarkGray}"/>
+        </Button>
+
     </Grid>
 </dialog:PpcDialogView>
