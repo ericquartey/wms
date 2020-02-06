@@ -61,11 +61,11 @@ namespace Ferretto.VW.MAS.MissionManager
 
         #region Methods
 
-        public async Task ScheduleCompactingMissionsAsync(IServiceProvider serviceProvider)
+        public void ScheduleCompactingMissions(IServiceProvider serviceProvider)
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
 
-            if (!missionsDataProvider.GetAllActiveMissions().Any())
+            if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status != MissionStatus.New))
             {
                 serviceProvider.GetRequiredService<IMissionSchedulingProvider>().QueueLoadingUnitCompactingMission(serviceProvider);
             }
@@ -428,7 +428,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     {
                         var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
 
-                        if (!missionsDataProvider.GetAllActiveMissions().Any()
+                        if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status != MissionStatus.New)
                             && !this.GenerateHoming(bayProvider, this.machineVolatileDataProvider.IsHomingExecuted))
                         {
                             this.machineVolatileDataProvider.Mode = MachineMode.Compact;
@@ -439,7 +439,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
                 case MachineMode.Compact:
                     {
-                        await this.ScheduleCompactingMissionsAsync(serviceProvider);
+                        this.ScheduleCompactingMissions(serviceProvider);
                     }
                     break;
 
@@ -666,7 +666,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         break;
 
                     case MachineMode.Compact:
-                        await this.ScheduleCompactingMissionsAsync(serviceProvider);
+                        this.ScheduleCompactingMissions(serviceProvider);
                         break;
                 }
             }
