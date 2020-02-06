@@ -86,41 +86,5 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ParameterCannotBeNullOrEmpty", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid credentials..
-        /// </summary>
-        public static string UserLogin_InvalidCredentials {
-            get {
-                return ResourceManager.GetString("UserLogin_InvalidCredentials", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Password is too short..
-        /// </summary>
-        public static string UserLogin_PasswordIsTooShort {
-            get {
-                return ResourceManager.GetString("UserLogin_PasswordIsTooShort", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Password must be specified..
-        /// </summary>
-        public static string UserLogin_PasswordMustBeSpecified {
-            get {
-                return ResourceManager.GetString("UserLogin_PasswordMustBeSpecified", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User name must be specified..
-        /// </summary>
-        public static string UserLogin_UserNameMustBeSpecified {
-            get {
-                return ResourceManager.GetString("UserLogin_UserNameMustBeSpecified", resourceCulture);
-            }
-        }
     }
 }

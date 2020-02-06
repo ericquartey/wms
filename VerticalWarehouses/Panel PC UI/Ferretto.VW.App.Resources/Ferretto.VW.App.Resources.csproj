@@ -33,6 +33,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>InstallationApp.resx</DependentUpon>
     </Compile>
+    <Compile Update="LoadLogin.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LoadLogin.resx</DependentUpon>
+    </Compile>
     <Compile Update="Menu.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -66,6 +71,10 @@
     <EmbeddedResource Update="InstallationApp.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>InstallationApp.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="LoadLogin.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LoadLogin.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Menu.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

@@ -175,14 +175,14 @@
                                         <x:Array Type="{x:Type clr:String}">
                                             <clr:String>operator</clr:String>
                                             <clr:String>installer</clr:String>
-                                            <clr:String>support</clr:String>
+                                            <clr:String>service</clr:String>
                                             <clr:String>admin</clr:String>
                                         </x:Array>
                                     </ComboBox.ItemsSource>
                                 </ComboBox>
 
                                 <Label Content="{Binding UserLogin.SupportToken}"
-                                       ContentStringFormat="chiave temporanea: {0}"
+                                       ContentStringFormat="{x:Static res:LoadLogin.TempKey}"
                                        FontFamily="{DynamicResource VWAPP_TitleFont}"
                                        FontSize="22"
                                        FontWeight="Light"
@@ -192,7 +192,7 @@
                                             <Setter Property="Visibility" Value="Collapsed" />
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding Path=SelectedItem, ElementName=comboBox}"
-                                                             Value="support">
+                                                             Value="service">
                                                     <Setter Property="Visibility" Value="Visible" />
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -206,7 +206,7 @@
                                                      FontSize="22"
                                                      FontWeight="Light"
                                                      MouseDoubleClick="OnKeyboardOpenHandler"
-                                                     NullText="Enter your password"
+                                                     NullText="{x:Static res:LoadLogin.PasswordEnter}"
                                                      Password="{Binding UserLogin.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                                      TouchEnter="OnKeyboardOpenHandler" />
 

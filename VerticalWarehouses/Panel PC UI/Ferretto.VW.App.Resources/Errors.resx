@@ -120,18 +120,6 @@
   <data name="ConverterCanConvertOnlyToVisibilityType" xml:space="preserve">
     <value>Converter can only convert to value of type Visibility.</value>
   </data>
-  <data name="UserLogin_InvalidCredentials" xml:space="preserve">
-    <value>Invalid credentials.</value>
-  </data>
-  <data name="UserLogin_PasswordIsTooShort" xml:space="preserve">
-    <value>Password is too short.</value>
-  </data>
-  <data name="UserLogin_PasswordMustBeSpecified" xml:space="preserve">
-    <value>Password must be specified.</value>
-  </data>
-  <data name="UserLogin_UserNameMustBeSpecified" xml:space="preserve">
-    <value>User name must be specified.</value>
-  </data>
   <data name="MarkupNameOfSyntax" xml:space="preserve">
     <value>Syntax for NameOf is Type={x:Type &lt;className&gt;}.</value>
   </data>
