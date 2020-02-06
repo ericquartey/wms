@@ -1035,7 +1035,13 @@ namespace Ferretto.VW.Simulator.Services.Models
                 this.CurrentAxis == Axis.Horizontal) ||
                 force)
             {
-                if (this.AxisPosition > -3 && this.AxisPosition < 3)
+                if (this.AxisPosition > -3 && this.AxisPosition < 3
+                    && force
+                    || (this.ioDeviceMain != null
+                        && !this.ioDeviceMain[(int)IoPorts.DrawerInOperatorSide].Value
+                        && !this.ioDeviceMain[(int)IoPorts.DrawerInMachineSide].Value
+                        )
+                    )
                 {
                     if (this.InverterType == InverterType.Ang)
                     {

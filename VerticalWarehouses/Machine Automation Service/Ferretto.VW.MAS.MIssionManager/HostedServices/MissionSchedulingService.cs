@@ -65,7 +65,7 @@ namespace Ferretto.VW.MAS.MissionManager
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
 
-            if (!missionsDataProvider.GetAllActiveMissions().Any())
+            if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status != MissionStatus.New))
             {
                 serviceProvider.GetRequiredService<IMissionSchedulingProvider>().QueueLoadingUnitCompactingMission(serviceProvider);
             }
@@ -428,7 +428,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     {
                         var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
 
-                        if (!missionsDataProvider.GetAllActiveMissions().Any()
+                        if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status != MissionStatus.New)
                             && !this.GenerateHoming(bayProvider, this.machineVolatileDataProvider.IsHomingExecuted))
                         {
                             this.machineVolatileDataProvider.Mode = MachineMode.Compact;
