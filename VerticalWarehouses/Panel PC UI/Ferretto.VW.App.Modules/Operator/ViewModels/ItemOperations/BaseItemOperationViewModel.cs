@@ -29,7 +29,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private double quantityIncrement;
 
-        private int quantityTolerance;
+        private int? quantityTolerance;
 
         #endregion
 
@@ -90,14 +90,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
             set => this.SetProperty(ref this.quantityIncrement, value);
         }
 
-        public int QuantityTolerance
+        public int? QuantityTolerance
         {
             get => this.quantityTolerance;
             set
             {
                 if (this.SetProperty(ref this.quantityTolerance, value))
                 {
-                    this.QuantityIncrement = Math.Pow(10, -this.quantityTolerance);
+                    this.QuantityIncrement = Math.Pow(10, -this.quantityTolerance.Value);
                 }
             }
         }

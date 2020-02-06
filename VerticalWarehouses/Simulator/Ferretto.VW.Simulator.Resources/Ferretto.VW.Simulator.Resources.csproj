@@ -4,33 +4,65 @@
         <NeutralLanguage>en-US</NeutralLanguage>
     </PropertyGroup>
 
-    <ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
         <Compile Update="Errors.Designer.cs">
             <DesignTime>True</DesignTime>
             <AutoGen>True</AutoGen>
             <DependentUpon>Errors.resx</DependentUpon>
         </Compile>
         <Compile Update="General.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>General.resx</DependentUpon>
+          <DependentUpon>General.resx</DependentUpon>
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
         </Compile>
+        <Compile Update="IODevice.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>IODevice.resx</DependentUpon>
+        </Compile>
+      <Compile Update="Inverter.Designer.cs">
+        <DependentUpon>Inverter.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      
     </ItemGroup>
 
     <ItemGroup>
         <EmbeddedResource Update="Errors.it.resx">
-          <Generator>PublicResXFileCodeGenerator</Generator>
+          <Generator></Generator>
         </EmbeddedResource>
         <EmbeddedResource Update="Errors.resx">
             <Generator>PublicResXFileCodeGenerator</Generator>
             <LastGenOutput>Errors.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
-        <EmbeddedResource Update="General.it.resx">
-          <Generator>PublicResXFileCodeGenerator</Generator>
-        </EmbeddedResource>
-        <EmbeddedResource Update="General.resx">
-            <Generator>PublicResXFileCodeGenerator</Generator>
-            <LastGenOutput>General.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
+        </EmbeddedResource>      
+      <EmbeddedResource Update="General.it.resx">
+        <Generator></Generator>
+      </EmbeddedResource>
+      <EmbeddedResource Update="General.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>General.Designer.cs</LastGenOutput>
+      </EmbeddedResource>      
+      <EmbeddedResource Update="IODevice.it.resx">
+        <Generator></Generator>
+      </EmbeddedResource>
+      <EmbeddedResource Update="IODevice.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>IODevice.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Inverter.it.resx">
+        <Generator></Generator>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Inverter.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Inverter.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 </Project>
