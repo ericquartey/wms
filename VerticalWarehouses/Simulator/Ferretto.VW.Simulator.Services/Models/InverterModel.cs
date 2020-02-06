@@ -1036,6 +1036,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 force)
             {
                 if (this.AxisPosition > -3 && this.AxisPosition < 3
+                    && this.ioDeviceMain != null
                     && !this.ioDeviceMain[(int)IoPorts.DrawerInOperatorSide].Value
                     && !this.ioDeviceMain[(int)IoPorts.DrawerInMachineSide].Value)
                 {
