@@ -192,6 +192,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 {
                     var machineId = this.bayManager.Identity.Id;
                     this.AvailableQuantity = this.SelectedItem?.Machines.SingleOrDefault(m => m.Id == machineId)?.AvailableQuantityItem;
+                    this.InputQuantity = null;
                     this.RaiseCanExecuteChanged();
                 }
             }

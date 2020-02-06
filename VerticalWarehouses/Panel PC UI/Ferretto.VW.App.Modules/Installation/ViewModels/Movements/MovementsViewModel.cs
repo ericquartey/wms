@@ -122,7 +122,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private IEnumerable<Cell> Cells => this.MachineService.Cells;
 
-        public override EnableMask EnableMask => EnableMask.MachinePoweredOn;
+        public override EnableMask EnableMask => EnableMask.Any;
 
         public string Error => string.Join(
             Environment.NewLine,
@@ -146,7 +146,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.goToStatusSensorsCommand
             ??
             (this.goToStatusSensorsCommand = new DelegateCommand(
-                () => this.StatusSensorsCommand()));
+                () => this.StatusSensorsCommand(),
+                () => (this.HealthProbeService.HealthMasStatus == Services.HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == Services.HealthStatus.Degraded)));
 
         public bool HasCarousel => this.MachineService.HasCarousel;
 
@@ -401,6 +402,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanBaseExecute()
         {
             return this.MachineModeService?.MachineMode == MachineMode.Manual &&
+                   this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
                    !this.IsKeyboardOpened &&
                    !this.IsExecutingProcedure &&
                    !this.IsMoving;
@@ -420,12 +422,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanGoToMovementsGuidedExecuteCommand()
         {
-            return this.MachineModeService?.MachineMode == MachineMode.Manual;
+            return this.MachineModeService?.MachineMode == MachineMode.Manual &&
+                   this.MachineModeService?.MachinePower == MachinePowerState.Powered
+                ;
         }
 
         private bool CanGoToMovementsManualExecuteCommand()
         {
-            return this.MachineModeService?.MachineMode == MachineMode.Manual;
+            return this.MachineModeService?.MachineMode == MachineMode.Manual &&
+                   this.MachineModeService?.MachinePower == MachinePowerState.Powered;
         }
 
         private bool CanResetCommand()
