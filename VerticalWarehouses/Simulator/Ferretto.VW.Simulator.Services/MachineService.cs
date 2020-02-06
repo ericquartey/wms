@@ -78,6 +78,12 @@ namespace Ferretto.VW.Simulator.Services
 
             this.Inverters00.OnHorizontalMovementComplete += this.OnHorizontalMovementCompleted;
             this.Inverters01.OnHorizontalMovementComplete += this.OnHorizontalMovementCompleted;
+
+            this.MinTorqueCurrent = 72;
+            this.MaxTorqueCurrent = 120;
+
+            this.MinProfileHeight = 2000;
+            this.MaxProfileHeight = 10000;
         }
 
         #endregion
@@ -112,8 +118,28 @@ namespace Ferretto.VW.Simulator.Services
                 this.machine = value;
                 this.remoteIOs.ForEach(x => x.Machine = value);
                 this.Inverters.ForEach(x => x.Machine = value);
+                if (this.machine.LoadUnitMaxNetWeight > 800)
+                {
+                    this.MinTorqueCurrent = 69;
+                    this.MaxTorqueCurrent = 127;
+                }
+                else
+                {
+                    this.MinTorqueCurrent = 74;
+                    this.MaxTorqueCurrent = 130;
+                }
+                this.MinProfileHeight = (int)Math.Round((this.machine.LoadUnitMinHeight - 50 + 181.25) / 0.090625);
+                this.MaxProfileHeight = (int)Math.Round((this.machine.LoadUnitMaxHeight - 50 + 181.25) / 0.090625);
             }
         }
+
+        public int MaxProfileHeight { get; private set; }
+
+        public int MaxTorqueCurrent { get; private set; }
+
+        public int MinProfileHeight { get; private set; }
+
+        public int MinTorqueCurrent { get; private set; }
 
         public IODeviceModel RemoteIOs01 { get => this.remoteIOs[0]; set { var ios = this.remoteIOs[0]; this.SetProperty(ref ios, value); } }
 
@@ -563,12 +589,14 @@ namespace Ferretto.VW.Simulator.Services
                     break;
 
                 case InverterParameterId.TorqueCurrent:
-                    var torqueMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(72, 120)));
+                    // simulate measure weight
+                    var torqueMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(this.MinTorqueCurrent, this.MaxTorqueCurrent)));
                     result = client.Client.Send(torqueMessage);
                     break;
 
                 case InverterParameterId.ProfileInput:
-                    var profileMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(2000, 10000)));
+                    // simulate measure profile height
+                    var profileMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(this.MinProfileHeight, this.MaxProfileHeight)));
                     result = client.Client.Send(profileMessage);
                     break;
 

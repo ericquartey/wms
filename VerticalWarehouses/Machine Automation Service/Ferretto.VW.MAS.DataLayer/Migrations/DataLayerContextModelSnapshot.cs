@@ -655,6 +655,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Code = 65,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
                             Code = 1000,
                             TotalErrors = 0
                         },
@@ -872,6 +877,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<double>("LoadUnitMaxHeight");
 
                     b.Property<double>("LoadUnitMaxNetWeight");
+
+                    b.Property<double>("LoadUnitMinHeight");
 
                     b.Property<double>("LoadUnitTare");
 
@@ -1098,7 +1105,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 3, 30, 11, 41, 23, 499, DateTimeKind.Local).AddTicks(7545),
+                            InstallationDate = new DateTime(2017, 4, 6, 16, 17, 3, 44, DateTimeKind.Local).AddTicks(9348),
                             ServiceStatus = 86
                         });
                 });

@@ -3,7 +3,7 @@ using System.Configuration;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Ferretto.VW.Installer
+namespace Ferretto.VW.Installer.Core
 {
     internal class MasHealthCheckStep : Step
     {
@@ -51,6 +51,8 @@ namespace Ferretto.VW.Installer
                     }
 
                     isHealthy = status?.Equals("healthy", StringComparison.OrdinalIgnoreCase) == true;
+
+                    await Task.Delay(1000);
                 }
                 while (!isHealthy && (DateTime.Now - startTime).TotalMilliseconds < this.Timeout);
 

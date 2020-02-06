@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
+using Ferretto.VW.Installer.Core;
 
 namespace Ferretto.VW.Installer
 {

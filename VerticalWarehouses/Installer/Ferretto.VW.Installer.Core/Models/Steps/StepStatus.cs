@@ -1,6 +1,6 @@
-﻿namespace Ferretto.VW.Installer
+﻿namespace Ferretto.VW.Installer.Core
 {
-    internal enum StepStatus
+    public enum StepStatus
     {
         ToDo,
 

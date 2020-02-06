@@ -2834,6 +2834,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select compartment.
+        /// </summary>
+        public static string SelectCompartment {
+            get {
+                return ResourceManager.GetString("SelectCompartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tot Back.
         /// </summary>
         public static string StatisticsCellsDataGridHeaderBack {

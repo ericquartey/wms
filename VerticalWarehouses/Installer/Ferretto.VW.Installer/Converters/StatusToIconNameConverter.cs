@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
+using Ferretto.VW.Installer.Core;
 
 namespace Ferretto.VW.Installer
 {
@@ -11,6 +12,11 @@ namespace Ferretto.VW.Installer
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (!Enum.IsDefined(typeof(StepStatus), value))
+            {
+                throw new ArgumentException($"The converter accepts only values of type {nameof(StepStatus)}", nameof(value));
+            }
+
             switch ((StepStatus)value)
             {
                 case StepStatus.Done: return "CheckCircle";
