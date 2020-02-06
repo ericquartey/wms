@@ -167,6 +167,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             {
                 if (mission.Status == MissionStatus.Completed
                     || mission.Status == MissionStatus.Aborted
+                    || mission.Status == MissionStatus.New
                     )
                 {
                     missionsDataProvider.Complete(missionId);
