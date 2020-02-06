@@ -2,20 +2,24 @@
                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      xmlns:keyboards="http://ferrettogroup.com/vw/keyboards"
                       xmlns:dialog="clr-namespace:Ferretto.VW.App.Controls"
                       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                      xmlns:keyboardConverters="clr-namespace:Ferretto.VW.App.Keyboards.Converters;assembly=Ferretto.VW.App.Keyboards"
+                      xmlns:keyboards="clr-namespace:Ferretto.VW.App.Keyboards.Controls;assembly=Ferretto.VW.App.Keyboards"
                       xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Controls.Keyboards"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      Title="PpcKeyboards"
+                      Width="800"
+                      Height="450"
                       IsClosed="{Binding IsClosed}"
-                      mc:Ignorable="d"
-                      Title="PpcKeyboards" Height="450" Width="800">
+                      mc:Ignorable="d">
     <dialog:PpcDialogView.Resources>
-        <keyboards:LayoutCodeToKeyboardLayoutConverter x:Key="LayoutCodeToKeyboardLayoutConverter" />
+        <keyboardConverters:LayoutCodeToKeyboardLayoutConverter x:Key="LayoutCodeToKeyboardLayoutConverter" />
 
 
-        <Style x:Key="KeyboardTextBoxStyle" TargetType="{x:Type TextBox}"
-               BasedOn="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}">
+        <Style x:Key="KeyboardTextBoxStyle"
+               BasedOn="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
+               TargetType="{x:Type TextBox}">
             <Setter Property="Padding" Value="0,15" />
             <Setter Property="Background" Value="#3000" />
             <Setter Property="Validation.ErrorTemplate">
@@ -23,22 +27,20 @@
                     <ControlTemplate>
                         <DockPanel LastChildFill="False">
 
-                            <TextBlock DockPanel.Dock="Right" Visibility="Collapsed"
-                                Foreground="{DynamicResource FerrettoRed}"
-                                Margin="5"
-                                FontSize="{DynamicResource FontSize_Normal}"
-                                Text="{Binding ElementName=MyAdorner,
-                           Path=AdornedElement.(Validation.Errors)/ErrorContent}">
-                            </TextBlock>
+                            <TextBlock Margin="5"
+                                       DockPanel.Dock="Right"
+                                       FontSize="{DynamicResource FontSize_Normal}"
+                                       Foreground="{DynamicResource FerrettoRed}"
+                                       Text="{Binding ElementName=MyAdorner, Path=AdornedElement.(Validation.Errors)/ErrorContent}"
+                                       Visibility="Collapsed" />
 
-                            <Border DockPanel.Dock="Right"
-                                    Padding="5"
+                            <Border Padding="5"
+                                    Background="{DynamicResource FerrettoRed}"
                                     CornerRadius="0,2,2,0"
-                                    Background="{DynamicResource FerrettoRed}">
+                                    DockPanel.Dock="Right">
 
-                                <iconPacks:PackIconModern
-                                          Foreground="{DynamicResource FerrettoPureWhite}"
-                                          Kind="WarningCircle" />
+                                <iconPacks:PackIconModern Foreground="{DynamicResource FerrettoPureWhite}"
+                                                          Kind="WarningCircle" />
                             </Border>
 
                             <Border BorderBrush="{DynamicResource FerrettoRed}"
@@ -51,9 +53,7 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="Validation.HasError" Value="true">
-                    <Setter Property="ToolTip"
-                        Value="{Binding RelativeSource={RelativeSource Self},
-                        Path=(Validation.Errors)/ErrorContent}" />
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)/ErrorContent}" />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -72,22 +72,28 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <TextBox Grid.Row="1" Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}"
+        <TextBox x:Name="textBox"
+                 Grid.Row="1"
+                 Margin="50,15"
                  Style="{StaticResource KeyboardTextBoxStyle}"
-                 x:Name="textBox" Margin="50,15"></TextBox>
+                 Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}" />
 
         <keyboards:Keyboard Grid.Row="2"
+                            KeyboardCommand="Keyboard_KeyboardCommand"
                             KeyboardLayout="{Binding Path=KeyboardLayoutCode, Converter={StaticResource LayoutCodeToKeyboardLayoutConverter}}"
-                            KeyboardCommand="Keyboard_KeyboardCommand" KeyboardLayoutChangeRequest="Keyboard_KeyboardLayoutChangeRequest" />
+                            KeyboardLayoutChangeRequest="Keyboard_KeyboardLayoutChangeRequest" />
 
-        <Button Command="{Binding CloseCommand}" Grid.Row="3"
+        <Button Grid.Row="3"
                 Margin="0,15,0,0"
                 Padding="5"
                 HorizontalAlignment="Center"
-                Background="Transparent" Style="{StaticResource {x:Type Button}}">
-            <iconPacks:PackIconFontAwesome Kind="ChevronDownSolid"
-                                           Width="32" Height="32"
-                                           Foreground="{DynamicResource FerrettoDarkGray}"/>
+                Background="Transparent"
+                Command="{Binding CloseCommand}"
+                Style="{StaticResource {x:Type Button}}">
+            <iconPacks:PackIconFontAwesome Width="32"
+                                           Height="32"
+                                           Foreground="{DynamicResource FerrettoDarkGray}"
+                                           Kind="ChevronDownSolid" />
         </Button>
 
     </Grid>
