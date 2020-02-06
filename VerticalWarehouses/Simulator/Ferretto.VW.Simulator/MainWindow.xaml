@@ -80,8 +80,8 @@
                                    Grid.Column="1"
                                    VerticalAlignment="Center"
                                    Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
-                                   Text="{Binding Id, StringFormat='IO DEVICE {0:00}'}"
-                                   ToolTip="Id" />
+                                   Text="{Binding Id, StringFormat={x:Static res:IODevice.IODeviceByID}}"
+                                   ToolTip="{x:Static res:IODevice.IODeviceName}" />
 
                         <Grid Grid.Row="1"
                               Grid.Column="0"
@@ -101,8 +101,9 @@
                                        Grid.Column="0"
                                        Margin="0,5,5,0"
                                        VerticalAlignment="Center"
-                                       Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                                       Text="Output:" />
+                                       Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}">
+                                <Run Text="{x:Static res:General.Outputs}" /> <Run Text=":" />
+                            </TextBlock>
 
                             <ItemsControl Grid.Row="2"
                                           Grid.Column="0"
@@ -141,8 +142,9 @@
 
                         <TextBlock Grid.Row="0"
                                    VerticalAlignment="Center"
-                                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                                   Text="Input:" />
+                                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}">
+                            <Run Text="{x:Static res:General.Inputs}" /> <Run Text=":" />
+                        </TextBlock>
 
                         <ItemsControl Grid.Row="1"
                                       Margin="-2,3"
@@ -233,36 +235,36 @@
                                        Grid.ColumnSpan="4"
                                        VerticalAlignment="Top"
                                        Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
-                                       Text="{Binding InverterRole, StringFormat='INVERTER {0} '}"
-                                       ToolTip="Inverter Role" />
-
+                                       Text="{Binding InverterRole, StringFormat={x:Static res:Inverter.RoleByID}}"
+                                       ToolTip="{x:Static res:Inverter.Role}" />
                             <TextBlock Grid.Row="1"
                                        Grid.Column="0"
                                        VerticalAlignment="Top"
                                        Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                                       Text="{Binding InverterType, StringFormat='{}{0} '}"
-                                       ToolTip="Inverter Type" />
-
+                                       ToolTip="{x:Static res:Inverter.Type}">
+                                <Run Text="{Binding InverterType}" /> <Run Text=" / " />
+                            </TextBlock>
                             <TextBlock Grid.Row="1"
                                        Grid.Column="1"
                                        VerticalAlignment="Top"
                                        Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                                       Text="{Binding OperationMode, StringFormat='/ {0} '}"
-                                       ToolTip="Operation Mode" />
+                                       ToolTip="{x:Static res:Inverter.OperationMode}">
+                                <Run Text="{Binding OperationMode}" /> <Run Text=" / " />
+                            </TextBlock>
 
                             <TextBlock Grid.Row="1"
                                        Grid.Column="2"
                                        VerticalAlignment="Top"
                                        Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                                       Text="{Binding AxisPositionX, StringFormat='/ {0:F4} '}"
-                                       ToolTip="Horizontal Position" />
+                                       Text="{Binding AxisPositionX, StringFormat=' {0:F4} / '}"
+                                       ToolTip="{x:Static res:Inverter.XPosition}" />
 
                             <TextBlock Grid.Row="1"
                                        Grid.Column="3"
                                        VerticalAlignment="Top"
                                        Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                                       Text="{Binding AxisPositionY, StringFormat='/ {0:F4} '}"
-                                       ToolTip="Vertical Position" />
+                                       Text="{Binding AxisPositionY, StringFormat=' {0:F4}'}"
+                                       ToolTip="{x:Static res:Inverter.YPosition}" />
                         </Grid>
 
                     </Grid>
@@ -282,8 +284,9 @@
                         <TextBlock Grid.Row="0"
                                    Grid.Column="0"
                                    HorizontalAlignment="Right"
-                                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                                   Text="Control Word:" />
+                                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}">
+                            <Run Text="{x:Static res:General.ControlWord}" /><Run Text=":" />
+                        </TextBlock>
 
                         <ItemsControl Grid.Row="1"
                                       Grid.Column="0"
@@ -323,10 +326,10 @@
 
                         <TextBlock Grid.Row="0"
                                    HorizontalAlignment="Left"
-                                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                                   Text="Input:" />
+                                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}">
+                            <Run Text="{x:Static res:General.Inputs}" /><Run Text=":" />
 
-
+                        </TextBlock>
                         <ItemsControl Grid.Row="1"
                                       Margin="-2,3"
                                       ItemsSource="{Binding DigitalIO}">
@@ -366,9 +369,9 @@
                         <TextBlock Grid.Row="0"
                                    Grid.Column="0"
                                    HorizontalAlignment="Right"
-                                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                                   Text="Status Word:" />
-
+                                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}">
+                            <Run Text="{x:Static res:General.StatusWord}" /><Run Text=":" />
+                        </TextBlock>
                         <ItemsControl Grid.Row="1"
                                       Grid.Column="0"
                                       Grid.ColumnSpan="2"
@@ -462,7 +465,7 @@
                        Margin="15,10,15,10"
                        VerticalAlignment="Center"
                        Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
-                       Text="VW Simulator" />
+                       Text="{x:Static res:General.Title}" />
         </Grid>
 
         <Grid Grid.Row="0"
@@ -513,7 +516,7 @@
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        SensorState="{Binding MachineService.RemoteIOs01.Inputs[0].Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                       Text="Sicurezza" />
+                                        Text="{x:Static res:General.Safety}" />
 
         </Grid>
 
@@ -583,6 +586,64 @@
             </Button>
         </Grid>
         <!--  Body  -->
+
+
+        <!--<Button Grid.Row="0"
+                Grid.Column="2"
+                Margin="0,0,15,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Click="Button_Click"
+                Command="{Binding ToggleCultureCommand}">
+            <Button.Content>
+                <StackPanel Orientation="Horizontal">
+                    <controls:PpcIcon Height="36"
+                                      Margin="10"
+                                      ColorizeBrush="{DynamicResource PpcButtonForeground}"
+                                      Source="pack://application:,,,/Ferretto.VW.Simulator;Component/Icons/theme_dark.png"
+                                      Visibility="{Binding IsEngCultureActive, Converter={StaticResource BTVC}}" />
+
+                    <controls:PpcIcon Height="36"
+                                      Margin="10"
+                                      ColorizeBrush="{DynamicResource PpcButtonForeground}"
+                                      Source="pack://application:,,,/Ferretto.VW.Simulator;Component/Icons/theme_light.png"
+                                      Visibility="{Binding IsEngCultureActive, Converter={StaticResource BTVIC}}" />
+
+                    <TextBlock Margin="0,0,10,0"
+                               VerticalAlignment="Center">
+                        <TextBlock.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsEngCultureActive}"
+                                                 Value="True">
+                                        <Setter Property="TextBlock.Text" Value="Eng" />
+                                        <Setter Property="TextBlock.Foreground" Value="White" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsEngCultureActive}"
+                                                 Value="False">
+                                        <Setter Property="TextBlock.Text" Value="Ita" />
+                                        <Setter Property="TextBlock.Foreground" Value="Black" />
+                                    </DataTrigger>
+
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </StackPanel>
+            </Button.Content>
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="Transparent" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+
+            </Button.Style>
+        </Button>-->
 
         <ScrollViewer Grid.Row="1"
                       VerticalScrollBarVisibility="Auto">

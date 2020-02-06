@@ -38,7 +38,7 @@ namespace Ferretto.VW.Simulator
         {
             base.OnStartup(e);
 
-            this.ForceItalianLanguage();
+            this.ForceLanguage();
 
             var bootstrapper = new Bootstrapper();
 
@@ -50,10 +50,10 @@ namespace Ferretto.VW.Simulator
             this.logger.Error(e.ExceptionObject as System.Exception, "An unhandled exception was thrown.");
         }
 
-        private void ForceItalianLanguage()
+        private void ForceLanguage()
         {
-            System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("it-IT");
-            System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("it-IT");
+            System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(this.Culture);
+            System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo(this.Culture);
         }
 
         #endregion

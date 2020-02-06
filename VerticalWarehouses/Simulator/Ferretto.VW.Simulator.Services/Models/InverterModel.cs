@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
+using Ferretto.VW.Simulator.Resources;
 using Prism.Commands;
 using Prism.Mvvm;
 
@@ -831,55 +832,55 @@ namespace Ferretto.VW.Simulator.Services.Models
             switch (signalIndex)
             {
                 case 0:
-                    return "Switch On";
+                    return Inverter.SwitchedOn;
 
                 case 1:
-                    return "Enable Voltage";
+                    return Inverter.EnableVoltage;
 
                 case 2:
-                    return "Quick Stop (Low Active)";
+                    return Inverter.QuickStop;
 
                 case 3:
-                    return "Enable Operation";
+                    return Inverter.EnableOperation;
 
                 case 4:
-                    return operationMode == InverterOperationMode.Velocity ? "Rfg enable" : operationMode == InverterOperationMode.Position ? "New set-point" : operationMode == InverterOperationMode.Homing ? "Homing operation started" : operationMode == InverterOperationMode.TableTravel ? "Sequence Mode" : "Operation mode specific";
+                    return operationMode == InverterOperationMode.Velocity ? Inverter.RfgEnable : operationMode == InverterOperationMode.Position ? Inverter.NewSetPoint : operationMode == InverterOperationMode.Homing ? Inverter.HomingStarted : operationMode == InverterOperationMode.TableTravel ? Inverter.SequenceMode : Inverter.OperationModeSpecific;
 
                 case 5:
-                    return operationMode == InverterOperationMode.Velocity ? "Rfg unlock" : operationMode == InverterOperationMode.Position ? "Change set immediately" : "Operation mode specific";
+                    return operationMode == InverterOperationMode.Velocity ? Inverter.RfgUnlock : operationMode == InverterOperationMode.Position ? Inverter.ChangeSetImmediately : Inverter.OperationModeSpecific;
 
                 case 6:
-                    return operationMode == InverterOperationMode.Velocity ? "Rfg use ref" : operationMode == InverterOperationMode.Position ? "Abs/rel" : operationMode == InverterOperationMode.TableTravel ? "Resume" : "Operation mode specific";
+                    return operationMode == InverterOperationMode.Velocity ? Inverter.RfgUseRef : operationMode == InverterOperationMode.Position ? Inverter.AbsoluteRelative : operationMode == InverterOperationMode.TableTravel ? Inverter.Resume : Inverter.OperationModeSpecific;
 
                 case 7:
-                    return "Reset Fault";
+                    return Inverter.ResetFault;
 
                 case 8:
-                    return "Halt";
+                    return Inverter.Halt;
 
                 case 9:
-                    return operationMode == InverterOperationMode.Position ? "Change on set-point" : operationMode == InverterOperationMode.TableTravel ? "Start Motion Block" : "Operation mode specific";
+                    return operationMode == InverterOperationMode.Position ? Inverter.ChangeOnSetPoint : operationMode == InverterOperationMode.TableTravel ? Inverter.StartMotionBlock : Inverter.OperationModeSpecific;
 
                 case 10:
-                    return "HeartBeat";
+                    return Inverter.HeartBeat;
 
                 case 11:
-                    return operationMode == InverterOperationMode.TableTravel ? "MotionBlockSelect0" : "Free";
+                    return operationMode == InverterOperationMode.TableTravel ? Inverter.MotionBlockSelect0 : Inverter.Free;
 
                 case 12:
-                    return operationMode == InverterOperationMode.TableTravel ? "MotionBlockSelect1" : "Free";
+                    return operationMode == InverterOperationMode.TableTravel ? Inverter.MotionBlockSelect1 : Inverter.Free;
 
                 case 13:
-                    return operationMode == InverterOperationMode.TableTravel ? "MotionBlockSelect2" : "Free";
+                    return operationMode == InverterOperationMode.TableTravel ? Inverter.MotionBlockSelect2 : Inverter.Free;
 
                 case 14:
-                    return operationMode == InverterOperationMode.TableTravel ? "MotionBlockSelect3" : "Free";
+                    return operationMode == InverterOperationMode.TableTravel ? Inverter.MotionBlockSelect3 : Inverter.Free;
 
                 case 15:
-                    return "Horizontal Axis";
+                    return Inverter.HorizontalAxis;
             }
 
-            return "Free";
+            return Inverter.Free;
         }
 
         internal static string GetInverterSignalDescription(InverterType inverterType, int signalIndex)
@@ -887,19 +888,19 @@ namespace Ferretto.VW.Simulator.Services.Models
             switch (signalIndex)
             {
                 case 0:
-                    return "Potenza ON";
+                    return Inverter.PowerOn;
 
                 case 1:
-                    return "Funzionamento normale";
+                    return Inverter.NormalFunction;
 
                 case 2:
-                    return inverterType == InverterType.Ang ? "Posizione di zero elevatore" : inverterType == InverterType.Agl ? "Sensore serranda (A)" : "Posizione di zero";
+                    return inverterType == InverterType.Ang ? Inverter.ElevatorZeroPosition : inverterType == InverterType.Agl ? Inverter.ShutterSensorA : Inverter.ZeroPosition;
 
                 case 3:
-                    return inverterType == InverterType.Ang ? "Encoder canale B --- culla" : inverterType == InverterType.Agl ? "Sensore serranda (B)" : "Encoder canale B";
+                    return inverterType == InverterType.Ang ? Inverter.EncoderChannelBElevatorChain : inverterType == InverterType.Agl ? Inverter.ShutterSensorB : Inverter.EncoderChannelB;
 
                 case 4:
-                    return inverterType == InverterType.Ang ? "Encoder canale A --- culla" : inverterType == InverterType.Agl ? "Libero" : "Encoder canale A";
+                    return inverterType == InverterType.Ang ? Inverter.EncoderChannelAElevatorChain : inverterType == InverterType.Agl ? Inverter.Free : Inverter.EncoderChannelA;
 
                 case 5:
                     return inverterType == InverterType.Ang ? "Extracorsa elevatore" : inverterType == InverterType.Agl ? "Libero" : "Libero";
@@ -908,7 +909,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                     return "Libero";
 
                 case 7:
-                    return inverterType == InverterType.Ang ? "Sensore zero culla" : inverterType == InverterType.Agl ? "Libero" : "Libero";
+                    return inverterType == InverterType.Ang ? Inverter.SensorElevatorChainZero : inverterType == InverterType.Agl ? Inverter.Free : Inverter.Free;
 
                 default:
                     return string.Empty;
@@ -920,52 +921,52 @@ namespace Ferretto.VW.Simulator.Services.Models
             switch (signalIndex)
             {
                 case 0:
-                    return "Ready to switch on";
+                    return Inverter.ReadyToSwitchOn;
 
                 case 1:
-                    return "Switched on";
+                    return Inverter.SwitchedOn;
 
                 case 2:
-                    return "Operation Enabled";
+                    return Inverter.OperationEnabled;
 
                 case 3:
-                    return "Fault";
+                    return Inverter.Fault;
 
                 case 4:
-                    return "Voltage Enabled";
+                    return Inverter.VoltageEnabled;
 
                 case 5:
-                    return "Quick Stop (Low active)";
+                    return Inverter.QuickStop;
 
                 case 6:
-                    return "Switch on disabled";
+                    return Inverter.SwitchOnDisabled;
 
                 case 7:
-                    return "Warning";
+                    return Inverter.Warning;
 
                 case 8:
-                    return operationMode == InverterOperationMode.TableTravel ? "MotionBlockInProgress" : "Manufacturer specific";
+                    return operationMode == InverterOperationMode.TableTravel ? Inverter.MotionBlockInProgress : Inverter.ManufacturerSpecific;
 
                 case 9:
-                    return "Remote";
+                    return Inverter.Remote;
 
                 case 10:
-                    return "Target reached";
+                    return Inverter.TargetReached;
 
                 case 11:
-                    return operationMode == InverterOperationMode.TableTravel ? "InternalLimitActive" : "Internal limit active";
+                    return operationMode == InverterOperationMode.TableTravel ? Inverter.InternalLimitActive_bis : Inverter.InternalLimitActive;
 
                 case 12:
-                    return operationMode == InverterOperationMode.ProfileVelocity ? "Velocity" : operationMode == InverterOperationMode.Position ? "Set-point acknowledge" : operationMode == InverterOperationMode.Homing ? "Homing attained" : operationMode == InverterOperationMode.TableTravel ? "InGear" : "Operation mode specific";
+                    return operationMode == InverterOperationMode.ProfileVelocity ? Inverter.Velocity : operationMode == InverterOperationMode.Position ? Inverter.SetPointAck : operationMode == InverterOperationMode.Homing ? Inverter.HomingAttained : operationMode == InverterOperationMode.TableTravel ? Inverter.InGear : Inverter.OperationModeSpecific;
 
                 case 13:
-                    return operationMode == InverterOperationMode.ProfileVelocity ? "Max slippage" : (operationMode == InverterOperationMode.Position || operationMode == InverterOperationMode.TableTravel) ? "Following error" : operationMode == InverterOperationMode.Homing ? "Homing error" : "Operation mode specific";
+                    return operationMode == InverterOperationMode.ProfileVelocity ? Inverter.MaxSlippage : (operationMode == InverterOperationMode.Position || operationMode == InverterOperationMode.TableTravel) ? Inverter.FollowingError : operationMode == InverterOperationMode.Homing ? Inverter.HomingError : Inverter.OperationModeSpecific;
 
                 case 14:
-                    return "Manufacturer specific";
+                    return Inverter.ManufacturerSpecific;
 
                 case 15:
-                    return "Manufacturer specific Warning 2";
+                    return Inverter.ManufacturerSpecificWarning2;
             }
 
             return "Free";

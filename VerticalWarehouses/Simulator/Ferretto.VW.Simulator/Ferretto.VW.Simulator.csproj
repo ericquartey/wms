@@ -44,7 +44,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="App.config">
+    <None Update="AppConfig.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Remove="DarkSkin.xaml" />
