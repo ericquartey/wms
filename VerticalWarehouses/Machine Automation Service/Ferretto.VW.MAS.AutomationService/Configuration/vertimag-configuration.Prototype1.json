@@ -429,6 +429,7 @@
     },
     "Height": 4563.0,
     "LoadUnitMaxHeight": 695.0,
+    "LoadUnitMinHeight": 145.0,
     "LoadUnitMaxNetWeight": 800.0,
     "LoadUnitTare": 120.0,
     "MaxGrossWeight": 50000.0,
