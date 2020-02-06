@@ -88,10 +88,6 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                     && this.sensorsProvider.IsMachineSecurityRunning == runningState.Enable)
                 {
                     this.IsCompleted = true;
-                    if (runningState.Enable)
-                    {
-                        this.errorsProvider.ResolveAll();
-                    }
 
                     this.machineModeDataProvider.Mode = MachineMode.Manual;
                     this.Logger.LogInformation($"Machine status switched to {this.machineModeDataProvider.Mode}; Running state {runningState.Enable}");
