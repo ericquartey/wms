@@ -51,6 +51,8 @@ namespace Ferretto.VW.Installer.Core
                     }
 
                     isHealthy = status?.Equals("healthy", StringComparison.OrdinalIgnoreCase) == true;
+
+                    await Task.Delay(1000);
                 }
                 while (!isHealthy && (DateTime.Now - startTime).TotalMilliseconds < this.Timeout);
 

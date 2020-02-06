@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -11,6 +12,8 @@ namespace Ferretto.VW.Installer.Core
     public abstract class Step : BindableBase
     {
         #region Fields
+
+        private const string EmbeddedInstallationFilePath = "EmbeddedInstallationFilePath";
 
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -123,6 +126,11 @@ namespace Ferretto.VW.Installer.Core
 
         public string InterpolateVariables(string value)
         {
+            if (value is null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
             var regex = new Regex(@"\$\((?<var_name>[^\)]+)\)");
 
             var match = regex.Match(value);
@@ -130,10 +138,19 @@ namespace Ferretto.VW.Installer.Core
             while (match.Success)
             {
                 var varName = match.Groups["var_name"].Value;
-                var varValue = ConfigurationManager.AppSettings.Get(varName);
-                if (varValue is null)
+
+                string varValue;
+                if (varName == EmbeddedInstallationFilePath)
                 {
-                    throw new Exception($"La chiave di configurazione '{varName}' non esiste.");
+                    varValue = Process.GetCurrentProcess().MainModule.FileName;
+                }
+                else
+                {
+                    varValue = ConfigurationManager.AppSettings.Get(varName);
+                    if (varValue is null)
+                    {
+                        throw new Exception($"La chiave di configurazione '{varName}' non esiste.");
+                    }
                 }
 
                 value = value.Replace(match.Value, varValue);
