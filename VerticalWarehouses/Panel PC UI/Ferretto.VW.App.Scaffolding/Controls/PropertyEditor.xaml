@@ -7,8 +7,8 @@
              xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:ctrlConverters="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
              xmlns:converters="clr-namespace:Ferretto.VW.App.Scaffolding.Converters"
-             xmlns:keyboards="http://ferrettogroup.com/vw/keyboards"
              xmlns:behaviors="clr-namespace:Ferretto.VW.App.Controls.Behaviors;assembly=Ferretto.VW.App.Controls"
+             xmlns:behaviorsLocal="clr-namespace:Ferretto.VW.App.Scaffolding.Behaviors"
              xmlns:interactivity="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:selectors="clr-namespace:Ferretto.VW.App.Scaffolding.Selectors"
              xmlns:validation="clr-namespace:Ferretto.VW.App.Scaffolding.ValidationRules"
@@ -195,9 +195,9 @@
 
                     <!-- keyboard interactivity -->
                     <interactivity:Interaction.Behaviors>
-                        <behaviors:KeyboardPopupBehavior KeyboardLayoutCode="{Binding Converter={StaticResource TypeToKeyboardLayoutCodeConverter}}" />
-                        <!--<behaviors:TextBoxKeyboardBehavior Keyboard="{Binding Converter={StaticResource KeyboardTypeConverter}}"
-                        KeyboardCaption="{Binding Converter={StaticResource DisplayNameConverter}}" />-->
+                        <!--<behaviors:KeyboardPopupBehavior KeyboardLayoutCode="{Binding Converter={StaticResource TypeToKeyboardLayoutCodeConverter}}" />-->
+                        <behaviorsLocal:TextBoxKeyboardBehavior Keyboard="{Binding Converter={StaticResource KeyboardTypeConverter}}"
+                            KeyboardCaption="{Binding Converter={StaticResource DisplayNameConverter}}" />
                     </interactivity:Interaction.Behaviors>
                 </TextBox>
             </DataTemplate>

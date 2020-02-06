@@ -55,7 +55,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override void OnMisionOperationRetrieved()
         {
-            this.InputQuantity = this.MissionOperation.RequestedQuantity;
+            this.InputQuantity = this.MissionOperation.RequestedQuantity - this.MissionOperation.DispatchedQuantity;
         }
 
         protected override void RaiseCanExecuteChanged()
