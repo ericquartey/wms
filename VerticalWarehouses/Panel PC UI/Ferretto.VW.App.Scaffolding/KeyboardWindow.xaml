@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ferretto.VW.App.Scaffolding"
-        xmlns:keyboards="http://ferrettogroup.com/vw/keyboards"
+        xmlns:keyboards="clr-namespace:Ferretto.VW.App.Keyboards.Controls;assembly=Ferretto.VW.App.Keyboards"
         xmlns:interactivity="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:behaviors="clr-namespace:Ferretto.VW.App.Controls.Behaviors;assembly=Ferretto.VW.App.Controls"
         mc:Ignorable="d"
