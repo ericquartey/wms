@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Ferretto.VW.Installer
+namespace Ferretto.VW.Installer.Core
 {
     internal class AppBackupStep : Step
     {

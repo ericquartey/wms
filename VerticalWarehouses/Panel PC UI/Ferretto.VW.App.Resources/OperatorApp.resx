@@ -1502,4 +1502,8 @@ Please put back any moved pieces in their original position.</value>
     <value>Loading unit present {0}</value>
     <comment>Label text</comment>
   </data>
+  <data name="SelectCompartment" xml:space="preserve">
+    <value>Select compartment</value>
+    <comment>Title test</comment>
+  </data>
 </root>

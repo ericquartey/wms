@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Ferretto.VW.Installer
+namespace Ferretto.VW.Installer.Core
 {
     internal abstract class ShellStep : Step
     {

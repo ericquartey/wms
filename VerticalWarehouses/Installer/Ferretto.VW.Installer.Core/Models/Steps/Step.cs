@@ -1,16 +1,14 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Configuration;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using NLog;
 
-namespace Ferretto.VW.Installer
+namespace Ferretto.VW.Installer.Core
 {
-    internal abstract class Step : BindableBase
+    public abstract class Step : BindableBase
     {
         #region Fields
 
@@ -40,6 +38,8 @@ namespace Ferretto.VW.Installer
         #endregion
 
         #region Properties
+
+        public string Description { get; }
 
         public TimeSpan? Duration
         {
@@ -71,7 +71,6 @@ namespace Ferretto.VW.Installer
         }
 
         public int Number { get; }
-        public string Description { get; }
 
         public bool SkipRollback { get; set; }
 

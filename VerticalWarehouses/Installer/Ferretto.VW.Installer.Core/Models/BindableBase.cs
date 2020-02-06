@@ -2,9 +2,9 @@
 using System.Runtime.CompilerServices;
 using System.Windows;
 
-namespace Ferretto.VW.Installer
+namespace Ferretto.VW.Installer.Core
 {
-    internal abstract class BindableBase : INotifyPropertyChanged
+    public abstract class BindableBase : INotifyPropertyChanged
     {
         #region Events
 
@@ -17,7 +17,7 @@ namespace Ferretto.VW.Installer
         protected void RaisePropertyChanged([CallerMemberName] string propertyName = null)
         {
             Application.Current?.Dispatcher.Invoke(() =>
-                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
+                 this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
         }
 
         protected bool SetProperty<T>(ref T field, T value, [CallerMemberName]string propertyName = null)
@@ -28,6 +28,7 @@ namespace Ferretto.VW.Installer
                 this.RaisePropertyChanged(propertyName);
                 return true;
             }
+
             return false;
         }
 

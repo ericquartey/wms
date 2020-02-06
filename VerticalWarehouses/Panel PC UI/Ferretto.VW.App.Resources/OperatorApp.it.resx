@@ -1192,4 +1192,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="LoadingUnitPresenceId" xml:space="preserve">
     <value>Cassetto presente {0}</value>
   </data>
+  <data name="SelectCompartment" xml:space="preserve">
+    <value>Seleziona uno scomparto</value>
+  </data>
 </root>

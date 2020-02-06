@@ -1,12 +1,9 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Management.Automation;
-using System.ServiceModel.Channels;
 using System.Threading;
-using System.Threading.Tasks;
 
-namespace Ferretto.VW.Installer
+namespace Ferretto.VW.Installer.Core
 {
     internal class PowershellStep : ShellStep
     {
