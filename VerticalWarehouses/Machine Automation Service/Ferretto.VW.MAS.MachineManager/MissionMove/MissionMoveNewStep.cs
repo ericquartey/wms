@@ -199,16 +199,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                         catch (Exception)
                         {
-                            if (showErrors)
-                            {
-                                this.ErrorsProvider.RecordNew(MachineErrorCode.WarehouseIsFull, this.Mission.TargetBay);
-                                throw new StateMachineException(ErrorDescriptions.WarehouseIsFull, this.Mission.TargetBay, MessageActor.MachineManager);
-                            }
-                            else
-                            {
-                                this.Logger.LogInformation(ErrorDescriptions.WarehouseIsFull);
-                            }
-                            return false;
+                            this.ErrorsProvider.RecordNew(MachineErrorCode.WarehouseIsFull, this.Mission.TargetBay);
+                            throw new StateMachineException(ErrorDescriptions.WarehouseIsFull, this.Mission.TargetBay, MessageActor.MachineManager);
                         }
                         returnValue = true;
                         mission.LoadUnitDestination = LoadingUnitLocation.Cell;
@@ -251,7 +243,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
-                        if(bay.Carousel != null
+                        if (bay.Carousel != null
                             && !this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number])
                         {
                             if (showErrors)
