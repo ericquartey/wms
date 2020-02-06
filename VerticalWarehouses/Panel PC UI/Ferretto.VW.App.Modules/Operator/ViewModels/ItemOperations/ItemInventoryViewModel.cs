@@ -47,6 +47,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
                this.InputQuantity.Value >= 0;
         }
 
+        public override void OnMisionOperationRetrieved()
+        {
+            this.InputQuantity = null;
+        }
+
         public async Task CommandUserActionAsync(UserActionEventArgs userAction)
         {
         }
