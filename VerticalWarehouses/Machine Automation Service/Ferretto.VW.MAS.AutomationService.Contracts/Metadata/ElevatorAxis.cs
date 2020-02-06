@@ -32,11 +32,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(3)]
             public double ChainOffset { get; set; }
 
-            [Offset(35)]
+            [Id(30)]
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.EmptyLoadMovement))]
             public MovementParameters EmptyLoadMovement { get; set; }
 
-            [Offset(40)]
+            [Id(35)]
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.FullLoadMovement))]
             public MovementParameters FullLoadMovement { get; set; }
 
@@ -50,7 +50,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(5)]
             public double HomingFastSpeed { get; set; }
 
-            [Id(30)]
+            [Id(10)]
             [Unfold]
             public Inverter Inverter { get; set; }
 
@@ -98,7 +98,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public double UpperBound { get; set; }
 
             [Unfold]
-            [Id(30)]
+            [Id(15)]
             public WeightMeasurement WeightMeasurement { get; set; }
 
             #endregion
