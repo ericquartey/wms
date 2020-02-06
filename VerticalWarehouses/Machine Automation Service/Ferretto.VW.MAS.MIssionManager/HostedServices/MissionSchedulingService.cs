@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         #region Methods
 
-        public async Task ScheduleCompactingMissionsAsync(IServiceProvider serviceProvider)
+        public void ScheduleCompactingMissions(IServiceProvider serviceProvider)
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
 
@@ -439,7 +439,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
                 case MachineMode.Compact:
                     {
-                        await this.ScheduleCompactingMissionsAsync(serviceProvider);
+                        this.ScheduleCompactingMissions(serviceProvider);
                     }
                     break;
 
@@ -666,7 +666,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         break;
 
                     case MachineMode.Compact:
-                        await this.ScheduleCompactingMissionsAsync(serviceProvider);
+                        this.ScheduleCompactingMissions(serviceProvider);
                         break;
                 }
             }
