@@ -77,9 +77,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public IEnumerable<IMission> GetMissionsByType(FsmType fsmType, MissionType type)
         {
-            return this.machineMissions.Where(m => (m.Type == fsmType)
-                    && (m.MachineData is IMoveLoadingUnitMachineData data)
-                    && data.MissionType == type);
+            return this.machineMissions.Where(m => (m.Type == fsmType));
         }
 
         public bool PauseMachineMission(Guid fsmId)

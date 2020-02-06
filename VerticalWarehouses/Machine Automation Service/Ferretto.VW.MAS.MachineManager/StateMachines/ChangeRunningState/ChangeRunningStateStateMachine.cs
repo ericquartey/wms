@@ -121,7 +121,11 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState
             {
                 if (messageData.Enable)
                 {
-                    returnValue = this.sensorsProvider.IsMachineSecureForRun();
+                    returnValue = this.sensorsProvider.IsMachineSecureForRun(out var errorText);
+                    if (!returnValue)
+                    {
+                        this.Logger.LogError(errorText);
+                    }
                 }
                 else
                 {
