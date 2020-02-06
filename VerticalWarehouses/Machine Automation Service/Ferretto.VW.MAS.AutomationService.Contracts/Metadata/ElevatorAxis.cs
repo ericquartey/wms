@@ -97,8 +97,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [ScaffoldColumn(false)]
             public double UpperBound { get; set; }
 
-            [Unfold]
             [Id(15)]
+            [Unfold]
             public WeightMeasurement WeightMeasurement { get; set; }
 
             #endregion
