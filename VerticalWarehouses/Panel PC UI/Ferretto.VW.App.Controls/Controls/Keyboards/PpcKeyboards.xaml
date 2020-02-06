@@ -4,7 +4,8 @@
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:dialog="clr-namespace:Ferretto.VW.App.Controls"
                       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-                      xmlns:keyboards="http://ferrettogroup.com/vw/keyboards"
+                      xmlns:keyboardConverters="clr-namespace:Ferretto.VW.App.Keyboards.Converters;assembly=Ferretto.VW.App.Keyboards"
+                      xmlns:keyboards="clr-namespace:Ferretto.VW.App.Keyboards.Controls;assembly=Ferretto.VW.App.Keyboards"
                       xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Controls.Keyboards"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       Title="PpcKeyboards"
@@ -13,7 +14,7 @@
                       IsClosed="{Binding IsClosed}"
                       mc:Ignorable="d">
     <dialog:PpcDialogView.Resources>
-        <keyboards:LayoutCodeToKeyboardLayoutConverter x:Key="LayoutCodeToKeyboardLayoutConverter" />
+        <keyboardConverters:LayoutCodeToKeyboardLayoutConverter x:Key="LayoutCodeToKeyboardLayoutConverter" />
 
 
         <Style x:Key="KeyboardTextBoxStyle"
