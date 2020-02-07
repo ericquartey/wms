@@ -8,6 +8,8 @@ namespace Ferretto.VW.App.Keyboards
 
         public Thickness? KeyMargin { get; set; }
 
+        public double? KeyMinHeight { get; set; }
+
         public double? KeyMinWidth { get; set; }
 
         public Thickness? KeyPadding { get; set; }

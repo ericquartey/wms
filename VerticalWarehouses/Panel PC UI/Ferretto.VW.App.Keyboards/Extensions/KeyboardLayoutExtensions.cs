@@ -58,6 +58,7 @@ namespace Ferretto.VW.App.Keyboards
                     string styleResource = cell.KeyStyleResource ?? rowStyleResource;
 
                     double minWidth = cell.KeyMinWidth ?? rowKeyMinWidth ?? default;
+                    double minHeight = cell.KeyMinHeight ?? default;
 
                     if (key != null)
                     {
@@ -68,6 +69,7 @@ namespace Ferretto.VW.App.Keyboards
                             Margin = margin,
                             Key = key,
                             MinWidth = minWidth,
+                            MinHeight = minHeight
                         };
                         Grid.SetColumn(btn, j);
                         rowGrid.Children.Add(btn);
