@@ -1479,4 +1479,8 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="RestorePossibleFromFile" xml:space="preserve">
     <value>Restore is possible from file {0}.</value>
   </data>
+  <data name="Source" xml:space="preserve">
+    <value>Source</value>
+    <comment>Header test</comment>
+  </data>
 </root>
