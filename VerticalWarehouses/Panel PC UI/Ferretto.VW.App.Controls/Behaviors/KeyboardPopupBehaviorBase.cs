@@ -96,10 +96,6 @@ namespace Ferretto.VW.App.Controls.Behaviors
 
         protected virtual void OpenKeyboard()
         {
-            if (!this.IsKeyboardEnabled(this.AssociatedObjectHandle))
-            {
-                return;
-            }
             // show keyboard
             this.AssociatedObjectHandle.PopupKeyboard(this.DependencyProperty, this.ValueType ?? typeof(object), this.KeyboardLayoutCode, this.KeyboardLabel, this.InactiveTimeout);
         }
@@ -108,14 +104,22 @@ namespace Ferretto.VW.App.Controls.Behaviors
         {
             if (this.IsDoubleClickTriggerEnabled)
             {
-                this.OpenKeyboard();
+                this.OpenKeyboardConditional();
             }
         }
 
         private void Control_TouchUp(object sender, TouchEventArgs e)
         {
             // e.Handled = true;
-            this.Dispatcher.BeginInvoke(new Action(this.OpenKeyboard));
+            this.Dispatcher.BeginInvoke(new Action(this.OpenKeyboardConditional));
+        }
+
+        private void OpenKeyboardConditional()
+        {
+            if (this.IsKeyboardEnabled(this.AssociatedObjectHandle))
+            {
+                this.OpenKeyboard();
+            }
         }
 
         #endregion

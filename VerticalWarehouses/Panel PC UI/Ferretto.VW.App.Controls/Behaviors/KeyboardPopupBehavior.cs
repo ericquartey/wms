@@ -11,89 +11,22 @@ using Microsoft.Xaml.Behaviors;
 
 namespace Ferretto.VW.App.Controls.Behaviors
 {
-    public class KeyboardPopupBehavior : Behavior<TextBox>
+    public class KeyboardPopupBehavior : KeyboardPopupBehaviorBase<TextBox>
     {
-        #region Fields
-
-        public static readonly DependencyProperty InactiveTimeoutProperty =
-                            DependencyProperty.Register(nameof(InactiveTimeout), typeof(TimeSpan), typeof(KeyboardPopupBehavior));
-
-        public static readonly DependencyProperty IsDoubleClickTriggerEnabledProperty
-                            = DependencyProperty.RegisterAttached(nameof(IsDoubleClickTriggerEnabled), typeof(bool), typeof(KeyboardPopupBehavior), new PropertyMetadata(true));
-
-        public static readonly DependencyProperty KeyboardLabelProperty =
-                    DependencyProperty.Register(nameof(KeyboardLabel), typeof(string), typeof(KeyboardPopupBehavior));
-
-        public static readonly DependencyProperty KeyboardLayoutCodeProperty =
-                            DependencyProperty.Register(nameof(KeyboardLayoutCode), typeof(string), typeof(KeyboardPopupBehavior), new PropertyMetadata("lowercase"));
-
-        #endregion
-
-        #region Properties
-
-        public TimeSpan InactiveTimeout
-        {
-            get => (TimeSpan)this.GetValue(InactiveTimeoutProperty);
-            set => this.SetValue(InactiveTimeoutProperty, value);
-        }
-
-        public bool IsDoubleClickTriggerEnabled
-        {
-            get => (bool)this.GetValue(IsDoubleClickTriggerEnabledProperty);
-            set => this.SetValue(IsDoubleClickTriggerEnabledProperty, value);
-        }
-
-        public string KeyboardLabel
-        {
-            get => (string)this.GetValue(KeyboardLabelProperty);
-            set => this.SetValue(KeyboardLabelProperty, value);
-        }
-
-        public string KeyboardLayoutCode
-        {
-            get => (string)this.GetValue(KeyboardLayoutCodeProperty);
-            set => this.SetValue(KeyboardLayoutCodeProperty, value);
-        }
-
-        #endregion
-
         #region Methods
 
-        protected override void OnAttached()
+        protected override bool IsKeyboardEnabled(Control ctrl)
         {
-            base.OnAttached();
-            this.AssociatedObject.TouchUp += this.TextBox_TouchUp;
-            this.AssociatedObject.MouseDoubleClick += this.TextBox_MouseDoubleClick;
-        }
-
-        protected override void OnDetaching()
-        {
-            this.AssociatedObject.TouchUp -= this.TextBox_TouchUp;
-            base.OnDetaching();
-        }
-
-        private void OpenKeyboard()
-        {
-            if (!this.AssociatedObject.IsEnabled || this.AssociatedObject.IsReadOnly)
+            if (ctrl is TextBox txtBox)
             {
-                return;
+                return txtBox.IsEnabled && !txtBox.IsReadOnly;
             }
-            // show keyboard
+            return base.IsKeyboardEnabled(ctrl);
+        }
+
+        protected override void OpenKeyboard()
+        {
             this.AssociatedObject.PopupKeyboard(this.KeyboardLayoutCode, this.KeyboardLabel, this.InactiveTimeout);
-        }
-
-        private void TextBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (this.IsDoubleClickTriggerEnabled)
-            {
-                this.OpenKeyboard();
-            }
-        }
-
-        private void TextBox_TouchUp(object sender, TouchEventArgs e)
-        {
-            // e.Handled = true;
-            this.Dispatcher.BeginInvoke(new Action(this.OpenKeyboard));
         }
 
         #endregion
