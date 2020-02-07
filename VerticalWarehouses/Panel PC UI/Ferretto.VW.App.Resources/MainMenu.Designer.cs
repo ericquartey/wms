@@ -22,14 +22,14 @@ namespace Ferretto.VW.App.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Menu {
+    public class MainMenu {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Menu() {
+        internal MainMenu() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Ferretto.VW.App.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.VW.App.Resources.Menu", typeof(Menu).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.VW.App.Resources.MainMenu", typeof(MainMenu).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,65 +61,110 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Installation Status.
+        ///   Looks up a localized string similar to About.
         /// </summary>
-        public static string InstallationStatus {
+        public static string About {
             get {
-                return ResourceManager.GetString("InstallationStatus", resourceCulture);
+                return ResourceManager.GetString("About", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Accessories.
+        ///   Looks up a localized string similar to INFO.
         /// </summary>
-        public static string MenuAccessories {
+        public static string AboutAbbreviation {
             get {
-                return ResourceManager.GetString("MenuAccessories", resourceCulture);
+                return ResourceManager.GetString("AboutAbbreviation", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bays.
+        ///   Looks up a localized string similar to Statistics, alarms, diagnostic.
         /// </summary>
-        public static string MenuBays {
+        public static string AboutDescription {
             get {
-                return ResourceManager.GetString("MenuBays", resourceCulture);
+                return ResourceManager.GetString("AboutDescription", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cells.
+        ///   Looks up a localized string similar to Installation.
         /// </summary>
-        public static string MenuCells {
+        public static string Installation {
             get {
-                return ResourceManager.GetString("MenuCells", resourceCulture);
+                return ResourceManager.GetString("Installation", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Elevator.
+        ///   Looks up a localized string similar to INST.
         /// </summary>
-        public static string MenuElevator {
+        public static string InstallationAbbreviation {
             get {
-                return ResourceManager.GetString("MenuElevator", resourceCulture);
+                return ResourceManager.GetString("InstallationAbbreviation", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loading Units.
+        ///   Looks up a localized string similar to Installation procedures, manual movement, more.
         /// </summary>
-        public static string MenuLoadingUnits {
+        public static string InstallationDescription {
             get {
-                return ResourceManager.GetString("MenuLoadingUnits", resourceCulture);
+                return ResourceManager.GetString("InstallationDescription", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Movements.
+        ///   Looks up a localized string similar to Maintenance.
         /// </summary>
-        public static string Movements {
+        public static string Maintenance {
             get {
-                return ResourceManager.GetString("Movements", resourceCulture);
+                return ResourceManager.GetString("Maintenance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MAINT.
+        /// </summary>
+        public static string MaintenanceAbbreviation {
+            get {
+                return ResourceManager.GetString("MaintenanceAbbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maintenance, compact drawers, update.
+        /// </summary>
+        public static string MaintenanceDescription {
+            get {
+                return ResourceManager.GetString("MaintenanceDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Picking.
+        /// </summary>
+        public static string Operation {
+            get {
+                return ResourceManager.GetString("Operation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PICK.
+        /// </summary>
+        public static string OperationAbbreviation {
+            get {
+                return ResourceManager.GetString("OperationAbbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Picking, deposit, inventory.
+        /// </summary>
+        public static string OperationDescription {
+            get {
+                return ResourceManager.GetString("OperationDescription", resourceCulture);
             }
         }
     }

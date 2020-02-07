@@ -1,5 +1,6 @@
 using System;
 using System.Configuration;
+using System.IO;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading;
@@ -95,6 +96,8 @@ namespace Ferretto.VW.App
 
             this.HACK_ForceItalianLanguage();
 
+            this.ClearTempFolder();
+
             base.OnStartup(e);
         }
 
@@ -155,6 +158,15 @@ namespace Ferretto.VW.App
 
                 return client;
             });
+        }
+
+        private void ClearTempFolder()
+        {
+            var tempFolder = ConfigurationManager.AppSettings["Update:Exchange:Temp"];
+            if (Directory.Exists(tempFolder))
+            {
+                Directory.Delete(tempFolder, true);
+            }
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

@@ -22,7 +22,7 @@ namespace Ferretto.VW.App.Keyboards.Controls
             DependencyProperty.Register(nameof(KeyButtonStyle), typeof(Style), typeof(KeyboardButton), new PropertyMetadata(OnKeyButtonStylePropertyChanged));
 
         public static readonly DependencyPropertyKey KeyCommandPropertyKey =
-                                                    DependencyProperty.RegisterReadOnly(nameof(KeyCommand), typeof(KeyboardKeyCommand), typeof(KeyboardButton), null);
+            DependencyProperty.RegisterReadOnly(nameof(KeyCommand), typeof(KeyboardKeyCommand), typeof(KeyboardButton), null);
 
         public static readonly DependencyProperty KeyCommandProperty = KeyCommandPropertyKey.DependencyProperty;
 
@@ -82,7 +82,7 @@ namespace Ferretto.VW.App.Keyboards.Controls
             // how to avoid .IsMouseOver trigger?
         }
 
-        private void UserControl_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void UserControl_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.ExecuteKeyCommand();
         }

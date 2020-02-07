@@ -1410,4 +1410,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="RestorePossibleFromFile" xml:space="preserve">
     <value>Importazione possibile dal file "{0}".</value>
   </data>
+  <data name="Source" xml:space="preserve">
+    <value>Sorg.</value>
+  </data>
 </root>

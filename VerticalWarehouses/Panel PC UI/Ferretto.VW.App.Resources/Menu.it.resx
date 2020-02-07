@@ -120,9 +120,6 @@
   <data name="InstallationStatus" xml:space="preserve">
     <value>Stato Installazione</value>
   </data>
-  <data name="MenuAbout" xml:space="preserve">
-    <value>Informazioni</value>
-  </data>
   <data name="MenuAccessories" xml:space="preserve">
     <value>Accessori</value>
   </data>
@@ -135,17 +132,8 @@
   <data name="MenuElevator" xml:space="preserve">
     <value>Elevatore</value>
   </data>
-  <data name="MenuInstalation" xml:space="preserve">
-    <value>Installazione</value>
-  </data>
   <data name="MenuLoadingUnits" xml:space="preserve">
     <value>Cassetti</value>
-  </data>
-  <data name="MenuMaintenance" xml:space="preserve">
-    <value>Manutenzione</value>
-  </data>
-  <data name="MenuOperation" xml:space="preserve">
-    <value>Picking</value>
   </data>
   <data name="Movements" xml:space="preserve">
     <value>Movimenti</value>

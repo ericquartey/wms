@@ -2492,6 +2492,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PICK.
+        /// </summary>
+        public static string NavigationMainMenuDrawerOperationAbbreviation {
+            get {
+                return ResourceManager.GetString("NavigationMainMenuDrawerOperationAbbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Picking.
+        /// </summary>
+        public static string NavigationMainMenuDrawerOperationDescription {
+            get {
+                return ResourceManager.GetString("NavigationMainMenuDrawerOperationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search item.
         /// </summary>
         public static string NavigationMainMenuItems {
@@ -2501,11 +2519,47 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ITEM.
+        /// </summary>
+        public static string NavigationMainMenuItemsAbbreviation {
+            get {
+                return ResourceManager.GetString("NavigationMainMenuItemsAbbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search and request articles.
+        /// </summary>
+        public static string NavigationMainMenuItemsDescription {
+            get {
+                return ResourceManager.GetString("NavigationMainMenuItemsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Waiting lists.
         /// </summary>
         public static string NavigationMainMenuLists {
             get {
                 return ResourceManager.GetString("NavigationMainMenuLists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LIST.
+        /// </summary>
+        public static string NavigationMainMenuListsAbbreviation {
+            get {
+                return ResourceManager.GetString("NavigationMainMenuListsAbbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execution / suspension of lists.
+        /// </summary>
+        public static string NavigationMainMenuListsDescription {
+            get {
+                return ResourceManager.GetString("NavigationMainMenuListsDescription", resourceCulture);
             }
         }
         
@@ -2645,11 +2699,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to OtherNavigationImmediateDrawerCall.
+        ///   Looks up a localized string similar to Drawer Call.
         /// </summary>
         public static string OtherNavigationImmediateDrawerCall {
             get {
                 return ResourceManager.GetString("OtherNavigationImmediateDrawerCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DRAW.
+        /// </summary>
+        public static string OtherNavigationImmediateDrawerCallAbbreviation {
+            get {
+                return ResourceManager.GetString("OtherNavigationImmediateDrawerCallAbbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drawer operations.
+        /// </summary>
+        public static string OtherNavigationImmediateDrawerCallDescription {
+            get {
+                return ResourceManager.GetString("OtherNavigationImmediateDrawerCallDescription", resourceCulture);
             }
         }
         
