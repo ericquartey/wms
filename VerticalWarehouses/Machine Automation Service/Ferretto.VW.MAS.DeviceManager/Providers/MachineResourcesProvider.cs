@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
@@ -235,36 +236,79 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return returnValue;
         }
 
-        public bool IsMachineSecureForRun()
+        public bool IsMachineSecureForRun(out string errorText)
         {
-            var returnValue = true;
-
-            if (this.sensorStatus[(int)IOMachineSensors.MushroomEmergencyButtonBay1])
-            {
-                returnValue = false;
-            }
-
-            if (this.sensorStatus[(int)IOMachineSensors.MushroomEmergencyButtonBay2])
-            {
-                returnValue = false;
-            }
-
-            if (this.sensorStatus[(int)IOMachineSensors.MushroomEmergencyButtonBay3])
-            {
-                returnValue = false;
-            }
+            var isMarchPossible = true;
+            var reason = new StringBuilder();
 
             if (this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSide])
             {
-                returnValue = false;
+                isMarchPossible = false;
+                reason.Append("Micro Carter Active Bay1 Left; ");
             }
-
             if (this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSide])
             {
-                returnValue = false;
+                isMarchPossible = false;
+                reason.Append("Micro Carter Active Bay1 Right; ");
             }
 
-            return returnValue;
+            using (var scope = this.serviceScopeFactory.CreateScope())
+            {
+                var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+                foreach (var bay in baysDataProvider.GetAll())
+                {
+                    switch (bay.Number)
+                    {
+                        case BayNumber.BayOne:
+                            if (this.sensorStatus[(int)IOMachineSensors.MushroomEmergencyButtonBay1])
+                            {
+                                isMarchPossible = false;
+                                reason.Append("Emergency Active Bay1; ");
+                            }
+                            else if (this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrierBay1])
+                            {
+                                isMarchPossible = false;
+                                reason.Append("Anti Intrusion Barrier Active Bay1; ");
+                            }
+
+                            break;
+
+                        case BayNumber.BayTwo:
+                            if (this.sensorStatus[(int)IOMachineSensors.MushroomEmergencyButtonBay2])
+                            {
+                                isMarchPossible = false;
+                                reason.Append("Emergency Active Bay2; ");
+                            }
+                            else if (this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrierBay2])
+                            {
+                                isMarchPossible = false;
+                                reason.Append("Anti Intrusion Barrier Active Bay2; ");
+                            }
+
+                            break;
+
+                        case BayNumber.BayThree:
+                            if (this.sensorStatus[(int)IOMachineSensors.MushroomEmergencyButtonBay3])
+                            {
+                                isMarchPossible = false;
+                                reason.Append("Emergency Active Bay3; ");
+                            }
+                            else if (this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrierBay3])
+                            {
+                                isMarchPossible = false;
+                                reason.Append("Anti Intrusion Barrier Active Bay3; ");
+                            }
+
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+            }
+
+            errorText = reason.ToString();
+            return isMarchPossible;
         }
 
         public bool IsProfileCalibratedBay(BayNumber bayNumber)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -83,6 +84,11 @@ namespace Ferretto.VW.MAS.MachineManager
                         else
                         {
                             this.Logger.LogWarning("Failed to create Change Running State machine mission");
+                            var activeMachineMission = machineMissionsProvider.GetMissionsByType(FsmType.ChangeRunningType, MissionType.Manual).FirstOrDefault();
+                            if (activeMachineMission != null)
+                            {
+                                machineMissionsProvider.StopMachineMission(activeMachineMission.FsmId, StopRequestReason.Stop);
+                            }
                         }
 
                         break;

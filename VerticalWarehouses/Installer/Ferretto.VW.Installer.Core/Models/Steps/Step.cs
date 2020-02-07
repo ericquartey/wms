@@ -1,18 +1,19 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Configuration;
-using System.Linq;
+using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using NLog;
 
-namespace Ferretto.VW.Installer
+namespace Ferretto.VW.Installer.Core
 {
-    internal abstract class Step : BindableBase
+    public abstract class Step : BindableBase
     {
         #region Fields
+
+        private const string EmbeddedInstallationFilePath = "EmbeddedInstallationFilePath";
 
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -40,6 +41,8 @@ namespace Ferretto.VW.Installer
         #endregion
 
         #region Properties
+
+        public string Description { get; }
 
         public TimeSpan? Duration
         {
@@ -71,7 +74,6 @@ namespace Ferretto.VW.Installer
         }
 
         public int Number { get; }
-        public string Description { get; }
 
         public bool SkipRollback { get; set; }
 
@@ -124,6 +126,11 @@ namespace Ferretto.VW.Installer
 
         public string InterpolateVariables(string value)
         {
+            if (value is null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
             var regex = new Regex(@"\$\((?<var_name>[^\)]+)\)");
 
             var match = regex.Match(value);
@@ -131,10 +138,19 @@ namespace Ferretto.VW.Installer
             while (match.Success)
             {
                 var varName = match.Groups["var_name"].Value;
-                var varValue = ConfigurationManager.AppSettings.Get(varName);
-                if (varValue is null)
+
+                string varValue;
+                if (varName == EmbeddedInstallationFilePath)
                 {
-                    throw new Exception($"La chiave di configurazione '{varName}' non esiste.");
+                    varValue = Process.GetCurrentProcess().MainModule.FileName;
+                }
+                else
+                {
+                    varValue = ConfigurationManager.AppSettings.Get(varName);
+                    if (varValue is null)
+                    {
+                        throw new Exception($"La chiave di configurazione '{varName}' non esiste.");
+                    }
                 }
 
                 value = value.Replace(match.Value, varValue);

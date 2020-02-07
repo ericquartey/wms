@@ -258,4 +258,7 @@
   <data name="Automatic" xml:space="preserve">
     <value>Automatico</value>
   </data>
+  <data name="ShuttingDown" xml:space="preserve">
+    <value>Spegnimento ...</value>
+  </data>
 </root>

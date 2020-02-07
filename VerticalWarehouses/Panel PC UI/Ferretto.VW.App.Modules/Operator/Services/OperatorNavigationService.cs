@@ -111,13 +111,15 @@ namespace Ferretto.VW.App.Modules.Operator.Services
                    m.Step == MissionStep.WaitPick
                    &&
                    m.TargetBay == this.machineService.BayNumber);
-            if (waitingMissions.SingleOrDefault(m => m.MissionType == MissionType.WMS) != null)
+            if (waitingMissions.Any(m => m.MissionType == MissionType.WMS)
+                &&
+                !(this.missionOperationsService.CurrentMissionOperation is null))
             {
                 this.NavigateToOperationDetails(this.missionOperationsService.CurrentMissionOperation.Type);
             }
             else
             {
-                var currentMission = waitingMissions.SingleOrDefault(m => m.MissionType != MissionType.WMS);
+                var currentMission = waitingMissions.SingleOrDefault();
                 if (this.machineService.Loadunits.SingleOrDefault(l => l.Id == currentMission?.LoadUnitId) is MAS.AutomationService.Contracts.LoadingUnit loadingUnit)
                 {
                     this.NavigateToLoadingUnitDetails(loadingUnit.Id);
@@ -154,19 +156,20 @@ namespace Ferretto.VW.App.Modules.Operator.Services
                 return;
             }
 
-            if (this.missionOperationsService.CurrentMissionOperation != null)
+            var machineMissions = await this.machineMissionsWebService.GetAllAsync();
+            var waitingMissions = machineMissions.Where(m =>
+                   m.Step == MissionStep.WaitPick
+                   &&
+                   m.TargetBay == this.machineService.BayNumber);
+            if (waitingMissions.Any(m => m.MissionType == MissionType.WMS)
+                &&
+                this.missionOperationsService.CurrentMissionOperation != null)
             {
                 this.NavigateToOperationDetails(this.missionOperationsService.CurrentMissionOperation.Type);
             }
             else
             {
-                var machineMissions = await this.machineMissionsWebService.GetAllAsync();
-                var currentMission = machineMissions.SingleOrDefault(m =>
-                    m.Step == MissionStep.WaitPick
-                    &&
-                    m.TargetBay == this.machineService.BayNumber
-                    &&
-                    m.MissionType != MissionType.WMS);
+                var currentMission = waitingMissions.SingleOrDefault();
                 var loadingUnit = this.machineService.Loadunits.SingleOrDefault(l => l.Id == currentMission?.LoadUnitId);
                 if (loadingUnit != null)
                 {

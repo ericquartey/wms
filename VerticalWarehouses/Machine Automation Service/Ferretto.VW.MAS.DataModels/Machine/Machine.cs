@@ -23,9 +23,17 @@ namespace Ferretto.VW.MAS.DataModels
         /// </summary>
         public double Height { get; set; }
 
+        /// <summary>
+        /// Load Unit maximum height, in millimeters
+        /// </summary>
         public double LoadUnitMaxHeight { get; set; }
 
         public double LoadUnitMaxNetWeight { get; set; }
+
+        /// <summary>
+        /// Load Unit minimum height, in millimeters
+        /// </summary>
+        public double LoadUnitMinHeight { get; set; }
 
         public double LoadUnitTare { get; set; }
 

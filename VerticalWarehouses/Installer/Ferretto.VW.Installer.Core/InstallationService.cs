@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml;
 using Newtonsoft.Json;
 using NLog;
 
-namespace Ferretto.VW.Installer
+namespace Ferretto.VW.Installer.Core
 {
-    internal sealed class InstallationService : BindableBase
+    public sealed class InstallationService : BindableBase
     {
         #region Fields
 
@@ -167,28 +164,21 @@ namespace Ferretto.VW.Installer
 
         private void LoadSoftwareVersion()
         {
-            var packagePath = ConfigurationManager.AppSettings.Get("Install:Package:Path");
-
             try
             {
-                using (var package = System.IO.Compression.ZipFile.OpenRead(packagePath))
+                using (var reader = new StreamReader("./properties/app.manifest"))
                 {
-                    var manifestEntry = package.Entries.FirstOrDefault(e => e.FullName.Contains("app.manifest"));
-
-                    using (var stream = manifestEntry.Open())
+                    using (var xmlReader = XmlReader.Create(reader))
                     {
-                        using (var xmlReader = XmlReader.Create(stream))
+                        while (xmlReader.Read())
                         {
-                            while (xmlReader.Read())
+                            if (xmlReader.NodeType == XmlNodeType.Element
+                                &&
+                                xmlReader.Name == "assemblyIdentity")
                             {
-                                if (xmlReader.NodeType == XmlNodeType.Element
-                                    &&
-                                    xmlReader.Name == "assemblyIdentity")
+                                if (xmlReader.HasAttributes)
                                 {
-                                    if (xmlReader.HasAttributes)
-                                    {
-                                        this.SoftwareVersion = xmlReader.GetAttribute("version");
-                                    }
+                                    this.SoftwareVersion = xmlReader.GetAttribute("version");
                                 }
                             }
                         }

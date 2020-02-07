@@ -151,14 +151,14 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             {
                 case HealthStatus.Initialized:
                 case HealthStatus.Initializing:
-                    this.ShowNotification("I servizi sono in fase di inizializzazione.");
+                    this.ShowNotification(Resources.LoadLogin.ServiceInitialization);
 
                     break;
 
                 case HealthStatus.Healthy:
                 case HealthStatus.Degraded:
 
-                    this.ShowNotification("Connessione ai servizi stabilita.", Services.Models.NotificationSeverity.Success);
+                    this.ShowNotification(Resources.LoadLogin.ConnectionEstablished, Services.Models.NotificationSeverity.Success);
 
                     try
                     {
@@ -176,7 +176,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
                 case HealthStatus.Unhealthy:
 
-                    this.ShowNotification("Impossibile connettersi al servizio di automazione", Services.Models.NotificationSeverity.Error);
+                    this.ShowNotification(Resources.LoadLogin.ConnectionNotPossible, Services.Models.NotificationSeverity.Error);
                     break;
             }
         }

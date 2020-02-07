@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
         /// CHecks if all security sensors are set to allow running state
         /// </summary>
         /// <returns></returns>
-        bool IsMachineSecureForRun();
+        bool IsMachineSecureForRun(out string errorText);
 
         #endregion
     }

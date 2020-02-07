@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.Installer
+﻿namespace Ferretto.VW.Installer.Core
 {
     internal class AppSettings
     {

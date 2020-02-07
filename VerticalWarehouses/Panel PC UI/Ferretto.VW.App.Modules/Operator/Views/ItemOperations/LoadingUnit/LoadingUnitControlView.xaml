@@ -11,38 +11,8 @@
              d:DesignWidth="800"
              mc:Ignorable="d">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="60" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-
-        <Grid>
-            <controls:PpcButton Width="180"
-                                Height="50"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Top"
-                                Command="{Binding ChangeModeLoadingUnitCommand}"
-                                Content="{x:Static res:OperatorApp.LoadingUnit}"
-                                Foreground="{DynamicResource FerrettoPureWhite}"
-                                Kind="Grid"
-                                TextBlock.TextAlignment="Right"
-                                Visibility="{Binding IsListVisibile, Converter={StaticResource BTVC}}" />
-
-            <controls:PpcButton Width="180"
-                                Height="50"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Top"
-                                Command="{Binding ChangeModeListCommand}"
-                                Content="{x:Static res:OperatorApp.List}"
-                                Foreground="{DynamicResource FerrettoPureWhite}"
-                                Kind="Table"
-                                Visibility="{Binding IsListVisibile, Converter={StaticResource BTVIC}}" />
-
-        </Grid>
-
-
         <Grid Name="TrayControlGrid"
-              Grid.Row="1"
+              Grid.Row="0"
               Visibility="{Binding IsListVisibile, Converter={StaticResource BTVIC}}">
 
             <Grid.RowDefinitions>
@@ -71,43 +41,51 @@
                                      ShowBackground="False"
                                      ShowRuler="False" />
 
-            <Grid Grid.Row="1"
-                  Visibility="{Binding IsOperationVisible, Converter={StaticResource BTVIC}}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="720" />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
+            <Grid Grid.Row="1" Visibility="{Binding SelectedCompartment, Converter={StaticResource RTVC}}">
+                <Grid Visibility="{Binding IsOperationVisible, Converter={StaticResource BTVIC}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="720" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
 
-                <views:ItemsDataGridView Visibility="{Binding IsListVisibile, Converter={StaticResource BTVIC}}" />
+                    <views:ItemsDataGridView Visibility="{Binding IsListVisibile, Converter={StaticResource BTVIC}}" />
 
-                <Grid Grid.Column="1"
-                      Margin="0,0,0,0"
-                      VerticalAlignment="Top">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
+                    <Grid Grid.Column="1"
+                          Margin="0,0,0,0"
+                          VerticalAlignment="Top">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
 
-                    <controls:PpcButton Grid.Row="0"
-                                        VerticalAlignment="Top"
-                                        Command="{Binding ItemUpCommand}"
-                                        Content="{x:Static res:OperatorApp.CommonUp}" />
+                        <controls:PpcButton Grid.Row="0"
+                                            VerticalAlignment="Top"
+                                            Command="{Binding ItemUpCommand}"
+                                            Content="{x:Static res:OperatorApp.CommonUp}" />
 
-                    <controls:PpcButton Grid.Row="1"
-                                        Margin="0,15,0,0"
-                                        Command="{Binding ItemDownCommand}"
-                                        Content="{x:Static res:OperatorApp.CommonDown}" />
+                        <controls:PpcButton Grid.Row="1"
+                                            Margin="0,15,0,0"
+                                            Command="{Binding ItemDownCommand}"
+                                            Content="{x:Static res:OperatorApp.CommonDown}" />
 
+                    </Grid>
                 </Grid>
+
+                <views:LoadingUnitOperationsView Visibility="{Binding IsOperationVisible, Converter={StaticResource BTVC}}" />
             </Grid>
 
-            <views:LoadingUnitOperationsView Grid.Row="1"
-                                             Visibility="{Binding IsOperationVisible, Converter={StaticResource BTVC}}" />
+            <TextBlock
+                        Grid.Row="1"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Visibility="{Binding SelectedCompartment, Converter={StaticResource RTVIC}}"
+                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                        Text="{x:Static res:OperatorApp.SelectCompartment}" />
         </Grid>
 
         <Grid Name="ListGrid"
-              Grid.Row="1"
+              Grid.Row="0"
               Visibility="{Binding IsListVisibile, Converter={StaticResource BTVC}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="720" />

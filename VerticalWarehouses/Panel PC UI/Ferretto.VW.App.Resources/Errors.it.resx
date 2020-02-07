@@ -120,18 +120,6 @@
   <data name="ConverterCanConvertOnlyToVisibilityType" xml:space="preserve">
     <value>Questo converter può convertire solo valori di tipo Visibility.</value>
   </data>
-  <data name="UserLogin_PasswordIsTooShort" xml:space="preserve">
-    <value>La password è troppo corta.</value>
-  </data>
-  <data name="UserLogin_PasswordMustBeSpecified" xml:space="preserve">
-    <value>La password deve essere specificata.</value>
-  </data>
-  <data name="UserLogin_UserNameMustBeSpecified" xml:space="preserve">
-    <value>Il nome utente deve essere specificato.</value>
-  </data>
-  <data name="UserLogin_InvalidCredentials" xml:space="preserve">
-    <value>Credenziali non valide.</value>
-  </data>
   <data name="ParameterCannotBeNullOrEmpty" xml:space="preserve">
     <value>Il parametro non può essere nullo o vuoto.</value>
   </data>

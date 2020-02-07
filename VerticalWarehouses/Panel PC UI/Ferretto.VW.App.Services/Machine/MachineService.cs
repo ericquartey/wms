@@ -587,7 +587,11 @@ namespace Ferretto.VW.App.Services
                                 ms.CurrentMissionId = messageData.MissionId;
 
                                 // TODO use messageData.MissionStep instead of message.Description
-                                this.Notification = $"Movimento in corso... ({ms.CurrentMissionId} - {message.Description})";
+                                this.Notification = $"Movimento in corso... (Id {ms.CurrentMissionId} " +
+                                    $"- LU {messageData.LoadUnitId} " +
+                                    $"- {message.Description} " +
+                                    $"- from {messageData.Source} {messageData.SourceCellId} " +
+                                    $"- to {messageData.Destination} {messageData.DestinationCellId})";
                             }
 
                             if (message?.Data is PositioningMessageData dataPositioning)
@@ -690,7 +694,11 @@ namespace Ferretto.VW.App.Services
                                 this.MachineStatus = ms;
 
                                 // TODO use messageData.MissionStep instead of message.Description
-                                this.Notification = $"Movimento in corso... ({this.MachineStatus?.CurrentMissionId} - {message.Description})";
+                                this.Notification = $"Movimento in corso... (Id {this.MachineStatus?.CurrentMissionId} " +
+                                    $"- LU {moveLoadingUnitMessageData.LoadUnitId} " +
+                                    $"- {message.Description} " +
+                                    $"- from {moveLoadingUnitMessageData.Source} {moveLoadingUnitMessageData.SourceCellId} " +
+                                    $"- to {moveLoadingUnitMessageData.Destination} {moveLoadingUnitMessageData.DestinationCellId})";
                             }
 
                             break;

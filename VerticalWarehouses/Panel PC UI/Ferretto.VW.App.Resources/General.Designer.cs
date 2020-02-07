@@ -421,6 +421,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Shutting down ....
+        /// </summary>
+        public static string ShuttingDown {
+            get {
+                return ResourceManager.GetString("ShuttingDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Status.
         /// </summary>
         public static string Status {

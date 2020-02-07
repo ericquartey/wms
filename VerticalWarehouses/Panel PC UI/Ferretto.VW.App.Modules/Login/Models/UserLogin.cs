@@ -20,7 +20,7 @@ namespace Ferretto.VW.App.Modules.Login.Models
 
         #region Properties
 
-        public bool IsSupport => string.CompareOrdinal(this.UserName, "support") == 0;
+        public bool IsSupport => string.CompareOrdinal(this.UserName, "service") == 0;
 
         public string Password
         {
@@ -59,12 +59,12 @@ namespace Ferretto.VW.App.Modules.Login.Models
                 case nameof(this.Password):
                     if (string.IsNullOrEmpty(this.Password))
                     {
-                        return Resources.Errors.UserLogin_PasswordMustBeSpecified;
+                        return Resources.LoadLogin.PasswordMustBeSpecified;
                     }
 
                     if (this.Password.Length < MinimumPasswordLength)
                     {
-                        return Resources.Errors.UserLogin_PasswordIsTooShort;
+                        return Resources.LoadLogin.PasswordIsTooShort;
                     }
 
                     break;
@@ -72,7 +72,7 @@ namespace Ferretto.VW.App.Modules.Login.Models
                 case nameof(this.UserName):
                     if (string.IsNullOrWhiteSpace(this.UserName))
                     {
-                        return Resources.Errors.UserLogin_UserNameMustBeSpecified;
+                        return Resources.LoadLogin.UserNameMustBeSpecified;
                     }
 
                     break;

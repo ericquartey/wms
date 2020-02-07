@@ -6,6 +6,7 @@ using System.Threading;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using Ferretto.VW.Installer.Core;
 
 namespace Ferretto.VW.Installer
 {
@@ -88,10 +89,10 @@ namespace Ferretto.VW.Installer
 
         private void InstallationService_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(InstallationService.ActiveStep))
+            if (e.PropertyName == nameof(Core.InstallationService.ActiveStep))
             {
                 this.SelectedStep = this.installationService.ActiveStep;
-                this.abortCommand.RaiseCanExecuteChanged();
+                this.abortCommand?.RaiseCanExecuteChanged();
             }
         }
 

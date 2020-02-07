@@ -179,7 +179,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
             else
             {
-                this.ShowNotification("Connection to Automation Service is lost, trying to resume...", Services.Models.NotificationSeverity.Error);
+                this.ShowNotification(Resources.LoadLogin.ConnectionLost, Services.Models.NotificationSeverity.Error);
                 this.RaiseCanExecuteChanged();
             }
         }
@@ -237,7 +237,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 }
                 else
                 {
-                    this.ShowNotification(Resources.Errors.UserLogin_InvalidCredentials, Services.Models.NotificationSeverity.Error);
+                    this.ShowNotification(Resources.LoadLogin.InvalidCredentials, Services.Models.NotificationSeverity.Error);
                 }
             }
             catch (Exception ex)
