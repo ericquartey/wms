@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Ferretto.VW.App.Controls.Keyboards;
 using Microsoft.Xaml.Behaviors;
 
 namespace Ferretto.VW.App.Controls.Behaviors
@@ -78,16 +79,7 @@ namespace Ferretto.VW.App.Controls.Behaviors
                 return;
             }
             // show keyboard
-            var dialog = new Keyboards.PpcKeyboards(this.AssociatedObject);
-            dialog.DataContext = new Keyboards.PpcKeyboardsViewModel(this.KeyboardLayoutCode)
-            {
-                InputText = this.AssociatedObject.Text,
-                LabelText = this.KeyboardLabel,
-                InactiveTimeout = this.InactiveTimeout
-            };
-            dialog.Topmost = false;
-            dialog.ShowInTaskbar = false;
-            PpcDialogView.ShowDialog(dialog);
+            this.AssociatedObject.PopupKeyboard(this.KeyboardLayoutCode, this.KeyboardLabel, this.InactiveTimeout);
         }
 
         private void TextBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)

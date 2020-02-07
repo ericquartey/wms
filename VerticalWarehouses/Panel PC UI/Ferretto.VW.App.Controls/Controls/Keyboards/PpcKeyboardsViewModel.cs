@@ -20,6 +20,8 @@ namespace Ferretto.VW.App.Controls.Keyboards
 
         private bool isClosed = false;
 
+        private bool isValid = true;
+
         private string keyboardLayoutCode = "lowercase";
 
         private string labelText;
@@ -65,6 +67,12 @@ namespace Ferretto.VW.App.Controls.Keyboards
         {
             get => this.isClosed;
             set => this.SetProperty(ref this.isClosed, value);
+        }
+
+        public bool IsValid
+        {
+            get => this.isValid;
+            set => this.SetProperty(ref this.isValid, value);
         }
 
         public string KeyboardLayoutCode

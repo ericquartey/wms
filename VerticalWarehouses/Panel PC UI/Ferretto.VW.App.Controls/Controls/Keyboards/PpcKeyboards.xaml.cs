@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,11 +16,13 @@ using System.Windows.Shapes;
 
 namespace Ferretto.VW.App.Controls.Keyboards
 {
-    public partial class PpcKeyboards : PpcDialogView
+    public partial class PpcKeyboards : PpcDialogView, IDisposable
     {
         #region Fields
 
         private readonly Control _ctrl;
+
+        private readonly Type _outputType;
 
         private readonly DependencyProperty _property;
 
@@ -27,14 +30,20 @@ namespace Ferretto.VW.App.Controls.Keyboards
 
         #region Constructors
 
-        public PpcKeyboards(Control tget, DependencyProperty prop) : this()
+        public PpcKeyboards(Control control, DependencyProperty dependencyProperty) : this(control, dependencyProperty, dependencyProperty?.PropertyType)
         {
-            this._ctrl = tget ?? throw new ArgumentNullException(nameof(tget));
-            this._property = prop;
-            var srcValidationRules = tget.GetBindingExpression(prop)?.ParentBinding.ValidationRules;
+        }
+
+        public PpcKeyboards(Control control, DependencyProperty dependencyProperty, Type outputType) : this()
+        {
+            this._ctrl = control ?? throw new ArgumentNullException(nameof(control));
+            this._property = dependencyProperty ?? throw new ArgumentNullException(nameof(dependencyProperty));
+            this._outputType = outputType ?? throw new ArgumentNullException(nameof(outputType));
+
+            var srcValidationRules = control.GetBindingExpression(dependencyProperty)?.ParentBinding.ValidationRules;
+            var tgetRules = this.textBox.GetBindingExpression(TextBox.TextProperty)?.ParentBinding.ValidationRules;
             if (srcValidationRules?.Count > 0)
             {
-                var tgetRules = this.textBox.GetBindingExpression(TextBox.TextProperty)?.ParentBinding.ValidationRules;
                 if (tgetRules != null)
                 {
                     foreach (var rule in srcValidationRules)
@@ -42,6 +51,11 @@ namespace Ferretto.VW.App.Controls.Keyboards
                         tgetRules.Add(rule);
                     }
                 }
+            }
+
+            if (outputType != typeof(object) && outputType != typeof(string))
+            {
+                tgetRules.Add(new TypePreservingValidationRule(outputType));
             }
         }
 
@@ -67,6 +81,11 @@ namespace Ferretto.VW.App.Controls.Keyboards
 
         #region Methods
 
+        public void Dispose()
+        {
+            this.textBox.TextChanged -= this.TextBox_TextChanged;
+        }
+
         private void Keyboard_KeyboardCommand(object sender, App.Keyboards.Controls.KeyboardCommandEventArgs e)
         {
             // reset inactive timeout
@@ -77,7 +96,7 @@ namespace Ferretto.VW.App.Controls.Keyboards
             {
                 if (this._ctrl != null)
                 {
-                    this._ctrl.SetValue(this._property, Convert.ChangeType(this.textBox.Text, this._property.PropertyType));
+                    this._ctrl.SetValue(this._property, Convert.ChangeType(this.textBox.Text, this._outputType));
                 }
             }
 
@@ -101,6 +120,51 @@ namespace Ferretto.VW.App.Controls.Keyboards
         {
             this.Loaded -= this.PpcKeyboards_Loaded;
             this.textBox.SelectAll();
+            this.textBox.TextChanged += this.TextBox_TextChanged;
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            this.ViewModel.IsValid = Validation.GetHasError((DependencyObject)sender);
+        }
+
+        #endregion
+
+        #region Classes
+
+        private class TypePreservingValidationRule : ValidationRule
+        {
+            #region Fields
+
+            private readonly Type _type;
+
+            #endregion
+
+            #region Constructors
+
+            public TypePreservingValidationRule(Type type)
+            {
+                this._type = type;
+            }
+
+            #endregion
+
+            #region Methods
+
+            public override ValidationResult Validate(object value, CultureInfo cultureInfo)
+            {
+                try
+                {
+                    Convert.ChangeType(value, this._type, cultureInfo);
+                    return ValidationResult.ValidResult;
+                }
+                catch (Exception exc)
+                {
+                    return new ValidationResult(false, exc.Message);
+                }
+            }
+
+            #endregion
         }
 
         #endregion
