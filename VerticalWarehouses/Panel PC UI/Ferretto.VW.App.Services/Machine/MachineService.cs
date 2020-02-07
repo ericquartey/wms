@@ -584,6 +584,8 @@ namespace Ferretto.VW.App.Services
                             {
                                 ms.IsMovingLoadingUnit = true;
 
+                                this.logger.Debug($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status}; IsMovingLoadingUnit({ms.IsMovingLoadingUnit});");
+
                                 ms.CurrentMissionId = messageData.MissionId;
 
                                 // TODO use messageData.MissionStep instead of message.Description
@@ -786,7 +788,7 @@ namespace Ferretto.VW.App.Services
                                 ms.CurrentMissionId = null;
                             }
 
-                            this.logger.Debug($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status}; ms end({ms.IsMovingLoadingUnit});");
+                            this.logger.Debug($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status}; IsMovingLoadingUnit({ms.IsMovingLoadingUnit});");
 
                             if (!this.MachineStatus.IsMovingLoadingUnit)
                             {
