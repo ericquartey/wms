@@ -545,7 +545,7 @@ namespace Ferretto.VW.App.Services
             {
                 if (message?.Data is HomingMessageData dataHoming)
                 {
-                    this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status};");
+                    this.logger.Debug($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status};");
 
                     var isHoming = await this.machinePowerWebService.GetIsHomingAsync();
                     if (isHoming != this.IsHoming ||
@@ -566,11 +566,11 @@ namespace Ferretto.VW.App.Services
                         {
                             if (message?.Data is PositioningMessageData dataLog)
                             {
-                                this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status}; {dataLog?.AxisMovement};");
+                                this.logger.Debug($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status}; {dataLog?.AxisMovement};");
                             }
                             else
                             {
-                                this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status};");
+                                this.logger.Debug($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status};");
                             }
 
                             var ms = (MachineStatus)this.MachineStatus.Clone();
@@ -633,14 +633,14 @@ namespace Ferretto.VW.App.Services
 
                     case MessageStatus.OperationExecuting:
                         {
-                            if (message?.Data is PositioningMessageData dataLog)
-                            {
-                                this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status}; {dataLog?.AxisMovement};");
-                            }
-                            else
-                            {
-                                this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status};");
-                            }
+                            //if (message?.Data is PositioningMessageData dataLog)
+                            //{
+                            //    this.logger.Debug($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status}; {dataLog?.AxisMovement};");
+                            //}
+                            //else
+                            //{
+                            //    this.logger.Debug($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status};");
+                            //}
 
                             if (this.MachineStatus.IsMoving)
                             {
@@ -706,7 +706,7 @@ namespace Ferretto.VW.App.Services
 
                     case MessageStatus.OperationUpdateData:
                         {
-                            this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status};");
+                            this.logger.Debug($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status};");
 
                             this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
                             this.Cells = await this.machineCellsWebService.GetAllAsync();
@@ -728,11 +728,11 @@ namespace Ferretto.VW.App.Services
                         {
                             if (message?.Data is PositioningMessageData dataLog)
                             {
-                                this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status}; {dataLog?.AxisMovement};");
+                                this.logger.Debug($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status}; {dataLog?.AxisMovement};");
                             }
                             else
                             {
-                                this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status};");
+                                this.logger.Debug($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status};");
                             }
 
                             this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
@@ -786,6 +786,8 @@ namespace Ferretto.VW.App.Services
                                 ms.CurrentMissionId = null;
                             }
 
+                            this.logger.Debug($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status}; ms end({ms.IsMovingLoadingUnit});");
+
                             if (!this.MachineStatus.IsMovingLoadingUnit)
                             {
                                 this.ClearNotifications();
@@ -835,11 +837,11 @@ namespace Ferretto.VW.App.Services
                         {
                             if (message?.Data is PositioningMessageData dataLog)
                             {
-                                this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status}; {dataLog?.AxisMovement};");
+                                this.logger.Debug($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status}; {dataLog?.AxisMovement};");
                             }
                             else
                             {
-                                this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status};");
+                                this.logger.Debug($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status};");
                             }
 
                             var ms = (MachineStatus)this.MachineStatus.Clone();

@@ -1,26 +1,6 @@
 {
   "$schema": "./schemas/vertimag-configuration-schema.json",
   "LoadingUnits": [
-    {
-      "MaxNetWeight": 930.0,
-      "Tare": 120.0,
-      "Id": 1
-    },
-    {
-      "MaxNetWeight": 930.0,
-      "Tare": 120.0,
-      "Id": 2
-    },
-    {
-      "MaxNetWeight": 930.0,
-      "Tare": 120.0,
-      "Id": 3
-    },
-    {
-      "Tare": 120,
-      "MaxNetWeight": 930,
-      "Id": 4
-    }
   ],
   "Machine": {
     "Id": 1,
