@@ -20,7 +20,13 @@ namespace Ferretto.VW.App.Modules.Installation.Views
         {
             // this is heavy (cannot dispose handler)
             // this.Loaded -= this.ParametersView_Loaded;
-            this.scaffolder?.ResetNavigation();
+            try
+            {
+                this.scaffolder?.ResetNavigation();
+            }
+            catch
+            {
+            }
         }
 
         #endregion
