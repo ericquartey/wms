@@ -9,7 +9,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Services.Models
 {
-    public class MachineStatus : BindableBase, ICloneable
+    public class MachineStatus : BindableBase
     {
         #region Fields
 
@@ -184,7 +184,13 @@ namespace Ferretto.VW.App.Services.Models
         public bool IsMovingLoadingUnit
         {
             get => this.isMovingLoadingUnit;
-            set => this.SetProperty(ref this.isMovingLoadingUnit, value);
+            set
+            {
+                if (this.SetProperty(ref this.isMovingLoadingUnit, value))
+                {
+                    System.Diagnostics.Debug.WriteLine("****** isMovingLoadingUnit " + value);
+                }
+            }
         }
 
         public bool IsMovingShutter
@@ -239,15 +245,6 @@ namespace Ferretto.VW.App.Services.Models
         {
             get => this.verticalTargetPosition;
             set => this.SetProperty(ref this.verticalTargetPosition, value);
-        }
-
-        #endregion
-
-        #region Methods
-
-        public object Clone()
-        {
-            return this.MemberwiseClone();
         }
 
         #endregion

@@ -145,6 +145,8 @@ namespace Ferretto.VW.App.Services
             this.machineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
             this.missionsWebService = missionsWebService ?? throw new ArgumentNullException(nameof(missionsWebService));
+
+            this.MachineStatus = new MachineStatus();
         }
 
         #endregion
@@ -226,11 +228,7 @@ namespace Ferretto.VW.App.Services
 
         public MachinePowerState MachinePower => this.machineModeService.MachinePower;
 
-        public MachineStatus MachineStatus
-        {
-            get => this.machineStatus;
-            set => this.SetProperty(ref this.machineStatus, value, this.MachineStatusNotificationProperty);
-        }
+        public MachineStatus MachineStatus { get; }
 
         internal string Notification
         {
@@ -441,18 +439,17 @@ namespace Ferretto.VW.App.Services
             return model?.GetType();
         }
 
-        private async Task<MachineStatus> GetElevatorAsync(MachineStatus ms)
+        private async Task<LoadingUnit> GetLodingUnitOnBoardAsync()
         {
             try
             {
-                ms.EmbarkedLoadingUnit = await this.machineElevatorWebService.GetLoadingUnitOnBoardAsync();
-                ms.EmbarkedLoadingUnitId = ms.EmbarkedLoadingUnit?.Id;
+                return await this.machineElevatorWebService.GetLoadingUnitOnBoardAsync();
             }
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
-            return ms;
+            return null;
         }
 
         private WarningsArea GetWarningAreaAttribute()
@@ -512,7 +509,7 @@ namespace Ferretto.VW.App.Services
                 .Publish(new LoadUnitsChangedMessage(this.Loadunits));
         }
 
-        private void MachineStatusNotificationProperty()
+        private void NotifyMachineStatusChanged()
         {
             this.eventAggregator
                 .GetEvent<MachineStatusChangedPubSubEvent>()
@@ -521,7 +518,7 @@ namespace Ferretto.VW.App.Services
 
         private void OnBayChainPositionChanged(BayChainPositionChangedEventArgs e)
         {
-            this.UpdateMachineStatusByElevatorPosition(e, null);
+            this.UpdateMachineStatusByElevatorPosition(e);
         }
 
         private void OnChangedEventArgs(EventArgs e)
@@ -540,9 +537,12 @@ namespace Ferretto.VW.App.Services
             if (e == EventArgs.Empty &&
                 !this.MachineStatus.IsMoving)
             {
-                var ms = (MachineStatus)this.MachineStatus.Clone();
-                ms.FlagForNotification = !ms.FlagForNotification;
-                this.MachineStatus = ms;
+                lock (this.MachineStatus)
+                {
+                    this.MachineStatus.FlagForNotification = !this.MachineStatus.FlagForNotification;
+                }
+
+                this.NotifyMachineStatusChanged();
             }
         }
 
@@ -581,63 +581,64 @@ namespace Ferretto.VW.App.Services
                                 this.logger.Debug($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status};");
                             }
 
-                            var ms = (MachineStatus)this.MachineStatus.Clone();
-
-                            ms.IsStopped = false;
-                            ms.MessageStatus = message.Status;
-                            ms.IsError = false;
-                            ms.IsMoving = true;
-
-                            if (message?.Data is MoveLoadingUnitMessageData messageData)
+                            lock (this.MachineStatus)
                             {
-                                ms.IsMovingLoadingUnit = true;
+                                this.MachineStatus.IsStopped = false;
+                                this.MachineStatus.MessageStatus = message.Status;
+                                this.MachineStatus.IsError = false;
+                                this.MachineStatus.IsMoving = true;
 
-                                this.logger.Debug($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status}; IsMovingLoadingUnit({ms.IsMovingLoadingUnit});");
-
-                                ms.CurrentMissionId = messageData.MissionId;
-
-                                // TODO use messageData.MissionStep instead of message.Description
-                                this.Notification = $"Movimento in corso... (Id {ms.CurrentMissionId} " +
-                                    $"- LU {messageData.LoadUnitId} " +
-                                    $"- {message.Description} " +
-                                    $"- from {messageData.Source} {messageData.SourceCellId} " +
-                                    $"- to {messageData.Destination} {messageData.DestinationCellId})";
-                            }
-
-                            if (message?.Data is PositioningMessageData dataPositioning)
-                            {
-                                ms.IsMovingElevator = true;
-
-                                if (!this.MachineStatus.IsMovingLoadingUnit)
+                                if (message?.Data is MoveLoadingUnitMessageData messageData)
                                 {
-                                    this.WriteInfo(dataPositioning?.AxisMovement);
+                                    this.MachineStatus.IsMovingLoadingUnit = true;
+
+                                    this.logger.Debug($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status}; IsMovingLoadingUnit({this.MachineStatus.IsMovingLoadingUnit});");
+
+                                    this.MachineStatus.CurrentMissionId = messageData.MissionId;
+
+                                    // TODO use messageData.MissionStep instead of message.Description
+                                    this.Notification = $"Movimento in corso... (Id {this.MachineStatus.CurrentMissionId} " +
+                                        $"- LU {messageData.LoadUnitId} " +
+                                        $"- {message.Description} " +
+                                        $"- from {messageData.Source} {messageData.SourceCellId} " +
+                                        $"- to {messageData.Destination} {messageData.DestinationCellId})";
                                 }
 
-                                ms.VerticalSpeed = null;
-                                if (dataPositioning.AxisMovement == Axis.Vertical)
+                                if (message?.Data is PositioningMessageData dataPositioning)
                                 {
-                                    ms.VerticalTargetPosition = dataPositioning.TargetPosition;
-                                    if (dataPositioning.TargetSpeed.Length > 0)
+                                    this.MachineStatus.IsMovingElevator = true;
+
+                                    if (!this.MachineStatus.IsMovingLoadingUnit)
                                     {
-                                        ms.VerticalSpeed = dataPositioning.TargetSpeed[0];
+                                        this.WriteInfo(dataPositioning?.AxisMovement);
+                                    }
+
+                                    this.MachineStatus.VerticalSpeed = null;
+                                    if (dataPositioning.AxisMovement == Axis.Vertical)
+                                    {
+                                        this.MachineStatus.VerticalTargetPosition = dataPositioning.TargetPosition;
+                                        if (dataPositioning.TargetSpeed.Length > 0)
+                                        {
+                                            this.MachineStatus.VerticalSpeed = dataPositioning.TargetSpeed[0];
+                                        }
+                                    }
+                                    else if (dataPositioning.AxisMovement == Axis.Horizontal)
+                                    {
+                                        this.MachineStatus.HorizontalTargetPosition = dataPositioning.TargetPosition;
+                                    }
+                                    else if (dataPositioning.AxisMovement == Axis.BayChain)
+                                    {
+                                        this.MachineStatus.BayChainTargetPosition = dataPositioning.TargetPosition;
                                     }
                                 }
-                                else if (dataPositioning.AxisMovement == Axis.Horizontal)
+
+                                if (message?.Data is ShutterPositioningMessageData)
                                 {
-                                    ms.HorizontalTargetPosition = dataPositioning.TargetPosition;
-                                }
-                                else if (dataPositioning.AxisMovement == Axis.BayChain)
-                                {
-                                    ms.BayChainTargetPosition = dataPositioning.TargetPosition;
+                                    this.MachineStatus.IsMovingShutter = true;
                                 }
                             }
 
-                            if (message?.Data is ShutterPositioningMessageData)
-                            {
-                                ms.IsMovingShutter = true;
-                            }
-
-                            this.MachineStatus = ms;
+                            this.NotifyMachineStatusChanged();
                             break;
                         }
 
@@ -664,28 +665,29 @@ namespace Ferretto.VW.App.Services
                                         (dataPositioningInfo.AxisMovement == Axis.Horizontal && this.MachineStatus.HorizontalTargetPosition.HasValue && dataPositioningInfo.TargetPosition != this.MachineStatus.HorizontalTargetPosition.Value) ||
                                         (dataPositioningInfo.AxisMovement == Axis.BayChain && this.MachineStatus.BayChainTargetPosition.HasValue && dataPositioningInfo.TargetPosition != this.MachineStatus.BayChainTargetPosition.Value))
                                     {
-                                        var ms = (MachineStatus)this.MachineStatus.Clone();
-
-                                        ms.MessageStatus = message.Status;
-                                        ms.VerticalSpeed = null;
-                                        if (dataPositioningInfo.AxisMovement == Axis.Vertical)
+                                        lock (this.MachineStatus)
                                         {
-                                            ms.VerticalTargetPosition = dataPositioningInfo.TargetPosition;
-                                            if (dataPositioningInfo.TargetSpeed?.Length > 0)
+                                            this.MachineStatus.MessageStatus = message.Status;
+                                            this.MachineStatus.VerticalSpeed = null;
+                                            if (dataPositioningInfo.AxisMovement == Axis.Vertical)
                                             {
-                                                ms.VerticalSpeed = dataPositioningInfo.TargetSpeed[0];
+                                                this.MachineStatus.VerticalTargetPosition = dataPositioningInfo.TargetPosition;
+                                                if (dataPositioningInfo.TargetSpeed?.Length > 0)
+                                                {
+                                                    this.MachineStatus.VerticalSpeed = dataPositioningInfo.TargetSpeed[0];
+                                                }
+                                            }
+                                            else if (dataPositioningInfo.AxisMovement == Axis.Horizontal)
+                                            {
+                                                this.MachineStatus.HorizontalTargetPosition = dataPositioningInfo.TargetPosition;
+                                            }
+                                            else if (dataPositioningInfo.AxisMovement == Axis.BayChain)
+                                            {
+                                                this.MachineStatus.BayChainTargetPosition = dataPositioningInfo.TargetPosition;
                                             }
                                         }
-                                        else if (dataPositioningInfo.AxisMovement == Axis.Horizontal)
-                                        {
-                                            ms.HorizontalTargetPosition = dataPositioningInfo.TargetPosition;
-                                        }
-                                        else if (dataPositioningInfo.AxisMovement == Axis.BayChain)
-                                        {
-                                            ms.BayChainTargetPosition = dataPositioningInfo.TargetPosition;
-                                        }
 
-                                        this.MachineStatus = ms;
+                                        this.NotifyMachineStatusChanged();
                                     }
                                 }
 
@@ -699,9 +701,13 @@ namespace Ferretto.VW.App.Services
                             if (message?.Data is MoveLoadingUnitMessageData moveLoadingUnitMessageData)
                             {
                                 this.logger.Debug($"OnMoveLoadingUnitMessageData:{moveLoadingUnitMessageData.MissionStep};");
-                                var ms = (MachineStatus)this.MachineStatus.Clone();
-                                ms.CurrentMissionId = moveLoadingUnitMessageData.MissionId;
-                                this.MachineStatus = ms;
+
+                                lock (this.MachineStatus)
+                                {
+                                    this.MachineStatus.CurrentMissionId = moveLoadingUnitMessageData.MissionId;
+                                }
+
+                                this.NotifyMachineStatusChanged();
 
                                 // TODO use messageData.MissionStep instead of message.Description
                                 this.Notification = $"Movimento in corso... (Id {this.MachineStatus?.CurrentMissionId} " +
@@ -721,14 +727,16 @@ namespace Ferretto.VW.App.Services
                             this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
                             this.Cells = await this.machineCellsWebService.GetAllAsync();
 
-                            var ms = (MachineStatus)this.MachineStatus.Clone();
+                            var embarkedLoadingUnit = await this.machineElevatorWebService.GetLoadingUnitOnBoardAsync();
 
-                            ms.MessageStatus = message.Status;
+                            lock (this.MachineStatus)
+                            {
+                                this.MachineStatus.MessageStatus = message.Status;
+                                this.MachineStatus.EmbarkedLoadingUnit = embarkedLoadingUnit;
+                                this.MachineStatus.EmbarkedLoadingUnitId = embarkedLoadingUnit?.Id;
+                            }
 
-                            await this.GetElevatorAsync(ms);
-
-                            this.MachineStatus = ms;
-
+                            this.NotifyMachineStatusChanged();
                             break;
                         }
 
@@ -753,92 +761,94 @@ namespace Ferretto.VW.App.Services
                                 this.IsMissionInError = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
                             }
 
-                            var ms = (MachineStatus)this.MachineStatus.Clone();
+                            var embarkedLoadingUnit = await this.GetLodingUnitOnBoardAsync();
 
-                            ms.MessageStatus = message.Status;
-
-                            if (message.Status == MessageStatus.OperationStop ||
-                                message.Status == MessageStatus.OperationStepStop)
+                            lock (this.MachineStatus)
                             {
-                                ms.IsStopped = true;
-                            }
+                                this.MachineStatus.MessageStatus = message.Status;
 
-                            if (message?.Data is PositioningMessageData dataPositioning)
-                            {
-                                await this.GetElevatorAsync(ms);
-
-                                ms.IsMovingElevator = false;
-                                if (dataPositioning.AxisMovement == Axis.Vertical)
+                                if (message.Status == MessageStatus.OperationStop ||
+                                    message.Status == MessageStatus.OperationStepStop)
                                 {
-                                    ms.VerticalTargetPosition = null;
-                                    ms.VerticalSpeed = null;
+                                    this.MachineStatus.IsStopped = true;
                                 }
-                                else if (dataPositioning.AxisMovement == Axis.Horizontal)
+
+                                if (message?.Data is PositioningMessageData dataPositioning)
                                 {
-                                    ms.HorizontalTargetPosition = null;
-                                }
-                                else if (dataPositioning.AxisMovement == Axis.BayChain)
-                                {
-                                    ms.BayChainTargetPosition = null;
-                                }
-                            }
+                                    this.MachineStatus.EmbarkedLoadingUnit = embarkedLoadingUnit;
+                                    this.MachineStatus.EmbarkedLoadingUnitId = embarkedLoadingUnit?.Id;
 
-                            ms.IsMoving = false;
-
-                            if (message?.Data is ShutterPositioningMessageData)
-                            {
-                                ms.IsMovingShutter = false;
-                            }
-
-                            if (message?.Data is MoveLoadingUnitMessageData)
-                            {
-                                ms.IsMovingLoadingUnit = false;
-                                ms.CurrentMissionId = null;
-                            }
-
-                            this.logger.Debug($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status}; IsMovingLoadingUnit({ms.IsMovingLoadingUnit});");
-
-                            if (!this.MachineStatus.IsMovingLoadingUnit)
-                            {
-                                this.ClearNotifications();
-                            }
-
-                            if (this.Bay.IsDouble || this.BayFirstPositionIsUpper)
-                            {
-                                if (this.Bay.Positions?.OrderBy(o => o.Height).LastOrDefault() is BayPosition bayPositionUp)
-                                {
-                                    ms.LoadingUnitPositionUpInBay = bayPositionUp.LoadingUnit;
-                                    if (bayPositionUp.LoadingUnit != null)
+                                    this.MachineStatus.IsMovingElevator = false;
+                                    if (dataPositioning.AxisMovement == Axis.Vertical)
                                     {
-                                        ms.ElevatorPositionLoadingUnit = bayPositionUp.LoadingUnit;
+                                        this.MachineStatus.VerticalTargetPosition = null;
+                                        this.MachineStatus.VerticalSpeed = null;
+                                    }
+                                    else if (dataPositioning.AxisMovement == Axis.Horizontal)
+                                    {
+                                        this.MachineStatus.HorizontalTargetPosition = null;
+                                    }
+                                    else if (dataPositioning.AxisMovement == Axis.BayChain)
+                                    {
+                                        this.MachineStatus.BayChainTargetPosition = null;
                                     }
                                 }
-                            }
 
-                            if (this.Bay.IsDouble || !this.BayFirstPositionIsUpper)
-                            {
-                                if (this.Bay.Positions?.OrderBy(o => o.Height).FirstOrDefault() is BayPosition bayPositionDown)
+                                this.MachineStatus.IsMoving = false;
+
+                                if (message?.Data is ShutterPositioningMessageData)
                                 {
-                                    ms.LoadingUnitPositionDownInBay = bayPositionDown.LoadingUnit;
-                                    if (bayPositionDown.LoadingUnit != null)
+                                    this.MachineStatus.IsMovingShutter = false;
+                                }
+
+                                if (message?.Data is MoveLoadingUnitMessageData)
+                                {
+                                    this.MachineStatus.IsMovingLoadingUnit = false;
+                                    this.MachineStatus.CurrentMissionId = null;
+                                }
+
+                                this.logger.Debug($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status}; IsMovingLoadingUnit({this.MachineStatus.IsMovingLoadingUnit});");
+
+                                if (!this.MachineStatus.IsMovingLoadingUnit)
+                                {
+                                    this.ClearNotifications();
+                                }
+
+                                if (this.Bay.IsDouble || this.BayFirstPositionIsUpper)
+                                {
+                                    if (this.Bay.Positions?.OrderBy(o => o.Height).LastOrDefault() is BayPosition bayPositionUp)
                                     {
-                                        ms.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
+                                        this.MachineStatus.LoadingUnitPositionUpInBay = bayPositionUp.LoadingUnit;
+                                        if (bayPositionUp.LoadingUnit != null)
+                                        {
+                                            this.MachineStatus.ElevatorPositionLoadingUnit = bayPositionUp.LoadingUnit;
+                                        }
+                                    }
+                                }
+
+                                if (this.Bay.IsDouble || !this.BayFirstPositionIsUpper)
+                                {
+                                    if (this.Bay.Positions?.OrderBy(o => o.Height).FirstOrDefault() is BayPosition bayPositionDown)
+                                    {
+                                        this.MachineStatus.LoadingUnitPositionDownInBay = bayPositionDown.LoadingUnit;
+                                        if (bayPositionDown.LoadingUnit != null)
+                                        {
+                                            this.MachineStatus.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
+                                        }
                                     }
                                 }
                             }
 
                             var pos = await this.machineElevatorWebService.GetPositionAsync();
-
                             this.UpdateMachineStatusByElevatorPosition(
-                                new ElevatorPositionChangedEventArgs(
-                                    pos.Vertical,
-                                    pos.Horizontal,
-                                    pos.CellId,
-                                    pos.BayPositionId,
-                                    pos.BayPositionUpper),
-                                ms);
+                                    new ElevatorPositionChangedEventArgs(
+                                        pos.Vertical,
+                                        pos.Horizontal,
+                                        pos.CellId,
+                                        pos.BayPositionId,
+                                        pos.BayPositionUpper));
 
-                            this.MachineStatus = ms;
+                            this.NotifyMachineStatusChanged();
 
                             break;
                         }
@@ -854,44 +864,45 @@ namespace Ferretto.VW.App.Services
                                 this.logger.Debug($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status};");
                             }
 
-                            var ms = (MachineStatus)this.MachineStatus.Clone();
-
-                            ms.MessageStatus = message.Status;
-                            ms.IsMoving = false;
-                            ms.IsError = true;
-                            ms.ErrorDescription = message.Description;
-
-                            if (message?.Data is PositioningMessageData dataPositioning)
+                            lock (this.MachineStatus)
                             {
-                                ms.IsMovingElevator = false;
-                                if (dataPositioning.AxisMovement == Axis.Vertical)
+                                this.MachineStatus.MessageStatus = message.Status;
+                                this.MachineStatus.IsMoving = false;
+                                this.MachineStatus.IsError = true;
+                                this.MachineStatus.ErrorDescription = message.Description;
+
+                                if (message?.Data is PositioningMessageData dataPositioning)
                                 {
-                                    ms.VerticalTargetPosition = null;
-                                    ms.VerticalSpeed = null;
+                                    this.MachineStatus.IsMovingElevator = false;
+                                    if (dataPositioning.AxisMovement == Axis.Vertical)
+                                    {
+                                        this.MachineStatus.VerticalTargetPosition = null;
+                                        this.MachineStatus.VerticalSpeed = null;
+                                    }
+                                    else if (dataPositioning.AxisMovement == Axis.Horizontal)
+                                    {
+                                        this.MachineStatus.HorizontalTargetPosition = null;
+                                    }
+                                    else if (dataPositioning.AxisMovement == Axis.BayChain)
+                                    {
+                                        this.MachineStatus.BayChainTargetPosition = null;
+                                    }
                                 }
-                                else if (dataPositioning.AxisMovement == Axis.Horizontal)
+
+                                if (message?.Data is ShutterPositioningMessageData)
                                 {
-                                    ms.HorizontalTargetPosition = null;
+                                    this.MachineStatus.IsMovingShutter = false;
                                 }
-                                else if (dataPositioning.AxisMovement == Axis.BayChain)
+
+                                if (message?.Data is MoveLoadingUnitMessageData)
                                 {
-                                    ms.BayChainTargetPosition = null;
+                                    this.MachineStatus.IsMovingLoadingUnit = false;
                                 }
+
+                                this.ShowNotification(message.Description, NotificationSeverity.Error);
                             }
 
-                            if (message?.Data is ShutterPositioningMessageData)
-                            {
-                                ms.IsMovingShutter = false;
-                            }
-
-                            if (message?.Data is MoveLoadingUnitMessageData)
-                            {
-                                ms.IsMovingLoadingUnit = false;
-                            }
-
-                            this.ShowNotification(message.Description, NotificationSeverity.Error);
-
-                            this.MachineStatus = ms;
+                            this.NotifyMachineStatusChanged();
                             break;
                         }
                 }
@@ -906,7 +917,7 @@ namespace Ferretto.VW.App.Services
 
         private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
         {
-            this.UpdateMachineStatusByElevatorPosition(e, null);
+            this.UpdateMachineStatusByElevatorPosition(e);
         }
 
         private async Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
@@ -939,16 +950,17 @@ namespace Ferretto.VW.App.Services
 
         private void StopMoving()
         {
-            var ms = (MachineStatus)this.MachineStatus.Clone();
+            lock (this.MachineStatus)
+            {
+                this.MachineStatus.IsMoving = false;
+                this.MachineStatus.IsError = false;
+                this.MachineStatus.IsMovingElevator = false;
+                this.MachineStatus.IsMovingShutter = false;
+                this.MachineStatus.IsMovingLoadingUnit = false;
+                this.MachineStatus.ErrorDescription = string.Empty;
+            }
 
-            ms.IsMoving = false;
-            ms.IsError = false;
-            ms.IsMovingElevator = false;
-            ms.IsMovingShutter = false;
-            ms.IsMovingLoadingUnit = false;
-            ms.ErrorDescription = string.Empty;
-
-            this.MachineStatus = ms;
+            this.NotifyMachineStatusChanged();
         }
 
         private void SubscribeToEvents()
@@ -1051,145 +1063,135 @@ namespace Ferretto.VW.App.Services
 
             // Devo aggiornare i dati delle posizioni della baia
             this.Bay = await this.bayManagerService.GetBayAsync();
+            var embarkedLoadingUnit = await this.GetLodingUnitOnBoardAsync();
+            var bayChainPosition = await this.machineCarouselWebService.GetPositionAsync();
 
-            var ms = (MachineStatus)this.MachineStatus.Clone();
-
-            ms = await this.GetElevatorAsync(ms);
-
-            ms.BayChainPosition = await this.machineCarouselWebService.GetPositionAsync();
-
-            if (this.Bay.IsDouble || this.BayFirstPositionIsUpper)
+            lock (this.MachineStatus)
             {
-                if (this.Bay.Positions?.OrderBy(o => o.Height).LastOrDefault() is BayPosition bayPositionUp)
+                this.MachineStatus.EmbarkedLoadingUnit = embarkedLoadingUnit;
+                this.MachineStatus.EmbarkedLoadingUnitId = embarkedLoadingUnit?.Id;
+
+                this.MachineStatus.BayChainPosition = bayChainPosition;
+
+                if (this.Bay.IsDouble || this.BayFirstPositionIsUpper)
                 {
-                    ms.LoadingUnitPositionUpInBay = bayPositionUp.LoadingUnit;
-                    if (bayPositionUp.LoadingUnit != null)
+                    if (this.Bay.Positions?.OrderBy(o => o.Height).LastOrDefault() is BayPosition bayPositionUp)
                     {
-                        ms.ElevatorPositionLoadingUnit = bayPositionUp.LoadingUnit;
+                        this.MachineStatus.LoadingUnitPositionUpInBay = bayPositionUp.LoadingUnit;
+                        if (bayPositionUp.LoadingUnit != null)
+                        {
+                            this.MachineStatus.ElevatorPositionLoadingUnit = bayPositionUp.LoadingUnit;
+                        }
                     }
                 }
-            }
 
-            if (this.Bay.IsDouble || !this.BayFirstPositionIsUpper)
-            {
-                if (this.Bay.Positions?.OrderBy(o => o.Height).FirstOrDefault() is BayPosition bayPositionDown)
+                if (this.Bay.IsDouble || !this.BayFirstPositionIsUpper)
                 {
-                    ms.LoadingUnitPositionDownInBay = bayPositionDown.LoadingUnit;
-                    if (bayPositionDown.LoadingUnit != null)
+                    if (this.Bay.Positions?.OrderBy(o => o.Height).FirstOrDefault() is BayPosition bayPositionDown)
                     {
-                        ms.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
+                        this.MachineStatus.LoadingUnitPositionDownInBay = bayPositionDown.LoadingUnit;
+                        if (bayPositionDown.LoadingUnit != null)
+                        {
+                            this.MachineStatus.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
+                        }
                     }
                 }
             }
 
             var pos = await this.machineElevatorWebService.GetPositionAsync();
-
             this.UpdateMachineStatusByElevatorPosition(
-                new ElevatorPositionChangedEventArgs(
-                    pos.Vertical,
-                    pos.Horizontal,
-                    pos.CellId,
-                    pos.BayPositionId,
-                    pos.BayPositionUpper),
-                ms);
+                    new ElevatorPositionChangedEventArgs(
+                        pos.Vertical,
+                        pos.Horizontal,
+                        pos.CellId,
+                        pos.BayPositionId,
+                        pos.BayPositionUpper));
 
-            this.MachineStatus = ms;
+            this.NotifyMachineStatusChanged();
         }
 
-        private void UpdateMachineStatusByElevatorPosition(EventArgs e, MachineStatus ms)
+        private void UpdateMachineStatusByElevatorPosition(EventArgs e)
         {
-            var update = false;
-            var machineStatusNull = false;
-
-            if (ms is null)
+            lock (this.MachineStatus)
             {
-                machineStatusNull = true;
-                ms = (MachineStatus)this.MachineStatus.Clone();
-            }
-
-            if (e is ElevatorPositionChangedEventArgs dataElevatorPosition)
-            {
-                if (dataElevatorPosition is null)
+                if (e is ElevatorPositionChangedEventArgs dataElevatorPosition)
                 {
-                    return;
-                }
-
-                ms.ElevatorVerticalPosition = dataElevatorPosition.VerticalPosition;
-                ms.ElevatorHorizontalPosition = dataElevatorPosition.HorizontalPosition;
-                ms.ElevatorPositionType = dataElevatorPosition.ElevatorPositionType;
-
-                if (dataElevatorPosition.CellId != null)
-                {
-                    ms.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.CellWithNumber, dataElevatorPosition.CellId);
-
-                    var cell = this.cells?.FirstOrDefault(l => l.Id.Equals(dataElevatorPosition.CellId));
-                    if (cell != null)
+                    if (dataElevatorPosition is null)
                     {
-                        ms.LogicalPosition = string.Concat(
-                            cell?.Side.ToString(),
-                            " / ",
-                            cell.IsFree ? "Libera" : "Occupata",
-                            cell.BlockLevel != BlockLevel.Undefined && cell.BlockLevel != BlockLevel.None ? $" / {cell.BlockLevel}" : string.Empty);
+                        return;
+                    }
+
+                    this.MachineStatus.ElevatorVerticalPosition = dataElevatorPosition.VerticalPosition;
+                    this.MachineStatus.ElevatorHorizontalPosition = dataElevatorPosition.HorizontalPosition;
+                    this.MachineStatus.ElevatorPositionType = dataElevatorPosition.ElevatorPositionType;
+
+                    if (dataElevatorPosition.CellId != null)
+                    {
+                        this.MachineStatus.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.CellWithNumber, dataElevatorPosition.CellId);
+
+                        var cell = this.cells?.FirstOrDefault(l => l.Id.Equals(dataElevatorPosition.CellId));
+                        if (cell != null)
+                        {
+                            this.MachineStatus.LogicalPosition = string.Concat(
+                                cell?.Side.ToString(),
+                                " / ",
+                                cell.IsFree ? "Libera" : "Occupata",
+                                cell.BlockLevel != BlockLevel.Undefined && cell.BlockLevel != BlockLevel.None ? $" / {cell.BlockLevel}" : string.Empty);
+                        }
+                        else
+                        {
+                            this.MachineStatus.LogicalPosition = null;
+                        }
+                        this.MachineStatus.LogicalPositionId = dataElevatorPosition.CellId;
+
+                        this.MachineStatus.ElevatorPositionLoadingUnit = this.loadingUnits.FirstOrDefault(l => l.CellId.Equals(dataElevatorPosition.CellId));
+
+                        this.MachineStatus.BayPositionUpper = null;
+                        this.MachineStatus.BayPositionId = null;
+                    }
+                    else if (dataElevatorPosition.BayPositionId != null)
+                    {
+                        var bay = this.bays.SingleOrDefault(b => b.Positions.Any(p => p.Id == dataElevatorPosition.BayPositionId));
+
+                        this.MachineStatus.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.InBayWithNumber, (int)bay.Number);
+
+                        if (dataElevatorPosition?.BayPositionUpper ?? false)
+                        {
+                            this.MachineStatus.LogicalPosition = "Posizione " + Resources.InstallationApp.PositionOnTop;
+                        }
+                        else
+                        {
+                            this.MachineStatus.LogicalPosition = "Posizione " + Resources.InstallationApp.PositionOnBotton;
+                        }
+
+                        this.MachineStatus.LogicalPositionId = (int)bay.Number;
+                        this.MachineStatus.BayPositionUpper = (dataElevatorPosition?.BayPositionUpper ?? false);
+                        this.MachineStatus.BayPositionId = dataElevatorPosition.BayPositionId;
+
+                        var position = this.bay.Positions.SingleOrDefault(p => p.Id == dataElevatorPosition.BayPositionId);
+                        this.MachineStatus.ElevatorPositionLoadingUnit = position?.LoadingUnit;
                     }
                     else
                     {
-                        ms.LogicalPosition = null;
+                        this.MachineStatus.ElevatorPositionLoadingUnit = null;
+                        this.MachineStatus.ElevatorLogicalPosition = null;
+                        this.MachineStatus.LogicalPosition = null;
+                        this.MachineStatus.LogicalPositionId = null;
+                        this.MachineStatus.BayPositionUpper = null;
+                        this.MachineStatus.BayPositionId = null;
                     }
-                    ms.LogicalPositionId = dataElevatorPosition.CellId;
-
-                    ms.ElevatorPositionLoadingUnit = this.loadingUnits.FirstOrDefault(l => l.CellId.Equals(dataElevatorPosition.CellId));
-
-                    ms.BayPositionUpper = null;
-                    ms.BayPositionId = null;
                 }
-                else if (dataElevatorPosition.BayPositionId != null)
+
+                if (e is BayChainPositionChangedEventArgs dataBayChainPosition)
                 {
-                    var bay = this.bays.SingleOrDefault(b => b.Positions.Any(p => p.Id == dataElevatorPosition.BayPositionId));
-
-                    ms.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.InBayWithNumber, (int)bay.Number);
-
-                    if (dataElevatorPosition?.BayPositionUpper ?? false)
+                    if (this.MachineStatus.BayChainPosition != dataBayChainPosition.Position)
                     {
-                        ms.LogicalPosition = "Posizione " + Resources.InstallationApp.PositionOnTop;
+                        this.MachineStatus.BayChainPosition = dataBayChainPosition.Position;
                     }
-                    else
-                    {
-                        ms.LogicalPosition = "Posizione " + Resources.InstallationApp.PositionOnBotton;
-                    }
-
-                    ms.LogicalPositionId = (int)bay.Number;
-                    ms.BayPositionUpper = (dataElevatorPosition?.BayPositionUpper ?? false);
-                    ms.BayPositionId = dataElevatorPosition.BayPositionId;
-
-                    var position = this.bay.Positions.SingleOrDefault(p => p.Id == dataElevatorPosition.BayPositionId);
-                    ms.ElevatorPositionLoadingUnit = position?.LoadingUnit;
-                }
-                else
-                {
-                    ms.ElevatorPositionLoadingUnit = null;
-                    ms.ElevatorLogicalPosition = null;
-                    ms.LogicalPosition = null;
-                    ms.LogicalPositionId = null;
-                    ms.BayPositionUpper = null;
-                    ms.BayPositionId = null;
-                }
-
-                update = true;
-            }
-
-            if (e is BayChainPositionChangedEventArgs dataBayChainPosition)
-            {
-                if (this.MachineStatus.BayChainPosition != dataBayChainPosition.Position)
-                {
-                    ms.BayChainPosition = dataBayChainPosition.Position;
-                    update = true;
                 }
             }
 
-            if (update && machineStatusNull)
-            {
-                this.MachineStatus = ms;
-            }
+            this.NotifyMachineStatusChanged();
         }
 
         private void WarningsManagement(string view)
