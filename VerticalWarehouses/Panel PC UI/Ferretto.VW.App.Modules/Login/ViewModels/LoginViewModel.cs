@@ -159,7 +159,9 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 this.MachineIdentity = this.sessionService.MachineIdentity;
             }
 
-            await base.OnAppearedAsync();
+            //await base.OnAppearedAsync();
+            this.IsVisible = true;
+            this.IsEnabled = true;
         }
 
         public void OnHealthStatusChanged(HealthStatusChangedEventArgs e)
@@ -273,13 +275,16 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             {
                 if (e.PropertyName == nameof(this.UserLogin.UserName) && this.UserLogin.IsSupport)
                 {
-                    try
+                    if (this.ServiceHealthStatus == HealthStatus.Healthy || this.ServiceHealthStatus == HealthStatus.Degraded)
                     {
-                        this.UserLogin.Password = string.Empty;
-                        this.UserLogin.SupportToken = await this.authenticationService.GetToken();
-                    }
-                    catch (HttpRequestException)
-                    {
+                        try
+                        {
+                            this.UserLogin.Password = string.Empty;
+                            this.UserLogin.SupportToken = await this.authenticationService.GetToken();
+                        }
+                        catch (HttpRequestException)
+                        {
+                        }
                     }
                 }
             }));

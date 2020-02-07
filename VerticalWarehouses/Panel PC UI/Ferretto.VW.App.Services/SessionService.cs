@@ -16,6 +16,8 @@ namespace Ferretto.VW.App.Services
     {
         private readonly IAuthenticationService autenticationService;
 
+        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private readonly IHealthProbeService healthProbeService;
 
         private readonly INavigationService navigationService;
@@ -39,7 +41,7 @@ namespace Ferretto.VW.App.Services
 
             this.healthProbeService.HealthStatusChanged.Subscribe(
                 async m => await this.OnHealthStatusChanged(m),
-                Prism.Events.ThreadOption.UIThread,
+                ThreadOption.UIThread,
                 false);
         }
 
@@ -49,7 +51,10 @@ namespace Ferretto.VW.App.Services
                 &&
                 ConfigurationManager.AppSettings.LogoutWhenUnhealthy())
             {
+                this.logger.Debug($"OnHealthStatusChanged.LogOutAsync();");
+
                 await this.autenticationService.LogOutAsync();
+
                 this.navigationService.GoBackTo(
                     nameof(Utils.Modules.Login),
                     Utils.Modules.Login.LOGIN);

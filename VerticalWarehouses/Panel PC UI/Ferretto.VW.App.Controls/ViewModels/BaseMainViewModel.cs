@@ -141,6 +141,8 @@ namespace Ferretto.VW.App.Controls
 
         protected virtual bool IsDataRefreshSyncronous => false;
 
+        protected virtual bool RequireDataRefresh => true;
+
         #endregion
 
         #region Methods

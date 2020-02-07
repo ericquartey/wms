@@ -247,15 +247,13 @@ namespace Ferretto.VW.MAS.MissionManager
             var missions = missionsDataProvider.GetAllMissions().ToList();
             foreach (var mission in missions)
             {
-                if (mission.Status == MissionStatus.New)
+                if (!mission.IsRestoringType())
                 {
-                    if (!mission.IsRestoringType())
-                    {
-                        missionsDataProvider.Delete(mission.Id);
-                    }
+                    missionsDataProvider.Delete(mission.Id);
                 }
                 else if (mission.Status != MissionStatus.Completed
-                    && mission.Status != MissionStatus.Aborted)
+                    && mission.Status != MissionStatus.Aborted
+                    && mission.Status != MissionStatus.New)
                 {
                     if (mission.RestoreStep == MissionStep.NotDefined)
                     {

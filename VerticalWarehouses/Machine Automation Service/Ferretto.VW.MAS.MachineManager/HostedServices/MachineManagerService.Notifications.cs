@@ -43,7 +43,10 @@ namespace Ferretto.VW.MAS.MachineManager
             {
                 case MessageType.FaultStateChanged:
                 case MessageType.RunningStateChanged:
-                    this.OnMachineRunningStatusChange(message, serviceProvider);
+                    lock (this.syncMachineObject)
+                    {
+                        this.OnMachineRunningStatusChange(message, serviceProvider);
+                    }
                     lock (this.syncObject)
                     {
                         missionMoveProvider.OnNotification(message, serviceProvider);

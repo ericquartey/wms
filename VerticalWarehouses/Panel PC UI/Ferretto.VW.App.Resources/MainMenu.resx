@@ -142,7 +142,7 @@
     <value>MAINT</value>
   </data>
   <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Maintenance, compact boxes, update</value>
+    <value>Maintenance, compact drawers, update</value>
   </data>
   <data name="Operation" xml:space="preserve">
     <value>Picking</value>

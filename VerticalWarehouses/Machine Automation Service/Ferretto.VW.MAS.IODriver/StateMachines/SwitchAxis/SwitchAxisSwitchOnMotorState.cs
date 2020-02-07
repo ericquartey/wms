@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.Extensions.Logging;
 
@@ -9,11 +10,15 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
     {
         #region Fields
 
+        private const int CheckDelayTime = 100;
+
         private readonly Axis axisToSwitchOn;
 
         private readonly IoIndex index;
 
         private readonly IoStatus status;
+
+        private DateTime startTime;
 
         #endregion
 
@@ -53,8 +58,15 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
                     ||
                     (this.axisToSwitchOn == Axis.Vertical && message.ElevatorMotorOn))
                 {
-                    this.Logger.LogTrace("3:Change State to EndState");
-                    this.ParentStateMachine.ChangeState(new SwitchAxisEndState(this.axisToSwitchOn, this.status, this.index, this.Logger, this.ParentStateMachine));
+                    this.Logger.LogTrace("2b:Axis switched on");
+
+                    var feedback = (this.axisToSwitchOn == Axis.Horizontal && message.CradleMotorOn) ? this.status.InputData[(int)IoPorts.CradleMotorFeedback] : this.status.InputData[(int)IoPorts.ElevatorMotorFeedback];
+                    if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 300
+                        || feedback)
+                    {
+                        this.Logger.LogDebug($"3:Change State to EndState: feedback {feedback}, delay {DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds:0.0000}");
+                        this.ParentStateMachine.ChangeState(new SwitchAxisEndState(this.axisToSwitchOn, this.status, this.index, this.Logger, this.ParentStateMachine));
+                    }
                 }
             }
         }
@@ -78,6 +90,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 
             switchOnAxisIoMessage.ResetSecurity = false;
             switchOnAxisIoMessage.PowerEnable = true;
+
+            this.startTime = DateTime.UtcNow;
 
             this.Logger.LogTrace($"2:{switchOnAxisIoMessage}");
             lock (this.status)

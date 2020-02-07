@@ -32,7 +32,10 @@ namespace Ferretto.VW.MAS.MachineManager
             switch (command.Type)
             {
                 case MessageType.ChangeRunningState:
-                    this.OnChangeRunningStateCommandReceived(command, serviceProvider);
+                    lock (this.syncMachineObject)
+                    {
+                        this.OnChangeRunningStateCommandReceived(command, serviceProvider);
+                    }
                     break;
 
                 case MessageType.MoveLoadingUnit:
