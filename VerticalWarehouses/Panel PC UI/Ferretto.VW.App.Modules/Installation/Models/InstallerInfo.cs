@@ -27,6 +27,11 @@ namespace Ferretto.VW.App.Modules.Installation.Models
             this.FileName = fileName;
         }
 
+        public InstallerInfo(string fileName, bool isRemotePath) : this(fileName)
+        {
+            this.IsRemotePath = isRemotePath;
+        }
+
         public InstallerInfo(string productVersion, string serviceVersion, string panelPcVersion, string fileName) : this()
         {
             this.ProductVersion = productVersion;
@@ -44,6 +49,8 @@ namespace Ferretto.VW.App.Modules.Installation.Models
         public string FileName { get; private set; }
 
         public int Id { get; private set; }
+
+        public bool IsRemotePath { get; }
 
         public bool IsValid => !string.IsNullOrEmpty(this.FileName) &&
                                !string.IsNullOrEmpty(this.PanelPcVersion) &&

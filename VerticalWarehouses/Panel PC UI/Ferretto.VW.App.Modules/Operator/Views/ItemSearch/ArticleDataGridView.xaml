@@ -5,19 +5,12 @@
              xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources">
 
-
-    <UserControl.Resources>
-        <conv:MachinesToStringConverter x:Key="MTSC" />
-    </UserControl.Resources>
-
     <Grid>
         <ctrls:PpcDataGrid Name="DataGrid"
                   Width="auto"
                   Height="auto"                 
-                  ItemsSource="{Binding Items}"
-            
-                  SelectedItem="{Binding SelectedItem, Mode=OneWay}"
-                 >
+                  ItemsSource="{Binding Items}"            
+                  SelectedItem="{Binding SelectedItem, Mode=OneWay}">
 
             <ctrls:PpcDataGrid.Columns>
                 <DataGridTextColumn x:Name="Column1"
@@ -59,12 +52,6 @@
                 <DataGridTemplateColumn x:Name="Column3"
                                             Width="100"
                                             Header="{x:Static Resources:OperatorApp.WaitingListDataGridHeaderExecutable}">
-                    <DataGridTemplateColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="BorderThickness" Value="0" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-                        </Style>
-                    </DataGridTemplateColumn.CellStyle>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Rectangle Fill="{DynamicResource FerrettoGreen}"
