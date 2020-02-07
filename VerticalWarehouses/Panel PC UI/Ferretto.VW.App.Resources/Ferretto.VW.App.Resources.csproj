@@ -43,6 +43,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Menu.resx</DependentUpon>
     </Compile>
+    <Compile Update="MainMenu.Designer.cs">
+      <DependentUpon>MainMenu.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Update="OperatorApp.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -80,6 +85,10 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Menu.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Update="MainMenu.resx">
+      <LastGenOutput>MainMenu.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="OperatorApp.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>OperatorApp.Designer.cs</LastGenOutput>
@@ -88,6 +97,10 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>VWApp.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="NewFolder\" />
   </ItemGroup>
 
 </Project>
