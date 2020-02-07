@@ -225,6 +225,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 await this.MissionOperationsService.CancelCurrentAsync();
 
                 this.ShowNotification(Resources.OperatorApp.OperationCancelledConfirmed);
+
+                this.NavigationService.GoBack();
             }
             catch (Exception ex)
             {
