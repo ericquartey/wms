@@ -57,6 +57,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly IMachineShuttersWebService shuttersWebService;
 
+        private string activeView;
+
         private Bay bay;
 
         private SubscriptionToken bayChainPositionChangedToken;
@@ -148,6 +150,12 @@ namespace Ferretto.VW.App.Services
         #endregion
 
         #region Properties
+
+        public string ActiveView
+        {
+            get => this.activeView;
+            set => this.SetProperty(ref this.activeView, value);
+        }
 
         public Bay Bay
         {
@@ -1186,6 +1194,7 @@ namespace Ferretto.VW.App.Services
 
         private void WarningsManagement(string view)
         {
+            this.ActiveView = view;
             if (!(view is null) && !this.MachineStatus.IsMoving && !this.MachineStatus.IsMovingLoadingUnit)
             {
                 switch (this.GetWarningAreaAttribute())
