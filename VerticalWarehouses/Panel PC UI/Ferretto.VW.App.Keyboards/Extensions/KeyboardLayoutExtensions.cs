@@ -38,7 +38,7 @@ namespace Ferretto.VW.App.Keyboards
                 var rowGrid = new Grid
                 {
                     HorizontalAlignment = row.HorizontalAlignment,
-                    VerticalAlignment = row.VerticalAlignment
+                    VerticalAlignment = row.VerticalAlignment,
                 };
                 Grid.SetRow(rowGrid, rowIndex++);
                 grid.Children.Add(rowGrid);
@@ -64,6 +64,7 @@ namespace Ferretto.VW.App.Keyboards
                         KeyboardButton btn = new KeyboardButton
                         {
                             Padding = padding,
+                            VerticalAlignment = VerticalAlignment.Stretch,
                             Margin = margin,
                             Key = key,
                             MinWidth = minWidth,

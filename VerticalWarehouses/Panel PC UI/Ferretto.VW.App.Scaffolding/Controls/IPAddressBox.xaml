@@ -42,8 +42,8 @@
                           Style="{StaticResource ByteTextBox}"
                           Text="{Binding Path=IPAddress, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}, Converter={StaticResource IPAddressToStringConverter}, ConverterParameter=0, Mode=TwoWay}">
             <interactivity:Interaction.Behaviors>
-                <!--<ctrlBehaviors:KeyboardPopupBehavior KeyboardLayoutCode="Numpad" />-->
-                <behaviors:TextBoxKeyboardBehavior Keyboard="Numpad" />
+                <ctrlBehaviors:KeyboardPopupBehavior KeyboardLayoutCode="Numpad" />
+                <!--<behaviors:TextBoxKeyboardBehavior Keyboard="Numpad" />-->
                 <behaviors:TextBoxAutoSelectBehavior />
                 <behaviors:NumericTextBoxFilterBehavior Min="0" Max="255" />
             </interactivity:Interaction.Behaviors>
@@ -55,8 +55,8 @@
                           Style="{StaticResource ByteTextBox}"
                           Text="{Binding Path=IPAddress, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}, Converter={StaticResource IPAddressToStringConverter}, ConverterParameter=1, Mode=TwoWay}">
             <interactivity:Interaction.Behaviors>
-                <!--<ctrlBehaviors:KeyboardPopupBehavior KeyboardLayoutCode="Numpad" />-->
-                <behaviors:TextBoxKeyboardBehavior Keyboard="Numpad" />
+                <ctrlBehaviors:KeyboardPopupBehavior KeyboardLayoutCode="Numpad" />
+                <!--<behaviors:TextBoxKeyboardBehavior Keyboard="Numpad" />-->
                 <behaviors:TextBoxAutoSelectBehavior />
                 <behaviors:NumericTextBoxFilterBehavior Min="0" Max="255" />
             </interactivity:Interaction.Behaviors>
@@ -68,8 +68,8 @@
                           Style="{StaticResource ByteTextBox}"
                           Text="{Binding Path=IPAddress, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}, Converter={StaticResource IPAddressToStringConverter}, ConverterParameter=2, Mode=TwoWay}">
             <interactivity:Interaction.Behaviors>
-                <!--<ctrlBehaviors:KeyboardPopupBehavior KeyboardLayoutCode="Numpad" />-->
-                <behaviors:TextBoxKeyboardBehavior Keyboard="Numpad" />
+                <ctrlBehaviors:KeyboardPopupBehavior KeyboardLayoutCode="Numpad" />
+                <!--<behaviors:TextBoxKeyboardBehavior Keyboard="Numpad" />-->
                 <behaviors:TextBoxAutoSelectBehavior />
                 <behaviors:NumericTextBoxFilterBehavior Min="0" Max="255" />
             </interactivity:Interaction.Behaviors>
@@ -81,8 +81,8 @@
                           Style="{StaticResource ByteTextBox}"
                           Text="{Binding Path=IPAddress, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}, Converter={StaticResource IPAddressToStringConverter}, ConverterParameter=3, Mode=TwoWay}">
             <interactivity:Interaction.Behaviors>
-                <!--<ctrlBehaviors:KeyboardPopupBehavior KeyboardLayoutCode="Numpad" />-->
-                <behaviors:TextBoxKeyboardBehavior Keyboard="Numpad" />
+                <ctrlBehaviors:KeyboardPopupBehavior KeyboardLayoutCode="Numpad" />
+                <!--<behaviors:TextBoxKeyboardBehavior Keyboard="Numpad" />-->
                 <behaviors:TextBoxAutoSelectBehavior />
                 <behaviors:NumericTextBoxFilterBehavior Min="0" Max="255" />
             </interactivity:Interaction.Behaviors>

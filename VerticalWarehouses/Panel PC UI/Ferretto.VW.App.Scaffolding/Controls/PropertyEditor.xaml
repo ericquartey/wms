@@ -195,9 +195,11 @@
 
                     <!-- keyboard interactivity -->
                     <interactivity:Interaction.Behaviors>
-                        <!--<behaviors:KeyboardPopupBehavior KeyboardLayoutCode="{Binding Converter={StaticResource TypeToKeyboardLayoutCodeConverter}}" />-->
-                        <behaviorsLocal:TextBoxKeyboardBehavior Keyboard="{Binding Converter={StaticResource KeyboardTypeConverter}}"
-                            KeyboardCaption="{Binding Converter={StaticResource DisplayNameConverter}}" />
+                        <behaviors:KeyboardPopupBehavior InactiveTimeout="00:00:15"
+                                                         KeyboardLabel="{Binding Converter={StaticResource DisplayNameConverter}}"
+                                                         KeyboardLayoutCode="{Binding Converter={StaticResource TypeToKeyboardLayoutCodeConverter}}" />
+                        <!--<behaviorsLocal:TextBoxKeyboardBehavior Keyboard="{Binding Converter={StaticResource KeyboardTypeConverter}}"
+                            KeyboardCaption="{Binding Converter={StaticResource DisplayNameConverter}}" />-->
                     </interactivity:Interaction.Behaviors>
                 </TextBox>
             </DataTemplate>

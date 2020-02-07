@@ -12,6 +12,7 @@
                       Width="800"
                       Height="450"
                       IsClosed="{Binding IsClosed}"
+                      Background="Transparent"
                       mc:Ignorable="d">
     <dialog:PpcDialogView.Resources>
         <keyboardConverters:LayoutCodeToKeyboardLayoutConverter x:Key="LayoutCodeToKeyboardLayoutConverter" />
@@ -20,7 +21,8 @@
         <Style x:Key="KeyboardTextBoxStyle"
                BasedOn="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
                TargetType="{x:Type TextBox}">
-            <Setter Property="Padding" Value="0,15" />
+            <Setter Property="Padding" Value="15" />
+            <Setter Property="FontSize" Value="{DynamicResource FontSize_Very_High}" />
             <Setter Property="Background" Value="#3000" />
             <Setter Property="Validation.ErrorTemplate">
                 <Setter.Value>
@@ -59,11 +61,10 @@
         </Style>
 
     </dialog:PpcDialogView.Resources>
-    <dialog:PpcDialogView.Background>
-        <SolidColorBrush Opacity="0.5"
-                         Color="Snow" />
-    </dialog:PpcDialogView.Background>
-    <Grid Background="{DynamicResource VWAPP_BACKGROUND}">
+    <Grid>
+        <Grid.Background>
+            <SolidColorBrush Color="{DynamicResource ColorFerrettoDarkGray}" Opacity=".5" />
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="Auto" />
@@ -72,13 +73,31 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
+        <Border VerticalAlignment="Top"
+                Visibility="{Binding Path=LabelText, Converter={StaticResource TTUI}}"
+                Margin="15" Padding="15,5">
+            <Border.Background>
+                <SolidColorBrush Color="{DynamicResource ColorFerrettoLightGray}"
+                                 Opacity=".1" />
+            </Border.Background>
+
+            <TextBlock Text="{Binding LabelText}"
+                       HorizontalAlignment="Center"
+                   FontSize="{DynamicResource FontSize_Very_High}">
+                <TextBlock.Foreground>
+                    <SolidColorBrush Color="{DynamicResource ColorFerrettoMediumGray}"
+                                 Opacity="1" />
+                </TextBlock.Foreground>
+            </TextBlock>
+        </Border>
+
         <TextBox x:Name="textBox"
                  Grid.Row="1"
                  Margin="50,15"
                  Style="{StaticResource KeyboardTextBoxStyle}"
                  Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}" />
 
-        <keyboards:Keyboard Grid.Row="2"
+        <keyboards:Keyboard Grid.Row="2" Margin="15,0"
                             KeyboardCommand="Keyboard_KeyboardCommand"
                             KeyboardLayout="{Binding Path=KeyboardLayoutCode, Converter={StaticResource LayoutCodeToKeyboardLayoutConverter}}"
                             KeyboardLayoutChangeRequest="Keyboard_KeyboardLayoutChangeRequest" />

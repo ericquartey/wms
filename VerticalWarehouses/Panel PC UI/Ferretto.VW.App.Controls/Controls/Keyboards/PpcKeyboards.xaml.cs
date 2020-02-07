@@ -19,16 +19,19 @@ namespace Ferretto.VW.App.Controls.Keyboards
     {
         #region Fields
 
-        private readonly TextBox _textBox;
+        private readonly Control _ctrl;
+
+        private readonly DependencyProperty _property;
 
         #endregion
 
         #region Constructors
 
-        public PpcKeyboards(TextBox tget) : this()
+        public PpcKeyboards(Control tget, DependencyProperty prop) : this()
         {
-            this._textBox = tget ?? throw new ArgumentNullException(nameof(tget));
-            var srcValidationRules = tget.GetBindingExpression(TextBox.TextProperty)?.ParentBinding.ValidationRules;
+            this._ctrl = tget ?? throw new ArgumentNullException(nameof(tget));
+            this._property = prop;
+            var srcValidationRules = tget.GetBindingExpression(prop)?.ParentBinding.ValidationRules;
             if (srcValidationRules?.Count > 0)
             {
                 var tgetRules = this.textBox.GetBindingExpression(TextBox.TextProperty)?.ParentBinding.ValidationRules;
@@ -40,6 +43,10 @@ namespace Ferretto.VW.App.Controls.Keyboards
                     }
                 }
             }
+        }
+
+        public PpcKeyboards(TextBox tget) : this(tget, TextBox.TextProperty)
+        {
         }
 
         public PpcKeyboards()
@@ -62,12 +69,15 @@ namespace Ferretto.VW.App.Controls.Keyboards
 
         private void Keyboard_KeyboardCommand(object sender, App.Keyboards.Controls.KeyboardCommandEventArgs e)
         {
+            // reset inactive timeout
+            this.ViewModel.ResetTimer();
+
             // assign
             if (e.CommandKey == System.Windows.Input.Key.Enter)
             {
-                if (this._textBox != null)
+                if (this._ctrl != null)
                 {
-                    this._textBox.Text = this.textBox.Text;
+                    this._ctrl.SetValue(this._property, Convert.ChangeType(this.textBox.Text, this._property.PropertyType));
                 }
             }
 
@@ -81,6 +91,9 @@ namespace Ferretto.VW.App.Controls.Keyboards
 
         private void Keyboard_KeyboardLayoutChangeRequest(object sender, App.Keyboards.Controls.KeyboardLayoutChangeRequestEventArgs e)
         {
+            // reset inactive timeout
+            this.ViewModel.ResetTimer();
+
             this.ViewModel.KeyboardLayoutCode = e.LayoutCode;
         }
 

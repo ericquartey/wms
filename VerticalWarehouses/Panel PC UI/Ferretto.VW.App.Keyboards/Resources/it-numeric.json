@@ -283,6 +283,6 @@
       "HorizontalAlignment": "Stretch"
     }
   ],
-  "KeyMargin": "1",
-  "KeyPadding": "4"
+  "KeyMargin": "5",
+  "KeyPadding": "5"
 }

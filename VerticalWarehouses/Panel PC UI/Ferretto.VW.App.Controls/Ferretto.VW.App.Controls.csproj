@@ -41,6 +41,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Behaviors\KeyboardPopupBehaviorBase.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Ferretto.VW.App.Keyboards\Ferretto.VW.App.Keyboards.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Resources\Ferretto.VW.App.Resources.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj" />

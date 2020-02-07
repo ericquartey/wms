@@ -86,7 +86,7 @@
                TargetType="Border">
             <Setter Property="BorderThickness" Value="0,0,0,1" />
             <Setter Property="CornerRadius" Value="0" />
-            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />  
         </Style>
 
         <Style TargetType="{x:Type ListView}">
@@ -198,9 +198,9 @@
                 </Setter.Value>
             </Setter>
             <EventSetter Event="MouseDoubleClick"
-                         Handler="ListViewItem_Click" />
-            <EventSetter Event="TouchUp"
-                         Handler="ListViewItem_Click" />
+                         Handler="ListViewItem_DblClick" />
+            <EventSetter Event="PreviewTouchDown"
+                         Handler="ListViewItem_PreviewTouchDown" />
             <Style.Triggers>
                 <Trigger Property="HasItems" Value="False">
                     <Setter Property="Template">
@@ -459,6 +459,7 @@
             </Grid>
             <!--  entities  -->
             <ListView Grid.Row="1"
+                      SelectionChanged="ListView_SelectionChanged"
                       ItemsSource="{Binding}">
                 <ListView.View>
                     <GridView>

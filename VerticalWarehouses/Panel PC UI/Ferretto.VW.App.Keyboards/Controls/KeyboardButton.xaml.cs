@@ -74,7 +74,15 @@ namespace Ferretto.VW.App.Keyboards.Controls
             ((KeyboardButton)d).SynchronizeLayout();
         }
 
-        private void Btn_Click(object sender, RoutedEventArgs e)
+        private void UserControl_TouchUp(object sender, TouchEventArgs e)
+        {
+            // e.Handled = true;
+            this.ExecuteKeyCommand();
+
+            // how to avoid .IsMouseOver trigger?
+        }
+
+        private void UserControl_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             this.ExecuteKeyCommand();
         }

@@ -1,5 +1,4 @@
 {
-  "KeyMinWidth": 100,
   "Rows": [
     {
       "Cells": [
@@ -75,7 +74,7 @@
         }
       ],
       "Height": "Auto",
-      "HorizontalAlignment": "Center"
+      "HorizontalAlignment": "Stretch"
     },
     {
       "Cells": [
@@ -144,7 +143,7 @@
         }
       ],
       "Height": "Auto",
-      "HorizontalAlignment": "Center"
+      "HorizontalAlignment": "Stretch"
     },
     {
       "Cells": [
@@ -217,7 +216,7 @@
         }
       ],
       "Height": "Auto",
-      "HorizontalAlignment": "Center"
+      "HorizontalAlignment": "Stretch"
     },
     {
       "Cells": [
@@ -279,6 +278,6 @@
       "HorizontalAlignment": "Stretch"
     }
   ],
-  "KeyMargin": "1,3",
-  "KeyPadding": "6,4"
+  "KeyMargin": "5",
+  "KeyPadding": "5"
 }

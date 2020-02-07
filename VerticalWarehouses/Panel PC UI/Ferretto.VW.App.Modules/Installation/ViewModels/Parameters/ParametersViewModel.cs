@@ -160,11 +160,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             try
             {
+                // tabula rasa
+                this.ClearNotifications();
                 this.IsBusy = true;
 
                 await this.machineConfigurationWebService.SetAsync(this.configuration);
 
-                this.ShowNotification(Resources.InstallationApp.SaveSuccessful);
+                this.ShowNotification(Resources.InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
 
                 this.configuration = await this.machineConfigurationWebService.GetAsync();
                 this.RaisePropertyChanged(nameof(this.Configuration));

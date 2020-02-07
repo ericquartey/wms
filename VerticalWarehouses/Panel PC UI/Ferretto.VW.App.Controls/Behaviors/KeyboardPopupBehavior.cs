@@ -14,20 +14,38 @@ namespace Ferretto.VW.App.Controls.Behaviors
     {
         #region Fields
 
+        public static readonly DependencyProperty InactiveTimeoutProperty =
+                            DependencyProperty.Register(nameof(InactiveTimeout), typeof(TimeSpan), typeof(KeyboardPopupBehavior));
+
         public static readonly DependencyProperty IsDoubleClickTriggerEnabledProperty
-                    = DependencyProperty.RegisterAttached(nameof(IsDoubleClickTriggerEnabled), typeof(bool), typeof(KeyboardPopupBehavior), new PropertyMetadata(true));
+                            = DependencyProperty.RegisterAttached(nameof(IsDoubleClickTriggerEnabled), typeof(bool), typeof(KeyboardPopupBehavior), new PropertyMetadata(true));
+
+        public static readonly DependencyProperty KeyboardLabelProperty =
+                    DependencyProperty.Register(nameof(KeyboardLabel), typeof(string), typeof(KeyboardPopupBehavior));
 
         public static readonly DependencyProperty KeyboardLayoutCodeProperty =
-                    DependencyProperty.Register(nameof(KeyboardLayoutCode), typeof(string), typeof(KeyboardPopupBehavior), new PropertyMetadata("lowercase"));
+                            DependencyProperty.Register(nameof(KeyboardLayoutCode), typeof(string), typeof(KeyboardPopupBehavior), new PropertyMetadata("lowercase"));
 
         #endregion
 
         #region Properties
 
+        public TimeSpan InactiveTimeout
+        {
+            get => (TimeSpan)this.GetValue(InactiveTimeoutProperty);
+            set => this.SetValue(InactiveTimeoutProperty, value);
+        }
+
         public bool IsDoubleClickTriggerEnabled
         {
             get => (bool)this.GetValue(IsDoubleClickTriggerEnabledProperty);
             set => this.SetValue(IsDoubleClickTriggerEnabledProperty, value);
+        }
+
+        public string KeyboardLabel
+        {
+            get => (string)this.GetValue(KeyboardLabelProperty);
+            set => this.SetValue(KeyboardLabelProperty, value);
         }
 
         public string KeyboardLayoutCode
@@ -43,32 +61,29 @@ namespace Ferretto.VW.App.Controls.Behaviors
         protected override void OnAttached()
         {
             base.OnAttached();
-            this.AssociatedObject.TouchDown += this.TextBox_TouchDown;
+            this.AssociatedObject.TouchUp += this.TextBox_TouchUp;
             this.AssociatedObject.MouseDoubleClick += this.TextBox_MouseDoubleClick;
         }
 
         protected override void OnDetaching()
         {
-            this.AssociatedObject.TouchDown -= this.TextBox_TouchDown;
+            this.AssociatedObject.TouchUp -= this.TextBox_TouchUp;
             base.OnDetaching();
-        }
-
-        private void OnOpenKeyboard(RoutedEventArgs e)
-        {
-            if (this.AssociatedObject.IsEnabled && !this.AssociatedObject.IsReadOnly)
-            {
-                e.Handled = true;
-                this.OpenKeyboard();
-            }
         }
 
         private void OpenKeyboard()
         {
+            if (!this.AssociatedObject.IsEnabled || this.AssociatedObject.IsReadOnly)
+            {
+                return;
+            }
             // show keyboard
             var dialog = new Keyboards.PpcKeyboards(this.AssociatedObject);
             dialog.DataContext = new Keyboards.PpcKeyboardsViewModel(this.KeyboardLayoutCode)
             {
-                InputText = this.AssociatedObject.Text
+                InputText = this.AssociatedObject.Text,
+                LabelText = this.KeyboardLabel,
+                InactiveTimeout = this.InactiveTimeout
             };
             dialog.Topmost = false;
             dialog.ShowInTaskbar = false;
@@ -79,13 +94,14 @@ namespace Ferretto.VW.App.Controls.Behaviors
         {
             if (this.IsDoubleClickTriggerEnabled)
             {
-                this.OnOpenKeyboard(e);
+                this.OpenKeyboard();
             }
         }
 
-        private void TextBox_TouchDown(object sender, TouchEventArgs e)
+        private void TextBox_TouchUp(object sender, TouchEventArgs e)
         {
-            this.OnOpenKeyboard(e);
+            // e.Handled = true;
+            this.Dispatcher.BeginInvoke(new Action(this.OpenKeyboard));
         }
 
         #endregion

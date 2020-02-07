@@ -7,7 +7,8 @@
              xmlns:converters="clr-namespace:Ferretto.VW.App.Keyboards.Converters"
              xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d"
-             ButtonBase.Click="Btn_Click"
+             TouchUp="UserControl_TouchUp"
+             PreviewMouseDoubleClick="UserControl_PreviewMouseDoubleClick"
              DataContext="{Binding Path=., RelativeSource={RelativeSource Mode=Self}}"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -43,9 +44,13 @@
             <Setter Property="MinHeight" Value="{DynamicResource PpcButtonHeight}" />
             <Setter Property="Background" Value="{DynamicResource PpcButtonBackground}" />
             <Setter Property="Foreground" Value="{DynamicResource PpcButtonForeground}" />
-            <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
+            <Setter Property="FontSize" Value="{DynamicResource FontSize_Very_High}" />
             <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
             <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
 
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
@@ -74,8 +79,6 @@
 
     </UserControl.Resources>
     <Button Focusable="False" x:Name="Btn"
-            VerticalContentAlignment="Center"
-            HorizontalContentAlignment="Center"
             Margin="{Binding Path=Padding, Converter={StaticResource NegateConverter}}"
             Padding="{Binding Path=Padding}"
             Style="{StaticResource DefaultKeyboardButtonStyle}">
