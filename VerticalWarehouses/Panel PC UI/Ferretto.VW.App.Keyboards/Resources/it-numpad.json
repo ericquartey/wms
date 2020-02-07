@@ -4,6 +4,7 @@
       "Cells": [
         {
           "KeyMinWidth": 100,
+          "KeyMinHeight": 60,
           "Key": {
             "Command": {
               "CommandText": "1"
@@ -27,6 +28,7 @@
           }
         },
         {
+          "KeyMinWidth": 100,
           "Key": {
             "Command": {
               "CommandText": "("
@@ -34,6 +36,7 @@
           }
         },
         {
+          "KeyMinWidth": 100,
           "Key": {
             "Command": {
               "CommandText": ")"
@@ -41,6 +44,7 @@
           }
         },
         {
+          "KeyMinWidth": 100,
           "Key": {
             "Command": {
               "CommandText": ","
@@ -49,7 +53,7 @@
         }
       ],
       "Height": "Auto",
-      "HorizontalAlignment": "Stretch"
+      "HorizontalAlignment": "Center"
     },
     {
       "Cells": [
@@ -78,6 +82,7 @@
           }
         },
         {
+          "KeyMinWidth": 100,
           "Key": {
             "Command": {
               "CommandText": "+"
@@ -85,6 +90,7 @@
           }
         },
         {
+          "KeyMinWidth": 100,
           "Key": {
             "Command": {
               "CommandText": "-"
@@ -92,6 +98,7 @@
           }
         },
         {
+          "KeyMinWidth": 100,
           "Key": {
             "Command": {
               "CommandText": ";"
@@ -100,7 +107,7 @@
         }
       ],
       "Height": "Auto",
-      "HorizontalAlignment": "Stretch"
+      "HorizontalAlignment": "Center"
     },
     {
       "Cells": [
@@ -129,6 +136,7 @@
           }
         },
         {
+          "KeyMinWidth": 100,
           "Key": {
             "Command": {
               "CommandText": "/"
@@ -136,6 +144,7 @@
           }
         },
         {
+          "KeyMinWidth": 100,
           "Key": {
             "Command": {
               "CommandText": "N"
@@ -144,6 +153,7 @@
         },
         {
           "KeyStyleResource": "AccentKeyboardButtonStyle",
+          "KeyMinWidth": 100,
           "Key": {
             "Command": {
               "Caption": "{icon:BackspaceSolid}",
@@ -153,7 +163,7 @@
         }
       ],
       "Height": "Auto",
-      "HorizontalAlignment": "Stretch"
+      "HorizontalAlignment": "Center"
     },
     {
       "Cells": [
@@ -182,6 +192,7 @@
           }
         },
         {
+          "KeyMinWidth": 100,
           "Key": {
             "Command": {
               "CommandText": "."
@@ -189,6 +200,7 @@
           }
         },
         {
+          "KeyMinWidth": 100,
           "Key": {
             "Command": {
               "Caption": " ",
@@ -197,6 +209,7 @@
           }
         },
         {
+          "KeyMinWidth": 100,
           "KeyStyleResource": "AccentKeyboardButtonStyle",
           "Key": {
             "Command": {
@@ -207,7 +220,7 @@
         }
       ],
       "Height": "Auto",
-      "HorizontalAlignment": "Stretch"
+      "HorizontalAlignment": "Center"
     }
 
   ],

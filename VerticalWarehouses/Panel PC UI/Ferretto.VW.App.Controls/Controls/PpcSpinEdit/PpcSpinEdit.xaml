@@ -34,7 +34,7 @@
                                        Foreground="{DynamicResource PpcForeground}"
                                        MouseDoubleClick="OnKeyboardOpenHandler"
                                        Template="{TemplateBinding ActualEditorControlTemplate}"
-                                       TouchEnter="OnKeyboardOpenHandler" />
+                                       TouchUp="OnKeyboardOpenHandler" />
                     <dxe:ButtonsControl x:Name="PART_RightButtons"
                                         Grid.Column="3"
                                         Margin="0"

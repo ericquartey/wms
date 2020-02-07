@@ -195,7 +195,7 @@
 
                     <!-- keyboard interactivity -->
                     <interactivity:Interaction.Behaviors>
-                        <behaviors:KeyboardPopupBehavior InactiveTimeout="00:00:15"
+                        <behaviors:KeyboardPopupBehavior InactiveTimeout="00:01:00"
                                                          KeyboardLabel="{Binding Converter={StaticResource DisplayNameConverter}}"
                                                          KeyboardLayoutCode="{Binding Converter={StaticResource TypeToKeyboardLayoutCodeConverter}}" />
                         <!--<behaviorsLocal:TextBoxKeyboardBehavior Keyboard="{Binding Converter={StaticResource KeyboardTypeConverter}}"

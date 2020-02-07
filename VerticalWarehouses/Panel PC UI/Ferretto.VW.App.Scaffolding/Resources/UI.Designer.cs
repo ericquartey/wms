@@ -97,6 +97,15 @@ namespace Ferretto.VW.App.Scaffolding.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Valore non valido.
+        /// </summary>
+        public static string GenericValidationError {
+            get {
+                return ResourceManager.GetString("GenericValidationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Macchina.
         /// </summary>
         public static string Machine {
