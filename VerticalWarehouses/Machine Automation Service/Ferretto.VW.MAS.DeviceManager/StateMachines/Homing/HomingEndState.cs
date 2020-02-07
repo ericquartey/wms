@@ -119,9 +119,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             }
             else
             {
-                if (this.machineData.AxisToCalibrate == Axis.Horizontal
-                    ||
-                    this.machineData.AxisToCalibrate == Axis.HorizontalAndVertical)
+                if (//this.machineData.AxisToCalibrate == Axis.Horizontal
+                    //||
+                    this.machineData.RequestedAxisToCalibrate == Axis.HorizontalAndVertical)
                 {
                     var elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
                     elevatorDataProvider.UpdateLastIdealPosition(0);
