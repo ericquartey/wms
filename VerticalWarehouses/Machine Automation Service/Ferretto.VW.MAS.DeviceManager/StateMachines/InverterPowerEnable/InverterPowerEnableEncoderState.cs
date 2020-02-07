@@ -1,9 +1,11 @@
 ﻿using System;
+using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.InverterPowerEnable.Interfaces;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -103,6 +105,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
             }
             else if (message.Type == FieldMessageType.InverterStatusUpdate
                 && message.Status == MessageStatus.OperationExecuting
+                && this.inverterSwitched
                 && message.Data is InverterStatusUpdateFieldMessageData data
                 )
             {
@@ -169,6 +172,8 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
 
         public override void Start()
         {
+            this.ioSwitched = false;
+            this.inverterSwitched = false;
             var axis = Axis.Horizontal;
             this.Logger.LogDebug($"Start with requested state: {this.machineData.Enable} Bay: {this.machineData.TargetBay}");
             var ioCommandMessageData = new SwitchAxisFieldMessageData(Axis.Horizontal);

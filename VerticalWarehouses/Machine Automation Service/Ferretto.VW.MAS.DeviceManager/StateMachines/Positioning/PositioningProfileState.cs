@@ -87,16 +87,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                 || profileHeight > this.machineConfiguration.LoadUnitMaxHeight
                                 )
                             {
-                                this.Logger.LogError($"Measure Profile error {profileHeight}! min height {this.machineConfiguration.LoadUnitMinHeight}, max height{this.machineConfiguration.LoadUnitMaxHeight}");
-                                if (++this.retry >= MAX_RETRIES)
-                                {
-                                    this.Stop(StopRequestReason.Stop);
-                                }
-                                else
+                                this.Logger.LogError($"Measure Profile error {profileHeight}! min height {this.machineConfiguration.LoadUnitMinHeight}, max height {this.machineConfiguration.LoadUnitMaxHeight}");
+                                if (++this.retry < MAX_RETRIES)
                                 {
                                     this.RequestMeasureProfile();
+                                    break;
                                 }
-                                break;
                             }
                             int? loadUnitId = this.machineData.MessageData.LoadingUnitId;
                             if (!loadUnitId.HasValue)

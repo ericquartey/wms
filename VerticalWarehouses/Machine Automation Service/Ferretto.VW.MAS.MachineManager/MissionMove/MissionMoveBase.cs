@@ -88,7 +88,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 && bay != null
                 )
             {
-                if (unitToMove.Height <= bayPosition.MaxSingleHeight)
+                if (unitToMove.Height <= bayPosition.MaxSingleHeight
+                    && unitToMove.Height >= bayPosition.MinSingleHeight
+                    )
                 {
                     returnValue = true;
                 }
