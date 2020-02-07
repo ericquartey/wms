@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 
 namespace Ferretto.VW.App.Controls.Keyboards
 {
-    public partial class PpcKeyboards : PpcDialogView, IDisposable
+    public partial class PpcKeyboards : PpcDialogView
     {
         #region Fields
 
@@ -69,6 +69,7 @@ namespace Ferretto.VW.App.Controls.Keyboards
             this.InitializeComponent();
             this.textBox.Focus();
             this.Loaded += this.PpcKeyboards_Loaded;
+            this.Unloaded += this.PpcKeyboards_Unloaded;
         }
 
         #endregion
@@ -81,11 +82,6 @@ namespace Ferretto.VW.App.Controls.Keyboards
 
         #region Methods
 
-        public void Dispose()
-        {
-            this.textBox.TextChanged -= this.TextBox_TextChanged;
-        }
-
         private void Keyboard_KeyboardCommand(object sender, App.Keyboards.Controls.KeyboardCommandEventArgs e)
         {
             // reset inactive timeout
@@ -94,9 +90,16 @@ namespace Ferretto.VW.App.Controls.Keyboards
             // assign
             if (e.CommandKey == System.Windows.Input.Key.Enter)
             {
+                if (!this.ViewModel.IsValid)
+                {
+                    // trying to commit an invalid value, exit.
+                    return;
+                }
+
                 if (this._ctrl != null)
                 {
-                    this._ctrl.SetValue(this._property, Convert.ChangeType(this.textBox.Text, this._outputType));
+                    IFormatProvider culture = this.Language.GetEquivalentCulture();
+                    this._ctrl.SetValue(this._property, Convert.ChangeType(this.textBox.Text, this._outputType, culture));
                 }
             }
 
@@ -120,12 +123,22 @@ namespace Ferretto.VW.App.Controls.Keyboards
         {
             this.Loaded -= this.PpcKeyboards_Loaded;
             this.textBox.SelectAll();
+            if (this.textBox.Language?.GetEquivalentCulture() != this.Language.GetEquivalentCulture())
+            {
+                this.textBox.Language = this.Language;
+            }
             this.textBox.TextChanged += this.TextBox_TextChanged;
+        }
+
+        private void PpcKeyboards_Unloaded(object sender, RoutedEventArgs e)
+        {
+            this.Unloaded -= this.PpcKeyboards_Unloaded;
+            this.textBox.TextChanged -= this.TextBox_TextChanged;
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            this.ViewModel.IsValid = Validation.GetHasError((DependencyObject)sender);
+            this.ViewModel.IsValid = !Validation.GetHasError((DependencyObject)sender);
         }
 
         #endregion

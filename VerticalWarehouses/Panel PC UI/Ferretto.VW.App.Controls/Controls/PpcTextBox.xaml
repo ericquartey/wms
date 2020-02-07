@@ -16,7 +16,7 @@
                  KeyDown="OnKeyDownHandler"
                  MouseDoubleClick="OnKeyboardOpenHandler"
                  Text="{Binding InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                 TouchEnter="OnKeyboardOpenHandler">
+                 TouchUp="OnKeyboardOpenHandler">
             <TextBox.Style>
                 <Style BasedOn="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
                        TargetType="{x:Type TextBox}">

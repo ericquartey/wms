@@ -20,9 +20,9 @@ namespace Ferretto.VW.App.Controls.Keyboards
             string caption = default, TimeSpan timeout = default)
         {
             // show keyboard
-            var dialog = new Keyboards.PpcKeyboards(ctrl, dependencyProperty, outputType);
+            var dialog = new PpcKeyboards(ctrl, dependencyProperty, outputType);
             object value = ctrl.GetValue(dependencyProperty);
-            dialog.DataContext = new Keyboards.PpcKeyboardsViewModel(layoutCode)
+            dialog.DataContext = new PpcKeyboardsViewModel(layoutCode)
             {
                 InputText = Convert.ToString(value, System.Globalization.CultureInfo.CurrentCulture),
                 LabelText = caption,
