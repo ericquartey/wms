@@ -27,17 +27,6 @@ namespace Ferretto.VW.MAS.AutomationService
             await this.installationHub.Clients.All.CalibrateAxisNotify(message);
         }
 
-        private void ChangeMachineMode()
-        {
-            if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic
-                || this.machineVolatileDataProvider.Mode == MachineMode.Restore
-                )
-            {
-                this.machineVolatileDataProvider.Mode = MachineMode.Automatic;
-                this.Logger.LogInformation($"Automation Machine status switched to {this.machineVolatileDataProvider.Mode}");
-            }
-        }
-
         private async Task CurrentPositionMethod(NotificationMessage receivedMessage)
         {
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);

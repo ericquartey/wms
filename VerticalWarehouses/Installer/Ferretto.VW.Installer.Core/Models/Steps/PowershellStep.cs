@@ -66,7 +66,8 @@ namespace Ferretto.VW.Installer.Core
 
                     if (shell.HadErrors)
                     {
-                        this.LogError("Errors encountered while running the script.");
+                        this.LogError(shell.Streams.Error.LastOrDefault()?.Exception?.Message);
+                        this.LogError("Errors encountered while running the script." );
                         return false;
                     }
                 }

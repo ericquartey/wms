@@ -125,7 +125,7 @@ namespace Ferretto.VW.Installer.Core
                     }
                 }
 
-                interpolatedValue = value.Replace(match.Value, varValue);
+                interpolatedValue = interpolatedValue.Replace(match.Value, varValue);
                 match = match.NextMatch();
             }
 

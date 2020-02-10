@@ -397,6 +397,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 else
                 {
                     this.AppendLine(InstallationApp.ErrorExecutingInstallerApp);
+                    this.isCurrentOperationValid = false;
                 }
             }
             catch (Exception ex)
