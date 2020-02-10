@@ -4,10 +4,13 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Errors.ViewModels
 {
+    [Warning(WarningsArea.None)]
     internal sealed class ErrorDetailsViewModel : BaseMainViewModel
     {
         #region Fields

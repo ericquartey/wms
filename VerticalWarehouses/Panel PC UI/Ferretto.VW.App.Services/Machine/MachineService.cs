@@ -1202,6 +1202,10 @@ namespace Ferretto.VW.App.Services
             {
                 switch (this.GetWarningAreaAttribute())
                 {
+                    case WarningsArea.None:
+                        this.ClearNotifications();
+                        break;
+
                     case WarningsArea.MovementsView:
                     case WarningsArea.Installation:
                         if (this.machineModeService.MachinePower != MachinePowerState.Powered)
