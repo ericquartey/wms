@@ -387,4 +387,25 @@
   <data name="WarehouseSide_Front" xml:space="preserve">
     <value>Front</value>
   </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Bay</value>
+  </data>
+  <data name="BayOneName" xml:space="preserve">
+    <value>One</value>
+  </data>
+  <data name="BayOneNumber" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="BayThreeName" xml:space="preserve">
+    <value>Three</value>
+  </data>
+  <data name="BayThreeNumber" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="BayTwoName" xml:space="preserve">
+    <value>Two</value>
+  </data>
+  <data name="BayTwoNumber" xml:space="preserve">
+    <value>2</value>
+  </data>
 </root>

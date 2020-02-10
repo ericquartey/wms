@@ -1,6 +1,7 @@
 ﻿<ctrls:View x:Class="Ferretto.VW.App.Modules.Errors.Views.ErrorDetailsView"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:contracts="clr-namespace:Ferretto.VW.MAS.AutomationService.Contracts;assembly=Ferretto.VW.MAS.AutomationService.Contracts"
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -58,6 +59,94 @@
                            Text="{Binding Error.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static res:General.TargetNullValue}}"
                            TextAlignment="Center"
                            TextWrapping="Wrap" />
+            </StackPanel>
+
+            <StackPanel Name="bayStackPanel"
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        MinHeight="100"
+                        HorizontalAlignment="Right"
+                        Orientation="Vertical">
+                <StackPanel.Style>
+                    <Style>
+                        <Setter Property="StackPanel.Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Error.BayNumber}"
+                                         Value="{x:Static contracts:BayNumber.BayOne}">
+                                <Setter Property="StackPanel.Visibility" Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Error.BayNumber}"
+                                         Value="{x:Static contracts:BayNumber.BayTwo}">
+                                <Setter Property="StackPanel.Visibility" Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Error.BayNumber}"
+                                         Value="{x:Static contracts:BayNumber.BayThree}">
+                                <Setter Property="StackPanel.Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+
+                <TextBlock Margin="0,1,5,1"
+                           Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                           Text="{x:Static res:General.Bay}" />
+                <TextBlock Margin="0,1,5,1"
+                           Padding="10,5,10,5"
+                           Background="{DynamicResource FerrettoBlue}"
+                           Text="{x:Static res:General.BayOneName}"
+                           TextAlignment="Center"
+                           TextWrapping="Wrap">
+                    <TextBlock.Style>
+                        <Style BasedOn="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
+                               TargetType="{x:Type TextBlock}">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Error.BayNumber}"
+                                             Value="{x:Static contracts:BayNumber.BayOne}">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBlock Margin="0,1,5,1"
+                           Padding="10,5,10,5"
+                           Background="{DynamicResource FerrettoBlue}"
+                           Text="{x:Static res:General.BayTwoName}"
+                           TextAlignment="Center"
+                           TextWrapping="Wrap">
+                    <TextBlock.Style>
+                        <Style BasedOn="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
+                               TargetType="{x:Type TextBlock}">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Error.BayNumber}"
+                                             Value="{x:Static contracts:BayNumber.BayTwo}">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBlock Margin="0,1,5,1"
+                           Padding="10,5,10,5"
+                           Background="{DynamicResource FerrettoBlue}"
+                           Text="{x:Static res:General.BayThreeName}"
+                           TextAlignment="Center"
+                           TextWrapping="Wrap">
+                    <TextBlock.Style>
+                        <Style BasedOn="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
+                               TargetType="{x:Type TextBlock}">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Error.BayNumber}"
+                                             Value="{x:Static contracts:BayNumber.BayThree}">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
             </StackPanel>
 
             <local:PpcLabeledText Grid.Row="1"

@@ -106,11 +106,74 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bay.
+        /// </summary>
+        public static string Bay {
+            get {
+                return ResourceManager.GetString("Bay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bay {0}.
         /// </summary>
         public static string BayNumber {
             get {
                 return ResourceManager.GetString("BayNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to One.
+        /// </summary>
+        public static string BayOneName {
+            get {
+                return ResourceManager.GetString("BayOneName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1.
+        /// </summary>
+        public static string BayOneNumber {
+            get {
+                return ResourceManager.GetString("BayOneNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Three.
+        /// </summary>
+        public static string BayThreeName {
+            get {
+                return ResourceManager.GetString("BayThreeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 3.
+        /// </summary>
+        public static string BayThreeNumber {
+            get {
+                return ResourceManager.GetString("BayThreeNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Two.
+        /// </summary>
+        public static string BayTwoName {
+            get {
+                return ResourceManager.GetString("BayTwoName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 2.
+        /// </summary>
+        public static string BayTwoNumber {
+            get {
+                return ResourceManager.GetString("BayTwoNumber", resourceCulture);
             }
         }
         
