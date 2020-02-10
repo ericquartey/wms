@@ -1413,4 +1413,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="Source" xml:space="preserve">
     <value>Sorg.</value>
   </data>
+  <data name="InstallerAppStartedSuccessfully" xml:space="preserve">
+    <value>App di installer avviata con successo.</value>
+  </data>
+  <data name="ErrorExecutingInstallerApp" xml:space="preserve">
+    <value>Errore durante l'esecuzione dell'app di installazione.</value>
+  </data>
 </root>

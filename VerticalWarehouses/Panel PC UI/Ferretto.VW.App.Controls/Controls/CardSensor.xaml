@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              x:Name="Card"
              d:DesignHeight="120"
              d:DesignWidth="250"
@@ -205,7 +206,7 @@
                                                    VerticalAlignment="Bottom"
                                                    FontSize="16"
                                                    Foreground="{DynamicResource FerrettoLightGray}"
-                                                   Text="Peso" />
+                                                   Text="{x:Static res:CardSensor.Weight}" />
                                         <TextBlock Grid.Row="1"
                                                    Grid.Column="0"
                                                    Margin="4"
@@ -213,7 +214,7 @@
                                                    VerticalAlignment="Top"
                                                    FontSize="16"
                                                    Foreground="{DynamicResource FerrettoLightGray}"
-                                                   Text="Altezza" />
+                                                   Text="{x:Static res:CardSensor.Height}" />
 
                                         <TextBlock Grid.Row="0"
                                                    Grid.Column="1"
@@ -558,7 +559,7 @@
                                                    VerticalAlignment="Bottom"
                                                    FontSize="16"
                                                    Foreground="{DynamicResource FerrettoLightGray}"
-                                                   Text="Peso" />
+                                                   Text="{x:Static res:CardSensor.Weight}" />
                                         <TextBlock Grid.Row="1"
                                                    Grid.Column="0"
                                                    Margin="4"
@@ -566,7 +567,7 @@
                                                    VerticalAlignment="Top"
                                                    FontSize="16"
                                                    Foreground="{DynamicResource FerrettoLightGray}"
-                                                   Text="Altezza" />
+                                                   Text="{x:Static res:CardSensor.Height}" />
 
                                         <TextBlock Grid.Row="0"
                                                    Grid.Column="1"
@@ -704,7 +705,7 @@
                                                    VerticalAlignment="Bottom"
                                                    FontSize="16"
                                                    Foreground="{DynamicResource FerrettoLightGray}"
-                                                   Text="Peso" />
+                                                   Text="{x:Static res:CardSensor.Weight}" />
                                         <TextBlock Grid.Row="1"
                                                    Grid.Column="0"
                                                    Margin="4"
@@ -712,7 +713,7 @@
                                                    VerticalAlignment="Top"
                                                    FontSize="16"
                                                    Foreground="{DynamicResource FerrettoLightGray}"
-                                                   Text="Altezza" />
+                                                   Text="{x:Static res:CardSensor.Height}" />
 
                                         <TextBlock Grid.Row="0"
                                                    Grid.Column="1"
@@ -1129,7 +1130,7 @@
                                                VerticalAlignment="Bottom"
                                                FontSize="16"
                                                Foreground="{DynamicResource FerrettoLightGray}"
-                                               Text="Peso" />
+                                               Text="{x:Static res:CardSensor.Weight}" />
                                     <TextBlock Grid.Row="1"
                                                Grid.Column="0"
                                                Margin="4"
@@ -1137,7 +1138,7 @@
                                                VerticalAlignment="Top"
                                                FontSize="16"
                                                Foreground="{DynamicResource FerrettoLightGray}"
-                                               Text="Altezza" />
+                                               Text="{x:Static res:CardSensor.Height}" />
 
 
                                     <TextBlock Grid.Row="0"

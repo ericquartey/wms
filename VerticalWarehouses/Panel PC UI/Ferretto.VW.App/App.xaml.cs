@@ -163,10 +163,12 @@ namespace Ferretto.VW.App
         private void ClearTempFolder()
         {
             var tempFolder = ConfigurationManager.AppSettings["Update:Exchange:Temp"];
+#if !DEBUG
             if (Directory.Exists(tempFolder))
             {
                 Directory.Delete(tempFolder, true);
             }
+#endif
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
