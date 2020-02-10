@@ -384,14 +384,8 @@ namespace Ferretto.VW.MAS.MissionManager
                                     && m.Step > MissionStep.New)
                                 && !this.GenerateHoming(bayProvider, this.machineVolatileDataProvider.IsHomingExecuted))
                         {
-                            var sensorProvider = serviceProvider.GetRequiredService<ISensorsProvider>();
-                            var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
-                            if (sensorProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator)
-                                && elevatorDataProvider.GetLoadingUnitOnBoard() == null
-                                )
+                            if (this.IsLoadUnitMissing(serviceProvider))
                             {
-                                var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
-                                errorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnElevator);
                                 this.machineVolatileDataProvider.Mode = MachineMode.Manual;
                             }
                             else
@@ -505,6 +499,37 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
+        private bool IsLoadUnitMissing(IServiceProvider serviceProvider)
+        {
+            var sensorProvider = serviceProvider.GetRequiredService<ISensorsProvider>();
+            var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
+            if (sensorProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator)
+                && elevatorDataProvider.GetLoadingUnitOnBoard() is null
+                )
+            {
+                var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
+                errorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnElevator);
+                return true;
+            }
+            var bayProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+            var bays = bayProvider.GetAll();
+            foreach (var bay in bays)
+            {
+                foreach (var position in bay.Positions)
+                {
+                    if (sensorProvider.IsLoadingUnitInLocation(position.Location)
+                        && position.LoadingUnit is null
+                        )
+                    {
+                        var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
+                        errorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnBay);
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         private void NotifyAssignedMissionOperationChanged(
             BayNumber bayNumber,
             int? missionId,
@@ -540,6 +565,38 @@ namespace Ferretto.VW.MAS.MissionManager
             GetPersistedMissions(serviceProvider, this.EventAggregator);
             this.dataLayerIsReady = true;
             await this.InvokeSchedulerAsync(serviceProvider);
+        }
+
+        private async Task OnHoming(NotificationMessage message, IServiceProvider serviceProvider)
+        {
+            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+            if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status != MissionStatus.Waiting && m.Status != MissionStatus.New))
+            {
+                if (message.Status == MessageStatus.OperationEnd
+                    && message.Data is IHomingMessageData data
+                    )
+                {
+                    this.machineVolatileDataProvider.IsHomingActive = false;
+                    if (data.AxisToCalibrate == Axis.BayChain)
+                    {
+                        this.machineVolatileDataProvider.IsBayHomingExecuted[message.RequestingBay] = true;
+                    }
+                    else
+                    {
+                        this.machineVolatileDataProvider.IsHomingExecuted = true;
+                    }
+                    await this.InvokeSchedulerAsync(serviceProvider);
+                }
+                else if (message.Status == MessageStatus.OperationError)
+                {
+                    this.machineVolatileDataProvider.IsHomingActive = false;
+                    if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic)
+                    {
+                        this.machineVolatileDataProvider.Mode = MachineMode.Automatic;
+                        this.Logger.LogInformation($"Automation Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                    }
+                }
+            }
         }
 
         private async Task OnLoadingUnitMovedAsync(NotificationMessage message, IServiceProvider serviceProvider)

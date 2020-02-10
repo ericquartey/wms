@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
@@ -18,6 +19,8 @@ namespace Ferretto.VW.MAS.DataLayer
         private readonly Dictionary<BayNumber, double> positions = new Dictionary<BayNumber, double>();
 
         private readonly IServiceScopeFactory serviceScopeFactory;
+
+        private bool isHomingExecuted;
 
         private MachineMode mode;
 
@@ -72,7 +75,29 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public bool IsHomingActive { get; set; }
 
-        public bool IsHomingExecuted { get; set; }
+        public bool IsHomingExecuted
+        {
+            get => this.isHomingExecuted;
+            set
+            {
+                if (this.isHomingExecuted != value)
+                {
+                    this.isHomingExecuted = value;
+
+                    // send a message to the UI
+                    this.eventAggregator
+                        .GetEvent<NotificationEvent>()
+                        .Publish(
+                            new NotificationMessage
+                            {
+                                Data = new HomingMessageData(),
+                                Destination = MessageActor.AutomationService,
+                                Source = MessageActor.DataLayer,
+                                Type = MessageType.Homing,
+                            });
+                }
+            }
+        }
 
         public bool IsMachineRunning { get; set; }
 

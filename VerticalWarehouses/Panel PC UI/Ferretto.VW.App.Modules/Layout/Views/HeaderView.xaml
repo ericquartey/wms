@@ -128,7 +128,7 @@
                               PresentationType="{x:Static enums:PresentationTypes.Shutdown}"
                               Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
                 <controls:PpcButton Command="{Binding ExecuteCommand}"
-                                    Content="{x:Static res:VWApp.SwitchOff}" />
+                                    Content="{x:Static res:General.SwitchOff}" />
             </ctrls:PpcControl>
         </StackPanel>
 

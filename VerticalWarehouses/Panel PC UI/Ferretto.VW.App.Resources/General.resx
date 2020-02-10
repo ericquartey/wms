@@ -286,4 +286,105 @@
   <data name="Close" xml:space="preserve">
     <value>Close</value>
   </data>
+  <data name="ChangeTheme" xml:space="preserve">
+    <value>Theme change</value>
+  </data>
+  <data name="AutomaticMode" xml:space="preserve">
+    <value>Automatic</value>
+    <comment>Information</comment>
+  </data>
+  <data name="BayNumber" xml:space="preserve">
+    <value>Bay {0}</value>
+    <comment>Information</comment>
+  </data>
+  <data name="DaysAgo" xml:space="preserve">
+    <value>{0:0} days ago</value>
+    <comment>Information</comment>
+  </data>
+  <data name="EmergencyIsOn" xml:space="preserve">
+    <value>Emergency is on</value>
+    <comment>Information</comment>
+  </data>
+  <data name="EnsureEmergencyIsOff" xml:space="preserve">
+    <value>Ensure no emergency buttons are pressed.</value>
+    <comment>Instruction</comment>
+  </data>
+  <data name="ErrorCode" xml:space="preserve">
+    <value>Error Code</value>
+    <comment>Label</comment>
+  </data>
+  <data name="ErrorCommunicatingWithServices" xml:space="preserve">
+    <value>Error communicating with services.</value>
+    <comment>Information</comment>
+  </data>
+  <data name="ErrorDescription" xml:space="preserve">
+    <value>Error Description</value>
+    <comment>Label</comment>
+  </data>
+  <data name="ErrorReason" xml:space="preserve">
+    <value>Error Reason</value>
+    <comment>Label</comment>
+  </data>
+  <data name="ErrorRecoveryProcedure" xml:space="preserve">
+    <value>Error recovery</value>
+    <comment>Label</comment>
+  </data>
+  <data name="FirstSeen" xml:space="preserve">
+    <value>First Seen</value>
+    <comment>Label</comment>
+  </data>
+  <data name="HoursAgo" xml:space="preserve">
+    <value>{0:0} hours ago</value>
+    <comment>Information</comment>
+  </data>
+  <data name="ManualMode" xml:space="preserve">
+    <value>Manual</value>
+    <comment>Information</comment>
+  </data>
+  <data name="MarkAsResolved" xml:space="preserve">
+    <value>Mark as resolved</value>
+    <comment>Action</comment>
+  </data>
+  <data name="MinutesAgo" xml:space="preserve">
+    <value>{0:0} minutes ago</value>
+    <comment>Information</comment>
+  </data>
+  <data name="Now" xml:space="preserve">
+    <value>Just now</value>
+    <comment>Information</comment>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
+    <comment>Information</comment>
+  </data>
+  <data name="PasswordLogin" xml:space="preserve">
+    <value>Password</value>
+    <comment>Action</comment>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Serial Number: {0}</value>
+    <comment>Information</comment>
+  </data>
+  <data name="UserLogin" xml:space="preserve">
+    <value>Username</value>
+    <comment>Label</comment>
+  </data>
+  <data name="UserLogin_Password" xml:space="preserve">
+    <value>Password</value>
+    <comment>Label</comment>
+  </data>
+  <data name="UserLogin_UserName" xml:space="preserve">
+    <value>User Name</value>
+    <comment>Label</comment>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Version {0}</value>
+    <comment>Information</comment>
+  </data>
+  <data name="WarehouseSide_Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="WarehouseSide_Front" xml:space="preserve">
+    <value>Front</value>
+  </data>
 </root>

@@ -100,11 +100,14 @@
         "Operation": "Idle",
         "Positions": [
           {
-            "Height": 772.0,
-            "Location": "InternalBay2Up",
-            "MaxDoubleHeight": 695.0,
-            "MaxSingleHeight": 320.0,
-            "ProfileOffset": 0.0
+            "Height": 772,
+            "MaxSingleHeight": 395,
+            "Location": "InternalBay2Down"
+          },
+          {
+            "Height": 1190,
+            "MaxSingleHeight": 395,
+            "Location": "InternalBay2Up"
           }
         ],
         "Resolution": 0.0,
