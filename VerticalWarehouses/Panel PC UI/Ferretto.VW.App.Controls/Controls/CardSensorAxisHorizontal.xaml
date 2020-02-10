@@ -12,10 +12,10 @@
              mc:Ignorable="d">
 
     <local:CardSensor CardDescription="{Binding HorizontalTargetPosition, TargetNullValue={x:Null}, StringFormat={}Target: {0:F2}}"
-                      CardSensorLabel1="Zero"
-                      CardSensorLabel2="Front"
-                      CardSensorLabel3="Back"
-                      CardText="Orizzontale (mm)"
+                      CardSensorLabel1="{x:Static res:CardSensor.Zero}"
+                      CardSensorLabel2="{x:Static res:CardSensor.Front}"
+                      CardSensorLabel3="{x:Static res:CardSensor.Back}"
+                      CardText="{x:Static res:CardSensor.Horizontal}"
                       CardValue="{Binding ElevatorHorizontalPosition, StringFormat={}{0:F2}}"
                       Sensor1="{Binding SensorsService.IsZeroChain}"
                       Sensor2="{Binding SensorsService.Sensors.LuPresentInMachineSide}"
