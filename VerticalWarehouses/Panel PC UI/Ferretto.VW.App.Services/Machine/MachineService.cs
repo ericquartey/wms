@@ -1202,6 +1202,10 @@ namespace Ferretto.VW.App.Services
             {
                 switch (this.GetWarningAreaAttribute())
                 {
+                    case WarningsArea.None:
+                        this.ClearNotifications();
+                        break;
+
                     case WarningsArea.MovementsView:
                     case WarningsArea.Installation:
                         if (this.machineModeService.MachinePower != MachinePowerState.Powered)
@@ -1225,7 +1229,7 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification("Homing non eseguito.", NotificationSeverity.Error);
                         }
-                        else if (view.Equals("LoadingUnitFromBayToCellView") && !this.sensorsService.IsLoadingUnitInBay && !this.sensorsService.IsLoadingUnitInMiddleBottomBay)
+                        else if (view.Equals("LoadingUnitFromBayToCellView", StringComparison.InvariantCultureIgnoreCase) && !this.sensorsService.IsLoadingUnitInBay && !this.sensorsService.IsLoadingUnitInMiddleBottomBay)
                         {
                             this.ShowNotification("Nessun cassetto presente in baia.", NotificationSeverity.Warning);
                         }

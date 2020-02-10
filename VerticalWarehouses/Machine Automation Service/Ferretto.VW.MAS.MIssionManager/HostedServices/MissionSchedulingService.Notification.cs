@@ -1,9 +1,16 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
+using Ferretto.VW.MAS.Utils.Events;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Ferretto.VW.MAS.MissionManager
 {
@@ -35,6 +42,10 @@ namespace Ferretto.VW.MAS.MissionManager
 
                 case MessageType.BayOperationalStatusChanged:
                     await this.OnBayOperationalStatusChangedAsync(serviceProvider);
+                    break;
+
+                case MessageType.Homing:
+                    await this.OnHoming(message, serviceProvider);
                     break;
 
                 case MessageType.NewMachineMissionAvailable:

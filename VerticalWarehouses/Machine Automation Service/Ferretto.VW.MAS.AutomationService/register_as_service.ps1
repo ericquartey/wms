@@ -43,7 +43,7 @@ New-Service -BinaryPathName $absoluteBinaryPath -Name $serviceName -DisplayName 
 
 try {
     Write-Host "Avvio nuovo servizio ..."
-    Start-Service $serviceName -ErrorAction SilentlyContinue 
+    Start-Service $serviceName 
 }
 catch {
     throw "Impossibile avviare il servizio"
@@ -53,7 +53,6 @@ Write-Host "Attendo che il servizio sia pronto ..."
 
 $isServiceHealthy = $false
 $retriesDone = 0
-
 do {
     try {
         $response = Invoke-WebRequest -UseBasicParsing -URI $serviceUri -ErrorAction SilentlyContinue 
