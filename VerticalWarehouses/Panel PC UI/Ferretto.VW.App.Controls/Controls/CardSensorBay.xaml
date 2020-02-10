@@ -12,7 +12,7 @@
     <local:CardSensor CardDescription="{Binding MachineStatus.BayChainTargetPosition, StringFormat={}{0:F2}}"
                       CardLuDown="{Binding MachineStatus.LoadingUnitPositionDownInBay}"
                       CardLuUp="{Binding MachineStatus.LoadingUnitPositionUpInBay}"
-                      CardSensorLabel1="{x:Static res:CardSensor.Zero}"
+                      CardSensorLabel1="{x:Static res:SensorCard.Zero}"
                       CardSensorLabel2="{Binding CardSensorLabel2}"
                       CardSensorLabel3="{Binding CardSensorLabel3}"
                       CardText="{Binding BayNumber}"

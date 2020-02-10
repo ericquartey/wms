@@ -118,31 +118,34 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Back" xml:space="preserve">
-    <value>Back</value>
+    <value>Posteriore</value>
   </data>
   <data name="Drawer" xml:space="preserve">
-    <value>Drawer</value>
+    <value>Cassetto</value>
+  </data>
+  <data name="Elevator" xml:space="preserve">
+    <value>Elevatore</value>
   </data>
   <data name="Extra" xml:space="preserve">
     <value>Extra</value>
   </data>
   <data name="Front" xml:space="preserve">
-    <value>Front</value>
+    <value>Anteriore</value>
   </data>
   <data name="Height" xml:space="preserve">
-    <value>Height</value>
+    <value>Altezza</value>
   </data>
   <data name="Horizontal" xml:space="preserve">
-    <value>Horizontal (mm)</value>
+    <value>Orizzontale (mm)</value>
   </data>
   <data name="Position" xml:space="preserve">
-    <value>Position</value>
+    <value>Posizione</value>
   </data>
   <data name="Vertical" xml:space="preserve">
-    <value>Vertical (mm)</value>
+    <value>Verticale (mm)</value>
   </data>
   <data name="Weight" xml:space="preserve">
-    <value>Weight</value>
+    <value>Peso</value>
   </data>
   <data name="Zero" xml:space="preserve">
     <value>Zero</value>

@@ -53,8 +53,8 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="CardSensor.Designer.cs">
-      <DependentUpon>CardSensor.resx</DependentUpon>
+    <Compile Update="SensorCard.Designer.cs">
+      <DependentUpon>SensorCard.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
@@ -103,8 +103,8 @@
       <LastGenOutput>MaintenanceMenu.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="CardSensor.resx">
-      <LastGenOutput>CardSensor.Designer.cs</LastGenOutput>
+    <EmbeddedResource Update="SensorCard.resx">
+      <LastGenOutput>SensorCard.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="OperatorApp.resx">

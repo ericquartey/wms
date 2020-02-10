@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using CommonServiceLocator;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 
@@ -112,10 +113,10 @@ namespace Ferretto.VW.App.Controls.Controls
         protected void OnDataRefresh()
         {
             LoadingUnit lu = this.machineService.MachineStatus.EmbarkedLoadingUnit;
-            this.Position = "Elevatore";
+            this.Position = SensorCard.Elevator;
             if (lu is null)
             {
-                this.Position = "Posizione";
+                this.Position = SensorCard.Position;
                 lu = this.machineService.MachineStatus.ElevatorPositionLoadingUnit;
             }
             if (lu is null)
