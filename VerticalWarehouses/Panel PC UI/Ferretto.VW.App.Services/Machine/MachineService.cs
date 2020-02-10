@@ -1225,7 +1225,7 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification("Homing non eseguito.", NotificationSeverity.Error);
                         }
-                        else if (view.Equals("LoadingUnitFromBayToCellView") && !this.sensorsService.IsLoadingUnitInBay && !this.sensorsService.IsLoadingUnitInMiddleBottomBay)
+                        else if (view.Equals("LoadingUnitFromBayToCellView", StringComparison.InvariantCultureIgnoreCase) && !this.sensorsService.IsLoadingUnitInBay && !this.sensorsService.IsLoadingUnitInMiddleBottomBay)
                         {
                             this.ShowNotification("Nessun cassetto presente in baia.", NotificationSeverity.Warning);
                         }
