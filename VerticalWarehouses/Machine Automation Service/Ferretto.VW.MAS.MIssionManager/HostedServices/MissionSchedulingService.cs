@@ -382,7 +382,8 @@ namespace Ferretto.VW.MAS.MissionManager
                         }
                         else if (!activeMissions.Any(m => m.Status == MissionStatus.Executing
                                     && m.Step > MissionStep.New)
-                                && !this.GenerateHoming(bayProvider, this.machineVolatileDataProvider.IsHomingExecuted))
+                                && !this.GenerateHoming(bayProvider, this.machineVolatileDataProvider.IsHomingExecuted)
+                                )
                         {
                             if (this.IsLoadUnitMissing(serviceProvider))
                             {
@@ -503,13 +504,22 @@ namespace Ferretto.VW.MAS.MissionManager
         {
             var sensorProvider = serviceProvider.GetRequiredService<ISensorsProvider>();
             var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
-            if (sensorProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator)
-                && elevatorDataProvider.GetLoadingUnitOnBoard() is null
-                )
+            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+            var moveLoadingUnitProvider = serviceProvider.GetRequiredService<IMoveLoadingUnitProvider>();
+            if (sensorProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
             {
-                var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
-                errorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnElevator);
-                return true;
+                var loadUnit = elevatorDataProvider.GetLoadingUnitOnBoard();
+                if (loadUnit is null)
+                {
+                    var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
+                    errorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnElevator);
+                    return true;
+                }
+                if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitId == loadUnit.Id))
+                {
+                    moveLoadingUnitProvider.InsertToCell(MissionType.Manual, LoadingUnitLocation.Elevator, null, loadUnit.Id, BayNumber.BayOne, MessageActor.AutomationService);
+                    return true;
+                }
             }
             var bayProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
             var bays = bayProvider.GetAll();
@@ -517,13 +527,19 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 foreach (var position in bay.Positions)
                 {
-                    if (sensorProvider.IsLoadingUnitInLocation(position.Location)
-                        && position.LoadingUnit is null
-                        )
+                    if (sensorProvider.IsLoadingUnitInLocation(position.Location))
                     {
-                        var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
-                        errorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnBay);
-                        return true;
+                        if (position.LoadingUnit is null)
+                        {
+                            var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
+                            errorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnBay);
+                            return true;
+                        }
+                        if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitId == position.LoadingUnit.Id))
+                        {
+                            moveLoadingUnitProvider.InsertToCell(MissionType.Manual, position.Location, null, position.LoadingUnit.Id, bay.Number, MessageActor.AutomationService);
+                            return true;
+                        }
                     }
                 }
             }
