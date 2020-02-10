@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace Ferretto.VW.Installer.Core
 {
@@ -12,8 +11,8 @@ namespace Ferretto.VW.Installer.Core
         public AppBackupStep(int number, string title, string description, string appRootPath, string backupPath)
             : base(number, title, description)
         {
-            this.AppRootPath = this.InterpolateVariables(appRootPath);
-            this.BackupPath = this.InterpolateVariables(backupPath);
+            this.AppRootPath = InterpolateVariables(appRootPath);
+            this.BackupPath = InterpolateVariables(backupPath);
 
             if (!Path.IsPathRooted(this.AppRootPath))
             {

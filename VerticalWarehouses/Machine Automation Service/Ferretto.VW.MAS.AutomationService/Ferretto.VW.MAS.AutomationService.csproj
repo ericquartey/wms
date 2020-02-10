@@ -56,6 +56,7 @@
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.0" />
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
+    <PackageReference Include="Ferretto.WMS.Data.WebAPI.Contracts" Version="0.14.0-alpha0017" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
@@ -88,6 +89,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="nlog.Production.config.xslt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Properties\app.manifest">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

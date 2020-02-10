@@ -41,7 +41,7 @@ namespace Ferretto.VW.Installer.Core
                 throw new ArgumentException("Unable to run the powershell command.", nameof(command));
             }
 
-            command = this.InterpolateVariables(command);
+            command = InterpolateVariables(command);
 
             this.LogInformation("");
             this.LogInformation($"ps> {command}");
