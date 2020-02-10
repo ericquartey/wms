@@ -145,6 +145,10 @@
                                      Value="false">
                             <Setter Property="Visibility" Value="Collapsed" />
                         </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=MachineService.HasCarousel}"
+                                     Value="true">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </TextBlock.Style>
@@ -163,6 +167,10 @@
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Path=MachineService.Bay.IsDouble}"
                                      Value="false">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=MachineService.HasCarousel}"
+                                     Value="true">
                             <Setter Property="Visibility" Value="Collapsed" />
                         </DataTrigger>
                     </Style.Triggers>
