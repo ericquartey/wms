@@ -115,6 +115,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Theme change.
+        /// </summary>
+        public static string ChangeTheme {
+            get {
+                return ResourceManager.GetString("ChangeTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CheckBoxDark.
         /// </summary>
         public static string CheckBoxDark {
@@ -336,6 +345,15 @@ namespace Ferretto.VW.App.Resources {
         public static string MillionsSymbol {
             get {
                 return ResourceManager.GetString("MillionsSymbol", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Movement in progress... (Id {0} .
+        /// </summary>
+        public static string MovementInProgress {
+            get {
+                return ResourceManager.GetString("MovementInProgress", resourceCulture);
             }
         }
         
