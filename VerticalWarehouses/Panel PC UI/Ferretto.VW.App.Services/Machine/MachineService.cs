@@ -598,11 +598,11 @@ namespace Ferretto.VW.App.Services
                                     this.MachineStatus.CurrentMissionId = messageData.MissionId;
 
                                     // TODO use messageData.MissionStep instead of message.Description
-                                    this.Notification = $"Movimento in corso... (Id {this.MachineStatus.CurrentMissionId} " +
+                                    this.Notification = string.Format(General.MovementInProgress, $"(Id {this.MachineStatus.CurrentMissionId} " +
                                         $"- LU {messageData.LoadUnitId} " +
                                         $"- {message.Description} " +
                                         $"- from {messageData.Source} {messageData.SourceCellId} " +
-                                        $"- to {messageData.Destination} {messageData.DestinationCellId})";
+                                        $"- to {messageData.Destination} {messageData.DestinationCellId})");
                                 }
 
                                 if (message?.Data is PositioningMessageData dataPositioning)
@@ -711,11 +711,11 @@ namespace Ferretto.VW.App.Services
                                 this.NotifyMachineStatusChanged();
 
                                 // TODO use messageData.MissionStep instead of message.Description
-                                this.Notification = $"Movimento in corso... (Id {this.MachineStatus?.CurrentMissionId} " +
+                                this.Notification = string.Format(General.MovementInProgress, $"(Id {this.MachineStatus?.CurrentMissionId} " +
                                     $"- LU {moveLoadingUnitMessageData.LoadUnitId} " +
                                     $"- {message.Description} " +
                                     $"- from {moveLoadingUnitMessageData.Source} {moveLoadingUnitMessageData.SourceCellId} " +
-                                    $"- to {moveLoadingUnitMessageData.Destination} {moveLoadingUnitMessageData.DestinationCellId})";
+                                    $"- to {moveLoadingUnitMessageData.Destination} {moveLoadingUnitMessageData.DestinationCellId})");
                             }
 
                             break;

@@ -273,4 +273,7 @@
   <data name="ChangeTheme" xml:space="preserve">
     <value>Cambia tema</value>
   </data>
+  <data name="MovementInProgress" xml:space="preserve">
+    <value>Movimento in corso... {0}</value>
+  </data>
 </root>
