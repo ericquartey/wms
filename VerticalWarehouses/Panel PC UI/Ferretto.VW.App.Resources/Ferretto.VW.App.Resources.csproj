@@ -93,6 +93,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>OperatorApp.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Update="Test.it.resx">
+      <Generator></Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="VWApp.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>VWApp.Designer.cs</LastGenOutput>
