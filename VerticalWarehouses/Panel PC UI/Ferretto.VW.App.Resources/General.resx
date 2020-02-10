@@ -290,6 +290,6 @@
     <value>Theme change</value>
   </data>
   <data name="MovementInProgress" xml:space="preserve">
-    <value>Movement in progress... (Id {0} </value>
+    <value>Movement in progress... {0}</value>
   </data>
 </root>

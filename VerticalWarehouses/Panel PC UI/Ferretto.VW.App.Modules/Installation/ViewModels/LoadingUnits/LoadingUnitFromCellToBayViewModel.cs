@@ -73,7 +73,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                    this.LoadingUnitId.HasValue &&
                    this.MachineService.Loadunits.Any(f => f.Id == this.LoadingUnitId && f.Status == LoadingUnitStatus.InLocation) &&
                    (this.MachineStatus.LoadingUnitPositionUpInBay is null ||
-                    this.MachineStatus.LoadingUnitPositionDownInBay is null);
+                    (!this.MachineService.HasCarousel && this.MachineStatus.LoadingUnitPositionDownInBay is null));
         }
 
         public override async Task OnAppearedAsync()
@@ -128,7 +128,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             await this.SensorsService.RefreshAsync(true);
 
-            if (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper)
+            if (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper || this.MachineService.HasCarousel)
             {
                 this.SelectBayPositionUp();
             }
@@ -176,10 +176,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 await this.machineBaysWebService.RemoveLoadUnitAsync(lu);
 
-                this.SensorsService.RefreshAsync(true);
-                this.MachineService.OnUpdateServiceAsync();
+                var refreshTask = this.SensorsService.RefreshAsync(true);
+
+                var updateTask = this.MachineService.OnUpdateServiceAsync();
 
                 this.ShowNotification($"Cassetto id {lu} estratto", Services.Models.NotificationSeverity.Warning);
+
+                await refreshTask;
+
+                await updateTask;
             }
             catch (Exception e)
             {

@@ -349,7 +349,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Movement in progress... (Id {0} .
+        ///   Looks up a localized string similar to Movement in progress... {0}.
         /// </summary>
         public static string MovementInProgress {
             get {
