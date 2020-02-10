@@ -1483,4 +1483,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Source</value>
     <comment>Header test</comment>
   </data>
+  <data name="InstallerAppStartedSuccessfully" xml:space="preserve">
+    <value>Installer app started successfully.</value>
+  </data>
+  <data name="ErrorExecutingInstallerApp" xml:space="preserve">
+    <value>Error executing installer app.</value>
+  </data>
 </root>

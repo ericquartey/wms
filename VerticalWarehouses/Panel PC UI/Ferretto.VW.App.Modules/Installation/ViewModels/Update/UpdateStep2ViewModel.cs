@@ -23,8 +23,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private const string CSVEXTENSION = ".csv";
 
-        private const string EXEEXTENSION = ".exe";
-
         private readonly IDialogService dialogService;
 
         private readonly string updateExchangeInstallerName;
@@ -267,7 +265,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 try
                 {
                     this.AppendLine($"Clear temp folder '{this.updateExchangeTemp}'.");
-                    Directory.Delete(this.updateExchangeTemp, true);
+                    if (Directory.Exists(this.updateExchangeTemp))
+                    {
+                        Directory.Delete(this.updateExchangeTemp, true);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -373,7 +374,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.isCurrentOperationValid = true;
 
-                var installerFilePath = $"{this.updateExchangeTemp}\\{this.updateExchangeInstallerPath}\\{this.updateExchangeInstallerName}{EXEEXTENSION}";
+                var installerFilePath = $"{this.updateExchangeTemp}\\{this.updateExchangeInstallerPath}\\{this.updateExchangeInstallerName}";
 
                 this.AppendLine($"Starting application '{installerFilePath}'.");
 
@@ -387,8 +388,16 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 process.Start();
                 process.WaitForExit();
+                var exitCode = process.ExitCode;
 
-                this.AppendLine("Starting installer app successfully completed.");
+                if (exitCode == 0)
+                {
+                    this.AppendLine(InstallationApp.InstallerAppStartedSuccessfully);
+                }
+                else
+                {
+                    this.AppendLine(InstallationApp.ErrorExecutingInstallerApp);
+                }
             }
             catch (Exception ex)
             {
