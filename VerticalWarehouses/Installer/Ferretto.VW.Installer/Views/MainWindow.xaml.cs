@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using NLog.Time;
+﻿using System.Threading.Tasks;
+using System.Windows;
 
 namespace Ferretto.VW.Installer
 {
@@ -18,6 +18,14 @@ namespace Ferretto.VW.Installer
 #else
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 #endif
+            this.Loaded += this.OnMainWindowLoaded;
+        }
+
+        private void OnMainWindowLoaded(object sender, RoutedEventArgs e)
+        {
+            var viewModel = this.DataContext as MainWindowViewModel;
+
+            viewModel.StartInstallation();
         }
 
         #endregion
@@ -28,7 +36,8 @@ namespace Ferretto.VW.Installer
         {
             base.OnInitialized(e);
 
-            this.DataContext = new MainWindowViewModel();
+            var viewModel = new MainWindowViewModel();
+            this.DataContext = viewModel;
         }
 
         #endregion

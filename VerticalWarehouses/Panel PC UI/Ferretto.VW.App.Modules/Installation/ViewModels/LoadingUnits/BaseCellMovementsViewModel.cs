@@ -143,18 +143,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Methods
 
-        public async override Task OnAppearedAsync()
-        {
-            await base.OnAppearedAsync();
-        }
-
-        protected override async Task OnDataRefreshAsync()
-        {
-            await base.OnDataRefreshAsync();
-
-            await this.RetrieveCellsAsync();
-        }
-
         protected async Task RetrieveCellsAsync()
         {
             try
@@ -163,14 +151,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 if (this.DestinationCellId is null)
                 {
-                    if (this.Cells.Count() > 0)
-                    {
-                        this.DestinationCellId = this.Cells.Where(w => w.IsFree).Min(o => o.Id);
-                    }
-                    else
-                    {
-                        this.DestinationCellId = null;
-                    }
+                    this.DestinationCellId = this.Cells.Any() ? this.Cells.Where(w => w.IsFree).Min(o => o.Id) : (int?)null;
                 }
             }
             catch (Exception ex)

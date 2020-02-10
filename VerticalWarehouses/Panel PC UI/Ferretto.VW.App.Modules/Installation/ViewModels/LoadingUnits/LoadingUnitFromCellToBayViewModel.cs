@@ -179,7 +179,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 this.SensorsService.RefreshAsync(true);
                 this.MachineService.OnUpdateServiceAsync();
 
-                this.ShowNotification($"Cassetto id {this.LoadingUnitId.Value} estratto", Services.Models.NotificationSeverity.Warning);
+                this.ShowNotification($"Cassetto id {lu} estratto", Services.Models.NotificationSeverity.Warning);
             }
             catch (Exception e)
             {

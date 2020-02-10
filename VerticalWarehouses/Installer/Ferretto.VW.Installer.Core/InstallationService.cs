@@ -29,6 +29,12 @@ namespace Ferretto.VW.Installer.Core
 
         #endregion
 
+        #region Events
+
+        public event EventHandler<InstallationFinishedEventArgs> Finished;
+
+        #endregion
+
         #region Properties
 
         public Step ActiveStep
@@ -151,8 +157,10 @@ namespace Ferretto.VW.Installer.Core
             }
             catch
             {
-                // do nothing
+                this.RaiseInstallationFinished(false);
             }
+
+            this.RaiseInstallationFinished(!this.IsRollbackInProgress);
         }
 
         private void Dump()
@@ -188,6 +196,11 @@ namespace Ferretto.VW.Installer.Core
             catch
             {
             }
+        }
+
+        private void RaiseInstallationFinished(bool success)
+        {
+            this.Finished?.Invoke(this, new InstallationFinishedEventArgs(success));
         }
 
         private async Task RollbackStep(Step stepToRollback)

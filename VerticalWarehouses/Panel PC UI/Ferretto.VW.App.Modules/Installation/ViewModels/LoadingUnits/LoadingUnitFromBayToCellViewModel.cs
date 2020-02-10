@@ -39,7 +39,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             return base.CanStart() &&
                    !this.IsMoving &&
                    ((this.SensorsService.IsLoadingUnitInBay && (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper)) ||
-                    (this.SensorsService.IsLoadingUnitInMiddleBottomBay && (this.MachineService.Bay.IsDouble || !this.MachineService.BayFirstPositionIsUpper))) &&
+                    (!this.MachineService.HasCarousel && this.SensorsService.IsLoadingUnitInMiddleBottomBay && (this.MachineService.Bay.IsDouble || !this.MachineService.BayFirstPositionIsUpper))) &&
                    this.LoadingUnitId.HasValue &&
                    !this.MachineService.Loadunits.DrawerInLocationById(this.LoadingUnitId.Value);
         }
@@ -117,8 +117,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         protected override async Task OnDataRefreshAsync()
         {
-            await base.OnDataRefreshAsync();
-
             await this.SensorsService.RefreshAsync(true);
 
             await this.InitializingData();
@@ -128,7 +126,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             await this.GetLoadingUnits();
 
-            if (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper)
+            if (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper || this.MachineService.HasCarousel)
             {
                 this.SelectBayPositionUp();
             }

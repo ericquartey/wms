@@ -67,11 +67,11 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 throw new InvalidOperationException($"FSM State {this.GetType().Name} was already entered.");
             }
 
-            this.hasEntered = true;
-
             this.Logger.LogTrace($"Entering state {this.GetType().Name}.");
 
             this.OnEnter(message, machineData);
+
+            this.hasEntered = true;
         }
 
         public void Exit()
@@ -81,11 +81,11 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 throw new InvalidOperationException($"FSM State {this.GetType().Name} was already exited.");
             }
 
-            this.hasExited = true;
-
             this.Logger.LogTrace($"Exiting state {this.GetType().Name}.");
 
             this.OnExit();
+
+            this.hasExited = true;
         }
 
         public virtual IState NotificationReceived(NotificationMessage notificationMessage)
@@ -95,14 +95,14 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         public IState Pause()
         {
-            this.Logger.LogDebug($"Pausing state {this.GetType().Name}.");
+            this.Logger.LogTrace($"Pausing state {this.GetType().Name}.");
 
             return this.OnPause();
         }
 
         public IState Resume(CommandMessage commandMessage)
         {
-            this.Logger.LogDebug($"Resuming state {this.GetType().Name}.");
+            this.Logger.LogTrace($"Resuming state {this.GetType().Name}.");
             return this.OnResume(commandMessage);
         }
 
@@ -113,7 +113,6 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 //throw new InvalidOperationException($"FSM State {this.GetType().Name} was already stopped.");
                 this.Logger.LogDebug($"FSM State {this.GetType().Name} was already stopped.");
             }
-
             this.hasStopped = true;
 
             this.Logger.LogTrace($"Stopping state {this.GetType().Name}.");

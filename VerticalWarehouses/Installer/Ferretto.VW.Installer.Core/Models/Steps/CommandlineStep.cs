@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Ferretto.VW.Installer.Core
 {
@@ -25,7 +24,7 @@ namespace Ferretto.VW.Installer.Core
                 throw new ArgumentException("Unable to run the commandline command.", nameof(command));
             }
 
-            command = this.InterpolateVariables(command);
+            command = InterpolateVariables(command);
 
             using (var process = new System.Diagnostics.Process())
             {
