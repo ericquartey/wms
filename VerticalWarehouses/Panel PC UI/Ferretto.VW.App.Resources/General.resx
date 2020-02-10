@@ -286,4 +286,10 @@
   <data name="Close" xml:space="preserve">
     <value>Close</value>
   </data>
+  <data name="ChangeTheme" xml:space="preserve">
+    <value>Theme change</value>
+  </data>
+  <data name="MovementInProgress" xml:space="preserve">
+    <value>Movement in progress... (Id {0} </value>
+  </data>
 </root>
