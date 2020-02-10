@@ -194,7 +194,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
                 this.NavigationService.GoBack();
             }
-            catch (MasWebApiException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

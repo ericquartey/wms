@@ -356,7 +356,7 @@ namespace Ferretto.VW.App.Services
             {
                 await this.OnInitializationServiceAsync();
             }
-            catch (HttpRequestException)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
             }
             catch (Exception)

@@ -218,7 +218,7 @@ namespace Ferretto.VW.App.Controls
                     this.IsWaitingForResponse = false;
                 }
             }
-            catch (HttpRequestException)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
             }
             catch (Exception)
@@ -243,7 +243,7 @@ namespace Ferretto.VW.App.Controls
                     await dataTask;
                 }
             }
-            catch (HttpRequestException)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
             }
             catch (Exception)

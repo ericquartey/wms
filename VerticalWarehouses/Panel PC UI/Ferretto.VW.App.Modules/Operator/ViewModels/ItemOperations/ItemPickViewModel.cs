@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Controls;
@@ -106,7 +107,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 await this.MissionOperationsService.PartiallyCompleteCurrentAsync(this.InputQuantity.Value);
             }
-            catch (MasWebApiException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

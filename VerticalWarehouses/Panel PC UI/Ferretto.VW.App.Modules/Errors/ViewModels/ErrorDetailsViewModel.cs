@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -106,7 +107,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
                 this.Error = await this.machineErrorsWebService.GetCurrentAsync();
             }
-            catch (MasWebApiException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -151,7 +152,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
                 this.Error = await this.machineErrorsWebService.GetCurrentAsync();
             }
-            catch (MasWebApiException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
