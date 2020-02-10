@@ -477,6 +477,25 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                         mission.LoadUnitSource = LoadingUnitLocation.Cell;
                         mission.LoadUnitCellSourceId = sourceCell.Id;
+
+                        bay = this.BaysDataProvider.GetByCell(sourceCell);
+                        if (bay != null
+                            && bay.Shutter.Type != ShutterType.NotSpecified)
+                        {
+                            var shutterInverter = bay.Shutter.Inverter.Index;
+                            if (this.SensorsProvider.GetShutterPosition(shutterInverter) != ShutterPosition.Closed)
+                            {
+                                if (showErrors)
+                                {
+                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, bay.Number);
+                                }
+                                else
+                                {
+                                    this.Logger.LogInformation(ErrorDescriptions.LoadUnitShutterOpen);
+                                }
+                                return false;
+                            }
+                        }
                     }
 
                     if (unitToMove == null)
@@ -491,7 +510,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                         return false;
                     }
-
                     break;
 
                 case LoadingUnitLocation.LoadUnit:
