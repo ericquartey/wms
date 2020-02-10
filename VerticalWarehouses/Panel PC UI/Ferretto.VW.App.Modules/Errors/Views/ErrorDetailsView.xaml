@@ -42,7 +42,7 @@
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:VWApp.ErrorRecoveryProcedure}" />
+                       Text="{x:Static res:General.ErrorRecoveryProcedure}" />
 
             <StackPanel Grid.Row="1"
                         MinHeight="100"
@@ -50,7 +50,7 @@
                         Orientation="Vertical">
                 <TextBlock Margin="0,1,5,1"
                            Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                           Text="{x:Static res:VWApp.ErrorCode}" />
+                           Text="{x:Static res:General.ErrorCode}" />
                 <TextBlock Margin="0,1,5,1"
                            Padding="10,5,10,5"
                            Background="{DynamicResource FerrettoRed}"
@@ -65,20 +65,20 @@
                                   MinHeight="100"
                                   HorizontalAlignment="Left"
                                   ContentText="{Binding Error.Description}"
-                                  LabelText="{x:Static res:VWApp.ErrorDescription}" />
+                                  LabelText="{x:Static res:General.ErrorDescription}" />
 
             <local:PpcLabeledText Grid.Row="2"
                                   Grid.ColumnSpan="2"
                                   MinHeight="100"
                                   HorizontalAlignment="Left"
                                   ContentText="{Binding Error.Reason}"
-                                  LabelText="{x:Static res:VWApp.ErrorReason}" />
+                                  LabelText="{x:Static res:General.ErrorReason}" />
 
             <local:PpcLabeledText Grid.Row="3"
                                   MinHeight="100"
                                   HorizontalAlignment="Left"
                                   ContentText="{Binding ErrorTime}"
-                                  LabelText="{x:Static res:VWApp.FirstSeen}" />
+                                  LabelText="{x:Static res:General.FirstSeen}" />
 
 
             <local:PpcLabeledText Grid.Row="3"
@@ -92,7 +92,7 @@
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              Command="{Binding MarkAsResolvedCommand}"
-                             Content="{x:Static res:VWApp.MarkAsResolved}" />
+                             Content="{x:Static res:General.MarkAsResolved}" />
 
         </Grid>
     </Grid>

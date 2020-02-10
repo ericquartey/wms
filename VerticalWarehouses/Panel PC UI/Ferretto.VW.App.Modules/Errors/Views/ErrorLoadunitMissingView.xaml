@@ -51,7 +51,7 @@
                                 Orientation="Vertical">
                         <TextBlock Margin="0"
                                    Style="{DynamicResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                                   Text="{x:Static res:VWApp.ErrorCode}" />
+                                   Text="{x:Static res:General.ErrorCode}" />
                         <TextBlock Height="26"
                                    Background="{DynamicResource FerrettoRed}"
                                    Style="{DynamicResource VWAPP_CustomLabel_ContentTextBlockStyle}"
@@ -82,19 +82,19 @@
                     <controls:PpcLabeledText Grid.Column="1"
                                              Margin="0,0,15,0"
                                              ContentText="{Binding Error.Description}"
-                                             LabelText="{x:Static res:VWApp.ErrorDescription}" />
+                                             LabelText="{x:Static res:General.ErrorDescription}" />
 
                     <controls:PpcLabeledText Grid.Column="2"
                                              HorizontalAlignment="Right"
                                              ContentText="{Binding ErrorTime}"
-                                             LabelText="{x:Static res:VWApp.FirstSeen}" />
+                                             LabelText="{x:Static res:General.FirstSeen}" />
 
                     <controls:PpcLabeledText Grid.Row="1"
                                              Grid.ColumnSpan="3"
                                              Margin="0,15,0,0"
                                              HorizontalAlignment="Left"
                                              ContentText="{Binding Error.Reason}"
-                                             LabelText="{x:Static res:VWApp.ErrorReason}" />
+                                             LabelText="{x:Static res:General.ErrorReason}" />
                 </Grid>
 
                 <Image Grid.Row="2"
@@ -368,7 +368,7 @@
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Bottom"
                                     Command="{Binding MarkAsResolvedCommand}"
-                                    Content="{x:Static res:VWApp.MarkAsResolved}" />
+                                    Content="{x:Static res:General.MarkAsResolved}" />
 
                 <controls:PpcButton Grid.Row="3"
                                     Command="{Binding AutomaticCommand}"

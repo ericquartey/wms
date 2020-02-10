@@ -10,6 +10,8 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 {
     internal sealed class ErrorInverterFaultViewModel : BaseMainViewModel
     {
+        #region Fields
+
         private readonly IMachineErrorsWebService machineErrorsWebService;
 
         private MachineError error;
@@ -18,6 +20,10 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         private ICommand markAsResolvedCommand;
 
+        #endregion
+
+        #region Constructors
+
         public ErrorInverterFaultViewModel(IMachineErrorsWebService machineErrorsWebService)
             : base(Services.PresentationMode.Menu | Services.PresentationMode.Installer | Services.PresentationMode.Operator)
         {
@@ -25,6 +31,10 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
             new Timer(this.OnErrorChanged, null, 0, 30 * 1000);
         }
+
+        #endregion
+
+        #region Properties
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -48,6 +58,10 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 this.CanMarkAsResolved)
             .ObservesProperty(() => this.Error)
             .ObservesProperty(() => this.IsWaitingForResponse));
+
+        #endregion
+
+        #region Methods
 
         public override void Disappear()
         {
@@ -110,19 +124,19 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             var elapsedTime = DateTime.UtcNow - this.error.OccurrenceDate;
             if (elapsedTime.TotalMinutes < 1)
             {
-                this.ErrorTime = Resources.VWApp.Now;
+                this.ErrorTime = Resources.General.Now;
             }
             else if (elapsedTime.TotalHours < 1)
             {
-                this.ErrorTime = string.Format(Resources.VWApp.MinutesAgo, elapsedTime.TotalMinutes);
+                this.ErrorTime = string.Format(Resources.General.MinutesAgo, elapsedTime.TotalMinutes);
             }
             else if (elapsedTime.TotalDays < 1)
             {
-                this.ErrorTime = string.Format(Resources.VWApp.HoursAgo, elapsedTime.TotalHours);
+                this.ErrorTime = string.Format(Resources.General.HoursAgo, elapsedTime.TotalHours);
             }
             else
             {
-                this.ErrorTime = string.Format(Resources.VWApp.DaysAgo, elapsedTime.TotalDays);
+                this.ErrorTime = string.Format(Resources.General.DaysAgo, elapsedTime.TotalDays);
             }
         }
 
@@ -143,5 +157,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 this.IsWaitingForResponse = false;
             }
         }
+
+        #endregion
     }
 }

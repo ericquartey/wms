@@ -55,7 +55,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
             var versionString = versionAttribute?.InformationalVersion ?? this.GetType().Assembly.GetName().Version.ToString();
 
-            this.ApplicationVersion = string.Format(Resources.VWApp.Version, versionString);
+            this.ApplicationVersion = string.Format(Resources.General.Version, versionString);
         }
 
         #endregion

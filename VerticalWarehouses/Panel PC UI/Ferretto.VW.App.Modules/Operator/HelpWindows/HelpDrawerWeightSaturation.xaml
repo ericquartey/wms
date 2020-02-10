@@ -1,160 +1,252 @@
 ﻿<UserControl x:Class="Ferretto.VW.App.Modules.Operator.HelpWindows.HelpDrawerWeightSaturation"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Ferretto.VW.App.Modules.Operator.HelpWindows"
-             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
-             xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              mc:Ignorable="d">
 
-    <Grid Width="1024" Height="688"
+    <Grid Width="1024"
+          Height="688"
           Background="{DynamicResource VWAPP_BACKGROUND}">
 
-        <Image Width="200" Height="60"
-               HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"
+        <Image Width="200"
+               Height="60"
+               Margin="10,10,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
                Source="{DynamicResource Ferretto_Logo}"
                Stretch="Uniform" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
-                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                    Text="{x:Static res:OperatorApp.DrawerWeightSaturationHeader}" />
+        <TextBlock Margin="320,20,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
+                   Text="{x:Static res:OperatorApp.DrawerWeightSaturationHeader}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
-                    Width="670" Height="60"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationDescription}" />
+        <TextBlock Width="670"
+                   Height="60"
+                   Margin="320,50,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationDescription}" />
 
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,600,0,0"
-                     Width="260" Height="70"
-                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationTotalDrawers}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,600,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationTotalDrawers}" />
 
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,120,0,0" Width="260"
-                     Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpCommonGridColumnHeader}" />
+        <TextBlock Width="260"
+                   Margin="220,120,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpCommonGridColumnHeader}" />
 
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,150,0,0" Width="180"
-                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                     Text="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderDrawer}" />
+        <TextBlock Width="180"
+                   Margin="20,150,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
+                   Text="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderDrawer}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,150,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationGridDrawer}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,150,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationGridDrawer}" />
 
-        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,600,0,0" Width="180"
-                                               ContentText="55"
-                                               LabelText="{x:Static res:OperatorApp.DrawerSpaceSaturazionTotalDrawers}"/>
+        <controls:PpcLabeledText Width="180"
+                                 Margin="20,600,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="55"
+                                 LabelText="{x:Static res:OperatorApp.DrawerSpaceSaturazionTotalDrawers}" />
 
-        <controls:PpcButton   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,470,0,0"
-                 Content="{x:Static res:OperatorApp.CommonUp}"
-                  />
+        <controls:PpcButton Margin="530,470,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{x:Static res:OperatorApp.CommonUp}" />
 
-        <controls:PpcButton   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,540,0,0"
-                 Content="{x:Static res:OperatorApp.CommonDown}"
-                  />
+        <controls:PpcButton Margin="530,540,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{x:Static res:OperatorApp.CommonDown}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,220,0,0" Width="180"
-                    Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                    Text="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderHeight}" />
+        <TextBlock Width="180"
+                   Margin="20,220,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
+                   Text="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderHeight}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,290,0,0" Width="180"
-                    Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                    Text="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderMaxWeight}" />
+        <TextBlock Width="180"
+                   Margin="20,290,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
+                   Text="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderMaxWeight}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,360,0,0" Width="180"
-                    Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                    Text="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderTare}" />
+        <TextBlock Width="180"
+                   Margin="20,360,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
+                   Text="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderTare}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,430,0,0" Width="180"
-                    Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                    Text="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderCurrentGrossWeight}" />
+        <TextBlock Width="180"
+                   Margin="20,430,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
+                   Text="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderCurrentGrossWeight}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,220,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationGridHeight}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,220,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationGridHeight}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,290,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationGridMaxWeight}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,290,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationGridMaxWeight}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,360,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationGridGross}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,360,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationGridGross}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,430,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationGridActualWeight}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,430,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationGridActualWeight}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,400,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationWeightPercent}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,400,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationWeightPercent}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,470,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpCommonUp}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,470,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpCommonUp}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,540,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpCommonDown}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,540,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpCommonDown}" />
 
-        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
-                                               ContentText="38.000"
-                                               LabelText="{x:Static res:OperatorApp.DrawerWeightSaturationWeightGrossLoaded}"/>
+        <controls:PpcLabeledText Width="180"
+                                 Margin="530,190,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="38.000"
+                                 LabelText="{x:Static res:OperatorApp.DrawerWeightSaturationWeightGrossLoaded}" />
 
-        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
-                                               ContentText="70.000"
-                                               LabelText="{x:Static res:OperatorApp.DrawerWeightSaturationMaxGrossRange}"/>
+        <controls:PpcLabeledText Width="180"
+                                 Margin="530,120,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="70.000"
+                                 LabelText="{x:Static res:OperatorApp.DrawerWeightSaturationMaxGrossRange}" />
 
-        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,330,0,0" Width="180"
-                                               ContentText="36.000"
-                                               LabelText="{x:Static res:OperatorApp.DrawerWeightSaturationWeightNetLoaded}"/>
+        <controls:PpcLabeledText Width="180"
+                                 Margin="530,330,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="36.000"
+                                 LabelText="{x:Static res:OperatorApp.DrawerWeightSaturationWeightNetLoaded}" />
 
-        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0" Width="180"
-                                               ContentText="65.000"
-                                               LabelText="{x:Static res:OperatorApp.DrawerWeightSaturationMaxNetRange}"/>
+        <controls:PpcLabeledText Width="180"
+                                 Margin="530,260,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="65.000"
+                                 LabelText="{x:Static res:OperatorApp.DrawerWeightSaturationMaxNetRange}" />
 
-        <controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,400,0,0" Width="180"
-                                            ProgressionValue="65"
-                                            LabelText="{x:Static res:OperatorApp.DrawerWeightSaturationNetLoadedWeight}"/>
+        <controls:CustomProgressBarControl Width="180"
+                                           Margin="530,400,0,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Top"
+                                           LabelText="{x:Static res:OperatorApp.DrawerWeightSaturationNetLoadedWeight}"
+                                           ProgressionValue="65" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,500,0,0" Width="180"
-                    Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                    Text="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderMaxPercentage}" />
+        <TextBlock Width="180"
+                   Margin="20,500,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
+                   Text="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderMaxPercentage}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,500,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,500,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                    Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationGridWeightPercent}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,120,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationGrossCapacityMax}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,120,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationGrossCapacityMax}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,190,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationGrossLoaded}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,190,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationGrossLoaded}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,260,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationNetCapacity}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,260,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationNetCapacity}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,330,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationNetLoaded}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,330,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationNetLoaded}" />
 
     </Grid>
 </UserControl>
