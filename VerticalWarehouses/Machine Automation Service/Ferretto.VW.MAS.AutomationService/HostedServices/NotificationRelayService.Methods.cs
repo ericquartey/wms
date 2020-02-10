@@ -54,55 +54,6 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private async Task HomingMethod(NotificationMessage receivedMessage, IServiceProvider serviceProvider)
         {
-            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
-            if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status != MissionStatus.Waiting && m.Status != MissionStatus.New))
-            {
-                if (receivedMessage.Status == MessageStatus.OperationEnd
-                    && receivedMessage.Data is IHomingMessageData data)
-                {
-                    this.machineVolatileDataProvider.IsHomingActive = false;
-                    if (data.AxisToCalibrate == Axis.BayChain)
-                    {
-                        this.machineVolatileDataProvider.IsBayHomingExecuted[receivedMessage.RequestingBay] = true;
-
-                        // the following message wakes up MissionSchedulingService
-                        this.EventAggregator
-                            .GetEvent<NotificationEvent>()
-                            .Publish(
-                                new NotificationMessage
-                                {
-                                    Data = new MachineModeMessageData(this.machineVolatileDataProvider.Mode),
-                                    Destination = MessageActor.MissionManager,
-                                    Source = MessageActor.AutomationService,
-                                    Type = MessageType.MachineMode,
-                                });
-                    }
-                    else
-                    {
-                        this.machineVolatileDataProvider.IsHomingExecuted = true;
-                        var sensorProvider = serviceProvider.GetRequiredService<ISensorsProvider>();
-                        var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
-                        if (sensorProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator)
-                            && elevatorDataProvider.GetLoadingUnitOnBoard() == null
-                            )
-                        {
-                            var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
-                            errorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnElevator);
-                            this.machineVolatileDataProvider.Mode = MachineMode.Manual;
-                            this.Logger.LogInformation($"Automation Machine status switched to {this.machineVolatileDataProvider.Mode}");
-                        }
-                        else
-                        {
-                            this.ChangeMachineMode();
-                        }
-                    }
-                }
-                else if (receivedMessage.Status == MessageStatus.OperationError)
-                {
-                    this.machineVolatileDataProvider.IsHomingActive = false;
-                    this.ChangeMachineMode();
-                }
-            }
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
             await this.installationHub.Clients.All.HomingProcedureStatusChanged(message);
         }
