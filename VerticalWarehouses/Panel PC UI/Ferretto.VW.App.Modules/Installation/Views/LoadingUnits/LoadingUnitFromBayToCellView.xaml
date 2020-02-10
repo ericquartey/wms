@@ -146,6 +146,10 @@
                                      Value="false">
                             <Setter Property="Visibility" Value="Collapsed" />
                         </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=MachineService.HasCarousel}"
+                                     Value="true">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </TextBlock.Style>
@@ -166,6 +170,10 @@
                                      Value="false">
                             <Setter Property="Visibility" Value="Collapsed" />
                         </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=MachineService.HasCarousel}"
+                                     Value="true">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </StackPanel.Style>
@@ -182,8 +190,7 @@
                                 VerticalAlignment="Center"
                                 Command="{Binding SelectBayPositionUpCommand}"
                                 Content="{x:Static res:InstallationApp.BayPositionUp}"
-                                IsActive="{Binding IsPositionUpSelected}"
-                                Visibility="{Binding SensorsService.BayIsMultiPosition, Converter={StaticResource BTVC}}" />
+                                IsActive="{Binding IsPositionUpSelected}" />
         </StackPanel>
 
         <controls:PpcButton Grid.Row="5"
