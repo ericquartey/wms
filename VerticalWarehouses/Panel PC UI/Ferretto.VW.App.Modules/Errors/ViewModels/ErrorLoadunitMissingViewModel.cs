@@ -262,7 +262,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                     }
                 }
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -336,7 +336,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
                 await this.machineModeWebService.SetAutomaticAsync();
             }
-            catch (MasWebApiException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -408,7 +408,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
                 this.Error = await this.machineErrorsWebService.GetCurrentAsync();
             }
-            catch (MasWebApiException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -439,7 +439,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                         this.SelectedLoadingUnit.Id);
                 }
             }
-            catch (MasWebApiException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

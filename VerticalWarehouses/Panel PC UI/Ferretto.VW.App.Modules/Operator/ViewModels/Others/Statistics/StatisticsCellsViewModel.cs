@@ -98,7 +98,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
                 this.RaisePropertyChanged(nameof(this.DataGridViewModel));
             }
-            catch (MasWebApiException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

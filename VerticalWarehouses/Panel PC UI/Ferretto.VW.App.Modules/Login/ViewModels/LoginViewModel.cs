@@ -262,7 +262,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                     {
                         this.RaisePropertyChanged(nameof(this.BayNumber));
                     }
-                    catch (HttpRequestException)
+                    catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
                     {
                     }
                 }
@@ -282,7 +282,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                             this.UserLogin.Password = string.Empty;
                             this.UserLogin.SupportToken = await this.authenticationService.GetToken();
                         }
-                        catch (HttpRequestException)
+                        catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
                         {
                         }
                     }

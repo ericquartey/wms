@@ -235,7 +235,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.ProcedureParameters = await this.MachineCellsWebService.GetHeightCheckProcedureParametersAsync();
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

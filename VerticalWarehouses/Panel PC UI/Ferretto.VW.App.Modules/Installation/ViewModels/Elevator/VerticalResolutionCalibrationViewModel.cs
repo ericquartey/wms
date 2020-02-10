@@ -493,7 +493,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.AxisLowerBound = procedureParameters.LowerBound;
                 }
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

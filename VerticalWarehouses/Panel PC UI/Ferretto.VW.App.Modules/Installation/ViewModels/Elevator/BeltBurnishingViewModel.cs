@@ -370,7 +370,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.CurrentPosition = this.machineElevatorService.Position.Vertical;
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
