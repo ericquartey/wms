@@ -95,6 +95,43 @@ namespace Ferretto.VW.Installer.Core
 
         #region Methods
 
+        public static string InterpolateVariables(string value)
+        {
+            if (value is null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            var regex = new Regex(@"\$\((?<var_name>[^\)]+)\)");
+
+            var match = regex.Match(value);
+
+            var interpolatedValue = value;
+            while (match.Success)
+            {
+                var varName = match.Groups["var_name"].Value;
+
+                string varValue;
+                if (varName == EmbeddedInstallationFilePath)
+                {
+                    varValue = Process.GetCurrentProcess().MainModule.FileName;
+                }
+                else
+                {
+                    varValue = ConfigurationManager.AppSettings.Get(varName);
+                    if (varValue is null)
+                    {
+                        throw new Exception($"La chiave di configurazione '{varName}' non esiste.");
+                    }
+                }
+
+                interpolatedValue = value.Replace(match.Value, varValue);
+                match = match.NextMatch();
+            }
+
+            return interpolatedValue;
+        }
+
         public async Task ApplyAsync()
         {
             if (this.Status is StepStatus.Done || this.Status is StepStatus.InProgress)
@@ -122,42 +159,6 @@ namespace Ferretto.VW.Installer.Core
                 this.LogError($"Step fallito inaspettatamente: {ex.Message}");
                 timer.Dispose();
             }
-        }
-
-        public string InterpolateVariables(string value)
-        {
-            if (value is null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
-
-            var regex = new Regex(@"\$\((?<var_name>[^\)]+)\)");
-
-            var match = regex.Match(value);
-
-            while (match.Success)
-            {
-                var varName = match.Groups["var_name"].Value;
-
-                string varValue;
-                if (varName == EmbeddedInstallationFilePath)
-                {
-                    varValue = Process.GetCurrentProcess().MainModule.FileName;
-                }
-                else
-                {
-                    varValue = ConfigurationManager.AppSettings.Get(varName);
-                    if (varValue is null)
-                    {
-                        throw new Exception($"La chiave di configurazione '{varName}' non esiste.");
-                    }
-                }
-
-                value = value.Replace(match.Value, varValue);
-                match = match.NextMatch();
-            }
-
-            return value;
         }
 
         public async Task RollbackAsync()

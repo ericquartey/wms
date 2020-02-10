@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Threading;
-using System.Windows.Controls;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
 using Ferretto.VW.Installer.Core;
@@ -17,6 +17,14 @@ namespace Ferretto.VW.Installer
         private readonly InstallationService installationService;
 
         private RelayCommand abortCommand;
+
+        private bool abortRequested;
+
+        private RelayCommand closeCommand;
+
+        private bool isFinished;
+
+        private bool isSuccessful;
 
         private Step selectedStep;
 
@@ -43,8 +51,7 @@ namespace Ferretto.VW.Installer
             }
 
             this.installationService.PropertyChanged += this.InstallationService_PropertyChanged;
-
-            new Thread(new ThreadStart(async () => await this.installationService.RunAsync())).Start();
+            this.installationService.Finished += this.OnInstallationServiceFinished;
         }
 
         #endregion
@@ -55,6 +62,29 @@ namespace Ferretto.VW.Installer
             this.abortCommand
             ??
             (this.abortCommand = new RelayCommand(this.Abort, this.CanAbort));
+
+        public bool AbortRequested
+        {
+            get => this.abortRequested;
+            set => this.SetProperty(ref this.abortRequested, value, this.RaiseCanExecuteChanged);
+        }
+
+        public ICommand CloseCommand =>
+            this.closeCommand
+            ??
+            (this.closeCommand = new RelayCommand(this.Close, this.CanClose));
+
+        public bool IsFinished
+        {
+            get => this.isFinished;
+            set => this.SetProperty(ref this.isFinished, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsSuccessful
+        {
+            get => this.isSuccessful;
+            set => this.SetProperty(ref this.isSuccessful, value);
+        }
 
         public Step SelectedStep
         {
@@ -76,10 +106,30 @@ namespace Ferretto.VW.Installer
 
         #region Methods
 
+        public void StartInstallation()
+        {
+            new Thread(
+                new ThreadStart(async () =>
+                {
+                    try
+                    {
+                        await this.installationService.RunAsync();
+                    }
+                    catch
+                    {
+                        this.IsSuccessful = false;
+                        this.IsFinished = true;
+                    }
+                })).Start();
+        }
+
         private void Abort()
         {
+            this.AbortRequested = true;
+
             this.installationService.Abort();
-            this.abortCommand?.RaiseCanExecuteChanged();
+
+            this.RaiseCanExecuteChanged();
         }
 
         private bool CanAbort()
@@ -87,13 +137,35 @@ namespace Ferretto.VW.Installer
             return !this.installationService.IsRollbackInProgress;
         }
 
+        private bool CanClose()
+        {
+            return this.IsFinished;
+        }
+
+        private void Close()
+        {
+            Application.Current.Shutdown(this.IsSuccessful ? 0 : -1);
+        }
+
         private void InstallationService_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(Core.InstallationService.ActiveStep))
             {
                 this.SelectedStep = this.installationService.ActiveStep;
-                this.abortCommand?.RaiseCanExecuteChanged();
+                this.RaiseCanExecuteChanged();
             }
+        }
+
+        private void OnInstallationServiceFinished(object sender, InstallationFinishedEventArgs e)
+        {
+            this.IsFinished = true;
+            this.IsSuccessful = e.Success;
+        }
+
+        private void RaiseCanExecuteChanged()
+        {
+            this.closeCommand?.RaiseCanExecuteChanged();
+            this.abortCommand?.RaiseCanExecuteChanged();
         }
 
         #endregion
