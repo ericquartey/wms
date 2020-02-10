@@ -1,125 +1,193 @@
 ﻿<UserControl x:Class="Ferretto.VW.App.Modules.Operator.HelpWindows.HelpCellsStatistics"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Ferretto.VW.App.Modules.Operator.HelpWindows"
-             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
-             xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              mc:Ignorable="d">
 
-    <Grid Width="1024" Height="688"
+    <Grid Width="1024"
+          Height="688"
           Background="{DynamicResource VWAPP_BACKGROUND}">
 
         <Image Width="200"
                Height="60"
-               HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"
+               Margin="10,10,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
                Source="{DynamicResource Ferretto_Logo}"
                Stretch="Uniform" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
-                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                    Text="{x:Static res:OperatorApp.CellsStatisticsHeader}" />
+        <TextBlock Margin="320,20,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
+                   Text="{x:Static res:OperatorApp.CellsStatisticsHeader}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
-                    Width="670" Height="60"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsDescription}" />
+        <TextBlock Width="670"
+                   Height="60"
+                   Margin="320,50,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsDescription}" />
 
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="740,120,0,0"
-                     Width="260" Height="70"
-                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsCellsTot}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="740,120,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsCellsTot}" />
 
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,120,0,0" Width="260"
-                     Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpCommonGridColumnHeader}" />
+        <TextBlock Width="260"
+                   Margin="220,120,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpCommonGridColumnHeader}" />
 
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,150,0,0" Width="180"
-                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                     Text="{x:Static Resources:OperatorApp.StatisticsCellsDataGridHeaderState }" />
+        <TextBlock Width="180"
+                   Margin="20,150,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
+                   Text="{x:Static res:OperatorApp.StatisticsCellsDataGridHeaderState}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,150,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsGridStatus}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,150,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsGridStatus}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,220,0,0" Width="180"
-                    Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                    Text="{x:Static Resources:OperatorApp.StatisticsCellsDataGridHeaderFront }" />
+        <TextBlock Width="180"
+                   Margin="20,220,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
+                   Text="{x:Static res:OperatorApp.StatisticsCellsDataGridHeaderFront}" />
 
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,290,0,0" Width="180"
-                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                     Text="{x:Static Resources:OperatorApp.StatisticsCellsDataGridHeaderFrontPercentage }" />
+        <TextBlock Width="180"
+                   Margin="20,290,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
+                   Text="{x:Static res:OperatorApp.StatisticsCellsDataGridHeaderFrontPercentage}" />
 
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,360,0,0" Width="180"
-                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                     Text="{x:Static Resources:OperatorApp.StatisticsCellsDataGridHeaderBack }" />
+        <TextBlock Width="180"
+                   Margin="20,360,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
+                   Text="{x:Static res:OperatorApp.StatisticsCellsDataGridHeaderBack}" />
 
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,430,0,0" Width="180"
-                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                     Text="{x:Static Resources:OperatorApp.StatisticsCellsDataGridHeaderBackPercentage }" />
+        <TextBlock Width="180"
+                   Margin="20,430,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
+                   Text="{x:Static res:OperatorApp.StatisticsCellsDataGridHeaderBackPercentage}" />
 
-        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
-                                               ContentText="300"
-                                               LabelText="{x:Static res:OperatorApp.CellsStatisticsFrontCellsTotal}"/>
+        <controls:PpcLabeledText Width="180"
+                                 Margin="530,190,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="300"
+                                 LabelText="{x:Static res:OperatorApp.CellsStatisticsFrontCellsTotal}" />
 
-        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
-                                               ContentText="630"
-                                               LabelText="{x:Static res:OperatorApp.CellsStatisticsCellsTotal}"/>
+        <controls:PpcLabeledText Width="180"
+                                 Margin="530,120,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="630"
+                                 LabelText="{x:Static res:OperatorApp.CellsStatisticsCellsTotal}" />
 
-        <controls:PpcButton   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,400,0,0"
-                 Content="{x:Static res:OperatorApp.CellsStatisticsOther}"
-                  />
+        <controls:PpcButton Margin="530,400,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{x:Static res:OperatorApp.CellsStatisticsOther}" />
 
-        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0" Width="180"
-                                               ContentText="330"
-                                               LabelText="{x:Static res:OperatorApp.CellsStatisticsRearCellsTotal}"/>
+        <controls:PpcLabeledText Width="180"
+                                 Margin="530,260,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="330"
+                                 LabelText="{x:Static res:OperatorApp.CellsStatisticsRearCellsTotal}" />
 
-        <controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,330,0,0" Width="200"
-                                            ProgressionValue="87"
-                                            LabelText="{x:Static res:OperatorApp.CellsStatisticsTotalUsedCells}"/>
+        <controls:CustomProgressBarControl Width="200"
+                                           Margin="530,330,0,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Top"
+                                           LabelText="{x:Static res:OperatorApp.CellsStatisticsTotalUsedCells}"
+                                           ProgressionValue="87" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,220,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsGridTotAnt}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,220,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsGridTotAnt}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,290,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsGridPercTotAnt}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,290,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsGridPercTotAnt}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,360,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsGridTotPost}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,360,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsGridTotPost}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,430,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsGridPercTotPost}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,430,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsGridPercTotPost}" />
 
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="740,190,0,0"
-                     Width="260" Height="70"
-                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsCellsAnt}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="740,190,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsCellsAnt}" />
 
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="740,260,0,0"
-                     Width="260" Height="70"
-                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsCellsPost}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="740,260,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsCellsPost}" />
 
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="740,330,0,0"
-                     Width="260" Height="70"
-                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsTotalOccupiedCells}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="740,330,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsTotalOccupiedCells}" />
 
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="740,400,0,0"
-                     Width="260" Height="70"
-                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsButtonOther}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="740,400,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpCellsStatisticsButtonOther}" />
 
     </Grid>
 </UserControl>

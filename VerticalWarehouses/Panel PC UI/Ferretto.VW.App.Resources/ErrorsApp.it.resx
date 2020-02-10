@@ -117,82 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ErrorLogin" xml:space="preserve">
-    <value>Errore: login fallito. Controlla la correttezza di user e password.</value>
+  <data name="ConverterCanConvertOnlyToVisibilityType" xml:space="preserve">
+    <value>Questo converter può convertire solo valori di tipo Visibility.</value>
   </data>
-  <data name="Ok" xml:space="preserve">
-    <value>Ok</value>
-  </data>
-  <data name="PasswordLogin" xml:space="preserve">
-    <value>Password</value>
-  </data>
-  <data name="UserLogin" xml:space="preserve">
-    <value>Nome Utente</value>
-  </data>
-  <data name="SwitchOff" xml:space="preserve">
-    <value>Spegni</value>
-  </data>
-  <data name="ErrorRecoveryProcedure" xml:space="preserve">
-    <value>Ripristino errore</value>
-  </data>
-  <data name="ErrorCode" xml:space="preserve">
-    <value>Codice Errore</value>
-  </data>
-  <data name="ErrorDescription" xml:space="preserve">
-    <value>Descrizione errore</value>
-  </data>
-  <data name="ErrorReason" xml:space="preserve">
-    <value>Possibili cause</value>
-  </data>
-  <data name="AutomaticMode" xml:space="preserve">
-    <value>Automatico</value>
-  </data>
-  <data name="ManualMode" xml:space="preserve">
-    <value>Manuale</value>
-  </data>
-  <data name="ErrorCommunicatingWithServices" xml:space="preserve">
-    <value>Errore di comunicazione con i servizi.</value>
-  </data>
-  <data name="BayNumber" xml:space="preserve">
-    <value>Baia {0}</value>
-  </data>
-  <data name="SerialNumber" xml:space="preserve">
-    <value>Numero Seriale: {0}</value>
-  </data>
-  <data name="UserLogin_Password" xml:space="preserve">
-    <value>Password</value>
-  </data>
-  <data name="FirstSeen" xml:space="preserve">
-    <value>Visto</value>
-  </data>
-  <data name="DaysAgo" xml:space="preserve">
-    <value>{0:0} giorni fa</value>
-  </data>
-  <data name="HoursAgo" xml:space="preserve">
-    <value>{0:0} ore fa</value>
-  </data>
-  <data name="MinutesAgo" xml:space="preserve">
-    <value>{0:0} minuti fa</value>
-  </data>
-  <data name="Now" xml:space="preserve">
-    <value>Adesso</value>
-  </data>
-  <data name="Version" xml:space="preserve">
-    <value>Versione {0}</value>
-  </data>
-  <data name="EmergencyIsOn" xml:space="preserve">
-    <value>Emergenza attiva</value>
-  </data>
-  <data name="EnsureEmergencyIsOff" xml:space="preserve">
-    <value>Assicurarsi che nessun bottone di emergenza sia premuto.</value>
-  </data>
-  <data name="MarkAsResolved" xml:space="preserve">
-    <value>Marca come risolto</value>
-  </data>
-  <data name="WarehouseSide_Back" xml:space="preserve">
-    <value>Posteriore</value>
-  </data>
-  <data name="WarehouseSide_Front" xml:space="preserve">
-    <value>Anteriore</value>
+  <data name="ParameterCannotBeNullOrEmpty" xml:space="preserve">
+    <value>Il parametro non può essere nullo o vuoto.</value>
   </data>
 </root>

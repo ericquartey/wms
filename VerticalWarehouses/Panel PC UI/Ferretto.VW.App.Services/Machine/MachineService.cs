@@ -598,7 +598,7 @@ namespace Ferretto.VW.App.Services
                                     this.MachineStatus.CurrentMissionId = messageData.MissionId;
 
                                     // TODO use messageData.MissionStep instead of message.Description
-                                    this.Notification = string.Format(General.MovementInProgress, $"(Id {this.MachineStatus.CurrentMissionId} " +
+                                    this.Notification = string.Format(ServiceMachine.MovementInProgress, $"(Id {this.MachineStatus.CurrentMissionId} " +
                                         $"- LU {messageData.LoadUnitId} " +
                                         $"- {message.Description} " +
                                         $"- from {messageData.Source} {messageData.SourceCellId} " +
@@ -711,7 +711,7 @@ namespace Ferretto.VW.App.Services
                                 this.NotifyMachineStatusChanged();
 
                                 // TODO use messageData.MissionStep instead of message.Description
-                                this.Notification = string.Format(General.MovementInProgress, $"(Id {this.MachineStatus?.CurrentMissionId} " +
+                                this.Notification = string.Format(ServiceMachine.MovementInProgress, $"(Id {this.MachineStatus?.CurrentMissionId} " +
                                     $"- LU {moveLoadingUnitMessageData.LoadUnitId} " +
                                     $"- {message.Description} " +
                                     $"- from {moveLoadingUnitMessageData.Source} {moveLoadingUnitMessageData.SourceCellId} " +

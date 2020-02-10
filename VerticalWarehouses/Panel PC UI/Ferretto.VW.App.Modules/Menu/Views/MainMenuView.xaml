@@ -62,7 +62,7 @@
                        VerticalAlignment="Top"
                        FontSize="{DynamicResource FontSize_High}"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{Binding MachineIdentity.SerialNumber, StringFormat={x:Static res:VWApp.SerialNumber}, FallbackValue='SerialNumber'}" />
+                       Text="{Binding MachineIdentity.SerialNumber, StringFormat={x:Static res:General.SerialNumber}, FallbackValue='SerialNumber'}" />
 
         </StackPanel>
 
@@ -153,7 +153,7 @@
                            HorizontalAlignment="Right"
                            VerticalAlignment="Bottom"
                            Tag="{Binding BayNumber}"
-                           TextBadge="{Binding BayNumber, StringFormat={x:Static res:VWApp.BayNumber}}" />
+                           TextBadge="{Binding BayNumber, StringFormat={x:Static res:General.BayNumber}}" />
 
     </Grid>
 </ctrls:View>
