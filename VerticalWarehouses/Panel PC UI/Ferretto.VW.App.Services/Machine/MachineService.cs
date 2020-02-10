@@ -1224,6 +1224,10 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification("Homing non eseguito.", NotificationSeverity.Error);
                         }
+                        else if (view.Equals("LoadingUnitFromBayToCellView") && !this.sensorsService.IsLoadingUnitInBay && !this.sensorsService.IsLoadingUnitInMiddleBottomBay)
+                        {
+                            this.ShowNotification("Nessun cassetto presente in baia.", NotificationSeverity.Warning);
+                        }
                         else if ((((this.MachineStatus.LoadingUnitPositionDownInBay != null && !this.sensorsService.IsLoadingUnitInMiddleBottomBay && (this.Bay.IsDouble || !this.BayFirstPositionIsUpper)) ||
                                    (this.MachineStatus.LoadingUnitPositionUpInBay != null && !this.sensorsService.IsLoadingUnitInBay && (this.Bay.IsDouble || this.BayFirstPositionIsUpper))) ||
                                   ((this.MachineStatus.LoadingUnitPositionDownInBay == null && this.sensorsService.IsLoadingUnitInMiddleBottomBay && (this.Bay.IsDouble || !this.BayFirstPositionIsUpper)) ||
