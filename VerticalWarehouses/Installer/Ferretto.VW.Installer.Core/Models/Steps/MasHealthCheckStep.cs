@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -32,7 +31,7 @@ namespace Ferretto.VW.Installer.Core
             using (var httpClient = new HttpClient())
             {
                 string status = null;
-                var requestUri = new Uri(this.InterpolateVariables(this.Url));
+                var requestUri = new Uri(InterpolateVariables(this.Url));
                 var startTime = DateTime.Now;
                 var isHealthy = false;
                 do

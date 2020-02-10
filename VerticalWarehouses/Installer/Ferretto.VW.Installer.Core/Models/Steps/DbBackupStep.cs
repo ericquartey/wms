@@ -20,8 +20,8 @@ namespace Ferretto.VW.Installer.Core
         public DbBackupStep(int number, string title, string description, string automationServicePath, string backupPath)
             : base(number, title, description)
         {
-            this.AutomationServicePath = this.InterpolateVariables(automationServicePath);
-            this.BackupPath = this.InterpolateVariables(backupPath);
+            this.AutomationServicePath = InterpolateVariables(automationServicePath);
+            this.BackupPath = InterpolateVariables(backupPath);
         }
 
         #endregion

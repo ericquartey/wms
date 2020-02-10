@@ -143,18 +143,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Methods
 
-        public async override Task OnAppearedAsync()
-        {
-            await base.OnAppearedAsync();
-        }
-
-        protected override async Task OnDataRefreshAsync()
-        {
-            await base.OnDataRefreshAsync();
-
-            await this.RetrieveCellsAsync();
-        }
-
         protected async Task RetrieveCellsAsync()
         {
             try

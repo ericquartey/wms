@@ -206,7 +206,7 @@
                                                    VerticalAlignment="Bottom"
                                                    FontSize="16"
                                                    Foreground="{DynamicResource FerrettoLightGray}"
-                                                   Text="{x:Static res:CardSensor.Weight}" />
+                                                   Text="{x:Static res:SensorCard.Weight}" />
                                         <TextBlock Grid.Row="1"
                                                    Grid.Column="0"
                                                    Margin="4"
@@ -214,7 +214,7 @@
                                                    VerticalAlignment="Top"
                                                    FontSize="16"
                                                    Foreground="{DynamicResource FerrettoLightGray}"
-                                                   Text="{x:Static res:CardSensor.Height}" />
+                                                   Text="{x:Static res:SensorCard.Height}" />
 
                                         <TextBlock Grid.Row="0"
                                                    Grid.Column="1"
@@ -559,7 +559,7 @@
                                                    VerticalAlignment="Bottom"
                                                    FontSize="16"
                                                    Foreground="{DynamicResource FerrettoLightGray}"
-                                                   Text="{x:Static res:CardSensor.Weight}" />
+                                                   Text="{x:Static res:SensorCard.Weight}" />
                                         <TextBlock Grid.Row="1"
                                                    Grid.Column="0"
                                                    Margin="4"
@@ -567,7 +567,7 @@
                                                    VerticalAlignment="Top"
                                                    FontSize="16"
                                                    Foreground="{DynamicResource FerrettoLightGray}"
-                                                   Text="{x:Static res:CardSensor.Height}" />
+                                                   Text="{x:Static res:SensorCard.Height}" />
 
                                         <TextBlock Grid.Row="0"
                                                    Grid.Column="1"
@@ -705,7 +705,7 @@
                                                    VerticalAlignment="Bottom"
                                                    FontSize="16"
                                                    Foreground="{DynamicResource FerrettoLightGray}"
-                                                   Text="{x:Static res:CardSensor.Weight}" />
+                                                   Text="{x:Static res:SensorCard.Weight}" />
                                         <TextBlock Grid.Row="1"
                                                    Grid.Column="0"
                                                    Margin="4"
@@ -713,7 +713,7 @@
                                                    VerticalAlignment="Top"
                                                    FontSize="16"
                                                    Foreground="{DynamicResource FerrettoLightGray}"
-                                                   Text="{x:Static res:CardSensor.Height}" />
+                                                   Text="{x:Static res:SensorCard.Height}" />
 
                                         <TextBlock Grid.Row="0"
                                                    Grid.Column="1"
@@ -1130,7 +1130,7 @@
                                                VerticalAlignment="Bottom"
                                                FontSize="16"
                                                Foreground="{DynamicResource FerrettoLightGray}"
-                                               Text="{x:Static res:CardSensor.Weight}" />
+                                               Text="{x:Static res:SensorCard.Weight}" />
                                     <TextBlock Grid.Row="1"
                                                Grid.Column="0"
                                                Margin="4"
@@ -1138,7 +1138,7 @@
                                                VerticalAlignment="Top"
                                                FontSize="16"
                                                Foreground="{DynamicResource FerrettoLightGray}"
-                                               Text="{x:Static res:CardSensor.Height}" />
+                                               Text="{x:Static res:SensorCard.Height}" />
 
 
                                     <TextBlock Grid.Row="0"
