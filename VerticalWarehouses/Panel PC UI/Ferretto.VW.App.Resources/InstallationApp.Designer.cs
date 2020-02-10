@@ -1150,6 +1150,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error executing installer app..
+        /// </summary>
+        public static string ErrorExecutingInstallerApp {
+            get {
+                return ResourceManager.GetString("ErrorExecutingInstallerApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error during initial update phase..
         /// </summary>
         public static string ErrorOnInitialPhaseUpdate {
@@ -1749,6 +1758,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Installer {
             get {
                 return ResourceManager.GetString("Installer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Installer app started successfully..
+        /// </summary>
+        public static string InstallerAppStartedSuccessfully {
+            get {
+                return ResourceManager.GetString("InstallerAppStartedSuccessfully", resourceCulture);
             }
         }
         

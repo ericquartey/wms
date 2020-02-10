@@ -48,6 +48,16 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Update="MaintenanceMenu.Designer.cs">
+      <DependentUpon>MaintenanceMenu.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="SensorCard.Designer.cs">
+      <DependentUpon>SensorCard.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Update="OperatorApp.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -89,9 +99,20 @@
       <LastGenOutput>MainMenu.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="MaintenanceMenu.resx">
+      <LastGenOutput>MaintenanceMenu.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="SensorCard.resx">
+      <LastGenOutput>SensorCard.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="OperatorApp.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>OperatorApp.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Test.it.resx">
+      <Generator></Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="VWApp.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

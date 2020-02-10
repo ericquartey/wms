@@ -10,9 +10,9 @@
              mc:Ignorable="d">
 
     <local:CardSensor CardBadge1="{Binding MachineStatus.ElevatorPositionLoadingUnit.Id}"
-                      CardBadgeLabel1="Cassetto"
+                      CardBadgeLabel1="{x:Static res:SensorCard.Drawer}"
                       CardDescription="{Binding MachineStatus.LogicalPosition}"
-                      CardText="Posizione"
+                      CardText="{x:Static res:SensorCard.Position}"
                       CardValue="{Binding MachineStatus.ElevatorLogicalPosition}"
                       LuHeight="{Binding MachineStatus.ElevatorPositionLoadingUnit.Height, StringFormat={}{0:F2}}"
                       LuWeight="{Binding MachineStatus.ElevatorPositionLoadingUnit.GrossWeight, StringFormat={}{0:F2}}"

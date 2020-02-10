@@ -117,157 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Open" xml:space="preserve">
-    <value>Apri</value>
-  </data>
-  <data name="Revert" xml:space="preserve">
-    <value>Scarta</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>Salva</value>
-  </data>
-  <data name="MeasureUnit" xml:space="preserve">
-    <value>Unità di Misura</value>
-  </data>
-  <data name="Search" xml:space="preserve">
-    <value>Cerca</value>
-  </data>
-  <data name="Refresh" xml:space="preserve">
-    <value>Aggiorna</value>
-  </data>
-  <data name="LastModificationDate" xml:space="preserve">
-    <value>Data Ultima Modifica</value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Descrizione</value>
-  </data>
   <data name="Back" xml:space="preserve">
-    <value>Indietro</value>
+    <value>Posteriore</value>
   </data>
-  <data name="Add" xml:space="preserve">
-    <value>Aggiungi</value>
+  <data name="Drawer" xml:space="preserve">
+    <value>Cassetto</value>
   </data>
-  <data name="CreationDate" xml:space="preserve">
-    <value>Data Creazione</value>
+  <data name="Elevator" xml:space="preserve">
+    <value>Elevatore</value>
   </data>
-  <data name="File" xml:space="preserve">
-    <value>File</value>
-  </data>
-  <data name="ThousandsSymbol" xml:space="preserve">
-    <value>k</value>
-  </data>
-  <data name="MillionsSymbol" xml:space="preserve">
-    <value>M</value>
-  </data>
-  <data name="Login" xml:space="preserve">
-    <value>Login</value>
-  </data>
-  <data name="SwitchOff" xml:space="preserve">
-    <value>Spegni</value>
-  </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Annulla</value>
+  <data name="Extra" xml:space="preserve">
+    <value>Extra</value>
   </data>
   <data name="Front" xml:space="preserve">
     <value>Anteriore</value>
   </data>
-  <data name="Next" xml:space="preserve">
-    <value>Successivo</value>
+  <data name="Height" xml:space="preserve">
+    <value>Altezza</value>
   </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Modifica</value>
+  <data name="Horizontal" xml:space="preserve">
+    <value>Orizzontale (mm)</value>
   </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Elimina</value>
+  <data name="Position" xml:space="preserve">
+    <value>Posizione</value>
   </data>
-  <data name="Code" xml:space="preserve">
-    <value>Codice</value>
+  <data name="Vertical" xml:space="preserve">
+    <value>Verticale (mm)</value>
   </data>
-  <data name="Execute" xml:space="preserve">
-    <value>Esegui</value>
+  <data name="Weight" xml:space="preserve">
+    <value>Peso</value>
   </data>
-  <data name="ShowDetails" xml:space="preserve">
-    <value>Mostra Dettagli</value>
-  </data>
-  <data name="Type" xml:space="preserve">
-    <value>Tipo</value>
-  </data>
-  <data name="Down" xml:space="preserve">
-    <value>Giù</value>
-  </data>
-  <data name="Up" xml:space="preserve">
-    <value>Su</value>
-  </data>
-  <data name="Bottom" xml:space="preserve">
-    <value>Inferiore</value>
-  </data>
-  <data name="Top" xml:space="preserve">
-    <value>Superiore</value>
-  </data>
-  <data name="Loading" xml:space="preserve">
-    <value>Caricamento</value>
-  </data>
-  <data name="Status" xml:space="preserve">
-    <value>Stato</value>
-  </data>
-  <data name="Quantity" xml:space="preserve">
-    <value>Quantità</value>
-  </data>
-  <data name="Priority" xml:space="preserve">
-    <value>Priorità</value>
-  </data>
-  <data name="Details" xml:space="preserve">
-    <value>Dettagli</value>
-  </data>
-  <data name="AdditionalInfo" xml:space="preserve">
-    <value>[{0}]</value>
-  </data>
-  <data name="CheckBoxDark" xml:space="preserve">
-    <value>  Tema scuro.</value>
-  </data>
-  <data name="TargetNullValue" xml:space="preserve">
-    <value>-</value>
-  </data>
-  <data name="MachineOff" xml:space="preserve">
-    <value>Spenta</value>
-  </data>
-  <data name="MachineOn" xml:space="preserve">
-    <value>Accesa</value>
-  </data>
-  <data name="Error" xml:space="preserve">
-    <value>Errore</value>
-  </data>
-  <data name="Debug" xml:space="preserve">
-    <value>Debug</value>
-  </data>
-  <data name="NumberOnTotal" xml:space="preserve">
-    <value>{0} di {1}</value>
-  </data>
-  <data name="FilePath" xml:space="preserve">
-    <value>Percorso file</value>
-  </data>
-  <data name="ConfirmMachineRun" xml:space="preserve">
-    <value>Sei sicuro di voler mettere la macchina in marcia?</value>
-  </data>
-  <data name="MachineRun" xml:space="preserve">
-    <value>Marcia</value>
-  </data>
-  <data name="ConfirmMachineModeSwitchAutomatic" xml:space="preserve">
-    <value>Sei sicuro di voler mettere la macchina in automatico e ripristinare i movimenti in corso?</value>
-  </data>
-  <data name="Automatic" xml:space="preserve">
-    <value>Automatico</value>
-  </data>
-  <data name="ShuttingDown" xml:space="preserve">
-    <value>Spegnimento ...</value>
-  </data>
-  <data name="No" xml:space="preserve">
-    <value>No</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Sì</value>
-  </data>
-  <data name="Close" xml:space="preserve">
-    <value>Chiudi</value>
+  <data name="Zero" xml:space="preserve">
+    <value>Zero</value>
   </data>
 </root>

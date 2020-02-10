@@ -30,8 +30,12 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         #region Fields
 
         private readonly IMachineErrorsWebService machineErrorsWebService;
-        private readonly IMachineModeWebService machineModeWebService;
+
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
+
+        private readonly IMachineModeWebService machineModeWebService;
+
+        private DelegateCommand automaticCommand;
 
         private bool canInputLoadingUnitId;
 
@@ -64,7 +68,6 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         private DelegateCommand stopCommand;
 
         private string subtitleStepLoadunit;
-        private DelegateCommand automaticCommand;
 
         #endregion
 
@@ -86,6 +89,13 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         #endregion
 
         #region Properties
+
+        public ICommand AutomaticCommand =>
+            this.automaticCommand
+            ??
+            (this.automaticCommand = new DelegateCommand(
+                async () => await this.AutomaticCommandAsync(),
+                this.CanAutomaticCommand));
 
         public bool CanInputLoadingUnitId
         {
@@ -164,51 +174,17 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                     {
                         throw new NotSupportedException();
                     }
-                }));
+                },
+                () => this.CanBaseExecute() &&
+                      this.MachineService.MachineMode != MachineMode.Automatic &&
+                      this.MachineService.MachinePower == MachinePowerState.Powered
+                ));
 
         public LoadingUnit SelectedLoadingUnit
         {
             get => this.selectedLoadingUnit;
             private set => this.SetProperty(ref this.selectedLoadingUnit, value);
         }
-
-
-        private bool CanAutomaticCommand()
-        {
-            return !this.IsKeyboardOpened &&
-                   !this.IsMoving &&
-                   this.MachineService.MachineMode != MachineMode.Automatic;
-        }
-
-
-        public ICommand AutomaticCommand =>
-            this.automaticCommand
-            ??
-            (this.automaticCommand = new DelegateCommand(
-                async () => await this.AutomaticCommandAsync(),
-                this.CanAutomaticCommand));
-
-
-        private async Task AutomaticCommandAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                await this.machineModeWebService.SetAutomaticAsync();
-            }
-            catch (MasWebApiException ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-        }
-
-
-
 
         public ICommand StopCommand =>
             this.stopCommand
@@ -352,12 +328,37 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             this.moveToNextCommand?.RaiseCanExecuteChanged();
         }
 
+        private async Task AutomaticCommandAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                await this.machineModeWebService.SetAutomaticAsync();
+            }
+            catch (MasWebApiException ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private bool CanAutomaticCommand()
+        {
+            return !this.IsKeyboardOpened &&
+                   !this.IsMoving &&
+                   this.MachineService.MachineMode != MachineMode.Automatic;
+        }
+
         private bool CanBaseExecute()
         {
             return
                 !this.IsKeyboardOpened
                 &&
-                !this.IsWaitingForResponse;
+                !this.IsMoving;
         }
 
         private bool CanMarkAsResolved()
