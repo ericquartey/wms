@@ -6,10 +6,10 @@
                       xmlns:dialog="clr-namespace:Ferretto.VW.App.Controls"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       Width="1024"
-                      Height="400"                      
+                      Height="400"
                       AllowsTransparency="True"
                       IsClosed="{Binding IsClosed}"
-                      Opacity="1"                      
+                      Opacity="1"
                       ResizeMode="CanResizeWithGrip"
                       WindowStyle="None"
                       mc:Ignorable="d">
@@ -54,7 +54,7 @@
                          HorizontalAlignment="Right"
                          VerticalAlignment="Bottom"
                          Command="{Binding CloseCommand}"
-                         Content="Chiudi" />
+                         Content="{x:Static res:General.Close}" />
 
     </Grid>
 
