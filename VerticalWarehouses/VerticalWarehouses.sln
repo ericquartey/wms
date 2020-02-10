@@ -110,7 +110,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Installer", "Installer", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Installer", "Installer\Ferretto.VW.Installer\Ferretto.VW.Installer.csproj", "{7021CA98-00A3-42A7-B7B9-6F7C31A1B994}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.VW.App.Keyboards", "Panel PC UI\Ferretto.VW.App.Keyboards\Ferretto.VW.App.Keyboards.csproj", "{139FEB03-A085-4A20-AAB4-A519D8A83770}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Keyboards", "Panel PC UI\Ferretto.VW.App.Keyboards\Ferretto.VW.App.Keyboards.csproj", "{139FEB03-A085-4A20-AAB4-A519D8A83770}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Installer.Core", "Installer\Ferretto.VW.Installer.Core\Ferretto.VW.Installer.Core.csproj", "{6758BBB2-52EA-47AF-93F0-787FA2DC9133}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -863,6 +865,24 @@ Global
 		{139FEB03-A085-4A20-AAB4-A519D8A83770}.Release|x64.Build.0 = Release|Any CPU
 		{139FEB03-A085-4A20-AAB4-A519D8A83770}.Release|x86.ActiveCfg = Release|Any CPU
 		{139FEB03-A085-4A20-AAB4-A519D8A83770}.Release|x86.Build.0 = Release|Any CPU
+		{6758BBB2-52EA-47AF-93F0-787FA2DC9133}.Debug (no autogen)|Any CPU.ActiveCfg = Debug|Any CPU
+		{6758BBB2-52EA-47AF-93F0-787FA2DC9133}.Debug (no autogen)|Any CPU.Build.0 = Debug|Any CPU
+		{6758BBB2-52EA-47AF-93F0-787FA2DC9133}.Debug (no autogen)|x64.ActiveCfg = Debug|Any CPU
+		{6758BBB2-52EA-47AF-93F0-787FA2DC9133}.Debug (no autogen)|x64.Build.0 = Debug|Any CPU
+		{6758BBB2-52EA-47AF-93F0-787FA2DC9133}.Debug (no autogen)|x86.ActiveCfg = Debug|Any CPU
+		{6758BBB2-52EA-47AF-93F0-787FA2DC9133}.Debug (no autogen)|x86.Build.0 = Debug|Any CPU
+		{6758BBB2-52EA-47AF-93F0-787FA2DC9133}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6758BBB2-52EA-47AF-93F0-787FA2DC9133}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6758BBB2-52EA-47AF-93F0-787FA2DC9133}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6758BBB2-52EA-47AF-93F0-787FA2DC9133}.Debug|x64.Build.0 = Debug|Any CPU
+		{6758BBB2-52EA-47AF-93F0-787FA2DC9133}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6758BBB2-52EA-47AF-93F0-787FA2DC9133}.Debug|x86.Build.0 = Debug|Any CPU
+		{6758BBB2-52EA-47AF-93F0-787FA2DC9133}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6758BBB2-52EA-47AF-93F0-787FA2DC9133}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6758BBB2-52EA-47AF-93F0-787FA2DC9133}.Release|x64.ActiveCfg = Release|Any CPU
+		{6758BBB2-52EA-47AF-93F0-787FA2DC9133}.Release|x64.Build.0 = Release|Any CPU
+		{6758BBB2-52EA-47AF-93F0-787FA2DC9133}.Release|x86.ActiveCfg = Release|Any CPU
+		{6758BBB2-52EA-47AF-93F0-787FA2DC9133}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -910,6 +930,7 @@ Global
 		{1717D41D-6BA6-43F4-939A-40FD3587CCFC} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
 		{7021CA98-00A3-42A7-B7B9-6F7C31A1B994} = {FA8E3B13-7F77-4140-9800-E15EAB61F296}
 		{139FEB03-A085-4A20-AAB4-A519D8A83770} = {F1C06ED8-17DC-48AE-9D64-B18455CA3231}
+		{6758BBB2-52EA-47AF-93F0-787FA2DC9133} = {FA8E3B13-7F77-4140-9800-E15EAB61F296}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {40395CF2-451B-48E4-A29A-0E8AE12146B4}
