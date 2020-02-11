@@ -117,13 +117,55 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ConverterCanConvertOnlyToVisibilityType" xml:space="preserve">
-    <value>Converter can only convert to value of type Visibility.</value>
+  <data name="CellSide" xml:space="preserve">
+    <value>Cell Side</value>
   </data>
-  <data name="MarkupNameOfSyntax" xml:space="preserve">
-    <value>Syntax for NameOf is Type={x:Type &lt;className&gt;}.</value>
+  <data name="CurrentCell" xml:space="preserve">
+    <value>Current cell</value>
   </data>
-  <data name="ParameterCannotBeNullOrEmpty" xml:space="preserve">
-    <value>Parameter cannot be null or empty.</value>
+  <data name="Displacement" xml:space="preserve">
+    <value>Displacement [mm]</value>
+  </data>
+  <data name="DrawerIdentificationCompleted" xml:space="preserve">
+    <value>Drawer identification completed, switch to automatic mode.</value>
+  </data>
+  <data name="DrawerReturn" xml:space="preserve">
+    <value>Return Drawer</value>
+  </data>
+  <data name="DrawerSelection" xml:space="preserve">
+    <value>Drawer selection</value>
+  </data>
+  <data name="ErrorCode" xml:space="preserve">
+    <value>Error Code</value>
+    <comment>Label</comment>
+  </data>
+  <data name="ErrorDescription" xml:space="preserve">
+    <value>Error Description</value>
+    <comment>Label</comment>
+  </data>
+  <data name="ErrorReason" xml:space="preserve">
+    <value>Error Reason</value>
+    <comment>Label</comment>
+  </data>
+  <data name="ErrorRecoveryProcedure" xml:space="preserve">
+    <value>Error recovery</value>
+    <comment>Label</comment>
+  </data>
+  <data name="FirstSeen" xml:space="preserve">
+    <value>First Seen</value>
+    <comment>Label</comment>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="InitialPosition" xml:space="preserve">
+    <value>Initial position [mm]</value>
+  </data>
+  <data name="InverterFaultErrorRestore" xml:space="preserve">
+    <value>Errore restore INVERTER FAULT</value>
+  </data>
+  <data name="MarkAsResolved" xml:space="preserve">
+    <value>Mark as resolved</value>
+    <comment>Action</comment>
   </data>
 </root>

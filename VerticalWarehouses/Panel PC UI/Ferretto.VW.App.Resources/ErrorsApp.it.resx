@@ -117,10 +117,49 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ConverterCanConvertOnlyToVisibilityType" xml:space="preserve">
-    <value>Questo converter può convertire solo valori di tipo Visibility.</value>
+  <data name="CellSide" xml:space="preserve">
+    <value>Lato Cella</value>
   </data>
-  <data name="ParameterCannotBeNullOrEmpty" xml:space="preserve">
-    <value>Il parametro non può essere nullo o vuoto.</value>
+  <data name="CurrentCell" xml:space="preserve">
+    <value>Cella selezionata</value>
+  </data>
+  <data name="Displacement" xml:space="preserve">
+    <value>Spostamento [mm]</value>
+  </data>
+  <data name="DrawerIdentificationCompleted" xml:space="preserve">
+    <value>Terminata la procedura di identificazione cassetto, passa in autmatico.</value>
+  </data>
+  <data name="DrawerReturn" xml:space="preserve">
+    <value>Rientra cassetto</value>
+  </data>
+  <data name="DrawerSelection" xml:space="preserve">
+    <value>Selezione del cassetto</value>
+  </data>
+  <data name="ErrorCode" xml:space="preserve">
+    <value>Codice Errore</value>
+  </data>
+  <data name="ErrorDescription" xml:space="preserve">
+    <value>Descrizione errore</value>
+  </data>
+  <data name="ErrorReason" xml:space="preserve">
+    <value>Possibili cause</value>
+  </data>
+  <data name="ErrorRecoveryProcedure" xml:space="preserve">
+    <value>Ripristino errore</value>
+  </data>
+  <data name="FirstSeen" xml:space="preserve">
+    <value>Visto</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="InitialPosition" xml:space="preserve">
+    <value>Quota iniziale [mm]</value>
+  </data>
+  <data name="InverterFaultErrorRestore" xml:space="preserve">
+    <value>Ripristino errore INVERTER FAULT</value>
+  </data>
+  <data name="MarkAsResolved" xml:space="preserve">
+    <value>Marca come risolto</value>
   </data>
 </root>

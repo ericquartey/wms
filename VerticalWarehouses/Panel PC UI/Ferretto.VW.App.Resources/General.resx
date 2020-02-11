@@ -241,9 +241,6 @@
     <value>CheckBoxDark</value>
     <comment>Check box label</comment>
   </data>
-  <data name="TargetNullValue" xml:space="preserve">
-    <value>-</value>
-  </data>
   <data name="MachineOff" xml:space="preserve">
     <value>Off</value>
   </data>
@@ -309,29 +306,9 @@
     <value>Ensure no emergency buttons are pressed.</value>
     <comment>Instruction</comment>
   </data>
-  <data name="ErrorCode" xml:space="preserve">
-    <value>Error Code</value>
-    <comment>Label</comment>
-  </data>
   <data name="ErrorCommunicatingWithServices" xml:space="preserve">
     <value>Error communicating with services.</value>
     <comment>Information</comment>
-  </data>
-  <data name="ErrorDescription" xml:space="preserve">
-    <value>Error Description</value>
-    <comment>Label</comment>
-  </data>
-  <data name="ErrorReason" xml:space="preserve">
-    <value>Error Reason</value>
-    <comment>Label</comment>
-  </data>
-  <data name="ErrorRecoveryProcedure" xml:space="preserve">
-    <value>Error recovery</value>
-    <comment>Label</comment>
-  </data>
-  <data name="FirstSeen" xml:space="preserve">
-    <value>First Seen</value>
-    <comment>Label</comment>
   </data>
   <data name="HoursAgo" xml:space="preserve">
     <value>{0:0} hours ago</value>
@@ -340,10 +317,6 @@
   <data name="ManualMode" xml:space="preserve">
     <value>Manual</value>
     <comment>Information</comment>
-  </data>
-  <data name="MarkAsResolved" xml:space="preserve">
-    <value>Mark as resolved</value>
-    <comment>Action</comment>
   </data>
   <data name="MinutesAgo" xml:space="preserve">
     <value>{0:0} minutes ago</value>
@@ -407,5 +380,17 @@
   </data>
   <data name="BayTwoNumber" xml:space="preserve">
     <value>2</value>
+  </data>
+  <data name="SwitchToAutomatic" xml:space="preserve">
+    <value>Switch to Automatic</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="TargetNullValue" xml:space="preserve">
+    <value>-</value>
   </data>
 </root>
