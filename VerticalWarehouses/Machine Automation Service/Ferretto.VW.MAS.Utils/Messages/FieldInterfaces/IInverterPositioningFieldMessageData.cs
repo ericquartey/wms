@@ -14,6 +14,10 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         double FeedRate { get; set; }
 
+        bool IsProfileCalibrate { get; set; }
+
+        bool IsProfileCalibrateDone { get; set; }
+
         bool IsTorqueCurrentSamplingEnabled { get; set; }
 
         bool IsWeightMeasure { get; set; }
@@ -33,6 +37,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
         bool RefreshAll { get; }
 
         BayNumber RequestingBay { get; set; }
+
+        int StartPosition { get; set; }
 
         int[] SwitchPosition { get; set; }
 
