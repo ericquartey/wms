@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -277,7 +278,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             if (this.StartPosition < 0)
                             {
-                                this.currentError = $"Start position must be strictly positive.";
+                                this.currentError = InstallationApp.StartPositionMustBePositive;
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
@@ -287,7 +288,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                 this.axisLowerBound > 0 &&
                                 this.axisUpperBound > 0)
                             {
-                                this.currentError = $"Start position out of range axis ({this.AxisLowerBound} - {this.AxisUpperBound}).";
+                                this.currentError = string.Format(InstallationApp.StartPositionOutOfRangeAxis, this.AxisLowerBound, this.AxisUpperBound); ;
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
@@ -301,7 +302,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             if (!this.CurrentCellId.HasValue)
                             {
-                                this.currentError = $"Cell selected is required.";
+                                this.currentError = InstallationApp.CellSelectedRequired;
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
@@ -309,7 +310,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                             if (this.CurrentCellId < 1 ||
                                 this.SelectedCell is null)
                             {
-                                this.currentError = $"Cell selected not present.";
+                                this.currentError = InstallationApp.CellSelectedNotPresent;
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
                                 return this.currentError;
                             }
@@ -459,7 +460,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.Displacement = null;
 
-                this.ShowNotification("Offset asse verticale aggiornato.", Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(InstallationApp.AxisVerticalOffsetUpdated, Services.Models.NotificationSeverity.Success);
 
                 this.CurrentStep = VerticalOffsetCalibrationStep.Confirm;
 

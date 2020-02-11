@@ -1,9 +1,9 @@
 ﻿<UserControl x:Class="Ferretto.VW.App.Installation.HelpWindows.HelpLoadFirstDrawer"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              mc:Ignorable="d">
     <Grid Width="1024"
@@ -12,83 +12,128 @@
 
         <Image Width="200"
                Height="60"
-               HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"
+               Margin="10,10,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
                Source="{DynamicResource Ferretto_Logo}"
                Stretch="Uniform" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
-                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                    Text="{x:Static res:InstallationApp.LoadFirstDrawerPageHeader}" />
+        <TextBlock Margin="320,20,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.LoadFirstDrawerPageHeader}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
-                    Width="670" Height="60"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpLFDDescription}" />
+        <TextBlock Width="670"
+                   Height="60"
+                   Margin="320,50,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpLFDDescription}" />
 
-        <controls:PpcLabeledText    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0"
-                                                 Width="180" ContentText="4"
-                                                 LabelText="{x:Static res:InstallationApp.LoadFirstDrawerTotCellsToCheck}"  />
+        <controls:PpcLabeledText Width="180"
+                                 Margin="20,140,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="4"
+                                 LabelText="{x:Static res:InstallationApp.LoadFirstDrawerTotCellsToCheck}" />
 
-        <controls:PpcLabeledText   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0"
-                                                Width="180" ContentText="2"
-                                                LabelText="{x:Static res:InstallationApp.LoadFirstDrawerTotCellsChecked}"  />
+        <controls:PpcLabeledText Width="180"
+                                 Margin="20,210,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="2"
+                                 LabelText="{x:Static res:InstallationApp.LoadFirstDrawerTotCellsChecked}" />
 
-        <controls:PpcLabeledText    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,280,0,0"
-                                                 Width="180" ContentText="234"
-                                                 LabelText="{x:Static res:InstallationApp.LoadFirstDrawerActualCellToCheck}"  />
+        <controls:PpcLabeledText Width="180"
+                                 Margin="20,280,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="234"
+                                 LabelText="{x:Static res:InstallationApp.LoadFirstDrawerActualCellToCheck}" />
 
-        <controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0"
-                                                    Width="180" InputText="1"
-                                                    Highlighted="True" IsEnabled="True"
+        <controls:PpcTextBox Width="180"
+                             Margin="20,350,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             Highlighted="True"
+                             InputText="1"
+                             IsEnabled="True"
+                             LabelText="{x:Static res:InstallationApp.LoadFirstDrawerDrawerToInsert}" />
 
-                                                    LabelText="{x:Static res:InstallationApp.LoadFirstDrawerDrawerToInsert}" />
+        <controls:PpcLabeledText Width="180"
+                                 Margin="20,420,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="500"
+                                 LabelText="{x:Static res:InstallationApp.LoadFirstDrawerMaxWeight}" />
 
-        <controls:PpcLabeledText   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0"
-                                                Width="180" ContentText="500"
-                                                LabelText="{x:Static res:InstallationApp.LoadFirstDrawerMaxWeight}"/>
+        <controls:PpcButton Margin="530,140,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{x:Static res:InstallationApp.LoadFirstDrawerStartLoading}" />
 
-        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,140,0,0"
-                    Content="{x:Static res:InstallationApp.LoadFirstDrawerStartLoading}"
-                     />
+        <controls:PpcButton Margin="530,210,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{x:Static res:InstallationApp.LoadFirstDrawerRecallDrawer}" />
 
-        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,210,0,0"
-                    Content="{x:Static res:InstallationApp.LoadFirstDrawerRecallDrawer}"
-                     />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,140,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpLFDTotalCells}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,140,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpLFDTotalCells}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,210,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpLFDTestedCells}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,210,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpLFDTestedCells}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,280,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpLFDCellInTest}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,280,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpLFDCellInTest}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,350,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpLFDDrawerNumber}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,350,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpLFDDrawerNumber}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,420,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpLFDMaxLoad}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,420,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpLFDMaxLoad}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,140,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpLFDInsertDrawer}" />
 
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,140,0,0"
-                     Width="260" Height="70"
-                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpLFDInsertDrawer}" />
-
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,210,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpLFDRecallDrawer}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,210,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpLFDRecallDrawer}" />
 
     </Grid>
 </UserControl>
