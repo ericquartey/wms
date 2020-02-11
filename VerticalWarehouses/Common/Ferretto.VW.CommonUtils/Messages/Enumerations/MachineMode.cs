@@ -8,15 +8,17 @@
 
         Manual,
 
+        ManualPlus,
+
         Test,
 
         Compact,
 
-        Restore,
-
         SwitchingToAutomatic,
 
         SwitchingToManual,
+
+        SwitchingToManualPlus,
 
         SwitchingToCompact
     }

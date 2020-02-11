@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading.Tasks;
@@ -369,16 +370,16 @@ namespace Ferretto.VW.MAS.MissionManager
             switch (this.machineVolatileDataProvider.Mode)
             {
                 case MachineMode.SwitchingToAutomatic:
+                case MachineMode.SwitchingToManualPlus:
                     {
                         // in this machine mode we generate homing for elevator and bays, but only if there are no missions to restore.
                         // if homing is not possible we switch anyway to automatic mode
                         var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
                         var activeMissions = missionsDataProvider.GetAllActiveMissions();
 
-                        if (activeMissions.Any(m => m.IsMissionToRestore()))
+                        if (activeMissions.Any(m => m.IsMissionToRestore() || m.Step >= MissionStep.Error))
                         {
-                            this.machineVolatileDataProvider.Mode = MachineMode.Restore;
-                            this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                            await this.ScheduleRestore(serviceProvider, bayProvider, activeMissions);
                         }
                         else if (!activeMissions.Any(m => m.Status == MissionStatus.Executing
                                     && m.Step > MissionStep.New)
@@ -389,10 +390,15 @@ namespace Ferretto.VW.MAS.MissionManager
                             {
                                 this.machineVolatileDataProvider.Mode = MachineMode.Manual;
                             }
+                            else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToManualPlus)
+                            {
+                                this.machineVolatileDataProvider.Mode = MachineMode.ManualPlus;
+                            }
                             else
                             {
                                 this.machineVolatileDataProvider.Mode = MachineMode.Automatic;
                             }
+
                             this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                         }
                     }
@@ -407,6 +413,10 @@ namespace Ferretto.VW.MAS.MissionManager
                                 if (bay.IsActive)
                                 {
                                     await this.ScheduleMissionsOnBayAsync(bay.Number, serviceProvider);
+                                }
+                                else
+                                {
+                                    this.Logger.LogWarning("Scheduling missions on bay {number} is not allowed: bay is not active.", bay.Number);
                                 }
                             }
                             catch (Exception ex)
@@ -445,49 +455,6 @@ namespace Ferretto.VW.MAS.MissionManager
                         {
                             this.machineVolatileDataProvider.Mode = MachineMode.Manual;
                             this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
-                        }
-                    }
-                    break;
-
-                case MachineMode.Restore:
-                    {
-                        // in this machine mode we have to restore missions in error.
-                        // in restoring missions the "full load" homing are processed and, where possible, also some "empty load" homing.
-                        // after processing missions we have to generate homing for bays and elevator, if there are some left.
-                        // only empty load homings are counted in HomingExecuted properties.
-                        var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
-                        var activeMissions = missionsDataProvider.GetAllActiveMissions();
-
-                        if (activeMissions.Any(m => m.Step >= MissionStep.Error))
-                        {
-                            if (!activeMissions.Any(m => m.Step >= MissionStep.Error && m.RestoreStep == MissionStep.NotDefined))
-                            {
-                                foreach (var bay in bayProvider.GetAll())
-                                {
-                                    try
-                                    {
-                                        if (bay.IsActive)
-                                        {
-                                            await this.ScheduleMissionsOnBayAsync(bay.Number, serviceProvider, true);
-                                        }
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        this.Logger.LogError(ex, "Failed to schedule missions on bay {number}.", bay.Number);
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (!activeMissions.Any(m => m.Status == MissionStatus.Executing
-                                    && m.Step > MissionStep.New)
-                                && !this.GenerateHoming(bayProvider, this.machineVolatileDataProvider.IsHomingExecuted)
-                                )
-                            {
-                                this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToAutomatic;
-                                this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
-                            }
                         }
                     }
                     break;
@@ -726,19 +693,27 @@ namespace Ferretto.VW.MAS.MissionManager
                 // close operation and schedule next
                 //baysDataProvider.ClearMission(bay.Number);
 
-                var currentMode = serviceProvider
-                    .GetRequiredService<IMachineModeProvider>()
-                    .GetCurrent();
+                await this.InvokeSchedulerAsync(serviceProvider);
+            }
+        }
 
-                switch (currentMode)
+        private async Task ScheduleRestore(IServiceProvider serviceProvider, IBaysDataProvider bayProvider, IEnumerable<Mission> activeMissions)
+        {
+            if (!activeMissions.Any(m => m.Step >= MissionStep.Error && m.RestoreStep == MissionStep.NotDefined))
+            {
+                foreach (var bay in bayProvider.GetAll())
                 {
-                    case MachineMode.Automatic:
-                        await this.ScheduleMissionsOnBayAsync(bay.Number, serviceProvider);
-                        break;
-
-                    case MachineMode.Compact:
-                        this.ScheduleCompactingMissions(serviceProvider);
-                        break;
+                    try
+                    {
+                        if (bay.IsActive)
+                        {
+                            await this.ScheduleMissionsOnBayAsync(bay.Number, serviceProvider, true);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        this.Logger.LogError(ex, "Failed to schedule missions on bay {number}.", bay.Number);
+                    }
                 }
             }
         }
