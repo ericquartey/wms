@@ -6,6 +6,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -239,12 +241,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.InputDisplacement):
                         if (!this.InputDisplacement.HasValue)
                         {
-                            return $"InputDisplacement is required.";
+                            return InstallationApp.InputDisplacementRequired;
                         }
 
                         if (this.InputDisplacement.Value <= 0)
                         {
-                            return "InputDisplacement must be strictly positive.";
+                            return InstallationApp.InputDisplacementMustBePositive;
                         }
 
                         break;
@@ -252,12 +254,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.InputNetWeight):
                         if (!this.InputNetWeight.HasValue)
                         {
-                            return $"InputNetWeight is required.";
+                            return InstallationApp.InputNetWeightRequired;
                         }
 
                         if (this.InputNetWeight.Value <= 0)
                         {
-                            return "InputNetWeight must be strictly positive.";
+                            return InstallationApp.InputNetWeightMustBePositive;
                         }
 
                         break;

@@ -5,6 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:helpWindows="clr-namespace:Ferretto.VW.App.Installation.HelpWindows"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
         Width="1024"
         Height="768"
         ResizeMode="NoResize"
@@ -28,6 +29,6 @@
                             Margin="0,0,10,0"
                             HorizontalAlignment="Right"
                             Click="Button_Click"
-                            Content="Back" />
+                            Content="{x:Static res:General.Back}" />
     </Grid>
 </Window>

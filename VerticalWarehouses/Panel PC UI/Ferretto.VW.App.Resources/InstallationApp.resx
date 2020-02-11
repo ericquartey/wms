@@ -1489,4 +1489,103 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="ErrorExecutingInstallerApp" xml:space="preserve">
     <value>Error executing installer app.</value>
   </data>
+  <data name="BoardingNotExecutedMissingDrawer" xml:space="preserve">
+    <value>Boarding not performed due to missing drawer</value>
+  </data>
+  <data name="CellNotValid" xml:space="preserve">
+    <value>Cell not valid</value>
+  </data>
+  <data name="InputFormCellIdMustBePositive" xml:space="preserve">
+    <value>InputFormCellId must be positive.</value>
+  </data>
+  <data name="InputFormCellIdRequired" xml:space="preserve">
+    <value>InputFormCellId is required.</value>
+  </data>
+  <data name="InputToCellIdMustBePositive" xml:space="preserve">
+    <value>InputToCellId must be positive.</value>
+  </data>
+  <data name="InputToCellIdRequired" xml:space="preserve">
+    <value>InputToCellId is required.</value>
+  </data>
+  <data name="LandingNotExecutedMissingDrawer" xml:space="preserve">
+    <value>Landing not performed due to missing drawer</value>
+  </data>
+  <data name="MoveToBayNotExecuted" xml:space="preserve">
+    <value>Move to bay not executed, current state is {0}</value>
+  </data>
+  <data name="StateShouldBeInMode" xml:space="preserve">
+    <value>State should be in mode {0} or {1}</value>
+  </data>
+  <data name="StepMustBePositive" xml:space="preserve">
+    <value>Step must be positive.</value>
+  </data>
+  <data name="StepRequired" xml:space="preserve">
+    <value>Step is required.</value>
+  </data>
+  <data name="SuccessfullChange" xml:space="preserve">
+    <value>Successful change</value>
+  </data>
+  <data name="AxisVerticalOffsetUpdated" xml:space="preserve">
+    <value>Axis Vertical Offset Updated</value>
+  </data>
+  <data name="BeltBreakIn" xml:space="preserve">
+    <value>Belt Break-In</value>
+  </data>
+  <data name="CellSelectedNotPresent" xml:space="preserve">
+    <value>Cell selected is not present.</value>
+  </data>
+  <data name="CellSelectedRequired" xml:space="preserve">
+    <value>Cell selected is required.</value>
+  </data>
+  <data name="DestinationPositionMustBePositive" xml:space="preserve">
+    <value>Destination position must be strictly positive.</value>
+  </data>
+  <data name="DestinationPositionOutOfRangeAxis" xml:space="preserve">
+    <value>Destination position out of range axis ({0}).</value>
+  </data>
+  <data name="DestinationPositionRequired" xml:space="preserve">
+    <value>DestinationPosition is required.</value>
+  </data>
+  <data name="InputDisplacementMustBePositive" xml:space="preserve">
+    <value>InputDisplacement must be strictly positive.</value>
+  </data>
+  <data name="InputDisplacementRequired" xml:space="preserve">
+    <value>InputDisplacement is required.</value>
+  </data>
+  <data name="InputNetWeightMustBePositive" xml:space="preserve">
+    <value>InputNetWeight must be strictly positive.</value>
+  </data>
+  <data name="InputNetWeightRequired" xml:space="preserve">
+    <value>InputNetWeight is required.</value>
+  </data>
+  <data name="InputWeightMustBePositive" xml:space="preserve">
+    <value>InputWeightRequired must be strictly positive.</value>
+  </data>
+  <data name="InputWeightMustBeSpecified" xml:space="preserve">
+    <value>InputWeightRequired must be specified.</value>
+  </data>
+  <data name="LoadingUnitIdMustBePositive" xml:space="preserve">
+    <value>LoadingUnitId must be strictly positive.</value>
+  </data>
+  <data name="LoadingUnitIdRequired" xml:space="preserve">
+    <value>LoadingUnitId is required.</value>
+  </data>
+  <data name="MeasuredPositionOutOfRangeAxis" xml:space="preserve">
+    <value>Measured position out of range axis ({0}).</value>
+  </data>
+  <data name="RequiredCyclesCompleted" xml:space="preserve">
+    <value>Required amount of cycles was completed.</value>
+  </data>
+  <data name="StartPositionMustBePositive" xml:space="preserve">
+    <value>Start position must be strictly positive.</value>
+  </data>
+  <data name="StartPositionOutOfRangeAxis" xml:space="preserve">
+    <value>Start position out of range axis ({0}).</value>
+  </data>
+  <data name="TestToRunMustBePositive" xml:space="preserve">
+    <value>TestToRunmust be strictly positive.</value>
+  </data>
+  <data name="WeightToleranceMustBePositive" xml:space="preserve">
+    <value>Weight Tolerance must be strictly positive.</value>
+  </data>
 </root>
