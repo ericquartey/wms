@@ -129,6 +129,15 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                                         this.Inverter,
                                         this.Logger));
                             }
+                            else if (this.data.IsProfileCalibrate && !this.data.IsProfileCalibrateDone)
+                            {
+                                this.ParentStateMachine.ChangeState(
+                                    new PositioningProfileStartMovingState(
+                                        this.ParentStateMachine,
+                                        this.data,
+                                        this.Inverter,
+                                        this.Logger));
+                            }
                             else
                             {
                                 this.ParentStateMachine.ChangeState(

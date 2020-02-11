@@ -15,6 +15,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         double FeedRate { get; }
 
+        bool IsProfileCalibrate { get; }
+
         bool IsTorqueCurrentSamplingEnabled { get; }
 
         bool IsWeightMeasure { get; }
