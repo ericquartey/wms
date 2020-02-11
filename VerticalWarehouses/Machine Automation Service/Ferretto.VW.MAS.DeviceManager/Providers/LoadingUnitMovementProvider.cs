@@ -557,10 +557,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return MessageStatus.NotSpecified;
         }
 
-        public void ResumeOperation(int missionId, LoadingUnitLocation loadUnitSource, LoadingUnitLocation loadUnitDestination, int? wmsId, BayNumber targetBay, MessageActor sender)
+        public void ResumeOperation(int missionId, LoadingUnitLocation loadUnitSource, LoadingUnitLocation loadUnitDestination, int? wmsId, MissionType missionType, BayNumber targetBay, MessageActor sender)
         {
             var data = new MoveLoadingUnitMessageData(
-                    (wmsId.HasValue ? MissionType.WMS : MissionType.Manual),
+                    missionType,
                     loadUnitSource,
                     loadUnitDestination,
                     sourceCellId: null,

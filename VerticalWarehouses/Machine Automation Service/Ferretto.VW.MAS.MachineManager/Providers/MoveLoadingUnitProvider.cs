@@ -291,10 +291,10 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 targetBay);
         }
 
-        public void ResumeMoveLoadUnit(int? missionId, LoadingUnitLocation sourceBay, LoadingUnitLocation destination, BayNumber targetBay, int? wmsId, MessageActor sender)
+        public void ResumeMoveLoadUnit(int? missionId, LoadingUnitLocation sourceBay, LoadingUnitLocation destination, BayNumber targetBay, int? wmsId, MissionType missionType, MessageActor sender)
         {
             var data = new MoveLoadingUnitMessageData(
-                    (wmsId.HasValue ? MissionType.WMS : MissionType.Manual),
+                    missionType,
                     sourceBay,
                     destination,
                     sourceCellId: null,

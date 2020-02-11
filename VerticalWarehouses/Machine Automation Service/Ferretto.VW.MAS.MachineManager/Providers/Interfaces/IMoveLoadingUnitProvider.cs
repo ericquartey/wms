@@ -33,7 +33,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers.Interfaces
 
         void RemoveLoadUnit(int? missionId, BayNumber requestingBay, BayNumber targetBay, MessageActor sender);
 
-        void ResumeMoveLoadUnit(int? missionId, LoadingUnitLocation sourceBay, LoadingUnitLocation destination, BayNumber targetBay, int? wmsId, MessageActor sender);
+        void ResumeMoveLoadUnit(int? missionId, LoadingUnitLocation sourceBay, LoadingUnitLocation destination, BayNumber targetBay, int? wmsId, MissionType missionType, MessageActor sender);
 
         void StopMove(int? missionId, BayNumber requestingBay, BayNumber targetBay, MessageActor sender);
 

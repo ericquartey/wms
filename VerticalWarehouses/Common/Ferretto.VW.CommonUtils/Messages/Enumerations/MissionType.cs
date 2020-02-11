@@ -6,6 +6,8 @@
 
         Manual,
 
+        ManualPlus,
+
         WMS,
 
         IN,

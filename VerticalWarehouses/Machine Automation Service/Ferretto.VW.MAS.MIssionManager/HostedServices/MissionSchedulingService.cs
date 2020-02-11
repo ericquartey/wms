@@ -87,7 +87,14 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 if (restore)
                 {
-                    moveLoadingUnitProvider.ResumeMoveLoadUnit(missionToRestore.Id, LoadingUnitLocation.NoLocation, LoadingUnitLocation.NoLocation, bayNumber, null, MessageActor.MissionManager);
+                    moveLoadingUnitProvider.ResumeMoveLoadUnit(
+                        missionToRestore.Id,
+                        LoadingUnitLocation.NoLocation,
+                        LoadingUnitLocation.NoLocation,
+                        bayNumber,
+                        missionToRestore.WmsId,
+                        missionToRestore.MissionType,
+                        MessageActor.MissionManager);
                 }
                 else
                 {
@@ -199,7 +206,14 @@ namespace Ferretto.VW.MAS.MissionManager
                         if (nextMission is null)
                         {
                             // send back the loading unit to the cell
-                            moveLoadingUnitProvider.ResumeMoveLoadUnit(mission.Id, loadingUnitSource, LoadingUnitLocation.Cell, bayNumber, null, MessageActor.MissionManager);
+                            moveLoadingUnitProvider.ResumeMoveLoadUnit(
+                                mission.Id,
+                                loadingUnitSource,
+                                LoadingUnitLocation.Cell,
+                                bayNumber,
+                                null,
+                                MissionType.IN,
+                                MessageActor.MissionManager);
                         }
                         else
                         {
@@ -236,7 +250,14 @@ namespace Ferretto.VW.MAS.MissionManager
                     )
                 {
                     var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(mission.LoadUnitId);
-                    moveLoadingUnitProvider.ResumeMoveLoadUnit(mission.Id, loadingUnitSource, LoadingUnitLocation.Cell, bayNumber, null, MessageActor.MissionManager);
+                    moveLoadingUnitProvider.ResumeMoveLoadUnit(
+                        mission.Id,
+                        loadingUnitSource,
+                        LoadingUnitLocation.Cell,
+                        bayNumber,
+                        null,
+                        mission.MissionType,
+                        MessageActor.MissionManager);
                 }
             }
         }

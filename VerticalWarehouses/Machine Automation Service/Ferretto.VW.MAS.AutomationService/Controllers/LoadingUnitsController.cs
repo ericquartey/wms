@@ -79,7 +79,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.BadRequest();
             }
 
-            this.moveLoadingUnitProvider.EjectFromCell(MissionType.Manual, destination, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
+            var missionType = (destination == LoadingUnitLocation.Elevator) ? MissionType.Manual : MissionType.ManualPlus;
+            this.moveLoadingUnitProvider.EjectFromCell(missionType, destination, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -162,7 +163,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult InsertLoadingUnit(LoadingUnitLocation source, int? destinationCellId, int loadingUnitId)
         {
-            this.moveLoadingUnitProvider.InsertToCell(MissionType.Manual, source, destinationCellId, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
+            var missionType = (source == LoadingUnitLocation.Elevator) ? MissionType.Manual : MissionType.ManualPlus;
+            this.moveLoadingUnitProvider.InsertToCell(missionType, source, destinationCellId, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -223,7 +225,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult StartMovingLoadingUnitToBay(int loadingUnitId, LoadingUnitLocation destination)
         {
-            this.moveLoadingUnitProvider.MoveLoadingUnitToBay(MissionType.Manual, loadingUnitId, destination, this.BayNumber, MessageActor.AutomationService);
+            var missionType = (destination == LoadingUnitLocation.Elevator) ? MissionType.Manual : MissionType.ManualPlus;
+            this.moveLoadingUnitProvider.MoveLoadingUnitToBay(missionType, loadingUnitId, destination, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -246,11 +249,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             if (source == LoadingUnitLocation.Cell && destination == LoadingUnitLocation.Cell)
             {
-                this.moveLoadingUnitProvider.MoveFromCellToCell(MissionType.Manual, sourceCellId, destinationCellId, this.BayNumber, MessageActor.AutomationService);
+                this.moveLoadingUnitProvider.MoveFromCellToCell(MissionType.ManualPlus, sourceCellId, destinationCellId, this.BayNumber, MessageActor.AutomationService);
             }
             else if (source != LoadingUnitLocation.Cell && destination != LoadingUnitLocation.Cell)
             {
-                this.moveLoadingUnitProvider.MoveFromBayToBay(MissionType.Manual, source, destination, this.BayNumber, MessageActor.AutomationService);
+                this.moveLoadingUnitProvider.MoveFromBayToBay(MissionType.ManualPlus, source, destination, this.BayNumber, MessageActor.AutomationService);
             }
             else if (source == LoadingUnitLocation.Cell && destination != LoadingUnitLocation.Cell)
             {
