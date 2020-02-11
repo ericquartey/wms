@@ -1570,15 +1570,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         Manual = 1,
     
-        WMS = 2,
+        ManualPlus = 2,
     
-        IN = 3,
+        WMS = 3,
     
-        OUT = 4,
+        IN = 4,
     
-        FullTest = 5,
+        OUT = 5,
     
-        Compact = 6,
+        FullTest = 6,
+    
+        Compact = 7,
     
     }
     
