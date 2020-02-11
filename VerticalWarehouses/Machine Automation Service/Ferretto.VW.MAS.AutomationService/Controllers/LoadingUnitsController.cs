@@ -79,8 +79,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.BadRequest();
             }
 
-            var missionType = (destination == LoadingUnitLocation.Elevator) ? MissionType.Manual : MissionType.ManualPlus;
-            this.moveLoadingUnitProvider.EjectFromCell(missionType, destination, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
+            this.moveLoadingUnitProvider.EjectFromCell(MissionType.Manual, destination, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
