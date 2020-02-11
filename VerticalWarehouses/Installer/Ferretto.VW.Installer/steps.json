@@ -131,8 +131,8 @@
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 13,
       "title": "Cancella backup precedente",
-      "description": "Elimina, se esiste, l'archivio contenente il backup della versione precedente a quella installata prima dell'aggiornamento.",
-      "script": "Remove-Item $(Backup:Root:Path)\\Backup.zip -ErrorAction SilentlyContinue",
+      "description": "Elimina, se esiste, l'archivio contenente il backup della versione precedente a quella installata prima dell'aggiornamento.",      
+      "script": "if(Test-Path $(Backup:Root:Path)\\Backup.zip -PathType Leaf) { Remove-Item $(Backup:Root:Path)\\Backup.zip -ErrorAction SilentlyContinue }",
       "skipRollback": true
     },
     {
