@@ -8,8 +8,8 @@ namespace Ferretto.VW.Installer.Core
     {
         #region Constructors
 
-        public MasHealthCheckStep(int number, string title, string description, int timeout, bool skipOnResume)
-            : base(number, title, description, skipOnResume)
+        public MasHealthCheckStep(int number, string title, string description, int timeout, string log, bool skipOnResume)
+            : base(number, title, description, log, skipOnResume)
         {
             this.Timeout = timeout;
         }

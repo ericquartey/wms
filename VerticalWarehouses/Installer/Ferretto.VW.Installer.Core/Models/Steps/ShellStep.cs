@@ -7,8 +7,8 @@ namespace Ferretto.VW.Installer.Core
     {
         #region Constructors
 
-        public ShellStep(int number, string title, string description, string rollbackScript, string script, bool skipOnResume)
-            : base(number, title, description, skipOnResume)
+        public ShellStep(int number, string title, string description, string rollbackScript, string script, string log, bool skipOnResume)
+            : base(number, title, description, log, skipOnResume)
         {
             if (script is null)
             {

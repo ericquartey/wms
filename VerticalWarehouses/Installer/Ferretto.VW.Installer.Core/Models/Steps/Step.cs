@@ -31,11 +31,12 @@ namespace Ferretto.VW.Installer.Core
 
         #region Constructors
 
-        public Step(int number, string title, string description, bool skipOnResume)
+        public Step(int number, string title, string description, string log, bool skipOnResume)
         {
             this.Title = title;
             this.Number = number;
             this.Description = description;
+            this.Log = log;
             this.SkipOnResume = skipOnResume;
         }
 
