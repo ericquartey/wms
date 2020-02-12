@@ -177,6 +177,12 @@ namespace Ferretto.VW.App.Services
             set => this.SetProperty(ref this.bayNumber, value);
         }
 
+        public IEnumerable<Bay> Bays
+        {
+            get => this.bays;
+            private set => this.SetProperty(ref this.bays, value);
+        }
+
         public IEnumerable<Cell> Cells
         {
             get => this.cells;

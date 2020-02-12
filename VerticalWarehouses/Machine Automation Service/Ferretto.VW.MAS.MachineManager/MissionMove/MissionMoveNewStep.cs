@@ -404,8 +404,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.Manual);
                     break;
 
-                case MissionType.ManualPlus:
-                    returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.ManualPlus);
+                case MissionType.LoadUnitOperation:
+                    returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.LoadUnitOperations
+                        // TODO remove the manual mode when LoadUnitOperations mode is available
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.Manual
+                        );
                     break;
 
                 case MissionType.Compact:
