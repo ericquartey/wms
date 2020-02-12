@@ -256,6 +256,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 return this.dataContext.Bays
                     .AsNoTracking()
                     .Include(b => b.Shutter)
+                        .ThenInclude(s => s.Inverter)
                     .Include(b => b.Carousel)
                     .Include(b => b.Positions)
                     .Where(b => b.Side == cell.Side && b.Positions.First().Height < cell.Position)

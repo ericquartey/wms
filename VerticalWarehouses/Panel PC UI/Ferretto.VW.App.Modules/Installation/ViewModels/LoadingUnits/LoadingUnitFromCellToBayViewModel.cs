@@ -29,9 +29,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public LoadingUnitFromCellToBayViewModel(
                 IMachineBaysWebService machineBaysWebService,
                 IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+                IMachineModeWebService machineModeWebService,
                 IBayManager bayManagerService)
         : base(
             machineLoadingUnitsWebService,
+            machineModeWebService,
             bayManagerService)
         {
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
@@ -103,6 +105,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 }
 
                 this.IsWaitingForResponse = true;
+
+                if (this.MachineModeService.MachineMode != MachineMode.LoadUnitOperations)
+                {
+                    await this.MachineModeWebService.SetLoadUnitOperationsAsync();
+                }
 
                 //await this.MachineLoadingUnitsWebService.EjectLoadingUnitAsync(destination, this.LoadingUnitId.Value);
                 await this.MachineLoadingUnitsWebService.StartMovingLoadingUnitToBayAsync(this.LoadingUnitId.Value, destination);

@@ -20,12 +20,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public LoadingUnitFromBayToCellViewModel(
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+            IMachineModeWebService machineModeWebService,
             IMachineCellsWebService machineCellsWebService,
             ISensorsService sensorsService,
             IBayManager bayManagerService)
             : base(
                 machineLoadingUnitsWebService,
                 machineCellsWebService,
+                machineModeWebService,
                 sensorsService,
                 bayManagerService)
         {
@@ -95,7 +97,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     return;
                 }
 
-                await this.MachineLoadingUnitsWebService.StartMovingLoadingUnitToCellAsync(this.LoadingUnitId.Value, null);
+                if (this.MachineModeService.MachineMode != MachineMode.LoadUnitOperations)
+                {
+                    await this.MachineModeWebService.SetLoadUnitOperationsAsync();
+                }
+
+                await this.MachineLoadingUnitsWebService.InsertLoadingUnitAsync(source, null, this.LoadingUnitId.Value);
             }
             catch (Exception ex)
             {

@@ -158,7 +158,7 @@ namespace Ferretto.VW.MAS.MachineManager
                                 }
                                 catch (Exception ex)
                                 {
-                                    this.Logger.LogError($"Failed to start mission: {ex.Message}");
+                                    this.Logger.LogError($"Failed to start mission: {ex}");
                                     this.NotifyCommandError(command);
                                 }
                             }
@@ -185,7 +185,7 @@ namespace Ferretto.VW.MAS.MachineManager
                         }
                         catch (Exception ex)
                         {
-                            this.Logger.LogError($"Failed to activate mission: {ex.Message}");
+                            this.Logger.LogError($"Failed to activate mission: {ex}");
                         }
                         break;
 
@@ -210,7 +210,7 @@ namespace Ferretto.VW.MAS.MachineManager
                         }
                         catch (Exception ex)
                         {
-                            this.Logger.LogError($"Failed to abort mission: {ex.Message}");
+                            this.Logger.LogError($"Failed to abort mission: {ex}");
                         }
                         break;
 
@@ -235,7 +235,7 @@ namespace Ferretto.VW.MAS.MachineManager
                         }
                         catch (Exception ex)
                         {
-                            this.Logger.LogError($"Failed to stop mission: {ex.Message}");
+                            this.Logger.LogError($"Failed to stop mission: {ex}");
                         }
                         break;
 

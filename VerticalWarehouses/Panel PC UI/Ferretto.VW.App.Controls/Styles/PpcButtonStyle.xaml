@@ -240,6 +240,11 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
                 <Setter Property="Content" Value="{x:Static res:InstallationApp.Auto}" />
             </DataTrigger>
+            <DataTrigger Binding="{Binding IsMachineInLoadUnitOperations}"
+                         Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
+                <Setter Property="Content" Value="{x:Static res:InstallationApp.ModeLoadUnitOperations}" />
+            </DataTrigger>
             <DataTrigger Binding="{Binding IsMachineInTestMode}"
                          Value="True">
                 <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />

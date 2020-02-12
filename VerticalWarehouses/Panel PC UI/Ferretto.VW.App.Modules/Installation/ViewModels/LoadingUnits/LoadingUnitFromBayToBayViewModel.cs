@@ -56,10 +56,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public LoadingUnitFromBayToBayViewModel(
             IMachineBaysWebService machineBaysWebService,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+            IMachineModeWebService machineModeWebService,
             ISensorsService sensorsService,
             IBayManager bayManagerService)
             : base(
                 machineLoadingUnitsWebService,
+                machineModeWebService,
                 bayManagerService)
         {
             this.machineBaysWebService = machineBaysWebService ?? throw new System.ArgumentNullException(nameof(machineBaysWebService));
@@ -196,6 +198,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 if (destination == LoadingUnitLocation.NoLocation)
                 {
+                    if (this.MachineModeService.MachineMode != MachineMode.LoadUnitOperations)
+                    {
+                        await this.MachineModeWebService.SetLoadUnitOperationsAsync();
+                    }
+
                     this.ShowNotification(InstallationApp.InvalidDestinationChoiceType, Services.Models.NotificationSeverity.Warning);
                     return;
                 }

@@ -2761,6 +2761,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loadunit Operations.
+        /// </summary>
+        public static string ModeLoadUnitOperations {
+            get {
+                return ResourceManager.GetString("ModeLoadUnitOperations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Month.
         /// </summary>
         public static string Month {

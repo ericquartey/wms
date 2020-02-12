@@ -1675,4 +1675,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="WeightToleranceMustBePositive" xml:space="preserve">
     <value>Weight Tolerance must be strictly positive.</value>
   </data>
+  <data name="ModeLoadUnitOperations" xml:space="preserve">
+    <value>Loadunit Operations</value>
+  </data>
 </root>

@@ -43,6 +43,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("LoadUnitOperations")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult SetLoadUnitOperations()
+        {
+            this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.LoadUnitOperations);
+
+            return this.Accepted();
+        }
+
         [HttpPost("manual")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
