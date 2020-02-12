@@ -1476,6 +1476,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="AxisVerticalOffsetUpdated" xml:space="preserve">
     <value>Offset asse verticale aggiornato.</value>
   </data>
+  <data name="CellInsertedNotFree" xml:space="preserve">
+    <value>la cella inserita non è libera</value>
+  </data>
   <data name="CellSelectedNotPresent" xml:space="preserve">
     <value>La cella selezionata non è presente.</value>
   </data>
@@ -1491,11 +1494,32 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="DestinationPositionRequired" xml:space="preserve">
     <value>DestinationPosition necessario.</value>
   </data>
+  <data name="DrawerIdExtracted" xml:space="preserve">
+    <value>Cassetto id {0} estratto</value>
+  </data>
   <data name="InputWeightMustBePositive" xml:space="preserve">
     <value>InputWeightRequired  deve essere strettamente positivo.</value>
   </data>
   <data name="InputWeightMustBeSpecified" xml:space="preserve">
     <value>InputWeightRequired deve essere specificato.</value>
+  </data>
+  <data name="InvalidCellIdEntered" xml:space="preserve">
+    <value>Id cella inserito non valido</value>
+  </data>
+  <data name="InvalidCellIdOnInsertedDrawer" xml:space="preserve">
+    <value>Id cella su cassetto inserito non valido</value>
+  </data>
+  <data name="InvalidDestinationChoiceType" xml:space="preserve">
+    <value>Tipo scelta destinazione non valida</value>
+  </data>
+  <data name="InvalidDrawerIdInBay" xml:space="preserve">
+    <value>Id cassetto in baia non valido</value>
+  </data>
+  <data name="InvalidEnteredDrawerId" xml:space="preserve">
+    <value>Id cassetto inserito non valido</value>
+  </data>
+  <data name="InvalidSourceChoiceType" xml:space="preserve">
+    <value>Tipo scelta sorgente non valida</value>
   </data>
   <data name="LoadingUnitIdMustBePositive" xml:space="preserve">
     <value>LoadingUnitId deve essere strettamente positivo.</value>
