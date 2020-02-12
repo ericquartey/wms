@@ -475,12 +475,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanMensurationDx()
         {
-            return this.CanBaseExecute();
+            return this.CanBaseExecute() &&
+                   this.SensorsService.ShutterSensors.Open;
         }
 
         private bool CanMensurationSx()
         {
-            return this.CanBaseExecute();
+            return this.CanBaseExecute() &&
+                   this.SensorsService.ShutterSensors.Open;
         }
 
         private bool CanMoveToElevatorPosition()
@@ -493,7 +495,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanMoveToShapePositionDx()
         {
             var res = this.CanBaseExecute() &&
-                      Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.GetValueOrDefault()) == Convert.ToInt32(this.BayPosition.Height);
+                      this.MachineStatus.ElevatorPositionType == ElevatorPositionType.Bay &&
+                      this.MachineStatus.BayPositionUpper.GetValueOrDefault();
 
             this.ShowNextStepSinglePage(true, res);
 
