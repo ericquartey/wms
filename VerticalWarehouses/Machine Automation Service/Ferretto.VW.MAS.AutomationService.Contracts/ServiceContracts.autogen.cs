@@ -1570,7 +1570,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         Manual = 1,
     
-        ManualPlus = 2,
+        LoadUnitOperation = 2,
     
         WMS = 3,
     
@@ -3652,7 +3652,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         Manual = 2,
     
-        ManualPlus = 3,
+        LoadUnitOperations = 3,
     
         Test = 4,
     
@@ -3662,7 +3662,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         SwitchingToManual = 7,
     
-        SwitchingToManualPlus = 8,
+        SwitchingToLoadUnitOperations = 8,
     
         SwitchingToCompact = 9,
     
