@@ -391,7 +391,6 @@ namespace Ferretto.VW.MAS.MissionManager
             switch (this.machineVolatileDataProvider.Mode)
             {
                 case MachineMode.SwitchingToAutomatic:
-                case MachineMode.SwitchingToLoadUnitOperations:
                     {
                         // in this machine mode we generate homing for elevator and bays, but only if there are no missions to restore.
                         // if homing is not possible we switch anyway to automatic mode
@@ -411,13 +410,37 @@ namespace Ferretto.VW.MAS.MissionManager
                             {
                                 this.machineVolatileDataProvider.Mode = MachineMode.Manual;
                             }
-                            else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations)
+                            else
+                            {
+                                this.machineVolatileDataProvider.Mode = MachineMode.Automatic;
+                            }
+
+                            this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                        }
+                    }
+                    break;
+
+                case MachineMode.SwitchingToLoadUnitOperations:
+                    {
+                        // in this machine mode we generate homing for elevator and bays, but only if there are no missions to restore.
+                        // if homing is not possible we switch anyway to automatic mode
+                        var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+                        var activeMissions = missionsDataProvider.GetAllActiveMissions();
+
+                        if (activeMissions.Any(m => m.IsMissionToRestore() || m.Step >= MissionStep.Error))
+                        {
+                            await this.ScheduleRestore(serviceProvider, bayProvider, activeMissions);
+                        }
+                        else if (!activeMissions.Any(m => m.Status == MissionStatus.Executing && m.Step > MissionStep.New) &&
+                                 !this.GenerateHoming(bayProvider, this.machineVolatileDataProvider.IsHomingExecuted))
+                        {
+                            if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations)
                             {
                                 this.machineVolatileDataProvider.Mode = MachineMode.LoadUnitOperations;
                             }
                             else
                             {
-                                this.machineVolatileDataProvider.Mode = MachineMode.Automatic;
+                                this.machineVolatileDataProvider.Mode = MachineMode.Manual;
                             }
 
                             this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
