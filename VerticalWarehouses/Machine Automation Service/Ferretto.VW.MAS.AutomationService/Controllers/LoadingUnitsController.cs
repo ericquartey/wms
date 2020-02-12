@@ -11,6 +11,7 @@ using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -21,6 +22,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Fields
 
         private readonly ILoadingUnitsDataProvider loadingUnitsDataProvider;
+
+        private readonly ILogger<LoadingUnitsController> logger;
 
         private readonly IMachineProvider machineProvider;
 
@@ -39,8 +42,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             ILoadingUnitsDataProvider loadingUnitsDataProvider,
             IMachineProvider machineProvider,
             IMissionSchedulingProvider missionSchedulingProvider,
-            IMachinesWmsWebService machinesWmsWebService)
+            IMachinesWmsWebService machinesWmsWebService,
+            ILogger<LoadingUnitsController> logger
+            )
         {
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.missionSchedulingProvider = missionSchedulingProvider ?? throw new ArgumentNullException(nameof(missionSchedulingProvider));
@@ -64,6 +70,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Abort(int? missionId, BayNumber targetBay)
         {
+            this.logger.LogDebug($"Abort Move mission {missionId}");
             this.moveLoadingUnitProvider.AbortMove(missionId, this.BayNumber, targetBay, MessageActor.AutomationService);
             return this.Accepted();
         }
@@ -79,6 +86,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.BadRequest();
             }
 
+            this.logger.LogDebug($"Eject load unit {loadingUnitId} to destination {destination}");
             this.moveLoadingUnitProvider.EjectFromCell(MissionType.Manual, destination, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
@@ -162,6 +170,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult InsertLoadingUnit(LoadingUnitLocation source, int? destinationCellId, int loadingUnitId)
         {
+            this.logger.LogDebug($"Insert load unit {loadingUnitId} from {source} to cell {destinationCellId}");
             var missionType = (source == LoadingUnitLocation.Elevator) ? MissionType.Manual : MissionType.LoadUnitOperation;
             this.moveLoadingUnitProvider.InsertToCell(missionType, source, destinationCellId, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
 
@@ -184,6 +193,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult MoveToBay(int id)
         {
+            this.logger.LogDebug($"Move load unit {id} to bay {this.BayNumber}");
             this.missionSchedulingProvider.QueueBayMission(id, this.BayNumber);
 
             return this.Accepted();
@@ -204,6 +214,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult RemoveFromBayAsync(int id)
         {
+            this.logger.LogDebug($"Move load unit {id} back from bay {this.BayNumber}");
             this.missionSchedulingProvider.QueueRecallMission(id, this.BayNumber);
 
             return this.Accepted();
@@ -214,6 +225,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Resume(int? missionId, BayNumber targetBay)
         {
+            this.logger.LogDebug($"Resume mission {missionId} in bay {targetBay}");
             this.moveLoadingUnitProvider.RemoveLoadUnit(missionId, this.BayNumber, targetBay, MessageActor.AutomationService);
             return this.Accepted();
         }
@@ -224,6 +236,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult StartMovingLoadingUnitToBay(int loadingUnitId, LoadingUnitLocation destination)
         {
+            this.logger.LogDebug($"Move load unit {loadingUnitId} to destination {destination} bay {this.BayNumber}");
             var missionType = (destination == LoadingUnitLocation.Elevator) ? MissionType.Manual : MissionType.LoadUnitOperation;
             this.moveLoadingUnitProvider.MoveLoadUnitToBay(missionType, loadingUnitId, destination, this.BayNumber, MessageActor.AutomationService);
 
@@ -235,6 +248,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult StartMovingLoadingUnitToCell(int loadingUnitId, int? destinationCellId)
         {
+            this.logger.LogDebug($"Move load unit {loadingUnitId} to cell {destinationCellId} bay {this.BayNumber}");
             this.moveLoadingUnitProvider.MoveLoadUnitToCell(MissionType.LoadUnitOperation, loadingUnitId, destinationCellId, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
@@ -246,6 +260,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult StartMovingSourceDestination(LoadingUnitLocation source, LoadingUnitLocation destination, int? sourceCellId, int? destinationCellId)
         {
+            this.logger.LogDebug($"Move from {source} cell {sourceCellId} to {destination} cell {destinationCellId} bay {this.BayNumber}");
             if (source == LoadingUnitLocation.Cell && destination == LoadingUnitLocation.Cell)
             {
                 this.moveLoadingUnitProvider.MoveFromCellToCell(MissionType.LoadUnitOperation, sourceCellId, destinationCellId, this.BayNumber, MessageActor.AutomationService);
@@ -277,6 +292,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Stop(int? missionId, BayNumber targetBay)
         {
+            this.logger.LogDebug($"Stop Move mission {missionId}");
             this.moveLoadingUnitProvider.StopMove(missionId, this.BayNumber, targetBay, MessageActor.AutomationService);
             return this.Accepted();
         }
