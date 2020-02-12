@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
@@ -81,7 +82,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                      this.currentState == DepositAndPickUpState.GotoBayAdjusted) == false)
                 {
                     this.IsExecutingProcedure = false;
-                    this.ShowNotification($"Stato dovrebbe essere in modalità {DepositAndPickUpState.GotoBay} o {DepositAndPickUpState.GotoBayAdjusted}");
+                    this.ShowNotification(string.Format(InstallationApp.StateShouldBeInMode, DepositAndPickUpState.GotoBay, DepositAndPickUpState.GotoBayAdjusted));
                     return;
                 }
 
@@ -94,7 +95,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 #pragma warning restore SA1009 // Closing parenthesis should be spaced correctly
                 {
                     this.IsExecutingProcedure = false;
-                    this.ShowNotification($"Imbarco non eseguito causa Cassetto mancante");
+                    this.ShowNotification(InstallationApp.BoardingNotExecutedMissingDrawer);
                     return;
                 }
 
@@ -103,7 +104,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     !this.sensorsService.IsLoadingUnitOnElevator)
                 {
                     this.IsExecutingProcedure = false;
-                    this.ShowNotification($"Sbarco non eseguito causa Cassetto mancante");
+                    this.ShowNotification(InstallationApp.LandingNotExecutedMissingDrawer);
                     return;
                 }
 

@@ -1,27 +1,32 @@
 ﻿using System.Threading;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
-    internal class PositioningStartMovingState : InverterStateBase
+    internal class PositioningProfileStartMovingState : InverterStateBase
     {
         #region Fields
 
         private readonly Timer axisPositionUpdateTimer;
 
+        private readonly IInverterPositioningFieldMessageData data;
+
         #endregion
 
         #region Constructors
 
-        public PositioningStartMovingState(
+        public PositioningProfileStartMovingState(
             IInverterStateMachine parentStateMachine,
+            IInverterPositioningFieldMessageData data,
             IPositioningInverterStatus inverterStatus,
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
+            this.data = data;
             this.Inverter = inverterStatus;
             this.axisPositionUpdateTimer = new Timer(this.RequestAxisPositionUpdate, null, -1, Timeout.Infinite);
         }
@@ -41,14 +46,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         #region Methods
 
-        /// <inheritdoc />
         public override void Start()
         {
-            this.Logger.LogDebug($"PositioningStartMoving.Start Inverter type={this.InverterStatus.GetType().Name}");
-
+            this.Logger.LogInformation("Starting profile calibration.");
+            this.Inverter.PositionControlWord.ImmediateChangeSet = true;
             this.Inverter.PositionControlWord.NewSetPoint = true;
-
-            this.Logger.LogDebug("Set New Setpoint");
 
             this.ParentStateMachine.EnqueueCommandMessage(
                 new InverterMessage(
@@ -57,9 +59,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                     this.Inverter.PositionControlWord.Value));
 
             this.axisPositionUpdateTimer.Change(250, 250);
+
+            this.data.WaitContinue = true;
         }
 
-        /// <inheritdoc />
         public override void Stop()
         {
             this.Logger.LogDebug("1:Positioning Stop requested");
@@ -74,7 +77,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                     true));
         }
 
-        /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
             this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
@@ -87,7 +89,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             return true;
         }
 
-        /// <inheritdoc />
         public override bool ValidateCommandResponse(InverterMessage message)
         {
             if (message.IsError)
@@ -102,28 +103,41 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
                 return true;
             }
-
             this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
 
-            if (this.TargetPositionReached
-                && message.ParameterId == InverterParameterId.ActualPositionShaft
+            if ((this.TargetPositionReached
+                    && message.ParameterId == InverterParameterId.ActualPositionShaft
+                    )
+                    || !this.data.WaitContinue
                 )
             {
-                this.Logger.LogDebug("Target position reached.");
-
                 this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                this.ParentStateMachine.ChangeState(
-                    new PositioningDisableOperationState(
-                        this.ParentStateMachine,
-                        this.Inverter,
-                        this.Logger));
+                if (!this.data.WaitContinue)
+                {
+                    this.Logger.LogDebug("Continue command received.");
+                    this.ParentStateMachine.ChangeState(
+                        new PositioningProfileDisableOperationState(
+                            this.ParentStateMachine,
+                            this.data,
+                            this.Inverter,
+                            this.Logger));
+                }
+                else
+                {
+                    this.Logger.LogDebug("Target position reached: profile calibration failed!");
+                    this.ParentStateMachine.ChangeState(
+                        new PositioningDisableOperationState(
+                            this.ParentStateMachine,
+                            this.Inverter,
+                            this.Logger));
+                }
             }
             else
             {
-                this.Logger.LogTrace("Moving towards target position.");
+                this.Logger.LogTrace("Waiting for Continue Command");
             }
 
-            return true; //INFO Next status word request handled by timer
+            return true;
         }
 
         protected override void OnDisposing()

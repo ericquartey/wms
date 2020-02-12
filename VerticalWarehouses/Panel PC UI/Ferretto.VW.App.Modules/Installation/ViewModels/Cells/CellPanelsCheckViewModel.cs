@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -251,7 +252,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         if (this.CurrentPanel == null ||
                             !this.CurrentPanel.Cells.Any(a => a.Id == this.CurrentCellId))
                         {
-                            return "Cella non valida";
+                            return InstallationApp.CellNotValid;
                         }
 
                         break;

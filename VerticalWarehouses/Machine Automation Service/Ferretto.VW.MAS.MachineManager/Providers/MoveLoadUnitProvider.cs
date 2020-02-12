@@ -9,7 +9,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.MachineManager.Providers
 {
-    internal sealed class MoveLoadingUnitProvider : BaseProvider, IMoveLoadingUnitProvider
+    internal sealed class MoveLoadUnitProvider : BaseProvider, IMoveLoadUnitProvider
     {
         #region Fields
 
@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         #region Constructors
 
-        public MoveLoadingUnitProvider(
+        public MoveLoadUnitProvider(
             ICellsProvider cellsProvider,
             IBaysDataProvider baysDataProvider,
             IEventAggregator eventAggregator)
@@ -93,6 +93,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 requestingBay);
         }
 
+        // used by all guided movements
         public void EjectFromCell(MissionType missionType, LoadingUnitLocation destinationBay, int loadingUnitId, BayNumber requestingBay, MessageActor sender)
         {
             this.SendCommandToMachineManager(
@@ -214,7 +215,8 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 requestingBay);
         }
 
-        public void MoveLoadingUnitToBay(MissionType missionType, int loadingUnitId, LoadingUnitLocation destination, BayNumber requestingBay, MessageActor sender)
+        // destination can be elevator
+        public void MoveLoadUnitToBay(MissionType missionType, int loadingUnitId, LoadingUnitLocation destination, BayNumber requestingBay, MessageActor sender)
         {
             if (destination is LoadingUnitLocation.Cell)
             {
@@ -235,7 +237,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 requestingBay);
         }
 
-        public void MoveLoadingUnitToCell(MissionType missionType, int loadingUnitId, int destinationCellId, BayNumber requestingBay, MessageActor sender)
+        public void MoveLoadUnitToCell(MissionType missionType, int loadingUnitId, int? destinationCellId, BayNumber requestingBay, MessageActor sender)
         {
             this.SendCommandToMachineManager(
                 new MoveLoadingUnitMessageData(
@@ -291,10 +293,10 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 targetBay);
         }
 
-        public void ResumeMoveLoadUnit(int? missionId, LoadingUnitLocation sourceBay, LoadingUnitLocation destination, BayNumber targetBay, int? wmsId, MessageActor sender)
+        public void ResumeMoveLoadUnit(int? missionId, LoadingUnitLocation sourceBay, LoadingUnitLocation destination, BayNumber targetBay, int? wmsId, MissionType missionType, MessageActor sender)
         {
             var data = new MoveLoadingUnitMessageData(
-                    (wmsId.HasValue ? MissionType.WMS : MissionType.Manual),
+                    missionType,
                     sourceBay,
                     destination,
                     sourceCellId: null,

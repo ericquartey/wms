@@ -33,6 +33,10 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private bool isMachineInAutomaticMode;
 
+        private bool isMachineInLoadUnitOperations;
+
+        private bool isMachineInSwitchingToLoadUnitOperations;
+
         private bool isMachineInTestMode;
 
         private bool isUnknownState;
@@ -96,6 +100,18 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             set => this.SetProperty(ref this.isMachineInAutomaticMode, value);
         }
 
+        public bool IsMachineInLoadUnitOperations
+        {
+            get => this.isMachineInLoadUnitOperations;
+            set => this.SetProperty(ref this.isMachineInLoadUnitOperations, value);
+        }
+
+        public bool IsMachineInSwitchingToLoadUnitOperations
+        {
+            get => this.isMachineInSwitchingToLoadUnitOperations;
+            set => this.SetProperty(ref this.isMachineInSwitchingToLoadUnitOperations, value);
+        }
+
         public bool IsMachineInTestMode
         {
             get => this.isMachineInTestMode;
@@ -150,6 +166,15 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                     await this.machineModeWebService.SetAutomaticAsync();
                 }
             }
+            else if (this.machineMode is MachineMode.LoadUnitOperations)
+            {
+                //var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, General.LoadUnitOperations, DialogType.Question, DialogButtons.YesNo);
+                //if (messageBoxResult == DialogResult.Yes)
+                //{
+                //    await this.machineModeWebService.SetLoadUnitOperationsAsync();
+                //}
+                await this.machineModeWebService.SetManualAsync();
+            }
             else
             {
                 NLog.LogManager
@@ -164,10 +189,12 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                 !this.IsBusy
                 &&
                 (this.MachineMode is MachineMode.Automatic
-                    ||
-                    this.MachineMode is MachineMode.Manual
-                    ||
-                    this.MachineMode is MachineMode.Test)
+                 ||
+                 this.MachineMode is MachineMode.Manual
+                 ||
+                 this.MachineMode is MachineMode.Test
+                 ||
+                 this.MachineMode is MachineMode.LoadUnitOperations)
                 &&
                 this.MachinePowerState is MachinePowerState.Powered
                 &&
@@ -213,9 +240,11 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         {
             this.IsMachineInAutomaticMode = this.MachineMode is MachineMode.Automatic;
             this.IsMachineInTestMode = this.MachineMode is MachineMode.Test;
+            this.IsMachineInLoadUnitOperations = this.MachineMode is MachineMode.LoadUnitOperations;
+            this.IsMachineInSwitchingToLoadUnitOperations = this.MachineMode is MachineMode.SwitchingToLoadUnitOperations;
 
             this.IsBusy =
-                this.MachineMode is MachineMode.Restore
+                this.MachineMode is MachineMode.SwitchingToLoadUnitOperations
                 ||
                 this.MachineMode is MachineMode.SwitchingToAutomatic
                 ||

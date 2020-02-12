@@ -214,14 +214,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 var filePath = $"{this.updateExchangeTemp}{Path.DirectorySeparatorChar}{this.updateZipChecksumFileName}{CSVEXTENSION}";
 
-                this.AppendLine($"Start checking files checksum '{filePath}'.");
+                this.AppendLine(string.Format(InstallationApp.StartChecksum, filePath));
 
                 var csvFilesToCheck = File.ReadLines(filePath).Select(a => a.Split(';').First())?.Skip(1);
 
                 if (csvFilesToCheck is null)
                 {
                     this.isCurrentOperationValid = false;
-                    this.AppendLine($"Error on checking file '{filePath}'. No checksums found.");
+                    this.AppendLine(string.Format(InstallationApp.ErrorChecksumNotFound, filePath));
                     return;
                 }
 
@@ -233,8 +233,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     var checksumFilePath = fileCheck[1].Trim('"');
                     if (this.GeMD5FromFile(absoluteFilePath) != checksumFilePath)
                     {
-                        this.AppendLine($"Operation aborted.");
-                        this.AppendLine($"Error on checking file '{fileName}'");
+                        this.AppendLine(InstallationApp.OperationAborted);
+                        this.AppendLine(string.Format(InstallationApp.ErrorCheckFile, fileName));
                         this.isCurrentOperationValid = false;
                         break;
                     }
@@ -242,13 +242,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 if (this.isCurrentOperationValid)
                 {
-                    this.AppendLine("Checksum files check successfully completed.");
+                    this.AppendLine(InstallationApp.ChecksumCompleted);
                 }
             }
             catch (Exception ex)
             {
                 this.isCurrentOperationValid = false;
-                this.AppendLine($"Error on checking files checksum:");
+                this.AppendLine(InstallationApp.ErrorChecksum);
                 var errMsg = (ex.InnerException is null) ? ex.Message : ex.InnerException.Message;
                 this.AppendLine(errMsg);
                 this.ShowNotification(ex);
@@ -266,7 +266,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 try
                 {
-                    this.AppendLine($"Clear temp folder '{this.updateExchangeTemp}'.");
+                    this.AppendLine(string.Format(InstallationApp.ClearTempFolder, this.updateExchangeTemp));
                     if (Directory.Exists(this.updateExchangeTemp))
                     {
                         Directory.Delete(this.updateExchangeTemp, true);
@@ -275,7 +275,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 catch (Exception ex)
                 {
                     this.isCurrentOperationValid = false;
-                    this.AppendLine($"Error on clear temp folder:");
+                    this.AppendLine(InstallationApp.ErrorClearTempFolder);
                     var errMsg = (ex.InnerException is null) ? ex.Message : ex.InnerException.Message;
                     this.AppendLine(errMsg);
                 }
@@ -311,14 +311,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 try
                 {
-                    this.AppendLine($"Start excracting files from '{this.selectedUpdate.FileName}'.");
+                    this.AppendLine(string.Format(InstallationApp.StartExtractingFiles, this.selectedUpdate.FileName));
                     ZipFile.ExtractToDirectory(this.selectedUpdate.FileName, this.updateExchangeTemp);
-                    this.AppendLine("Extraction successfullly completed.");
+                    this.AppendLine(InstallationApp.ExtractingFilesCompleted);
                 }
                 catch (Exception ex)
                 {
                     this.isCurrentOperationValid = false;
-                    this.AppendLine($"Error excracting files:");
+                    this.AppendLine(InstallationApp.ErrorExtractingFiles);
                     var errMsg = (ex.InnerException is null) ? ex.Message : ex.InnerException.Message;
                     this.AppendLine(errMsg);
                 }
@@ -378,7 +378,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 var installerFilePath = $"{this.updateExchangeTemp}\\{this.updateExchangeInstallerPath}\\{this.updateExchangeInstallerName} {UPDATEARG}";
 
-                this.AppendLine($"Starting application '{installerFilePath}'.");
+                this.AppendLine(string.Format(InstallationApp.StartingApplication, installerFilePath));
 
                 var process = new Process
                 {
@@ -405,7 +405,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             catch (Exception ex)
             {
                 this.isCurrentOperationValid = false;
-                this.AppendLine($"Error on starting:");
+                this.AppendLine(InstallationApp.ErrorOnStarting);
                 var errMsg = (ex.InnerException is null) ? ex.Message : ex.InnerException.Message;
                 this.AppendLine(errMsg);
                 this.ShowNotification(ex);

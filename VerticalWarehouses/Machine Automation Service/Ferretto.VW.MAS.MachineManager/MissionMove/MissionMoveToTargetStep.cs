@@ -206,7 +206,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 .FirstOrDefault(x => x.Status == MissionStatus.Waiting);
                             if (activeMission != null)
                             {
-                                this.LoadingUnitMovementProvider.ResumeOperation(activeMission.Id, activeMission.LoadUnitSource, activeMission.LoadUnitDestination, activeMission.WmsId, activeMission.TargetBay, MessageActor.MachineManager);
+                                this.LoadingUnitMovementProvider.ResumeOperation(
+                                    activeMission.Id,
+                                    activeMission.LoadUnitSource,
+                                    activeMission.LoadUnitDestination,
+                                    activeMission.WmsId,
+                                    activeMission.MissionType,
+                                    activeMission.TargetBay,
+                                    MessageActor.MachineManager);
                             }
                         }
                         else

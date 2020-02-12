@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
@@ -13,13 +14,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Constructors
 
         public LoadingUnitFromCellToCellViewModel(
-                    IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-                    IMachineCellsWebService machineCellsWebService,
-                    ISensorsService sensorsService,
-                    IBayManager bayManagerService)
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+            IMachineCellsWebService machineCellsWebService,
+            IMachineModeWebService machineModeWebService,
+            ISensorsService sensorsService,
+            IBayManager bayManagerService)
             : base(
                 machineLoadingUnitsWebService,
                 machineCellsWebService,
+                machineModeWebService,
                 sensorsService,
                 bayManagerService)
         {
@@ -28,6 +31,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #endregion
 
         #region Methods
+
+        public override bool CanStart()
+        {
+            return base.CanStart() &&
+                   this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations;
+        }
 
         public override async Task OnAppearedAsync()
         {
@@ -40,25 +49,25 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 if (!this.IsLoadingUnitIdValid)
                 {
-                    this.ShowNotification("Id cassetto inserito non valido", Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(InstallationApp.InvalidEnteredDrawerId, Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
                 if (this.LoadingUnitCellId == null)
                 {
-                    this.ShowNotification("Id cella su cassetto inserito non valido", Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(InstallationApp.InvalidCellIdOnInsertedDrawer, Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
                 if (!this.IsCellIdValid)
                 {
-                    this.ShowNotification("Id cella inserito non valido", Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(InstallationApp.InvalidCellIdEntered, Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
                 if (!this.IsCellFree)
                 {
-                    this.ShowNotification("la cella inserita non è libera", Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(InstallationApp.CellInsertedNotFree, Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 

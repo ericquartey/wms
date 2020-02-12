@@ -28,6 +28,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IElevatorWeightCheckProcedureProvider elevatorWeightCheckProvider;
 
+        private readonly IErrorsProvider errorsProvider;
+
         private readonly IEventAggregator eventAggregator;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
@@ -41,6 +43,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IElevatorDataProvider elevatorDataProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider,
             IElevatorWeightCheckProcedureProvider elevatorWeightCheckProvider,
+            IErrorsProvider errorsProvider,
             IEventAggregator eventAggregator)
         {
             this.elevatorProvider = elevatorProvider ?? throw new ArgumentNullException(nameof(elevatorProvider));
@@ -48,6 +51,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.elevatorWeightCheckProvider = elevatorWeightCheckProvider ?? throw new ArgumentNullException(nameof(elevatorWeightCheckProvider));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
+            this.errorsProvider = errorsProvider ?? throw new System.ArgumentNullException(nameof(errorsProvider));
         }
 
         #endregion
@@ -328,6 +332,19 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult SearchHorizontalZero()
         {
             this.elevatorProvider.Homing(Axis.Horizontal, Calibration.FindSensor, null, true, this.BayNumber, MessageActor.WebApi);
+            return this.Accepted();
+        }
+
+        [HttpPost("set-loadunit-on-elevator")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult SetLoadUnitOnElevator(int loadingUnitId)
+        {
+            var currentError = this.errorsProvider.GetCurrent();
+            if (currentError != null)
+            {
+                this.elevatorDataProvider.SetLoadingUnit(loadingUnitId);
+            }
             return this.Accepted();
         }
 

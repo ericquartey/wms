@@ -55,6 +55,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
             this.IsTorqueCurrentSamplingEnabled = messageData.MovementMode == MovementMode.TorqueCurrentSampling;
             this.IsWeightMeasure = (messageData.MovementMode == MovementMode.PositionAndMeasureWeight && this.AxisMovement == Axis.Vertical);
+            this.IsProfileCalibrate = (messageData.MovementMode == MovementMode.ProfileCalibration);
             this.LoadedNetWeight = messageData.LoadedNetWeight;
             this.LoadingUnitId = messageData.LoadingUnitId;
             this.TorqueCurrentSample = messageData.TorqueCurrentSample;
@@ -76,6 +77,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public HorizontalMovementDirection Direction { get; set; }
 
         public double FeedRate { get; }
+
+        public bool IsProfileCalibrate { get; set; }
 
         public bool IsTorqueCurrentSamplingEnabled { get; }
 

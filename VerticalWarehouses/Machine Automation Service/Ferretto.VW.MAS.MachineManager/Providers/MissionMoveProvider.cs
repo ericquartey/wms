@@ -218,7 +218,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 if (missionsDataProvider.CanCreateMission(messageData.LoadUnitId.Value, command.RequestingBay))
                 {
                     var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-                    mission = missionsDataProvider.CreateBayMission(messageData.LoadUnitId.Value, command.RequestingBay, MissionType.Manual);
+                    mission = missionsDataProvider.CreateBayMission(messageData.LoadUnitId.Value, command.RequestingBay, messageData.MissionType);
                     if (this.UpdateWaitingMission(missionsDataProvider, baysDataProvider, mission))
                     {
                         return true;

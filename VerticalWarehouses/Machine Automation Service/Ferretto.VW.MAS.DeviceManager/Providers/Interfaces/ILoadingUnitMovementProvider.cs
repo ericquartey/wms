@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         MessageStatus PositionElevatorToPositionStatus(NotificationMessage message);
 
-        void ResumeOperation(int missionId, LoadingUnitLocation loadUnitSource, LoadingUnitLocation loadUnitDestination, int? wmsId, BayNumber targetBay, MessageActor sender);
+        void ResumeOperation(int missionId, LoadingUnitLocation loadUnitSource, LoadingUnitLocation loadUnitDestination, int? wmsId, MissionType missionType, BayNumber targetBay, MessageActor sender);
 
         MessageStatus ShutterStatus(NotificationMessage message);
 

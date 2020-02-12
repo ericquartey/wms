@@ -106,6 +106,8 @@
 
         BayLight,
 
-        FullTest
+        FullTest,
+
+        ProfileCalibration,
     }
 }

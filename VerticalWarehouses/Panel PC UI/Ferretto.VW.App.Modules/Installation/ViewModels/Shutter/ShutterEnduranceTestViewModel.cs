@@ -188,12 +188,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.InputDelayBetweenCycles):
                         if (!this.InputDelayBetweenCycles.HasValue)
                         {
-                            return $"InputDelayBetweenCycles is required.";
+                            return InstallationApp.InputDelayBetweenCyclesRequired;
                         }
 
                         if (this.InputDelayBetweenCycles.Value < 0)
                         {
-                            return "InputDelayBetweenCycles must be strictly positive.";
+                            return InstallationApp.InputDelayBetweenCyclesMustBePositive;
                         }
 
                         break;

@@ -57,6 +57,11 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     this.logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
                     break;
 
+                case MachineMode.LoadUnitOperations:
+                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToLoadUnitOperations;
+                    this.logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                    break;
+
                 case MachineMode.Compact:
                     this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToCompact;
                     this.logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
