@@ -603,6 +603,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void UpdateStatusButtonFooter()
         {
+            if (!this.IsVisible)
+            {
+                return;
+            }
+
             switch (this.CurrentStep)
             {
                 case ProfileCheckStep.Initialize:

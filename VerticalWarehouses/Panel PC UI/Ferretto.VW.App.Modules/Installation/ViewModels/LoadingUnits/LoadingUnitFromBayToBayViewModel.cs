@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Prism.Commands;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
-using Ferretto.VW.App.Resources;
+using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
@@ -147,6 +145,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Methods
 
+        public override bool CanStart()
+        {
+            return base.CanStart() &&
+                   this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations;
+        }
+
         public async Task GetLoadingUnits()
         {
             try
@@ -198,11 +202,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 if (destination == LoadingUnitLocation.NoLocation)
                 {
-                    if (this.MachineModeService.MachineMode != MachineMode.LoadUnitOperations)
-                    {
-                        await this.MachineModeWebService.SetLoadUnitOperationsAsync();
-                    }
-
                     this.ShowNotification(InstallationApp.InvalidDestinationChoiceType, Services.Models.NotificationSeverity.Warning);
                     return;
                 }

@@ -41,6 +41,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             return base.CanStart() &&
                    !this.IsMoving &&
+                   this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations &&
                    ((this.SensorsService.IsLoadingUnitInBay && (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper)) ||
                     (!this.MachineService.HasCarousel && this.SensorsService.IsLoadingUnitInMiddleBottomBay && (this.MachineService.Bay.IsDouble || !this.MachineService.BayFirstPositionIsUpper))) &&
                    this.LoadingUnitId.HasValue &&
@@ -95,11 +96,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 {
                     this.ShowNotification(InstallationApp.InvalidSourceChoiceType, Services.Models.NotificationSeverity.Warning);
                     return;
-                }
-
-                if (this.MachineModeService.MachineMode != MachineMode.LoadUnitOperations)
-                {
-                    await this.MachineModeWebService.SetLoadUnitOperationsAsync();
                 }
 
                 await this.MachineLoadingUnitsWebService.InsertLoadingUnitAsync(source, null, this.LoadingUnitId.Value);
