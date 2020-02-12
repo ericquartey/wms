@@ -719,6 +719,7 @@
                                             HorizontalContentAlignment="Center"
                                             BorderBrush="{DynamicResource FerrettoRed}"
                                             Foreground="{StaticResource FerrettoPureWhite}"
+                                            IsEnabled="False"
                                             Kind="Shield"
                                             Visibility="{Binding IsMovementsManual, Converter={StaticResource BTVC}}" />
                         <controls:PpcButton Width="60"
