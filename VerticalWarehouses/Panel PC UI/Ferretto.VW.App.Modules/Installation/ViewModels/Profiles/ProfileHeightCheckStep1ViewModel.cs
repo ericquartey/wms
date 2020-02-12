@@ -111,8 +111,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        protected bool IsValid => this.InputLoadingUnitIdValidation() is null;
-
         public IEnumerable<LoadingUnit> LoadingUnits { get => this.loadingUnits; set => this.loadingUnits = value; }
 
         public bool LodingUnitManual
@@ -146,6 +144,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                (this.stopCommand = new DelegateCommand(
                    async () => await this.StopAsync(),
                    this.CanExecuteStopCommand));
+
+        protected bool IsValid => this.InputLoadingUnitIdValidation() is null;
 
         private bool IsCanExecuteStepCommand =>
             !this.IsExecutingProcedure
@@ -302,7 +302,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (!this.LodingUnitManual &&
                 !this.InputLoadingUnitId.HasValue)
             {
-                return $"Filed is required.";
+                return VW.App.Resources.InstallationApp.FieldRequired;
             }
 
             if (!this.LodingUnitManual &&
@@ -311,7 +311,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (this.InputLoadingUnitId.Value < 1 ||
                     this.InputLoadingUnitId.Value > 99)
                 {
-                    return $"Invalid value";
+                    return VW.App.Resources.InstallationApp.InvalidValue;
                 }
             }
 

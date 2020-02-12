@@ -405,8 +405,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 case MissionType.LoadUnitOperation:
                     returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.LoadUnitOperations
-                        // TODO remove the manual mode when LoadUnitOperations mode is available
-                        || this.MachineVolatileDataProvider.Mode == MachineMode.Manual
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations
                         );
                     break;
 
@@ -417,7 +416,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MissionType.WMS:
                 case MissionType.OUT:
                 case MissionType.IN:
-                    returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.Automatic);
+                    returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.Automatic
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic
+                        );
                     break;
 
                 case MissionType.FullTest:
@@ -430,6 +431,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             if (!returnValue)
             {
+                this.Logger.LogDebug($"IsMachineOk: Machine Mode {this.MachineVolatileDataProvider.Mode} not valid for mission type {messageData.MissionType}");
                 this.ErrorsProvider.RecordNew(MachineErrorCode.MachineModeNotValid, this.Mission.TargetBay);
                 return false;
             }
@@ -439,7 +441,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             if (activeMission != null)
             {
-                this.Logger.LogTrace($"IsDestinationOk: waiting for active mission {activeMission.Id}, LoadUnit {activeMission.LoadUnitId}; bay {this.Mission.TargetBay}");
+                this.Logger.LogTrace($"IsMachineOk: waiting for active mission {activeMission.Id}, LoadUnit {activeMission.LoadUnitId}; bay {this.Mission.TargetBay}");
                 if (showErrors)
                 {
                     this.ErrorsProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisBay, this.Mission.TargetBay);

@@ -646,6 +646,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Checksum files check successfully completed..
+        /// </summary>
+        public static string ChecksumCompleted {
+            get {
+                return ResourceManager.GetString("ChecksumCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear temp folder &apos;{0}&apos;..
+        /// </summary>
+        public static string ClearTempFolder {
+            get {
+                return ResourceManager.GetString("ClearTempFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Closed.
         /// </summary>
         public static string Closed {
@@ -1249,6 +1267,42 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error on checking file {0}.
+        /// </summary>
+        public static string ErrorCheckFile {
+            get {
+                return ResourceManager.GetString("ErrorCheckFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error on checking files checksum:.
+        /// </summary>
+        public static string ErrorChecksum {
+            get {
+                return ResourceManager.GetString("ErrorChecksum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error on checking file &apos;{0}&apos;. No checksums found..
+        /// </summary>
+        public static string ErrorChecksumNotFound {
+            get {
+                return ResourceManager.GetString("ErrorChecksumNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error on clear temp folder:.
+        /// </summary>
+        public static string ErrorClearTempFolder {
+            get {
+                return ResourceManager.GetString("ErrorClearTempFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error executing installer app..
         /// </summary>
         public static string ErrorExecutingInstallerApp {
@@ -1258,11 +1312,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error excracting files:.
+        /// </summary>
+        public static string ErrorExtractingFiles {
+            get {
+                return ResourceManager.GetString("ErrorExtractingFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error during initial update phase..
         /// </summary>
         public static string ErrorOnInitialPhaseUpdate {
             get {
                 return ResourceManager.GetString("ErrorOnInitialPhaseUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error on starting:.
+        /// </summary>
+        public static string ErrorOnStarting {
+            get {
+                return ResourceManager.GetString("ErrorOnStarting", resourceCulture);
             }
         }
         
@@ -1321,11 +1393,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Extraction successfullly completed..
+        /// </summary>
+        public static string ExtractingFilesCompleted {
+            get {
+                return ResourceManager.GetString("ExtractingFilesCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Feed rate.
         /// </summary>
         public static string FeedRate {
             get {
                 return ResourceManager.GetString("FeedRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field is required..
+        /// </summary>
+        public static string FieldRequired {
+            get {
+                return ResourceManager.GetString("FieldRequired", resourceCulture);
             }
         }
         
@@ -1780,6 +1870,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to InputDelayBetweenCycles must be strictly positive..
+        /// </summary>
+        public static string InputDelayBetweenCyclesMustBePositive {
+            get {
+                return ResourceManager.GetString("InputDelayBetweenCyclesMustBePositive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InputDelayBetweenCycles is required..
+        /// </summary>
+        public static string InputDelayBetweenCyclesRequired {
+            get {
+                return ResourceManager.GetString("InputDelayBetweenCyclesRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to InputDisplacement must be strictly positive..
         /// </summary>
         public static string InputDisplacementMustBePositive {
@@ -2037,6 +2145,15 @@ namespace Ferretto.VW.App.Resources {
         public static string InvalidSourceChoiceType {
             get {
                 return ResourceManager.GetString("InvalidSourceChoiceType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Valore non valido..
+        /// </summary>
+        public static string InvalidValue {
+            get {
+                return ResourceManager.GetString("InvalidValue", resourceCulture);
             }
         }
         
@@ -2847,6 +2964,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Open {
             get {
                 return ResourceManager.GetString("Open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operation aborted..
+        /// </summary>
+        public static string OperationAborted {
+            get {
+                return ResourceManager.GetString("OperationAborted", resourceCulture);
             }
         }
         
@@ -3677,6 +3803,33 @@ namespace Ferretto.VW.App.Resources {
         public static string Start {
             get {
                 return ResourceManager.GetString("Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start checking files checksum &apos;{0}&apos;..
+        /// </summary>
+        public static string StartChecksum {
+            get {
+                return ResourceManager.GetString("StartChecksum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start excracting files from &apos;{0}&apos;..
+        /// </summary>
+        public static string StartExtractingFiles {
+            get {
+                return ResourceManager.GetString("StartExtractingFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting application &apos;{0}&apos;..
+        /// </summary>
+        public static string StartingApplication {
+            get {
+                return ResourceManager.GetString("StartingApplication", resourceCulture);
             }
         }
         
