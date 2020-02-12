@@ -845,6 +845,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compacting.
+        /// </summary>
+        public static string DrawerCompacting {
+            get {
+                return ResourceManager.GetString("DrawerCompacting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compact front side.
         /// </summary>
         public static string DrawerCompactingAntCompact {
@@ -980,6 +989,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back free space.
+        /// </summary>
+        public static string DrawerCompactingFrontFreeSpace {
+            get {
+                return ResourceManager.GetString("DrawerCompactingFrontFreeSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compaction drawer procedure.
         /// </summary>
         public static string DrawerCompactingHeader {
@@ -1021,6 +1039,15 @@ namespace Ferretto.VW.App.Resources {
         public static string DrawerCompactingRearCompact {
             get {
                 return ResourceManager.GetString("DrawerCompactingRearCompact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Front free space.
+        /// </summary>
+        public static string DrawerCompactingRearFreeSpace {
+            get {
+                return ResourceManager.GetString("DrawerCompactingRearFreeSpace", resourceCulture);
             }
         }
         

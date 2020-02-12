@@ -1530,4 +1530,13 @@ Please put back any moved pieces in their original position.</value>
   <data name="OtherNavigationImmediateDrawerCallDescription" xml:space="preserve">
     <value>Drawer operations</value>
   </data>
+  <data name="DrawerCompactingFrontFreeSpace" xml:space="preserve">
+    <value>Back free space</value>
+  </data>
+  <data name="DrawerCompactingRearFreeSpace" xml:space="preserve">
+    <value>Front free space</value>
+  </data>
+  <data name="DrawerCompacting" xml:space="preserve">
+    <value>Compacting</value>
+  </data>
 </root>

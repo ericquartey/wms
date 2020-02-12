@@ -78,12 +78,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private bool CanCompactingStart()
         {
-            return !this.IsWaitingForResponse;
+            return !this.IsWaitingForResponse &&
+                   !this.IsMoving;
         }
 
         private bool CanCompactingStop()
         {
-            return !this.IsWaitingForResponse;
+            return !this.IsWaitingForResponse &&
+                   this.IsMoving;
         }
 
         private bool CanDetailCommand()
