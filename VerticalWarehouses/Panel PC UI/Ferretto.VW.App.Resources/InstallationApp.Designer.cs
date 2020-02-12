@@ -484,6 +484,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Insterted cell not free.
+        /// </summary>
+        public static string CellInsertedNotFree {
+            get {
+                return ResourceManager.GetString("CellInsertedNotFree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cell not valid.
         /// </summary>
         public static string CellNotValid {
@@ -1074,6 +1083,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Drawer {
             get {
                 return ResourceManager.GetString("Drawer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drawer id {0} extracted.
+        /// </summary>
+        public static string DrawerIdExtracted {
+            get {
+                return ResourceManager.GetString("DrawerIdExtracted", resourceCulture);
             }
         }
         
@@ -1938,6 +1956,60 @@ namespace Ferretto.VW.App.Resources {
         public static string InstallerAppStartedSuccessfully {
             get {
                 return ResourceManager.GetString("InstallerAppStartedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid cell id entered.
+        /// </summary>
+        public static string InvalidCellIdEntered {
+            get {
+                return ResourceManager.GetString("InvalidCellIdEntered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid cell id on inserted drawer .
+        /// </summary>
+        public static string InvalidCellIdOnInsertedDrawer {
+            get {
+                return ResourceManager.GetString("InvalidCellIdOnInsertedDrawer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid destination choice type.
+        /// </summary>
+        public static string InvalidDestinationChoiceType {
+            get {
+                return ResourceManager.GetString("InvalidDestinationChoiceType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid drawer id in bay.
+        /// </summary>
+        public static string InvalidDrawerIdInBay {
+            get {
+                return ResourceManager.GetString("InvalidDrawerIdInBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid entered drawer Id.
+        /// </summary>
+        public static string InvalidEnteredDrawerId {
+            get {
+                return ResourceManager.GetString("InvalidEnteredDrawerId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid source choice type.
+        /// </summary>
+        public static string InvalidSourceChoiceType {
+            get {
+                return ResourceManager.GetString("InvalidSourceChoiceType", resourceCulture);
             }
         }
         

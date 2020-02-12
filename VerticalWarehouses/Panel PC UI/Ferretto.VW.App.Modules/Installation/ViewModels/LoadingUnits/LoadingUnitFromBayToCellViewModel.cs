@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using DevExpress.Mvvm;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
@@ -90,7 +91,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 if (source == LoadingUnitLocation.NoLocation)
                 {
-                    this.ShowNotification("Tipo scelta sorgente non valida", Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(InstallationApp.InvalidSourceChoiceType, Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
