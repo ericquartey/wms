@@ -53,6 +53,12 @@ namespace Ferretto.VW.Installer
                 // no configuration file found
             }
 
+            if (!this.installationService.CanStart())
+            {                
+                this.IsSuccessful = false;
+                this.Close();
+            }
+
             this.installationService.PropertyChanged += this.InstallationService_PropertyChanged;
             this.installationService.Finished += this.OnInstallationServiceFinished;
         }

@@ -1,16 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
 using Newtonsoft.Json;
 using NLog;
+using NLog.Time;
 
 namespace Ferretto.VW.Installer.Core
 {
     public sealed class InstallationService : BindableBase
     {
+
+        private const string UPDATEARG = "-update";
+
+        private const string INSTALLARG = "-install";
+
         #region Fields
 
         private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings()
@@ -26,6 +33,10 @@ namespace Ferretto.VW.Installer.Core
         private bool isRollbackInProgress;
 
         private string softwareVersion;
+
+        private bool isUpdate;
+
+        private bool isInstall;
 
         #endregion
 
@@ -63,6 +74,7 @@ namespace Ferretto.VW.Installer.Core
 
         public static InstallationService LoadAsync(string fileName)
         {
+
             if (string.IsNullOrWhiteSpace(fileName))
             {
                 throw new ArgumentException("message", nameof(fileName));
@@ -78,6 +90,38 @@ namespace Ferretto.VW.Installer.Core
                 Steps = serviceAnon.Steps.OrderBy(s => s.Number).ToArray()
             };
         }
+
+        public bool CanStart()
+        {
+            this.SetArgsStartup();
+            if (!(this.isInstall || this.isUpdate))
+            {
+                if (this.Steps.FirstOrDefault(s => s.StartTime != null) is null)
+                {
+                    this.logger.Debug("Nothing to do, update/installation in progress.");
+                    return false;
+                }                
+            }
+
+            return true;
+        }
+
+        private void SetArgsStartup()
+        {
+            var args = Environment.GetCommandLineArgs();
+            foreach (var arg in args)
+            {
+                if (arg.ToLower(CultureInfo.InvariantCulture) == UPDATEARG)
+                {
+                    this.isUpdate = true;
+                }
+                else if (arg.ToLower(CultureInfo.InvariantCulture) == INSTALLARG)
+                {
+                    this.isInstall = true;
+                }
+            }
+        }
+
 
         public void Abort()
         {

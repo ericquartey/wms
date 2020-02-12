@@ -23,6 +23,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private const string CSVEXTENSION = ".csv";
 
+        private const string UPDATEARG = "-update";
+
         private readonly IDialogService dialogService;
 
         private readonly string updateExchangeInstallerName;
@@ -374,7 +376,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.isCurrentOperationValid = true;
 
-                var installerFilePath = $"{this.updateExchangeTemp}\\{this.updateExchangeInstallerPath}\\{this.updateExchangeInstallerName}";
+                var installerFilePath = $"{this.updateExchangeTemp}\\{this.updateExchangeInstallerPath}\\{this.updateExchangeInstallerName} {UPDATEARG}";
 
                 this.AppendLine($"Starting application '{installerFilePath}'.");
 
