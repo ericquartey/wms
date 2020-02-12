@@ -1219,4 +1219,10 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="OtherNavigationImmediateDrawerCallDescription" xml:space="preserve">
     <value>Operazioni su cassetto</value>
   </data>
+  <data name="DrawerCompactingFrontFreeSpace" xml:space="preserve">
+    <value>Spazio libero posteriore</value>
+  </data>
+  <data name="DrawerCompactingRearFreeSpace" xml:space="preserve">
+    <value>Spazio libero anteriore</value>
+  </data>
 </root>
