@@ -592,7 +592,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             var selectedBayPosition = this.SelectedBayPosition();
             var res = (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
                    this.CanBaseExecute() &&
-                   this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay && 
+                   this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay &&
                    this.MachineStatus.LogicalPositionId == this.Bay.Id &&
                    this.IsPositionUpSelected == this.MachineStatus.BayPositionUpper &&
                    selectedBayPosition != null &&
