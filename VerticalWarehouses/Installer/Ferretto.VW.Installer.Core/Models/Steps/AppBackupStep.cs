@@ -8,8 +8,8 @@ namespace Ferretto.VW.Installer.Core
     {
         #region Constructors
 
-        public AppBackupStep(int number, string title, string description, string appRootPath, string backupPath)
-            : base(number, title, description)
+        public AppBackupStep(int number, string title, string description, string appRootPath, string backupPath, bool skipOnResume)
+            : base(number, title, description, skipOnResume)
         {
             this.AppRootPath = InterpolateVariables(appRootPath);
             this.BackupPath = InterpolateVariables(backupPath);

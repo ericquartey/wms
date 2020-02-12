@@ -114,6 +114,8 @@ namespace Ferretto.VW.Installer.Core
                 throw new InvalidOperationException("Unable to continue with setup because execution was interrupted while one step was being rolled back.");
             }
 
+            this.CheckToSkipCurrentStartingStep();
+
             this.LoadSoftwareVersion();
 
             try
@@ -139,17 +141,18 @@ namespace Ferretto.VW.Installer.Core
                     else
                     {
                         this.ActiveStep = this.Steps.FirstOrDefault(s => s.Status == StepStatus.ToDo);
+                        this.ActiveStep.Status = StepStatus.Start;
                         this.Dump();
                         this.RaisePropertyChanged(nameof(this.ActiveStep));
-
                         await this.ActiveStep.ApplyAsync();
                         this.Dump();
                         if (this.ActiveStep.Status is StepStatus.Failed || this.IsRollbackInProgress)
                         {
                             if (!this.ActiveStep.SkipRollback)
                             {
-                                this.IsRollbackInProgress = true;
-                                await this.RollbackStep(this.ActiveStep);
+                                break;
+                                //this.IsRollbackInProgress = true;
+                                //await this.RollbackStep(this.ActiveStep);
                             }
                         }
                     }
@@ -161,6 +164,18 @@ namespace Ferretto.VW.Installer.Core
             }
 
             this.RaiseInstallationFinished(!this.IsRollbackInProgress);
+        }
+
+        private void CheckToSkipCurrentStartingStep()
+        {
+            var stepInProgress = this.Steps.SingleOrDefault(s => s.Status == StepStatus.Start
+                                                                 &&
+                                                                 s.SkipOnResume);
+            if (!(stepInProgress is null))
+            {
+                stepInProgress.Status = StepStatus.Done;
+            }
+            
         }
 
         private void Dump()

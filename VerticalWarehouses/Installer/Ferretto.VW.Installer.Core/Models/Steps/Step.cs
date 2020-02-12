@@ -31,11 +31,12 @@ namespace Ferretto.VW.Installer.Core
 
         #region Constructors
 
-        public Step(int number, string title, string description)
+        public Step(int number, string title, string description, bool skipOnResume)
         {
             this.Title = title;
             this.Number = number;
             this.Description = description;
+            this.SkipOnResume = skipOnResume;
         }
 
         #endregion
@@ -43,6 +44,7 @@ namespace Ferretto.VW.Installer.Core
         #region Properties
 
         public string Description { get; }
+        public bool SkipOnResume { get; }
 
         public TimeSpan? Duration
         {

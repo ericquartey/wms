@@ -4,6 +4,8 @@
     {
         ToDo,
 
+        Start,
+
         InProgress,
 
         Done,

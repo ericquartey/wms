@@ -8,8 +8,8 @@ namespace Ferretto.VW.Installer.Core
     {
         #region Constructors
 
-        public CommandlineStep(int number, string title, string description, string rollbackScript, string script)
-            : base(number, title, description, rollbackScript, script)
+        public CommandlineStep(int number, string title, string description, string rollbackScript, string script, bool skipOnResume)
+            : base(number, title, description, rollbackScript, script, skipOnResume)
         {
         }
 
