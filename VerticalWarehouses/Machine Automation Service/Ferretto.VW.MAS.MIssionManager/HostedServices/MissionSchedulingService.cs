@@ -430,7 +430,9 @@ namespace Ferretto.VW.MAS.MissionManager
                         {
                             if (!this.IsLoadUnitMissing(serviceProvider))
                             {
-                                if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations)
+                                if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations
+                                    || activeMissions.Any(m => m.MissionType == MissionType.LoadUnitOperation)
+                                    )
                                 {
                                     this.machineVolatileDataProvider.Mode = MachineMode.LoadUnitOperations;
                                 }
@@ -529,7 +531,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitId == loadUnit.Id))
                 {
                     this.Logger.LogInformation($"Insert load unit {loadUnit.Id} from {LoadingUnitLocation.Elevator} to cell");
-                    moveLoadingUnitProvider.InsertToCell(MissionType.Manual, LoadingUnitLocation.Elevator, null, loadUnit.Id, BayNumber.BayOne, MessageActor.AutomationService);
+                    moveLoadingUnitProvider.InsertToCell(MissionType.IN, LoadingUnitLocation.Elevator, null, loadUnit.Id, BayNumber.BayOne, MessageActor.AutomationService);
                     return true;
                 }
             }
@@ -555,7 +557,7 @@ namespace Ferretto.VW.MAS.MissionManager
                             if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitId == position.LoadingUnit.Id))
                             {
                                 this.Logger.LogInformation($"Insert load unit {position.LoadingUnit.Id} from {position.Location} to cell");
-                                moveLoadingUnitProvider.InsertToCell(MissionType.Manual, position.Location, null, position.LoadingUnit.Id, bay.Number, MessageActor.AutomationService);
+                                moveLoadingUnitProvider.InsertToCell(MissionType.IN, position.Location, null, position.LoadingUnit.Id, bay.Number, MessageActor.AutomationService);
                                 return true;
                             }
                         }

@@ -360,6 +360,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 IMissionMoveBase newStep;
                 if (reason == StopRequestReason.Abort
                     || !this.Mission.IsRestoringType()
+                    || this.Mission.Step == MissionStep.New
                     )
                 {
                     newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
