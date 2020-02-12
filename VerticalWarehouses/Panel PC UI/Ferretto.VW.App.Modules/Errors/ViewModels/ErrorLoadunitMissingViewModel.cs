@@ -42,6 +42,8 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
     {
         #region Fields
 
+        private readonly IMachineBaysWebService machineBaysWebService;
+
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
         private readonly IMachineErrorsWebService machineErrorsWebService;
@@ -98,6 +100,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             IMachineModeWebService machineModeWebService,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IMachineElevatorWebService machineElevatorWebService,
+            IMachineBaysWebService machineBaysWebService,
             IMachineErrorsWebService machineErrorsWebService)
             : base(Services.PresentationMode.Menu | Services.PresentationMode.Installer | Services.PresentationMode.Operator)
         {
@@ -105,6 +108,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             this.machineErrorsWebService = machineErrorsWebService ?? throw new ArgumentNullException(nameof(machineErrorsWebService));
             this.machineModeWebService = machineModeWebService ?? throw new ArgumentNullException(nameof(machineModeWebService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
+            this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
 
             this.CurrentStep = default(ErrorLoadunitMissingStepStart);
         }
@@ -376,36 +380,78 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 switch (columnName)
                 {
                     case nameof(this.LuIdOnElevator):
-
-                        if ((!this.LuIdOnElevator.HasValue) || (!this.MachineService.Loadunits.Any(l => l.Id == this.LuIdOnElevator && l.Status == LoadingUnitStatus.Undefined && l.Height != 0)))
+                        if (this.SensorsService.IsLoadingUnitOnElevator &&
+                            ((!this.LuIdOnElevator.HasValue) || (!this.MachineService.Loadunits.Any(l => l.Id == this.LuIdOnElevator && l.Status == LoadingUnitStatus.Undefined && l.Height != 0))))
                         {
-                            var lus = this.MachineService.Loadunits.Where(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0).Select(s => s.Id.ToString()).Aggregate((a, b) => a + ", " + b);
+                            var lus = string.Join(",", this.MachineService.Loadunits.Where(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0).Select(s => s.Id.ToString()));
                             return $"Cassetto non valido, inserire: {lus}";
                         }
 
                         break;
 
                     case nameof(this.LuIdOnBay1Down):
+                        if (this.SensorsService.Sensors.LUPresentInBay1 &&
+                            this.HasBay1PositionUpVisible &&
+                            ((!this.LuIdOnBay1Down.HasValue) || (!this.MachineService.Loadunits.Any(l => l.Id == this.LuIdOnBay1Down && l.Status == LoadingUnitStatus.Undefined && l.Height != 0))))
+                        {
+                            var lus = string.Join(",", this.MachineService.Loadunits.Where(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0).Select(s => s.Id.ToString()));
+                            return $"Cassetto non valido, inserire: {lus}";
+                        }
 
                         break;
 
                     case nameof(this.LuIdOnBay1Up):
+                        if (this.SensorsService.Sensors.LUPresentMiddleBottomBay1 &&
+                            this.HasBay1PositionDownVisible &&
+                            ((!this.LuIdOnBay1Up.HasValue) || (!this.MachineService.Loadunits.Any(l => l.Id == this.LuIdOnBay1Up && l.Status == LoadingUnitStatus.Undefined && l.Height == 0))))
+                        {
+                            var lus = string.Join(",", this.MachineService.Loadunits.Where(l => l.Status == LoadingUnitStatus.Undefined && l.Height == 0).Select(s => s.Id.ToString()));
+                            return $"Cassetto non valido, inserire: {lus}";
+                        }
 
                         break;
 
                     case nameof(this.LuIdOnBay2Down):
+                        if (this.SensorsService.Sensors.LUPresentInBay2 &&
+                            this.HasBay2PositionUpVisible &&
+                            ((!this.LuIdOnBay2Down.HasValue) || (!this.MachineService.Loadunits.Any(l => l.Id == this.LuIdOnBay2Down && l.Status == LoadingUnitStatus.Undefined && l.Height != 0))))
+                        {
+                            var lus = string.Join(",", this.MachineService.Loadunits.Where(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0).Select(s => s.Id.ToString()));
+                            return $"Cassetto non valido, inserire: {lus}";
+                        }
 
                         break;
 
                     case nameof(this.LuIdOnBay2Up):
+                        if (this.SensorsService.Sensors.LUPresentMiddleBottomBay2 &&
+                            this.HasBay2PositionDownVisible &&
+                            ((!this.LuIdOnBay2Up.HasValue) || (!this.MachineService.Loadunits.Any(l => l.Id == this.LuIdOnBay2Up && l.Status == LoadingUnitStatus.Undefined && l.Height == 0))))
+                        {
+                            var lus = string.Join(",", this.MachineService.Loadunits.Where(l => l.Status == LoadingUnitStatus.Undefined && l.Height == 0).Select(s => s.Id.ToString()));
+                            return $"Cassetto non valido, inserire: {lus}";
+                        }
 
                         break;
 
                     case nameof(this.LuIdOnBay3Down):
+                        if (this.SensorsService.Sensors.LUPresentInBay3 &&
+                            this.HasBay3PositionUpVisible &&
+                            ((!this.LuIdOnBay3Down.HasValue) || (!this.MachineService.Loadunits.Any(l => l.Id == this.LuIdOnBay3Down && l.Status == LoadingUnitStatus.Undefined && l.Height != 0))))
+                        {
+                            var lus = string.Join(",", this.MachineService.Loadunits.Where(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0).Select(s => s.Id.ToString()));
+                            return $"Cassetto non valido, inserire: {lus}";
+                        }
 
                         break;
 
                     case nameof(this.LuIdOnBay3Up):
+                        if (this.SensorsService.Sensors.LUPresentMiddleBottomBay3 &&
+                            this.HasBay3PositionDownVisible &&
+                            ((!this.LuIdOnBay3Up.HasValue) || (!this.MachineService.Loadunits.Any(l => l.Id == this.LuIdOnBay3Up && l.Status == LoadingUnitStatus.Undefined && l.Height != 0))))
+                        {
+                            var lus = string.Join(",", this.MachineService.Loadunits.Where(l => l.Status == LoadingUnitStatus.Undefined && l.Height == 0).Select(s => s.Id.ToString()));
+                            return $"Cassetto non valido, inserire: {lus}";
+                        }
 
                         break;
                 }
@@ -466,10 +512,53 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                     await this.MarkAsResolvedAsync();
                 }
 
+                // Elevator
                 this.LuIdOnElevator = null;
                 if (this.SensorsService.IsLoadingUnitOnElevator)
                 {
                     this.LuIdOnElevator = this.MachineService.Loadunits.First(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0).Id;
+                }
+
+                // Bay 1
+                this.LuIdOnBay1Up = null;
+                if (this.SensorsService.Sensors.LUPresentInBay1 &&
+                    this.HasBay1PositionUpVisible)
+                {
+                    this.LuIdOnBay1Up = this.MachineService.Loadunits.First(l => l.Status == LoadingUnitStatus.Undefined && l.Height == 0).Id;
+                }
+
+                if (this.SensorsService.Sensors.LUPresentMiddleBottomBay1 &&
+                    this.HasBay1PositionDownVisible)
+                {
+                    this.LuIdOnBay1Down = this.MachineService.Loadunits.First(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0).Id;
+                }
+
+                // Bay 2
+                this.LuIdOnBay2Up = null;
+                if (this.SensorsService.Sensors.LUPresentInBay2 &&
+                    this.HasBay2PositionUpVisible)
+                {
+                    this.LuIdOnBay2Up = this.MachineService.Loadunits.First(l => l.Status == LoadingUnitStatus.Undefined && l.Height == 0).Id;
+                }
+
+                if (this.SensorsService.Sensors.LUPresentMiddleBottomBay2 &&
+                    this.HasBay2PositionDownVisible)
+                {
+                    this.LuIdOnBay2Down = this.MachineService.Loadunits.First(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0).Id;
+                }
+
+                // Bay 3
+                this.LuIdOnBay3Up = null;
+                if (this.SensorsService.Sensors.LUPresentInBay3 &&
+                    this.HasBay3PositionUpVisible)
+                {
+                    this.LuIdOnBay3Up = this.MachineService.Loadunits.First(l => l.Status == LoadingUnitStatus.Undefined && l.Height == 0).Id;
+                }
+
+                if (this.SensorsService.Sensors.LUPresentMiddleBottomBay3 &&
+                    this.HasBay3PositionDownVisible)
+                {
+                    this.LuIdOnBay3Down = this.MachineService.Loadunits.First(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0).Id;
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
@@ -691,9 +780,62 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                if (this.SensorsService.IsLoadingUnitOnElevator && this.LuIdOnElevator.HasValue)
+                // Elevator
+                if (this.SensorsService.IsLoadingUnitOnElevator &&
+                    this.LuIdOnElevator.HasValue)
                 {
                     await this.machineElevatorWebService.SetLoadUnitOnElevatorAsync(this.LuIdOnElevator.Value);
+                }
+
+                // Bay 1
+                if (this.SensorsService.Sensors.LUPresentInBay1 &&
+                    this.HasBay1PositionUpVisible &&
+                    this.LuIdOnBay1Up.HasValue)
+                {
+                    var id = this.Bay1Positions.Single(s => s.LocationUpDown == LoadingUnitLocation.Up).Id;
+                    await this.machineBaysWebService.SetLoadUnitOnBayAsync(id, this.LuIdOnBay1Up.Value);
+                }
+
+                if (this.SensorsService.Sensors.LUPresentMiddleBottomBay1 &&
+                    this.HasBay1PositionDownVisible &&
+                    this.LuIdOnBay1Down.HasValue)
+                {
+                    var id = this.Bay1Positions.Single(s => s.LocationUpDown == LoadingUnitLocation.Down).Id;
+                    await this.machineBaysWebService.SetLoadUnitOnBayAsync(id, this.LuIdOnBay1Down.Value);
+                }
+
+                // Bay 2
+                if (this.SensorsService.Sensors.LUPresentInBay2 &&
+                    this.HasBay2PositionUpVisible &&
+                    this.LuIdOnBay2Up.HasValue)
+                {
+                    var id = this.Bay2Positions.Single(s => s.LocationUpDown == LoadingUnitLocation.Up).Id;
+                    await this.machineBaysWebService.SetLoadUnitOnBayAsync(id, this.LuIdOnBay2Up.Value);
+                }
+
+                if (this.SensorsService.Sensors.LUPresentMiddleBottomBay2 &&
+                    this.HasBay2PositionDownVisible &&
+                    this.LuIdOnBay2Down.HasValue)
+                {
+                    var id = this.Bay2Positions.Single(s => s.LocationUpDown == LoadingUnitLocation.Down).Id;
+                    await this.machineBaysWebService.SetLoadUnitOnBayAsync(id, this.LuIdOnBay2Down.Value);
+                }
+
+                // Bay 3
+                if (this.SensorsService.Sensors.LUPresentInBay3 &&
+                    this.HasBay3PositionUpVisible &&
+                    this.LuIdOnBay3Up.HasValue)
+                {
+                    var id = this.Bay3Positions.Single(s => s.LocationUpDown == LoadingUnitLocation.Up).Id;
+                    await this.machineBaysWebService.SetLoadUnitOnBayAsync(id, this.LuIdOnBay3Up.Value);
+                }
+
+                if (this.SensorsService.Sensors.LUPresentMiddleBottomBay3 &&
+                    this.HasBay3PositionDownVisible &&
+                    this.LuIdOnBay3Down.HasValue)
+                {
+                    var id = this.Bay3Positions.Single(s => s.LocationUpDown == LoadingUnitLocation.Down).Id;
+                    await this.machineBaysWebService.SetLoadUnitOnBayAsync(id, this.LuIdOnBay3Down.Value);
                 }
 
                 await this.machineErrorsWebService.ResolveAllAsync();

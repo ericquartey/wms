@@ -15,17 +15,20 @@
       "number": 2,
       "title": "Auto-avvio installer",
       "description": "Imposta l'installatore in avvio automatico.",
-      "rollbackScript": "Set-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(Install:Root:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath)\"",
-      "script": "Set-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(EmbeddedInstallationFilePath)\""
+      //"rollbackScript": "Set-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(Install:Root:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath)\"",
+      //"script": "Set-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(EmbeddedInstallationFilePath)\"",
+      "script": "Set-ItemProperty $(PPC:Registry:Approve:Path) -Name $(PPC:Registry:Key) -Value ([byte[]](0x03,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00));Enable-ScheduledTask -TaskName Installer",
+      "rollbackScript": "Set-ItemProperty $(PPC:Registry:Approve:Path) -Name $(PPC:Registry:Key) -Value ([byte[]](0x02,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00));Disable-ScheduledTask -TaskName Installer",
+      "SkipOnResume": "true"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
       "number": 3,
       "title": "Riavvia il sistema",
       "description": "Riavvia il sistema operativo per completare la disabilitazione della protezione.",
-      "script": "shutdown /r /t 0 /f /d p:4:2 /c \"Vertimag Software Setup\"",
-      "rollbackScript": "true"
+      "script": "shutdown /r /t 0 /f /d p:4:2 /c \"Vertimag Software Setup\"",      
       //"script": "timeout /T 2" // ** fake
+      "skipOnResume" :  "true"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
@@ -184,8 +187,10 @@
       "number": 18,
       "title": "Auto Avvio PPC",
       "description": "Imposta l'applicazione del PanelPC in avvio automatico dopo il login.",
-      "script": "Set-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(Install:Root:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath)\"",
-      "rollbackScript": "\"Set-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(EmbeddedInstallationFilePath)\""
+      //"script": "Set-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(Install:Root:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath)\"",
+      //"rollbackScript": "\"Set-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(EmbeddedInstallationFilePath)\""
+      "script": "Set-ItemProperty $(PPC:Registry:Approve:Path) -Name $(PPC:Registry:Key) -Value ([byte[]](0x02,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00));Disable-ScheduledTask -TaskName Installer",
+      "rollbackScript": "Set-ItemProperty $(PPC:Registry:Approve:Path) -Name $(PPC:Registry:Key) -Value ([byte[]](0x03,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00));Disable-ScheduledTask -TaskName Installer"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",

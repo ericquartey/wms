@@ -36,10 +36,13 @@ namespace Ferretto.VW.Installer
 
         public MainWindowViewModel()
         {
+            var currExeLocation = System.Reflection.Assembly.GetEntryAssembly().Location;
+            Directory.SetCurrentDirectory(System.IO.Path.GetDirectoryName(currExeLocation));
+
             if (File.Exists("steps-snapshot.json"))
             {
-                //this.installationService = InstallationService.LoadAsync("steps-snapshot.json");
-                this.installationService = InstallationService.LoadAsync("steps.json");
+                this.installationService = InstallationService.LoadAsync("steps-snapshot.json");
+                //this.installationService = InstallationService.LoadAsync("steps.json");
             }
             else if (File.Exists("steps.json"))
             {
@@ -48,6 +51,12 @@ namespace Ferretto.VW.Installer
             else
             {
                 // no configuration file found
+            }
+
+            if (!this.installationService.CanStart())
+            {                
+                this.IsSuccessful = false;
+                this.Close();
             }
 
             this.installationService.PropertyChanged += this.InstallationService_PropertyChanged;
