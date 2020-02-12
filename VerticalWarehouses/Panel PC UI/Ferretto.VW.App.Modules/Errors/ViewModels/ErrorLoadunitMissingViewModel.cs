@@ -892,8 +892,6 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
             this.ShowAbortStep(true, !this.IsMoving);
 
-            this.RaisePropertyChanged(nameof(this.Source));
-
             this.RaisePropertyChanged(nameof(this.HasStepStart));
             this.RaisePropertyChanged(nameof(this.HasStepLoadunitOnElevator));
             this.RaisePropertyChanged(nameof(this.HasStepLoadunitOnBay1));
