@@ -33,6 +33,8 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private bool isMachineInAutomaticMode;
 
+        private bool isMachineInLoadUnitOperations;
+
         private bool isMachineInTestMode;
 
         private bool isUnknownState;
@@ -94,6 +96,12 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         {
             get => this.isMachineInAutomaticMode;
             set => this.SetProperty(ref this.isMachineInAutomaticMode, value);
+        }
+
+        public bool IsMachineInLoadUnitOperations
+        {
+            get => this.isMachineInLoadUnitOperations;
+            set => this.SetProperty(ref this.isMachineInLoadUnitOperations, value);
         }
 
         public bool IsMachineInTestMode
@@ -213,6 +221,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         {
             this.IsMachineInAutomaticMode = this.MachineMode is MachineMode.Automatic;
             this.IsMachineInTestMode = this.MachineMode is MachineMode.Test;
+            this.IsMachineInLoadUnitOperations = this.MachineMode is MachineMode.LoadUnitOperations;
 
             this.IsBusy =
                 this.MachineMode is MachineMode.SwitchingToLoadUnitOperations
