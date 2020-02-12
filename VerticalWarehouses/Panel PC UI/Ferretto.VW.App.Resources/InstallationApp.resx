@@ -1552,6 +1552,12 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="DrawerIdExtracted" xml:space="preserve">
     <value>Drawer id {0} extracted</value>
   </data>
+  <data name="GoToFreeCell" xml:space="preserve">
+    <value>Go to free cell</value>
+  </data>
+  <data name="HorizontalAxisMovementInProgress" xml:space="preserve">
+    <value>Horizontal axis movement in progress ...</value>
+  </data>
   <data name="InputDisplacementMustBePositive" xml:space="preserve">
     <value>InputDisplacement must be strictly positive.</value>
   </data>
@@ -1582,6 +1588,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="InvalidDrawerIdInBay" xml:space="preserve">
     <value>Invalid drawer id in bay</value>
   </data>
+  <data name="InvalidDrawerSelected" xml:space="preserve">
+    <value>Invalid drawer selected</value>
+  </data>
   <data name="InvalidEnteredDrawerId" xml:space="preserve">
     <value>Invalid entered drawer Id</value>
   </data>
@@ -1608,6 +1617,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="TestToRunMustBePositive" xml:space="preserve">
     <value>TestToRunmust be strictly positive.</value>
+  </data>
+  <data name="VerticalAxisMovementInProgress" xml:space="preserve">
+    <value>Vertical axis movement in progress ...</value>
   </data>
   <data name="WeightToleranceMustBePositive" xml:space="preserve">
     <value>Weight Tolerance must be strictly positive.</value>

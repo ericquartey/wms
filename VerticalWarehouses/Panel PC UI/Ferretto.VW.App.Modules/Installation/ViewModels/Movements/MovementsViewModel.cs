@@ -230,7 +230,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                             (!this.MachineService.Loadunits.DrawerInLocationById(this.InputLoadingUnitId.Value) &&
                              !this.MachineService.Loadunits.DrawerInBayById(this.InputLoadingUnitId.Value)))
                         {
-                            return "Il cassetto selezionato non è valido";
+                            return InstallationApp.InvalidDrawerSelected;
                         }
 
                         break;
@@ -384,7 +384,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             if (this.MachineStatus.EmbarkedLoadingUnit != null)
             {
-                this.LabelMoveToLoadunit = "Vai a cella libera";
+                this.LabelMoveToLoadunit = InstallationApp.GoToFreeCell;
             }
             else
             {
@@ -613,7 +613,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.IsKeyboardOpened = true;
 
-            var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Reset macchina", DialogType.Question, DialogButtons.YesNo);
+            var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, InstallationApp.ResetMachine, DialogType.Question, DialogButtons.YesNo);
             if (messageBoxResult is DialogResult.Yes)
             {
                 try

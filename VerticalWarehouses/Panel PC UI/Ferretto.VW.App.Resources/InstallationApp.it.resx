@@ -1497,6 +1497,12 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="DrawerIdExtracted" xml:space="preserve">
     <value>Cassetto id {0} estratto</value>
   </data>
+  <data name="GoToFreeCell" xml:space="preserve">
+    <value>Vai a cella libera</value>
+  </data>
+  <data name="HorizontalAxisMovementInProgress" xml:space="preserve">
+    <value>Movimento asse orizzontale in corso...</value>
+  </data>
   <data name="InputWeightMustBePositive" xml:space="preserve">
     <value>InputWeightRequired  deve essere strettamente positivo.</value>
   </data>
@@ -1514,6 +1520,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="InvalidDrawerIdInBay" xml:space="preserve">
     <value>Id cassetto in baia non valido</value>
+  </data>
+  <data name="InvalidDrawerSelected" xml:space="preserve">
+    <value>Il cassetto selezionato non è valido</value>
   </data>
   <data name="InvalidEnteredDrawerId" xml:space="preserve">
     <value>Id cassetto inserito non valido</value>
@@ -1538,6 +1547,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="TestToRunMustBePositive" xml:space="preserve">
     <value>TestToRun  deve essere strettamente positivo.</value>
+  </data>
+  <data name="VerticalAxisMovementInProgress" xml:space="preserve">
+    <value>Movimento asse verticale in corso...</value>
   </data>
   <data name="WeightToleranceMustBePositive" xml:space="preserve">
     <value>La tolleranza del peso deve essere strettamente positiva.</value>
