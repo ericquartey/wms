@@ -71,6 +71,13 @@
                                     Style="{StaticResource WizardIntoButton}" />
 
                 <controls:PpcButton Grid.Row="2"
+                                    Grid.Column="0"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding OpenShutterCommand}"
+                                    Content="Apri serranda"
+                                    Style="{StaticResource WizardIntoButton}" />
+
+                <controls:PpcButton Grid.Row="2"
                                     Grid.Column="1"
                                     VerticalAlignment="Center"
                                     Command="{Binding CloseShutterCommand}"
@@ -139,7 +146,13 @@
 
                 <controls:PpcButton Grid.Row="2"
                                     Grid.Column="0"
-                                    Grid.ColumnSpan="2"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding OpenShutterCommand}"
+                                    Content="Apri serranda"
+                                    Style="{StaticResource WizardIntoButton}" />
+
+                <controls:PpcButton Grid.Row="2"
+                                    Grid.Column="1"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Command="{Binding CloseShutterCommand}"

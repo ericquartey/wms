@@ -79,6 +79,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand moveToShapePositionDxCommand;
 
+        private DelegateCommand openShutterCommand;
+
         private SubscriptionToken stepChangedToken;
 
         private DelegateCommand stopCommand;
@@ -109,7 +111,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public BayPosition BayPosition => this.MachineService.Bay.Positions.OrderByDescending(o => o.Height).First();
 
         public ICommand CallLoadunitToBayCommand =>
-                    this.callLoadunitToBayCommand
+            this.callLoadunitToBayCommand
             ??
             (this.callLoadunitToBayCommand = new DelegateCommand(
                 async () => await this.CallLoadunitToBayCommandAsync(),
@@ -164,6 +166,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool HasStepTuningChainSx => this.currentStep is ProfileCheckStep.TuningChainSx;
 
+        public override bool KeepAlive => false;
+
         public int? LoadingUnitId
         {
             get => this.loadingUnitId;
@@ -197,6 +201,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.moveToShapePositionDxCommand = new DelegateCommand(
                 () => this.CurrentStep = ProfileCheckStep.ShapePositionDx,
                 this.CanMoveToShapePositionDx));
+
+        public ICommand OpenShutterCommand =>
+            this.openShutterCommand
+            ??
+            (this.openShutterCommand = new DelegateCommand(
+                async () => await this.OpenShutterAsync(),
+                this.CanOpenShutter));
 
         public ICommand StopCommand =>
             this.stopCommand
@@ -407,6 +418,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.moveToElevatorPositionCommand?.RaiseCanExecuteChanged();
             this.callLoadunitToBayCommand?.RaiseCanExecuteChanged();
+            this.openShutterCommand?.RaiseCanExecuteChanged();
             this.closeShutterCommand?.RaiseCanExecuteChanged();
             this.goToBayCommand?.RaiseCanExecuteChanged();
             this.moveToShapePositionDxCommand?.RaiseCanExecuteChanged();
@@ -452,13 +464,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanCloseShutter()
         {
             return this.CanBaseExecute() &&
-                   !this.SensorsService.ShutterSensors.Closed;
+                   this.SensorsService.ShutterSensors.Open;
         }
 
         private bool CanGoToBayCommand()
         {
             return this.CanBaseExecute() &&
-                   Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.GetValueOrDefault()) != Convert.ToInt32(this.BayPosition.Height);
+                   (this.MachineStatus.ElevatorPositionType != ElevatorPositionType.Bay || !this.MachineStatus.BayPositionUpper.GetValueOrDefault());
         }
 
         private bool CanMensurationDx()
@@ -486,6 +498,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.ShowNextStepSinglePage(true, res);
 
             return res;
+        }
+
+        private bool CanOpenShutter()
+        {
+            return this.CanBaseExecute() &&
+                   this.SensorsService.ShutterSensors.Closed;
         }
 
         private bool CanStop()
@@ -561,6 +579,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.machineProfileProcedureWeb.CalibrationAsync(this.BayPosition.Id);
 
                 this.CurrentStep = ProfileCheckStep.TuningChainSx;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task OpenShutterAsync()
+        {
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                await this.shuttersWebService.MoveToAsync(MAS.AutomationService.Contracts.ShutterPosition.Opened);
             }
             catch (Exception ex)
             {
