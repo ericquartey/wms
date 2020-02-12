@@ -60,19 +60,42 @@ namespace Ferretto.VW.MAS.DataLayer
                 return false;
             }
 
-            var loadingUnit = this.dataContext.LoadingUnits.SingleOrDefault(l => l.Id == loadingUnitId);
+            var loadingUnit = this.dataContext.LoadingUnits
+                .AsNoTracking()
+                .Include(i => i.Cell)
+                    .ThenInclude(c => c.Panel)
+                .SingleOrDefault(l => l.Id == loadingUnitId);
             if (loadingUnit is null)
             {
                 throw new EntityNotFoundException(loadingUnitId);
             }
 
-            var cellsInRange = this.dataContext.Cells.Where(
-                c =>
-                    c.Panel.Side == cell.Side
-                    &&
-                    c.Position >= cell.Position
-                    &&
-                    c.Position <= cell.Position + loadingUnit.Height + VerticalPositionTolerance);
+            var cellsInRange = this.dataContext.Cells.Where(c => c.Panel.Side == cell.Side
+                    && c.Position >= cell.Position
+                    && c.Position <= cell.Position + loadingUnit.Height + VerticalPositionTolerance
+                    );
+            if (!cellsInRange.Any())
+            {
+                return false;
+            }
+
+            var availableSpace = cellsInRange.Last().Position - cellsInRange.First().Position + CellHeight;
+            if (availableSpace < loadingUnit.Height + VerticalPositionTolerance)
+            {
+                return false;
+            }
+
+            if (loadingUnit.Cell != null)
+            {
+                // in cell-to-cell movements we check only the cells not presently occupied by this load unit
+                var cellsFrom = this.dataContext.Cells.Where(c => c.Panel.Side == loadingUnit.Cell.Side
+                    && c.Position >= loadingUnit.Cell.Position
+                    && c.Position <= loadingUnit.Cell.Position + loadingUnit.Height + VerticalPositionTolerance);
+                var lastPosition = cellsFrom.LastOrDefault().Position;
+                return !cellsInRange.Any(c => (!c.IsFree && c.Position < loadingUnit.Cell.Position)
+                    || (!c.IsFree && c.Position > lastPosition)
+                    || c.BlockLevel == BlockLevel.Blocked);
+            }
 
             return !cellsInRange.Any(c => !c.IsFree || c.BlockLevel == BlockLevel.Blocked);
         }

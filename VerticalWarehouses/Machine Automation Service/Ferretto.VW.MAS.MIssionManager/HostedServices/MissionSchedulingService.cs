@@ -428,20 +428,19 @@ namespace Ferretto.VW.MAS.MissionManager
                                 && !this.GenerateHoming(bayProvider, this.machineVolatileDataProvider.IsHomingExecuted)
                                 )
                         {
-                            if (this.IsLoadUnitMissing(serviceProvider))
+                            if (!this.IsLoadUnitMissing(serviceProvider))
                             {
-                                this.machineVolatileDataProvider.Mode = MachineMode.Manual;
-                            }
-                            else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations)
-                            {
-                                this.machineVolatileDataProvider.Mode = MachineMode.LoadUnitOperations;
-                            }
-                            else
-                            {
-                                this.machineVolatileDataProvider.Mode = MachineMode.Automatic;
-                            }
+                                if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations)
+                                {
+                                    this.machineVolatileDataProvider.Mode = MachineMode.LoadUnitOperations;
+                                }
+                                else
+                                {
+                                    this.machineVolatileDataProvider.Mode = MachineMode.Automatic;
+                                }
 
-                            this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                                this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                            }
                         }
                     }
                     break;
@@ -522,6 +521,9 @@ namespace Ferretto.VW.MAS.MissionManager
                 {
                     var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
                     errorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnElevator);
+
+                    this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                    this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                     return true;
                 }
                 if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitId == loadUnit.Id))
@@ -545,6 +547,9 @@ namespace Ferretto.VW.MAS.MissionManager
                             {
                                 var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
                                 errorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnBay);
+
+                                this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                                this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                                 return true;
                             }
                             if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitId == position.LoadingUnit.Id))
