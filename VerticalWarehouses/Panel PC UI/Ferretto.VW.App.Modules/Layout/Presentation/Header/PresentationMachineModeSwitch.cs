@@ -158,6 +158,14 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                     await this.machineModeWebService.SetAutomaticAsync();
                 }
             }
+            else if (this.machineMode is MachineMode.LoadUnitOperations)
+            {
+                var messageBoxResult = this.dialogService.ShowMessage(General.ConfirmMachineModeSwitchAutomatic, General.Automatic, DialogType.Question, DialogButtons.YesNo);
+                if (messageBoxResult == DialogResult.Yes)
+                {
+                    await this.machineModeWebService.SetLoadUnitOperationsAsync();
+                }
+            }
             else
             {
                 NLog.LogManager
@@ -172,10 +180,12 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                 !this.IsBusy
                 &&
                 (this.MachineMode is MachineMode.Automatic
-                    ||
-                    this.MachineMode is MachineMode.Manual
-                    ||
-                    this.MachineMode is MachineMode.Test)
+                 ||
+                 this.MachineMode is MachineMode.Manual
+                 ||
+                 this.MachineMode is MachineMode.Test
+                 ||
+                 this.MachineMode is MachineMode.LoadUnitOperations)
                 &&
                 this.MachinePowerState is MachinePowerState.Powered
                 &&
