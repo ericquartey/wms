@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using DevExpress.Mvvm;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -676,11 +677,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             if (axisMovement.HasValue && axisMovement == Axis.Vertical)
             {
-                this.ShowNotification("Movimento asse verticale in corso...", Services.Models.NotificationSeverity.Info);
+                this.ShowNotification(InstallationApp.VerticalAxisMovementInProgress, Services.Models.NotificationSeverity.Info);
             }
             else if (axisMovement.HasValue && axisMovement == Axis.Horizontal)
             {
-                this.ShowNotification("Movimento asse orizzontale in corso...", Services.Models.NotificationSeverity.Info);
+                this.ShowNotification(InstallationApp.HorizontalAxisMovementInProgress, Services.Models.NotificationSeverity.Info);
             }
         }
 

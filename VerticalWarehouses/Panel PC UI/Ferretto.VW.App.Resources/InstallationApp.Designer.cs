@@ -1582,6 +1582,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Go to free cell.
+        /// </summary>
+        public static string GoToFreeCell {
+            get {
+                return ResourceManager.GetString("GoToFreeCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Go to cell.
         /// </summary>
         public static string GoToInitialPosition {
@@ -1659,6 +1668,15 @@ namespace Ferretto.VW.App.Resources {
         public static string HorizontalAxisHomedDone {
             get {
                 return ResourceManager.GetString("HorizontalAxisHomedDone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Horizontal axis movement in progress ....
+        /// </summary>
+        public static string HorizontalAxisMovementInProgress {
+            get {
+                return ResourceManager.GetString("HorizontalAxisMovementInProgress", resourceCulture);
             }
         }
         
@@ -1992,6 +2010,15 @@ namespace Ferretto.VW.App.Resources {
         public static string InvalidDrawerIdInBay {
             get {
                 return ResourceManager.GetString("InvalidDrawerIdInBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid drawer selected.
+        /// </summary>
+        public static string InvalidDrawerSelected {
+            get {
+                return ResourceManager.GetString("InvalidDrawerSelected", resourceCulture);
             }
         }
         
@@ -4118,6 +4145,15 @@ namespace Ferretto.VW.App.Resources {
         public static string VerticalAxisHomedDone {
             get {
                 return ResourceManager.GetString("VerticalAxisHomedDone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical axis movement in progress ....
+        /// </summary>
+        public static string VerticalAxisMovementInProgress {
+            get {
+                return ResourceManager.GetString("VerticalAxisMovementInProgress", resourceCulture);
             }
         }
         
