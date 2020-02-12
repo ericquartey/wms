@@ -87,6 +87,7 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 if (restore)
                 {
+                    this.Logger.LogInformation("Bay {bayNumber}: mission {missionId} Restore.", missionToRestore.TargetBay, missionToRestore.Id);
                     moveLoadingUnitProvider.ResumeMoveLoadUnit(
                         missionToRestore.Id,
                         LoadingUnitLocation.NoLocation,
@@ -158,6 +159,7 @@ namespace Ferretto.VW.MAS.MissionManager
                             }
                             else
                             {
+                                this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} Activate.", mission.TargetBay, mission.WmsId.Value);
                                 moveLoadingUnitProvider.ActivateMove(mission.Id, mission.MissionType, mission.LoadUnitId, bayNumber, MessageActor.MissionManager);
                             }
                         }
@@ -206,6 +208,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         if (nextMission is null)
                         {
                             // send back the loading unit to the cell
+                            this.Logger.LogInformation("Bay {bayNumber}: mission {missionId} Resume.", mission.TargetBay, mission.Id);
                             moveLoadingUnitProvider.ResumeMoveLoadUnit(
                                 mission.Id,
                                 loadingUnitSource,
@@ -218,9 +221,11 @@ namespace Ferretto.VW.MAS.MissionManager
                         else
                         {
                             // close current mission
+                            this.Logger.LogInformation("Bay {bayNumber}: mission {missionId} Stop.", mission.TargetBay, mission.Id);
                             moveLoadingUnitProvider.StopMove(mission.Id, bayNumber, bayNumber, MessageActor.MissionManager);
 
                             // activate new mission
+                            this.Logger.LogInformation("Bay {bayNumber}: mission {missionId} Activate.", mission.TargetBay, nextMission.Id);
                             moveLoadingUnitProvider.ActivateMove(nextMission.Id, nextMission.MissionType, nextMission.LoadUnitId, bayNumber, MessageActor.MissionManager);
                         }
                     }
@@ -237,11 +242,13 @@ namespace Ferretto.VW.MAS.MissionManager
                         }
                         else
                         {
+                            this.Logger.LogInformation("Bay {bayNumber}: mission {missionId} Activate new.", mission.TargetBay, mission.Id);
                             moveLoadingUnitProvider.ActivateMove(mission.Id, mission.MissionType, mission.LoadUnitId, bayNumber, MessageActor.MissionManager);
                         }
                     }
                     else if (mission.MissionType is MissionType.IN)
                     {
+                        this.Logger.LogInformation("Bay {bayNumber}: mission {missionId} Activate IN.", mission.TargetBay, mission.Id);
                         moveLoadingUnitProvider.ActivateMoveToCell(mission.Id, mission.MissionType, mission.LoadUnitId, bayNumber, MessageActor.MissionManager);
                     }
                 }
@@ -250,6 +257,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     )
                 {
                     var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(mission.LoadUnitId);
+                    this.Logger.LogInformation("Bay {bayNumber}: mission {missionId} Resume waiting.", mission.TargetBay, mission.Id);
                     moveLoadingUnitProvider.ResumeMoveLoadUnit(
                         mission.Id,
                         loadingUnitSource,
@@ -505,6 +513,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 }
                 if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitId == loadUnit.Id))
                 {
+                    this.Logger.LogInformation($"Insert load unit {loadUnit.Id} from {LoadingUnitLocation.Elevator} to cell");
                     moveLoadingUnitProvider.InsertToCell(MissionType.Manual, LoadingUnitLocation.Elevator, null, loadUnit.Id, BayNumber.BayOne, MessageActor.AutomationService);
                     return true;
                 }
@@ -527,6 +536,7 @@ namespace Ferretto.VW.MAS.MissionManager
                             }
                             if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitId == position.LoadingUnit.Id))
                             {
+                                this.Logger.LogInformation($"Insert load unit {position.LoadingUnit.Id} from {position.Location} to cell");
                                 moveLoadingUnitProvider.InsertToCell(MissionType.Manual, position.Location, null, position.LoadingUnit.Id, bay.Number, MessageActor.AutomationService);
                                 return true;
                             }
