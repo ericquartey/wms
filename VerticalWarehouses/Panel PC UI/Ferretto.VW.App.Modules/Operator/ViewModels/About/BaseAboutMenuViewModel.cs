@@ -79,8 +79,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.generalCommand
             ??
             (this.generalCommand = new DelegateCommand(
-                () => this.ExecuteCommand(Menu.General),
-                this.CanExecuteCommand));
+                () => this.ExecuteCommand(Menu.General)));
 
         public bool IsAlarmActive
         {
