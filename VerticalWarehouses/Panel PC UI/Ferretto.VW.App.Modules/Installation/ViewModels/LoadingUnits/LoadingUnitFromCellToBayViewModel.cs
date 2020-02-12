@@ -27,14 +27,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Constructors
 
         public LoadingUnitFromCellToBayViewModel(
-                IMachineBaysWebService machineBaysWebService,
-                IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-                IMachineModeWebService machineModeWebService,
-                IBayManager bayManagerService)
-        : base(
-            machineLoadingUnitsWebService,
-            machineModeWebService,
-            bayManagerService)
+            IMachineBaysWebService machineBaysWebService,
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+            IMachineModeWebService machineModeWebService,
+            IBayManager bayManagerService)
+            : base(
+                machineLoadingUnitsWebService,
+                machineModeWebService,
+                bayManagerService)
         {
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
         }
@@ -74,6 +74,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             return base.CanStart() &&
                    this.LoadingUnitId.HasValue &&
+                   this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations &&
                    this.MachineService.Loadunits.Any(f => f.Id == this.LoadingUnitId && f.Status == LoadingUnitStatus.InLocation) &&
                    (this.MachineStatus.LoadingUnitPositionUpInBay is null ||
                     (!this.MachineService.HasCarousel && this.MachineStatus.LoadingUnitPositionDownInBay is null));
@@ -105,11 +106,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 }
 
                 this.IsWaitingForResponse = true;
-
-                if (this.MachineModeService.MachineMode != MachineMode.LoadUnitOperations)
-                {
-                    await this.MachineModeWebService.SetLoadUnitOperationsAsync();
-                }
 
                 //await this.MachineLoadingUnitsWebService.EjectLoadingUnitAsync(destination, this.LoadingUnitId.Value);
                 await this.MachineLoadingUnitsWebService.StartMovingLoadingUnitToBayAsync(this.LoadingUnitId.Value, destination);
