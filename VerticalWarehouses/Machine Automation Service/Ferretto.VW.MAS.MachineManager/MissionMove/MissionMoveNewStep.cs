@@ -186,8 +186,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case LoadingUnitLocation.Cell:
                     if (messageData.DestinationCellId != null)
                     {
-                        var destinationCell = this.CellsProvider.GetById(messageData.DestinationCellId.Value);
-                        returnValue = (destinationCell.LoadingUnit == null && destinationCell.IsFree);
+                        returnValue = this.CellsProvider.CanFitLoadingUnit(messageData.DestinationCellId.Value, this.Mission.LoadUnitId);
                         mission.DestinationCellId = messageData.DestinationCellId;
                         mission.LoadUnitDestination = LoadingUnitLocation.Cell;
                     }

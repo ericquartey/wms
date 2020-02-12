@@ -95,7 +95,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     return;
                 }
 
-                await this.MachineLoadingUnitsWebService.StartMovingLoadingUnitToCellAsync(this.LoadingUnitId.Value, null);
+                await this.MachineLoadingUnitsWebService.InsertLoadingUnitAsync(source, null, this.LoadingUnitId.Value);
             }
             catch (Exception ex)
             {
