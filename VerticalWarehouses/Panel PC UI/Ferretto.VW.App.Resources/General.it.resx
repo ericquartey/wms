@@ -360,4 +360,7 @@
   <data name="TargetNullValue" xml:space="preserve">
     <value>-</value>
   </data>
+  <data name="LoadUnitOperations" xml:space="preserve">
+    <value>Operazioni cassetto</value>
+  </data>
 </root>

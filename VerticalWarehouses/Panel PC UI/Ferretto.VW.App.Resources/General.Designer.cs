@@ -421,6 +421,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LoadUnit Operations.
+        /// </summary>
+        public static string LoadUnitOperations {
+            get {
+                return ResourceManager.GetString("LoadUnitOperations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Login.
         /// </summary>
         public static string Login {

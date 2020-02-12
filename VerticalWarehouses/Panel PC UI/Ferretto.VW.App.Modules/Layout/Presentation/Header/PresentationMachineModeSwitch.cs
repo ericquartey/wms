@@ -160,11 +160,12 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             }
             else if (this.machineMode is MachineMode.LoadUnitOperations)
             {
-                var messageBoxResult = this.dialogService.ShowMessage(General.ConfirmMachineModeSwitchAutomatic, General.Automatic, DialogType.Question, DialogButtons.YesNo);
-                if (messageBoxResult == DialogResult.Yes)
-                {
-                    await this.machineModeWebService.SetLoadUnitOperationsAsync();
-                }
+                //var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, General.LoadUnitOperations, DialogType.Question, DialogButtons.YesNo);
+                //if (messageBoxResult == DialogResult.Yes)
+                //{
+                //    await this.machineModeWebService.SetLoadUnitOperationsAsync();
+                //}
+                await this.machineModeWebService.SetManualAsync();
             }
             else
             {
