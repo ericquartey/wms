@@ -106,8 +106,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
+        public BayPosition BayPosition => this.MachineService.Bay.Positions.OrderByDescending(o => o.Height).First();
+
         public ICommand CallLoadunitToBayCommand =>
-            this.callLoadunitToBayCommand
+                    this.callLoadunitToBayCommand
             ??
             (this.callLoadunitToBayCommand = new DelegateCommand(
                 async () => await this.CallLoadunitToBayCommandAsync(),
@@ -203,8 +205,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.StopAsync(),
                 this.CanStop));
 
-        public BayPosition BayPosition => this.MachineService.Bay.Positions.OrderByDescending(o => o.Height).First();
-
         #endregion
 
         #region Indexers
@@ -290,7 +290,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

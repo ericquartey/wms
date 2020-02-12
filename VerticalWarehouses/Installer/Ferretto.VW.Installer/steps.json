@@ -5,10 +5,10 @@
       "number": 1,
       "title": "Disabilita UWF",
       "description": "Disabilita la protezione del disco fisso (Unified Write Filter) per permettere l'aggiornamento.",
-      //"script": "uwfmgr filter disable",
-      //"rollbackScript": "uwfmgr filter enable",
-      "script": "timeout /T 2", // ** fake
-      "rollbackScript": "timeout /T 2" // ** fake
+      "script": "uwfmgr filter disable",
+      "rollbackScript": "uwfmgr filter enable"
+      //"script": "timeout /T 2", // ** fake
+      //"rollbackScript": "timeout /T 2" // ** fake
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
@@ -23,36 +23,37 @@
       "number": 3,
       "title": "Riavvia il sistema",
       "description": "Riavvia il sistema operativo per completare la disabilitazione della protezione.",
-      // "script": "shutdown /r /t 0 /f /d p:4:2 /c \"Vertimag Software Setup\"",
-      "script": "timeout /T 2" // ** fake
+      "script": "shutdown /r /t 0 /f /d p:4:2 /c \"Vertimag Software Setup\"",
+      "rollbackScript": "true"
+      //"script": "timeout /T 2" // ** fake
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
       "number": 4,
       "title": "Controlla stato UWF",
       "description": "Controlla che la protezione del disco fisso sia disabilitata.",
-      //"script": "uwfmgr filter disable",
-      //"rollbackScript": "uwfmgr filter enable",
-      "script": "timeout /T 2", // ** fake
-      "rollbackScript": "timeout /T 2" // ** fake
+      "script": "$NAMESPACE = \"root\\standardcimv2\\embedded\";$uwfInstance = Get-WmiObject -Namespace $NAMESPACE -Class UWF_Filter -List;if(!$uwfInstance){throw  \"UWF is NOT installed.\"};$uwfInstance = Get-WmiObject -Namespace $NAMESPACE -Class UWF_Filter;if(!$uwfInstance.CurrentEnabled){throw  \"UWF is currently NOT enabled.\"};",
+      "rollbackScript": "true"
+      //"script": "timeout /T 2", // ** fake
+      //"rollbackScript": "timeout /T 2" // ** fake
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 5,
       "title": "Ferma il MAS",
       "description": "Ferma il servizio di automazione, in modo da poterlo aggiornare.",
-      // "script": "Stop-Service \"$(MAS:ServiceName)\"",
-      // "rollbackScript": "Start-Service \"$(MAS:ServiceName)\"",
-      "script": "timeout /T 2", // ** fake
-      "rollbackScript": "timeout /T 2" // ** fake
+      "script": "Stop-Service \"$(MAS:ServiceName)\"",
+      "rollbackScript": "Start-Service \"$(MAS:ServiceName)\""
+      //"script": "timeout /T 2", // ** fake
+      //rollbackScript": "timeout /T 2" // ** fake
     },
     {
-      "$type": "Ferretto.VW.Installer.Core.AppBackupStep, Ferretto.VW.Installer.Core",
+      "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 7,
       "title": "Backup applicazione",
-      "description": "Sposta l'applicazione nella cartella di backup",
-      "appRootPath": "$(Install:Root:Path)",
-      "backupPath": "$(Backup:Root:Path)\\Staging"
+      "description": "Sposta l'applicazione nella cartella di backup",      
+      "script": "$stageAs=\"$(Backup:Root:Path)\\Staging\\$(Install:MAS:Path)\";$stagePpc=\"$(Backup:Root:Path)\\Staging\\$(Install:PPC:Path)\";$as=\"$(Install:Root:Path)\\$(Install:MAS:Path)\";$ppc=\"$(Install:Root:Path)\\$(Install:PPC:Path)\";if(Test-Path $stageAs -PathType Container) {Remove-Item $stageAs -Recurse -Force};if(Test-Path $stagePpc -PathType Container) {Remove-Item $stagePpc -Recurse -Force};Copy-Item $as $stageAs -Recurse;Copy-Item $ppc $stagePpc -Recurse;Remove-Item $as -Force -Recurse;Remove-Item $ppc -Force -Recurse",
+      "rollbackScript": "$stageAs=\"$(Backup:Root:Path)\\Staging\\$(Install:MAS:Path)\";$stagePpc=\"$(Backup:Root:Path)\\Staging\\$(Install:PPC:Path)\";$as=\"$(Install:Root:Path)\\$(Install:MAS:Path)\";$ppc=\"$(Install:Root:Path)\\$(Install:PPC:Path)\";Copy-Item $stageAs -Recurse  -Exclude (Get-ChildItem $as -Recurse);Copy-Item $stagePpc $ppc -Recurse -Exclude (Get-ChildItem $ppc -Recurse);Remove-Item $stageAs -Force -Recurse;Remove-Item $stagePpc -Force -Recurse"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.DbBackupStep, Ferretto.VW.Installer.Core",
@@ -75,8 +76,8 @@
       "number": 9,
       "title": "Copia nuova versione",
       "description": "Copia la nuova versione nella cartella di destinazione dell'installazione.",
-      "script": "Copy-Item ..\\$(Install:MAS:Path)\\*.* $(Install:Root:Path)\\$(Install:MAS:Path); Copy-Item ..\\$(Install:PPC:Path)\\*.* $(Install:Root:Path)\\$(Install:PPC:Path)",
-      "rollbackScript": "Remove-Item $(Install:Root:Path) -Recurse"
+      "script": "Copy-Item $(Update:Temp:Path)\\$(Install:MAS:Path) $(Install:Root:Path) -recurse; Copy-Item $(Update:Temp:Path)\\$(Install:PPC:Path) $(Install:Root:Path) -recurse",
+      "rollbackScript": "Remove-Item $(Install:Root:Path)\\$(Install:MAS:Path) -recurse;Remove-Item $(Install:Root:Path)\\$(Install:PPC:Path) -recurse;"
     },
     /*{
       "$type": "Ferretto.VW.Installer.Core.MergeAppConfig, Ferretto.VW.Installer.Core",
@@ -108,16 +109,15 @@
       "description": "Aggiorna il file di configurazione del MAS."
     },
     */
-
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 11,
       "title": "Avvia il MAS",
       "description": "Avvia il servizio di automazione aggiornato così che il database venga aggiornato.",
-      //   "script": "Start-Service \"$(MAS:ServiceName)\"",
-      //  "rollbackScript": "Stop-Service \"$(MAS:ServiceName)\"",
-      "script": "timeout /T 2", // ** fake
-      "rollbackScript": "timeout /T 2" // ** fake
+      "script": "Start-Service \"$(MAS:ServiceName)\"",
+      "rollbackScript": "Stop-Service \"$(MAS:ServiceName)\""
+      //"script": "timeout /T 2", // ** fake
+      //"rollbackScript": "timeout /T 2" // ** fake
     },
     {
       "$type": "Ferretto.VW.Installer.Core.MasHealthCheckStep, Ferretto.VW.Installer.Core",
@@ -131,8 +131,8 @@
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 13,
       "title": "Cancella backup precedente",
-      "description": "Elimina, se esiste, l'archivio contenente il backup della versione precedente a quella installata prima dell'aggiornamento.",
-      "script": "Remove-Item $(Backup:Root:Path)\\Backup.zip -ErrorAction SilentlyContinue",
+      "description": "Elimina, se esiste, l'archivio contenente il backup della versione precedente a quella installata prima dell'aggiornamento.",      
+      "script": "if(Test-Path $(Backup:Root:Path)\\Backup.zip -PathType Leaf) { Remove-Item $(Backup:Root:Path)\\Backup.zip -ErrorAction SilentlyContinue }",
       "skipRollback": true
     },
     {
@@ -165,18 +165,19 @@
       "number": 16,
       "title": "Riavvia il sistema",
       "description": "Riavvia il sistema operativo per completare l'abilitazione della protezione.",
-      // "script": "shutdown /r /t 0 /f /d p:4:2 /c \"Vertimag Software Setup\"",
-      "script": "timeout /T 2" // ** fake
+      "script": "shutdown /r /t 0 /f /d p:4:2 /c \"Vertimag Software Setup\"",
+      "skipRollback": true
+      //"script": "timeout /T 2" // ** fake
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
       "number": 17,
       "title": "Controlla stato UWF",
-      "description": "Controlla che la protezione del disco fisso sia abilitata.",
-      //"script": "uwfmgr filter disable",
-      //"rollbackScript": "uwfmgr filter enable",
-      "script": "timeout /T 2", // ** fake
-      "rollbackScript": "timeout /T 2" // ** fake
+      "description": "Controlla che la protezione del disco fisso sia abilitata.",      
+      "script": "$NAMESPACE = \"root\\standardcimv2\\embedded\";$uwfInstance = Get-WmiObject -Namespace $NAMESPACE -Class UWF_Filter -List;if(!$uwfInstance){throw  \"UWF is NOT installed.\"};$uwfInstance = Get-WmiObject -Namespace $NAMESPACE -Class UWF_Filter;if($uwfInstance.CurrentEnabled){throw  \"UWF is currently NOT disaabled.\"};",
+      "rollbackScript": "uwfmgr filter disable",
+      //"script": "timeout /T 2", // ** fake
+      //"rollbackScript": "timeout /T 2" // ** fake
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
@@ -191,8 +192,9 @@
       "number": 19,
       "title": "Riavvia il sistema",
       "description": "Riavvia il sistema operativo per l'auto avvio del software PanelPC.",
-      // "script": "shutdown /r /t 0 /f /d p:4:2 /c \"Vertimag Software Setup\"",
-      "script": "timeout /T 2" // ** fake
+      "script": "shutdown /r /t 0 /f /d p:4:2 /c \"Vertimag Software Setup\"",
+      "skipRollback": true
+      //"script": "timeout /T 2" // ** fake
     }
   ]
 }

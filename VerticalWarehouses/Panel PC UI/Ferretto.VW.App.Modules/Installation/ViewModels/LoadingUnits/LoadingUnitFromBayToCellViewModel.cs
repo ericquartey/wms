@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using DevExpress.Mvvm;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
@@ -39,7 +40,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             return base.CanStart() &&
                    !this.IsMoving &&
                    ((this.SensorsService.IsLoadingUnitInBay && (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper)) ||
-                    (this.SensorsService.IsLoadingUnitInMiddleBottomBay && (this.MachineService.Bay.IsDouble || !this.MachineService.BayFirstPositionIsUpper))) &&
+                    (!this.MachineService.HasCarousel && this.SensorsService.IsLoadingUnitInMiddleBottomBay && (this.MachineService.Bay.IsDouble || !this.MachineService.BayFirstPositionIsUpper))) &&
                    this.LoadingUnitId.HasValue &&
                    !this.MachineService.Loadunits.DrawerInLocationById(this.LoadingUnitId.Value);
         }
@@ -90,11 +91,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 if (source == LoadingUnitLocation.NoLocation)
                 {
-                    this.ShowNotification("Tipo scelta sorgente non valida", Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(InstallationApp.InvalidSourceChoiceType, Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
-                await this.MachineLoadingUnitsWebService.InsertLoadingUnitAsync(source, null, this.LoadingUnitId.Value);
+                await this.MachineLoadingUnitsWebService.StartMovingLoadingUnitToCellAsync(this.LoadingUnitId.Value, null);
             }
             catch (Exception ex)
             {
@@ -117,8 +118,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         protected override async Task OnDataRefreshAsync()
         {
-            await base.OnDataRefreshAsync();
-
             await this.SensorsService.RefreshAsync(true);
 
             await this.InitializingData();
@@ -128,7 +127,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             await this.GetLoadingUnits();
 
-            if (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper)
+            if (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper || this.MachineService.HasCarousel)
             {
                 this.SelectBayPositionUp();
             }

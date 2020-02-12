@@ -241,9 +241,6 @@
     <value>CheckBoxDark</value>
     <comment>Check box label</comment>
   </data>
-  <data name="TargetNullValue" xml:space="preserve">
-    <value>-</value>
-  </data>
   <data name="MachineOff" xml:space="preserve">
     <value>Off</value>
   </data>
@@ -285,5 +282,115 @@
   </data>
   <data name="Close" xml:space="preserve">
     <value>Close</value>
+  </data>
+  <data name="ChangeTheme" xml:space="preserve">
+    <value>Theme change</value>
+  </data>
+  <data name="AutomaticMode" xml:space="preserve">
+    <value>Automatic</value>
+    <comment>Information</comment>
+  </data>
+  <data name="BayNumber" xml:space="preserve">
+    <value>Bay {0}</value>
+    <comment>Information</comment>
+  </data>
+  <data name="DaysAgo" xml:space="preserve">
+    <value>{0:0} days ago</value>
+    <comment>Information</comment>
+  </data>
+  <data name="EmergencyIsOn" xml:space="preserve">
+    <value>Emergency is on</value>
+    <comment>Information</comment>
+  </data>
+  <data name="EnsureEmergencyIsOff" xml:space="preserve">
+    <value>Ensure no emergency buttons are pressed.</value>
+    <comment>Instruction</comment>
+  </data>
+  <data name="ErrorCommunicatingWithServices" xml:space="preserve">
+    <value>Error communicating with services.</value>
+    <comment>Information</comment>
+  </data>
+  <data name="HoursAgo" xml:space="preserve">
+    <value>{0:0} hours ago</value>
+    <comment>Information</comment>
+  </data>
+  <data name="ManualMode" xml:space="preserve">
+    <value>Manual</value>
+    <comment>Information</comment>
+  </data>
+  <data name="MinutesAgo" xml:space="preserve">
+    <value>{0:0} minutes ago</value>
+    <comment>Information</comment>
+  </data>
+  <data name="Now" xml:space="preserve">
+    <value>Just now</value>
+    <comment>Information</comment>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
+    <comment>Information</comment>
+  </data>
+  <data name="PasswordLogin" xml:space="preserve">
+    <value>Password</value>
+    <comment>Action</comment>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Serial Number: {0}</value>
+    <comment>Information</comment>
+  </data>
+  <data name="UserLogin" xml:space="preserve">
+    <value>Username</value>
+    <comment>Label</comment>
+  </data>
+  <data name="UserLogin_Password" xml:space="preserve">
+    <value>Password</value>
+    <comment>Label</comment>
+  </data>
+  <data name="UserLogin_UserName" xml:space="preserve">
+    <value>User Name</value>
+    <comment>Label</comment>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Version {0}</value>
+    <comment>Information</comment>
+  </data>
+  <data name="WarehouseSide_Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="WarehouseSide_Front" xml:space="preserve">
+    <value>Front</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Bay</value>
+  </data>
+  <data name="BayOneName" xml:space="preserve">
+    <value>One</value>
+  </data>
+  <data name="BayOneNumber" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="BayThreeName" xml:space="preserve">
+    <value>Three</value>
+  </data>
+  <data name="BayThreeNumber" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="BayTwoName" xml:space="preserve">
+    <value>Two</value>
+  </data>
+  <data name="BayTwoNumber" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="SwitchToAutomatic" xml:space="preserve">
+    <value>Switch to Automatic</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="TargetNullValue" xml:space="preserve">
+    <value>-</value>
   </data>
 </root>

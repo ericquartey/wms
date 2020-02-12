@@ -108,6 +108,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             await this.SensorsService.RefreshAsync(true);
         }
 
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.startCommand?.RaiseCanExecuteChanged();
+            this.stopCommand?.RaiseCanExecuteChanged();
+        }
+
         private bool CanStart()
         {
             return !this.IsMoving &&
@@ -131,7 +139,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 this.IsExecutingProcedure = true;
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -156,7 +164,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 this.IsExecutingProcedure = false;
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -168,14 +176,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
-        }
-
-        protected override void RaiseCanExecuteChanged()
-        {
-            base.RaiseCanExecuteChanged();
-
-            this.startCommand?.RaiseCanExecuteChanged();
-            this.stopCommand?.RaiseCanExecuteChanged();
         }
 
         private void SubscribeToEvents()

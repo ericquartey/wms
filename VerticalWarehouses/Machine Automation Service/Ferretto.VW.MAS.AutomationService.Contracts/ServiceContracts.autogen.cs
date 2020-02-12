@@ -691,11 +691,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task StartMovingLoadingUnitToBayAsync(int loadingUnitId, LoadingUnitLocation destination, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task StartMovingLoadingUnitToCellAsync(int loadingUnitId, int destinationCellId);
+        System.Threading.Tasks.Task StartMovingLoadingUnitToCellAsync(int loadingUnitId, int? destinationCellId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task StartMovingLoadingUnitToCellAsync(int loadingUnitId, int destinationCellId, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task StartMovingLoadingUnitToCellAsync(int loadingUnitId, int? destinationCellId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StartMovingSourceDestinationAsync(LoadingUnitLocation source, LoadingUnitLocation destination, int? sourceCellId, int? destinationCellId);
@@ -1570,15 +1570,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         Manual = 1,
     
-        WMS = 2,
+        ManualPlus = 2,
     
-        IN = 3,
+        WMS = 3,
     
-        OUT = 4,
+        IN = 4,
     
-        FullTest = 5,
+        OUT = 5,
     
-        Compact = 6,
+        FullTest = 6,
+    
+        Compact = 7,
     
     }
     
@@ -3650,17 +3652,19 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         Manual = 2,
     
-        Test = 3,
+        ManualPlus = 3,
     
-        Compact = 4,
+        Test = 4,
     
-        Restore = 5,
+        Compact = 5,
     
         SwitchingToAutomatic = 6,
     
         SwitchingToManual = 7,
     
-        SwitchingToCompact = 8,
+        SwitchingToManualPlus = 8,
+    
+        SwitchingToCompact = 9,
     
     }
     

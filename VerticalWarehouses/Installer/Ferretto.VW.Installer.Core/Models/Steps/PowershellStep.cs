@@ -41,7 +41,7 @@ namespace Ferretto.VW.Installer.Core
                 throw new ArgumentException("Unable to run the powershell command.", nameof(command));
             }
 
-            command = this.InterpolateVariables(command);
+            command = InterpolateVariables(command);
 
             this.LogInformation("");
             this.LogInformation($"ps> {command}");
@@ -66,7 +66,8 @@ namespace Ferretto.VW.Installer.Core
 
                     if (shell.HadErrors)
                     {
-                        this.LogError("Errors encountered while running the script.");
+                        this.LogError(shell.Streams.Error.LastOrDefault()?.Exception?.Message);
+                        this.LogError("Errors encountered while running the script." );
                         return false;
                     }
                 }

@@ -1,7 +1,6 @@
 ﻿<Window x:Class="Ferretto.VW.Installer.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:controls="clr-namespace:Ferretto.VW.Installer.Controls"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:installer="clr-namespace:Ferretto.VW.Installer"
@@ -22,6 +21,9 @@
             <installer:InProgressToVisibilityConverter x:Key="IPTVC" />
             <installer:StatusToStringConverter x:Key="STSC" />
             <installer:BooleanNegationConverter x:Key="BNC" />
+            <installer:BoolToVisibilityConverter x:Key="BTVIC"
+                                                 Invert="True" />
+            <installer:BoolToVisibilityConverter x:Key="BTVC" />
         </Grid.Resources>
         <Grid>
             <Grid.RowDefinitions>
@@ -151,16 +153,21 @@
                                           Source="{Binding SelectedStep.Log, Mode=OneWay}"
                                           Style="{StaticResource RichTextBoxConsoleStyle}" />-->
 
+            <Button Grid.Column="1"
+                    Margin="0,10,0,0"
+                    HorizontalAlignment="Right"
+                    Command="{Binding AbortCommand}"
+                    Content="Annulla"
+                    Style="{StaticResource ButtonStyle}"
+                    Visibility="{Binding IsFinished, Converter={StaticResource BTVIC}}" />
 
             <Button Grid.Column="1"
-                    Width="100"
                     Margin="0,10,0,0"
-                    Padding="10"
                     HorizontalAlignment="Right"
-                    Background="{StaticResource BackgroundBrush}"
-                    BorderThickness="2"
-                    Command="{Binding AbortCommand}"
-                    Content="Annulla" />
+                    Command="{Binding CloseCommand}"
+                    Content="Chiudi"
+                    Style="{StaticResource ButtonStyle}"
+                    Visibility="{Binding IsFinished, Converter={StaticResource BTVC}}" />
         </Grid>
     </Grid>
 </Window>

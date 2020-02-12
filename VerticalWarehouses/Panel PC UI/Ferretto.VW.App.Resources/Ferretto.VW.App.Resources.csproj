@@ -14,9 +14,14 @@
 
   <ItemGroup>
     <Compile Update="Errors.Designer.cs">
+      <DependentUpon>Errors.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Errors.resx</DependentUpon>
+    </Compile>
+    <Compile Update="ErrorsApp.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ErrorsApp.resx</DependentUpon>
     </Compile>
     <Compile Update="General.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -53,6 +58,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Update="ServiceMachine.Designer.cs">
+      <DependentUpon>ServiceMachine.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Update="SensorCard.Designer.cs">
       <DependentUpon>SensorCard.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -72,8 +82,12 @@
 
   <ItemGroup>
     <EmbeddedResource Update="Errors.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Errors.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ErrorsApp.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ErrorsApp.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="General.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -103,6 +117,10 @@
       <LastGenOutput>MaintenanceMenu.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="ServiceMachine.resx">
+      <LastGenOutput>ServiceMachine.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="SensorCard.resx">
       <LastGenOutput>SensorCard.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -118,10 +136,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>VWApp.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="NewFolder\" />
   </ItemGroup>
 
 </Project>

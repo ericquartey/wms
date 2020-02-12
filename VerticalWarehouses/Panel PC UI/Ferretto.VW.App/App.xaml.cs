@@ -197,7 +197,7 @@ namespace Ferretto.VW.App
                         .GetAwaiter().GetResult();
                 }
             }
-            catch (HttpRequestException)
+            catch (Exception ex) when (ex is MasWebApiException || ex is HttpRequestException)
             {
             }
         }

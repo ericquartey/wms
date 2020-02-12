@@ -130,7 +130,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
                     case MasWebApiException webApiException:
                         {
-                            var notificationMessage = Resources.VWApp.ErrorCommunicatingWithServices;
+                            var notificationMessage = Resources.General.ErrorCommunicatingWithServices;
 
                             if (webApiException.InnerException != null)
                             {

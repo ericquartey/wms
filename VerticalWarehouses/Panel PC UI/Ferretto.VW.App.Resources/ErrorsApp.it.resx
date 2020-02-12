@@ -117,23 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ErrorLogin" xml:space="preserve">
-    <value>Errore: login fallito. Controlla la correttezza di user e password.</value>
+  <data name="CellSide" xml:space="preserve">
+    <value>Lato Cella</value>
   </data>
-  <data name="Ok" xml:space="preserve">
-    <value>Ok</value>
+  <data name="CurrentCell" xml:space="preserve">
+    <value>Cella selezionata</value>
   </data>
-  <data name="PasswordLogin" xml:space="preserve">
-    <value>Password</value>
+  <data name="Displacement" xml:space="preserve">
+    <value>Spostamento [mm]</value>
   </data>
-  <data name="UserLogin" xml:space="preserve">
-    <value>Nome Utente</value>
+  <data name="DrawerIdentificationCompleted" xml:space="preserve">
+    <value>Terminata la procedura di identificazione cassetto, passa in autmatico.</value>
   </data>
-  <data name="SwitchOff" xml:space="preserve">
-    <value>Spegni</value>
+  <data name="DrawerReturn" xml:space="preserve">
+    <value>Rientra cassetto</value>
   </data>
-  <data name="ErrorRecoveryProcedure" xml:space="preserve">
-    <value>Ripristino errore</value>
+  <data name="DrawerSelection" xml:space="preserve">
+    <value>Selezione del cassetto</value>
   </data>
   <data name="ErrorCode" xml:space="preserve">
     <value>Codice Errore</value>
@@ -144,55 +144,22 @@
   <data name="ErrorReason" xml:space="preserve">
     <value>Possibili cause</value>
   </data>
-  <data name="AutomaticMode" xml:space="preserve">
-    <value>Automatico</value>
-  </data>
-  <data name="ManualMode" xml:space="preserve">
-    <value>Manuale</value>
-  </data>
-  <data name="ErrorCommunicatingWithServices" xml:space="preserve">
-    <value>Errore di comunicazione con i servizi.</value>
-  </data>
-  <data name="BayNumber" xml:space="preserve">
-    <value>Baia {0}</value>
-  </data>
-  <data name="SerialNumber" xml:space="preserve">
-    <value>Numero Seriale: {0}</value>
-  </data>
-  <data name="UserLogin_Password" xml:space="preserve">
-    <value>Password</value>
+  <data name="ErrorRecoveryProcedure" xml:space="preserve">
+    <value>Ripristino errore</value>
   </data>
   <data name="FirstSeen" xml:space="preserve">
     <value>Visto</value>
   </data>
-  <data name="DaysAgo" xml:space="preserve">
-    <value>{0:0} giorni fa</value>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
   </data>
-  <data name="HoursAgo" xml:space="preserve">
-    <value>{0:0} ore fa</value>
+  <data name="InitialPosition" xml:space="preserve">
+    <value>Quota iniziale [mm]</value>
   </data>
-  <data name="MinutesAgo" xml:space="preserve">
-    <value>{0:0} minuti fa</value>
-  </data>
-  <data name="Now" xml:space="preserve">
-    <value>Adesso</value>
-  </data>
-  <data name="Version" xml:space="preserve">
-    <value>Versione {0}</value>
-  </data>
-  <data name="EmergencyIsOn" xml:space="preserve">
-    <value>Emergenza attiva</value>
-  </data>
-  <data name="EnsureEmergencyIsOff" xml:space="preserve">
-    <value>Assicurarsi che nessun bottone di emergenza sia premuto.</value>
+  <data name="InverterFaultErrorRestore" xml:space="preserve">
+    <value>Ripristino errore INVERTER FAULT</value>
   </data>
   <data name="MarkAsResolved" xml:space="preserve">
     <value>Marca come risolto</value>
-  </data>
-  <data name="WarehouseSide_Back" xml:space="preserve">
-    <value>Posteriore</value>
-  </data>
-  <data name="WarehouseSide_Front" xml:space="preserve">
-    <value>Anteriore</value>
   </data>
 </root>

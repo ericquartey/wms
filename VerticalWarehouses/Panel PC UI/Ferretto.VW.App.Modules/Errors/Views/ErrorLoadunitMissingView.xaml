@@ -51,7 +51,7 @@
                                 Orientation="Vertical">
                         <TextBlock Margin="0"
                                    Style="{DynamicResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                                   Text="{x:Static res:VWApp.ErrorCode}" />
+                                   Text="{x:Static res:ErrorsApp.ErrorCode}" />
                         <TextBlock Height="26"
                                    Background="{DynamicResource FerrettoRed}"
                                    Style="{DynamicResource VWAPP_CustomLabel_ContentTextBlockStyle}"
@@ -77,24 +77,24 @@
                                              Margin="0,0,15,0"
                                              HorizontalAlignment="Left"
                                              ContentText="{Binding MachineError.Id}"
-                                             LabelText="Id" />
+                                             LabelText="{x:Static res:ErrorsApp.Id}" />
 
                     <controls:PpcLabeledText Grid.Column="1"
                                              Margin="0,0,15,0"
                                              ContentText="{Binding MachineError.Description}"
-                                             LabelText="{x:Static res:VWApp.ErrorDescription}" />
+                                             LabelText="{x:Static res:ErrorsApp.ErrorDescription}" />
 
                     <controls:PpcLabeledText Grid.Column="2"
                                              HorizontalAlignment="Right"
                                              ContentText="{Binding ErrorTime}"
-                                             LabelText="{x:Static res:VWApp.FirstSeen}" />
+                                             LabelText="{x:Static res:ErrorsApp.FirstSeen}" />
 
                     <controls:PpcLabeledText Grid.Row="1"
                                              Grid.ColumnSpan="3"
                                              Margin="0,15,0,0"
                                              HorizontalAlignment="Left"
                                              ContentText="{Binding MachineError.Reason}"
-                                             LabelText="{x:Static res:VWApp.ErrorReason}" />
+                                             LabelText="{x:Static res:ErrorsApp.ErrorReason}" />
                 </Grid>
 
                 <Image Grid.Row="2"
@@ -106,7 +106,7 @@
 
                 <controls:PpcButton Grid.Row="3"
                                     Command="{Binding MoveToNextCommand}"
-                                    Content="Avanti"
+                                    Content="{x:Static res:General.Next}"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
@@ -124,9 +124,9 @@
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Selezione del cassetto:"
-                               TextWrapping="Wrap" />
-
+                               TextWrapping="Wrap">
+                        <Run Text="{x:Static res:ErrorsApp.DrawerSelection}" /><Run Text=":" />
+                    </TextBlock>
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                Text="Selezionare l'id del cassetto presente sull'elevatore."
@@ -366,7 +366,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Bottom"
                                     Command="{Binding MoveToNextCommand}"
-                                    Content="Avanti"
+                                    Content="{x:Static res:General.Next}"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
@@ -384,12 +384,13 @@
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Passa in automatico:"
-                               TextWrapping="Wrap" />
+                               TextWrapping="Wrap">
+                        <Run Text="{x:Static res:General.SwitchToAutomatic}" /><Run Text=":" />
+                    </TextBlock>
 
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Terminata la procedura di identificazione cassetto, passa in autmatico."
+                               Text="{x:Static res:ErrorsApp.DrawerIdentificationCompleted}"
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -397,11 +398,11 @@
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Bottom"
                                     Command="{Binding MarkAsResolvedCommand}"
-                                    Content="{x:Static res:VWApp.MarkAsResolved}" />-->
+                                    Content="{x:Static res:ErrorsApp.MarkAsResolved}" />-->
 
                 <controls:PpcButton Grid.Row="3"
                                     Command="{Binding AutomaticCommand}"
-                                    Content="Automatico"
+                                    Content="{x:Static res:General.Automatic}"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
@@ -480,7 +481,7 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Command="{Binding StopCommand}"
-                            Content="{x:Static res:InstallationApp.Stop}" />
+                            Content="{x:Static res:General.Stop}" />
         <!--#endregion-->
 
         <!--#region Wizard-->

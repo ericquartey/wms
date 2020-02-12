@@ -237,7 +237,7 @@
                     <TextBlock FontSize="18"
                                FontWeight="Bold"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Attendare il termine della procedura automatica."
+                               Text="Attendere il termine della procedura automatica."
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -507,7 +507,7 @@
                     <TextBlock FontSize="18"
                                FontWeight="Bold"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Attendare il termine della procedura automatica."
+                               Text="Attendere il termine della procedura automatica."
                                TextWrapping="Wrap" />
                 </StackPanel>
 

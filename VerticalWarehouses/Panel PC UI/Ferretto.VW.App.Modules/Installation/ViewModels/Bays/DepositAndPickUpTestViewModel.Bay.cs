@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
@@ -122,7 +123,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     ||
                     this.currentState == DepositAndPickUpState.Deposit))
                 {
-                    this.ShowNotification($"Vai a baia non eseguito, lo stato corrente è {this.currentState.ToString()}");
+                    this.ShowNotification(string.Format(InstallationApp.MoveToBayNotExecuted, this.currentState));
                     this.IsExecutingProcedure = false;
                     return;
                 }

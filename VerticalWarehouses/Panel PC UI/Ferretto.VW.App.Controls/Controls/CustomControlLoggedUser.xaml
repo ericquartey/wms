@@ -29,7 +29,7 @@
             <StackPanel>
                 <controls:PpcButton Width="{Binding ElementName=ButtonRoot, Path=ActualWidth}"
                                     Command="{Binding ToggleThemeCommand}"
-                                    Content="Cambia Tema" />
+                                    Content="{x:Static res:General.ChangeTheme}" />
 
                 <controls:PpcButton Width="{Binding ElementName=ButtonRoot, Path=ActualWidth}"
                                     Command="{Binding LogOutCommand}"

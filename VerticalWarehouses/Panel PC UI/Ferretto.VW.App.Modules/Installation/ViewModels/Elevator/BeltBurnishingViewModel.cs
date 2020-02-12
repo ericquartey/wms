@@ -370,7 +370,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.CurrentPosition = this.machineElevatorService.Position.Vertical;
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -466,7 +466,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Rodaggio cinghia", DialogType.Question, DialogButtons.YesNo);
+                var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, InstallationApp.BeltBreakIn, DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     this.CumulativePerformedCycles = 0;
@@ -493,7 +493,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (totalCyclesToPerform <= 0)
                 {
                     this.isCompleted = true;
-                    this.ShowNotification("Required amount of cycles was completed.", Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(InstallationApp.RequiredCyclesCompleted, Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 

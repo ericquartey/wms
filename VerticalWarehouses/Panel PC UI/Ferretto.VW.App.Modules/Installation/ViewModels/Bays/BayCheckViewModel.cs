@@ -159,7 +159,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                 this.Logger.Debug($"Policy.IsAllowed = false ({policy.Reason})");
                             }
                         }
-                        catch (HttpRequestException ex)
+                        catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
                         {
                             this.Logger.Error(ex);
                             res = false;
@@ -373,7 +373,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.NavigationService.GoBack();
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -457,7 +457,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.NewPositionDown = this.BayPositionActive.Height + (double)this.DisplacementDown.Value;
                 }
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -481,7 +481,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     {
                         this.RaisePropertyChanged(nameof(this.ShutterLabel));
                     }
-                    catch (HttpRequestException)
+                    catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
                     {
                     }
                 }
@@ -511,7 +511,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.StepValueDown = 0;
                 }
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -536,7 +536,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     ShutterPosition.Closed :
                     ShutterPosition.Opened);
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -558,7 +558,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 await this.MachineService.StopMovingByAllAsync();
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

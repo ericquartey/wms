@@ -741,7 +741,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
 
-            var targetPosition = axis.ManualMovements.TargetDistanceAfterZero;
+            var targetPosition = axis.Profiles.FirstOrDefault().TotalDistance;
 
             var bay = this.baysDataProvider.GetByNumber(requestingBay);
 

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -15,8 +13,8 @@ namespace Ferretto.VW.Installer.Core
         public MergeAppConfig(int number, string title, string description, string newPathName, string oldPathName)
             : base(number, title, description)
         {
-            this.NewPathName = this.InterpolateVariables(newPathName);
-            this.OldPathName = this.InterpolateVariables(oldPathName);
+            this.NewPathName = InterpolateVariables(newPathName);
+            this.OldPathName = InterpolateVariables(oldPathName);
         }
 
         #endregion

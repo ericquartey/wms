@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 using NLog.Time;
 
 namespace Ferretto.VW.Installer
@@ -17,18 +19,35 @@ namespace Ferretto.VW.Installer
             this.Height = SystemParameters.PrimaryScreenHeight;
 #else
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            this.MouseDown += this.Shell_MouseDown;
 #endif
+            this.Loaded += this.OnMainWindowLoaded;
+        }
+
+        private void OnMainWindowLoaded(object sender, RoutedEventArgs e)
+        {
+            var viewModel = this.DataContext as MainWindowViewModel;
+
+            viewModel.StartInstallation();
         }
 
         #endregion
 
         #region Methods
+        private void Shell_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                this.DragMove();
+            }
+        }
 
         protected override void OnInitialized(System.EventArgs e)
         {
             base.OnInitialized(e);
 
-            this.DataContext = new MainWindowViewModel();
+            var viewModel = new MainWindowViewModel();
+            this.DataContext = viewModel;
         }
 
         #endregion

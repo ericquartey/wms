@@ -1,7 +1,4 @@
-﻿using System;
-using System.Windows.Controls;
-
-namespace Ferretto.VW.Installer.Controls
+﻿namespace Ferretto.VW.Installer.Controls
 {
     /* public class ScrollIntoViewForListBox : Behavior<ListBox>
      {

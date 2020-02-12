@@ -27,13 +27,13 @@ namespace Ferretto.VW.MAS.MachineManager.Providers.Interfaces
 
         void MoveLoadingUnitToBay(MissionType missionType, int loadingUnitId, LoadingUnitLocation destination, BayNumber requestingBay, MessageActor sender);
 
-        void MoveLoadingUnitToCell(MissionType missionType, int loadingUnitId, int destinationCellId, BayNumber requestingBay, MessageActor sender);
+        void MoveLoadingUnitToCell(MissionType missionType, int loadingUnitId, int? destinationCellId, BayNumber requestingBay, MessageActor sender);
 
         void PauseMove(int? missionId, BayNumber requestingBay, BayNumber targetBay, MessageActor sender);
 
         void RemoveLoadUnit(int? missionId, BayNumber requestingBay, BayNumber targetBay, MessageActor sender);
 
-        void ResumeMoveLoadUnit(int? missionId, LoadingUnitLocation sourceBay, LoadingUnitLocation destination, BayNumber targetBay, int? wmsId, MessageActor sender);
+        void ResumeMoveLoadUnit(int? missionId, LoadingUnitLocation sourceBay, LoadingUnitLocation destination, BayNumber targetBay, int? wmsId, MissionType missionType, MessageActor sender);
 
         void StopMove(int? missionId, BayNumber requestingBay, BayNumber targetBay, MessageActor sender);
 
