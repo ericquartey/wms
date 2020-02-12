@@ -391,6 +391,7 @@ namespace Ferretto.VW.MAS.MissionManager
             switch (this.machineVolatileDataProvider.Mode)
             {
                 case MachineMode.SwitchingToAutomatic:
+                case MachineMode.SwitchingToLoadUnitOperations:
                     {
                         // in this machine mode we generate homing for elevator and bays, but only if there are no missions to restore.
                         // if homing is not possible we switch anyway to automatic mode
@@ -410,37 +411,13 @@ namespace Ferretto.VW.MAS.MissionManager
                             {
                                 this.machineVolatileDataProvider.Mode = MachineMode.Manual;
                             }
-                            else
-                            {
-                                this.machineVolatileDataProvider.Mode = MachineMode.Automatic;
-                            }
-
-                            this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
-                        }
-                    }
-                    break;
-
-                case MachineMode.SwitchingToLoadUnitOperations:
-                    {
-                        // in this machine mode we generate homing for elevator and bays, but only if there are no missions to restore.
-                        // if homing is not possible we switch anyway to automatic mode
-                        var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
-                        var activeMissions = missionsDataProvider.GetAllActiveMissions();
-
-                        if (activeMissions.Any(m => m.IsMissionToRestore() || m.Step >= MissionStep.Error))
-                        {
-                            await this.ScheduleRestore(serviceProvider, bayProvider, activeMissions);
-                        }
-                        else if (!activeMissions.Any(m => m.Status == MissionStatus.Executing && m.Step > MissionStep.New) &&
-                                 !this.GenerateHoming(bayProvider, this.machineVolatileDataProvider.IsHomingExecuted))
-                        {
-                            if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations)
+                            else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations)
                             {
                                 this.machineVolatileDataProvider.Mode = MachineMode.LoadUnitOperations;
                             }
                             else
                             {
-                                this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                                this.machineVolatileDataProvider.Mode = MachineMode.Automatic;
                             }
 
                             this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
@@ -532,24 +509,27 @@ namespace Ferretto.VW.MAS.MissionManager
                     return true;
                 }
             }
-            var bayProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-            var bays = bayProvider.GetAll();
-            foreach (var bay in bays)
+            if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic)
             {
-                foreach (var position in bay.Positions)
+                var bayProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                var bays = bayProvider.GetAll();
+                foreach (var bay in bays)
                 {
-                    if (sensorProvider.IsLoadingUnitInLocation(position.Location))
+                    foreach (var position in bay.Positions)
                     {
-                        if (position.LoadingUnit is null)
+                        if (sensorProvider.IsLoadingUnitInLocation(position.Location))
                         {
-                            var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
-                            errorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnBay);
-                            return true;
-                        }
-                        if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitId == position.LoadingUnit.Id))
-                        {
-                            moveLoadingUnitProvider.InsertToCell(MissionType.Manual, position.Location, null, position.LoadingUnit.Id, bay.Number, MessageActor.AutomationService);
-                            return true;
+                            if (position.LoadingUnit is null)
+                            {
+                                var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
+                                errorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnBay);
+                                return true;
+                            }
+                            if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitId == position.LoadingUnit.Id))
+                            {
+                                moveLoadingUnitProvider.InsertToCell(MissionType.Manual, position.Location, null, position.LoadingUnit.Id, bay.Number, MessageActor.AutomationService);
+                                return true;
+                            }
                         }
                     }
                 }
