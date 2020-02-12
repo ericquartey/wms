@@ -75,7 +75,7 @@ namespace Ferretto.VW.MAS.MissionManager
         public async Task ScheduleMissionsOnBayAsync(BayNumber bayNumber, IServiceProvider serviceProvider, bool restore = false)
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
-            var moveLoadingUnitProvider = serviceProvider.GetRequiredService<IMoveLoadingUnitProvider>();
+            var moveLoadingUnitProvider = serviceProvider.GetRequiredService<IMoveLoadUnitProvider>();
 
             var activeMissions = missionsDataProvider.GetAllActiveMissionsByBay(bayNumber);
 
@@ -391,7 +391,7 @@ namespace Ferretto.VW.MAS.MissionManager
             switch (this.machineVolatileDataProvider.Mode)
             {
                 case MachineMode.SwitchingToAutomatic:
-                case MachineMode.SwitchingToManualPlus:
+                case MachineMode.SwitchingToLoadUnitOperations:
                     {
                         // in this machine mode we generate homing for elevator and bays, but only if there are no missions to restore.
                         // if homing is not possible we switch anyway to automatic mode
@@ -411,9 +411,9 @@ namespace Ferretto.VW.MAS.MissionManager
                             {
                                 this.machineVolatileDataProvider.Mode = MachineMode.Manual;
                             }
-                            else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToManualPlus)
+                            else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations)
                             {
-                                this.machineVolatileDataProvider.Mode = MachineMode.ManualPlus;
+                                this.machineVolatileDataProvider.Mode = MachineMode.LoadUnitOperations;
                             }
                             else
                             {
@@ -493,7 +493,7 @@ namespace Ferretto.VW.MAS.MissionManager
             var sensorProvider = serviceProvider.GetRequiredService<ISensorsProvider>();
             var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
-            var moveLoadingUnitProvider = serviceProvider.GetRequiredService<IMoveLoadingUnitProvider>();
+            var moveLoadingUnitProvider = serviceProvider.GetRequiredService<IMoveLoadUnitProvider>();
             if (sensorProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
             {
                 var loadUnit = elevatorDataProvider.GetLoadingUnitOnBoard();

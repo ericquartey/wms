@@ -9,7 +9,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.MachineManager.Providers
 {
-    internal sealed class MoveLoadingUnitProvider : BaseProvider, IMoveLoadingUnitProvider
+    internal sealed class MoveLoadUnitProvider : BaseProvider, IMoveLoadUnitProvider
     {
         #region Fields
 
@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         #region Constructors
 
-        public MoveLoadingUnitProvider(
+        public MoveLoadUnitProvider(
             ICellsProvider cellsProvider,
             IBaysDataProvider baysDataProvider,
             IEventAggregator eventAggregator)
@@ -216,7 +216,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
         }
 
         // destination can be elevator
-        public void MoveLoadingUnitToBay(MissionType missionType, int loadingUnitId, LoadingUnitLocation destination, BayNumber requestingBay, MessageActor sender)
+        public void MoveLoadUnitToBay(MissionType missionType, int loadingUnitId, LoadingUnitLocation destination, BayNumber requestingBay, MessageActor sender)
         {
             if (destination is LoadingUnitLocation.Cell)
             {
@@ -237,7 +237,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 requestingBay);
         }
 
-        public void MoveLoadingUnitToCell(MissionType missionType, int loadingUnitId, int? destinationCellId, BayNumber requestingBay, MessageActor sender)
+        public void MoveLoadUnitToCell(MissionType missionType, int loadingUnitId, int? destinationCellId, BayNumber requestingBay, MessageActor sender)
         {
             this.SendCommandToMachineManager(
                 new MoveLoadingUnitMessageData(

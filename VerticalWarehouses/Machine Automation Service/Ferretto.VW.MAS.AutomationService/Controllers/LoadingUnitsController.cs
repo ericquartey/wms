@@ -28,14 +28,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IMissionSchedulingProvider missionSchedulingProvider;
 
-        private readonly IMoveLoadingUnitProvider moveLoadingUnitProvider;
+        private readonly IMoveLoadUnitProvider moveLoadingUnitProvider;
 
         #endregion
 
         #region Constructors
 
         public LoadingUnitsController(
-            IMoveLoadingUnitProvider moveLoadingUnitProvider,
+            IMoveLoadUnitProvider moveLoadingUnitProvider,
             ILoadingUnitsDataProvider loadingUnitsDataProvider,
             IMachineProvider machineProvider,
             IMissionSchedulingProvider missionSchedulingProvider,
@@ -162,7 +162,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult InsertLoadingUnit(LoadingUnitLocation source, int? destinationCellId, int loadingUnitId)
         {
-            var missionType = (source == LoadingUnitLocation.Elevator) ? MissionType.Manual : MissionType.ManualPlus;
+            var missionType = (source == LoadingUnitLocation.Elevator) ? MissionType.Manual : MissionType.LoadUnitOperation;
             this.moveLoadingUnitProvider.InsertToCell(missionType, source, destinationCellId, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
@@ -224,8 +224,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult StartMovingLoadingUnitToBay(int loadingUnitId, LoadingUnitLocation destination)
         {
-            var missionType = (destination == LoadingUnitLocation.Elevator) ? MissionType.Manual : MissionType.ManualPlus;
-            this.moveLoadingUnitProvider.MoveLoadingUnitToBay(missionType, loadingUnitId, destination, this.BayNumber, MessageActor.AutomationService);
+            var missionType = (destination == LoadingUnitLocation.Elevator) ? MissionType.Manual : MissionType.LoadUnitOperation;
+            this.moveLoadingUnitProvider.MoveLoadUnitToBay(missionType, loadingUnitId, destination, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -235,7 +235,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult StartMovingLoadingUnitToCell(int loadingUnitId, int? destinationCellId)
         {
-            this.moveLoadingUnitProvider.MoveLoadingUnitToCell(MissionType.ManualPlus, loadingUnitId, destinationCellId, this.BayNumber, MessageActor.AutomationService);
+            this.moveLoadingUnitProvider.MoveLoadUnitToCell(MissionType.LoadUnitOperation, loadingUnitId, destinationCellId, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -248,11 +248,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             if (source == LoadingUnitLocation.Cell && destination == LoadingUnitLocation.Cell)
             {
-                this.moveLoadingUnitProvider.MoveFromCellToCell(MissionType.ManualPlus, sourceCellId, destinationCellId, this.BayNumber, MessageActor.AutomationService);
+                this.moveLoadingUnitProvider.MoveFromCellToCell(MissionType.LoadUnitOperation, sourceCellId, destinationCellId, this.BayNumber, MessageActor.AutomationService);
             }
             else if (source != LoadingUnitLocation.Cell && destination != LoadingUnitLocation.Cell)
             {
-                this.moveLoadingUnitProvider.MoveFromBayToBay(MissionType.ManualPlus, source, destination, this.BayNumber, MessageActor.AutomationService);
+                this.moveLoadingUnitProvider.MoveFromBayToBay(MissionType.LoadUnitOperation, source, destination, this.BayNumber, MessageActor.AutomationService);
             }
             else if (source == LoadingUnitLocation.Cell && destination != LoadingUnitLocation.Cell)
             {

@@ -3,7 +3,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.MAS.MachineManager.Providers.Interfaces
 {
-    public interface IMoveLoadingUnitProvider
+    public interface IMoveLoadUnitProvider
     {
         #region Methods
 
@@ -25,9 +25,9 @@ namespace Ferretto.VW.MAS.MachineManager.Providers.Interfaces
 
         void MoveFromCellToCell(MissionType missionType, int? sourceCellId, int? destinationCellId, BayNumber requestingBay, MessageActor sender);
 
-        void MoveLoadingUnitToBay(MissionType missionType, int loadingUnitId, LoadingUnitLocation destination, BayNumber requestingBay, MessageActor sender);
+        void MoveLoadUnitToBay(MissionType missionType, int loadingUnitId, LoadingUnitLocation destination, BayNumber requestingBay, MessageActor sender);
 
-        void MoveLoadingUnitToCell(MissionType missionType, int loadingUnitId, int? destinationCellId, BayNumber requestingBay, MessageActor sender);
+        void MoveLoadUnitToCell(MissionType missionType, int loadingUnitId, int? destinationCellId, BayNumber requestingBay, MessageActor sender);
 
         void PauseMove(int? missionId, BayNumber requestingBay, BayNumber targetBay, MessageActor sender);
 
