@@ -1540,6 +1540,12 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="CellSelectedRequired" xml:space="preserve">
     <value>Cell selected is required.</value>
   </data>
+  <data name="ChecksumCompleted" xml:space="preserve">
+    <value>Checksum files check successfully completed.</value>
+  </data>
+  <data name="ClearTempFolder" xml:space="preserve">
+    <value>Clear temp folder '{0}'.</value>
+  </data>
   <data name="DestinationPositionMustBePositive" xml:space="preserve">
     <value>Destination position must be strictly positive.</value>
   </data>
@@ -1552,11 +1558,41 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="DrawerIdExtracted" xml:space="preserve">
     <value>Drawer id {0} extracted</value>
   </data>
+  <data name="ErrorCheckFile" xml:space="preserve">
+    <value>Error on checking file {0}</value>
+  </data>
+  <data name="ErrorChecksum" xml:space="preserve">
+    <value>Error on checking files checksum:</value>
+  </data>
+  <data name="ErrorChecksumNotFound" xml:space="preserve">
+    <value>Error on checking file '{0}'. No checksums found.</value>
+  </data>
+  <data name="ErrorClearTempFolder" xml:space="preserve">
+    <value>Error on clear temp folder:</value>
+  </data>
+  <data name="ErrorExtractingFiles" xml:space="preserve">
+    <value>Error excracting files:</value>
+  </data>
+  <data name="ErrorOnStarting" xml:space="preserve">
+    <value>Error on starting:</value>
+  </data>
+  <data name="ExtractingFilesCompleted" xml:space="preserve">
+    <value>Extraction successfullly completed.</value>
+  </data>
+  <data name="FieldRequired" xml:space="preserve">
+    <value>Field is required.</value>
+  </data>
   <data name="GoToFreeCell" xml:space="preserve">
     <value>Go to free cell</value>
   </data>
   <data name="HorizontalAxisMovementInProgress" xml:space="preserve">
     <value>Horizontal axis movement in progress ...</value>
+  </data>
+  <data name="InputDelayBetweenCyclesMustBePositive" xml:space="preserve">
+    <value>InputDelayBetweenCycles must be strictly positive.</value>
+  </data>
+  <data name="InputDelayBetweenCyclesRequired" xml:space="preserve">
+    <value>InputDelayBetweenCycles is required.</value>
   </data>
   <data name="InputDisplacementMustBePositive" xml:space="preserve">
     <value>InputDisplacement must be strictly positive.</value>
@@ -1597,6 +1633,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="InvalidSourceChoiceType" xml:space="preserve">
     <value>Invalid source choice type</value>
   </data>
+  <data name="InvalidValue" xml:space="preserve">
+    <value>Valore non valido.</value>
+  </data>
   <data name="LoadingUnitIdMustBePositive" xml:space="preserve">
     <value>LoadingUnitId must be strictly positive.</value>
   </data>
@@ -1606,8 +1645,20 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="MeasuredPositionOutOfRangeAxis" xml:space="preserve">
     <value>Measured position out of range axis ({0}).</value>
   </data>
+  <data name="OperationAborted" xml:space="preserve">
+    <value>Operation aborted.</value>
+  </data>
   <data name="RequiredCyclesCompleted" xml:space="preserve">
     <value>Required amount of cycles was completed.</value>
+  </data>
+  <data name="StartChecksum" xml:space="preserve">
+    <value>Start checking files checksum '{0}'.</value>
+  </data>
+  <data name="StartExtractingFiles" xml:space="preserve">
+    <value>Start excracting files from '{0}'.</value>
+  </data>
+  <data name="StartingApplication" xml:space="preserve">
+    <value>Starting application '{0}'.</value>
   </data>
   <data name="StartPositionMustBePositive" xml:space="preserve">
     <value>Start position must be strictly positive.</value>

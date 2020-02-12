@@ -227,7 +227,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                             (!this.MachineService.Loadunits.DrawerInLocationById(this.LoadingUnitId.Value) &&
                              !this.MachineService.Loadunits.DrawerInBayById(this.LoadingUnitId.Value)))
                         {
-                            return "Il cassetto selezionato non è valido";
+                            return VW.App.Resources.InstallationApp.InvalidDrawerSelected;
                         }
 
                         break;
