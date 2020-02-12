@@ -63,7 +63,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             ??
             (this.alarm = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.Alarm),
-                this.CanExecuteCommand));
+                this.CanExecuteCommand))
+            ;
 
         public ICommand DiagnosticsCommand =>
             this.diagnosticsCommand
@@ -164,7 +165,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private bool CanExecuteCommand()
         {
-            return true;
+            return true && false; // temp 20200212 : prevent to display empty pages alarms, diagnostics and statistics
         }
 
         private void ExecuteCommand(Menu menu)
