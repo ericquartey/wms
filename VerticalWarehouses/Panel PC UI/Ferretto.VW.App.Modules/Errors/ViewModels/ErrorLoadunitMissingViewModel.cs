@@ -42,6 +42,8 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
     {
         #region Fields
 
+        private readonly IMachineElevatorWebService machineElevatorWebService;
+
         private readonly IMachineErrorsWebService machineErrorsWebService;
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
@@ -95,12 +97,14 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         public ErrorLoadunitMissingViewModel(
             IMachineModeWebService machineModeWebService,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+            IMachineElevatorWebService machineElevatorWebService,
             IMachineErrorsWebService machineErrorsWebService)
             : base(Services.PresentationMode.Menu | Services.PresentationMode.Installer | Services.PresentationMode.Operator)
         {
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.machineErrorsWebService = machineErrorsWebService ?? throw new ArgumentNullException(nameof(machineErrorsWebService));
             this.machineModeWebService = machineModeWebService ?? throw new ArgumentNullException(nameof(machineModeWebService));
+            this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
 
             this.CurrentStep = default(ErrorLoadunitMissingStepStart);
         }
@@ -687,11 +691,14 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.machineModeWebService.SetAutomaticAsync();
+                if (this.SensorsService.IsLoadingUnitOnElevator && this.LuIdOnElevator.HasValue)
+                {
+                    await this.machineElevatorWebService.SetLoadUnitOnElevatorAsync(this.LuIdOnElevator.Value);
+                }
 
                 await this.machineErrorsWebService.ResolveAllAsync();
 
-                this.MachineError = await this.machineErrorsWebService.GetCurrentAsync();
+                await this.machineModeWebService.SetAutomaticAsync();
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
