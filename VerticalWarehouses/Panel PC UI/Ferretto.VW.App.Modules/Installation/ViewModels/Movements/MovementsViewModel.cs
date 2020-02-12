@@ -336,7 +336,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await base.OnMachineModeChangedAsync(e);
 
             if (e.MachineMode == MachineMode.SwitchingToAutomatic
-                || e.MachineMode == MachineMode.SwitchingToManualPlus)
+                || e.MachineMode == MachineMode.SwitchingToLoadUnitOperations)
             {
                 this.GoToMovementsExecuteCommand(true);
                 this.goToMovementsManualCommand?.RaiseCanExecuteChanged();

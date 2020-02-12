@@ -215,7 +215,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             this.IsMachineInTestMode = this.MachineMode is MachineMode.Test;
 
             this.IsBusy =
-                this.MachineMode is MachineMode.SwitchingToManualPlus
+                this.MachineMode is MachineMode.SwitchingToLoadUnitOperations
                 ||
                 this.MachineMode is MachineMode.SwitchingToAutomatic
                 ||
