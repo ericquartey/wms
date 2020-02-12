@@ -1536,4 +1536,7 @@ Please put back any moved pieces in their original position.</value>
   <data name="DrawerCompactingRearFreeSpace" xml:space="preserve">
     <value>Front free space</value>
   </data>
+  <data name="DrawerCompacting" xml:space="preserve">
+    <value>Compacting</value>
+  </data>
 </root>

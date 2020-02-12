@@ -1225,4 +1225,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="DrawerCompactingRearFreeSpace" xml:space="preserve">
     <value>Spazio libero anteriore</value>
   </data>
+  <data name="DrawerCompacting" xml:space="preserve">
+    <value>Compattazione</value>
+  </data>
 </root>

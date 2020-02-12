@@ -845,6 +845,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compacting.
+        /// </summary>
+        public static string DrawerCompacting {
+            get {
+                return ResourceManager.GetString("DrawerCompacting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compact front side.
         /// </summary>
         public static string DrawerCompactingAntCompact {

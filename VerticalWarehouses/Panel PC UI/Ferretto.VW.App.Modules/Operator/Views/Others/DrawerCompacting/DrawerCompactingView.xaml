@@ -377,18 +377,18 @@
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
                     Orientation="Horizontal">
+
             <controls:PpcButton Margin="0,0,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding CompactingStartCommand}"
-                                Content="{x:Static res:InstallationApp.Start}" />
-            <!--  IsBusy="{Binding IsExecutingProcedure}"  -->
+                                Content="{x:Static Resources:OperatorApp.DrawerCompacting}" />
 
             <controls:PpcButton Margin="0,0,15,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding CompactingStopCommand}"
-                                Content="{x:Static res:InstallationApp.Stop}" />
+                                Content="{x:Static Resources:OperatorApp.DrawerCompactingAntStop}" />
         </StackPanel>
 
     </Grid>
