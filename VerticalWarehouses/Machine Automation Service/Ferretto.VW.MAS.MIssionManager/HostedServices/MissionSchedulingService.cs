@@ -393,6 +393,12 @@ namespace Ferretto.VW.MAS.MissionManager
                 this.Logger.LogTrace("Cannot perform mission scheduling, because data layer is not ready.");
                 return;
             }
+            var sensorsProvider = serviceProvider.GetRequiredService<ISensorsProvider>();
+            if (!sensorsProvider.IsMachineSecurityRunning)
+            {
+                this.Logger.LogWarning("Cannot perform mission scheduling, because machine is not in running state.");
+                return;
+            }
 
             var bayProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
 
@@ -408,6 +414,13 @@ namespace Ferretto.VW.MAS.MissionManager
 
                         if (activeMissions.Any(m => m.IsMissionToRestore() || m.Step >= MissionStep.Error))
                         {
+                            if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic
+                                && activeMissions.All(m => m.MissionType == MissionType.LoadUnitOperation)
+                                )
+                            {
+                                this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToLoadUnitOperations;
+                                this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                            }
                             await this.ScheduleRestore(serviceProvider, bayProvider, activeMissions);
                         }
                         else if (!activeMissions.Any(m => m.Status == MissionStatus.Executing
