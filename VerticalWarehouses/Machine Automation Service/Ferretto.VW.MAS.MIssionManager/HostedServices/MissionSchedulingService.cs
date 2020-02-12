@@ -602,6 +602,11 @@ namespace Ferretto.VW.MAS.MissionManager
                         this.machineVolatileDataProvider.Mode = MachineMode.Automatic;
                         this.Logger.LogInformation($"Automation Machine status switched to {this.machineVolatileDataProvider.Mode}");
                     }
+                    else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations)
+                    {
+                        this.machineVolatileDataProvider.Mode = MachineMode.LoadUnitOperations;
+                        this.Logger.LogInformation($"Automation Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                    }
                 }
             }
         }
