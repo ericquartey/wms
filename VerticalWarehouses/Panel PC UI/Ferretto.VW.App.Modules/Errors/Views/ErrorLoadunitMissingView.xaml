@@ -55,7 +55,7 @@
                         <TextBlock Height="26"
                                    Background="{DynamicResource FerrettoRed}"
                                    Style="{DynamicResource VWAPP_CustomLabel_ContentTextBlockStyle}"
-                                   Text="{Binding Error.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static res:General.TargetNullValue}}"
+                                   Text="{Binding MachineError.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static res:General.TargetNullValue}}"
                                    TextAlignment="Center"
                                    TextWrapping="Wrap" />
                     </StackPanel>
@@ -76,12 +76,12 @@
                     <controls:PpcLabeledText Grid.Column="0"
                                              Margin="0,0,15,0"
                                              HorizontalAlignment="Left"
-                                             ContentText="{Binding Error.Id}"
+                                             ContentText="{Binding MachineError.Id}"
                                              LabelText="Id" />
 
                     <controls:PpcLabeledText Grid.Column="1"
                                              Margin="0,0,15,0"
-                                             ContentText="{Binding Error.Description}"
+                                             ContentText="{Binding MachineError.Description}"
                                              LabelText="{x:Static res:VWApp.ErrorDescription}" />
 
                     <controls:PpcLabeledText Grid.Column="2"
@@ -93,7 +93,7 @@
                                              Grid.ColumnSpan="3"
                                              Margin="0,15,0,0"
                                              HorizontalAlignment="Left"
-                                             ContentText="{Binding Error.Reason}"
+                                             ContentText="{Binding MachineError.Reason}"
                                              LabelText="{x:Static res:VWApp.ErrorReason}" />
                 </Grid>
 
@@ -111,13 +111,13 @@
             </Grid>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewmodels:ErrorLoadunitMissingStepLoadunit}">
+        <DataTemplate DataType="{x:Type viewmodels:ErrorLoadunitMissingStepLoadunitOnElevator}">
             <Grid Margin="20"
                   DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
@@ -129,176 +129,56 @@
 
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{Binding SubtitleStepLoadunit}"
+                               Text="Selezionare l'id del cassetto presente sull'elevatore."
                                TextWrapping="Wrap" />
                 </StackPanel>
 
-                <Border Grid.Row="1"
-                        Background="{DynamicResource PpcBackground}">
-                    <Border BorderBrush="{DynamicResource PpcBorderBrush}"
-                            BorderThickness="{DynamicResource PpcBorderThickness}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
+                <ctrls:PpcSpinEdit Grid.Row="2"
+                                   Grid.Column="1"
+                                   Width="200"
+                                   Margin="0,0,15,0"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   EditValue="{Binding LuIdOnElevator, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                   IsEnabled="{Binding CanLuIdOnElevator}"
+                                   KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
+                                   KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
+                                   LabelText="Cassetto su elevatore"
+                                   Mask="#0"
+                                   MaxValue="999"
+                                   MinValue="1" />
 
-                            <Grid Grid.ColumnSpan="3">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
+                <controls:PpcButton Grid.Row="3"
+                                    Margin="0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Bottom"
+                                    Command="{Binding MoveToNextCommand}"
+                                    Content="Avanti"
+                                    Style="{StaticResource WizardConfirmButton}" />
+            </Grid>
+        </DataTemplate>
 
-                                <TextBlock Margin="0,20,0,0"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Normal}"
-                                           FontWeight="Normal"
-                                           Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="{x:Static res:InstallationApp.CurrentCell}"
-                                           TextAlignment="Left" />
+        <DataTemplate DataType="{x:Type viewmodels:ErrorLoadunitMissingStepLoadunitOnBay1}">
+            <Grid Margin="20"
+                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-                                <TextBlock Grid.Row="1"
-                                           Margin="0"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Top"
-                                           FontSize="{StaticResource FontSize_Very_High}"
-                                           Foreground="{DynamicResource PpcForeground}"
-                                           Text="{Binding SelectedCell.Id}"
-                                           TextWrapping="Wrap" />
+                <StackPanel Grid.ColumnSpan="2">
+                    <TextBlock FontSize="24"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               Text="Selezione del cassetto (Baia 1):"
+                               TextWrapping="Wrap" />
 
-                                <Border Grid.RowSpan="2"
-                                        Grid.Column="1"
-                                        Margin="0,25"
-                                        VerticalAlignment="Stretch"
-                                        BorderBrush="{DynamicResource FerrettoMediumGray}"
-                                        BorderThickness="1" />
-
-                            </Grid>
-
-                            <Grid Grid.Column="3"
-                                  Grid.ColumnSpan="3">
-
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock Margin="0,20,0,0"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Normal}"
-                                           FontWeight="Normal"
-                                           Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="{x:Static res:InstallationApp.InitialPosition}"
-                                           TextAlignment="Left" />
-
-                                <TextBlock Grid.Row="1"
-                                           Margin="0"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Top"
-                                           FontSize="{StaticResource FontSize_Very_High}"
-                                           Foreground="{DynamicResource PpcForeground}"
-                                           Text="{Binding SelectedCell.Position}"
-                                           TextWrapping="Wrap" />
-
-                                <Border Grid.RowSpan="2"
-                                        Grid.Column="1"
-                                        Margin="0,25"
-                                        VerticalAlignment="Stretch"
-                                        BorderBrush="{DynamicResource FerrettoMediumGray}"
-                                        BorderThickness="1" />
-
-                            </Grid>
-
-                            <Grid Grid.Column="6"
-                                  Grid.ColumnSpan="3">
-
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock Margin="0,20,0,0"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Normal}"
-                                           FontWeight="Normal"
-                                           Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="{x:Static res:InstallationApp.CellSide}" />
-
-                                <TextBlock Grid.Row="1"
-                                           Margin="0"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Top"
-                                           FontSize="{StaticResource FontSize_Very_High}"
-                                           Foreground="{DynamicResource PpcForeground}"
-                                           Text="{Binding SelectedCell.Side, Converter={StaticResource EWSC}}"
-                                           TextWrapping="Wrap" />
-
-                                <Border Grid.RowSpan="2"
-                                        Grid.Column="1"
-                                        Margin="0,25"
-                                        VerticalAlignment="Stretch"
-                                        BorderBrush="{DynamicResource FerrettoMediumGray}"
-                                        BorderThickness="1" />
-
-                            </Grid>
-
-                            <Grid Grid.Column="9"
-                                  Grid.ColumnSpan="3"
-                                  Margin="0,0,15,0">
-
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-
-                                <TextBlock Margin="0,20,0,0"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Normal}"
-                                           FontWeight="Normal"
-                                           Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="{x:Static res:InstallationApp.Displacement}"
-                                           TextAlignment="Left" />
-
-                                <TextBlock Grid.Row="1"
-                                           Margin="0"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Top"
-                                           FontSize="{StaticResource FontSize_Very_High}"
-                                           Foreground="{DynamicResource PpcForeground}"
-                                           Text="{Binding Displacement, StringFormat={}{0:F1}, FallbackValue=0}"
-                                           TextWrapping="Wrap" />
-
-                            </Grid>
-
-                        </Grid>
-                    </Border>
-                </Border>
+                    <TextBlock FontSize="18"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               Text="Selezionare l'id del/i cassetto/i presente/i in baia."
+                               TextWrapping="Wrap" />
+                </StackPanel>
 
                 <Grid Grid.Row="2"
                       Margin="0,15,0,0">
@@ -309,27 +189,176 @@
                     </Grid.ColumnDefinitions>
 
                     <ctrls:PpcSpinEdit Grid.Row="2"
-                                       Grid.Column="1"
+                                       Grid.Column="0"
                                        Width="200"
                                        Margin="0,0,15,0"
-                                       HorizontalAlignment="Right"
+                                       HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
-                                       EditValue="{Binding InputLoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                       IsEnabled="{Binding CanInputLoadingUnitId}"
+                                       EditValue="{Binding LuIdOnBay1Up, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                        KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                                        KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
-                                       LabelText=""
+                                       LabelText="Postazione alta"
                                        Mask="#0"
                                        MaxValue="999"
-                                       MinValue="1" />
+                                       MinValue="1"
+                                       Visibility="{Binding HasBay1PositionUpVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
 
-                    <controls:PpcButton Grid.Row="2"
-                                        Grid.Column="2"
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Command="{Binding MoveLoadunitCommand}"
-                                        Content="Rientra cassetto" />
+                    <ctrls:PpcSpinEdit Grid.Row="2"
+                                       Grid.Column="2"
+                                       Width="200"
+                                       Margin="15,0,0,0"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Center"
+                                       EditValue="{Binding LuIdOnBay1Down, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                       KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
+                                       KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
+                                       LabelText="Postazione bassa"
+                                       Mask="#0"
+                                       MaxValue="999"
+                                       MinValue="1"
+                                       Visibility="{Binding HasBay1PositionDownVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
+                </Grid>
 
+                <controls:PpcButton Grid.Row="3"
+                                    Margin="0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Bottom"
+                                    Command="{Binding MoveToNextCommand}"
+                                    Content="Avanti"
+                                    Style="{StaticResource WizardConfirmButton}" />
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:ErrorLoadunitMissingStepLoadunitOnBay2}">
+            <Grid Margin="20"
+                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.ColumnSpan="2">
+                    <TextBlock FontSize="24"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               Text="Selezione del cassetto (Baia 2):"
+                               TextWrapping="Wrap" />
+
+                    <TextBlock FontSize="18"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               Text="Selezionare l'id del/i cassetto/i presente/i in baia."
+                               TextWrapping="Wrap" />
+                </StackPanel>
+
+                <Grid Grid.Row="2"
+                      Margin="0,15,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <ctrls:PpcSpinEdit Grid.Row="2"
+                                       Grid.Column="0"
+                                       Width="200"
+                                       Margin="0,0,15,0"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       EditValue="{Binding LuIdOnBay2Up, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                       KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
+                                       KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
+                                       LabelText="Postazione alta"
+                                       Mask="#0"
+                                       MaxValue="999"
+                                       MinValue="1"
+                                       Visibility="{Binding HasBay2PositionUpVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
+
+                    <ctrls:PpcSpinEdit Grid.Row="2"
+                                       Grid.Column="2"
+                                       Width="200"
+                                       Margin="15,0,0,0"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Center"
+                                       EditValue="{Binding LuIdOnBay2Down, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                       KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
+                                       KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
+                                       LabelText="Postazione bassa"
+                                       Mask="#0"
+                                       MaxValue="999"
+                                       MinValue="1"
+                                       Visibility="{Binding HasBay2PositionDownVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
+                </Grid>
+
+                <controls:PpcButton Grid.Row="3"
+                                    Margin="0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Bottom"
+                                    Command="{Binding MoveToNextCommand}"
+                                    Content="Avanti"
+                                    Style="{StaticResource WizardConfirmButton}" />
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:ErrorLoadunitMissingStepLoadunitOnBay3}">
+            <Grid Margin="20"
+                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.ColumnSpan="2">
+                    <TextBlock FontSize="24"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               Text="Selezione del cassetto (Baia 3):"
+                               TextWrapping="Wrap" />
+
+                    <TextBlock FontSize="18"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               Text="Selezionare l'id del/i cassetto/i presente/i in baia."
+                               TextWrapping="Wrap" />
+                </StackPanel>
+
+                <Grid Grid.Row="2"
+                      Margin="0,15,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <ctrls:PpcSpinEdit Grid.Row="2"
+                                       Grid.Column="0"
+                                       Width="200"
+                                       Margin="0,0,15,0"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       EditValue="{Binding LuIdOnBay3Up, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                       KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
+                                       KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
+                                       LabelText="Postazione alta"
+                                       Mask="#0"
+                                       MaxValue="999"
+                                       MinValue="1"
+                                       Visibility="{Binding HasBay3PositionUpVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
+
+                    <ctrls:PpcSpinEdit Grid.Row="2"
+                                       Grid.Column="2"
+                                       Width="200"
+                                       Margin="15,0,0,0"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Center"
+                                       EditValue="{Binding LuIdOnBay3Down, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                       KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
+                                       KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
+                                       LabelText="Postazione bassa"
+                                       Mask="#0"
+                                       MaxValue="999"
+                                       MinValue="1"
+                                       Visibility="{Binding HasBay3PositionDownVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
                 </Grid>
 
                 <controls:PpcButton Grid.Row="3"
@@ -364,11 +393,11 @@
                                TextWrapping="Wrap" />
                 </StackPanel>
 
-                <controls:PpcButton Grid.Row="1"
+                <!--<controls:PpcButton Grid.Row="1"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Bottom"
                                     Command="{Binding MarkAsResolvedCommand}"
-                                    Content="{x:Static res:VWApp.MarkAsResolved}" />
+                                    Content="{x:Static res:VWApp.MarkAsResolved}" />-->
 
                 <controls:PpcButton Grid.Row="3"
                                     Command="{Binding AutomaticCommand}"
@@ -403,7 +432,7 @@
                        Margin="0,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{Binding Error.Description}" />
+                       Text="{Binding MachineError.Description}" />
         </StackPanel>
         <!--#endregion-->
 
@@ -415,7 +444,7 @@
                    VerticalAlignment="Top"
                    FontSize="{DynamicResource FontSize_Small}"
                    Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                   Text="{Binding Error.Reason}"
+                   Text="{Binding MachineError.Reason}"
                    TextWrapping="Wrap" />
         <!--#endregion-->
 
@@ -472,11 +501,14 @@
                 <RowDefinition Height="4*" />
                 <RowDefinition Height="4*" />
                 <RowDefinition Height="4*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="4*" />
                 <RowDefinition Height="1" />
             </Grid.RowDefinitions>
             <!--#region Body-->
             <Border Grid.Row="0"
-                    Grid.RowSpan="6"
+                    Grid.RowSpan="7"
                     Grid.Column="2"
                     Grid.ColumnSpan="2"
                     Margin="8,0,0,0"
@@ -489,7 +521,7 @@
             <!--#endregion-->
             <!--#region TimeLine-->
             <Border Grid.Row="0"
-                    Grid.RowSpan="6"
+                    Grid.RowSpan="7"
                     Style="{DynamicResource BorderTimeLine}" />
 
             <Grid Grid.Row="1">
@@ -510,7 +542,7 @@
             </Grid>
 
             <Grid Grid.Row="2">
-                <Border Background="{Binding HasStepLoadunit, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                <Border Background="{Binding HasStepLoadunitOnElevator, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                         Style="{DynamicResource BorderTimeLineCirle}" />
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                            Text="2" />
@@ -518,7 +550,7 @@
             <Grid Grid.Row="2"
                   Grid.Column="1"
                   Grid.ColumnSpan="2"
-                  Visibility="{Binding HasStepLoadunit, Converter={StaticResource BTVC}, Mode=OneWay}">
+                  Visibility="{Binding HasStepLoadunitOnElevator, Converter={StaticResource BTVC}, Mode=OneWay}">
                 <Path Height="24"
                       VerticalAlignment="Center"
                       StrokeThickness="0"
@@ -527,12 +559,63 @@
             </Grid>
 
             <Grid Grid.Row="3">
-                <Border Background="{Binding HasStepAutomaticMode, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                <Border Background="{Binding HasStepLoadunitOnBay1, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                         Style="{DynamicResource BorderTimeLineCirle}" />
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                            Text="3" />
             </Grid>
             <Grid Grid.Row="3"
+                  Grid.Column="1"
+                  Grid.ColumnSpan="2"
+                  Visibility="{Binding HasStepLoadunitOnBay1, Converter={StaticResource BTVC}, Mode=OneWay}">
+                <Path Height="24"
+                      VerticalAlignment="Center"
+                      StrokeThickness="0"
+                      Style="{DynamicResource BorderTimeLinePath}" />
+                <Path Style="{DynamicResource BorderTimeLinePath}" />
+            </Grid>
+
+            <Grid Grid.Row="4">
+                <Border Background="{Binding HasStepLoadunitOnBay2, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                        Style="{DynamicResource BorderTimeLineCirle}" />
+                <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                           Text="4" />
+            </Grid>
+            <Grid Grid.Row="4"
+                  Grid.Column="1"
+                  Grid.ColumnSpan="2"
+                  Visibility="{Binding HasStepLoadunitOnBay2, Converter={StaticResource BTVC}, Mode=OneWay}">
+                <Path Height="24"
+                      VerticalAlignment="Center"
+                      StrokeThickness="0"
+                      Style="{DynamicResource BorderTimeLinePath}" />
+                <Path Style="{DynamicResource BorderTimeLinePath}" />
+            </Grid>
+
+            <Grid Grid.Row="5">
+                <Border Background="{Binding HasStepLoadunitOnBay3, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                        Style="{DynamicResource BorderTimeLineCirle}" />
+                <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                           Text="5" />
+            </Grid>
+            <Grid Grid.Row="5"
+                  Grid.Column="1"
+                  Grid.ColumnSpan="2"
+                  Visibility="{Binding HasStepLoadunitOnBay3, Converter={StaticResource BTVC}, Mode=OneWay}">
+                <Path Height="24"
+                      VerticalAlignment="Center"
+                      StrokeThickness="0"
+                      Style="{DynamicResource BorderTimeLinePath}" />
+                <Path Style="{DynamicResource BorderTimeLinePath}" />
+            </Grid>
+
+            <Grid Grid.Row="6">
+                <Border Background="{Binding HasStepAutomaticMode, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                        Style="{DynamicResource BorderTimeLineCirle}" />
+                <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                           Text="6" />
+            </Grid>
+            <Grid Grid.Row="6"
                   Grid.Column="1"
                   Grid.ColumnSpan="2"
                   Visibility="{Binding HasStepAutomaticMode, Converter={StaticResource BTVC}, Mode=OneWay}">

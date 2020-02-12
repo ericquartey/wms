@@ -22,6 +22,8 @@ namespace Ferretto.VW.App.Services
 
         BayNumber BayNumber { get; }
 
+        IEnumerable<Bay> Bays { get; }
+
         IEnumerable<Cell> Cells { get; }
 
         bool HasBayExternal { get; }
