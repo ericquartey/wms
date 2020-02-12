@@ -8,7 +8,7 @@
 
         Manual,
 
-        ManualPlus,
+        LoadUnitOperations,
 
         Test,
 
@@ -18,7 +18,7 @@
 
         SwitchingToManual,
 
-        SwitchingToManualPlus,
+        SwitchingToLoadUnitOperations,
 
         SwitchingToCompact
     }

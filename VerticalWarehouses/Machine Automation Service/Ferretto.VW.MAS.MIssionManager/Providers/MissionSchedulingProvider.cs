@@ -121,7 +121,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 || this.CompactDownCell(loadUnits, out loadUnit, out cellId)
                 )
             {
-                var moveLoadingUnitProvider = serviceProvider.GetRequiredService<IMoveLoadingUnitProvider>();
+                var moveLoadingUnitProvider = serviceProvider.GetRequiredService<IMoveLoadUnitProvider>();
                 moveLoadingUnitProvider.MoveFromCellToCell(MissionType.Compact, loadUnit.Cell.Id, cellId, BayNumber.BayOne, MessageActor.MissionManager);
             }
             else
