@@ -42,6 +42,8 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
     {
         #region Fields
 
+        private readonly IMachineBaysWebService machineBaysWebService;
+
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
         private readonly IMachineErrorsWebService machineErrorsWebService;
@@ -98,6 +100,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             IMachineModeWebService machineModeWebService,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IMachineElevatorWebService machineElevatorWebService,
+            IMachineBaysWebService machineBaysWebService,
             IMachineErrorsWebService machineErrorsWebService)
             : base(Services.PresentationMode.Menu | Services.PresentationMode.Installer | Services.PresentationMode.Operator)
         {
@@ -105,6 +108,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             this.machineErrorsWebService = machineErrorsWebService ?? throw new ArgumentNullException(nameof(machineErrorsWebService));
             this.machineModeWebService = machineModeWebService ?? throw new ArgumentNullException(nameof(machineModeWebService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
+            this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
 
             this.CurrentStep = default(ErrorLoadunitMissingStepStart);
         }
@@ -691,9 +695,62 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                if (this.SensorsService.IsLoadingUnitOnElevator && this.LuIdOnElevator.HasValue)
+                // Elevator
+                if (this.SensorsService.IsLoadingUnitOnElevator &&
+                    this.LuIdOnElevator.HasValue)
                 {
                     await this.machineElevatorWebService.SetLoadUnitOnElevatorAsync(this.LuIdOnElevator.Value);
+                }
+
+                // Bay 1
+                if (this.SensorsService.Sensors.LUPresentInBay1 &&
+                    this.HasBay1PositionUpVisible &&
+                    this.LuIdOnBay1Up.HasValue)
+                {
+                    var id = this.Bay1Positions.Single(s => s.LocationUpDown == LoadingUnitLocation.Up).Id;
+                    await this.machineBaysWebService.SetLoadUnitOnBayAsync(id, this.LuIdOnBay1Up.Value);
+                }
+
+                if (this.SensorsService.Sensors.LUPresentMiddleBottomBay1 &&
+                    this.HasBay1PositionDownVisible &&
+                    this.LuIdOnBay1Down.HasValue)
+                {
+                    var id = this.Bay1Positions.Single(s => s.LocationUpDown == LoadingUnitLocation.Down).Id;
+                    await this.machineBaysWebService.SetLoadUnitOnBayAsync(id, this.LuIdOnBay1Down.Value);
+                }
+
+                // Bay 2
+                if (this.SensorsService.Sensors.LUPresentInBay2 &&
+                    this.HasBay2PositionUpVisible &&
+                    this.LuIdOnBay2Up.HasValue)
+                {
+                    var id = this.Bay2Positions.Single(s => s.LocationUpDown == LoadingUnitLocation.Up).Id;
+                    await this.machineBaysWebService.SetLoadUnitOnBayAsync(id, this.LuIdOnBay2Up.Value);
+                }
+
+                if (this.SensorsService.Sensors.LUPresentMiddleBottomBay2 &&
+                    this.HasBay2PositionDownVisible &&
+                    this.LuIdOnBay2Down.HasValue)
+                {
+                    var id = this.Bay2Positions.Single(s => s.LocationUpDown == LoadingUnitLocation.Down).Id;
+                    await this.machineBaysWebService.SetLoadUnitOnBayAsync(id, this.LuIdOnBay2Down.Value);
+                }
+
+                // Bay 3
+                if (this.SensorsService.Sensors.LUPresentInBay3 &&
+                    this.HasBay3PositionUpVisible &&
+                    this.LuIdOnBay3Up.HasValue)
+                {
+                    var id = this.Bay3Positions.Single(s => s.LocationUpDown == LoadingUnitLocation.Up).Id;
+                    await this.machineBaysWebService.SetLoadUnitOnBayAsync(id, this.LuIdOnBay3Up.Value);
+                }
+
+                if (this.SensorsService.Sensors.LUPresentMiddleBottomBay3 &&
+                    this.HasBay3PositionDownVisible &&
+                    this.LuIdOnBay3Down.HasValue)
+                {
+                    var id = this.Bay3Positions.Single(s => s.LocationUpDown == LoadingUnitLocation.Down).Id;
+                    await this.machineBaysWebService.SetLoadUnitOnBayAsync(id, this.LuIdOnBay3Down.Value);
                 }
 
                 await this.machineErrorsWebService.ResolveAllAsync();
