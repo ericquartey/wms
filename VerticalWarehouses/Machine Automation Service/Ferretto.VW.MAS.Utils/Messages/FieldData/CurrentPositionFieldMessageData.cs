@@ -3,7 +3,7 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
 namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
-    public class CurrentPositionFieldMessageData : FieldMessageData, IFieldMessageData
+    public sealed class CurrentPositionFieldMessageData : FieldMessageData, IFieldMessageData
     {
         #region Constructors
 

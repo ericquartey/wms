@@ -7,7 +7,7 @@ using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-// ReSharper disable ArrangeThisQualifier
+
 
 namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 {

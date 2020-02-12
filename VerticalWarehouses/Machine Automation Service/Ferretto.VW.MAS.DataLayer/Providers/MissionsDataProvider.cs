@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.DataLayer
 {
     internal sealed class MissionsDataProvider : IMissionsDataProvider

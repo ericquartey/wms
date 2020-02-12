@@ -1,10 +1,10 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
-    public class InverterStatusWordFieldMessageData : IInverterStatusWordFieldMessageData
+    public sealed class InverterStatusWordFieldMessageData : IInverterStatusWordFieldMessageData
     {
         #region Constructors
 

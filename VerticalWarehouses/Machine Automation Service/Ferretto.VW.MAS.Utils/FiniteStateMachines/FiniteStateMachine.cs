@@ -12,8 +12,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-// ReSharper disable ParameterHidesMember
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 {
     public abstract class FiniteStateMachine<TStartState, TErrorState> : IFiniteStateMachine, IDisposable

@@ -10,7 +10,7 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.DeviceManager.Homing
 {
     internal class HomingSwitchAxisDoneState : StateBase

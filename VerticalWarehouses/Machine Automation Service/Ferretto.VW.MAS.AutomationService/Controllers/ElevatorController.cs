@@ -1,19 +1,16 @@
 ﻿using System;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DeviceManager;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
-using Ferretto.VW.MAS.AutomationService;
-using Ferretto.VW.MAS.DeviceManager;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]

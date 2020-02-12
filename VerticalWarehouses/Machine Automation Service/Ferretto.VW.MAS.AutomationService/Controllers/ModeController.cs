@@ -3,7 +3,7 @@ using Ferretto.VW.MAS.MachineManager;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]

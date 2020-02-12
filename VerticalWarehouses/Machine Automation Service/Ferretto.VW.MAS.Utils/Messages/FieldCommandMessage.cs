@@ -3,7 +3,7 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.Utils.Messages
 {
     public class FieldCommandMessage : Message

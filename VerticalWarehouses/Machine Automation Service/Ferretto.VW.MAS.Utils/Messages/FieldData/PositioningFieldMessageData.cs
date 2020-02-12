@@ -5,7 +5,7 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
 namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
-    public class PositioningFieldMessageData : FieldMessageData, IPositioningFieldMessageData
+    public sealed class PositioningFieldMessageData : FieldMessageData, IPositioningFieldMessageData
     {
         #region Constructors
 

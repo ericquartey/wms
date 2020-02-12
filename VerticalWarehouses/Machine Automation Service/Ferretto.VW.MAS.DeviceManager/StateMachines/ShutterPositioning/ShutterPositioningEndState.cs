@@ -14,7 +14,7 @@ using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 {
     internal class ShutterPositioningEndState : StateBase

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Ferretto.VW.MAS.DataModels
+﻿namespace Ferretto.VW.MAS.DataModels
 {
     public sealed class Carousel : DataModel
     {

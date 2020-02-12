@@ -3,7 +3,7 @@ using Ferretto.VW.MAS.IODriver.StateMachines.Reset;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.IODriver
 {
     internal partial class IoDevice

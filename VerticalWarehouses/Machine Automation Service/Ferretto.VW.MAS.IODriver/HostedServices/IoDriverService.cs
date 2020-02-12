@@ -15,8 +15,6 @@ using Microsoft.Extensions.Logging;
 using Prism.Events;
 using Microsoft.Extensions.Hosting;
 
-// ReSharper disable ParameterHidesMember
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver
 {
     internal sealed class IoDriverService : AutomationBackgroundService<FieldCommandMessage, FieldNotificationMessage, FieldCommandEvent, FieldNotificationEvent>
