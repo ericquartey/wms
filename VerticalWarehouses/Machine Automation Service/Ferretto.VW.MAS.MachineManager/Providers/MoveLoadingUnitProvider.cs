@@ -93,6 +93,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 requestingBay);
         }
 
+        // used by all guided movements
         public void EjectFromCell(MissionType missionType, LoadingUnitLocation destinationBay, int loadingUnitId, BayNumber requestingBay, MessageActor sender)
         {
             this.SendCommandToMachineManager(
@@ -214,6 +215,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 requestingBay);
         }
 
+        // destination can be elevator
         public void MoveLoadingUnitToBay(MissionType missionType, int loadingUnitId, LoadingUnitLocation destination, BayNumber requestingBay, MessageActor sender)
         {
             if (destination is LoadingUnitLocation.Cell)
@@ -235,7 +237,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 requestingBay);
         }
 
-        public void MoveLoadingUnitToCell(MissionType missionType, int loadingUnitId, int destinationCellId, BayNumber requestingBay, MessageActor sender)
+        public void MoveLoadingUnitToCell(MissionType missionType, int loadingUnitId, int? destinationCellId, BayNumber requestingBay, MessageActor sender)
         {
             this.SendCommandToMachineManager(
                 new MoveLoadingUnitMessageData(

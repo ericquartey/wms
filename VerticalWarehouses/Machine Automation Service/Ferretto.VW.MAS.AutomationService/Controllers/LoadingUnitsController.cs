@@ -233,9 +233,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("start-moving-loading-unit-to-cell")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult StartMovingLoadingUnitToCell(int loadingUnitId, int destinationCellId)
+        public IActionResult StartMovingLoadingUnitToCell(int loadingUnitId, int? destinationCellId)
         {
-            this.moveLoadingUnitProvider.MoveLoadingUnitToCell(MissionType.Manual, loadingUnitId, destinationCellId, this.BayNumber, MessageActor.AutomationService);
+            this.moveLoadingUnitProvider.MoveLoadingUnitToCell(MissionType.ManualPlus, loadingUnitId, destinationCellId, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
