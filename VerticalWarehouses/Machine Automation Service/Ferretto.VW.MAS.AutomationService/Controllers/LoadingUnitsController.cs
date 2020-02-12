@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Abort(int? missionId, BayNumber targetBay)
         {
-            this.logger.LogDebug($"Abort Move mission {missionId}");
+            this.logger.LogInformation($"Abort Move mission {missionId}");
             this.moveLoadingUnitProvider.AbortMove(missionId, this.BayNumber, targetBay, MessageActor.AutomationService);
             return this.Accepted();
         }
@@ -86,7 +86,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.BadRequest();
             }
 
-            this.logger.LogDebug($"Eject load unit {loadingUnitId} to destination {destination}");
+            this.logger.LogInformation($"Eject load unit {loadingUnitId} to destination {destination}");
             this.moveLoadingUnitProvider.EjectFromCell(MissionType.Manual, destination, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
@@ -170,7 +170,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult InsertLoadingUnit(LoadingUnitLocation source, int? destinationCellId, int loadingUnitId)
         {
-            this.logger.LogDebug($"Insert load unit {loadingUnitId} from {source} to cell {destinationCellId}");
+            this.logger.LogInformation($"Insert load unit {loadingUnitId} from {source} to cell {destinationCellId}");
             var missionType = (source == LoadingUnitLocation.Elevator) ? MissionType.Manual : MissionType.LoadUnitOperation;
             this.moveLoadingUnitProvider.InsertToCell(missionType, source, destinationCellId, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
 
@@ -193,7 +193,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult MoveToBay(int id)
         {
-            this.logger.LogDebug($"Move load unit {id} to bay {this.BayNumber}");
+            this.logger.LogInformation($"Move load unit {id} to bay {this.BayNumber}");
             this.missionSchedulingProvider.QueueBayMission(id, this.BayNumber);
 
             return this.Accepted();
@@ -214,7 +214,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult RemoveFromBayAsync(int id)
         {
-            this.logger.LogDebug($"Move load unit {id} back from bay {this.BayNumber}");
+            this.logger.LogInformation($"Move load unit {id} back from bay {this.BayNumber}");
             this.missionSchedulingProvider.QueueRecallMission(id, this.BayNumber);
 
             return this.Accepted();
@@ -225,7 +225,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Resume(int? missionId, BayNumber targetBay)
         {
-            this.logger.LogDebug($"Resume mission {missionId} in bay {targetBay}");
+            this.logger.LogInformation($"Resume mission {missionId} in bay {targetBay}");
             this.moveLoadingUnitProvider.RemoveLoadUnit(missionId, this.BayNumber, targetBay, MessageActor.AutomationService);
             return this.Accepted();
         }
@@ -236,7 +236,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult StartMovingLoadingUnitToBay(int loadingUnitId, LoadingUnitLocation destination)
         {
-            this.logger.LogDebug($"Move load unit {loadingUnitId} to destination {destination} bay {this.BayNumber}");
+            this.logger.LogInformation($"Move load unit {loadingUnitId} to destination {destination} bay {this.BayNumber}");
             var missionType = (destination == LoadingUnitLocation.Elevator) ? MissionType.Manual : MissionType.LoadUnitOperation;
             this.moveLoadingUnitProvider.MoveLoadUnitToBay(missionType, loadingUnitId, destination, this.BayNumber, MessageActor.AutomationService);
 
@@ -248,7 +248,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult StartMovingLoadingUnitToCell(int loadingUnitId, int? destinationCellId)
         {
-            this.logger.LogDebug($"Move load unit {loadingUnitId} to cell {destinationCellId} bay {this.BayNumber}");
+            this.logger.LogInformation($"Move load unit {loadingUnitId} to cell {destinationCellId} bay {this.BayNumber}");
             this.moveLoadingUnitProvider.MoveLoadUnitToCell(MissionType.LoadUnitOperation, loadingUnitId, destinationCellId, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
@@ -260,7 +260,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult StartMovingSourceDestination(LoadingUnitLocation source, LoadingUnitLocation destination, int? sourceCellId, int? destinationCellId)
         {
-            this.logger.LogDebug($"Move from {source} cell {sourceCellId} to {destination} cell {destinationCellId} bay {this.BayNumber}");
+            this.logger.LogInformation($"Move from {source} cell {sourceCellId} to {destination} cell {destinationCellId} bay {this.BayNumber}");
             if (source == LoadingUnitLocation.Cell && destination == LoadingUnitLocation.Cell)
             {
                 this.moveLoadingUnitProvider.MoveFromCellToCell(MissionType.LoadUnitOperation, sourceCellId, destinationCellId, this.BayNumber, MessageActor.AutomationService);
@@ -292,7 +292,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Stop(int? missionId, BayNumber targetBay)
         {
-            this.logger.LogDebug($"Stop Move mission {missionId}");
+            this.logger.LogInformation($"Stop Move mission {missionId}");
             this.moveLoadingUnitProvider.StopMove(missionId, this.BayNumber, targetBay, MessageActor.AutomationService);
             return this.Accepted();
         }

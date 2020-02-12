@@ -122,6 +122,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 )
             {
                 var moveLoadingUnitProvider = serviceProvider.GetRequiredService<IMoveLoadUnitProvider>();
+                this.logger.LogInformation($"Move from cell {loadUnit.Cell.Id} to cell {cellId} Compact");
                 moveLoadingUnitProvider.MoveFromCellToCell(MissionType.Compact, loadUnit.Cell.Id, cellId, BayNumber.BayOne, MessageActor.MissionManager);
             }
             else
