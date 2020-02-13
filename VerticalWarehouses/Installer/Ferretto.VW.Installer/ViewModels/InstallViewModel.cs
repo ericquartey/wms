@@ -8,9 +8,65 @@ using Ferretto.VW.Installer.Core;
 namespace Ferretto.VW.Installer.ViewModels
 {
     [POCOViewModel]
-    public class InstallViewModel : IOperationResult, ISupportServices
-    {        
-        IServiceContainer serviceContainer = null;
+    public class InstallViewModel : Core.BindableBase, IOperationResult, ISupportServices
+    {
+        #region Fields
+
+        private readonly InstallationService installationService;
+
+        private bool isSuccessful;
+
+        private RelayCommand openFileCommand;
+
+        private IServiceContainer serviceContainer = null;
+
+        #endregion
+
+        #region Constructors
+
+        public InstallViewModel(InstallationService installationService)
+        {
+            this.installationService = installationService ?? throw new ArgumentNullException(nameof(installationService));
+
+            this.Filter = "Conf. files (.json)|*.json";
+            this.FilterIndex = 1;
+            this.Title = "Caricamento file di configurazione";
+            this.DefaultExt = "json";
+            this.DefaultFileName = "Configurazione";
+            this.OverwritePrompt = true;
+
+            this.RaisePropertyChanged(nameof(this.SoftwareVersion));
+        }
+
+        #endregion
+
+        #region Properties
+
+        public virtual string DefaultExt { get; set; }
+
+        public virtual string DefaultFileName { get; set; }
+
+        public virtual bool DialogResult { get; protected set; }
+
+        public virtual string FileBody { get; set; }
+
+        public virtual string Filter { get; set; }
+
+        public virtual int FilterIndex { get; set; }
+
+        public bool IsSuccessful => this.isSuccessful;
+
+        public ICommand OpenFileCommand =>
+                        this.openFileCommand
+                        ??
+                        (this.openFileCommand = new RelayCommand(this.OpenFile, this.CanOpenFile));
+
+        public virtual bool OverwritePrompt { get; set; }
+
+        public string PanelPcMasVersion => string.Format("Panel pc ver.{0} Machine automation service ver.{1}", this.installationService?.PanelPcVersion, this.installationService?.MasVersion);
+
+        public virtual string ResultFileName { get; protected set; }
+
         public IServiceContainer ServiceContainer
         {
             get
@@ -24,55 +80,17 @@ namespace Ferretto.VW.Installer.ViewModels
             }
         }
 
-        private RelayCommand openFileCommand;
-
-        private bool isSuccessful;
-        readonly InstallationService installationService;
-
-
-
-        public virtual string Filter { get; set; }
-        public virtual int FilterIndex { get; set; }
-        public virtual string Title { get; set; }
-        public virtual bool DialogResult { get; protected set; }
-        public virtual string ResultFileName { get; protected set; }
-        public virtual string FileBody { get; set; }
-
-
-        #region SaveFileDialogService specific properties
-        public virtual string DefaultExt { get; set; }
-        public virtual string DefaultFileName { get; set; }
-        public virtual bool OverwritePrompt { get; set; }
-
         public string SoftwareVersion => string.Format("Welcome to installation {0}", this.installationService?.SoftwareVersion);
-        #endregion
-        public string PanelPcMasVersion => string.Format("Panel pc ver.{0} Machine automation service ver.{1}", this.installationService?.PanelPcVersion, this.installationService?.MasVersion);     
+
+        public virtual string Title { get; set; }
+
+        protected IOpenFileDialogService OpenFileDialogService { get { return this.ServiceContainer.GetService<IOpenFileDialogService>(); } }
 
         protected ISaveFileDialogService SaveFileDialogService { get { return this.ServiceContainer.GetService<ISaveFileDialogService>(); } }
-        protected IOpenFileDialogService OpenFileDialogService { get { return this.ServiceContainer.GetService<IOpenFileDialogService>(); } }
-        public ICommand OpenFileCommand =>
-                        this.openFileCommand
-                        ??
-                        (this.openFileCommand = new RelayCommand(this.OpenFile, this.CanOpenFile));
 
-        public bool IsSuccessful => this.isSuccessful;        
+        #endregion
 
-        private bool CanOpenFile()
-        {
-            return true;
-        }
-
-        public InstallViewModel(InstallationService installationService)
-        {
-            this.installationService = installationService ?? throw new ArgumentNullException(nameof(installationService));
-
-            this.Filter = "Conf. files (.json)|*.json";            
-            this.FilterIndex = 1;
-            this.Title = "Caricamento file di configurazione";
-            this.DefaultExt = "json";
-            this.DefaultFileName = "Configurazione";
-            this.OverwritePrompt = true;
-        }
+        #region Methods
 
         public void OpenFile()
         {
@@ -90,7 +108,6 @@ namespace Ferretto.VW.Installer.ViewModels
                 using (var stream = file.OpenText())
                 {
                     this.FileBody = stream.ReadToEnd();
-                    
                 }
             }
         }
@@ -100,5 +117,11 @@ namespace Ferretto.VW.Installer.ViewModels
             this.isSuccessful = true;
         }
 
+        private bool CanOpenFile()
+        {
+            return true;
+        }
+
+        #endregion
     }
 }

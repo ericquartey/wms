@@ -12,12 +12,11 @@ namespace Ferretto.VW.Installer.Core
 {
     public sealed class InstallationService : BindableBase
     {
-
-        private const string UPDATEARG = "-update";
+        #region Fields
 
         private const string INSTALLARG = "-install";
 
-        #region Fields
+        private const string UPDATEARG = "-update";
 
         private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings()
         {
@@ -29,19 +28,19 @@ namespace Ferretto.VW.Installer.Core
 
         private Step activeStep;
 
-        private bool isRollbackInProgress;
-
-        private string softwareVersion;
-
-        private bool isUpdate;
-
         private bool isInstall;
 
-        private string panelPcVersion;
+        private bool isRollbackInProgress;
+
+        private bool isUpdate;
 
         private string masVersion;
 
         private OperationMode operationMode;
+
+        private string panelPcVersion;
+
+        private string softwareVersion;
 
         #endregion
 
@@ -52,15 +51,6 @@ namespace Ferretto.VW.Installer.Core
         #endregion
 
         #region Properties
-        public bool IsUpdate => this.isUpdate;
-        public bool IsInstall => this.isInstall;        
-
-        public OperationMode OperationMode
-        {
-            get => this.operationMode;
-            private set => this.SetProperty(ref this.operationMode, value);
-        }
-
 
         public Step ActiveStep
         {
@@ -68,28 +58,26 @@ namespace Ferretto.VW.Installer.Core
             private set => this.SetProperty(ref this.activeStep, value);
         }
 
+        public bool IsInstall => this.isInstall;
+
         public bool IsRollbackInProgress
         {
             get => this.isRollbackInProgress;
             private set => this.SetProperty(ref this.isRollbackInProgress, value);
         }
 
-        public void Start()
+        public bool IsUpdate => this.isUpdate;
+
+        public string MasVersion
         {
-            if (this.isInstall)
-            {
-                this.OperationMode = OperationMode.Imstall;
-            }
-            else if (this.isUpdate)
-            {
-                this.OperationMode = OperationMode.Update;
-            }
+            get => this.masVersion;
+            private set => this.SetProperty(ref this.masVersion, value);
         }
 
-        public string SoftwareVersion
+        public OperationMode OperationMode
         {
-            get => this.softwareVersion;
-            private set => this.SetProperty(ref this.softwareVersion, value);
+            get => this.operationMode;
+            private set => this.SetProperty(ref this.operationMode, value);
         }
 
         public string PanelPcVersion
@@ -98,12 +86,11 @@ namespace Ferretto.VW.Installer.Core
             private set => this.SetProperty(ref this.panelPcVersion, value);
         }
 
-        public string MasVersion
+        public string SoftwareVersion
         {
-            get => this.masVersion;
-            private set => this.SetProperty(ref this.masVersion, value);
+            get => this.softwareVersion;
+            private set => this.SetProperty(ref this.softwareVersion, value);
         }
-
 
         public IEnumerable<Step> Steps { get; private set; }
 
@@ -113,7 +100,6 @@ namespace Ferretto.VW.Installer.Core
 
         public static InstallationService LoadAsync(string fileName)
         {
-
             if (string.IsNullOrWhiteSpace(fileName))
             {
                 throw new ArgumentException("message", nameof(fileName));
@@ -130,6 +116,11 @@ namespace Ferretto.VW.Installer.Core
             };
         }
 
+        public void Abort()
+        {
+            this.IsRollbackInProgress = true;
+        }
+
         public bool CanStart()
         {
             this.SetArgsStartup();
@@ -139,32 +130,10 @@ namespace Ferretto.VW.Installer.Core
                 {
                     this.logger.Debug("Nothing to do, update/installation in progress.");
                     return false;
-                }                
+                }
             }
 
             return true;
-        }
-
-        private void SetArgsStartup()
-        {
-            var args = Environment.GetCommandLineArgs();
-            foreach (var arg in args)
-            {
-                if (arg.ToLower(CultureInfo.InvariantCulture) == UPDATEARG)
-                {
-                    this.isUpdate = true;
-                }
-                else if (arg.ToLower(CultureInfo.InvariantCulture) == INSTALLARG)
-                {
-                    this.isInstall = true;
-                }
-            }
-        }
-
-
-        public void Abort()
-        {
-            this.IsRollbackInProgress = true;
         }
 
         public Step GetNextStepToExecute()
@@ -172,10 +141,18 @@ namespace Ferretto.VW.Installer.Core
             return this.Steps.FirstOrDefault(s => s.Status == StepStatus.ToDo);
         }
 
+        public void LoadMasVersion()
+        {
+            this.MasVersion = this.GetVersion("../panelpc_app/properties/app.manifest");
+        }
+
+        public void LoadPanelPcVersion()
+        {
+            this.PanelPcVersion = this.GetVersion("../automation_service/properties/app.manifest");
+        }
+
         public async Task RunAsync()
         {
-            return;
-
             if (!this.Steps.Any())
             {
                 throw new InvalidOperationException("Unable to execute setup because no steps are available.");
@@ -200,8 +177,6 @@ namespace Ferretto.VW.Installer.Core
             }
 
             this.CheckToSkipCurrentStartingStep();
-
-            this.LoadSoftwareVersion();
 
             try
             {
@@ -251,6 +226,22 @@ namespace Ferretto.VW.Installer.Core
             this.RaiseInstallationFinished(!this.IsRollbackInProgress);
         }
 
+        public void Start()
+        {
+            this.LoadMasVersion();
+            this.LoadPanelPcVersion();
+            this.LoadMasVersion();
+
+            if (this.isInstall)
+            {
+                this.OperationMode = OperationMode.Imstall;
+            }
+            else if (this.isUpdate)
+            {
+                this.OperationMode = OperationMode.Update;
+            }
+        }
+
         private void CheckToSkipCurrentStartingStep()
         {
             var stepInProgress = this.Steps.SingleOrDefault(s => s.Status == StepStatus.Start
@@ -259,10 +250,9 @@ namespace Ferretto.VW.Installer.Core
             if (!(stepInProgress is null))
             {
                 stepInProgress.Status = StepStatus.Done;
-                this.ActiveStep = stepInProgress;                
+                this.ActiveStep = stepInProgress;
                 this.RaisePropertyChanged(nameof(this.ActiveStep));
             }
-            
         }
 
         private void Dump()
@@ -271,22 +261,6 @@ namespace Ferretto.VW.Installer.Core
 
             System.IO.File.WriteAllText("steps-snapshot.json", objectString);
         }
-
-        private void LoadSoftwareVersion()
-        {
-            this.SoftwareVersion = this.GetVersion("./properties/app.manifest");
-        }
-
-        public void LoadPanelPcVersion()
-        {
-            this.PanelPcVersion = this.GetVersion("../automation_service/properties/app.manifest");
-        }
-
-        public void LoadMasVersion()
-        {
-            this.MasVersion = this.GetVersion("../panelpc_app/properties/app.manifest");
-        }
-
 
         private string GetVersion(string fullPath)
         {
@@ -318,6 +292,11 @@ namespace Ferretto.VW.Installer.Core
             return null;
         }
 
+        private void LoadSoftwareVersion()
+        {
+            this.SoftwareVersion = this.GetVersion("./properties/app.manifest");
+        }
+
         private void RaiseInstallationFinished(bool success)
         {
             this.Finished?.Invoke(this, new InstallationFinishedEventArgs(success));
@@ -331,6 +310,22 @@ namespace Ferretto.VW.Installer.Core
             {
                 throw new InvalidOperationException(
                     $"Unable to continue with setup because rollback of step {stepToRollback.Number} failed.");
+            }
+        }
+
+        private void SetArgsStartup()
+        {
+            var args = Environment.GetCommandLineArgs();
+            foreach (var arg in args)
+            {
+                if (arg.ToLower(CultureInfo.InvariantCulture) == UPDATEARG)
+                {
+                    this.isUpdate = true;
+                }
+                else if (arg.ToLower(CultureInfo.InvariantCulture) == INSTALLARG)
+                {
+                    this.isInstall = true;
+                }
             }
         }
 
