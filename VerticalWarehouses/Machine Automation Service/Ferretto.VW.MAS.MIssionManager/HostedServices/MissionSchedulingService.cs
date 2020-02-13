@@ -62,14 +62,16 @@ namespace Ferretto.VW.MAS.MissionManager
 
         #region Methods
 
-        public void ScheduleCompactingMissions(IServiceProvider serviceProvider)
+        public bool ScheduleCompactingMissions(IServiceProvider serviceProvider)
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
 
             if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status != MissionStatus.New))
             {
-                serviceProvider.GetRequiredService<IMissionSchedulingProvider>().QueueLoadingUnitCompactingMission(serviceProvider);
+                return serviceProvider.GetRequiredService<IMissionSchedulingProvider>().QueueLoadingUnitCompactingMission(serviceProvider);
             }
+            // no more compacting is possible. Exit from compact mode
+            return false;
         }
 
         public async Task ScheduleMissionsOnBayAsync(BayNumber bayNumber, IServiceProvider serviceProvider, bool restore = false)
@@ -406,6 +408,7 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 case MachineMode.SwitchingToAutomatic:
                 case MachineMode.SwitchingToLoadUnitOperations:
+                case MachineMode.SwitchingToCompact:
                     {
                         // in this machine mode we generate homing for elevator and bays, but only if there are no missions to restore.
                         // if homing is not possible we switch anyway to automatic mode
@@ -414,12 +417,18 @@ namespace Ferretto.VW.MAS.MissionManager
 
                         if (activeMissions.Any(m => m.IsMissionToRestore() || m.Step >= MissionStep.Error))
                         {
-                            if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic
-                                && activeMissions.Any(m => m.MissionType == MissionType.LoadUnitOperation)
-                                )
+                            if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic)
                             {
-                                this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToLoadUnitOperations;
-                                this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                                if (activeMissions.Any(m => m.MissionType == MissionType.LoadUnitOperation))
+                                {
+                                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToLoadUnitOperations;
+                                    this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                                }
+                                else if (activeMissions.Any(m => m.MissionType == MissionType.Compact))
+                                {
+                                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToCompact;
+                                    this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                                }
                             }
                             await this.ScheduleRestore(serviceProvider, bayProvider, activeMissions);
                         }
@@ -435,6 +444,12 @@ namespace Ferretto.VW.MAS.MissionManager
                                     )
                                 {
                                     this.machineVolatileDataProvider.Mode = MachineMode.LoadUnitOperations;
+                                }
+                                else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToCompact
+                                    || activeMissions.Any(m => m.MissionType == MissionType.Compact)
+                                    )
+                                {
+                                    this.machineVolatileDataProvider.Mode = MachineMode.Compact;
                                 }
                                 else
                                 {
@@ -470,22 +485,13 @@ namespace Ferretto.VW.MAS.MissionManager
                     }
                     break;
 
-                case MachineMode.SwitchingToCompact:
-                    {
-                        var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
-
-                        if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status != MissionStatus.New)
-                            && !this.GenerateHoming(bayProvider, this.machineVolatileDataProvider.IsHomingExecuted))
-                        {
-                            this.machineVolatileDataProvider.Mode = MachineMode.Compact;
-                            this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
-                        }
-                    }
-                    break;
-
                 case MachineMode.Compact:
                     {
-                        this.ScheduleCompactingMissions(serviceProvider);
+                        if (!this.ScheduleCompactingMissions(serviceProvider))
+                        {
+                            this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                            this.Logger.LogInformation($"Compacting terminated. Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                        }
                     }
                     break;
 

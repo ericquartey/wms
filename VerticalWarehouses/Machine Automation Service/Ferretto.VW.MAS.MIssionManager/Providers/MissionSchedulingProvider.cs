@@ -108,11 +108,12 @@ namespace Ferretto.VW.MAS.MissionManager
         /// When no compacting mission is available machine returns to manual mode
         /// </summary>
         /// <param name="serviceProvider"></param>
-        public void QueueLoadingUnitCompactingMission(IServiceProvider serviceProvider)
+        public bool QueueLoadingUnitCompactingMission(IServiceProvider serviceProvider)
         {
             var loadUnits = this.loadingUnitsDataProvider.GetAll().Where(x => x.Cell != null);
             int? cellId;
             LoadingUnit loadUnit;
+
             // first we try to find a lower place for each load unit, matching exactly the height
             if (this.CompactFindEmptyCell(loadUnits, CompactingType.ExactMatchCompacting, out loadUnit, out cellId)
                 // then we try to find a lower place for each load unit
@@ -124,14 +125,10 @@ namespace Ferretto.VW.MAS.MissionManager
                 var moveLoadingUnitProvider = serviceProvider.GetRequiredService<IMoveLoadUnitProvider>();
                 this.logger.LogInformation($"Move from cell {loadUnit.Cell.Id} to cell {cellId} Compact");
                 moveLoadingUnitProvider.MoveFromCellToCell(MissionType.Compact, loadUnit.Cell.Id, cellId, BayNumber.BayOne, MessageActor.MissionManager);
+                return true;
             }
-            else
-            {
-                // no more compacting is possible. Exit from compact mode
-                var machineModeDataProvider = serviceProvider.GetRequiredService<IMachineVolatileDataProvider>();
-                machineModeDataProvider.Mode = MachineMode.Manual;
-                this.logger.LogInformation($"Compacting terminated. Machine status switched to {machineModeDataProvider.Mode}");
-            }
+            // no more compacting is possible. Exit from compact mode
+            return false;
         }
 
         public void QueueRecallMission(int loadingUnitId, BayNumber sourceBayNumber)
