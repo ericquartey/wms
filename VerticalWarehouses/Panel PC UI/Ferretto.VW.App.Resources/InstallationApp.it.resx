@@ -1608,4 +1608,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="ModeLoadUnitOperations" xml:space="preserve">
     <value>Operazioni cassetto</value>
   </data>
+  <data name="Compact" xml:space="preserve">
+    <value>Compatta</value>
+  </data>
 </root>

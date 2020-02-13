@@ -682,6 +682,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compact.
+        /// </summary>
+        public static string Compact {
+            get {
+                return ResourceManager.GetString("Compact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Completed cycles.
         /// </summary>
         public static string CompletedCycles {

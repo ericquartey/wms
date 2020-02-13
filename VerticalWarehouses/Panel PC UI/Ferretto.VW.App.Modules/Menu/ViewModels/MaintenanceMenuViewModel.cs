@@ -75,7 +75,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.menuCompactionCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Compaction),
                 () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual &&
+                      (this.MachineModeService.MachineMode == MachineMode.Manual ||
+                       this.MachineModeService.MachineMode == MachineMode.Compact) &&
                       this.MachineModeService.MachinePower == MachinePowerState.Powered));
 
         public ICommand MenuMaintenanceCommand =>

@@ -23,6 +23,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private DelegateCommand detailButtonCommand;
 
+        private bool isStopPressed;
+
         #endregion
 
         #region Constructors
@@ -39,18 +41,36 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Properties
 
         public ICommand CompactingStartCommand =>
-            this.compactingStartCommand ??
-            (this.compactingStartCommand = new DelegateCommand(async () => this.StartAsync(), this.CanCompactingStart));
+            this.compactingStartCommand
+            ??
+            (this.compactingStartCommand =
+                new DelegateCommand(
+                    async () => await this.StartAsync(),
+                    this.CanCompactingStart));
 
         public ICommand CompactingStopCommand =>
-            this.compactingStopCommand ??
-            (this.compactingStopCommand = new DelegateCommand(async () => this.StopAsync(), this.CanCompactingStop));
+            this.compactingStopCommand
+            ??
+            (this.compactingStopCommand =
+                new DelegateCommand(
+                    async () => await this.StopAsync(),
+                    this.CanCompactingStop));
 
         public ICommand DetailButtonCommand =>
-                            this.detailButtonCommand ??
-            (this.detailButtonCommand = new DelegateCommand(() => this.Detail(), this.CanDetailCommand));
+            this.detailButtonCommand
+            ??
+            (this.detailButtonCommand =
+                new DelegateCommand(
+                    () => this.Detail(),
+                    this.CanDetailCommand));
 
-        public override EnableMask EnableMask => EnableMask.MachineManualMode | EnableMask.MachinePoweredOn;
+        public override EnableMask EnableMask => EnableMask.Any;
+
+        public bool IsStopPressed
+        {
+            get => this.isStopPressed;
+            protected set => this.SetProperty(ref this.isStopPressed, value, this.RaiseCanExecuteChanged);
+        }
 
         #endregion
 
@@ -58,13 +78,19 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            this.IsWaitingForResponse = true;
-
-            await base.OnAppearedAsync();
-
             this.IsBackNavigationAllowed = true;
 
-            this.IsWaitingForResponse = false;
+            await base.OnAppearedAsync();
+        }
+
+        protected override async Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
+        {
+            await base.OnMachineStatusChangedAsync(e);
+
+            if (!this.IsMoving)
+            {
+                this.IsStopPressed = false;
+            }
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -79,13 +105,16 @@ namespace Ferretto.VW.App.Operator.ViewModels
         private bool CanCompactingStart()
         {
             return !this.IsWaitingForResponse &&
+                   this.MachineModeService.MachineMode == MachineMode.Manual &&
+                   this.MachineService.MachinePower == MachinePowerState.Powered &&
                    !this.IsMoving;
         }
 
         private bool CanCompactingStop()
         {
             return !this.IsWaitingForResponse &&
-                   this.IsMoving;
+                   this.IsMoving &&
+                   !this.IsStopPressed;
         }
 
         private bool CanDetailCommand()
@@ -140,6 +169,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.IsWaitingForResponse = true;
 
                 await this.machineCompactingWebService.StopAsync();
+
+                this.IsStopPressed = true;
             }
             catch (Exception ex)
             {

@@ -15,136 +15,6 @@
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <!--<Grid Margin="100,30,0,0">
-
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-
-        <TextBlock Grid.ColumnSpan="2"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static Resources:OperatorApp.DrawerCompactingHeader}" />
-
-        <Grid Grid.Row="1"
-              Grid.Column="0"
-              Grid.ColumnSpan="2">
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-
-            <TextBlock Grid.Column="0"
-                       HorizontalAlignment="Left"
-                       VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_GeneralTextBlockStyle}"
-                       Text="{x:Static Resources:OperatorApp.DrawerCompactingFront}" />
-
-            <TextBlock Grid.Column="1"
-                       HorizontalAlignment="Left"
-                       VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_GeneralTextBlockStyle}"
-                       Text="{x:Static Resources:OperatorApp.DrawerCompactingRear}" />
-
-            <controls:PpcLabeledText Grid.Row="1"
-                                     Grid.Column="0"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="8"
-                                     LabelText="{x:Static Resources:OperatorApp.DrawerCompactingFragmentNumber}" />
-
-            <controls:PpcLabeledText Grid.Row="1"
-                                     Grid.Column="1"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="6"
-                                     LabelText="{x:Static Resources:OperatorApp.DrawerCompactingFragmentNumber}" />
-
-            <controls:PpcLabeledText Grid.Row="2"
-                                     Grid.Column="0"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="200"
-                                     LabelText="{x:Static Resources:OperatorApp.DrawerCompactingMaxSpaceRecoverable}" />
-
-            <controls:PpcLabeledText Grid.Row="2"
-                                     Grid.Column="1"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="150"
-                                     LabelText="{x:Static Resources:OperatorApp.DrawerCompactingMaxSpaceRecoverable}" />
-
-            <controls:PpcTextBox Grid.Row="3"
-                                 Grid.Column="0"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 LabelText="{x:Static Resources:OperatorApp.DrawerCompactingSpaceToRecover}" />
-
-            <controls:PpcTextBox Grid.Row="3"
-                                 Grid.Column="1"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 LabelText="{x:Static Resources:OperatorApp.DrawerCompactingSpaceToRecover}" />
-
-            <controls:PpcLabeledText Grid.Row="4"
-                                     Grid.Column="0"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="Compattazione in corso"
-                                     LabelText="{x:Static Resources:OperatorApp.DrawerCompactingProcedureStatus}" />
-
-            <controls:PpcLabeledText Grid.Row="4"
-                                     Grid.Column="1"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="In attesa"
-                                     LabelText="{x:Static Resources:OperatorApp.DrawerCompactingProcedureStatus}" />
-
-            <controls:PpcButton Grid.Row="5"
-                                Grid.Column="0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Top"
-                                Command="{Binding CompactingStopCommand}"
-                                Content="{x:Static Resources:OperatorApp.DrawerCompactingAntStop}" />
-
-
-            <controls:PpcButton Grid.Row="5"
-                                Grid.Column="1"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Top"
-                                Command="{Binding CompactingStartCommand}"
-                                Content="{x:Static Resources:OperatorApp.DrawerCompactingRearCompact}" />
-
-        </Grid>
-
-        <controls:PpcButton Grid.Row="3"
-                            Grid.Column="2"
-                            Margin="15,15,15,0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Top"
-                            Command="{Binding DetailButtonCommand}"
-                            Content="{x:Static Resources:OperatorApp.CommonButtonDetail}" />
-
-    </Grid>-->
-
     <Grid Margin="15,0,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -388,7 +258,8 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding CompactingStopCommand}"
-                                Content="{x:Static Resources:OperatorApp.DrawerCompactingAntStop}" />
+                                Content="{x:Static Resources:General.Stop}"
+                                IsBusy="{Binding IsStopPressed}" />
         </StackPanel>
 
     </Grid>
