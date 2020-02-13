@@ -1611,4 +1611,22 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="Compact" xml:space="preserve">
     <value>Compatta</value>
   </data>
+  <data name="TotalCycleMoreThanRequired" xml:space="preserve">
+    <value>I cicli totali completati sono più di quelli richiesti.</value>
+  </data>
+  <data name="TrayTareValueMustBePositive" xml:space="preserve">
+    <value>Tara deve essere maggiore di 0</value>
+  </data>
+  <data name="TrayTareValueNotInserted" xml:space="preserve">
+    <value>Tara non inserita</value>
+  </data>
+  <data name="WeightValueMustBePositive" xml:space="preserve">
+    <value>Peso deve essere maggiore di 0</value>
+  </data>
+  <data name="WeightValueNotInserted" xml:space="preserve">
+    <value>Peso non inserito</value>
+  </data>
+  <data name="CarouselCalibration" xml:space="preserve">
+    <value>Calibrazione giostra</value>
+  </data>
 </root>

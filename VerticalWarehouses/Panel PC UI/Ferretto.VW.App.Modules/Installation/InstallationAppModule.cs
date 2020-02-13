@@ -43,7 +43,8 @@ namespace Ferretto.VW.App.Modules.Installation
         {
             containerRegistry.RegisterForNavigation<BayCheckView>();
             containerRegistry.RegisterForNavigation<DepositAndPickUpTestView>();
-
+            containerRegistry.RegisterForNavigation<CarouselCalibrationView>();
+            
             containerRegistry.RegisterForNavigation<BaysSensorsView>();
             containerRegistry.RegisterForNavigation<VerticalAxisSensorsView>();
             containerRegistry.RegisterForNavigation<OtherSensorsView>();

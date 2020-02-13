@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -471,31 +472,31 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (!this.Tare.HasValue)
                 {
-                    this.ShowNotification("Tara non inserita", Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(InstallationApp.TrayTareValueNotInserted, Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
                 if (this.Tare.Value <= 0)
                 {
-                    this.ShowNotification("Tara deve essere maggiore di 0", Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(InstallationApp.TrayTareValueMustBePositive, Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
                 if (!this.NetWeight.HasValue)
                 {
-                    this.ShowNotification("Peso non inserito", Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(InstallationApp.WeightValueNotInserted, Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
                 if (this.NetWeight.Value <= 0)
                 {
-                    this.ShowNotification("Peso deve essere maggiore di 0", Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(InstallationApp.WeightValueMustBePositive, Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
                 if ((this.InputRequiredCycles.Value - this.CumulativePerformedCycles.Value) <= 0)
                 {
-                    this.ShowNotification("Total completed cycles are greater than required cycles.", Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(InstallationApp.TotalCycleMoreThanRequired, Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 

@@ -430,6 +430,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Carousel calibration.
+        /// </summary>
+        public static string CarouselCalibration {
+            get {
+                return ResourceManager.GetString("CarouselCalibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Carousel down.
         /// </summary>
         public static string CarouselDown {
@@ -4077,6 +4086,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total completed cycles are greater than required cycles..
+        /// </summary>
+        public static string TotalCycleMoreThanRequired {
+            get {
+                return ResourceManager.GetString("TotalCycleMoreThanRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Total panels.
         /// </summary>
         public static string TotalPanels {
@@ -4127,6 +4145,24 @@ namespace Ferretto.VW.App.Resources {
         public static string TrayTare {
             get {
                 return ResourceManager.GetString("TrayTare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tare value must be strictly positive..
+        /// </summary>
+        public static string TrayTareValueMustBePositive {
+            get {
+                return ResourceManager.GetString("TrayTareValueMustBePositive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tare value not inserted.
+        /// </summary>
+        public static string TrayTareValueNotInserted {
+            get {
+                return ResourceManager.GetString("TrayTareValueNotInserted", resourceCulture);
             }
         }
         
@@ -4433,6 +4469,24 @@ namespace Ferretto.VW.App.Resources {
         public static string WeightToleranceMustBePositive {
             get {
                 return ResourceManager.GetString("WeightToleranceMustBePositive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weight value must be strictly positive..
+        /// </summary>
+        public static string WeightValueMustBePositive {
+            get {
+                return ResourceManager.GetString("WeightValueMustBePositive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weight value not inserted.
+        /// </summary>
+        public static string WeightValueNotInserted {
+            get {
+                return ResourceManager.GetString("WeightValueNotInserted", resourceCulture);
             }
         }
         
