@@ -67,6 +67,7 @@
     <None Remove="ViewsAndViewModels\SingleViews\UpdateView.xaml" />
     <None Remove="ViewsAndViewModels\SingleViews\UsersView.xaml" />
     <None Remove="Views\Bays\BayCheckView.xaml" />
+    <None Remove="Views\Bays\CarouselCalibrationView.xaml" />
     <None Remove="Views\CellsLoadingUnits\CellsLoadingUnitsMenuView.xaml" />
     <None Remove="Views\CellsLoadingUnits\CellsView.xaml" />
     <None Remove="Views\CellsLoadingUnits\LoadingUnitsView.xaml" />

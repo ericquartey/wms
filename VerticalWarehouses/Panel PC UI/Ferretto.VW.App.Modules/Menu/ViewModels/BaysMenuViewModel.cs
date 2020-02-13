@@ -25,6 +25,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand bayHeightCommand;
 
+        private DelegateCommand carouselCalibrationCommand;
+
         private DelegateCommand testShutterCommand;
 
         #endregion
@@ -49,6 +51,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             BayControl,
 
             BayHeight,
+
+            CarouselCalibration,
 
             TestShutter,
         }
@@ -77,11 +81,25 @@ namespace Ferretto.VW.App.Menu.ViewModels
                       (true || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
                 ));
 
+        //protected SetupStepStatus CarouselCalibration => this.SetupStatusCapabilities?.CarouselCalibration ?? new SetupStepStatus();
+
+        public ICommand CarouselCalibrationCommand =>
+                    this.carouselCalibrationCommand
+            ??
+            (this.carouselCalibrationCommand = new DelegateCommand(
+                () => this.ExecuteCommand(Menu.CarouselCalibration),
+                () => this.CanExecuteCommand() &&
+                      this.MachineModeService.MachineMode == MachineMode.Manual && false &&
+               (true || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
+                ));
+
         public override EnableMask EnableMask => EnableMask.Any;
 
         public bool IsBayControlCompleted => this.BayControl.IsCompleted;
 
         public bool IsBayHeightCompleted => false;
+
+        public bool IsCarouselCalibrationVisible => this.MachineService.HasCarousel;
 
         public bool IsTestBayVisible => (this.MachineService.HasBayExternal || this.MachineService.HasCarousel);
 
@@ -133,6 +151,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Methods
 
+        public override async Task OnAppearedAsync()
+        {
+            this.RaisePropertyChanged(nameof(this.IsCarouselCalibrationVisible));
+
+            await base.OnAppearedAsync();
+        }
+
         protected override async Task OnDataRefreshAsync()
         {
             this.SetupStatusCapabilities = await this.machineSetupStatusWebService.GetAsync();
@@ -151,6 +176,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.bayControlCommand?.RaiseCanExecuteChanged();
             this.bayHeightCommand?.RaiseCanExecuteChanged();
             this.testShutterCommand?.RaiseCanExecuteChanged();
+            this.carouselCalibrationCommand?.RaiseCanExecuteChanged();
         }
 
         private void ExecuteCommand(Menu menu)
@@ -169,6 +195,14 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     this.NavigationService.Appear(
                         nameof(Utils.Modules.Installation),
                         Utils.Modules.Installation.PROFILEHEIGHTCHECKVIEW,
+                        data: null,
+                        trackCurrentView: true);
+                    break;
+
+                case Menu.CarouselCalibration:
+                    this.NavigationService.Appear(
+                        nameof(Utils.Modules.Installation),
+                        Utils.Modules.Installation.CAROUSELCALIBRATION,
                         data: null,
                         trackCurrentView: true);
                     break;

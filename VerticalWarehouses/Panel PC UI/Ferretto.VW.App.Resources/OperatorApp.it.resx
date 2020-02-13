@@ -739,7 +739,7 @@
     <value>Riempimento</value>
   </data>
   <data name="DrawerSaturationDataGridHeaderFillingPercentage" xml:space="preserve">
-    <value>%Riemp.</value>
+    <value>Riemp.</value>
   </data>
   <data name="DrawerSaturationDataGridHeaderMissions" xml:space="preserve">
     <value>Missioni</value>

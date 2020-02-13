@@ -624,7 +624,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     this.ShowNotification(InstallationApp.ResetMachineSuccessfull, Services.Models.NotificationSeverity.Success);
 
-                    this.RaiseCanExecuteChanged();
+                    this.MachineService.OnUpdateServiceAsync();
                 }
                 catch (Exception ex)
                 {

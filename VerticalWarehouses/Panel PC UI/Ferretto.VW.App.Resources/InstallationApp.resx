@@ -1678,4 +1678,25 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="ModeLoadUnitOperations" xml:space="preserve">
     <value>Loadunit Operations</value>
   </data>
+  <data name="Compact" xml:space="preserve">
+    <value>Compact</value>
+  </data>
+  <data name="TotalCycleMoreThanRequired" xml:space="preserve">
+    <value>Total completed cycles are greater than required cycles.</value>
+  </data>
+  <data name="TrayTareValueMustBePositive" xml:space="preserve">
+    <value>Tare value must be strictly positive.</value>
+  </data>
+  <data name="TrayTareValueNotInserted" xml:space="preserve">
+    <value>Tare value not inserted</value>
+  </data>
+  <data name="WeightValueMustBePositive" xml:space="preserve">
+    <value>Weight value must be strictly positive.</value>
+  </data>
+  <data name="WeightValueNotInserted" xml:space="preserve">
+    <value>Weight value not inserted</value>
+  </data>
+  <data name="CarouselCalibration" xml:space="preserve">
+    <value>Carousel calibration</value>
+  </data>
 </root>

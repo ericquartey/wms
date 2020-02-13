@@ -255,6 +255,11 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
                 <Setter Property="Content" Value="{x:Static res:InstallationApp.Test}" />
             </DataTrigger>
+            <DataTrigger Binding="{Binding IsMachineInCompact}"
+                         Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
+                <Setter Property="Content" Value="{x:Static res:InstallationApp.Compact}" />
+            </DataTrigger>
         </Style.Triggers>
     </Style>
 
@@ -713,7 +718,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-
 
     <Style x:Key="WizardIntoButton"
            BasedOn="{StaticResource {x:Type controls:PpcButton}}"
