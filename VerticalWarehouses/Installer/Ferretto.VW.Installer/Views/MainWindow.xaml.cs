@@ -1,17 +1,18 @@
-﻿using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
-using NLog.Time;
+using Ferretto.VW.Installer.ViewModels;
 
-namespace Ferretto.VW.Installer
+namespace Ferretto.VW.Installer.Views
 {
-    public partial class MainWindow
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
     {
-        #region Constructors
-
         public MainWindow()
         {
             this.InitializeComponent();
+
 #if !DEBUG
             this.Top = 0;
             this.Left = 0;
@@ -24,16 +25,6 @@ namespace Ferretto.VW.Installer
             this.Loaded += this.OnMainWindowLoaded;
         }
 
-        private void OnMainWindowLoaded(object sender, RoutedEventArgs e)
-        {
-            var viewModel = this.DataContext as MainWindowViewModel;
-
-            viewModel.StartInstallation();
-        }
-
-        #endregion
-
-        #region Methods
         private void Shell_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -42,14 +33,21 @@ namespace Ferretto.VW.Installer
             }
         }
 
+        private void OnMainWindowLoaded(object sender, RoutedEventArgs e)
+        {
+            var viewModel = this.DataContext as MainViewModel;
+
+            viewModel.StartInstallation();
+        }
+
+
         protected override void OnInitialized(System.EventArgs e)
         {
             base.OnInitialized(e);
 
-            var viewModel = new MainWindowViewModel();
+            var viewModel = new MainViewModel();
             this.DataContext = viewModel;
         }
 
-        #endregion
     }
 }

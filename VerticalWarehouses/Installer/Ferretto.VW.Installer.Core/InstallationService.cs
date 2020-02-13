@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Xml;
 using Newtonsoft.Json;
 using NLog;
-using NLog.Time;
 
 namespace Ferretto.VW.Installer.Core
 {
@@ -38,6 +37,12 @@ namespace Ferretto.VW.Installer.Core
 
         private bool isInstall;
 
+        private string panelPcVersion;
+
+        private string masVersion;
+
+        private OperationMode operationMode;
+
         #endregion
 
         #region Events
@@ -47,6 +52,15 @@ namespace Ferretto.VW.Installer.Core
         #endregion
 
         #region Properties
+        public bool IsUpdate => this.isUpdate;
+        public bool IsInstall => this.isInstall;        
+
+        public OperationMode OperationMode
+        {
+            get => this.operationMode;
+            private set => this.SetProperty(ref this.operationMode, value);
+        }
+
 
         public Step ActiveStep
         {
@@ -60,11 +74,36 @@ namespace Ferretto.VW.Installer.Core
             private set => this.SetProperty(ref this.isRollbackInProgress, value);
         }
 
+        public void Start()
+        {
+            if (this.isInstall)
+            {
+                this.OperationMode = OperationMode.Imstall;
+            }
+            else if (this.isUpdate)
+            {
+                this.OperationMode = OperationMode.Update;
+            }
+        }
+
         public string SoftwareVersion
         {
             get => this.softwareVersion;
             private set => this.SetProperty(ref this.softwareVersion, value);
         }
+
+        public string PanelPcVersion
+        {
+            get => this.panelPcVersion;
+            private set => this.SetProperty(ref this.panelPcVersion, value);
+        }
+
+        public string MasVersion
+        {
+            get => this.masVersion;
+            private set => this.SetProperty(ref this.masVersion, value);
+        }
+
 
         public IEnumerable<Step> Steps { get; private set; }
 
@@ -135,6 +174,8 @@ namespace Ferretto.VW.Installer.Core
 
         public async Task RunAsync()
         {
+            return;
+
             if (!this.Steps.Any())
             {
                 throw new InvalidOperationException("Unable to execute setup because no steps are available.");
@@ -218,6 +259,8 @@ namespace Ferretto.VW.Installer.Core
             if (!(stepInProgress is null))
             {
                 stepInProgress.Status = StepStatus.Done;
+                this.ActiveStep = stepInProgress;                
+                this.RaisePropertyChanged(nameof(this.ActiveStep));
             }
             
         }
@@ -231,9 +274,25 @@ namespace Ferretto.VW.Installer.Core
 
         private void LoadSoftwareVersion()
         {
+            this.SoftwareVersion = this.GetVersion("./properties/app.manifest");
+        }
+
+        public void LoadPanelPcVersion()
+        {
+            this.PanelPcVersion = this.GetVersion("../automation_service/properties/app.manifest");
+        }
+
+        public void LoadMasVersion()
+        {
+            this.MasVersion = this.GetVersion("../panelpc_app/properties/app.manifest");
+        }
+
+
+        private string GetVersion(string fullPath)
+        {
             try
             {
-                using (var reader = new StreamReader("./properties/app.manifest"))
+                using (var reader = new StreamReader(fullPath))
                 {
                     using (var xmlReader = XmlReader.Create(reader))
                     {
@@ -245,7 +304,7 @@ namespace Ferretto.VW.Installer.Core
                             {
                                 if (xmlReader.HasAttributes)
                                 {
-                                    this.SoftwareVersion = xmlReader.GetAttribute("version");
+                                    return xmlReader.GetAttribute("version");
                                 }
                             }
                         }
@@ -255,6 +314,8 @@ namespace Ferretto.VW.Installer.Core
             catch
             {
             }
+
+            return null;
         }
 
         private void RaiseInstallationFinished(bool success)
