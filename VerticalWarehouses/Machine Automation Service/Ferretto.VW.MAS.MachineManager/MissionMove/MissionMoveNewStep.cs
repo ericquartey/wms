@@ -410,7 +410,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
 
                 case MissionType.Compact:
-                    returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.Compact);
+                    returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.Compact
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToCompact
+                        );
                     break;
 
                 case MissionType.WMS:

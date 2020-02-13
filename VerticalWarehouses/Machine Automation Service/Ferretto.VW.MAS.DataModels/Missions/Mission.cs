@@ -72,7 +72,8 @@ namespace Ferretto.VW.MAS.DataModels
             return this.MissionType == MissionType.WMS
                 || this.MissionType == MissionType.IN
                 || this.MissionType == MissionType.LoadUnitOperation
-                || this.MissionType == MissionType.OUT;
+                || this.MissionType == MissionType.OUT
+                || this.MissionType == MissionType.Compact;
         }
 
         public override string ToString()
