@@ -110,7 +110,8 @@ namespace Ferretto.VW.App.Modules.Operator.Services
             var waitingMissions = machineMissions.Where(m =>
                    m.Step == MissionStep.WaitPick
                    &&
-                   m.TargetBay == this.machineService.BayNumber);
+                   m.TargetBay == this.machineService.BayNumber)
+                .OrderBy(o => o.LoadUnitDestination);
             if (waitingMissions.Any(m => m.MissionType == MissionType.WMS)
                 &&
                 !(this.missionOperationsService.CurrentMissionOperation is null))
@@ -119,7 +120,7 @@ namespace Ferretto.VW.App.Modules.Operator.Services
             }
             else
             {
-                var currentMission = waitingMissions.SingleOrDefault();
+                var currentMission = waitingMissions.FirstOrDefault();
                 if (this.machineService.Loadunits.SingleOrDefault(l => l.Id == currentMission?.LoadUnitId) is MAS.AutomationService.Contracts.LoadingUnit loadingUnit)
                 {
                     this.NavigateToLoadingUnitDetails(loadingUnit.Id);
@@ -160,7 +161,8 @@ namespace Ferretto.VW.App.Modules.Operator.Services
             var waitingMissions = machineMissions.Where(m =>
                    m.Step == MissionStep.WaitPick
                    &&
-                   m.TargetBay == this.machineService.BayNumber);
+                   m.TargetBay == this.machineService.BayNumber)
+                .OrderBy(o => o.LoadUnitDestination);
             if (waitingMissions.Any(m => m.MissionType == MissionType.WMS)
                 &&
                 this.missionOperationsService.CurrentMissionOperation != null)
@@ -169,7 +171,7 @@ namespace Ferretto.VW.App.Modules.Operator.Services
             }
             else
             {
-                var currentMission = waitingMissions.SingleOrDefault();
+                var currentMission = waitingMissions.FirstOrDefault();
                 var loadingUnit = this.machineService.Loadunits.SingleOrDefault(l => l.Id == currentMission?.LoadUnitId);
                 if (loadingUnit != null)
                 {

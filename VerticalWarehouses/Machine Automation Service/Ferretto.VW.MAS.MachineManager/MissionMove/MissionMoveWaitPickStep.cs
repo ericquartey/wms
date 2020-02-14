@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
@@ -46,7 +47,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 this.LoadingUnitMovementProvider.NotifyAssignedMissionOperationChanged(bay.Number, this.Mission.WmsId.Value);
             }
-            else
+            else if (!bay.IsDouble
+                || (bay.Positions.FirstOrDefault(p => p.Location == this.Mission.LoadUnitDestination)?.LoadingUnit.Id ?? this.Mission.LoadUnitId) == this.Mission.LoadUnitId
+                )
             {
                 this.BaysDataProvider.AssignWmsMission(this.Mission.TargetBay, this.Mission, null);
             }
@@ -72,6 +75,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override void OnResume(CommandMessage command)
         {
+            this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
             var ejectBayLocation = this.Mission.LoadUnitDestination;
             var bayPosition = this.BaysDataProvider.GetPositionByLocation(ejectBayLocation);
 #if CHECK_BAY_SENSOR
