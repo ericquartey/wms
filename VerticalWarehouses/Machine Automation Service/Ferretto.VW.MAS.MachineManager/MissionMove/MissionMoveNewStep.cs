@@ -3,12 +3,10 @@ using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -229,7 +227,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         this.ErrorsProvider.RecordNew(MachineErrorCode.DestinationTypeNotValid, this.Mission.TargetBay);
                         throw new StateMachineException(ErrorDescriptions.DestinationTypeNotValid, this.Mission.TargetBay, MessageActor.MachineManager);
                     }
-                case LoadingUnitLocation.NoLocation:
+
+                default:
                     // destination is bay, but first we must decide which position to use
                     var bay = this.BaysDataProvider.GetByNumber(requestingBay);
                     if (bay.Positions.Count() == 1)
@@ -284,6 +283,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 return false;
                             }
                         }
+                        // always check upper position first
                         returnValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, false);
                         if (returnValue)
                         {
@@ -291,12 +291,45 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             returnValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, showErrors);
                             if (returnValue)
                             {
-                                // both positions are free: choose upper
-                                mission.LoadUnitDestination = upper;
+                                // both positions are free: choose upper if not fixed by message
+                                if (messageData.Destination == bottom)
+                                {
+                                    mission.LoadUnitDestination = bottom;
+                                }
+                                else
+                                {
+                                    mission.LoadUnitDestination = upper;
+                                }
+                            }
+                            else
+                            {
+                                if (showErrors)
+                                {
+                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
+                                    throw new StateMachineException(ErrorDescriptions.LoadUnitDestinationBay, this.Mission.TargetBay, MessageActor.MachineManager);
+                                }
+                                else
+                                {
+                                    this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay);
+                                    return false;
+                                }
                             }
                         }
                         else
                         {
+                            if (messageData.Destination == upper)
+                            {
+                                if (showErrors)
+                                {
+                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
+                                    throw new StateMachineException(ErrorDescriptions.LoadUnitDestinationBay, this.Mission.TargetBay, MessageActor.MachineManager);
+                                }
+                                else
+                                {
+                                    this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay);
+                                    return false;
+                                }
+                            }
                             // if upper position is not empty we can try lower position
                             returnValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, showErrors);
                             if (returnValue)
@@ -306,15 +339,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                         }
                     }
-                    break;
-
-                default:
-                    returnValue = this.CheckBayDestination(messageData, requestingBay, messageData.Destination, mission, showErrors);
-                    if (returnValue)
-                    {
-                        mission.LoadUnitDestination = messageData.Destination;
-                    }
-
                     break;
             }
 
