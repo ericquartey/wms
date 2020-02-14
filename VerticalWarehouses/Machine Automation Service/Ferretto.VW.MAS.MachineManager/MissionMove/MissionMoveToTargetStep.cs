@@ -201,19 +201,34 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         {
                             this.BaysDataProvider.Light(this.Mission.TargetBay, false);
 
-                            // wake up the bottom bay position
-                            var activeMission = this.MissionsDataProvider.GetAllActiveMissionsByBay(this.Mission.TargetBay)
-                                .FirstOrDefault(x => x.Status == MissionStatus.Waiting);
-                            if (activeMission != null)
+                            var sourceBay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
+                            LoadingUnit lowerUnit = null;
+                            if (sourceBay != null
+                                && sourceBay.IsDouble
+                                && (lowerUnit = sourceBay.Positions.FirstOrDefault(p => !p.IsUpper && p.LoadingUnit != null)?.LoadingUnit) != null
+                                )
                             {
-                                this.LoadingUnitMovementProvider.ResumeOperation(
-                                    activeMission.Id,
-                                    activeMission.LoadUnitSource,
-                                    activeMission.LoadUnitDestination,
-                                    activeMission.WmsId,
-                                    activeMission.MissionType,
-                                    activeMission.TargetBay,
-                                    MessageActor.MachineManager);
+                                var lowerMission = this.MissionsDataProvider.GetAllActiveMissions().FirstOrDefault(m => m.LoadUnitId == lowerUnit.Id);
+                                if (lowerMission != null)
+                                {
+                                    if (sourceBay.Carousel is null)
+                                    {
+                                        this.BaysDataProvider.AssignWmsMission(this.Mission.TargetBay, lowerMission, null);
+                                    }
+                                    else
+                                    {
+                                        // carousel: wake up the bottom bay position
+                                        this.Logger.LogInformation($"Resume lower bay Mission:Id={lowerMission.Id}");
+                                        this.LoadingUnitMovementProvider.ResumeOperation(
+                                            lowerMission.Id,
+                                            lowerMission.LoadUnitSource,
+                                            lowerMission.LoadUnitDestination,
+                                            lowerMission.WmsId,
+                                            lowerMission.MissionType,
+                                            lowerMission.TargetBay,
+                                            MessageActor.MachineManager);
+                                    }
+                                }
                             }
                         }
                         else
