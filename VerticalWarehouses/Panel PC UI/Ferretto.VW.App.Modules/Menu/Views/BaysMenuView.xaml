@@ -77,10 +77,21 @@
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="Test serranda"
+                    <controls:PpcButton Title="Calibrazione Giostra"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.3.3"
+                                        BorderBrush="{DynamicResource FerrettoRed}"
+                                        Command="{Binding CarouselCalibrationCommand}"
+                                        Content="Effettua la calibrazione della giostra"
+                                        Kind="Account"
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}"
+                                        Visibility="{Binding IsCarouselCalibrationVisible, Converter={StaticResource BTVC}}" />
+
+                    <controls:PpcButton Title="Test serranda"
+                                        Margin="0,0,30,30"
+                                        Padding="-2,1,0,0"
+                                        Abbrevation="4.3.4"
                                         BorderBrush="{DynamicResource FerrettoOrange}"
                                         Command="{Binding TestShutterCommand}"
                                         Content="Permette di effettuare una serie di test ripetitivi per la serranda"
@@ -91,7 +102,7 @@
                     <controls:PpcButton Title="Test baia"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
-                                        Abbrevation="4.3.4"
+                                        Abbrevation="4.3.5"
                                         BorderBrush="{DynamicResource FerrettoOrange}"
                                         Command="{Binding TestBayCommand}"
                                         Content="Permette di effettuare una serie di test ripetitivi per la baia"

@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Prism.Commands;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
+using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
@@ -55,10 +54,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public LoadingUnitFromBayToBayViewModel(
             IMachineBaysWebService machineBaysWebService,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+            IMachineModeWebService machineModeWebService,
             ISensorsService sensorsService,
             IBayManager bayManagerService)
             : base(
                 machineLoadingUnitsWebService,
+                machineModeWebService,
                 bayManagerService)
         {
             this.machineBaysWebService = machineBaysWebService ?? throw new System.ArgumentNullException(nameof(machineBaysWebService));
@@ -144,6 +145,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Methods
 
+        public override bool CanStart()
+        {
+            return base.CanStart() &&
+                   this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations;
+        }
+
         public async Task GetLoadingUnits()
         {
             try
@@ -172,7 +179,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 var source = this.GetLoadingUnitSource(!(this.MachineStatus.LoadingUnitPositionUpInBay != null));
                 if (source == LoadingUnitLocation.NoLocation)
                 {
-                    this.ShowNotification("Tipo scelta sorgente non valida", Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(InstallationApp.InvalidSourceChoiceType, Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
@@ -186,7 +193,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 if (this.LoadingUnitId is null)
                 {
-                    this.ShowNotification("Id cassetto in baia non valido", Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(InstallationApp.InvalidDrawerIdInBay, Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
@@ -195,7 +202,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 if (destination == LoadingUnitLocation.NoLocation)
                 {
-                    this.ShowNotification("Tipo scelta destinazione non valida", Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(InstallationApp.InvalidDestinationChoiceType, Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 

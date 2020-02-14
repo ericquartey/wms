@@ -39,6 +39,8 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         Task PowerEnableNotify(IBaseNotificationMessageUI message);
 
+        Task ProfileCalibration(IBaseNotificationMessageUI message);
+
         Task ResolutionCalibrationNotify(IBaseNotificationMessageUI message);
 
         Task SensorsChanged(IBaseNotificationMessageUI message);

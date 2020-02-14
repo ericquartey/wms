@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS.MachineManager
 
             services
                 .AddScoped<IRunningStateProvider, RunningStateProvider>()
-                .AddScoped<IMoveLoadingUnitProvider, MoveLoadingUnitProvider>()
+                .AddScoped<IMoveLoadUnitProvider, MoveLoadUnitProvider>()
                 .AddScoped<IMissionMoveProvider, MissionMoveProvider>()
                 .AddScoped<IMachineModeProvider, MachineModeProvider>();
 

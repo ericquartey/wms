@@ -186,8 +186,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case LoadingUnitLocation.Cell:
                     if (messageData.DestinationCellId != null)
                     {
-                        var destinationCell = this.CellsProvider.GetById(messageData.DestinationCellId.Value);
-                        returnValue = (destinationCell.LoadingUnit == null && destinationCell.IsFree);
+                        returnValue = this.CellsProvider.CanFitLoadingUnit(messageData.DestinationCellId.Value, this.Mission.LoadUnitId);
                         mission.DestinationCellId = messageData.DestinationCellId;
                         mission.LoadUnitDestination = LoadingUnitLocation.Cell;
                     }
@@ -404,14 +403,24 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.Manual);
                     break;
 
+                case MissionType.LoadUnitOperation:
+                    returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.LoadUnitOperations
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations
+                        );
+                    break;
+
                 case MissionType.Compact:
-                    returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.Compact);
+                    returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.Compact
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToCompact
+                        );
                     break;
 
                 case MissionType.WMS:
                 case MissionType.OUT:
                 case MissionType.IN:
-                    returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.Automatic);
+                    returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.Automatic
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic
+                        );
                     break;
 
                 case MissionType.FullTest:
@@ -424,6 +433,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             if (!returnValue)
             {
+                this.Logger.LogDebug($"IsMachineOk: Machine Mode {this.MachineVolatileDataProvider.Mode} not valid for mission type {messageData.MissionType}");
                 this.ErrorsProvider.RecordNew(MachineErrorCode.MachineModeNotValid, this.Mission.TargetBay);
                 return false;
             }
@@ -433,7 +443,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             if (activeMission != null)
             {
-                this.Logger.LogTrace($"IsDestinationOk: waiting for active mission {activeMission.Id}, LoadUnit {activeMission.LoadUnitId}; bay {this.Mission.TargetBay}");
+                this.Logger.LogTrace($"IsMachineOk: waiting for active mission {activeMission.Id}, LoadUnit {activeMission.LoadUnitId}; bay {this.Mission.TargetBay}");
                 if (showErrors)
                 {
                     this.ErrorsProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisBay, this.Mission.TargetBay);

@@ -27,6 +27,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
+        private readonly IMachineModeWebService machineModeWebService;
+
         private SubscriptionToken fsmExceptionToken;
 
         private bool isExecutingProcedure;
@@ -35,10 +37,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private bool isPositionUpSelected;
 
-        //private bool isStopping;
-
         private int? loadingUnitId;
-        
+
+        private DelegateCommand loadingUnitsCommand;
+
         private SubscriptionToken moveLoadingUnitToken;
 
         private DelegateCommand selectBayPositionDownCommand;
@@ -55,29 +57,18 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public BaseMovementsViewModel(
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+            IMachineModeWebService machineModeWebService,
             IBayManager bayManagerService)
             : base(PresentationMode.Installer)
         {
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
+            this.machineModeWebService = machineModeWebService ?? throw new ArgumentNullException(nameof(machineModeWebService));
             this.bayManagerService = bayManagerService ?? throw new ArgumentNullException(nameof(bayManagerService));
         }
 
         #endregion
 
         #region Properties
-
-        private DelegateCommand loadingUnitsCommand;
-
-        public ICommand LoadingUnitsCommand =>
-            this.loadingUnitsCommand
-            ??
-            (this.loadingUnitsCommand = new DelegateCommand(
-                () => this.NavigationService.Appear(
-                          nameof(Utils.Modules.Installation),
-                          Utils.Modules.Installation.CellsLoadingUnitsMenu.LOADINGUNITS,
-                          data: null,
-                          trackCurrentView: true),
-                () => !this.IsMoving));
 
         public int? CurrentMissionId { get; private set; }
 
@@ -130,12 +121,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
-        //public bool IsStopping
-        //{
-        //    get => this.isStopping;
-        //    set => this.SetProperty(ref this.isStopping, value);
-        //}
-
         public virtual bool KeepAlive => true;
 
         public int? LoadingUnitCellId
@@ -163,7 +148,20 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
+        public ICommand LoadingUnitsCommand =>
+            this.loadingUnitsCommand
+            ??
+            (this.loadingUnitsCommand = new DelegateCommand(
+                () => this.NavigationService.Appear(
+                        nameof(Utils.Modules.Installation),
+                        Utils.Modules.Installation.CellsLoadingUnitsMenu.LOADINGUNITS,
+                        data: null,
+                        trackCurrentView: true),
+                () => !this.IsMoving));
+
         public IMachineLoadingUnitsWebService MachineLoadingUnitsWebService => this.machineLoadingUnitsWebService;
+
+        public IMachineModeWebService MachineModeWebService => this.machineModeWebService;
 
         public ICommand SelectBayPositionDownCommand =>
             this.selectBayPositionDownCommand
@@ -284,6 +282,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             this.IsBackNavigationAllowed = true;
 
+            if (this.MachineModeService.MachineMode != MachineMode.LoadUnitOperations)
+            {
+                await this.MachineModeWebService.SetLoadUnitOperationsAsync();
+            }
+
             this.SubscribeToEvents();
 
             await base.OnAppearedAsync();
@@ -367,6 +370,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             if (e.MachinePowerState != MachinePowerState.Powered)
             {
                 this.RestoreStates();
+                this.IsBackNavigationAllowed = true;
             }
         }
 

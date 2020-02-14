@@ -27,7 +27,7 @@
             <Grid Margin="20"
                   DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
@@ -71,6 +71,13 @@
                                     Style="{StaticResource WizardIntoButton}" />
 
                 <controls:PpcButton Grid.Row="2"
+                                    Grid.Column="0"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding OpenShutterCommand}"
+                                    Content="Apri serranda"
+                                    Style="{StaticResource WizardIntoButton}" />
+
+                <controls:PpcButton Grid.Row="2"
                                     Grid.Column="1"
                                     VerticalAlignment="Center"
                                     Command="{Binding CloseShutterCommand}"
@@ -93,7 +100,7 @@
             <Grid Margin="20"
                   DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
@@ -139,7 +146,13 @@
 
                 <controls:PpcButton Grid.Row="2"
                                     Grid.Column="0"
-                                    Grid.ColumnSpan="2"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding OpenShutterCommand}"
+                                    Content="Apri serranda"
+                                    Style="{StaticResource WizardIntoButton}" />
+
+                <controls:PpcButton Grid.Row="2"
+                                    Grid.Column="1"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Command="{Binding CloseShutterCommand}"
@@ -182,7 +195,7 @@
 
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Posizionare la sagoma di regolazione nell'angolo superiore a destra del cassetto in baia, assicurarsi di posizionare le calamite in modo che la stessa rimanga ben salda al cassetto."
+                               Text="Aprire la serranda, posizionare la sagoma di regolazione nell'angolo superiore a destra del cassetto in baia, assicurarsi di posizionare le calamite in modo che la stessa rimanga ben salda al cassetto."
                                TextWrapping="Wrap" />
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
@@ -196,14 +209,33 @@
                        Source="{DynamicResource PHCSagoma1}"
                        Stretch="Uniform" />
 
-                <controls:PpcButton Grid.Row="1"
-                                    Grid.Column="1"
-                                    Margin="15,15,0,0"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Bottom"
-                                    Command="{Binding MensurationDxCommand}"
-                                    Content="Misurazione lato destro"
-                                    Style="{StaticResource WizardConfirmButton}" />
+                <StackPanel Grid.Row="1"
+                            Grid.Column="1"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom">
+
+                    <controls:PpcButton Grid.Row="2"
+                                        Grid.Column="0"
+                                        Margin="15,15,0,0"
+                                        VerticalAlignment="Center"
+                                        Command="{Binding OpenShutterCommand}"
+                                        Content="Apri serranda"
+                                        Style="{StaticResource WizardIntoButton}" />
+
+                    <controls:PpcButton Grid.Row="2"
+                                        Grid.Column="1"
+                                        Margin="15,15,0,0"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Command="{Binding CloseShutterCommand}"
+                                        Content="Chiudi serranda"
+                                        Style="{StaticResource WizardIntoButton}" />
+
+                    <controls:PpcButton Margin="15,15,0,0"
+                                        Command="{Binding MensurationDxCommand}"
+                                        Content="Misurazione lato destro"
+                                        Style="{StaticResource WizardConfirmButton}" />
+                </StackPanel>
 
             </Grid>
         </DataTemplate>
@@ -237,7 +269,7 @@
                     <TextBlock FontSize="18"
                                FontWeight="Bold"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Attendare il termine della procedura automatica."
+                               Text="Attendere il termine della procedura automatica."
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -507,7 +539,7 @@
                     <TextBlock FontSize="18"
                                FontWeight="Bold"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Attendare il termine della procedura automatica."
+                               Text="Attendere il termine della procedura automatica."
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -828,12 +860,23 @@
                                            MinHeight="90"
                                            Margin="0,15,15,0" />
 
-        <controls:CardSensorBay Grid.Row="4"
-                                Grid.Column="3"
-                                Width="230"
-                                Height="90"
-                                MinHeight="90"
-                                Margin="0,15,15,0" />
+        <Grid Grid.Row="4"
+              Grid.Column="3"
+              Visibility="{Binding HasStepElevatorPosition, Converter={StaticResource BTVIC}, Mode=OneWay}">
+            <controls:CardSensorBay Width="230"
+                                    Height="90"
+                                    MinHeight="90"
+                                    Margin="0,15,15,0" />
+        </Grid>
+
+        <Grid Grid.Row="4"
+              Grid.Column="3"
+              Visibility="{Binding HasStepElevatorPosition, Converter={StaticResource BTVC}, Mode=OneWay}">
+            <controls:CardSensorPosition Width="230"
+                                         Height="90"
+                                         MinHeight="90"
+                                         Margin="0,15,15,0" />
+        </Grid>
 
         <controls:CardSensorShutter Grid.Row="5"
                                     Grid.Column="3"

@@ -1419,4 +1419,277 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="ErrorExecutingInstallerApp" xml:space="preserve">
     <value>Errore durante l'esecuzione dell'app di installazione.</value>
   </data>
+  <data name="BoardingNotExecutedMissingDrawer" xml:space="preserve">
+    <value>Imbarco non eseguito causa Cassetto mancante</value>
+  </data>
+  <data name="CellNotValid" xml:space="preserve">
+    <value>Cella non valida</value>
+  </data>
+  <data name="InputFormCellIdMustBePositive" xml:space="preserve">
+    <value>InputFormCellId deve essere positivo.</value>
+  </data>
+  <data name="InputFormCellIdRequired" xml:space="preserve">
+    <value>InputFormCellId necessario.</value>
+  </data>
+  <data name="InputToCellIdMustBePositive" xml:space="preserve">
+    <value>InputToCellId deve essere positivo.</value>
+  </data>
+  <data name="InputToCellIdRequired" xml:space="preserve">
+    <value>InputToCellId necessario.</value>
+  </data>
+  <data name="LandingNotExecutedMissingDrawer" xml:space="preserve">
+    <value>Sbarco non eseguito causa Cassetto mancante</value>
+  </data>
+  <data name="MoveToBayNotExecuted" xml:space="preserve">
+    <value>Vai a baia non eseguito, lo stato corrente è {0}</value>
+  </data>
+  <data name="StateShouldBeInMode" xml:space="preserve">
+    <value>Stato dovrebbe essere in modalità {0} o {1}</value>
+  </data>
+  <data name="StepMustBePositive" xml:space="preserve">
+    <value>Step deve essere positivo.</value>
+  </data>
+  <data name="StepRequired" xml:space="preserve">
+    <value>Step necessario.</value>
+  </data>
+  <data name="SuccessfullChange" xml:space="preserve">
+    <value>Modifica avvenuta con successo</value>
+  </data>
+  <data name="BeltBreakIn" xml:space="preserve">
+    <value>Rodaggio Cinghia</value>
+  </data>
+  <data name="InputDisplacementMustBePositive" xml:space="preserve">
+    <value>InputDisplacement deve essere strettamente positivo.</value>
+  </data>
+  <data name="InputDisplacementRequired" xml:space="preserve">
+    <value>InputDisplacement necessario.</value>
+  </data>
+  <data name="InputNetWeightMustBePositive" xml:space="preserve">
+    <value>InputNetWeight deve essere strettamente positivo.</value>
+  </data>
+  <data name="InputNetWeightRequired" xml:space="preserve">
+    <value>InputNetWeight necessario.</value>
+  </data>
+  <data name="RequiredCyclesCompleted" xml:space="preserve">
+    <value>Numero dei cicli necessari completato.</value>
+  </data>
+  <data name="AxisVerticalOffsetUpdated" xml:space="preserve">
+    <value>Offset asse verticale aggiornato.</value>
+  </data>
+  <data name="CellInsertedNotFree" xml:space="preserve">
+    <value>la cella inserita non è libera</value>
+  </data>
+  <data name="CellSelectedNotPresent" xml:space="preserve">
+    <value>La cella selezionata non è presente.</value>
+  </data>
+  <data name="CellSelectedRequired" xml:space="preserve">
+    <value>E' necessario selezionare una cella.</value>
+  </data>
+  <data name="ChecksumCompleted" xml:space="preserve">
+    <value>Controllo del checksum dei file completato correttamente.</value>
+  </data>
+  <data name="ClearTempFolder" xml:space="preserve">
+    <value>Cancella la cartella temporanea '{0}'.</value>
+  </data>
+  <data name="DestinationPositionMustBePositive" xml:space="preserve">
+    <value>Destination position  deve essere strettamente positivo.</value>
+  </data>
+  <data name="DestinationPositionOutOfRangeAxis" xml:space="preserve">
+    <value>Destination position fuori dal range degli assi ({0}).</value>
+  </data>
+  <data name="DestinationPositionRequired" xml:space="preserve">
+    <value>DestinationPosition necessario.</value>
+  </data>
+  <data name="DrawerIdExtracted" xml:space="preserve">
+    <value>Cassetto id {0} estratto</value>
+  </data>
+  <data name="ErrorCheckFile" xml:space="preserve">
+    <value>Errore durante il controllo del file {0}.</value>
+  </data>
+  <data name="ErrorChecksum" xml:space="preserve">
+    <value>Errore nel controllo del checksum del file:</value>
+  </data>
+  <data name="ErrorChecksumNotFound" xml:space="preserve">
+    <value>Errore durante il controllo del file '{0}'. Nessun checksum trovato.</value>
+  </data>
+  <data name="ErrorClearTempFolder" xml:space="preserve">
+    <value>Errore durante la cancellazione della cartella temporanea:</value>
+  </data>
+  <data name="ErrorExtractingFiles" xml:space="preserve">
+    <value>Error excracting files:</value>
+  </data>
+  <data name="ErrorOnStarting" xml:space="preserve">
+    <value>Error on starting:</value>
+  </data>
+  <data name="ExtractingFilesCompleted" xml:space="preserve">
+    <value>Extraction successfullly completed.</value>
+  </data>
+  <data name="FieldRequired" xml:space="preserve">
+    <value>Campo necessario.</value>
+  </data>
+  <data name="GoToFreeCell" xml:space="preserve">
+    <value>Vai a cella libera</value>
+  </data>
+  <data name="HorizontalAxisMovementInProgress" xml:space="preserve">
+    <value>Movimento asse orizzontale in corso...</value>
+  </data>
+  <data name="InputDelayBetweenCyclesMustBePositive" xml:space="preserve">
+    <value>InputDelayBetweenCycles deve essere strettamente positivo.</value>
+  </data>
+  <data name="InputDelayBetweenCyclesRequired" xml:space="preserve">
+    <value>InputDelayBetweenCycles necessario.</value>
+  </data>
+  <data name="InputWeightMustBePositive" xml:space="preserve">
+    <value>InputWeightRequired  deve essere strettamente positivo.</value>
+  </data>
+  <data name="InputWeightMustBeSpecified" xml:space="preserve">
+    <value>InputWeightRequired deve essere specificato.</value>
+  </data>
+  <data name="InvalidCellIdEntered" xml:space="preserve">
+    <value>Id cella inserito non valido</value>
+  </data>
+  <data name="InvalidCellIdOnInsertedDrawer" xml:space="preserve">
+    <value>Id cella su cassetto inserito non valido</value>
+  </data>
+  <data name="InvalidDestinationChoiceType" xml:space="preserve">
+    <value>Tipo scelta destinazione non valida</value>
+  </data>
+  <data name="InvalidDrawerIdInBay" xml:space="preserve">
+    <value>Id cassetto in baia non valido</value>
+  </data>
+  <data name="InvalidDrawerSelected" xml:space="preserve">
+    <value>Il cassetto selezionato non è valido</value>
+  </data>
+  <data name="InvalidEnteredDrawerId" xml:space="preserve">
+    <value>Id cassetto inserito non valido</value>
+  </data>
+  <data name="InvalidSourceChoiceType" xml:space="preserve">
+    <value>Tipo scelta sorgente non valida</value>
+  </data>
+  <data name="InvalidValue" xml:space="preserve">
+    <value>Invalid Value</value>
+  </data>
+  <data name="LoadingUnitIdMustBePositive" xml:space="preserve">
+    <value>LoadingUnitId deve essere strettamente positivo.</value>
+  </data>
+  <data name="LoadingUnitIdRequired" xml:space="preserve">
+    <value>LoadingUnitId necessario.</value>
+  </data>
+  <data name="MeasuredPositionOutOfRangeAxis" xml:space="preserve">
+    <value>Measured position fuori dal range degli assi ({0}).</value>
+  </data>
+  <data name="OperationAborted" xml:space="preserve">
+    <value>Operazione fallita.</value>
+  </data>
+  <data name="StartChecksum" xml:space="preserve">
+    <value>Inizio controllo checksum dei file '{0}'.</value>
+  </data>
+  <data name="StartExtractingFiles" xml:space="preserve">
+    <value>Start excracting files from '{0}'.</value>
+  </data>
+  <data name="StartingApplication" xml:space="preserve">
+    <value>Starting application '{0}'.</value>
+  </data>
+  <data name="StartPositionMustBePositive" xml:space="preserve">
+    <value>Start position  deve essere strettamente positivo.</value>
+  </data>
+  <data name="StartPositionOutOfRangeAxis" xml:space="preserve">
+    <value>Start position  fuori dal range degli assi ({0}).</value>
+  </data>
+  <data name="TestToRunMustBePositive" xml:space="preserve">
+    <value>TestToRun  deve essere strettamente positivo.</value>
+  </data>
+  <data name="VerticalAxisMovementInProgress" xml:space="preserve">
+    <value>Movimento asse verticale in corso...</value>
+  </data>
+  <data name="WeightToleranceMustBePositive" xml:space="preserve">
+    <value>La tolleranza del peso deve essere strettamente positiva.</value>
+  </data>
+  <data name="ModeLoadUnitOperations" xml:space="preserve">
+    <value>Operazioni cassetto</value>
+  </data>
+  <data name="Compact" xml:space="preserve">
+    <value>Compatta</value>
+  </data>
+  <data name="TotalCycleMoreThanRequired" xml:space="preserve">
+    <value>I cicli totali completati sono più di quelli richiesti.</value>
+  </data>
+  <data name="TrayTareValueMustBePositive" xml:space="preserve">
+    <value>Tara deve essere maggiore di 0</value>
+  </data>
+  <data name="TrayTareValueNotInserted" xml:space="preserve">
+    <value>Tara non inserita</value>
+  </data>
+  <data name="WeightValueMustBePositive" xml:space="preserve">
+    <value>Peso deve essere maggiore di 0</value>
+  </data>
+  <data name="WeightValueNotInserted" xml:space="preserve">
+    <value>Peso non inserito</value>
+  </data>
+  <data name="CarouselCalibration" xml:space="preserve">
+    <value>Calibrazione giostra</value>
+  </data>
+  <data name="HighPositionControl" xml:space="preserve">
+    <value>Controllo posizione alta</value>
+  </data>
+  <data name="InputDelayMustBePositive" xml:space="preserve">
+    <value>InputDelay deve essere maggiore di 0</value>
+  </data>
+  <data name="InputLowerBoundMustBeGreatherThanUpper" xml:space="preserve">
+    <value>InputLowerBound deve essere maggiore di InputUpperBound.</value>
+  </data>
+  <data name="InputLowerBoundMustBeGreatherThanValue" xml:space="preserve">
+    <value>InputLowerBound deve essere maggiore di {0}.</value>
+  </data>
+  <data name="InputLowerBoundMustBePositive" xml:space="preserve">
+    <value>InputLowerBound deve essere maggiore di 0</value>
+  </data>
+  <data name="InputLowerBoundRequired" xml:space="preserve">
+    <value>InputLowerBound necessario.</value>
+  </data>
+  <data name="InputRequiredCyclesMustBePositive" xml:space="preserve">
+    <value>InputRequiredCycles deve essere maggiore di 0</value>
+  </data>
+  <data name="InputRequiredCyclesRequired" xml:space="preserve">
+    <value>InputRequiredCycles necessario.</value>
+  </data>
+  <data name="InputUpperBoundMustBeGreatherThanLower" xml:space="preserve">
+    <value>InputUpperBound deve essere maggiore di InputLowerBound.</value>
+  </data>
+  <data name="InputUpperBoundMustBeGreatherThanValue" xml:space="preserve">
+    <value>InputUpperBound deve essere maggiore di {0}.</value>
+  </data>
+  <data name="InputUpperBoundMustBePositive" xml:space="preserve">
+    <value>InputUpperrBound deve essere maggiore di 0</value>
+  </data>
+  <data name="InputUpperBoundRequired" xml:space="preserve">
+    <value>InputUpperBound necessario.</value>
+  </data>
+  <data name="MoveElevatorAtBayHeightOpenShutter" xml:space="preserve">
+    <value>Posizionare l'elevatore all'altezza della baia e aprire la serranda se presente.</value>
+  </data>
+  <data name="BayPositionDownHeightNew" xml:space="preserve">
+    <value>Nuova quota posiz. bassa [mm]</value>
+  </data>
+  <data name="BayPositionUpHeightNew" xml:space="preserve">
+    <value>Nuova quota posiz. alta [mm]</value>
+  </data>
+  <data name="CheckBayElevatorAlignment" xml:space="preserve">
+    <value>Verificare l'allineamento della baia e dell'elevatore. Nel caso non fossero allineate, procedere a correggere la posizione dell'elevatore.</value>
+  </data>
+  <data name="ConfirmChanges" xml:space="preserve">
+    <value>Conferma le modifiche.</value>
+  </data>
+  <data name="LowPositionControl" xml:space="preserve">
+    <value>Controllo posizione bassa</value>
+  </data>
+  <data name="MoveElevator" xml:space="preserve">
+    <value>Sposta elevatore</value>
+  </data>
+  <data name="NoChanges" xml:space="preserve">
+    <value>Non sono state apportate modifiche.</value>
+  </data>
+  <data name="SaveCheckPosition" xml:space="preserve">
+    <value>Verificare le nuove quote e premere Salva per rendere le modifiche effettive.</value>
+  </data>
 </root>

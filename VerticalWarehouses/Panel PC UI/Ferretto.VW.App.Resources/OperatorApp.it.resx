@@ -739,7 +739,7 @@
     <value>Riempimento</value>
   </data>
   <data name="DrawerSaturationDataGridHeaderFillingPercentage" xml:space="preserve">
-    <value>%Riemp.</value>
+    <value>Riemp.</value>
   </data>
   <data name="DrawerSaturationDataGridHeaderMissions" xml:space="preserve">
     <value>Missioni</value>
@@ -1218,5 +1218,14 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   </data>
   <data name="OtherNavigationImmediateDrawerCallDescription" xml:space="preserve">
     <value>Operazioni su cassetto</value>
+  </data>
+  <data name="DrawerCompactingFrontFreeSpace" xml:space="preserve">
+    <value>Spazio libero posteriore</value>
+  </data>
+  <data name="DrawerCompactingRearFreeSpace" xml:space="preserve">
+    <value>Spazio libero anteriore</value>
+  </data>
+  <data name="DrawerCompacting" xml:space="preserve">
+    <value>Compattazione</value>
   </data>
 </root>

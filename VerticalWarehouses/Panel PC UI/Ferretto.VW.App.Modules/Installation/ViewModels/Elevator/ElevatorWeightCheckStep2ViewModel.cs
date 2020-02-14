@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -157,7 +158,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.TestToRun):
                         if (this.TestToRun < 0)
                         {
-                            return $"Test to Run must be positive";
+                            return InstallationApp.TestToRunMustBePositive;
                         }
 
                         break;
@@ -165,12 +166,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.InputWeight):
                         if (!this.InputWeight.HasValue)
                         {
-                            return "Input Weight must be specified.";
+                            return InstallationApp.InputWeightMustBeSpecified;
                         }
 
                         if (this.InputWeight.Value <= 0)
                         {
-                            return "Input Weight must be strictly positive.";
+                            return InstallationApp.InputWeightMustBePositive;
                         }
 
                         break;
@@ -179,7 +180,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                         if (this.WeightTolerance <= 0)
                         {
-                            return "Weight Tolerance must be strictly positive.";
+                            return InstallationApp.WeightToleranceMustBePositive;
                         }
 
                         break;

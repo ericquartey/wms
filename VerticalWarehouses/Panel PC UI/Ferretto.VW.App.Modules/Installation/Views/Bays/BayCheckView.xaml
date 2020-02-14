@@ -43,12 +43,14 @@
                 <StackPanel Grid.ColumnSpan="3">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Controllo posizione alta:"
-                               TextWrapping="Wrap" />
+                               TextWrapping="Wrap">
+                        <Run Text="{x:Static res:InstallationApp.HighPositionControl}" /><Run Text=":" />
+
+                    </TextBlock>
 
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Posizionare l'elevatore all'altezza della baia e aprire la serranda se presente."
+                               Text="{x:Static res:InstallationApp.MoveElevatorAtBayHeightOpenShutter}"
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -90,7 +92,7 @@
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
                                            Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="Baia"
+                                           Text="{x:Static res:InstallationApp.Bay}"
                                            TextAlignment="Left" />
 
                                 <TextBlock Grid.Row="1"
@@ -129,7 +131,7 @@
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
                                            Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="Posizione"
+                                           Text="{x:Static res:InstallationApp.Position}"
                                            TextAlignment="Left" />
 
                                 <TextBlock Grid.Row="1"
@@ -168,7 +170,7 @@
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
                                            Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="Quota iniziale" />
+                                           Text="{x:Static res:InstallationApp.InitialPosition}" />
 
                                 <TextBlock Grid.Row="1"
                                            Margin="0"
@@ -203,7 +205,7 @@
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
                                            Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="Spostamento"
+                                           Text="{x:Static res:InstallationApp.Displacement}"
                                            TextAlignment="Left" />
 
                                 <TextBlock Grid.Row="1"
@@ -231,7 +233,7 @@
                                         Margin="0"
                                         VerticalAlignment="Center"
                                         Command="{Binding MoveToBayPositionCommand}"
-                                        Content="Vai a posizione"
+                                        Content="{x:Static res:InstallationApp.MoveToPosition}"
                                         Style="{DynamicResource WizardIntoButton}" />
 
                     <controls:PpcButton Grid.Row="2"
@@ -249,7 +251,7 @@
                            Margin="0,30,0,15"
                            FontSize="18"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="Verificare l'allineamento della baia e dell'elevatore. Nel caso non fossero allineate, procedere a correggere la posizione dell'elevatore."
+                           Text="{x:Static res:InstallationApp.CheckBayElevatorAlignment}"
                            TextWrapping="Wrap" />
 
                 <ctrls:PpcSpinEdit Grid.Row="4"
@@ -270,7 +272,7 @@
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
                                     Command="{Binding DisplacementCommand}"
-                                    Content="Sposta elevatore"
+                                    Content="{x:Static res:InstallationApp.MoveElevator}"
                                     Style="{DynamicResource WizardIntoButton}" />
 
                 <controls:PpcButton Grid.Row="4"
@@ -279,7 +281,7 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
                                     Command="{Binding MoveToNextCommand}"
-                                    Content="Avanti"
+                                    Content="{x:Static res:InstallationApp.Next}"
                                     Style="{DynamicResource WizardConfirmButton}" />
 
             </Grid>
@@ -305,12 +307,12 @@
                 <StackPanel Grid.ColumnSpan="3">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Controllo posizione bassa:"
-                               TextWrapping="Wrap" />
-
+                               TextWrapping="Wrap">
+                        <Run Text="{x:Static res:InstallationApp.HighPositionControl}" /> <Run Text=":" />
+                    </TextBlock>
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Posizionare l'elevatore all'altezza della baia e aprire la serranda se presente."
+                               Text="{x:Static res:InstallationApp.MoveElevatorAtBayHeightOpenShutter}"
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -352,7 +354,7 @@
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
                                            Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="Baia"
+                                           Text="{x:Static res:InstallationApp.Bay}"
                                            TextAlignment="Left" />
 
                                 <TextBlock Grid.Row="1"
@@ -391,7 +393,7 @@
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
                                            Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="Posizione"
+                                           Text="{x:Static res:InstallationApp.Position}"
                                            TextAlignment="Left" />
 
                                 <TextBlock Grid.Row="1"
@@ -430,7 +432,7 @@
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
                                            Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="Quota iniziale" />
+                                           Text="{x:Static res:InstallationApp.InitialPosition}" />
 
                                 <TextBlock Grid.Row="1"
                                            Margin="0"
@@ -465,7 +467,7 @@
                                            FontSize="{StaticResource FontSize_Normal}"
                                            FontWeight="Normal"
                                            Foreground="{DynamicResource FerrettoLightGray}"
-                                           Text="Spostamento"
+                                           Text="{x:Static res:InstallationApp.Displacement}"
                                            TextAlignment="Left" />
 
                                 <TextBlock Grid.Row="1"
@@ -493,7 +495,7 @@
                                         Margin="0"
                                         VerticalAlignment="Center"
                                         Command="{Binding MoveToBayPositionCommand}"
-                                        Content="Vai a posizione"
+                                        Content="{x:Static res:InstallationApp.MoveToPosition}"
                                         Style="{DynamicResource WizardIntoButton}" />
 
                     <controls:PpcButton Grid.Row="2"
@@ -510,7 +512,7 @@
                            Margin="0,30,0,15"
                            FontSize="18"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="Verificare l'allineamento della baia e dell'elevatore. Nel caso non fossero allineate, procedere a correggere la posizione dell'elevatore."
+                           Text="{x:Static res:InstallationApp.CheckBayElevatorAlignment}"
                            TextWrapping="Wrap" />
 
                 <ctrls:PpcSpinEdit Grid.Row="4"
@@ -531,7 +533,7 @@
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
                                     Command="{Binding DisplacementCommand}"
-                                    Content="Sposta elevatore"
+                                    Content="{x:Static res:InstallationApp.MoveElevator}"
                                     Style="{DynamicResource WizardIntoButton}" />
 
                 <controls:PpcButton Grid.Row="4"
@@ -540,7 +542,7 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
                                     Command="{Binding MoveToNextCommand}"
-                                    Content="Avanti"
+                                    Content="{x:Static res:InstallationApp.Next}"
                                     Style="{DynamicResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
@@ -558,12 +560,14 @@
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Conferma modifiche:"
-                               TextWrapping="Wrap" />
+                               TextWrapping="Wrap">
+                        <Run Text="{x:Static res:InstallationApp.ConfirmChanges}" /><Run Text=":" />
+
+                    </TextBlock>
 
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Verificare le nuove quote e premere Salva per rendere le modifiche effettive."
+                               Text="{x:Static res:InstallationApp.SaveCheckPosition}"
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -575,7 +579,7 @@
                                VerticalAlignment="Center"
                                FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Non sono state apportate modifiche."
+                               Text="{x:Static res:InstallationApp.NoChanges}"
                                TextWrapping="Wrap" />
                 </Grid>
 
@@ -596,7 +600,7 @@
                                        FontSize="{StaticResource FontSize_Normal}"
                                        FontWeight="Normal"
                                        Foreground="{DynamicResource FerrettoLightGray}"
-                                       Text="Nuova quota posizione alta (mm)" />
+                                       Text="{x:Static res:InstallationApp.BayPositionUpHeightNew}" />
 
                             <TextBlock Grid.Row="1"
                                        Margin="8,4"
@@ -629,7 +633,7 @@
                                        FontSize="{StaticResource FontSize_Normal}"
                                        FontWeight="Normal"
                                        Foreground="{DynamicResource FerrettoLightGray}"
-                                       Text="Nuova quota posizione bassa (mm)" />
+                                       Text="{x:Static res:InstallationApp.BayPositionDownHeightNew}" />
 
                             <TextBlock Grid.Row="1"
                                        Margin="8,4"
@@ -646,7 +650,7 @@
 
                 <controls:PpcButton Grid.Row="3"
                                     Command="{Binding SaveCommand}"
-                                    Content="Salva"
+                                    Content="{x:Static res:General.Save}"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>

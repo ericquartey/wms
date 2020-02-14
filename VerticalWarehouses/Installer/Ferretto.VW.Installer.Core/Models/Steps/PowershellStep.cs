@@ -15,8 +15,8 @@ namespace Ferretto.VW.Installer.Core
 
         #region Constructors
 
-        public PowershellStep(int number, string title, string description, string rollbackScript, string script)
-            : base(number, title, description, rollbackScript, script)
+        public PowershellStep(int number, string title, string description, string rollbackScript, string script, string log, bool skipOnResume)
+            : base(number, title, description, rollbackScript, script, log, skipOnResume)
         {
         }
 

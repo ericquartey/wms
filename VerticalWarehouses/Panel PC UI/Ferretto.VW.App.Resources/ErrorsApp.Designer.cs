@@ -61,29 +61,137 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Converter can only convert to value of type Visibility..
+        ///   Looks up a localized string similar to Cell Side.
         /// </summary>
-        public static string ConverterCanConvertOnlyToVisibilityType {
+        public static string CellSide {
             get {
-                return ResourceManager.GetString("ConverterCanConvertOnlyToVisibilityType", resourceCulture);
+                return ResourceManager.GetString("CellSide", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Syntax for NameOf is Type={x:Type &lt;className&gt;}..
+        ///   Looks up a localized string similar to Current cell.
         /// </summary>
-        public static string MarkupNameOfSyntax {
+        public static string CurrentCell {
             get {
-                return ResourceManager.GetString("MarkupNameOfSyntax", resourceCulture);
+                return ResourceManager.GetString("CurrentCell", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parameter cannot be null or empty..
+        ///   Looks up a localized string similar to Displacement [mm].
         /// </summary>
-        public static string ParameterCannotBeNullOrEmpty {
+        public static string Displacement {
             get {
-                return ResourceManager.GetString("ParameterCannotBeNullOrEmpty", resourceCulture);
+                return ResourceManager.GetString("Displacement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drawer identification completed, switch to automatic mode..
+        /// </summary>
+        public static string DrawerIdentificationCompleted {
+            get {
+                return ResourceManager.GetString("DrawerIdentificationCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Return Drawer.
+        /// </summary>
+        public static string DrawerReturn {
+            get {
+                return ResourceManager.GetString("DrawerReturn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drawer selection.
+        /// </summary>
+        public static string DrawerSelection {
+            get {
+                return ResourceManager.GetString("DrawerSelection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error Code.
+        /// </summary>
+        public static string ErrorCode {
+            get {
+                return ResourceManager.GetString("ErrorCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error Description.
+        /// </summary>
+        public static string ErrorDescription {
+            get {
+                return ResourceManager.GetString("ErrorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error Reason.
+        /// </summary>
+        public static string ErrorReason {
+            get {
+                return ResourceManager.GetString("ErrorReason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error recovery.
+        /// </summary>
+        public static string ErrorRecoveryProcedure {
+            get {
+                return ResourceManager.GetString("ErrorRecoveryProcedure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First Seen.
+        /// </summary>
+        public static string FirstSeen {
+            get {
+                return ResourceManager.GetString("FirstSeen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Id.
+        /// </summary>
+        public static string Id {
+            get {
+                return ResourceManager.GetString("Id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initial position [mm].
+        /// </summary>
+        public static string InitialPosition {
+            get {
+                return ResourceManager.GetString("InitialPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errore restore INVERTER FAULT.
+        /// </summary>
+        public static string InverterFaultErrorRestore {
+            get {
+                return ResourceManager.GetString("InverterFaultErrorRestore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mark as resolved.
+        /// </summary>
+        public static string MarkAsResolved {
+            get {
+                return ResourceManager.GetString("MarkAsResolved", resourceCulture);
             }
         }
     }

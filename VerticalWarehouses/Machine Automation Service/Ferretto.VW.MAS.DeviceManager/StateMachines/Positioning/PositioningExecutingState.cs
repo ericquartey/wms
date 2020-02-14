@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Positioning.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
@@ -64,6 +66,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         private double? profileCalibratePosition = null;
 
         private double? profileStartPosition = null;
+
+        private double startingPosition;
+
+        private double targetPosition;
 
         #endregion
 
@@ -129,10 +135,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                         case FieldMessageType.InverterStop:
                             this.ProcessEndStop();
-                            break;
-
-                        case FieldMessageType.MeasureProfile when message.Data is MeasureProfileFieldMessageData:
-                            this.ProcessEndMeasureProfile(message);
                             break;
                     }
                     break;
@@ -211,6 +213,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                 case MovementMode.ProfileCalibration:
                     {
+                        this.profileCalibratePosition = null;
+                        this.profileStartPosition = null;
+                        this.startingPosition = this.elevatorProvider.HorizontalPosition;
+                        var elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
+                        var axis = elevatorDataProvider.GetAxis(Orientation.Horizontal);
+
+                        this.targetPosition = axis.Profiles.FirstOrDefault().TotalDistance * 0.75;
+
                         var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
                         statusWordPollingInterval = 500;
                         commandMessage = new FieldCommandMessage(
@@ -604,29 +614,28 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     {
                         if (message.DeviceIndex == (byte)this.machineData.CurrentInverterIndex)
                         {
+                            var data = message.Data as InverterStatusUpdateFieldMessageData;
+                            var chainPosition = data.CurrentPosition;
+
                             var machineResourcesProvider = this.scope.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
                             if (machineResourcesProvider.IsProfileCalibratedBay(this.machineData.RequestingBay))
                             {
-                                var data = message.Data as InverterStatusUpdateFieldMessageData;
-                                var chainPosition = data.CurrentPosition;
-
                                 if (this.countProfileCalibrated == 0
                                     && !this.profileStartPosition.HasValue)
                                 {
                                     this.profileStartPosition = chainPosition;
-                                    this.Logger.LogDebug($"profileStartPosition = {this.profileStartPosition.Value}");
+                                    this.Logger.LogInformation($"profileStartPosition = {this.profileStartPosition.Value:0.0000}");
                                 }
                                 else if (this.countProfileCalibrated == 1
                                     && !this.profileCalibratePosition.HasValue)
                                 {
-                                    this.profileCalibratePosition = chainPosition - this.profileStartPosition.Value;
+                                    if (chainPosition.HasValue && this.profileStartPosition.HasValue)
+                                    {
+                                        this.profileCalibratePosition = data.CurrentPosition;
+                                    }
 
-                                    // TODO - store the profileCalibratePosition in the corrisponding configuration parameter or send it to the UI?
-                                    this.Logger.LogInformation($"profileCalibratePosition Reached! Value {this.profileCalibratePosition.Value}");
-
-                                    this.Stop(StopRequestReason.Stop);
-
-                                    // TODO - go back to starting position (axis.LastIdealPosition)
+                                    this.Logger.LogInformation($"profileCalibratePosition reached! Value {this.profileCalibratePosition.Value:0.0000}");
+                                    this.ReturnToStartPosition();
                                 }
                             }
                             else if (this.countProfileCalibrated == 0
@@ -634,6 +643,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             {
                                 // profileCalibrated signal is low after startPosition
                                 this.countProfileCalibrated = 1;
+                            }
+                            else if (chainPosition.HasValue
+                                && Math.Abs(chainPosition.Value - this.startingPosition) >= this.targetPosition
+                                )
+                            {
+                                this.Logger.LogInformation($"profileCalibratePosition NOT reached!");
+                                this.ReturnToStartPosition();
                             }
                         }
                         break;
@@ -671,38 +687,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             }
         }
 
-        /// <summary>
-        /// Reads the profile height to find the position where the profile mask starts.
-        /// The profileCalibratePosition is relative to the start of the mask.
-        /// </summary>
-        /// <param name="message"></param>
-        private void ProcessEndMeasureProfile(FieldNotificationMessage message)
-        {
-            Trace.Assert(message.Data is MeasureProfileFieldMessageData);
-
-            if (this.machineData.MessageData.MovementMode == MovementMode.ProfileCalibration)
-            {
-                var data = message.Data as MeasureProfileFieldMessageData;
-
-                if (message.Source == FieldMessageActor.InverterDriver)
-                {
-                    var profileHeight = this.baysDataProvider.ConvertProfileToHeight(data.Profile, this.machineData.MessageData.SourceBayPositionId.Value);
-                    this.Logger.LogInformation($"Height measured {profileHeight}mm. Profile {data.Profile / 100.0}%");
-
-                    var bayNumber = this.baysDataProvider.GetByInverterIndex(this.machineData.CurrentInverterIndex);
-
-                    var chainPosition = this.baysDataProvider.GetChainPosition(bayNumber);
-
-                    if (profileHeight > 250.0 &&
-                        !this.profileStartPosition.HasValue)
-                    {
-                        this.profileStartPosition = chainPosition;
-                        this.Logger.LogInformation($"profileStartPosition = {this.profileStartPosition.Value}");
-                    }
-                }
-            }
-        }
-
         private void ProcessEndPositioning()
         {
             switch (this.machineData.MessageData.MovementMode)
@@ -710,6 +694,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 case MovementMode.Position:
                 case MovementMode.PositionAndMeasureProfile:
                 case MovementMode.PositionAndMeasureWeight:
+                case MovementMode.ProfileCalibration:
                     this.Logger.LogDebug($"FSM Finished Executing State in {this.machineData.MessageData.MovementMode} Mode");
                     this.machineData.ExecutedSteps = this.performedCycles;
                     if (this.IsZeroSensorError())
@@ -740,7 +725,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     }
                     else
                     {
-                        if (this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasureProfile)
+                        if (this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasureProfile
+                            || this.machineData.MessageData.MovementMode == MovementMode.ProfileCalibration
+                            )
                         {
                             var ioCommandMessageData = new MeasureProfileFieldMessageData(false);
                             var ioCommandMessage = new FieldCommandMessage(
@@ -755,7 +742,38 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                             this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
 
-                            this.ParentStateMachine.ChangeState(new PositioningProfileState(this.stateData));
+                            if (this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasureProfile)
+                            {
+                                this.ParentStateMachine.ChangeState(new PositioningProfileState(this.stateData));
+                            }
+                            else
+                            {
+                                double? profileCalibrateDistance = null;
+                                double? profileStartDistance = null;
+                                if (this.profileStartPosition.HasValue)
+                                {
+                                    profileStartDistance = Math.Abs(this.profileStartPosition.Value - this.startingPosition);
+                                }
+                                if (this.profileCalibratePosition.HasValue && this.profileStartPosition.HasValue)
+                                {
+                                    profileCalibrateDistance = Math.Abs(this.profileCalibratePosition.Value - this.profileStartPosition.Value);
+                                }
+                                this.Logger.LogDebug($"Send Profile calibration result: Calibrate Distance {profileCalibrateDistance:0.0000}, Start Distance {profileStartDistance:0.0000}");
+
+                                var notificationMessage = new NotificationMessage(
+                                    new ProfileCalibrationMessageData(profileCalibrateDistance, profileStartDistance),
+                                    $"Profile calibration result",
+                                    MessageActor.AutomationService,
+                                    MessageActor.DeviceManager,
+                                    MessageType.ProfileCalibration,
+                                    this.machineData.RequestingBay,
+                                    this.machineData.TargetBay,
+                                    MessageStatus.OperationEnd);
+
+                                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+                                this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+                            }
                         }
                         else
                         {
@@ -848,6 +866,20 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 this.delayTimer?.Change(Timeout.Infinite, Timeout.Infinite);
                 this.ParentStateMachine.ChangeState(new PositioningStartState(this.stateData));
             }
+        }
+
+        private void ReturnToStartPosition()
+        {
+            var inverterMessage = new FieldCommandMessage(
+                null,
+                "Continue Message Command",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.DeviceManager,
+                FieldMessageType.ContinueMovement,
+                (byte)this.machineData.CurrentInverterIndex);
+            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
+
+            this.Logger.LogDebug($"Continue Message send to inverter {this.machineData.CurrentInverterIndex}");
         }
 
         #endregion

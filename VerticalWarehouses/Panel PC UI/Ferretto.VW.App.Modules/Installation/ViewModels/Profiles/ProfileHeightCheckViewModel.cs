@@ -79,6 +79,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand moveToShapePositionDxCommand;
 
+        private DelegateCommand openShutterCommand;
+
+        private SubscriptionToken profileCalibrationToken;
+
         private SubscriptionToken stepChangedToken;
 
         private DelegateCommand stopCommand;
@@ -109,7 +113,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public BayPosition BayPosition => this.MachineService.Bay.Positions.OrderByDescending(o => o.Height).First();
 
         public ICommand CallLoadunitToBayCommand =>
-                    this.callLoadunitToBayCommand
+            this.callLoadunitToBayCommand
             ??
             (this.callLoadunitToBayCommand = new DelegateCommand(
                 async () => await this.CallLoadunitToBayCommandAsync(),
@@ -164,6 +168,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool HasStepTuningChainSx => this.currentStep is ProfileCheckStep.TuningChainSx;
 
+        public override bool KeepAlive => false;
+
         public int? LoadingUnitId
         {
             get => this.loadingUnitId;
@@ -198,6 +204,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 () => this.CurrentStep = ProfileCheckStep.ShapePositionDx,
                 this.CanMoveToShapePositionDx));
 
+        public ICommand OpenShutterCommand =>
+            this.openShutterCommand
+            ??
+            (this.openShutterCommand = new DelegateCommand(
+                async () => await this.OpenShutterAsync(),
+                this.CanOpenShutter));
+
         public ICommand StopCommand =>
             this.stopCommand
             ??
@@ -227,7 +240,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                             (!this.MachineService.Loadunits.DrawerInLocationById(this.LoadingUnitId.Value) &&
                              !this.MachineService.Loadunits.DrawerInBayById(this.LoadingUnitId.Value)))
                         {
-                            return "Il cassetto selezionato non è valido";
+                            return VW.App.Resources.InstallationApp.InvalidDrawerSelected;
                         }
 
                         break;
@@ -407,6 +420,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.moveToElevatorPositionCommand?.RaiseCanExecuteChanged();
             this.callLoadunitToBayCommand?.RaiseCanExecuteChanged();
+            this.openShutterCommand?.RaiseCanExecuteChanged();
             this.closeShutterCommand?.RaiseCanExecuteChanged();
             this.goToBayCommand?.RaiseCanExecuteChanged();
             this.moveToShapePositionDxCommand?.RaiseCanExecuteChanged();
@@ -452,23 +466,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanCloseShutter()
         {
             return this.CanBaseExecute() &&
-                   !this.SensorsService.ShutterSensors.Closed;
+                   this.SensorsService.ShutterSensors.Open;
         }
 
         private bool CanGoToBayCommand()
         {
             return this.CanBaseExecute() &&
-                   Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.GetValueOrDefault()) != Convert.ToInt32(this.BayPosition.Height);
+                   (this.MachineStatus.ElevatorPositionType != ElevatorPositionType.Bay || !this.MachineStatus.BayPositionUpper.GetValueOrDefault());
         }
 
         private bool CanMensurationDx()
         {
-            return this.CanBaseExecute();
+            return this.CanBaseExecute() &&
+                   this.SensorsService.ShutterSensors.Open;
         }
 
         private bool CanMensurationSx()
         {
-            return this.CanBaseExecute();
+            return this.CanBaseExecute() &&
+                   this.SensorsService.ShutterSensors.Open;
         }
 
         private bool CanMoveToElevatorPosition()
@@ -481,11 +497,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanMoveToShapePositionDx()
         {
             var res = this.CanBaseExecute() &&
-                      Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.GetValueOrDefault()) == Convert.ToInt32(this.BayPosition.Height);
+                      this.MachineStatus.ElevatorPositionType == ElevatorPositionType.Bay &&
+                      this.MachineStatus.BayPositionUpper.GetValueOrDefault();
 
             this.ShowNextStepSinglePage(true, res);
 
             return res;
+        }
+
+        private bool CanOpenShutter()
+        {
+            return this.CanBaseExecute() &&
+                   this.SensorsService.ShutterSensors.Closed;
         }
 
         private bool CanStop()
@@ -572,6 +595,72 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private void OnProfileCalibrationMessage(NotificationMessageUI<ProfileCalibrationMessageData> message)
+        {
+            switch (message.Status)
+            {
+                case MessageStatus.NotSpecified:
+                    break;
+
+                case MessageStatus.OperationEnd:
+                    break;
+
+                case MessageStatus.OperationError:
+                    break;
+
+                case MessageStatus.OperationStop:
+                    break;
+
+                case MessageStatus.OperationFaultStop:
+                    break;
+
+                case MessageStatus.OperationRunningStop:
+                    break;
+
+                case MessageStatus.OperationStart:
+                    break;
+
+                case MessageStatus.OperationUpdateData:
+                    break;
+
+                case MessageStatus.OperationExecuting:
+                    break;
+
+                case MessageStatus.OperationStepStart:
+                    break;
+
+                case MessageStatus.OperationStepEnd:
+                    break;
+
+                case MessageStatus.OperationStepStop:
+                    break;
+
+                case MessageStatus.OperationWaitResume:
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        private async Task OpenShutterAsync()
+        {
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                await this.shuttersWebService.MoveToAsync(MAS.AutomationService.Contracts.ShutterPosition.Opened);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
         private async Task StopAsync()
         {
             this.IsWaitingForResponse = true;
@@ -599,10 +688,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         (m) => this.OnStepChanged(m),
                         ThreadOption.UIThread,
                         false);
+
+            this.profileCalibrationToken = this.profileCalibrationToken
+                ?? this.EventAggregator
+                    .GetEvent<NotificationEventUI<ProfileCalibrationMessageData>>()
+                    .Subscribe(
+                        (m) => this.OnProfileCalibrationMessage(m),
+                        ThreadOption.UIThread,
+                        false);
         }
 
         private void UpdateStatusButtonFooter()
         {
+            if (!this.IsVisible)
+            {
+                return;
+            }
+
             switch (this.CurrentStep)
             {
                 case ProfileCheckStep.Initialize:

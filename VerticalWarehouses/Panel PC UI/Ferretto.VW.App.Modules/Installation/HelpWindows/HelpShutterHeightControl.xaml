@@ -58,39 +58,39 @@
                              LabelText="{x:Static res:InstallationApp.SpeedMMSec}" />
 
         <controls:PpcLabeledText Width="180"
-                                              Margin="20,280,0,0"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Top"
-                                              ContentText="4,5"
-                                              LabelText="{x:Static res:InstallationApp.Tolerance}" />
+                                 Margin="20,280,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="4,5"
+                                 LabelText="{x:Static res:InstallationApp.Tolerance}" />
 
         <controls:PpcLabeledText Width="180"
-                                              Margin="20,210,0,0"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Top"
-                                              ContentText="3,5"
-                                              LabelText="{x:Static res:InstallationApp.SystemErrorMM}" />
+                                 Margin="20,210,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="3,5"
+                                 LabelText="{x:Static res:InstallationApp.SystemErrorMM}" />
 
         <controls:PpcLabeledText Width="180"
-                                              Margin="20,420,0,0"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Top"
-                                              ContentText="568,5"
-                                              LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
+                                 Margin="20,420,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="568,5"
+                                 LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
 
         <controls:PpcLabeledText Width="180"
-                                              Margin="20,490,0,0"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Top"
-                                              ContentText="-3,5"
-                                              LabelText="{x:Static res:InstallationApp.GateCorrection}" />
+                                 Margin="20,490,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="-3,5"
+                                 LabelText="{x:Static res:InstallationApp.GateCorrection}" />
 
         <controls:PpcLabeledText Width="180"
-                                              Margin="530,140,0,0"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Top"
-                                              ContentText="Fuori tolleranza"
-                                              LabelText="{x:Static res:InstallationApp.Output}" />
+                                 Margin="530,140,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="Fuori tolleranza"
+                                 LabelText="{x:Static res:InstallationApp.Output}" />
 
         <controls:PpcButton Margin="530,210,0,0"
                             HorizontalAlignment="Left"

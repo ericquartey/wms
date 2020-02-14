@@ -22,6 +22,8 @@ namespace Ferretto.VW.App.Services
 
         BayNumber BayNumber { get; }
 
+        IEnumerable<Bay> Bays { get; }
+
         IEnumerable<Cell> Cells { get; }
 
         bool HasBayExternal { get; }
@@ -41,6 +43,7 @@ namespace Ferretto.VW.App.Services
         MachinePowerState MachinePower { get; }
 
         MachineStatus MachineStatus { get; }
+        bool HasBayWithInverter { get; set; }
 
         #endregion
 

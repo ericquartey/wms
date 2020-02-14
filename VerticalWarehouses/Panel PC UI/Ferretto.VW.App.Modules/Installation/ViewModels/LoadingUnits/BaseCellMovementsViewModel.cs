@@ -30,10 +30,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public BaseCellMovementsViewModel(
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IMachineCellsWebService machineCellsWebService,
+            IMachineModeWebService machineModeWebService,
             ISensorsService sensorsService,
             IBayManager bayManagerService)
             : base(
                 machineLoadingUnitsWebService,
+                machineModeWebService,
                 bayManagerService)
         {
             if (machineCellsWebService is null)

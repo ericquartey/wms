@@ -1,9 +1,9 @@
 ﻿<UserControl x:Class="Ferretto.VW.App.Installation.HelpWindows.HelpPageBase"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              mc:Ignorable="d">
     <Grid Width="1024"
@@ -12,45 +12,64 @@
 
         <Image Width="200"
                Height="60"
-               HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"
+               Margin="10,10,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
                Source="{DynamicResource Ferretto_Logo}"
                Stretch="Uniform" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
-                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                    Text="{x:Static res:InstallationApp.VerticalResolutionCalibration}" />
+        <TextBlock Margin="320,20,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.VerticalResolutionCalibration}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
-                    Width="670" Height="60"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.ResolutionCalibrationFunctionDescription}" />
+        <TextBlock Width="670"
+                   Height="60"
+                   Margin="320,50,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.ResolutionCalibrationFunctionDescription}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,165,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.BeltBurnishingUpLimit}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,165,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.BeltBurnishingUpLimit}" />
 
-        <controls:PpcTextBox     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,165,0,0"
-                                                       Width="180"
-                                                       Highlighted="True" IsEnabled="True"
-                                                       InputText="1025,5"
-                                                       LabelText="{x:Static res:InstallationApp.InitialPosition}"
-                                                        />
+        <controls:PpcTextBox Width="180"
+                             Margin="20,165,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             Highlighted="True"
+                             InputText="1025,5"
+                             IsEnabled="True"
+                             LabelText="{x:Static res:InstallationApp.InitialPosition}" />
 
-        <controls:PpcLabeledText          HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,140,0,0"
-                                                       Width="180"
-                                                       ContentText="125,36"
-                                                       LabelText="{x:Static res:InstallationApp.CurrentResolution}"/>
+        <controls:PpcLabeledText Width="180"
+                                 Margin="530,140,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="125,36"
+                                 LabelText="{x:Static res:InstallationApp.CurrentResolution}" />
 
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,140,0,0"
-                     Width="260" Height="70"
-                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.ResolutionCalibrationActualResolutionHelp}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,140,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.ResolutionCalibrationActualResolutionHelp}" />
 
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,125,0,0"
-                     Width="300"
-                     Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.VerticalResolutionCalibrationStep1}" />
+        <TextBlock Width="300"
+                   Margin="220,125,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.VerticalResolutionCalibrationStep1}" />
 
     </Grid>
 </UserControl>

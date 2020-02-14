@@ -349,47 +349,11 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error Code.
-        /// </summary>
-        public static string ErrorCode {
-            get {
-                return ResourceManager.GetString("ErrorCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Error communicating with services..
         /// </summary>
         public static string ErrorCommunicatingWithServices {
             get {
                 return ResourceManager.GetString("ErrorCommunicatingWithServices", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error Description.
-        /// </summary>
-        public static string ErrorDescription {
-            get {
-                return ResourceManager.GetString("ErrorDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error Reason.
-        /// </summary>
-        public static string ErrorReason {
-            get {
-                return ResourceManager.GetString("ErrorReason", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error recovery.
-        /// </summary>
-        public static string ErrorRecoveryProcedure {
-            get {
-                return ResourceManager.GetString("ErrorRecoveryProcedure", resourceCulture);
             }
         }
         
@@ -417,15 +381,6 @@ namespace Ferretto.VW.App.Resources {
         public static string FilePath {
             get {
                 return ResourceManager.GetString("FilePath", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to First Seen.
-        /// </summary>
-        public static string FirstSeen {
-            get {
-                return ResourceManager.GetString("FirstSeen", resourceCulture);
             }
         }
         
@@ -462,6 +417,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Loading {
             get {
                 return ResourceManager.GetString("Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoadUnit Operations.
+        /// </summary>
+        public static string LoadUnitOperations {
+            get {
+                return ResourceManager.GetString("LoadUnitOperations", resourceCulture);
             }
         }
         
@@ -507,15 +471,6 @@ namespace Ferretto.VW.App.Resources {
         public static string ManualMode {
             get {
                 return ResourceManager.GetString("ManualMode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Mark as resolved.
-        /// </summary>
-        public static string MarkAsResolved {
-            get {
-                return ResourceManager.GetString("MarkAsResolved", resourceCulture);
             }
         }
         
@@ -691,6 +646,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        public static string Start {
+            get {
+                return ResourceManager.GetString("Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Status.
         /// </summary>
         public static string Status {
@@ -700,11 +664,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stop.
+        /// </summary>
+        public static string Stop {
+            get {
+                return ResourceManager.GetString("Stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Switch Off.
         /// </summary>
         public static string SwitchOff {
             get {
                 return ResourceManager.GetString("SwitchOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Switch to Automatic.
+        /// </summary>
+        public static string SwitchToAutomatic {
+            get {
+                return ResourceManager.GetString("SwitchToAutomatic", resourceCulture);
             }
         }
         

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,6 +14,10 @@ namespace Ferretto.VW.Installer.Core
     {
         #region Fields
 
+        private const string INSTALLARG = "-install";
+
+        private const string UPDATEARG = "-update";
+
         private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings()
         {
             TypeNameHandling = TypeNameHandling.Auto,
@@ -23,7 +28,17 @@ namespace Ferretto.VW.Installer.Core
 
         private Step activeStep;
 
+        private bool isInstall;
+
         private bool isRollbackInProgress;
+
+        private bool isUpdate;
+
+        private string masVersion;
+
+        private OperationMode operationMode;
+
+        private string panelPcVersion;
 
         private string softwareVersion;
 
@@ -43,10 +58,32 @@ namespace Ferretto.VW.Installer.Core
             private set => this.SetProperty(ref this.activeStep, value);
         }
 
+        public bool IsInstall => this.isInstall;
+
         public bool IsRollbackInProgress
         {
             get => this.isRollbackInProgress;
             private set => this.SetProperty(ref this.isRollbackInProgress, value);
+        }
+
+        public bool IsUpdate => this.isUpdate;
+
+        public string MasVersion
+        {
+            get => this.masVersion;
+            private set => this.SetProperty(ref this.masVersion, value);
+        }
+
+        public OperationMode OperationMode
+        {
+            get => this.operationMode;
+            private set => this.SetProperty(ref this.operationMode, value);
+        }
+
+        public string PanelPcVersion
+        {
+            get => this.panelPcVersion;
+            private set => this.SetProperty(ref this.panelPcVersion, value);
         }
 
         public string SoftwareVersion
@@ -84,9 +121,34 @@ namespace Ferretto.VW.Installer.Core
             this.IsRollbackInProgress = true;
         }
 
+        public bool CanStart()
+        {
+            this.SetArgsStartup();
+            if (!(this.isInstall || this.isUpdate))
+            {
+                if (this.Steps.FirstOrDefault(s => s.StartTime != null) is null)
+                {
+                    this.logger.Debug("Nothing to do, update/installation in progress.");
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         public Step GetNextStepToExecute()
         {
             return this.Steps.FirstOrDefault(s => s.Status == StepStatus.ToDo);
+        }
+
+        public void LoadMasVersion()
+        {
+            this.MasVersion = this.GetVersion("../panelpc_app/properties/app.manifest");
+        }
+
+        public void LoadPanelPcVersion()
+        {
+            this.PanelPcVersion = this.GetVersion("../automation_service/properties/app.manifest");
         }
 
         public async Task RunAsync()
@@ -114,7 +176,7 @@ namespace Ferretto.VW.Installer.Core
                 throw new InvalidOperationException("Unable to continue with setup because execution was interrupted while one step was being rolled back.");
             }
 
-            this.LoadSoftwareVersion();
+            this.CheckToSkipCurrentStartingStep();
 
             try
             {
@@ -139,17 +201,18 @@ namespace Ferretto.VW.Installer.Core
                     else
                     {
                         this.ActiveStep = this.Steps.FirstOrDefault(s => s.Status == StepStatus.ToDo);
+                        this.ActiveStep.Status = StepStatus.Start;
                         this.Dump();
                         this.RaisePropertyChanged(nameof(this.ActiveStep));
-
                         await this.ActiveStep.ApplyAsync();
                         this.Dump();
                         if (this.ActiveStep.Status is StepStatus.Failed || this.IsRollbackInProgress)
                         {
                             if (!this.ActiveStep.SkipRollback)
                             {
-                                this.IsRollbackInProgress = true;
-                                await this.RollbackStep(this.ActiveStep);
+                                break;
+                                //this.IsRollbackInProgress = true;
+                                //await this.RollbackStep(this.ActiveStep);
                             }
                         }
                     }
@@ -163,6 +226,35 @@ namespace Ferretto.VW.Installer.Core
             this.RaiseInstallationFinished(!this.IsRollbackInProgress);
         }
 
+        public void Start()
+        {
+            this.LoadMasVersion();
+            this.LoadPanelPcVersion();
+            this.LoadMasVersion();
+
+            if (this.isInstall)
+            {
+                this.OperationMode = OperationMode.Imstall;
+            }
+            else if (this.isUpdate)
+            {
+                this.OperationMode = OperationMode.Update;
+            }
+        }
+
+        private void CheckToSkipCurrentStartingStep()
+        {
+            var stepInProgress = this.Steps.SingleOrDefault(s => s.Status == StepStatus.Start
+                                                                 &&
+                                                                 s.SkipOnResume);
+            if (!(stepInProgress is null))
+            {
+                stepInProgress.Status = StepStatus.Done;
+                this.ActiveStep = stepInProgress;
+                this.RaisePropertyChanged(nameof(this.ActiveStep));
+            }
+        }
+
         private void Dump()
         {
             var objectString = JsonConvert.SerializeObject(this, SerializerSettings);
@@ -170,11 +262,11 @@ namespace Ferretto.VW.Installer.Core
             System.IO.File.WriteAllText("steps-snapshot.json", objectString);
         }
 
-        private void LoadSoftwareVersion()
+        private string GetVersion(string fullPath)
         {
             try
             {
-                using (var reader = new StreamReader("./properties/app.manifest"))
+                using (var reader = new StreamReader(fullPath))
                 {
                     using (var xmlReader = XmlReader.Create(reader))
                     {
@@ -186,7 +278,7 @@ namespace Ferretto.VW.Installer.Core
                             {
                                 if (xmlReader.HasAttributes)
                                 {
-                                    this.SoftwareVersion = xmlReader.GetAttribute("version");
+                                    return xmlReader.GetAttribute("version");
                                 }
                             }
                         }
@@ -196,6 +288,13 @@ namespace Ferretto.VW.Installer.Core
             catch
             {
             }
+
+            return null;
+        }
+
+        private void LoadSoftwareVersion()
+        {
+            this.SoftwareVersion = this.GetVersion("./properties/app.manifest");
         }
 
         private void RaiseInstallationFinished(bool success)
@@ -211,6 +310,22 @@ namespace Ferretto.VW.Installer.Core
             {
                 throw new InvalidOperationException(
                     $"Unable to continue with setup because rollback of step {stepToRollback.Number} failed.");
+            }
+        }
+
+        private void SetArgsStartup()
+        {
+            var args = Environment.GetCommandLineArgs();
+            foreach (var arg in args)
+            {
+                if (arg.ToLower(CultureInfo.InvariantCulture) == UPDATEARG)
+                {
+                    this.isUpdate = true;
+                }
+                else if (arg.ToLower(CultureInfo.InvariantCulture) == INSTALLARG)
+                {
+                    this.isInstall = true;
+                }
             }
         }
 

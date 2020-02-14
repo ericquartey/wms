@@ -125,11 +125,25 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             switch (this.Mission.RestoreStep)
             {
                 case MissionStep.BayChain:
-                    this.RestoreBayChain();
+                    if (this.Mission.ErrorMovements == MissionErrorMovements.None)
+                    {
+                        this.RestoreBayChain();
+                    }
+                    else
+                    {
+                        this.Logger.LogWarning($"{this.GetType().Name}: Resume mission {this.Mission.Id} already executed!");
+                    }
                     break;
 
                 case MissionStep.CloseShutter:
-                    this.RestoreCloseShutter();
+                    if (this.Mission.ErrorMovements == MissionErrorMovements.None)
+                    {
+                        this.RestoreCloseShutter();
+                    }
+                    else
+                    {
+                        this.Logger.LogWarning($"{this.GetType().Name}: Resume mission {this.Mission.Id} already executed!");
+                    }
                     break;
 
                 case MissionStep.End:
@@ -143,15 +157,36 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 case MissionStep.ToTarget:
                 case MissionStep.BackToTarget:
-                    this.RestoreMoveToTarget();
+                    if (this.Mission.ErrorMovements == MissionErrorMovements.None)
+                    {
+                        this.RestoreMoveToTarget();
+                    }
+                    else
+                    {
+                        this.Logger.LogWarning($"{this.GetType().Name}: Resume mission {this.Mission.Id} already executed!");
+                    }
                     break;
 
                 case MissionStep.Start:
-                    this.RestoreStartStep();
+                    if (this.Mission.ErrorMovements == MissionErrorMovements.None)
+                    {
+                        this.RestoreStartStep();
+                    }
+                    else
+                    {
+                        this.Logger.LogWarning($"{this.GetType().Name}: Resume mission {this.Mission.Id} already executed!");
+                    }
                     break;
 
                 case MissionStep.WaitPick:
-                    this.RestoreWaitPick();
+                    if (this.Mission.ErrorMovements == MissionErrorMovements.None)
+                    {
+                        this.RestoreWaitPick();
+                    }
+                    else
+                    {
+                        this.Logger.LogWarning($"{this.GetType().Name}: Resume mission {this.Mission.Id} already executed!");
+                    }
                     break;
 
                 default:

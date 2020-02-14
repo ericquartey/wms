@@ -60,6 +60,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
                 {
                     this.Logger.LogTrace("2b:Axis switched on");
 
+                    // TODO send an OperationError when timeout expires
                     var feedback = (this.axisToSwitchOn == Axis.Horizontal && message.CradleMotorOn) ? this.status.InputData[(int)IoPorts.CradleMotorFeedback] : this.status.InputData[(int)IoPorts.ElevatorMotorFeedback];
                     if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 300
                         || feedback)

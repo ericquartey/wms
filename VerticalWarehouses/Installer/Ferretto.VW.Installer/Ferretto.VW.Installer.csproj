@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Reference Include="System.Web" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DevExpress.Mvvm" Version="19.2.6" />
+    <PackageReference Include="DevExpress.WindowsDesktop.Data" Version="19.2.6" />
+    <PackageReference Include="DevExpress.Wpf.Core" Version="19.2.6" />
     <PackageReference Include="MahApps.Metro.IconPacks" Version="3.1.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
       <PrivateAssets>all</PrivateAssets>
@@ -27,8 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Properties\launchSettings.json" />
-    <None Remove="Themes\Dark.xaml" />
+    <None Remove="Properties\launchSettings.json" />    
     <Content Include="Properties\launchSettings.json">
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </Content>
@@ -66,6 +72,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Ferretto.VW.Installer.Core\Ferretto.VW.Installer.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Themes\DarkSkin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
 
 </Project>

@@ -16,6 +16,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IBaysDataProvider baysDataProvider;
 
+        private readonly IErrorsProvider errorsProvider;
+
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
         #endregion
@@ -24,10 +26,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public BaysController(
             ISetupProceduresDataProvider setupProceduresDataProvider,
-            IBaysDataProvider baysDataProvider)
+            IBaysDataProvider baysDataProvider,
+            IErrorsProvider errorsProvider)
         {
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
+            this.errorsProvider = errorsProvider ?? throw new System.ArgumentNullException(nameof(errorsProvider));
         }
 
         #endregion
@@ -134,6 +138,19 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             this.baysDataProvider.Light(this.BayNumber, enable);
 
+            return this.Accepted();
+        }
+
+        [HttpPost("set-loadunit-on-elevator")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult SetLoadUnitOnBay(int bayPositionId, int loadingUnitId)
+        {
+            var currentError = this.errorsProvider.GetCurrent();
+            if (currentError != null)
+            {
+                this.baysDataProvider.SetLoadingUnit(bayPositionId, loadingUnitId);
+            }
             return this.Accepted();
         }
 

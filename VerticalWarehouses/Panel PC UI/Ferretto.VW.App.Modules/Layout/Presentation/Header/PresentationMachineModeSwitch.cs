@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
@@ -6,6 +7,7 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Events;
+using Prism.Regions;
 
 namespace Ferretto.VW.App.Modules.Layout.Presentation
 {
@@ -25,6 +27,8 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private readonly SubscriptionToken machinePowerChangedToken;
 
+        private readonly IRegionManager regionManager;
+
         private HealthStatus healthStatus;
 
         private bool isBusy;
@@ -32,6 +36,12 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         private bool isDisposed;
 
         private bool isMachineInAutomaticMode;
+
+        private bool isMachineInCompact;
+
+        private bool isMachineInLoadUnitOperations;
+
+        private bool isMachineInSwitchingToLoadUnitOperations;
 
         private bool isMachineInTestMode;
 
@@ -46,11 +56,13 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         #region Constructors
 
         public PresentationMachineModeSwitch(
+            IRegionManager regionManager,
             IMachineModeService machineModeService,
             IMachineModeWebService machineModeWebService,
             IDialogService dialogService)
             : base(PresentationTypes.MachineMode)
         {
+            this.regionManager = regionManager ?? throw new ArgumentNullException(nameof(regionManager));
             this.machineModeService = machineModeService ?? throw new ArgumentNullException(nameof(machineModeService));
             this.machineModeWebService = machineModeWebService ?? throw new ArgumentNullException(nameof(machineModeWebService));
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
@@ -94,6 +106,24 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         {
             get => this.isMachineInAutomaticMode;
             set => this.SetProperty(ref this.isMachineInAutomaticMode, value);
+        }
+
+        public bool IsMachineInCompact
+        {
+            get => this.isMachineInCompact;
+            set => this.SetProperty(ref this.isMachineInCompact, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsMachineInLoadUnitOperations
+        {
+            get => this.isMachineInLoadUnitOperations;
+            set => this.SetProperty(ref this.isMachineInLoadUnitOperations, value);
+        }
+
+        public bool IsMachineInSwitchingToLoadUnitOperations
+        {
+            get => this.isMachineInSwitchingToLoadUnitOperations;
+            set => this.SetProperty(ref this.isMachineInSwitchingToLoadUnitOperations, value);
         }
 
         public bool IsMachineInTestMode
@@ -144,11 +174,31 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             }
             else if (this.machineMode is MachineMode.Manual || this.machineMode is MachineMode.Test)
             {
-                var messageBoxResult = this.dialogService.ShowMessage(General.ConfirmMachineModeSwitchAutomatic, General.Automatic, DialogType.Question, DialogButtons.YesNo);
-                if (messageBoxResult == DialogResult.Yes)
+                var view = this.GetActiveView();
+                if (view.Equals("LoadingUnitFromBayToBayView", StringComparison.InvariantCultureIgnoreCase) ||
+                    view.Equals("LoadingUnitFromBayToCellView", StringComparison.InvariantCultureIgnoreCase) ||
+                    view.Equals("LoadingUnitFromCellToBayView", StringComparison.InvariantCultureIgnoreCase) ||
+                    view.Equals("LoadingUnitFromCellToCellView", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    await this.machineModeWebService.SetAutomaticAsync();
+                    await this.machineModeWebService.SetLoadUnitOperationsAsync();
                 }
+                else
+                {
+                    var messageBoxResult = this.dialogService.ShowMessage(General.ConfirmMachineModeSwitchAutomatic, General.Automatic, DialogType.Question, DialogButtons.YesNo);
+                    if (messageBoxResult == DialogResult.Yes)
+                    {
+                        await this.machineModeWebService.SetAutomaticAsync();
+                    }
+                }
+            }
+            else if (this.machineMode is MachineMode.LoadUnitOperations)
+            {
+                //var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, General.LoadUnitOperations, DialogType.Question, DialogButtons.YesNo);
+                //if (messageBoxResult == DialogResult.Yes)
+                //{
+                //    await this.machineModeWebService.SetLoadUnitOperationsAsync();
+                //}
+                await this.machineModeWebService.SetManualAsync();
             }
             else
             {
@@ -164,10 +214,12 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                 !this.IsBusy
                 &&
                 (this.MachineMode is MachineMode.Automatic
-                    ||
-                    this.MachineMode is MachineMode.Manual
-                    ||
-                    this.MachineMode is MachineMode.Test)
+                 ||
+                 this.MachineMode is MachineMode.Manual
+                 ||
+                 this.MachineMode is MachineMode.Test
+                 ||
+                 this.MachineMode is MachineMode.LoadUnitOperations)
                 &&
                 this.MachinePowerState is MachinePowerState.Powered
                 &&
@@ -189,6 +241,12 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             }
 
             this.isDisposed = true;
+        }
+
+        private string GetActiveView()
+        {
+            var activeView = this.regionManager.Regions[Utils.Modules.Layout.REGION_MAINCONTENT].ActiveViews.FirstOrDefault();
+            return activeView?.GetType()?.Name;
         }
 
         private void OnHealthStatusChanged(HealthStatusChangedEventArgs e)
@@ -213,9 +271,12 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         {
             this.IsMachineInAutomaticMode = this.MachineMode is MachineMode.Automatic;
             this.IsMachineInTestMode = this.MachineMode is MachineMode.Test;
+            this.IsMachineInLoadUnitOperations = this.MachineMode is MachineMode.LoadUnitOperations;
+            this.IsMachineInSwitchingToLoadUnitOperations = this.MachineMode is MachineMode.SwitchingToLoadUnitOperations;
+            this.IsMachineInCompact = this.MachineMode is MachineMode.Compact;
 
             this.IsBusy =
-                this.MachineMode is MachineMode.Restore
+                this.MachineMode is MachineMode.SwitchingToLoadUnitOperations
                 ||
                 this.MachineMode is MachineMode.SwitchingToAutomatic
                 ||

@@ -54,12 +54,12 @@
                                               Visibility="Visible" />
 
         <controls:CustomMachinePowerToggleButton Margin="20,280,0,0"
-                                                   HorizontalAlignment="Left"
-                                                   VerticalAlignment="Top" />
+                                                 HorizontalAlignment="Left"
+                                                 VerticalAlignment="Top" />
 
         <controls:CustomMachinePowerToggleButton Margin="20,210,0,0"
-                                                   HorizontalAlignment="Left"
-                                                   VerticalAlignment="Top" />
+                                                 HorizontalAlignment="Left"
+                                                 VerticalAlignment="Top" />
 
         <controls:CustomControlLoggedUser Height="60"
                                           Margin="20,350,0,0"
@@ -76,14 +76,14 @@
             </controls:CustomControlLoggedUser.RenderTransform>
         </controls:CustomControlLoggedUser>
 
-        <controls:PpcButton  Width="60"
-                Height="60"
-                Margin="20,420,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Background="{DynamicResource VWAPP_BACKGROUND}"
-                BorderBrush="{DynamicResource VWAPP_CustomMachineModeToggleButton_BorderBrush_Normal}"
-                BorderThickness="1">
+        <controls:PpcButton Width="60"
+                            Height="60"
+                            Margin="20,420,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Background="{DynamicResource VWAPP_BACKGROUND}"
+                            BorderBrush="{DynamicResource VWAPP_CustomMachineModeToggleButton_BorderBrush_Normal}"
+                            BorderThickness="1">
             <TextBlock FontSize="25"
                        Foreground="{DynamicResource FerrettoPureWhite}"
                        TextAlignment="Center"><Run Text="?" />
@@ -111,12 +111,12 @@
             </RepeatButton.LayoutTransform>
         </RepeatButton>
 
-        <controls:PpcButton  Margin="500,210,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Content="{x:Static res:InstallationApp.InstallationState}"
-                IsEnabled="True"
-                Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+        <controls:PpcButton Margin="500,210,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{x:Static res:InstallationApp.InstallationState}"
+                            IsEnabled="True"
+                            Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
         <TextBlock Width="260"
                    Height="70"

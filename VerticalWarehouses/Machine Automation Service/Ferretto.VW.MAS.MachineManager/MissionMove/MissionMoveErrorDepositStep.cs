@@ -164,21 +164,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             this.Logger.LogDebug($"{this.GetType().Name}: Resume mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, from {this.Mission.RestoreStep}, loadUnit {this.Mission.LoadUnitId}");
 
-            switch (this.Mission.RestoreStep)
+            if (this.Mission.ErrorMovements == MissionErrorMovements.None)
             {
-                case MissionStep.DepositUnit:
-                    this.RestoreDepositStart();
-                    break;
-
-                default:
-                    this.Logger.LogError($"{this.GetType().Name}: no valid RestoreState {this.Mission.RestoreStep} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
-
-                    {
-                        this.Mission.StopReason = StopRequestReason.NoReason;
-                        var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                        newStep.OnEnter(null);
-                    }
-                    break;
+                this.RestoreDepositStart();
+            }
+            else
+            {
+                this.Logger.LogWarning($"{this.GetType().Name}: Resume mission {this.Mission.Id} already executed!");
             }
         }
 

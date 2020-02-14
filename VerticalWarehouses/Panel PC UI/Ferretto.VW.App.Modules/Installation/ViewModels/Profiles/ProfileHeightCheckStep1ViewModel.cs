@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.CommonUtils;
@@ -302,7 +303,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (!this.LodingUnitManual &&
                 !this.InputLoadingUnitId.HasValue)
             {
-                return $"Filed is required.";
+                return VW.App.Resources.InstallationApp.FieldRequired;
             }
 
             if (!this.LodingUnitManual &&
@@ -311,7 +312,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (this.InputLoadingUnitId.Value < 1 ||
                     this.InputLoadingUnitId.Value > 99)
                 {
-                    return $"Invalid value";
+                    return VW.App.Resources.InstallationApp.InvalidValue;
                 }
             }
 
@@ -364,7 +365,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (!this.IsLoadingUnitIdValid)
                 {
-                    this.ShowNotification("Id cassetto inserito non valido", Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(InstallationApp.InvalidEnteredDrawerId, Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
@@ -372,7 +373,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 if (destination == LoadingUnitLocation.NoLocation)
                 {
-                    this.ShowNotification("Tipo scelta sorgente non valida", Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(InstallationApp.InvalidSourceChoiceType, Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 

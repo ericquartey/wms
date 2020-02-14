@@ -109,14 +109,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 && message.ParameterId == InverterParameterId.ActualPositionShaft
                 )
             {
+                this.Logger.LogDebug("Target position reached.");
+
                 this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
                 this.ParentStateMachine.ChangeState(
                     new PositioningDisableOperationState(
                         this.ParentStateMachine,
                         this.Inverter,
                         this.Logger));
-
-                this.Logger.LogDebug("Target position reached.");
             }
             else
             {

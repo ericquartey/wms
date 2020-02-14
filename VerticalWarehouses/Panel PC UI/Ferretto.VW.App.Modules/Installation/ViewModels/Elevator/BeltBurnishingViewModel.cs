@@ -229,7 +229,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.InputDelay):
                         if (this.InputDelay < 0)
                         {
-                            return "InputDelay must be strictly positive.";
+                            return InstallationApp.InputDelayMustBePositive;
                         }
 
                         break;
@@ -237,12 +237,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.InputRequiredCycles):
                         if (!this.InputRequiredCycles.HasValue)
                         {
-                            return $"InputRequiredCycles is required.";
+                            return InstallationApp.InputRequiredCyclesMustBePositive;
                         }
 
                         if (this.InputRequiredCycles.Value <= 0)
                         {
-                            return "InputRequiredCycles must be strictly positive.";
+                            return InstallationApp.InputRequiredCyclesRequired;
                         }
 
                         break;
@@ -250,24 +250,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.InputLowerBound):
                         if (!this.InputLowerBound.HasValue)
                         {
-                            return $"InputLowerBound is required.";
+                            return InstallationApp.InputLowerBoundRequired;
                         }
 
                         if (this.InputLowerBound.Value <= 0)
                         {
-                            return "InputLowerBound must be strictly positive.";
+                            return InstallationApp.InputLowerBoundMustBePositive;
                         }
 
                         if (this.InputUpperBound.HasValue
                           &&
                           this.InputUpperBound.Value < this.InputLowerBound.Value)
                         {
-                            return "InputLowerBound must be greater than InputUpperBound.";
+                            return InstallationApp.InputLowerBoundMustBeGreatherThanUpper;
                         }
 
                         if (this.InputLowerBound.Value < this.machineLowerBound)
                         {
-                            return $"InputLowerBound must be greater than {this.machineLowerBound}.";
+                            return string.Format(InstallationApp.InputLowerBoundMustBeGreatherThanValue, this.machineLowerBound);
                         }
 
                         break;
@@ -275,24 +275,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     case nameof(this.InputUpperBound):
                         if (!this.InputUpperBound.HasValue)
                         {
-                            return $"InputUpperBound is required.";
+                            return InstallationApp.InputUpperBoundRequired;
                         }
 
                         if (this.InputUpperBound.Value <= 0)
                         {
-                            return "InputLowerBound must be strictly positive.";
+                            return InstallationApp.InputUpperBoundMustBePositive;
                         }
 
                         if (this.InputLowerBound.HasValue
                             &&
                             this.InputUpperBound.Value < this.InputLowerBound.Value)
                         {
-                            return "InputUpperBound must be greater than InputLowerBound.";
+                            return InstallationApp.InputUpperBoundMustBeGreatherThanLower;
                         }
 
                         if (this.InputUpperBound.Value > this.machineUpperBound)
                         {
-                            return $"InputUpperBound must be greater than {this.machineUpperBound}.";
+                            return string.Format(InstallationApp.InputUpperBoundMustBeGreatherThanValue, this.machineUpperBound);
                         }
 
                         break;
@@ -466,7 +466,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Rodaggio cinghia", DialogType.Question, DialogButtons.YesNo);
+                var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, InstallationApp.BeltBreakIn, DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     this.CumulativePerformedCycles = 0;
@@ -493,7 +493,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (totalCyclesToPerform <= 0)
                 {
                     this.isCompleted = true;
-                    this.ShowNotification("Required amount of cycles was completed.", Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(InstallationApp.RequiredCyclesCompleted, Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 

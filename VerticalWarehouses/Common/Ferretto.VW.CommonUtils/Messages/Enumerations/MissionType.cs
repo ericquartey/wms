@@ -6,6 +6,8 @@
 
         Manual,
 
+        LoadUnitOperation,
+
         WMS,
 
         IN,

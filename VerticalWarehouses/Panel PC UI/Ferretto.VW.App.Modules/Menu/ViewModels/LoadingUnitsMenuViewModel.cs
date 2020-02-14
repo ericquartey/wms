@@ -73,39 +73,49 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.extractionLoadingUnitsCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.ExtractionLoadingUnits),
-                () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual && this.VerticalOriginCalibration.IsCompleted));
+                () => this.MachineModeService.MachinePower == MachinePowerState.Powered &&
+                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded) &&
+                      (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations) &&
+                      this.VerticalOriginCalibration.IsCompleted));
 
         public ICommand InsertionLoadingUnitsCommand =>
             this.insertionLoadingUnitsCommand
             ??
             (this.insertionLoadingUnitsCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.InsertionLoadingUnits),
-                () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual && this.VerticalOriginCalibration.IsCompleted));
+                () => this.MachineModeService.MachinePower == MachinePowerState.Powered &&
+                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded) &&
+                      (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations) &&
+                      this.VerticalOriginCalibration.IsCompleted));
 
         public ICommand LoadingUnitsBayToBayCommand =>
             this.loadingUnitsBayToBayCommand
             ??
             (this.loadingUnitsBayToBayCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.LoadingUnitsBayToBay),
-                () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual && this.VerticalOriginCalibration.IsCompleted));
+                () => this.MachineModeService.MachinePower == MachinePowerState.Powered &&
+                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded) &&
+                      (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations) &&
+                      this.VerticalOriginCalibration.IsCompleted));
 
         public ICommand LoadingUnitsCommand =>
             this.loadingUnitsCommand
             ??
             (this.loadingUnitsCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.LoadingUnits),
-                this.CanExecuteCommand));
+                ()=> (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations || this.MachineModeService.MachineMode == MachineMode.Test) &&
+                     this.MachineModeService.MachinePower == MachinePowerState.Powered &&
+                     (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded)));
 
         public ICommand MoveLoadingUnitsCommand =>
             this.moveLoadingUnitsCommand
             ??
             (this.moveLoadingUnitsCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.MoveLoadingUnits),
-                () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual && this.VerticalOriginCalibration.IsCompleted));
+                () => this.MachineModeService.MachinePower == MachinePowerState.Powered &&
+                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded) &&
+                      (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations) &&
+                      this.VerticalOriginCalibration.IsCompleted));
 
         public ICommand TestCompleteCommand =>
             this.testCompleteCommand
@@ -113,6 +123,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.testCompleteCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.TestComplete),
                 () => this.CanExecuteCommand() &&
+                      (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Test) &&
                       this.MachineService.IsHoming));
 
         protected SetupStepStatus VerticalOriginCalibration => this.SetupStatusCapabilities?.VerticalOriginCalibration ?? new SetupStepStatus();

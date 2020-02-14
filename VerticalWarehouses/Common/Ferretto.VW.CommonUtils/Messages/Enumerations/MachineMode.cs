@@ -8,15 +8,17 @@
 
         Manual,
 
+        LoadUnitOperations,
+
         Test,
 
         Compact,
 
-        Restore,
-
         SwitchingToAutomatic,
 
         SwitchingToManual,
+
+        SwitchingToLoadUnitOperations,
 
         SwitchingToCompact
     }

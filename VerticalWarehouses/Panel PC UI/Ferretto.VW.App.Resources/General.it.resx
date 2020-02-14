@@ -225,9 +225,6 @@
   <data name="CheckBoxDark" xml:space="preserve">
     <value>  Tema scuro.</value>
   </data>
-  <data name="TargetNullValue" xml:space="preserve">
-    <value>-</value>
-  </data>
   <data name="MachineOff" xml:space="preserve">
     <value>Spenta</value>
   </data>
@@ -288,35 +285,17 @@
   <data name="EnsureEmergencyIsOff" xml:space="preserve">
     <value>Assicurarsi che nessun bottone di emergenza sia premuto.</value>
   </data>
-  <data name="ErrorCode" xml:space="preserve">
-    <value>Codice Errore</value>
-  </data>
   <data name="ErrorCommunicatingWithServices" xml:space="preserve">
     <value>Errore di comunicazione con i servizi.</value>
   </data>
-  <data name="ErrorDescription" xml:space="preserve">
-    <value>Descrizione errore</value>
-  </data>
   <data name="ErrorLogin" xml:space="preserve">
     <value>Errore: login fallito. Controlla la correttezza di user e password.</value>
-  </data>
-  <data name="ErrorReason" xml:space="preserve">
-    <value>Possibili cause</value>
-  </data>
-  <data name="ErrorRecoveryProcedure" xml:space="preserve">
-    <value>Ripristino errore</value>
-  </data>
-  <data name="FirstSeen" xml:space="preserve">
-    <value>Visto</value>
   </data>
   <data name="HoursAgo" xml:space="preserve">
     <value>{0:0} ore fa</value>
   </data>
   <data name="ManualMode" xml:space="preserve">
     <value>Manuale</value>
-  </data>
-  <data name="MarkAsResolved" xml:space="preserve">
-    <value>Marca come risolto</value>
   </data>
   <data name="MinutesAgo" xml:space="preserve">
     <value>{0:0} minuti fa</value>
@@ -368,5 +347,20 @@
   </data>
   <data name="BayTwoNumber" xml:space="preserve">
     <value>2</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Inizia</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="SwitchToAutomatic" xml:space="preserve">
+    <value>Passa in automatico</value>
+  </data>
+  <data name="TargetNullValue" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="LoadUnitOperations" xml:space="preserve">
+    <value>Operazioni cassetto</value>
   </data>
 </root>

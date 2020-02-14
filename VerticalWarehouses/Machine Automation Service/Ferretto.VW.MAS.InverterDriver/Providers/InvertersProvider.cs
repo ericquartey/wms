@@ -208,6 +208,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 positioningData,
                 targetAcceleration,
                 targetDeceleration,
+                currentPosition,
                 targetPosition,
                 targetSpeed,
                 switchPosition,
