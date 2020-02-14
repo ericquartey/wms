@@ -4,8 +4,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"        
-        mc:Ignorable="d">
+        xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Scaffolding.Controls"
+             mc:Ignorable="d">
     <dxmvvm:Interaction.Behaviors>
         <dxmvvm:OpenFileDialogService Title="{Binding Title}"/>
     </dxmvvm:Interaction.Behaviors>
@@ -94,6 +95,8 @@
                                Text="Apri file di configurazione" />
                         <Button Margin="0 0 20 0"
                                 Grid.Column="1"
+                                Width="100"
+                                Height="60"
                                 Content="Open file"
                                 Command="{Binding OpenFileCommand}">
                         </Button>
@@ -110,34 +113,48 @@
                      IsChecked="{Binding IsAuto, Mode=TwoWay}"
                      IsEnabled="{Binding CanGoAutoSync}">
             <RadioButton.Content>
-                <TextBlock Margin="0,25"
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Margin="0,25"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
                            FontSize="{DynamicResource FontSize_High}"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                            Text="Baia slave" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Grid.Row="0"
+                               Margin="30,25"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               FontSize="{DynamicResource FontSize_High}"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               Text="Indirizzo servizio di automazione " />
+                            <ctrls:IPAddressBox
+                               Margin="0,0"
+                               Width="460"
+                               Height="60"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               IPAddress="{Binding MasIpAddress, Mode=TwoWay}"
+                              />
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
             </RadioButton.Content>
         </RadioButton>
 
-        <Grid Grid.Row="3"
-              Grid.Column="1"
-              Grid.ColumnSpan="3"
-              Margin="40,0,0,15"
-              HorizontalAlignment="Left">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-        </Grid>
-
-        <Button Grid.Row="5"
+        <Button Grid.Row="6"
                 Grid.ColumnSpan="3"
                 Margin="15,15,15,0"
                 Width="100"
                 Height="60"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
-                Command="{Binding CloseCommand}"
-                Content="Chiudi" />
+                Command="{Binding SaveCommand}"
+                Content="Continua" />
     </Grid>
 </UserControl>

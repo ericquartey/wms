@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Windows.Input;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
@@ -16,6 +18,8 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private bool isSuccessful;
 
+        private IPAddress masIpAddress;
+
         private RelayCommand openFileCommand;
 
         private IServiceContainer serviceContainer = null;
@@ -28,14 +32,7 @@ namespace Ferretto.VW.Installer.ViewModels
         {
             this.installationService = installationService ?? throw new ArgumentNullException(nameof(installationService));
 
-            this.Filter = "Conf. files (.json)|*.json";
-            this.FilterIndex = 1;
-            this.Title = "Caricamento file di configurazione";
-            this.DefaultExt = "json";
-            this.DefaultFileName = "Configurazione";
-            this.OverwritePrompt = true;
-
-            this.RaisePropertyChanged(nameof(this.SoftwareVersion));
+            this.Inistialize();
         }
 
         #endregion
@@ -55,6 +52,12 @@ namespace Ferretto.VW.Installer.ViewModels
         public virtual int FilterIndex { get; set; }
 
         public bool IsSuccessful => this.isSuccessful;
+
+        public IPAddress MasIpAddress
+        {
+            get => this.masIpAddress;
+            set => this.SetProperty(ref this.masIpAddress, value);
+        }
 
         public ICommand OpenFileCommand =>
                         this.openFileCommand
@@ -120,6 +123,23 @@ namespace Ferretto.VW.Installer.ViewModels
         private bool CanOpenFile()
         {
             return true;
+        }
+
+        private void Inistialize()
+        {
+            this.Filter = "Conf. files (.json)|*.json";
+            this.FilterIndex = 1;
+            this.Title = "Caricamento file di configurazione";
+            this.DefaultExt = "json";
+            this.DefaultFileName = "Configurazione";
+            this.OverwritePrompt = true;
+
+            this.RaisePropertyChanged(nameof(this.SoftwareVersion));
+
+            if (IPAddress.TryParse(ConfigurationManager.AppSettings.GetInstallDefaultMasIpaddress(), out var ip))
+            {
+                this.MasIpAddress = ip;
+            }
         }
 
         #endregion
