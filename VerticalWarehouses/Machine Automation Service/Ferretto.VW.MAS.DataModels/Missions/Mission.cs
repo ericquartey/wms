@@ -24,6 +24,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool EjectLoadUnit { get; set; }
 
+        public MachineErrorCode ErrorCode { get; set; }
+
         public MissionErrorMovements ErrorMovements { get; set; }
 
         public int? LoadUnitCellSourceId { get; set; }

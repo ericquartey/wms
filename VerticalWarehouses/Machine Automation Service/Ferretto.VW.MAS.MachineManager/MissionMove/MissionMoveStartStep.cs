@@ -36,6 +36,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.Mission.CloseShutterBayNumber = BayNumber.None;
             this.Mission.StopReason = StopRequestReason.NoReason;
+            this.Mission.ErrorCode = MachineErrorCode.NoError;
             if (this.Mission.NeedHomingAxis == Axis.None)
             {
                 this.Mission.NeedHomingAxis = (this.MachineVolatileDataProvider.IsHomingExecuted ? Axis.None : Axis.Horizontal);
