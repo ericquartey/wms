@@ -29,6 +29,7 @@
           {
             "Height": 645,
             "MaxSingleHeight": 695,
+            "ProfileOffset": 50,
             "Location": "InternalBay1Down"
           }
         ],

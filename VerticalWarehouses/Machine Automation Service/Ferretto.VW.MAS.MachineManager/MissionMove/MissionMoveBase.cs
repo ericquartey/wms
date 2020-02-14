@@ -39,6 +39,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.MachineVolatileDataProvider = this.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>();
             this.MissionsDataProvider = this.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
             this.SensorsProvider = this.ServiceProvider.GetRequiredService<ISensorsProvider>();
+            this.MachineProvider = this.ServiceProvider.GetRequiredService<IMachineProvider>();
 
             this.Logger = this.ServiceProvider.GetRequiredService<ILogger<MachineManagerService>>();
         }
@@ -73,10 +74,19 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         internal ISensorsProvider SensorsProvider { get; }
 
+        public IMachineProvider MachineProvider { get; }
+
         #endregion
 
         #region Methods
 
+        /// <summary>
+        /// return true if load unit height is ok for the bay location
+        /// </summary>
+        /// <param name="locationBay"></param>
+        /// <param name="bayLocation"></param>
+        /// <param name="mission"></param>
+        /// <returns></returns>
         public bool CheckBayHeight(Bay locationBay, LoadingUnitLocation bayLocation, Mission mission)
         {
             bool returnValue = false;
@@ -88,14 +98,22 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 && bay != null
                 )
             {
-                if (unitToMove.Height <= bayPosition.MaxSingleHeight
-                    && unitToMove.Height >= bayPosition.MinSingleHeight
-                    )
+                var machine = this.MachineProvider.Get();
+                if (unitToMove.Height > machine.LoadUnitMaxHeight)
+                {
+                    this.Logger.LogWarning($"Load unit Height {unitToMove.Height} higher than machine max {machine.LoadUnitMaxHeight}: Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId} ");
+                }
+                else if (unitToMove.Height < machine.LoadUnitMinHeight)
+                {
+                    this.Logger.LogWarning($"Load unit Height {unitToMove.Height} lower than machine min {machine.LoadUnitMinHeight}: Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId} ");
+                }
+                else if (unitToMove.Height <= bayPosition.MaxSingleHeight)
                 {
                     returnValue = true;
                 }
                 else if (bayPosition.MaxDoubleHeight > 0
-                    && unitToMove.Height <= bayPosition.MaxDoubleHeight)
+                    && unitToMove.Height <= bayPosition.MaxDoubleHeight
+                    )
                 {
                     if (bay.Positions.Count() == 1)
                     {
@@ -107,6 +125,19 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         returnValue = true;
                     }
+                    else
+                    {
+                        this.Logger.LogWarning($"Load unit Height {unitToMove.Height} higher than single {bayPosition.MaxSingleHeight} and upper position occupied: Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId} ");
+                    }
+                }
+                else if (bayPosition.MaxDoubleHeight == 0
+                    && unitToMove.Height > bayPosition.MaxSingleHeight)
+                {
+                    this.Logger.LogWarning($"Load unit Height {unitToMove.Height} higher than single {bayPosition.MaxSingleHeight}: Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId} ");
+                }
+                else
+                {
+                    this.Logger.LogWarning($"Load unit Height {unitToMove.Height} higher than double {bayPosition.MaxDoubleHeight}: Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId} ");
                 }
             }
 #else

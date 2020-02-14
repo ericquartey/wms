@@ -163,7 +163,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new EntityNotFoundException();
                 }
                 var offset = bay.Positions.FirstOrDefault(x => x.Id == positionId)?.ProfileOffset ?? 0;
-                return (profile * this.kMul) + this.kSum + offset;
+                return (profile * this.kMul) + this.kSum - offset;
             }
         }
 
