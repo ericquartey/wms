@@ -1629,6 +1629,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="CarouselCalibration" xml:space="preserve">
     <value>Calibrazione giostra</value>
   </data>
+  <data name="HighPositionControl" xml:space="preserve">
+    <value>Controllo posizione alta</value>
+  </data>
   <data name="InputDelayMustBePositive" xml:space="preserve">
     <value>InputDelay deve essere maggiore di 0</value>
   </data>
@@ -1661,5 +1664,32 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="InputUpperBoundRequired" xml:space="preserve">
     <value>InputUpperBound necessario.</value>
+  </data>
+  <data name="MoveElevatorAtBayHeightOpenShutter" xml:space="preserve">
+    <value>Posizionare l'elevatore all'altezza della baia e aprire la serranda se presente.</value>
+  </data>
+  <data name="BayPositionDownHeightNew" xml:space="preserve">
+    <value>Nuova quota posiz. bassa [mm]</value>
+  </data>
+  <data name="BayPositionUpHeightNew" xml:space="preserve">
+    <value>Nuova quota posiz. alta [mm]</value>
+  </data>
+  <data name="CheckBayElevatorAlignment" xml:space="preserve">
+    <value>Verificare l'allineamento della baia e dell'elevatore. Nel caso non fossero allineate, procedere a correggere la posizione dell'elevatore.</value>
+  </data>
+  <data name="ConfirmChanges" xml:space="preserve">
+    <value>Conferma le modifiche.</value>
+  </data>
+  <data name="LowPositionControl" xml:space="preserve">
+    <value>Controllo posizione bassa</value>
+  </data>
+  <data name="MoveElevator" xml:space="preserve">
+    <value>Sposta elevatore</value>
+  </data>
+  <data name="NoChanges" xml:space="preserve">
+    <value>Non sono state apportate modifiche.</value>
+  </data>
+  <data name="SaveCheckPosition" xml:space="preserve">
+    <value>Verificare le nuove quote e premere Salva per rendere le modifiche effettive.</value>
   </data>
 </root>
