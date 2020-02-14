@@ -6,6 +6,7 @@ using Ferretto.VW.MAS.DataModels;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -21,9 +22,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IMachineProvider machineProvider;
 
-        private readonly IMachinesWmsWebService machinesWmsWebService;
-
         private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
+
+        private readonly IServiceScopeFactory serviceScopeFactory;
 
         private readonly IServicingProvider servicingProvider;
 
@@ -37,14 +38,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IMachineProvider machineProvider,
             IMachineVolatileDataProvider machineVolatileDataProvider,
             IConfiguration configuration,
-            IMachinesWmsWebService machinesWmsWebService)
+            IServiceScopeFactory serviceScopeFactory)
         {
             this.loadingUnitStatisticsProvider = loadingUnitStatisticsProvider ?? throw new System.ArgumentNullException(nameof(loadingUnitStatisticsProvider));
             this.servicingProvider = servicingProvider ?? throw new System.ArgumentNullException(nameof(servicingProvider));
             this.machineProvider = machineProvider ?? throw new System.ArgumentNullException(nameof(machineProvider));
             this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new System.ArgumentNullException(nameof(machineVolatileDataProvider));
             this.configuration = configuration ?? throw new System.ArgumentNullException(nameof(configuration));
-            this.machinesWmsWebService = machinesWmsWebService ?? throw new System.ArgumentNullException(nameof(machinesWmsWebService));
+            this.serviceScopeFactory = serviceScopeFactory ?? throw new System.ArgumentNullException(nameof(serviceScopeFactory));
         }
 
         #endregion
@@ -65,7 +66,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 try
                 {
-                    var area = await this.machinesWmsWebService.GetAreaByIdAsync(machine.Id);
+                    var machinesWebService = this.serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IMachinesWmsWebService>();
+                    var area = await machinesWebService.GetAreaByIdAsync(machine.Id);
                     areaId = area.Id;
                 }
                 catch
@@ -100,7 +102,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 try
                 {
                     var machine = this.machineProvider.Get();
-                    var wmsMachine = await this.machinesWmsWebService.GetByIdAsync(machine.Id);
+                    var machinesWebService = this.serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IMachinesWmsWebService>();
+
+                    var wmsMachine = await machinesWebService.GetByIdAsync(machine.Id);
 
                     statistics.AreaFillPercentage = wmsMachine.AreaFillRate;
                 }

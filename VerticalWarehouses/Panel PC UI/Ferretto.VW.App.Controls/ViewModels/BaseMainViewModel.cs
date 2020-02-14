@@ -127,7 +127,7 @@ namespace Ferretto.VW.App.Controls
 
         public IMachineService MachineService => this.machineService;
 
-        public MachineStatus MachineStatus => this.machineService.MachineStatus;
+        public App.Services.Models.MachineStatus MachineStatus => this.machineService.MachineStatus;
 
         public PresentationMode Mode
         {
@@ -350,6 +350,11 @@ namespace Ferretto.VW.App.Controls
 
         protected virtual Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
         {
+            if (e is null)
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
+
             this.UpdateIsEnabled(
                 this.machineModeService.MachinePower,
                 this.machineModeService.MachineMode,
@@ -364,6 +369,11 @@ namespace Ferretto.VW.App.Controls
 
         protected virtual Task OnMachineModeChangedAsync(MachineModeChangedEventArgs e)
         {
+            if (e is null)
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
+
             this.UpdateIsEnabled(
                 this.machineModeService.MachinePower,
                 e.MachineMode,
@@ -376,6 +386,11 @@ namespace Ferretto.VW.App.Controls
 
         protected virtual Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
         {
+            if (e is null)
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
+
             this.UpdateIsEnabled(
                 e.MachinePowerState,
                 this.machineModeService.MachineMode,
@@ -516,7 +531,7 @@ namespace Ferretto.VW.App.Controls
             MachineMode machineMode,
             HealthStatus healthStatus)
         {
-            bool result = true;
+            var result = true;
             if (this.EnableMask != EnableMask.Any)
             {
                 foreach (EnableMask flag in Enum.GetValues(typeof(EnableMask)))

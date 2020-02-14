@@ -3,7 +3,7 @@ using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 {
     internal abstract class InverterStateBase : IInverterState

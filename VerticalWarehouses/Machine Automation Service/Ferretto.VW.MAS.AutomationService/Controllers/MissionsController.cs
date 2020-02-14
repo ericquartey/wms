@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -20,8 +19,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Constructors
 
-        public MissionsController(
-            IMissionsDataProvider missionsDataProvider)
+        public MissionsController(IMissionsDataProvider missionsDataProvider)
         {
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
         }
@@ -36,6 +34,30 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var missions = this.missionsDataProvider.GetAllActiveMissions();
 
             return this.Ok(missions);
+        }
+
+        [HttpGet("{id}/wms")]
+        public async Task<ActionResult<WMS.Data.WebAPI.Contracts.MissionInfo>> GetByWmsIdAsync(int id, [FromServices] WMS.Data.WebAPI.Contracts.IMissionsWmsWebService missionsWmsWebService)
+        {
+            if (missionsWmsWebService is null)
+            {
+                throw new ArgumentNullException(nameof(missionsWmsWebService));
+            }
+
+            return this.Ok(await missionsWmsWebService.GetByIdAsync(id));
+        }
+
+        [HttpGet("{id}/wms/details")]
+        public async Task<ActionResult<WMS.Data.WebAPI.Contracts.MissionWithLoadingUnitDetails>> GetWmsDetailsByIdAsync(
+            int id,
+            [FromServices] WMS.Data.WebAPI.Contracts.IMissionsWmsWebService missionsWmsWebService)
+        {
+            if (missionsWmsWebService is null)
+            {
+                throw new ArgumentNullException(nameof(missionsWmsWebService));
+            }
+
+            return this.Ok(await missionsWmsWebService.GetDetailsByIdAsync(id));
         }
 
         #endregion

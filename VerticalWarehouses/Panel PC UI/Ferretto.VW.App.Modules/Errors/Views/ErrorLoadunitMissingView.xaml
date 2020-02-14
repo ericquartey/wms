@@ -500,10 +500,14 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="1" />
                 <RowDefinition Height="4*" />
-                <RowDefinition Height="4*" />
-                <RowDefinition Height="4*" />
-                <RowDefinition Height="4*" />
-                <RowDefinition Height="4*" />
+                <controls:CollapsibleRow Height="4*"
+                                         IsVisible="{Binding ElevatorStepVisible}" />
+                <controls:CollapsibleRow Height="4*"
+                                         IsVisible="{Binding Bay1StepVisible}" />
+                <controls:CollapsibleRow Height="4*"
+                                         IsVisible="{Binding Bay2StepVisible}" />
+                <controls:CollapsibleRow Height="4*"
+                                         IsVisible="{Binding Bay3StepVisible}" />
                 <RowDefinition Height="4*" />
                 <RowDefinition Height="1" />
             </Grid.RowDefinitions>
@@ -542,11 +546,12 @@
                 <Path Style="{DynamicResource BorderTimeLinePath}" />
             </Grid>
 
-            <Grid Grid.Row="2">
+            <Grid Grid.Row="2"
+                  Visibility="{Binding ElevatorStepVisible, Converter={StaticResource BTVC}}">
                 <Border Background="{Binding HasStepLoadunitOnElevator, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                         Style="{DynamicResource BorderTimeLineCirle}" />
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                           Text="2" />
+                           Text="{Binding ElevatorStepText}" />
             </Grid>
             <Grid Grid.Row="2"
                   Grid.Column="1"
@@ -559,11 +564,12 @@
                 <Path Style="{DynamicResource BorderTimeLinePath}" />
             </Grid>
 
-            <Grid Grid.Row="3">
+            <Grid Grid.Row="3"
+                  Visibility="{Binding Bay1StepVisible, Converter={StaticResource BTVC}}">
                 <Border Background="{Binding HasStepLoadunitOnBay1, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                         Style="{DynamicResource BorderTimeLineCirle}" />
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                           Text="3" />
+                           Text="{Binding Bay1StepText}" />
             </Grid>
             <Grid Grid.Row="3"
                   Grid.Column="1"
@@ -576,11 +582,12 @@
                 <Path Style="{DynamicResource BorderTimeLinePath}" />
             </Grid>
 
-            <Grid Grid.Row="4">
+            <Grid Grid.Row="4"
+                  Visibility="{Binding Bay2StepVisible, Converter={StaticResource BTVC}}">
                 <Border Background="{Binding HasStepLoadunitOnBay2, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                         Style="{DynamicResource BorderTimeLineCirle}" />
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                           Text="4" />
+                           Text="{Binding Bay2StepText}" />
             </Grid>
             <Grid Grid.Row="4"
                   Grid.Column="1"
@@ -593,11 +600,12 @@
                 <Path Style="{DynamicResource BorderTimeLinePath}" />
             </Grid>
 
-            <Grid Grid.Row="5">
+            <Grid Grid.Row="5"
+                  Visibility="{Binding Bay3StepVisible, Converter={StaticResource BTVC}}">
                 <Border Background="{Binding HasStepLoadunitOnBay3, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                         Style="{DynamicResource BorderTimeLineCirle}" />
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                           Text="5" />
+                           Text="{Binding Bay3StepText}" />
             </Grid>
             <Grid Grid.Row="5"
                   Grid.Column="1"
@@ -614,7 +622,7 @@
                 <Border Background="{Binding HasStepAutomaticMode, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                         Style="{DynamicResource BorderTimeLineCirle}" />
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                           Text="6" />
+                           Text="{Binding AutomaticStepText}" />
             </Grid>
             <Grid Grid.Row="6"
                   Grid.Column="1"

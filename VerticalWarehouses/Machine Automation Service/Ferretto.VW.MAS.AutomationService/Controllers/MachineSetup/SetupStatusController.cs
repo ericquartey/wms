@@ -1,7 +1,7 @@
 ﻿using Ferretto.VW.MAS.DataLayer;
 using Microsoft.AspNetCore.Mvc;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/setup/[controller]")]

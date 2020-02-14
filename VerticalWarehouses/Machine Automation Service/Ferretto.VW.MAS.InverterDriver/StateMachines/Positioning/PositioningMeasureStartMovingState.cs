@@ -11,7 +11,7 @@ using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
     internal class PositioningMeasureStartMovingState : PositioningStartMovingState

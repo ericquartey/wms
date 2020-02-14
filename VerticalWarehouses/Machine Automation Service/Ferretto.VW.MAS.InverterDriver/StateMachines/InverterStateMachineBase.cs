@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 {
     internal abstract class InverterStateMachineBase : IInverterStateMachine

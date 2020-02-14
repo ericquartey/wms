@@ -54,11 +54,29 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         private DelegateCommand automaticCommand;
 
+        private string automaticStepText;
+
+        private string bay1StepText;
+
+        private bool bay1StepVisible;
+
+        private string bay2StepText;
+
+        private bool bay2StepVisible;
+
+        private string bay3StepText;
+
+        private bool bay3StepVisible;
+
         private bool canLuIdOnElevator;
 
         private string currentError;
 
         private object currentStep = default(ErrorLoadunitMissingStepStart);
+
+        private bool elevatorStepVisible;
+
+        private string elevatorText;
 
         private string errorTime;
 
@@ -124,6 +142,48 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 async () => await this.AutomaticCommandAsync(),
                 this.CanAutomaticCommand));
 
+        public string AutomaticStepText
+        {
+            get => this.automaticStepText;
+            set => this.SetProperty(ref this.automaticStepText, value);
+        }
+
+        public string Bay1StepText
+        {
+            get => this.bay1StepText;
+            set => this.SetProperty(ref this.bay1StepText, value);
+        }
+
+        public bool Bay1StepVisible
+        {
+            get => this.bay1StepVisible;
+            set => this.SetProperty(ref this.bay1StepVisible, value);
+        }
+
+        public string Bay2StepText
+        {
+            get => this.bay2StepText;
+            set => this.SetProperty(ref this.bay2StepText, value);
+        }
+
+        public bool Bay2StepVisible
+        {
+            get => this.bay2StepVisible;
+            set => this.SetProperty(ref this.bay2StepVisible, value);
+        }
+
+        public string Bay3StepText
+        {
+            get => this.bay3StepText;
+            set => this.SetProperty(ref this.bay3StepText, value);
+        }
+
+        public bool Bay3StepVisible
+        {
+            get => this.bay3StepVisible;
+            set => this.SetProperty(ref this.bay3StepVisible, value);
+        }
+
         public bool CanLuIdOnElevator
         {
             get => this.canLuIdOnElevator;
@@ -134,6 +194,18 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         {
             get => this.currentStep;
             set => this.SetProperty(ref this.currentStep, value, this.UpdateStatusButtonFooter);
+        }
+
+        public string ElevatorStepText
+        {
+            get => this.elevatorText;
+            set => this.SetProperty(ref this.elevatorText, value);
+        }
+
+        public bool ElevatorStepVisible
+        {
+            get => this.elevatorStepVisible;
+            set => this.SetProperty(ref this.elevatorStepVisible, value);
         }
 
         public override EnableMask EnableMask => EnableMask.MachineManualMode | EnableMask.MachinePoweredOn;
@@ -512,6 +584,13 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                     await this.MarkAsResolvedAsync();
                 }
 
+                int stepValue = 2;
+
+                this.ElevatorStepVisible = false;
+                this.Bay1StepVisible = false;
+                this.Bay2StepVisible = false;
+                this.Bay3StepVisible = false;
+
                 // Elevator
                 this.LuIdOnElevator = null;
                 if (this.SensorsService.IsLoadingUnitOnElevator)
@@ -519,8 +598,16 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                     this.LuIdOnElevator = this.MachineService.Loadunits.First(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0).Id;
                 }
 
+                if (this.LuIdOnElevator != null)
+                {
+                    this.ElevatorStepText = stepValue.ToString();
+                    stepValue++;
+                    this.ElevatorStepVisible = true;
+                }
+
                 // Bay 1
                 this.LuIdOnBay1Up = null;
+                this.LuIdOnBay1Down = null;
                 if (this.SensorsService.Sensors.LUPresentInBay1 &&
                     this.HasBay1PositionUpVisible)
                 {
@@ -531,6 +618,13 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                     this.HasBay1PositionDownVisible)
                 {
                     this.LuIdOnBay1Down = this.MachineService.Loadunits.First(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0).Id;
+                }
+
+                if (this.LuIdOnBay1Up != null || this.LuIdOnBay1Down != null)
+                {
+                    this.Bay1StepText = stepValue.ToString();
+                    stepValue++;
+                    this.Bay1StepVisible = true;
                 }
 
                 // Bay 2
@@ -547,6 +641,13 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                     this.LuIdOnBay2Down = this.MachineService.Loadunits.First(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0).Id;
                 }
 
+                if (this.LuIdOnBay2Up != null || this.LuIdOnBay2Down != null)
+                {
+                    this.Bay2StepText = stepValue.ToString();
+                    stepValue++;
+                    this.Bay2StepVisible = true;
+                }
+
                 // Bay 3
                 this.LuIdOnBay3Up = null;
                 if (this.SensorsService.Sensors.LUPresentInBay3 &&
@@ -560,6 +661,15 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 {
                     this.LuIdOnBay3Down = this.MachineService.Loadunits.First(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0).Id;
                 }
+
+                if (this.LuIdOnBay3Up != null || this.LuIdOnBay3Down != null)
+                {
+                    this.Bay3StepText = stepValue.ToString();
+                    stepValue++;
+                    this.Bay3StepVisible = true;
+                }
+
+                this.AutomaticStepText = stepValue.ToString();
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

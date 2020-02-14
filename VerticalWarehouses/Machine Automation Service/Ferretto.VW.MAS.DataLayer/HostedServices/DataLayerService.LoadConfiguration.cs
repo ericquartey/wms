@@ -11,8 +11,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 
-// ReSharper disable ArrangeThisQualifier
-// ReSharper disable ParameterHidesMember
 namespace Ferretto.VW.MAS.DataLayer
 {
     internal partial class DataLayerService

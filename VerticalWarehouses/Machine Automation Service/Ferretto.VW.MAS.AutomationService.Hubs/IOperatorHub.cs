@@ -8,7 +8,7 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
     {
         #region Methods
 
-        Task AssignedMissionOperationChanged(BayNumber bayNumber, int? missionId, int? missionOperationId, int pendingMissionOperationsCount);
+        Task AssignedMissionChanged(BayNumber bayNumber, int? missionId);
 
         Task BayStatusChanged(BayNumber bayNumber, BayStatus bayStatus);
 

@@ -2,7 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
-using Ferretto.WMS.Data.WebAPI.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Services
 {
@@ -12,20 +12,15 @@ namespace Ferretto.VW.App.Services
 
         private const string BLANKIMAGE = "no_image.jpg";
 
-        private readonly IImagesWmsWebService imagesDataService;
+        private readonly IMachineImagesWebService imagesWebService;
 
         #endregion
 
         #region Constructors
 
-        public WmsImagesProvider(IImagesWmsWebService imagesDataService)
+        public WmsImagesProvider(IMachineImagesWebService imagesWebService)
         {
-            if (imagesDataService is null)
-            {
-                throw new ArgumentNullException(nameof(imagesDataService));
-            }
-
-            this.imagesDataService = imagesDataService;
+            this.imagesWebService = imagesWebService ?? throw new ArgumentNullException(nameof(imagesWebService));
         }
 
         #endregion
@@ -41,7 +36,7 @@ namespace Ferretto.VW.App.Services
 
             try
             {
-                using (var response = await this.imagesDataService.DownloadAsync(imageKey))
+                using (var response = await this.imagesWebService.DownloadAsync(imageKey))
                 {
                     return new MemoryStream(this.ReadFully(response.Stream));
                 }
@@ -63,7 +58,7 @@ namespace Ferretto.VW.App.Services
 
         private Stream LoadFallbackImage()
         {
-            var sri = Application.GetResourceStream(new Uri($"pack://application:,,,/{VW.Utils.Common.ASSEMBLY_MAINTHEMENAME};Component/Images/{BLANKIMAGE}"));
+            var sri = Application.GetResourceStream(new Uri($"pack://application:,,,/{Utils.Common.ASSEMBLY_MAINTHEMENAME};Component/Images/{BLANKIMAGE}"));
             return new MemoryStream(this.ReadFully(sri.Stream));
         }
 

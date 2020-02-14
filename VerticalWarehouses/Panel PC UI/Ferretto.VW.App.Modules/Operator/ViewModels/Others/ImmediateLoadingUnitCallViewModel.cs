@@ -106,9 +106,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public IEnumerable<LoadingUnit> LoadingUnits => new BindingList<LoadingUnit>(this.loadingUnits);
 
         public ICommand LoadingUnitsMissionsCommand =>
-                        this.loadingUnitsMissionsCommand
-                        ??
-                        (this.loadingUnitsMissionsCommand = new DelegateCommand(this.LoadingUnitsMissionsAppear));
+            this.loadingUnitsMissionsCommand
+            ??
+            (this.loadingUnitsMissionsCommand = new DelegateCommand(this.LoadingUnitsMissionsAppear));
 
         public LoadingUnit SelectedLoadingUnit
         {

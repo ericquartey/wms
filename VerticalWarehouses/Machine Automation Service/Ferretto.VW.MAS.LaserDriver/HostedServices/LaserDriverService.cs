@@ -86,7 +86,6 @@ namespace Ferretto.VW.MAS.LaserDriver
 
                     case FieldMessageType.LaserMoveAndSwitchOn:
                         device.ExecuteLaserMoveAndSwitchOn();
-
                         break;
                 }
             }

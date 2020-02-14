@@ -4,7 +4,7 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
 namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
-    public class IoExceptionFieldMessageData : FieldMessageData, IIoExceptionFieldMessageData
+    public sealed class IoExceptionFieldMessageData : FieldMessageData, IIoExceptionFieldMessageData
     {
         #region Constructors
 

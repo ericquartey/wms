@@ -16,10 +16,20 @@ namespace Ferretto.VW.MAS.MissionManager
 
             services
                 .AddHostedService<MissionSchedulingService>()
-                .AddHostedService<WmsMissionProxyService>();
+                .AddScoped<IMissionSchedulingProvider, MissionSchedulingProvider>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddWmsMissionManager(this IServiceCollection services)
+        {
+            if (services is null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
 
             services
-                .AddScoped<IMissionSchedulingProvider, MissionSchedulingProvider>()
+                .AddHostedService<WmsMissionProxyService>()
                 .AddScoped<IMissionOperationsProvider, MissionOperationsProvider>();
 
             return services;

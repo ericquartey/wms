@@ -159,7 +159,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 this.MachineIdentity = this.sessionService.MachineIdentity;
             }
 
-            //await base.OnAppearedAsync();
+            // await base.OnAppearedAsync();
             this.IsVisible = true;
             this.IsEnabled = true;
         }

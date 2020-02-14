@@ -8,7 +8,7 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 {
     internal class PowerOnStartState : InverterStateBase

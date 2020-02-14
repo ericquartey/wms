@@ -503,6 +503,7 @@ namespace Ferretto.VW.Simulator.Services
             {
                 case "LASER ON":
                 case "LASER OFF":
+                    System.Diagnostics.Debug.WriteLine($"Simulation *** {messageText}");
                     client.Client.Send(Encoding.ASCII.GetBytes("OK\r\n"));
                     break;
             }

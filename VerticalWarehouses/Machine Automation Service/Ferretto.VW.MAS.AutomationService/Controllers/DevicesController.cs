@@ -2,7 +2,6 @@
 using Ferretto.VW.MAS.AutomationService.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {

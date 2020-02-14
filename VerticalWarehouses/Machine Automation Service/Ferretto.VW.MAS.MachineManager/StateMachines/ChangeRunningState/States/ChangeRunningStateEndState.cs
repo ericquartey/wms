@@ -14,7 +14,7 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.States
 {
     internal class ChangeRunningStateEndState : StateBase, IChangeRunningStateEndState, IEndState

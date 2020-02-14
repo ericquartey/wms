@@ -30,8 +30,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
-// ReSharper disable ParameterHidesMember
 namespace Ferretto.VW.MAS.DeviceManager
 {
     internal partial class DeviceManagerService : AutomationBackgroundService<CommandMessage, NotificationMessage, CommandEvent, NotificationEvent>

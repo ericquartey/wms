@@ -9,7 +9,6 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Operator.ViewModels
@@ -79,7 +78,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public ICommand DrawerActivityButtonCommand => this.drawerActivityButtonCommand
             ??
             (this.drawerActivityButtonCommand = new DelegateCommand(
-                async () => await this.operatorNavigationService.NavigateToDrawerViewAsync(),
+                this.operatorNavigationService.NavigateToDrawerView,
                 this.CanShowItemOperations));
 
         public override EnableMask EnableMask => EnableMask.Any;

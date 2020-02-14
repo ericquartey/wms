@@ -213,7 +213,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 {
                                     if (sourceBay.Carousel is null)
                                     {
-                                        this.BaysDataProvider.AssignWmsMission(this.Mission.TargetBay, lowerMission, null);
+                                        this.BaysDataProvider.AssignMission(this.Mission.TargetBay, lowerMission);
                                     }
                                     else
                                     {

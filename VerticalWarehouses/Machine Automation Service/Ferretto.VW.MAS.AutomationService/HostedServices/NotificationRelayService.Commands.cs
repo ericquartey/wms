@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.Utils.Messages;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.AutomationService
 {
     public partial class NotificationRelayService

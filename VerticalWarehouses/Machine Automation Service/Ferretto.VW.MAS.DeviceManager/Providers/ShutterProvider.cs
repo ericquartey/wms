@@ -6,7 +6,7 @@ using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.DeviceManager.Providers
 {
     internal class ShutterProvider : BaseProvider, IShutterProvider

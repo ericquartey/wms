@@ -1,14 +1,18 @@
 using System;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.LaserDriver;
 using Ferretto.VW.MAS.MissionManager;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/wms/[controller]")]
     [ApiController]
     public class MissionOperationsController : ControllerBase, IRequestingBayController
     {
@@ -22,7 +26,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IMissionOperationsProvider missionOperationsProvider;
 
+        private readonly IMissionOperationsWmsWebService missionOperationsWmsWebService;
+
         private readonly IMissionsDataProvider missionsDataProvider;
+
+        private readonly IMissionsWmsWebService missionsWmsWebService;
 
         #endregion
 
@@ -32,6 +40,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             ILogger<MissionOperationsController> logger,
             IMissionsDataProvider missionsDataProvider,
             IMissionOperationsProvider missionOperationsProvider,
+            IMissionOperationsWmsWebService missionOperationsWmsWebService,
+            IMissionsWmsWebService missionsWmsWebService,
             IBaysDataProvider baysDataProvider,
             IElevatorDataProvider elevatorDataProvider)
         {
@@ -39,6 +49,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.missionOperationsProvider = missionOperationsProvider ?? throw new ArgumentNullException(nameof(missionOperationsProvider));
+            this.missionOperationsWmsWebService = missionOperationsWmsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWmsWebService));
+            this.missionsWmsWebService = missionsWmsWebService ?? throw new ArgumentNullException(nameof(missionsWmsWebService));
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
         }
 
@@ -60,14 +72,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
-        [HttpPost("cancel")]
-        public async Task<ActionResult> CancelAsync()
-        {
-            await this.missionOperationsProvider.CancelAsync();
-
-            return this.Ok();
-        }
-
         [HttpPost("{id}/complete")]
         public async Task<ActionResult> CompleteAsync(int id, double quantity, string printerName)
         {
@@ -76,12 +80,55 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpPost("{id}/execute")]
+        public async Task<ActionResult<MissionOperation>> ExecuteAsync(int id, [FromServices] ILaserProvider laserProvider)
+        {
+            if (laserProvider is null)
+            {
+                throw new ArgumentNullException(nameof(laserProvider));
+            }
+
+            var operation = await this.missionOperationsWmsWebService.ExecuteAsync(id);
+            var mission = await this.missionsWmsWebService.GetDetailsByIdAsync(operation.MissionId);
+
+            var compartment = mission.LoadingUnit.Compartments?.SingleOrDefault(c => c.Id == operation.CompartmentId);
+            if (compartment != null && compartment.XPosition.HasValue && compartment.YPosition.HasValue)
+            {
+                var loadingUnitLaserX = mission.LoadingUnit.Width / 2;
+                var loadingUnitLaserY = mission.LoadingUnit.Depth / 2;
+
+                var compartmentX = compartment.XPosition.Value;
+                var compartmentY = compartment.YPosition.Value;
+
+                var bay = this.baysDataProvider.GetByNumber(this.BayNumber);
+
+                if (bay.Side is DataModels.WarehouseSide.Back)
+                {
+                    compartmentX = mission.LoadingUnit.Width - compartmentX;
+                    compartmentY = mission.LoadingUnit.Depth - compartmentY;
+                }
+
+                var compartmentLaserX = compartmentX - loadingUnitLaserX;
+                var compartmentLaserY = compartmentY - loadingUnitLaserY;
+
+                laserProvider.MoveToPositionAndSwitchOn(this.BayNumber, compartmentLaserX, compartmentLaserY);
+            }
+
+            return this.Ok(operation);
+        }
+
         [HttpGet("count")]
         public ActionResult<int> GetByBayCount()
         {
             var missionOperationsCount = this.missionOperationsProvider.GetCountByBay(this.BayNumber);
 
             return this.Ok(missionOperationsCount);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<MissionOperation>> GetByIdAsync(int id)
+        {
+            return this.Ok(await this.missionOperationsWmsWebService.GetByIdAsync(id));
         }
 
         [HttpPost("{id}/partially-complete")]

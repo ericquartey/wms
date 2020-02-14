@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using System.Threading;
@@ -26,8 +25,6 @@ namespace Ferretto.VW.MAS.LaserDriver
 
         private readonly CancellationToken cancellationToken;
 
-        private readonly IServiceScopeFactory serviceScopeFactory;
-
         private readonly IEventAggregator eventAggregator;
 
         private readonly BlockingConcurrentQueue<FieldCommandMessage> laserCommandQueue = new BlockingConcurrentQueue<FieldCommandMessage>();
@@ -38,13 +35,15 @@ namespace Ferretto.VW.MAS.LaserDriver
 
         private readonly ILogger logger;
 
+        private readonly IServiceScopeFactory serviceScopeFactory;
+
         private readonly ISocketTransport socketTransport;
 
         private readonly ManualResetEventSlim writeEnableEvent;
 
         private ILaserStateMachine currentStateMachine;
 
-        private bool disposedValue = false;
+        private bool isDisposed = false;
 
         private byte[] receiveBuffer;
 
@@ -117,8 +116,6 @@ namespace Ferretto.VW.MAS.LaserDriver
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             this.Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
-            // GC.SuppressFinalize(this);
         }
 
         public void ExecuteLaserMoveAndSwitchOn()
@@ -233,21 +230,17 @@ namespace Ferretto.VW.MAS.LaserDriver
 
         private void Dispose(bool disposing)
         {
-            if (!this.disposedValue)
+            if (!this.isDisposed)
             {
                 if (disposing)
                 {
-                    // TODO: dispose managed state (managed objects).
                     this.laserCommandQueue?.Dispose();
                     this.laserReceiveTask?.Dispose();
                     this.laserSendTask?.Dispose();
                     this.writeEnableEvent?.Dispose();
                 }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
-
-                this.disposedValue = true;
+                this.isDisposed = true;
             }
         }
 
@@ -364,15 +357,12 @@ namespace Ferretto.VW.MAS.LaserDriver
                 {
                     try
                     {
-                        LaserFieldMessageData data = null;
                         if (this.laserCommandQueue.TryPeek(Timeout.Infinite, this.cancellationToken, out var message) && message != null)
                         {
                             this.logger.LogTrace($"1:message={message}: index {this.BayNumber}");
-
-                            data = message.Data as LaserFieldMessageData;
                         }
 
-                        if (message != null && this.writeEnableEvent.Wait(Timeout.Infinite, this.cancellationToken))
+                        if (message?.Data is LaserFieldMessageData data && this.writeEnableEvent.Wait(Timeout.Infinite, this.cancellationToken))
                         {
                             if (this.socketTransport.IsConnected)
                             {
@@ -439,7 +429,5 @@ namespace Ferretto.VW.MAS.LaserDriver
         }
 
         #endregion
-
-        // To detect redundant calls
     }
 }

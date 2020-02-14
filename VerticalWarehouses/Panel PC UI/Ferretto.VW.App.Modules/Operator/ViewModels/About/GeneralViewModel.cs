@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
-using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
+using Prism.Events;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
@@ -18,8 +15,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
     internal sealed class GeneralViewModel : BaseAboutMenuViewModel
     {
         #region Fields
-
-        private readonly WMS.Data.WebAPI.Contracts.IDataHubClient dataHubClient;
 
         private readonly IMachineIdentityWebService identityService;
 
@@ -37,16 +32,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Constructors
 
-        public GeneralViewModel(
-            IMachineIdentityWebService identityService,
-            WMS.Data.WebAPI.Contracts.IDataHubClient dataHubClient)
+        public GeneralViewModel(IMachineIdentityWebService identityService)
             : base()
         {
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
-            this.dataHubClient = dataHubClient ?? throw new ArgumentNullException(nameof(dataHubClient));
-            this.dataHubClient.ConnectionStatusChanged += this.OperatorHubClient_ConnectionStatusChanged;
 
-            this.UpdateWmsServicesStatus();
+            this.UpdateWmsServicesStatus(this.HealthProbeService.HealthWmsStatus);
         }
 
         #endregion
@@ -68,7 +59,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public string SoftwareVersion => this.GetType().Assembly.GetName().Version.ToString();
 
         public ICommand ViewStatusSensorsCommand =>
-                                            this.viewStatusSensorsCommand
+            this.viewStatusSensorsCommand
             ??
             (this.viewStatusSensorsCommand = new DelegateCommand(
                 () => this.StatusSensorsCommand(),
@@ -90,11 +81,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Methods
 
-        public override void Disappear()
-        {
-            base.Disappear();
-        }
-
         public override async Task OnAppearedAsync()
         {
             this.IsBackNavigationAllowed = true;
@@ -112,6 +98,13 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.Model = await this.identityService.GetAsync();
 
             this.MachineServiceStatusBrush = this.GetBrushForServiceStatus(this.Model.ServiceStatus);
+        }
+
+        protected override Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
+        {
+            this.UpdateWmsServicesStatus(e.HealthWmsStatus);
+
+            return base.OnHealthStatusChangedAsync(e);
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -139,13 +132,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
         }
 
-        private void OperatorHubClient_ConnectionStatusChanged(
-            object sender,
-            WMS.Data.WebAPI.Contracts.ConnectionStatusChangedEventArgs e)
-        {
-            this.UpdateWmsServicesStatus();
-        }
-
         private void StatusSensorsCommand()
         {
             try
@@ -168,16 +154,16 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
         }
 
-        private void UpdateWmsServicesStatus()
+        private void UpdateWmsServicesStatus(HealthStatus wmsHealthStatus)
         {
-            if (this.dataHubClient.IsConnected)
+            if (wmsHealthStatus is HealthStatus.Healthy || wmsHealthStatus is HealthStatus.Degraded)
             {
-                this.WmsServicesStatusDescription = "Online"; // VW.App.Resources.OperatorApp.WmsServicesOnline;
+                this.WmsServicesStatusDescription = "Online";
                 this.WmsServicesStatusBrush = Brushes.Green;
             }
             else
             {
-                this.WmsServicesStatusDescription = "Offline"; //VW.App.Resources.OperatorApp.WmsServicesOffline;
+                this.WmsServicesStatusDescription = "Offline";
                 this.WmsServicesStatusBrush = Brushes.Red;
             }
         }

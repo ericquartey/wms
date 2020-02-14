@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
@@ -72,20 +68,18 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.BayFirstLoadingUnit),
                 () => this.CanExecuteCommand() &&
                       this.MachineModeService.MachineMode == MachineMode.Manual &&
-                      (this.MachineService.IsHoming || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
-                ));
+                      (this.MachineService.IsHoming || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
-        protected SetupStepStatus CellPanelsCheck => this.SetupStatusCapabilities?.CellPanelsCheck ?? new SetupStepStatus();
+        private SetupStepStatus CellPanelsCheck => this.SetupStatusCapabilities?.CellPanelsCheck ?? new SetupStepStatus();
 
         public ICommand CellPanelsCheckCommand =>
-            this.cellPanelsCheckCommand
+                    this.cellPanelsCheckCommand
             ??
             (this.cellPanelsCheckCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.CellPanelsCheck),
                 () => this.CanExecuteCommand() &&
                       this.MachineModeService.MachineMode == MachineMode.Manual &&
-                      (this.CellPanelsCheck.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
-                ));
+                      (this.CellPanelsCheck.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
         public ICommand CellsBlockTuningCommand =>
             this.cellsBlockTuningCommand
@@ -94,8 +88,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.CellsBlockTuning),
                 () => this.CanExecuteCommand() &&
                       this.MachineModeService.MachineMode == MachineMode.Manual &&
-                      (this.CellsHeightCheck.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
-                ));
+                      (this.CellsHeightCheck.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
         public ICommand CellsCommand =>
             this.cellsCommand
@@ -104,22 +97,21 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.Cells),
                 this.CanExecuteCommand));
 
-        protected SetupStepStatus CellsHeightCheck => this.SetupStatusCapabilities?.CellsHeightCheck ?? new SetupStepStatus();
+        private SetupStepStatus CellsHeightCheck => this.SetupStatusCapabilities?.CellsHeightCheck ?? new SetupStepStatus();
 
         public ICommand CellsHeightCheckCommand =>
-            this.cellsHeightCheckCommand
+                            this.cellsHeightCheckCommand
             ??
             (this.cellsHeightCheckCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.CellsHeightCheck),
                 () => this.CanExecuteCommand() &&
                       this.MachineModeService.MachineMode == MachineMode.Manual &&
                       (this.CellsHeightCheck.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus()) &&
-                      false
-               ));
+                      false));
 
         public bool IsCellPanelsCheckProcedure => this.CellPanelsCheck.IsCompleted;
 
-        protected SetupStatusCapabilities SetupStatusCapabilities { get; private set; }
+        public SetupStatusCapabilities SetupStatusCapabilities { get; private set; }
 
         #endregion
 
