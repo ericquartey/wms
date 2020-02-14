@@ -138,7 +138,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public Mission CreateBayMission(int loadingUnitId, BayNumber bayNumber, MissionType missionType)
+        public Mission CreateBayMission(int loadingUnitId, BayNumber bayNumber, MissionType missionType, LoadingUnitLocation destination = LoadingUnitLocation.NoLocation)
         {
             lock (this.dataContext)
             {
@@ -150,6 +150,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         LoadUnitId = loadingUnitId,
                         TargetBay = bayNumber,
                         MissionType = missionType,
+                        LoadUnitDestination = destination,
                         Status = MissionStatus.New
                     });
 
@@ -161,7 +162,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public Mission CreateBayMission(int loadingUnitId, BayNumber bayNumber, int wmsId, int wmsPriority)
+        public Mission CreateBayMission(int loadingUnitId, BayNumber bayNumber, int wmsId, int wmsPriority, LoadingUnitLocation destination = LoadingUnitLocation.NoLocation)
         {
             lock (this.dataContext)
             {
@@ -188,6 +189,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         Status = MissionStatus.New,
                         TargetBay = bayNumber,
                         WmsId = wmsId,
+                        LoadUnitDestination = destination
                     });
 
                 this.dataContext.SaveChanges();
