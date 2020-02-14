@@ -329,7 +329,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 if (sourceBay != null
                     && this.Mission.MissionType != MissionType.Manual
                     && (!this.CheckBayHeight(sourceBay, this.Mission.LoadUnitSource, this.Mission)
-                        || true    // TEST
+                        //|| true    // TEST
                         )
                     )
                 {
