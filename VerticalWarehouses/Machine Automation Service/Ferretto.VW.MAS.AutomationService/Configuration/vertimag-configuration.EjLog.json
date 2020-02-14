@@ -52,6 +52,7 @@
           {
             "Height": 755,
             "MaxSingleHeight": 395,
+            "ProfileOffset": 50,
             "Location": "InternalBay1Up"
           }
         ],
@@ -118,11 +119,13 @@
             "Height": 645,
             "MaxSingleHeight": 320,
             "MaxDoubleHeight": 695,
+            "ProfileOffset": 50,
             "Location": "InternalBay2Down"
           },
           {
             "Height": 1143,
             "MaxSingleHeight": 320,
+            "ProfileOffset": 370,
             "Location": "InternalBay2Up"
           }
         ],
