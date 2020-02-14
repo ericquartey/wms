@@ -3,12 +3,6 @@ parameters:
 
 steps:
 
-- task: NuGetToolInstaller@0
-  displayName: 'Use NuGet 5.x'
-  inputs:
-    versionSpec: 5.x
-
-
 - task: NuGetCommand@2
   displayName: 'NuGet restore'
   inputs:
@@ -16,5 +10,5 @@ steps:
     feedsToUse: config
     nugetConfigPath: 'nuget.config'
     restoreDirectory: './packages'
-    verbosityRestore: Detailed
+    verbosityRestore: normal
 

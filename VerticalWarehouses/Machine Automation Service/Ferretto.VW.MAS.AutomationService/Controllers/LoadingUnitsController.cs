@@ -44,7 +44,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IMachineProvider machineProvider,
             IMissionSchedulingProvider missionSchedulingProvider,
             IServiceScopeFactory serviceScopeFactory,
-            IMachinesWmsWebService machinesWmsWebService,
             ILogger<LoadingUnitsController> logger)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
