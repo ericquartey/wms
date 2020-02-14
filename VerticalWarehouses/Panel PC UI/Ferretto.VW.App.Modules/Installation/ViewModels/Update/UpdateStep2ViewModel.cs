@@ -376,7 +376,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.isCurrentOperationValid = true;
 
-                var installerFilePath = $"{this.updateExchangeTemp}\\{this.updateExchangeInstallerPath}\\{this.updateExchangeInstallerName} {UPDATEARG}";
+                var installerFilePath = $"{this.updateExchangeTemp}\\{this.updateExchangeInstallerPath}\\{this.updateExchangeInstallerName}";
 
                 this.AppendLine(string.Format(InstallationApp.StartingApplication, installerFilePath));
 
@@ -384,7 +384,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 {
                     StartInfo = new ProcessStartInfo
                     {
-                        FileName = installerFilePath
+                        FileName = installerFilePath,
+                        Arguments = UPDATEARG
                     }
                 };
 

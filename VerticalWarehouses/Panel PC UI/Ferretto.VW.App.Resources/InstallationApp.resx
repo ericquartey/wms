@@ -1681,4 +1681,85 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="Compact" xml:space="preserve">
     <value>Compact</value>
   </data>
+  <data name="TotalCycleMoreThanRequired" xml:space="preserve">
+    <value>Total completed cycles are greater than required cycles.</value>
+  </data>
+  <data name="TrayTareValueMustBePositive" xml:space="preserve">
+    <value>Tare value must be strictly positive.</value>
+  </data>
+  <data name="TrayTareValueNotInserted" xml:space="preserve">
+    <value>Tare value not inserted</value>
+  </data>
+  <data name="WeightValueMustBePositive" xml:space="preserve">
+    <value>Weight value must be strictly positive.</value>
+  </data>
+  <data name="WeightValueNotInserted" xml:space="preserve">
+    <value>Weight value not inserted</value>
+  </data>
+  <data name="CarouselCalibration" xml:space="preserve">
+    <value>Carousel calibration</value>
+  </data>
+  <data name="InputDelayMustBePositive" xml:space="preserve">
+    <value>InputDelay must be strictly positive.</value>
+  </data>
+  <data name="InputLowerBoundMustBeGreatherThanUpper" xml:space="preserve">
+    <value>InputLowerBound must be greater than InputUpperBound.</value>
+  </data>
+  <data name="InputLowerBoundMustBeGreatherThanValue" xml:space="preserve">
+    <value>InputLowerBound must be greater than {0}.</value>
+  </data>
+  <data name="InputLowerBoundMustBePositive" xml:space="preserve">
+    <value>InputLowerBound must be strictly positive.</value>
+  </data>
+  <data name="InputLowerBoundRequired" xml:space="preserve">
+    <value>InputLowerBound is required.</value>
+  </data>
+  <data name="InputRequiredCyclesMustBePositive" xml:space="preserve">
+    <value>InputRequiredCycles must be strictly positive.</value>
+  </data>
+  <data name="InputRequiredCyclesRequired" xml:space="preserve">
+    <value>InputRequiredCycles is required.</value>
+  </data>
+  <data name="InputUpperBoundMustBeGreatherThanLower" xml:space="preserve">
+    <value>InputUpperBound must be greater than InputLowerBound.</value>
+  </data>
+  <data name="InputUpperBoundMustBeGreatherThanValue" xml:space="preserve">
+    <value>InputUpperBound must be greater than {0}.</value>
+  </data>
+  <data name="InputUpperBoundMustBePositive" xml:space="preserve">
+    <value>InputUpperrBound must be strictly positive.</value>
+  </data>
+  <data name="InputUpperBoundRequired" xml:space="preserve">
+    <value>InputUpperBound is required.</value>
+  </data>
+  <data name="HighPositionControl" xml:space="preserve">
+    <value>High position control</value>
+  </data>
+  <data name="MoveElevatorAtBayHeightOpenShutter" xml:space="preserve">
+    <value>Move the elevator at bay height and open shutter.</value>
+  </data>
+  <data name="BayPositionDownHeightNew" xml:space="preserve">
+    <value>Position down bay new height [mm]</value>
+  </data>
+  <data name="BayPositionUpHeightNew" xml:space="preserve">
+    <value>Position up bay new height [mm]</value>
+  </data>
+  <data name="CheckBayElevatorAlignment" xml:space="preserve">
+    <value>Check the alignment between the bay and the elevator. If they are not aligned, proceed to correct the position of the elevator.</value>
+  </data>
+  <data name="ConfirmChanges" xml:space="preserve">
+    <value>Confirm your changes.</value>
+  </data>
+  <data name="LowPositionControl" xml:space="preserve">
+    <value>Low position control</value>
+  </data>
+  <data name="MoveElevator" xml:space="preserve">
+    <value>Move elevator</value>
+  </data>
+  <data name="NoChanges" xml:space="preserve">
+    <value>There are no changes.</value>
+  </data>
+  <data name="SaveCheckPosition" xml:space="preserve">
+    <value>Check the new dimensions and press Save to make the changes effective.</value>
+  </data>
 </root>

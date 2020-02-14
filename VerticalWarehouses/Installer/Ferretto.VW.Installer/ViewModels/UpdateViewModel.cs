@@ -1,16 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
 using Ferretto.VW.Installer.Core;
 
-namespace Ferretto.VW.Installer
+namespace Ferretto.VW.Installer.ViewModels
 {
-    internal sealed class MainWindowViewModel : BindableBase
+    internal sealed class UpdateViewModel : BindableBase, IOperationResult
     {
         #region Fields
 
@@ -33,34 +32,14 @@ namespace Ferretto.VW.Installer
         #endregion
 
         #region Constructors
-
-        public MainWindowViewModel()
+        public UpdateViewModel(InstallationService installationService)
         {
-            var currExeLocation = System.Reflection.Assembly.GetEntryAssembly().Location;
-            Directory.SetCurrentDirectory(System.IO.Path.GetDirectoryName(currExeLocation));
-
-            if (File.Exists("steps-snapshot.json"))
-            {
-                this.installationService = InstallationService.LoadAsync("steps-snapshot.json");
-                //this.installationService = InstallationService.LoadAsync("steps.json");
-            }
-            else if (File.Exists("steps.json"))
-            {
-                this.installationService = InstallationService.LoadAsync("steps.json");
-            }
-            else
-            {
-                // no configuration file found
-            }
-
-            if (!this.installationService.CanStart())
-            {                
-                this.IsSuccessful = false;
-                this.Close();
-            }
+            this.installationService = installationService ?? throw new ArgumentNullException(nameof(installationService));
 
             this.installationService.PropertyChanged += this.InstallationService_PropertyChanged;
             this.installationService.Finished += this.OnInstallationServiceFinished;
+
+            this.StartInstallation();
         }
 
         #endregion

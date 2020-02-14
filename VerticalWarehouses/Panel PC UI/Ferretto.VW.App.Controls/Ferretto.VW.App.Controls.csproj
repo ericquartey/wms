@@ -37,7 +37,6 @@
   <ItemGroup>
     <Resource Include="Assets\*.*" />
     <Resource Include="Fonts\*.*" />
-    <EmbeddedResource Include="Resources\*.json" />
   </ItemGroup>
 
   <ItemGroup>

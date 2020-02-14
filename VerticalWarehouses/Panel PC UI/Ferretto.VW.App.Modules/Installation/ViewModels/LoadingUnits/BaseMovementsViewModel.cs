@@ -370,6 +370,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             if (e.MachinePowerState != MachinePowerState.Powered)
             {
                 this.RestoreStates();
+                this.IsBackNavigationAllowed = true;
             }
         }
 
