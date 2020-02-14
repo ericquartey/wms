@@ -597,7 +597,7 @@ namespace Ferretto.VW.Simulator.Services
 
                 case InverterParameterId.ProfileInput:
                     // simulate measure profile height
-                    var profileMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(this.MinProfileHeight, this.MaxProfileHeight)));
+                    var profileMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(this.MinProfileHeight, inverter.MaxProfileHeight)));
                     result = client.Client.Send(profileMessage);
                     break;
 

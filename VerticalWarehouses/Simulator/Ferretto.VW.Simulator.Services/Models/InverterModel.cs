@@ -591,7 +591,18 @@ namespace Ferretto.VW.Simulator.Services.Models
                     switch (this.InverterRole)
                     {
                         case InverterRole.Main:
-                            this.ImpulsesEncoderPerRound = this.Machine.Elevator.Axes.First().Resolution;
+                            {
+                                this.ImpulsesEncoderPerRound = this.Machine.Elevator.Axes.First().Resolution;
+                                var maxHeight = this.machine.Bays.First(b => b.Number == BayNumber.BayOne).Positions?.Min(p => p.MaxSingleHeight);
+                                if (maxHeight != null)
+                                {
+                                    this.MaxProfileHeight = (int)Math.Round((maxHeight.Value - 50 + 181.25) / 0.090625);
+                                }
+                                else
+                                {
+                                    this.MaxProfileHeight = (int)Math.Round((this.machine.LoadUnitMaxHeight - 50 + 181.25) / 0.090625);
+                                }
+                            }
                             break;
 
                         case InverterRole.ElevatorChain:
@@ -604,11 +615,33 @@ namespace Ferretto.VW.Simulator.Services.Models
                             break;
 
                         case InverterRole.Shutter2:
-                            this.Enabled = this.Machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayTwo)?.Shutter != null;
+                            {
+                                this.Enabled = this.Machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayTwo)?.Shutter != null;
+                                var maxHeight = this.machine.Bays.First(b => b.Number == BayNumber.BayTwo).Positions?.Min(p => p.MaxSingleHeight);
+                                if (maxHeight != null)
+                                {
+                                    this.MaxProfileHeight = (int)Math.Round((maxHeight.Value - 50 + 181.25) / 0.090625);
+                                }
+                                else
+                                {
+                                    this.MaxProfileHeight = (int)Math.Round((this.machine.LoadUnitMaxHeight - 50 + 181.25) / 0.090625);
+                                }
+                            }
                             break;
 
                         case InverterRole.Shutter3:
-                            this.Enabled = this.Machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayThree)?.Shutter != null;
+                            {
+                                this.Enabled = this.Machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayThree)?.Shutter != null;
+                                var maxHeight = this.machine.Bays.First(b => b.Number == BayNumber.BayThree).Positions?.Min(p => p.MaxSingleHeight);
+                                if (maxHeight != null)
+                                {
+                                    this.MaxProfileHeight = (int)Math.Round((maxHeight.Value - 50 + 181.25) / 0.090625);
+                                }
+                                else
+                                {
+                                    this.MaxProfileHeight = (int)Math.Round((this.machine.LoadUnitMaxHeight - 50 + 181.25) / 0.090625);
+                                }
+                            }
                             break;
 
                         case InverterRole.Bay1:
@@ -629,6 +662,8 @@ namespace Ferretto.VW.Simulator.Services.Models
                 }
             }
         }
+
+        public int MaxProfileHeight { get; private set; }
 
         public InverterOperationMode OperationMode
         {

@@ -126,7 +126,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
-                        if (!this.CheckBayHeight(destinationBay, destination, mission))
+                        if (mission.MissionType != MissionType.Manual
+                            && !this.CheckBayHeight(destinationBay, destination, mission)
+                            )
                         {
                             if (showErrors)
                             {
