@@ -129,17 +129,6 @@ namespace Ferretto.VW.App.Controls.Controls
                     this.InputText = vmKeyboard.ScreenText;
                     break;
 
-                case KeyboardType.Multi:
-                    var keyboard = new Keyboards.Keyboards();
-                    var vmMulti = new PpcKeypadsPopupViewModel();
-                    keyboard.Keyboardsss = vmMulti.Keyboards;
-                    vmMulti.Update(this.LabelText, this.InputText?.ToString() ?? string.Empty);
-                    keyboard.Topmost = false;
-                    keyboard.ShowInTaskbar = false;
-                    PpcMessagePopup.ShowDialog(keyboard);
-                    this.InputText = vmMulti.ScreenText;
-                    break;
-
                 case KeyboardType.NumpadCenter:
                     var ppcMessagePopup = new PpcNumpadCenterPopup();
                     var vm = new PpcKeypadsPopupViewModel();
