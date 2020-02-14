@@ -78,6 +78,8 @@ namespace Ferretto.VW.App.Services
 
         private bool hasBayExternal;
 
+        private bool hasBayWithInverter;
+
         private bool hasCarousel;
 
         private bool hasShutter;
@@ -193,6 +195,12 @@ namespace Ferretto.VW.App.Services
         {
             get => this.hasBayExternal;
             set => this.SetProperty(ref this.hasBayExternal, value);
+        }
+
+        public bool HasBayWithInverter
+        {
+            get => this.hasBayWithInverter;
+            set => this.SetProperty(ref this.hasBayWithInverter, value);
         }
 
         public bool HasCarousel
