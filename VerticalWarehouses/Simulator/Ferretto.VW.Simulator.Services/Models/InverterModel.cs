@@ -613,17 +613,17 @@ namespace Ferretto.VW.Simulator.Services.Models
 
                         case InverterRole.Bay1:
                             this.ImpulsesEncoderPerRound = this.Machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayOne)?.Resolution ?? this.ImpulsesEncoderPerRound;
-                            this.Enabled = this.Machine.Bays.Any(x => x.Number == BayNumber.BayOne);
+                            this.Enabled = this.Machine.Bays.Any(x => x.Number == BayNumber.BayOne && x.Inverter != null);
                             break;
 
                         case InverterRole.Bay2:
                             this.ImpulsesEncoderPerRound = this.Machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayTwo)?.Resolution ?? this.ImpulsesEncoderPerRound;
-                            this.Enabled = this.Machine.Bays.Any(x => x.Number == BayNumber.BayTwo);
+                            this.Enabled = this.Machine.Bays.Any(x => x.Number == BayNumber.BayTwo && x.Inverter != null);
                             break;
 
                         case InverterRole.Bay3:
                             this.ImpulsesEncoderPerRound = this.Machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayThree)?.Resolution ?? this.ImpulsesEncoderPerRound;
-                            this.Enabled = this.Machine.Bays.Any(x => x.Number == BayNumber.BayThree);
+                            this.Enabled = this.Machine.Bays.Any(x => x.Number == BayNumber.BayThree && x.Inverter != null);
                             break;
                     }
                 }
