@@ -490,6 +490,7 @@ namespace Ferretto.VW.App.Services
             this.cells = await this.machineCellsWebService.GetAllAsync();
 
             this.Bay = await this.bayManagerService.GetBayAsync();
+
             this.BayNumber = this.Bay.Number;
 
             this.HasBayExternal = this.Bay.IsExternal;
