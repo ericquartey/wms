@@ -89,6 +89,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     || bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitDestination).IsUpper
                     || bay.Carousel is null)
                 {
+                    if (this.Mission.ErrorCode != MachineErrorCode.NoError)
+                    {
+                        this.ErrorsProvider.RecordNew(this.Mission.ErrorCode, this.Mission.TargetBay);
+                    }
                     if (this.Mission.MissionType == MissionType.OUT
                         || this.Mission.MissionType == MissionType.WMS
                         )

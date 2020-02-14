@@ -234,7 +234,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         else
                         {
                             // stop movement and go back to bay
-                            this.ErrorsProvider.RecordNew(check, this.Mission.TargetBay);
+                            this.Mission.ErrorCode = check;
                             this.Mission.EjectLoadUnit = true;
                             this.Mission.LoadUnitDestination = this.Mission.LoadUnitSource;
                             this.Mission.RestoreConditions = true;

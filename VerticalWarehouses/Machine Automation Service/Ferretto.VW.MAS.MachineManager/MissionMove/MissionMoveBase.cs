@@ -218,17 +218,38 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Mission.NeedMovingBackward = false;
             }
 
+            IMissionMoveBase newStep;
             if (bayShutter)
             {
                 this.BaysDataProvider.Light(this.Mission.TargetBay, true);
-                var newStep = new MissionMoveCloseShutterStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                newStep.OnEnter(null);
+                newStep = new MissionMoveCloseShutterStep(this.Mission, this.ServiceProvider, this.EventAggregator);
             }
             else
             {
-                var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                newStep.OnEnter(null);
+                if (this.Mission.LoadUnitDestination == LoadingUnitLocation.Cell)
+                {
+                    newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                }
+                else
+                {
+                    if (this.Mission.ErrorCode != MachineErrorCode.NoError)
+                    {
+                        this.ErrorsProvider.RecordNew(this.Mission.ErrorCode, this.Mission.TargetBay);
+                    }
+
+                    if (this.Mission.MissionType == MissionType.OUT
+                        || this.Mission.MissionType == MissionType.WMS
+                        )
+                    {
+                        newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    }
+                    else
+                    {
+                        newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    }
+                }
             }
+            newStep.OnEnter(null);
         }
 
         public bool EnterErrorState(MissionStep errorState)
@@ -309,7 +330,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     && !this.CheckBayHeight(sourceBay, this.Mission.LoadUnitSource, this.Mission)
                     )
                 {
-                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitHeightExceeded, this.Mission.TargetBay);
+                    this.Mission.ErrorCode = MachineErrorCode.LoadUnitHeightExceeded;
                     this.MoveBackToBay();
                     return;
                 }
@@ -320,7 +341,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 catch (InvalidOperationException)
                 {
                     // cell not found: go back to bay
-                    this.ErrorsProvider.RecordNew(MachineErrorCode.WarehouseIsFull, this.Mission.TargetBay);
+                    this.Mission.ErrorCode = MachineErrorCode.WarehouseIsFull;
                     this.MoveBackToBay();
                     return;
                 }
