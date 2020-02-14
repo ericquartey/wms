@@ -45,6 +45,7 @@
         },
         {
           "KeyMinWidth": 100,
+          "RowSpan": 2,
           "Key": {
             "Command": {
               "CommandText": ","
@@ -94,14 +95,6 @@
           "Key": {
             "Command": {
               "CommandText": "-"
-            }
-          }
-        },
-        {
-          "KeyMinWidth": 100,
-          "Key": {
-            "Command": {
-              "CommandText": ";"
             }
           }
         }
