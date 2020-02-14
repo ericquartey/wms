@@ -28,8 +28,6 @@ namespace Ferretto.VW.App.Controls.Controls.Keyboards
 
         private bool isClosed;
 
-        private KeyboardDefinition keyboards;
-
         private ICommand minPlusCommand;
 
         private bool morePressKey;
@@ -46,14 +44,6 @@ namespace Ferretto.VW.App.Controls.Controls.Keyboards
 
         public PpcKeypadsPopupViewModel()
         {
-            var stream2 = Assembly.GetExecutingAssembly().GetManifestResourceNames();
-
-            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ferretto.VW.App.Controls.Resources.it.json"))
-            {
-                TextReader tr = new StreamReader(stream);
-                string fileContents = tr.ReadToEnd();
-                this.Keyboards = JsonConvert.DeserializeObject<KeyboardDefinition>(fileContents);
-            }
         }
 
         #endregion
@@ -100,12 +90,6 @@ namespace Ferretto.VW.App.Controls.Controls.Keyboards
         {
             get => this.isClosed;
             set => this.SetProperty(ref this.isClosed, value);
-        }
-
-        public KeyboardDefinition Keyboards
-        {
-            get => this.keyboards;
-            set => this.SetProperty(ref this.keyboards, value);
         }
 
         public ICommand MinPlusCommand =>

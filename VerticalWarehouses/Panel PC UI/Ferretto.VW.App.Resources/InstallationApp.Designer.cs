@@ -322,6 +322,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Position down bay new height [mm].
+        /// </summary>
+        public static string BayPositionDownHeightNew {
+            get {
+                return ResourceManager.GetString("BayPositionDownHeightNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to On Bay botton.
         /// </summary>
         public static string BayPositionOnBotton {
@@ -354,6 +363,15 @@ namespace Ferretto.VW.App.Resources {
         public static string BayPositionUpHeight {
             get {
                 return ResourceManager.GetString("BayPositionUpHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Position up bay new height [mm].
+        /// </summary>
+        public static string BayPositionUpHeightNew {
+            get {
+                return ResourceManager.GetString("BayPositionUpHeightNew", resourceCulture);
             }
         }
         
@@ -655,6 +673,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check the alignment between the bay and the elevator. If they are not aligned, proceed to correct the position of the elevator..
+        /// </summary>
+        public static string CheckBayElevatorAlignment {
+            get {
+                return ResourceManager.GetString("CheckBayElevatorAlignment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Checksum files check successfully completed..
         /// </summary>
         public static string ChecksumCompleted {
@@ -732,6 +759,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ConfirmationOperation {
             get {
                 return ResourceManager.GetString("ConfirmationOperation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm your changes..
+        /// </summary>
+        public static string ConfirmChanges {
+            get {
+                return ResourceManager.GetString("ConfirmChanges", resourceCulture);
             }
         }
         
@@ -1735,6 +1771,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to High position control.
+        /// </summary>
+        public static string HighPositionControl {
+            get {
+                return ResourceManager.GetString("HighPositionControl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Homing completed successfully.
         /// </summary>
         public static string HomingCompleted {
@@ -1906,6 +1951,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to InputDelay must be strictly positive..
+        /// </summary>
+        public static string InputDelayMustBePositive {
+            get {
+                return ResourceManager.GetString("InputDelayMustBePositive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to InputDisplacement must be strictly positive..
         /// </summary>
         public static string InputDisplacementMustBePositive {
@@ -1942,6 +1996,42 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to InputLowerBound must be greater than InputUpperBound..
+        /// </summary>
+        public static string InputLowerBoundMustBeGreatherThanUpper {
+            get {
+                return ResourceManager.GetString("InputLowerBoundMustBeGreatherThanUpper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InputLowerBound must be greater than {0}..
+        /// </summary>
+        public static string InputLowerBoundMustBeGreatherThanValue {
+            get {
+                return ResourceManager.GetString("InputLowerBoundMustBeGreatherThanValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InputLowerBound must be strictly positive..
+        /// </summary>
+        public static string InputLowerBoundMustBePositive {
+            get {
+                return ResourceManager.GetString("InputLowerBoundMustBePositive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InputLowerBound is required..
+        /// </summary>
+        public static string InputLowerBoundRequired {
+            get {
+                return ResourceManager.GetString("InputLowerBoundRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to InputNetWeight must be strictly positive..
         /// </summary>
         public static string InputNetWeightMustBePositive {
@@ -1960,6 +2050,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to InputRequiredCycles must be strictly positive..
+        /// </summary>
+        public static string InputRequiredCyclesMustBePositive {
+            get {
+                return ResourceManager.GetString("InputRequiredCyclesMustBePositive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InputRequiredCycles is required..
+        /// </summary>
+        public static string InputRequiredCyclesRequired {
+            get {
+                return ResourceManager.GetString("InputRequiredCyclesRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to InputToCellId must be positive..
         /// </summary>
         public static string InputToCellIdMustBePositive {
@@ -1974,6 +2082,42 @@ namespace Ferretto.VW.App.Resources {
         public static string InputToCellIdRequired {
             get {
                 return ResourceManager.GetString("InputToCellIdRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InputUpperBound must be greater than InputLowerBound..
+        /// </summary>
+        public static string InputUpperBoundMustBeGreatherThanLower {
+            get {
+                return ResourceManager.GetString("InputUpperBoundMustBeGreatherThanLower", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InputUpperBound must be greater than {0}..
+        /// </summary>
+        public static string InputUpperBoundMustBeGreatherThanValue {
+            get {
+                return ResourceManager.GetString("InputUpperBoundMustBeGreatherThanValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InputUpperrBound must be strictly positive..
+        /// </summary>
+        public static string InputUpperBoundMustBePositive {
+            get {
+                return ResourceManager.GetString("InputUpperBoundMustBePositive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InputUpperBound is required..
+        /// </summary>
+        public static string InputUpperBoundRequired {
+            get {
+                return ResourceManager.GetString("InputUpperBoundRequired", resourceCulture);
             }
         }
         
@@ -2491,6 +2635,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Low position control.
+        /// </summary>
+        public static string LowPositionControl {
+            get {
+                return ResourceManager.GetString("LowPositionControl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Low Speed Movements.
         /// </summary>
         public static string LowSpeedMovementsTest {
@@ -2806,6 +2959,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Move elevator.
+        /// </summary>
+        public static string MoveElevator {
+            get {
+                return ResourceManager.GetString("MoveElevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move the elevator at bay height and open shutter..
+        /// </summary>
+        public static string MoveElevatorAtBayHeightOpenShutter {
+            get {
+                return ResourceManager.GetString("MoveElevatorAtBayHeightOpenShutter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Move loading unit from cell to bay.
         /// </summary>
         public static string MoveLoadingUnitFromCellToBay {
@@ -2928,6 +3099,15 @@ namespace Ferretto.VW.App.Resources {
         public static string NextPanel {
             get {
                 return ResourceManager.GetString("NextPanel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There are no changes..
+        /// </summary>
+        public static string NoChanges {
+            get {
+                return ResourceManager.GetString("NoChanges", resourceCulture);
             }
         }
         
@@ -3425,6 +3605,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Result {
             get {
                 return ResourceManager.GetString("Result", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check the new dimensions and press Save to make the changes effective..
+        /// </summary>
+        public static string SaveCheckPosition {
+            get {
+                return ResourceManager.GetString("SaveCheckPosition", resourceCulture);
             }
         }
         

@@ -321,7 +321,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Test serranda", DialogType.Question, DialogButtons.YesNo);
+                var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, InstallationApp.ShutterEnduranceTest, DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     this.CumulativePerformedCycles = 0;
