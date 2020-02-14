@@ -81,6 +81,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand openShutterCommand;
 
+        private SubscriptionToken profileCalibrationToken;
+
         private SubscriptionToken stepChangedToken;
 
         private DelegateCommand stopCommand;
@@ -593,6 +595,54 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private void OnProfileCalibrationMessage(NotificationMessageUI<ProfileCalibrationMessageData> message)
+        {
+            switch (message.Status)
+            {
+                case MessageStatus.NotSpecified:
+                    break;
+
+                case MessageStatus.OperationEnd:
+                    break;
+
+                case MessageStatus.OperationError:
+                    break;
+
+                case MessageStatus.OperationStop:
+                    break;
+
+                case MessageStatus.OperationFaultStop:
+                    break;
+
+                case MessageStatus.OperationRunningStop:
+                    break;
+
+                case MessageStatus.OperationStart:
+                    break;
+
+                case MessageStatus.OperationUpdateData:
+                    break;
+
+                case MessageStatus.OperationExecuting:
+                    break;
+
+                case MessageStatus.OperationStepStart:
+                    break;
+
+                case MessageStatus.OperationStepEnd:
+                    break;
+
+                case MessageStatus.OperationStepStop:
+                    break;
+
+                case MessageStatus.OperationWaitResume:
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
         private async Task OpenShutterAsync()
         {
             this.IsWaitingForResponse = true;
@@ -636,6 +686,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     .GetEvent<StepChangedPubSubEvent>()
                     .Subscribe(
                         (m) => this.OnStepChanged(m),
+                        ThreadOption.UIThread,
+                        false);
+
+            this.profileCalibrationToken = this.profileCalibrationToken
+                ?? this.EventAggregator
+                    .GetEvent<NotificationEventUI<ProfileCalibrationMessageData>>()
+                    .Subscribe(
+                        (m) => this.OnProfileCalibrationMessage(m),
                         ThreadOption.UIThread,
                         false);
         }

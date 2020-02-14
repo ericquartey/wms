@@ -191,6 +191,15 @@ namespace Ferretto.VW.MAS.AutomationService
             await this.installationHub.Clients.All.PositioningNotify(message);
         }
 
+        private async Task OnProfileCalibration(NotificationMessage receivedMessage)
+        {
+            if (receivedMessage.Data is ProfileCalibrationMessageData)
+            {
+                var messageToUi = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+                await this.installationHub.Clients.All.ProfileCalibration(messageToUi);
+            }
+        }
+
         private async Task OnSensorsChanged(NotificationMessage receivedMessage)
         {
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);

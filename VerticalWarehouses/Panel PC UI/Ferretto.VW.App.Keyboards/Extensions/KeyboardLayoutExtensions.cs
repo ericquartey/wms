@@ -18,6 +18,22 @@ namespace Ferretto.VW.App.Keyboards
                 return;
             }
 
+            var rowGrid = new Grid
+            {
+                HorizontalAlignment = keyboard.Rows.First().HorizontalAlignment,
+                VerticalAlignment = keyboard.Rows.First().VerticalAlignment,
+            };
+            grid.Children.Add(rowGrid);
+
+            var c = keyboard.Rows.Max(r => r.Cells.Count());
+            for (int i = 0; i <= c; i++)
+            {
+                rowGrid.ColumnDefinitions.Add(new ColumnDefinition
+                {
+                    Width = GridLength.Auto
+                });
+
+            }
             int rowIndex = 0;
             foreach (var row in keyboard.Rows)
             {
@@ -35,21 +51,21 @@ namespace Ferretto.VW.App.Keyboards
                     Height = row.Height
                 });
 
-                var rowGrid = new Grid
-                {
-                    HorizontalAlignment = row.HorizontalAlignment,
-                    VerticalAlignment = row.VerticalAlignment,
-                };
-                Grid.SetRow(rowGrid, rowIndex++);
-                grid.Children.Add(rowGrid);
+                //var rowGrid = new Grid
+                //{
+                //    HorizontalAlignment = row.HorizontalAlignment,
+                //    VerticalAlignment = row.VerticalAlignment,
+                //};
+                //Grid.SetRow(rowGrid, rowIndex++);
+                //grid.Children.Add(rowGrid);
 
                 for (int j = 0; j < cellCount; j++)
                 {
                     var cell = cells[j];
-                    rowGrid.ColumnDefinitions.Add(new ColumnDefinition
-                    {
-                        Width = cell.Width ?? new GridLength(1, GridUnitType.Star)
-                    });
+                    //rowGrid.ColumnDefinitions.Add(new ColumnDefinition
+                    //{
+                    //    Width = cell.Width ?? new GridLength(1, GridUnitType.Star)
+                    //});
                     var key = cell.Key;
 
                     Thickness padding = cell.KeyPadding ?? keyPadding ?? default,
@@ -59,6 +75,7 @@ namespace Ferretto.VW.App.Keyboards
 
                     double minWidth = cell.KeyMinWidth ?? rowKeyMinWidth ?? default;
                     double minHeight = cell.KeyMinHeight ?? default;
+                    int rowSpan = cell.RowSpan ?? default;
 
                     if (key != null)
                     {
@@ -72,6 +89,10 @@ namespace Ferretto.VW.App.Keyboards
                             MinHeight = minHeight
                         };
                         Grid.SetColumn(btn, j);
+                        if (rowSpan > 1)
+                        {
+                            Grid.SetRowSpan(btn, rowSpan);
+                        }
                         rowGrid.Children.Add(btn);
                         if (!string.IsNullOrEmpty(styleResource))
                         {
@@ -90,6 +111,8 @@ namespace Ferretto.VW.App.Keyboards
                         rowGrid.Children.Add(brd);
                     }
                 }
+
+                rowIndex++;
             }
         }
 

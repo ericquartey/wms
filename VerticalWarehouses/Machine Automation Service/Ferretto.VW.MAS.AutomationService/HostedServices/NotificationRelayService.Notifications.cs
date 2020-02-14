@@ -126,6 +126,10 @@ namespace Ferretto.VW.MAS.AutomationService
                 case MessageType.BayLight:
                     await this.OnBayLight(message);
                     break;
+
+                case MessageType.ProfileCalibration:
+                    await this.OnProfileCalibration(message);
+                    break;
             }
         }
 
