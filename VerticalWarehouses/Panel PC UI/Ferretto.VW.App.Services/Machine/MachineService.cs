@@ -498,6 +498,8 @@ namespace Ferretto.VW.App.Services
 
             this.HasCarousel = this.Bay.Carousel != null;
 
+            this.HasBayWithInverter = this.Bay.Inverter != null;
+
             this.IsShutterThreeSensors = this.Bay.Shutter.Type is MAS.AutomationService.Contracts.ShutterType.ThreeSensors;
 
             await this.UpdateBay();
