@@ -1906,6 +1906,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to InputDelay must be strictly positive..
+        /// </summary>
+        public static string InputDelayMustBePositive {
+            get {
+                return ResourceManager.GetString("InputDelayMustBePositive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to InputDisplacement must be strictly positive..
         /// </summary>
         public static string InputDisplacementMustBePositive {
@@ -1942,6 +1951,42 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to InputLowerBound must be greater than InputUpperBound..
+        /// </summary>
+        public static string InputLowerBoundMustBeGreatherThanUpper {
+            get {
+                return ResourceManager.GetString("InputLowerBoundMustBeGreatherThanUpper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InputLowerBound must be greater than {0}..
+        /// </summary>
+        public static string InputLowerBoundMustBeGreatherThanValue {
+            get {
+                return ResourceManager.GetString("InputLowerBoundMustBeGreatherThanValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InputLowerBound must be strictly positive..
+        /// </summary>
+        public static string InputLowerBoundMustBePositive {
+            get {
+                return ResourceManager.GetString("InputLowerBoundMustBePositive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InputLowerBound is required..
+        /// </summary>
+        public static string InputLowerBoundRequired {
+            get {
+                return ResourceManager.GetString("InputLowerBoundRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to InputNetWeight must be strictly positive..
         /// </summary>
         public static string InputNetWeightMustBePositive {
@@ -1960,6 +2005,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to InputRequiredCycles must be strictly positive..
+        /// </summary>
+        public static string InputRequiredCyclesMustBePositive {
+            get {
+                return ResourceManager.GetString("InputRequiredCyclesMustBePositive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InputRequiredCycles is required..
+        /// </summary>
+        public static string InputRequiredCyclesRequired {
+            get {
+                return ResourceManager.GetString("InputRequiredCyclesRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to InputToCellId must be positive..
         /// </summary>
         public static string InputToCellIdMustBePositive {
@@ -1974,6 +2037,42 @@ namespace Ferretto.VW.App.Resources {
         public static string InputToCellIdRequired {
             get {
                 return ResourceManager.GetString("InputToCellIdRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InputUpperBound must be greater than InputLowerBound..
+        /// </summary>
+        public static string InputUpperBoundMustBeGreatherThanLower {
+            get {
+                return ResourceManager.GetString("InputUpperBoundMustBeGreatherThanLower", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InputUpperBound must be greater than {0}..
+        /// </summary>
+        public static string InputUpperBoundMustBeGreatherThanValue {
+            get {
+                return ResourceManager.GetString("InputUpperBoundMustBeGreatherThanValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InputUpperrBound must be strictly positive..
+        /// </summary>
+        public static string InputUpperBoundMustBePositive {
+            get {
+                return ResourceManager.GetString("InputUpperBoundMustBePositive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InputUpperBound is required..
+        /// </summary>
+        public static string InputUpperBoundRequired {
+            get {
+                return ResourceManager.GetString("InputUpperBoundRequired", resourceCulture);
             }
         }
         
