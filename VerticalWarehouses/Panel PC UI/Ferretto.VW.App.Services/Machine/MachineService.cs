@@ -487,6 +487,7 @@ namespace Ferretto.VW.App.Services
             this.cells = await this.machineCellsWebService.GetAllAsync();
 
             this.Bay = await this.bayManagerService.GetBayAsync();
+
             this.BayNumber = this.Bay.Number;
 
             this.HasBayExternal = this.Bay.IsExternal;
@@ -494,6 +495,8 @@ namespace Ferretto.VW.App.Services
             this.HasShutter = this.Bay.Shutter.Type != ShutterType.NotSpecified;
 
             this.HasCarousel = this.Bay.Carousel != null;
+
+            this.HasBayWithInverter = this.Bay.Inverter != null;
 
             this.IsShutterThreeSensors = this.Bay.Shutter.Type is MAS.AutomationService.Contracts.ShutterType.ThreeSensors;
 
