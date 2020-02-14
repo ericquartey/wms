@@ -24,6 +24,10 @@ namespace Ferretto.VW.App.Controls.Controls
             DependencyProperty.Register(nameof(BayNumber), typeof(string), typeof(CardSensorBay));
 
         [Browsable(false)]
+        public static readonly DependencyProperty CardSensorLabel1Property =
+            DependencyProperty.Register(nameof(CardSensorLabel1), typeof(string), typeof(CardSensorBay));
+
+        [Browsable(false)]
         public static readonly DependencyProperty CardSensorLabel2Property =
             DependencyProperty.Register(nameof(CardSensorLabel2), typeof(string), typeof(CardSensorBay));
 
@@ -80,6 +84,12 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             get => (string)this.GetValue(BayNumberProperty);
             set => this.SetValue(BayNumberProperty, value);
+        }
+
+        public string CardSensorLabel1
+        {
+            get => (string)this.GetValue(CardSensorLabel1Property);
+            set => this.SetValue(CardSensorLabel1Property, value);
         }
 
         public string CardSensorLabel2
@@ -158,6 +168,15 @@ namespace Ferretto.VW.App.Controls.Controls
                     this.CardSensorLabel2 = null;
                     this.CardSensorLabel3 = "Baia";
                 }
+            }
+
+            if (this.machineService.HasBayWithInverter)
+            {
+                this.CardSensorLabel1 = SensorCard.Zero;
+            }
+            else
+            {
+                this.CardSensorLabel1 = string.Empty;
             }
         }
 
