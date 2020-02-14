@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.Devices.BarcodeReader;
-using Ferretto.WMS.Data.WebAPI.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Accessories
@@ -15,7 +15,7 @@ namespace Ferretto.VW.App.Accessories
     {
         #region Fields
 
-        private readonly IBarcodesWmsWebService barcodesWmsWebService;
+        private readonly IMachineBarcodesWebService barcodesWebService;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -35,14 +35,14 @@ namespace Ferretto.VW.App.Accessories
             IEventAggregator eventAggregator,
             IBarcodeReader reader,
             INavigationService navigationService,
-            IBarcodesWmsWebService barcodesWmsWebService,
+            IMachineBarcodesWebService barcodesWebService,
             IBarcodeConfigurationOptions options)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.options = options ?? throw new ArgumentNullException(nameof(options));
             this.reader = reader ?? throw new ArgumentNullException(nameof(reader));
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
-            this.barcodesWmsWebService = barcodesWmsWebService ?? throw new ArgumentNullException(nameof(barcodesWmsWebService));
+            this.barcodesWebService = barcodesWebService ?? throw new ArgumentNullException(nameof(barcodesWebService));
 
             this.reader.BarcodeReceived += async (sender, e) => await this.OnBarcodeReceivedAsync(sender, e);
 
@@ -120,7 +120,7 @@ namespace Ferretto.VW.App.Accessories
 
             try
             {
-                this.ruleSet = await this.barcodesWmsWebService.GetAllAsync();
+                this.ruleSet = await this.barcodesWebService.GetAllAsync();
             }
             catch (Exception ex)
             {

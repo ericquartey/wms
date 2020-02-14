@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.MAS.AutomationService.Contracts;
 using NLog;
 using Prism.Events;
 
@@ -12,8 +12,6 @@ namespace Ferretto.VW.App.Services
         #region Fields
 
         private const int DefaultPollInterval = 3000;
-
-        private const string ErrorMessage = "String cannot be null or empty.";
 
         private readonly Uri baseMasAddress;
 
@@ -142,7 +140,7 @@ namespace Ferretto.VW.App.Services
             this.tokenSource.Cancel(false);
         }
 
-        private async Task<HealthStatus> CheckLivelinessStatus(RetryHttpClient client, CancellationToken cancellationToken)
+        private async Task<HealthStatus> CheckLivelinessStatus(HttpClient client, CancellationToken cancellationToken)
         {
             try
             {
@@ -160,7 +158,7 @@ namespace Ferretto.VW.App.Services
             return HealthStatus.Unknown;
         }
 
-        private async Task<HealthStatus> CheckReadinessStatus(RetryHttpClient client, CancellationToken cancellationToken)
+        private async Task<HealthStatus> CheckReadinessStatus(HttpClient client, CancellationToken cancellationToken)
         {
             try
             {
@@ -186,7 +184,7 @@ namespace Ferretto.VW.App.Services
             return HealthStatus.Unknown;
         }
 
-        private async Task<string> GetHealthCheckStatus(RetryHttpClient client, string healthCheckPath, CancellationToken cancellationToken)
+        private async Task<string> GetHealthCheckStatus(HttpClient client, string healthCheckPath, CancellationToken cancellationToken)
         {
             var readinessResponse = await client.SendAsync(
                 new System.Net.Http.HttpRequestMessage
@@ -205,7 +203,7 @@ namespace Ferretto.VW.App.Services
         {
             do
             {
-                using (var client = new RetryHttpClient { BaseAddress = this.baseMasAddress })
+                using (var client = new HttpClient { BaseAddress = this.baseMasAddress })
                 {
                     if (this.HealthMasStatus == HealthStatus.Unknown
                         ||
@@ -228,7 +226,7 @@ namespace Ferretto.VW.App.Services
         {
             do
             {
-                using (var client = new RetryHttpClient { BaseAddress = this.baseWmsAddress })
+                using (var client = new HttpClient { BaseAddress = this.baseWmsAddress })
                 {
                     if (this.HealthWmsStatus == HealthStatus.Unknown
                         ||

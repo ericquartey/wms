@@ -12,7 +12,6 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.Utils;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
@@ -103,24 +102,15 @@ namespace Ferretto.VW.App
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            // UI controls services
-            containerRegistry.RegisterUiControlServices(
-                new NavigationOptions { MainContentRegionName = Utils.Modules.Layout.REGION_MAINCONTENT });
-
-            // App services
-            var serviceUrl = ConfigurationManager.AppSettings.GetAutomationServiceUrl();
-            var serviceWmsUrl = ConfigurationManager.AppSettings.GetWMSDataServiceUrl();
-            var serviceLiveHealthPath = ConfigurationManager.AppSettings.GetAutomationServiceLiveHealthPath();
-            var serviceReadyHealthPath = ConfigurationManager.AppSettings.GetAutomationServiceReadyHealthPath();
-
-            containerRegistry.RegisterAppServices(serviceUrl, serviceWmsUrl, serviceLiveHealthPath, serviceReadyHealthPath);
-
             // MAS Web API services
             var operatorHubPath = ConfigurationManager.AppSettings.GetAutomationServiceOperatorHubPath();
             var installationHubPath = ConfigurationManager.AppSettings.GetAutomationServiceInstallationHubPath();
+
+            var serviceUrl = ConfigurationManager.AppSettings.GetAutomationServiceUrl();
+            containerRegistry.RegisterMasHubs(serviceUrl, operatorHubPath, installationHubPath);
             containerRegistry.RegisterMasWebServices(serviceUrl, c =>
             {
-                var client = c.Resolve<RetryHttpClient>();
+                var client = new HttpClient();
 
                 var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
                 client.DefaultRequestHeaders.Add("Bay-Number", bayNumber.ToString());
@@ -129,12 +119,16 @@ namespace Ferretto.VW.App
                 return client;
             });
 
-            containerRegistry.RegisterMasHubs(serviceUrl, operatorHubPath, installationHubPath);
+            // UI controls services
+            containerRegistry.RegisterUiControlServices(
+                new NavigationOptions { MainContentRegionName = Utils.Modules.Layout.REGION_MAINCONTENT });
 
-            // WMS Web API services
-            RegisterWmsProviders(containerRegistry);
-            var wmsHubPath = ConfigurationManager.AppSettings.GetWMSDataServiceHubDataPath();
-            containerRegistry.RegisterWmsHub(wmsHubPath);
+            // App services
+            var serviceWmsUrl = ConfigurationManager.AppSettings.GetWMSDataServiceUrl();
+            var serviceLiveHealthPath = ConfigurationManager.AppSettings.GetAutomationServiceLiveHealthPath();
+            var serviceReadyHealthPath = ConfigurationManager.AppSettings.GetAutomationServiceReadyHealthPath();
+
+            containerRegistry.RegisterAppServices(serviceUrl, serviceWmsUrl, serviceLiveHealthPath, serviceReadyHealthPath);
 
             // USB Watcher
             RegisterUsbWatcher(containerRegistry);
@@ -143,21 +137,6 @@ namespace Ferretto.VW.App
         private static void RegisterUsbWatcher(IContainerRegistry container)
         {
             container.Register<Ferretto.VW.App.Services.IO.UsbWatcherService>();
-        }
-
-        private static void RegisterWmsProviders(IContainerRegistry container)
-        {
-            var wmsServiceEnabled = ConfigurationManager.AppSettings.GetWmsDataServiceEnabled();
-            var wmsServiceUrl = ConfigurationManager.AppSettings.GetWMSDataServiceUrl();
-
-            container.RegisterWmsWebServices(wmsServiceUrl, c =>
-            {
-                var client = c.Resolve<RetryHttpClient>();
-
-                client.DefaultRequestHeaders.Add("Accept-Language", System.Globalization.CultureInfo.CurrentUICulture.Name);
-
-                return client;
-            });
         }
 
         private void ClearTempFolder()

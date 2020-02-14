@@ -14,7 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable InconsistentNaming
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.AutomationService
 {
     public partial class NotificationRelayService
@@ -59,15 +59,13 @@ namespace Ferretto.VW.MAS.AutomationService
             await this.installationHub.Clients.All.MachineStatusActiveNotify(message);
         }
 
-        private async Task OnAssignedMissionOperationChanged(AssignedMissionOperationChangedMessageData e)
+        private async Task OnAssignedMissionOperationChanged(AssignedMissionChangedMessageData e)
         {
             Contract.Requires(e != null);
 
-            await this.operatorHub.Clients.All.AssignedMissionOperationChanged(
+            await this.operatorHub.Clients.All.AssignedMissionChanged(
                 e.BayNumber,
-                e.MissionId,
-                e.MissionOperationId,
-                e.PendingMissionsCount);
+                e.MissionId);
         }
 
         private async Task OnBayChainPositionChanged(BayChainPositionMessageData data)

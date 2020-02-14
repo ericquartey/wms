@@ -62,11 +62,6 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
-        public async Task CancelAsync()
-        {
-            // TODO implement missionOperationsDataService cancel
-        }
-
         /// <summary>
         /// the UI informs mission manager that the operation is completed
         /// </summary>

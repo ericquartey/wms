@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Drawing;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Operator.Models;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
@@ -18,7 +17,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private readonly IBayManager bayManager;
 
-        private readonly IItemsWmsWebService itemsWmsWebService;
+        private readonly IMachineItemsWebService itemsWebService;
 
         private readonly IWmsImagesProvider wmsImagesProvider;
 
@@ -30,13 +29,13 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public ItemSearchDetailViewModel(
             IWmsImagesProvider wmsImagesProvider,
-            IItemsWmsWebService itemsWmsWebService,
+            IMachineItemsWebService itemsWebService,
             IBayManager bayManager)
             : base(PresentationMode.Operator)
         {
             this.wmsImagesProvider = wmsImagesProvider ?? throw new ArgumentNullException(nameof(wmsImagesProvider));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
-            this.itemsWmsWebService = itemsWmsWebService ?? throw new ArgumentNullException(nameof(itemsWmsWebService));
+            this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
         }
 
         #endregion
@@ -74,8 +73,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
                         break;
 
                     case UserAction.PickItem:
-                        // TODO da definire con Danilo
 
+                        // TODO da definire con Danilo
                         break;
                 }
             }
@@ -102,7 +101,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 try
                 {
-                    var item = await this.itemsWmsWebService.GetByBarcodeAsync(itemBarcode);
+                    var item = await this.itemsWebService.GetByBarcodeAsync(itemBarcode);
                     this.Item = new ItemInfo(item, this.bayManager.Identity.Id);
                 }
                 catch (Exception ex)

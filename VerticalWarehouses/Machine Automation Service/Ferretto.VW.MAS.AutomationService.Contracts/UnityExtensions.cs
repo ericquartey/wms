@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Net.Http;
 using Prism.Ioc;
 using Prism.Unity;
 using Unity;
@@ -8,110 +8,128 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 {
     public static class UnityExtensions
     {
-        private static readonly System.Func<IUnityContainer, RetryHttpClient> DefaultResolveHttpClientFunction = (IUnityContainer c) => c.Resolve<RetryHttpClient>();
+        private static readonly System.Func<IUnityContainer, HttpClient> DefaultResolveHttpClientFunction = (IUnityContainer c) => c.Resolve<HttpClient>();
 
         public static IContainerRegistry RegisterMasWebServices(
-            this IContainerRegistry container,
+            this IContainerRegistry containerRegistry,
             System.Uri webServiceUrl,
-            System.Func<IUnityContainer, RetryHttpClient> resolveHttpClientFunction = null)
+            System.Func<IUnityContainer, HttpClient> resolveHttpClientFunction = null)
         {
-            _ = container ?? throw new ArgumentNullException(nameof(container));
-            _ = webServiceUrl ?? throw new ArgumentNullException(nameof(webServiceUrl));
+            _ = containerRegistry ?? throw new System.ArgumentNullException(nameof(containerRegistry));
+            _ = webServiceUrl ?? throw new System.ArgumentNullException(nameof(webServiceUrl));
 
             var urlString = webServiceUrl.ToString();
 
             var resolveFunction = resolveHttpClientFunction ?? DefaultResolveHttpClientFunction;
 
-            container.Register<RetryHttpClient, RetryHttpClient>();
+            var container = containerRegistry.GetContainer();
 
-            container.GetContainer().RegisterType<IMachineBaysWebService>(
+            container.RegisterType<IMachineBaysWebService>(
                 new InjectionFactory(c => new MachineBaysWebService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachineBeltBurnishingProcedureWebService>(
+            container.RegisterType<IMachineBeltBurnishingProcedureWebService>(
                 new InjectionFactory(c => new MachineBeltBurnishingProcedureWebService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachineCellsWebService>(
+            container.RegisterType<IMachineCellsWebService>(
                 new InjectionFactory(c => new MachineCellsWebService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachineCellPanelsWebService>(
+            container.RegisterType<IMachineCellPanelsWebService>(
                new InjectionFactory(c => new MachineCellPanelsWebService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachineElevatorWebService>(
+            container.RegisterType<IMachineElevatorWebService>(
                 new InjectionFactory(c => new MachineElevatorWebService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachineCarouselWebService>(
+            container.RegisterType<IMachineCarouselWebService>(
                 new InjectionFactory(c => new MachineCarouselWebService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachineErrorsWebService>(
+            container.RegisterType<IMachineErrorsWebService>(
                 new InjectionFactory(c => new MachineErrorsWebService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachineIdentityWebService>(
+            container.RegisterType<IMachineIdentityWebService>(
                 new InjectionFactory(c => new MachineIdentityWebService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachineSetupStatusWebService>(
+            container.RegisterType<IMachineSetupStatusWebService>(
                 new InjectionFactory(c => new MachineSetupStatusWebService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachineLoadingUnitsWebService>(
+            container.RegisterType<IMachineLoadingUnitsWebService>(
                 new InjectionFactory(c => new MachineLoadingUnitsWebService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachinePowerWebService>(
+            container.RegisterType<IMachinePowerWebService>(
                 new InjectionFactory(c => new MachinePowerWebService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachineMissionOperationsWebService>(
+            container.RegisterType<IMachineMissionOperationsWebService>(
                 new InjectionFactory(c => new MachineMissionOperationsWebService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachineMissionOperationsWebService>(
+            container.RegisterType<IMachineMissionOperationsWebService>(
                 new InjectionFactory(c => new MachineMissionOperationsWebService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachineVerticalResolutionCalibrationProcedureWebService>(
+            container.RegisterType<IMachineVerticalResolutionCalibrationProcedureWebService>(
                 new InjectionFactory(c => new MachineVerticalResolutionCalibrationProcedureWebService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachineSensorsWebService>(
+            container.RegisterType<IMachineSensorsWebService>(
                 new InjectionFactory(c => new MachineSensorsWebService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachineModeWebService>(
+            container.RegisterType<IMachineModeWebService>(
                 new InjectionFactory(c => new MachineModeWebService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachineShuttersWebService>(
+            container.RegisterType<IMachineShuttersWebService>(
                 new InjectionFactory(c => new MachineShuttersWebService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachineUsersWebService>(
+            container.RegisterType<IMachineUsersWebService>(
                 new InjectionFactory(c => new MachineUsersWebService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachineVerticalOriginProcedureWebService>(
+            container.RegisterType<IMachineVerticalOriginProcedureWebService>(
                 new InjectionFactory(c => new MachineVerticalOriginProcedureWebService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachineVerticalOffsetProcedureWebService>(
+            container.RegisterType<IMachineVerticalOffsetProcedureWebService>(
                 new InjectionFactory(c => new MachineVerticalOffsetProcedureWebService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachineDevicesWebService>(
+            container.RegisterType<IMachineDevicesWebService>(
                 new InjectionFactory(c => new MachineDevicesWebService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachineWeightAnalysisProcedureWebService>(
+            container.RegisterType<IMachineWeightAnalysisProcedureWebService>(
                 new InjectionFactory(c => new MachineWeightAnalysisProcedureWebService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachineDepositAndPickupProcedureWebService>(
+            container.RegisterType<IMachineDepositAndPickupProcedureWebService>(
                 new InjectionFactory(c => new MachineDepositAndPickupProcedureWebService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachineConfigurationWebService>(
+            container.RegisterType<IMachineConfigurationWebService>(
                 new InjectionFactory(c => new MachineConfigurationWebService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachineUtcTimeWebService>(
+            container.RegisterType<IMachineUtcTimeWebService>(
                 new InjectionFactory(c => new MachineUtcTimeWebService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachineProfileProcedureWebService>(
+            container.RegisterType<IMachineProfileProcedureWebService>(
                 new InjectionFactory(c => new MachineProfileProcedureWebService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachineCompactingWebService>(
+            container.RegisterType<IMachineCompactingWebService>(
                 new InjectionFactory(c => new MachineCompactingWebService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachineMissionsWebService>(
+            container.RegisterType<IMachineMissionsWebService>(
                 new InjectionFactory(c => new MachineMissionsWebService(urlString, resolveFunction(c))));
 
-            container.GetContainer().RegisterType<IMachineFullTestWebService>(
+            container.RegisterType<IMachineFullTestWebService>(
                 new InjectionFactory(c => new MachineFullTestWebService(urlString, resolveFunction(c))));
 
-            return container;
+            container.RegisterType<IMachineBarcodesWebService>(
+                new InjectionFactory(c => new MachineBarcodesWebService(urlString, resolveFunction(c))));
+
+            container.RegisterType<IMachineCompartmentsWebService>(
+                new InjectionFactory(c => new MachineCompartmentsWebService(urlString, resolveFunction(c))));
+
+            container.RegisterType<IMachineAreasWebService>(
+                new InjectionFactory(c => new MachineAreasWebService(urlString, resolveFunction(c))));
+
+            container.RegisterType<IMachineImagesWebService>(
+                new InjectionFactory(c => new MachineImagesWebService(urlString, resolveFunction(c))));
+
+            container.RegisterType<IMachineItemListsWebService>(
+                new InjectionFactory(c => new MachineItemListsWebService(urlString, resolveFunction(c))));
+
+            container.RegisterType<IMachineItemsWebService>(
+                new InjectionFactory(c => new MachineItemsWebService(urlString, resolveFunction(c))));
+
+            return containerRegistry;
         }
     }
 }

@@ -85,7 +85,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public double? CurrentPosition
         {
             get => this.currentPosition;
-            protected set => this.SetProperty(ref this.currentPosition, value);
+            private set => this.SetProperty(ref this.currentPosition, value);
         }
 
         public ICommand GoToSemiAutomaticMovmentsCommand =>

@@ -11,6 +11,7 @@ using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -27,11 +28,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IMachineProvider machineProvider;
 
-        private readonly IMachinesWmsWebService machinesWmsWebService;
-
         private readonly IMissionSchedulingProvider missionSchedulingProvider;
 
         private readonly IMoveLoadUnitProvider moveLoadingUnitProvider;
+
+        private readonly IServiceScopeFactory serviceScopeFactory;
 
         #endregion
 
@@ -42,15 +43,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             ILoadingUnitsDataProvider loadingUnitsDataProvider,
             IMachineProvider machineProvider,
             IMissionSchedulingProvider missionSchedulingProvider,
+            IServiceScopeFactory serviceScopeFactory,
             IMachinesWmsWebService machinesWmsWebService,
-            ILogger<LoadingUnitsController> logger
-            )
+            ILogger<LoadingUnitsController> logger)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.missionSchedulingProvider = missionSchedulingProvider ?? throw new ArgumentNullException(nameof(missionSchedulingProvider));
-            this.machinesWmsWebService = machinesWmsWebService ?? throw new ArgumentNullException(nameof(machinesWmsWebService));
+            this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             this.moveLoadingUnitProvider = moveLoadingUnitProvider ?? throw new ArgumentNullException(nameof(moveLoadingUnitProvider));
         }
 
@@ -98,6 +99,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.loadingUnitsDataProvider.GetAll());
         }
 
+        [HttpGet("{id}/compartments")]
+        public async Task<ActionResult<IEnumerable<CompartmentDetails>>> GetCompartmentsAsync(int id, [FromServices] ILoadingUnitsWmsWebService loadingUnitsWmsWebService)
+        {
+            if (loadingUnitsWmsWebService is null)
+            {
+                throw new ArgumentNullException(nameof(loadingUnitsWmsWebService));
+            }
+
+            return this.Ok(await loadingUnitsWmsWebService.GetCompartmentsAsync(id));
+        }
+
         [HttpGet("statistics/space")]
         public async Task<ActionResult<IEnumerable<LoadingUnitSpaceStatistics>>> GetSpaceStatisticsAsync(
             [FromServices] IConfiguration configuration)
@@ -109,7 +121,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 try
                 {
                     var machineId = this.machineProvider.GetIdentity();
-                    var loadingUnits = await this.machinesWmsWebService.GetLoadingUnitsByIdAsync(machineId);
+                    var machineWebService = this.serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IMachinesWmsWebService>();
+                    var loadingUnits = await machineWebService.GetLoadingUnitsByIdAsync(machineId);
                     foreach (var stat in statistics)
                     {
                         var loadingUnit = loadingUnits.SingleOrDefault(l => l.Code == stat.Code);
@@ -144,7 +157,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 try
                 {
                     var machineId = this.machineProvider.GetIdentity();
-                    var loadingUnits = await this.machinesWmsWebService.GetLoadingUnitsByIdAsync(machineId);
+                    var machineWebService = this.serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IMachinesWmsWebService>();
+
+                    var loadingUnits = await machineWebService.GetLoadingUnitsByIdAsync(machineId);
                     foreach (var stat in statistics)
                     {
                         var loadingUnit = loadingUnits.SingleOrDefault(l => l.Code == stat.Code);
@@ -162,6 +177,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
 
             return this.Ok(statistics);
+        }
+
+        [HttpGet("{id}/wms/details")]
+        public async Task<ActionResult<LoadingUnitDetails>> GetWmsDetailsByIdAsync(int id, [FromServices] ILoadingUnitsWmsWebService loadingUnitsWmsWebService)
+        {
+            if (loadingUnitsWmsWebService is null)
+            {
+                throw new ArgumentNullException(nameof(loadingUnitsWmsWebService));
+            }
+
+            return this.Ok(await loadingUnitsWmsWebService.GetByIdAsync(id));
         }
 
         [HttpPost("insert-loading-unit")]

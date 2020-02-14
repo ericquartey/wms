@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Ferretto.VW.MAS.LaserDriver
@@ -8,15 +7,16 @@ namespace Ferretto.VW.MAS.LaserDriver
     {
         #region Methods
 
-        public static IServiceCollection AddLaserDriver(
-            this IServiceCollection services)
+        public static IServiceCollection AddLaserDriver(this IServiceCollection services)
         {
-            if (services == null)
+            if (services is null)
             {
                 throw new ArgumentNullException(nameof(services));
             }
 
             services.AddHostedService<LaserDriverService>();
+
+            services.AddScoped<ILaserProvider, LaserProvider>();
 
             return services;
         }

@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         #region Events
 
-        public event EventHandler<AssignedMissionOperationChangedEventArgs> AssignedMissionOperationChanged;
+        public event EventHandler<AssignedMissionChangedEventArgs> AssignedMissionChanged;
 
         public event EventHandler<BayStatusChangedEventArgs> BayStatusChanged;
 
@@ -28,9 +28,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         protected override void RegisterEvents(HubConnection connection)
         {
-            connection.On<BayNumber, int?, int?, int>(
-                nameof(AutomationService.Hubs.IOperatorHub.AssignedMissionOperationChanged),
-                this.OnAssignedMissionOperationChanged);
+            connection.On<BayNumber, int?>(
+                nameof(AutomationService.Hubs.IOperatorHub.AssignedMissionChanged),
+                this.OnAssignedMissionChanged);
 
             connection.On<BayNumber, BayStatus>(
                 nameof(AutomationService.Hubs.IOperatorHub.BayStatusChanged),
@@ -41,14 +41,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
                 this.OnErrorStatusChanged);
         }
 
-        private void OnAssignedMissionOperationChanged(BayNumber bayNumber, int? missionId, int? missionOperationId, int pendingMissionOperationsCount)
+        private void OnAssignedMissionChanged(BayNumber bayNumber, int? missionId)
         {
-            this.AssignedMissionOperationChanged?.Invoke(
+            this.AssignedMissionChanged?.Invoke(
                 this,
-                new AssignedMissionOperationChangedEventArgs(
+                new AssignedMissionChangedEventArgs(
                     bayNumber,
-                    missionId,
-                    missionOperationId));
+                    missionId));
         }
 
         private void OnBayStatusChanged(BayNumber bayNumber, BayStatus bayStatus)

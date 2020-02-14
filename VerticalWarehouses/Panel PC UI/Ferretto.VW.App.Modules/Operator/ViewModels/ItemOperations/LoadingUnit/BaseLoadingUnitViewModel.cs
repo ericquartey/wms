@@ -10,7 +10,6 @@ using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 using Prism.Events;
 
@@ -22,9 +21,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly ILoadingUnitsWmsWebService loadingUnitsWmsWebService;
-
-        private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
+        private readonly IMachineLoadingUnitsWebService loadingUnitsWebService;
 
         private DelegateCommand changeModeListCommand;
 
@@ -77,14 +74,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Constructors
 
         public BaseLoadingUnitViewModel(
-            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-            ILoadingUnitsWmsWebService loadingUnitsWmsWebService,
+            IMachineLoadingUnitsWebService loadingUnitsWebService,
             IEventAggregator eventAggregator)
             : base(PresentationMode.Operator)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
-            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
-            this.loadingUnitsWmsWebService = loadingUnitsWmsWebService;
+            this.loadingUnitsWebService = loadingUnitsWebService ?? throw new ArgumentNullException(nameof(loadingUnitsWebService));
 
             this.CompartmentColoringFunction = (compartment, selectedCompartment) => compartment == selectedCompartment ? "#0288f7" : "#444444";
         }
@@ -162,10 +157,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             set => this.SetProperty(ref this.isWaitingForNewOperation, value);
         }
 
-        public bool IsWmsEnabledAndHealthy
-        {
-            get => this.IsWmsHealthy && ConfigurationManager.AppSettings.GetWmsDataServiceEnabled();
-        }
+        public bool IsWmsEnabledAndHealthy => this.IsWmsHealthy && ConfigurationManager.AppSettings.GetWmsDataServiceEnabled();
 
         public override bool IsWmsHealthy
         {
@@ -292,7 +284,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             if (this.missionOperationToken != null)
             {
-                this.EventAggregator.GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>().Unsubscribe(this.missionOperationToken);
+                this.EventAggregator.GetEvent<PubSubEvent<AssignedMissionChangedEventArgs>>().Unsubscribe(this.missionOperationToken);
                 this.missionOperationToken?.Dispose();
                 this.missionOperationToken = null;
             }
@@ -304,11 +296,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 if (this.IsWmsHealthy && ConfigurationManager.AppSettings.GetWmsDataServiceEnabled())
                 {
-                    var wmsLoadingUnit = await this.loadingUnitsWmsWebService.GetByIdAsync(this.LoadingUnit.Id);
+                    var wmsLoadingUnit = await this.loadingUnitsWebService.GetWmsDetailsByIdAsync(this.LoadingUnit.Id);
                     this.LoadingUnitWidth = wmsLoadingUnit.Width;
                     this.LoadingUnitDepth = wmsLoadingUnit.Depth;
 
-                    this.ItemsCompartments = await this.loadingUnitsWmsWebService.GetCompartmentsAsync(this.LoadingUnit.Id);
+                    this.ItemsCompartments = await this.loadingUnitsWebService.GetCompartmentsAsync(this.LoadingUnit.Id);
 
                     this.Compartments = MapCompartments(this.ItemsCompartments);
                 }
@@ -335,8 +327,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
 
             this.missionOperationToken = this.eventAggregator
-                .GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>()
-                .Subscribe(this.MissionOperationUpdate);
+                .GetEvent<PubSubEvent<MissionChangedEventArgs>>()
+                .Subscribe(this.OnMissionChanged);
 
             if (this.CanReset)
             {
@@ -364,7 +356,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             try
             {
                 this.isWaitingForNewOperation = true;
-                await this.machineLoadingUnitsWebService.RemoveFromBayAsync(this.LoadingUnit.Id);
+                await this.loadingUnitsWebService.RemoveFromBayAsync(this.LoadingUnit.Id);
 
                 this.NavigationService.GoBack();
             }
@@ -517,12 +509,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.currentItemCompartmentIndex > 0;
         }
 
-        private void MissionOperationUpdate(AssignedMissionOperationChangedEventArgs e)
+        private void OnMissionChanged(MissionChangedEventArgs e)
         {
-            if (e.MissionOperationId.HasValue)
-            {
-                this.isNewOperationAvailable = true;
-            }
+            this.isNewOperationAvailable = e.WmsOperation != null;
         }
 
         private void Reset()

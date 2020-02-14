@@ -1,12 +1,11 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Controls.Interfaces;
-using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
@@ -15,9 +14,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
     {
         #region Fields
 
-        private readonly IItemsWmsWebService itemsWmsWebService;
-
-        private readonly IMissionsWmsWebService missionWmsWebService;
+        private readonly IMachineItemsWebService itemsWebService;
 
         private bool canInputQuantity;
 
@@ -37,8 +34,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public BaseItemOperationViewModel(
             IWmsImagesProvider wmsImagesProvider,
-            IMissionsWmsWebService missionsWmsWebService,
-            IItemsWmsWebService itemsWmsWebService,
+            IMachineItemsWebService itemsWebService,
             IBayManager bayManager,
             IMissionOperationsService missionOperationsService,
             IDialogService dialogService)
@@ -47,8 +43,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.WmsImagesProvider = wmsImagesProvider ?? throw new ArgumentNullException(nameof(wmsImagesProvider));
             this.BayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.MissionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
-            this.missionWmsWebService = missionsWmsWebService ?? throw new ArgumentNullException(nameof(missionsWmsWebService));
-            this.itemsWmsWebService = itemsWmsWebService ?? throw new ArgumentNullException(nameof(itemsWmsWebService));
+            this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
             this.DialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
         }
 
@@ -64,7 +59,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public string ItemId => this.MissionOperationsService.CurrentMissionOperation?.ItemId.ToString();
+        public string ItemId => this.MissionOperationsService.ActiveWmsOperation?.ItemId.ToString();
 
         public string MeasureUnit
         {
@@ -134,36 +129,30 @@ namespace Ferretto.VW.App.Operator.ViewModels
             // do nothing
         }
 
-        protected override void RaiseCanExecuteChanged()
-        {
-            base.RaiseCanExecuteChanged();
-
-            // do nothing
-        }
-
         protected async Task RetrieveMissionOperationAsync()
         {
+            if (this.MissionOperationsService.ActiveWmsOperation is null)
+            {
+                this.NavigationService.GoBack();
+                return;
+            }
+
+            this.Mission = this.MissionOperationsService.ActiveWmsMission;
+            this.MissionOperation = this.MissionOperationsService.ActiveWmsOperation;
+
             try
             {
-                if (this.MissionOperationsService.CurrentMissionOperation is null)
-                {
-                    this.NavigationService.GoBack();
-                    return;
-                }
-
-                this.MissionOperation = this.MissionOperationsService.CurrentMissionOperation;
-
-                this.Mission = await this.missionWmsWebService.GetDetailsByIdAsync(this.MissionOperationsService.CurrentMission.Id);
-
-                var item = await this.itemsWmsWebService.GetByIdAsync(this.MissionOperation.ItemId);
+                var item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
                 this.QuantityTolerance = item.PickTolerance ?? 0;
                 this.MeasureUnit = item.MeasureUnitDescription;
 
                 this.RaisePropertyChanged(nameof(this.ItemId));
+                this.RaisePropertyChanged(nameof(this.MeasureUnit));
+                this.RaisePropertyChanged(nameof(this.QuantityTolerance));
 
                 this.OnMisionOperationRetrieved();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is HttpRequestException)
             {
                 this.NavigationService.GoBack();
                 this.ShowNotification(ex);

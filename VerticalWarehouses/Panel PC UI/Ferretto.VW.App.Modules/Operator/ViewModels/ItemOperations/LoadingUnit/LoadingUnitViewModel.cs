@@ -5,7 +5,6 @@ using System.Windows.Input;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 using Prism.Events;
 
@@ -17,11 +16,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public double? inputQuantity;
 
-        private readonly ICompartmentsWmsWebService compartmentsWmsWebService;
+        private readonly IMachineCompartmentsWebService compartmentsWebService;
 
-        private readonly IItemsWmsWebService itemsWmsWebService;
-
-        private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
+        private readonly IMachineItemsWebService itemsWebService;
 
         private readonly IMissionOperationsService missionOperationsService;
 
@@ -56,18 +53,16 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Constructors
 
         public LoadingUnitViewModel(
-            IItemsWmsWebService itemsWmsWebService,
-            ICompartmentsWmsWebService compartmentsWmsWebService,
+            IMachineItemsWebService itemsWebService,
+            IMachineCompartmentsWebService compartmentsWebService,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IMissionOperationsService missionOperationsService,
-            ILoadingUnitsWmsWebService loadingUnitsWmsWebService,
             IEventAggregator eventAggregator,
             IWmsDataProvider wmsDataProvider)
-            : base(machineLoadingUnitsWebService, loadingUnitsWmsWebService, eventAggregator)
+            : base(machineLoadingUnitsWebService, eventAggregator)
         {
-            this.itemsWmsWebService = itemsWmsWebService ?? throw new ArgumentNullException(nameof(itemsWmsWebService));
-            this.compartmentsWmsWebService = compartmentsWmsWebService ?? throw new ArgumentNullException(nameof(compartmentsWmsWebService));
-            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
+            this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
+            this.compartmentsWebService = compartmentsWebService ?? throw new ArgumentNullException(nameof(compartmentsWebService));
             this.missionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
             this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
         }
@@ -190,7 +185,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 this.IsBusyConfirmingRecallOperation = true;
                 this.IsWaitingForNewOperation = true;
-                await this.machineLoadingUnitsWebService.RemoveFromBayAsync(this.LoadingUnit.Id);
+                await this.missionOperationsService.RecallLoadingUnitAsync(this.LoadingUnit.Id);
 
                 this.NavigationService.GoBack();
             }
@@ -297,7 +292,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                         Stock = this.InputQuantity.Value,
                     };
 
-                    var newItemCompartment = await this.compartmentsWmsWebService.UpdateAsync(compartment, this.SelectedItemCompartment.Id);
+                    var newItemCompartment = await this.compartmentsWebService.UpdateAsync(compartment, this.SelectedItemCompartment.Id);
 
                     await this.ResetLoadDataAsync();
                 }
@@ -315,7 +310,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private async Task GetItemInfoAsync()
         {
-            var item = await this.itemsWmsWebService.GetByIdAsync(this.SelectedItemCompartment.ItemId.Value);
+            var item = await this.itemsWebService.GetByIdAsync(this.SelectedItemCompartment.ItemId.Value);
             this.QuantityTolerance = item.PickTolerance ?? 0;
             this.MeasureUnit = item.MeasureUnitDescription;
         }

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Configuration;
-using System.Linq;
-using System.Threading.Tasks;
-using Ferretto.WMS.Data.WebAPI.Contracts;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Services
 {
@@ -14,7 +9,7 @@ namespace Ferretto.VW.App.Services
 
         private readonly IBayManager bayManager;
 
-        private readonly IItemsWmsWebService itemsWmsWebService;
+        private readonly IMachineItemsWebService itemWebService;
 
         #endregion
 
@@ -22,10 +17,10 @@ namespace Ferretto.VW.App.Services
 
         public WmsDataProvider(
             IBayManager bayManager,
-            IItemsWmsWebService itemsWmsWebService)
+            IMachineItemsWebService itemWebService)
         {
             this.bayManager = bayManager ?? throw new System.ArgumentNullException(nameof(bayManager));
-            this.itemsWmsWebService = itemsWmsWebService ?? throw new System.ArgumentNullException(nameof(itemsWmsWebService));
+            this.itemWebService = itemWebService ?? throw new System.ArgumentNullException(nameof(itemWebService));
         }
 
         #endregion
@@ -36,7 +31,7 @@ namespace Ferretto.VW.App.Services
         {
             try
             {
-                var item = await this.itemsWmsWebService.GetByIdAsync(itemId);
+                var item = await this.itemWebService.GetByIdAsync(itemId);
                 return item.Image;
             }
             catch
@@ -54,7 +49,7 @@ namespace Ferretto.VW.App.Services
 
             var bay = await this.bayManager.GetBayAsync();
 
-            await this.itemsWmsWebService.PickAsync(itemId, new ItemOptions
+            await this.itemWebService.PickAsync(itemId, new ItemOptions
             {
                 AreaId = this.bayManager.Identity.AreaId.Value,
                 BayId = bay.Id,
@@ -73,7 +68,7 @@ namespace Ferretto.VW.App.Services
 
             var bay = await this.bayManager.GetBayAsync();
 
-            await this.itemsWmsWebService.PutAsync(itemId, new ItemOptions
+            await this.itemWebService.PutAsync(itemId, new ItemOptions
             {
                 AreaId = this.bayManager.Identity.AreaId.Value,
                 BayId = bay.Id,
@@ -82,6 +77,7 @@ namespace Ferretto.VW.App.Services
                 RunImmediately = true
             });
         }
+
         #endregion
     }
 }

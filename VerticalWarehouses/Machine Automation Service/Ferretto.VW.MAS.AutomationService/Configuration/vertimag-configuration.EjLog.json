@@ -4,25 +4,25 @@
     {
       "Tare": 120,
       "MaxNetWeight": 800,
-      "Height": 100,
+      "Height": 200,
       "Id": 43 // same ID as on EjLog
     },
     {
       "Tare": 120,
       "MaxNetWeight": 800,
-      "Height": 100,
+      "Height": 200,
       "Id": 44 // same ID as on EjLog
     },
     {
       "Tare": 120,
       "MaxNetWeight": 800,
-      "Height": 100,
+      "Height": 200,
       "Id": 45 // same ID as on EjLog
     },
     {
       "Tare": 120,
       "MaxNetWeight": 800,
-      "Height": 100,
+      "Height": 200,
       "Id": 46 // same ID as on EjLog
     }
   ],
