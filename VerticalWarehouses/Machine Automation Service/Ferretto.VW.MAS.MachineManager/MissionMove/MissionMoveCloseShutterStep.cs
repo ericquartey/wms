@@ -74,6 +74,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         private void CloseShutterEnd()
         {
+            if (this.Mission.ErrorCode != MachineErrorCode.NoError)
+            {
+                this.ErrorsProvider.RecordNew(this.Mission.ErrorCode, this.Mission.TargetBay);
+            }
             IMissionMoveBase newStep;
             if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
                 && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator
@@ -89,10 +93,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     || bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitDestination).IsUpper
                     || bay.Carousel is null)
                 {
-                    if (this.Mission.ErrorCode != MachineErrorCode.NoError)
-                    {
-                        this.ErrorsProvider.RecordNew(this.Mission.ErrorCode, this.Mission.TargetBay);
-                    }
                     if (this.Mission.MissionType == MissionType.OUT
                         || this.Mission.MissionType == MissionType.WMS
                         )

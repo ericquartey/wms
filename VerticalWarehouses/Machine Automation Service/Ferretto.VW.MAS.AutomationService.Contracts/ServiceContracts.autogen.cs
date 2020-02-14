@@ -1522,6 +1522,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("EjectLoadUnit", Required = Newtonsoft.Json.Required.Always)]
         public bool EjectLoadUnit { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("ErrorCode", Required = Newtonsoft.Json.Required.Always)]
+        public MachineErrorCode ErrorCode { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("ErrorMovements", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
@@ -1672,6 +1675,173 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         Forwards = 1,
     
         Backwards = 2,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum MachineErrorCode
+    {
+        CradleNotCompletelyLoaded = 1,
+    
+        ConditionsNotMetForPositioning = 2,
+    
+        ConditionsNotMetForRunning = 3,
+    
+        ConditionsNotMetForHoming = 4,
+    
+        SecurityWasTriggered = 5,
+    
+        SecurityButtonWasTriggered = 6,
+    
+        SecurityBarrierWasTriggered = 7,
+    
+        SecuritySensorWasTriggered = 8,
+    
+        InverterFaultStateDetected = 9,
+    
+        CradleNotCorrectlyLoadedDuringPickup = 10,
+    
+        CradleNotCorrectlyUnloadedDuringDeposit = 11,
+    
+        ZeroSensorErrorAfterPickup = 12,
+    
+        ZeroSensorErrorAfterDeposit = 13,
+    
+        InvalidPresenceSensors = 14,
+    
+        MissingZeroSensorWithEmptyElevator = 15,
+    
+        ZeroSensorActiveWithFullElevator = 16,
+    
+        LoadUnitPresentOnEmptyElevator = 17,
+    
+        TopLevelBayOccupied = 18,
+    
+        BottomLevelBayOccupied = 19,
+    
+        TopLevelBayEmpty = 20,
+    
+        BottomLevelBayEmpty = 21,
+    
+        SensorZeroBayNotActiveAtStart = 22,
+    
+        InverterConnectionError = 23,
+    
+        IoDeviceConnectionError = 24,
+    
+        LaserConnectionError = 25,
+    
+        LoadUnitWeightExceeded = 26,
+    
+        LoadUnitHeightExceeded = 27,
+    
+        LoadUnitWeightTooLow = 28,
+    
+        MachineWeightExceeded = 29,
+    
+        DestinationBelowLowerBound = 30,
+    
+        DestinationOverUpperBound = 31,
+    
+        BayInvertersBusy = 32,
+    
+        IoDeviceError = 33,
+    
+        MachineModeNotValid = 34,
+    
+        AnotherMissionIsActiveForThisLoadUnit = 35,
+    
+        AnotherMissionIsActiveForThisBay = 36,
+    
+        AnotherMissionOfThisTypeIsActive = 37,
+    
+        WarehouseIsFull = 38,
+    
+        CellLogicallyOccupied = 39,
+    
+        MoveBayChainNotAllowed = 40,
+    
+        AutomaticRestoreNotAllowed = 41,
+    
+        DestinationTypeNotValid = 42,
+    
+        MissionTypeNotValid = 43,
+    
+        ResumeCommandNotValid = 44,
+    
+        DestinationBayNotCalibrated = 45,
+    
+        NoLoadUnitInSource = 46,
+    
+        LoadUnitSourceDb = 47,
+    
+        LoadUnitDestinationCell = 48,
+    
+        LoadUnitElevator = 49,
+    
+        LoadUnitNotRemoved = 50,
+    
+        LoadUnitDestinationBay = 51,
+    
+        LoadUnitSourceCell = 52,
+    
+        LoadUnitNotFound = 53,
+    
+        LoadUnitNotLoaded = 54,
+    
+        LoadUnitSourceBay = 55,
+    
+        LoadUnitShutterOpen = 56,
+    
+        LoadUnitShutterInvalid = 57,
+    
+        LoadUnitShutterClosed = 58,
+    
+        LoadUnitPresentInCell = 59,
+    
+        LoadUnitOtherBay = 60,
+    
+        LoadUnitSourceElevator = 61,
+    
+        LoadUnitMissingOnElevator = 62,
+    
+        LoadUnitMissingOnBay = 63,
+    
+        LoadUnitUndefinedUpper = 64,
+    
+        LoadUnitUndefinedBottom = 65,
+    
+        InverterErrorBaseCode = 1000,
+    
+        InverterErrorInvalidParameter = 1001,
+    
+        InverterErrorInvalidDataset = 1002,
+    
+        InverterErrorParameterIsWriteOnly = 1003,
+    
+        InverterErrorParameterIsReadOnly = 1004,
+    
+        InverterErrorEepromReadError = 1005,
+    
+        InverterErrorEepromWriteError = 1006,
+    
+        InverterErrorEepromChecksumError = 1007,
+    
+        InverterErrorCannotWriteParameterWhileRunning = 1008,
+    
+        InverterErrorDatasetValuesAreDifferent = 1009,
+    
+        InverterErrorUnknownParameter = 1011,
+    
+        InverterErrorSyntaxError = 1013,
+    
+        InverterErrorWrongPayloadLength = 1014,
+    
+        InverterErrorNodeNotAvailable = 1020,
+    
+        InverterErrorSyntaxError2 = 1030,
+    
+        NoError = -1,
     
     }
     
@@ -3318,173 +3488,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<ErrorStatisticsDetail>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum MachineErrorCode
-    {
-        CradleNotCompletelyLoaded = 1,
-    
-        ConditionsNotMetForPositioning = 2,
-    
-        ConditionsNotMetForRunning = 3,
-    
-        ConditionsNotMetForHoming = 4,
-    
-        SecurityWasTriggered = 5,
-    
-        SecurityButtonWasTriggered = 6,
-    
-        SecurityBarrierWasTriggered = 7,
-    
-        SecuritySensorWasTriggered = 8,
-    
-        InverterFaultStateDetected = 9,
-    
-        CradleNotCorrectlyLoadedDuringPickup = 10,
-    
-        CradleNotCorrectlyUnloadedDuringDeposit = 11,
-    
-        ZeroSensorErrorAfterPickup = 12,
-    
-        ZeroSensorErrorAfterDeposit = 13,
-    
-        InvalidPresenceSensors = 14,
-    
-        MissingZeroSensorWithEmptyElevator = 15,
-    
-        ZeroSensorActiveWithFullElevator = 16,
-    
-        LoadUnitPresentOnEmptyElevator = 17,
-    
-        TopLevelBayOccupied = 18,
-    
-        BottomLevelBayOccupied = 19,
-    
-        TopLevelBayEmpty = 20,
-    
-        BottomLevelBayEmpty = 21,
-    
-        SensorZeroBayNotActiveAtStart = 22,
-    
-        InverterConnectionError = 23,
-    
-        IoDeviceConnectionError = 24,
-    
-        LaserConnectionError = 25,
-    
-        LoadUnitWeightExceeded = 26,
-    
-        LoadUnitHeightExceeded = 27,
-    
-        LoadUnitWeightTooLow = 28,
-    
-        MachineWeightExceeded = 29,
-    
-        DestinationBelowLowerBound = 30,
-    
-        DestinationOverUpperBound = 31,
-    
-        BayInvertersBusy = 32,
-    
-        IoDeviceError = 33,
-    
-        MachineModeNotValid = 34,
-    
-        AnotherMissionIsActiveForThisLoadUnit = 35,
-    
-        AnotherMissionIsActiveForThisBay = 36,
-    
-        AnotherMissionOfThisTypeIsActive = 37,
-    
-        WarehouseIsFull = 38,
-    
-        CellLogicallyOccupied = 39,
-    
-        MoveBayChainNotAllowed = 40,
-    
-        AutomaticRestoreNotAllowed = 41,
-    
-        DestinationTypeNotValid = 42,
-    
-        MissionTypeNotValid = 43,
-    
-        ResumeCommandNotValid = 44,
-    
-        DestinationBayNotCalibrated = 45,
-    
-        NoLoadUnitInSource = 46,
-    
-        LoadUnitSourceDb = 47,
-    
-        LoadUnitDestinationCell = 48,
-    
-        LoadUnitElevator = 49,
-    
-        LoadUnitNotRemoved = 50,
-    
-        LoadUnitDestinationBay = 51,
-    
-        LoadUnitSourceCell = 52,
-    
-        LoadUnitNotFound = 53,
-    
-        LoadUnitNotLoaded = 54,
-    
-        LoadUnitSourceBay = 55,
-    
-        LoadUnitShutterOpen = 56,
-    
-        LoadUnitShutterInvalid = 57,
-    
-        LoadUnitShutterClosed = 58,
-    
-        LoadUnitPresentInCell = 59,
-    
-        LoadUnitOtherBay = 60,
-    
-        LoadUnitSourceElevator = 61,
-    
-        LoadUnitMissingOnElevator = 62,
-    
-        LoadUnitMissingOnBay = 63,
-    
-        LoadUnitUndefinedUpper = 64,
-    
-        LoadUnitUndefinedBottom = 65,
-    
-        InverterErrorBaseCode = 1000,
-    
-        InverterErrorInvalidParameter = 1001,
-    
-        InverterErrorInvalidDataset = 1002,
-    
-        InverterErrorParameterIsWriteOnly = 1003,
-    
-        InverterErrorParameterIsReadOnly = 1004,
-    
-        InverterErrorEepromReadError = 1005,
-    
-        InverterErrorEepromWriteError = 1006,
-    
-        InverterErrorEepromChecksumError = 1007,
-    
-        InverterErrorCannotWriteParameterWhileRunning = 1008,
-    
-        InverterErrorDatasetValuesAreDifferent = 1009,
-    
-        InverterErrorUnknownParameter = 1011,
-    
-        InverterErrorSyntaxError = 1013,
-    
-        InverterErrorWrongPayloadLength = 1014,
-    
-        InverterErrorNodeNotAvailable = 1020,
-    
-        InverterErrorSyntaxError2 = 1030,
-    
-        NoError = -1,
     
     }
     

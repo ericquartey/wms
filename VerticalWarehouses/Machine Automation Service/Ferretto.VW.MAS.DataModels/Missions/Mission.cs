@@ -105,7 +105,8 @@ namespace Ferretto.VW.MAS.DataModels
                 $"Direction={this.Direction}; " +
                 $"EjectLoadUnit={this.EjectLoadUnit}; " +
                 $"Priority={this.Priority}; " +
-                $"StopReason={this.StopReason}; ";
+                $"StopReason={this.StopReason}; " +
+                $"ErrorCode={this.ErrorCode}; ";
             return returnString;
         }
 
