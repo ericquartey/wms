@@ -270,57 +270,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.SensorsService.RefreshAsync(true);
         }
 
-        protected void OnStepChanged(StepChangedMessage e)
-        {
-            switch (this.CurrentStep)
-            {
-                case BayCheckStep.PositionUp:
-                    if (e.Next)
-                    {
-                        if (this.Bay?.IsDouble ?? false)
-                        {
-                            this.CurrentStep = BayCheckStep.PositionDown;
-                        }
-                        else
-                        {
-                            this.CurrentStep = BayCheckStep.Confirm;
-                        }
-                    }
-
-                    break;
-
-                case BayCheckStep.PositionDown:
-                    if (e.Next)
-                    {
-                        this.CurrentStep = BayCheckStep.Confirm;
-                    }
-                    else
-                    {
-                        this.CurrentStep = BayCheckStep.PositionUp;
-                    }
-
-                    break;
-
-                case BayCheckStep.Confirm:
-                    if (!e.Next)
-                    {
-                        if (this.Bay?.IsDouble ?? false)
-                        {
-                            this.CurrentStep = BayCheckStep.PositionDown;
-                        }
-                        else
-                        {
-                            this.CurrentStep = BayCheckStep.PositionUp;
-                        }
-                    }
-
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
@@ -547,6 +496,57 @@ namespace Ferretto.VW.App.Installation.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
+            }
+        }
+
+        private void OnStepChanged(StepChangedMessage e)
+        {
+            switch (this.CurrentStep)
+            {
+                case BayCheckStep.PositionUp:
+                    if (e.Next)
+                    {
+                        if (this.Bay?.IsDouble ?? false)
+                        {
+                            this.CurrentStep = BayCheckStep.PositionDown;
+                        }
+                        else
+                        {
+                            this.CurrentStep = BayCheckStep.Confirm;
+                        }
+                    }
+
+                    break;
+
+                case BayCheckStep.PositionDown:
+                    if (e.Next)
+                    {
+                        this.CurrentStep = BayCheckStep.Confirm;
+                    }
+                    else
+                    {
+                        this.CurrentStep = BayCheckStep.PositionUp;
+                    }
+
+                    break;
+
+                case BayCheckStep.Confirm:
+                    if (!e.Next)
+                    {
+                        if (this.Bay?.IsDouble ?? false)
+                        {
+                            this.CurrentStep = BayCheckStep.PositionDown;
+                        }
+                        else
+                        {
+                            this.CurrentStep = BayCheckStep.PositionUp;
+                        }
+                    }
+
+                    break;
+
+                default:
+                    break;
             }
         }
 

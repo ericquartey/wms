@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Interfaces;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Controls.Interfaces
 {

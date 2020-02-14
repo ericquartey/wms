@@ -10,7 +10,7 @@ using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
+
 
 namespace Ferretto.VW.MAS.DeviceManager.Positioning
 {

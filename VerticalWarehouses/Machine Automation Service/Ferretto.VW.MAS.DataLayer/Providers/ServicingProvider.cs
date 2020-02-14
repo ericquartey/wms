@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using Ferretto.VW.MAS.DataModels;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.DataLayer
 {
     internal sealed class ServicingProvider : IServicingProvider

@@ -1,4 +1,4 @@
-﻿// ReSharper disable ArrangeThisQualifier
+﻿
 using System;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;

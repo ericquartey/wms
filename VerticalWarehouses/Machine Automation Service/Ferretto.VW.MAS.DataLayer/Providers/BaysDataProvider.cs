@@ -15,7 +15,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DataLayer
 {
     internal sealed class BaysDataProvider : BaseProvider, IBaysDataProvider
@@ -96,7 +95,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public Bay AssignWmsMission(BayNumber bayNumber, Mission mission, int? wmsMissionOperationId)
+        public Bay AssignMission(BayNumber bayNumber, Mission mission)
         {
             if (mission is null)
             {
@@ -119,7 +118,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     throw new EntityNotFoundException(mission.Id);
                 }
-                bay.CurrentWmsMissionOperationId = wmsMissionOperationId;
 
                 this.Update(bay);
 
@@ -138,7 +136,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
 
                 bay.CurrentMission = null;
-                bay.CurrentWmsMissionOperationId = null;
 
                 this.Update(bay);
 
@@ -163,7 +160,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new EntityNotFoundException();
                 }
                 var offset = bay.Positions.FirstOrDefault(x => x.Id == positionId)?.ProfileOffset ?? 0;
-                return (profile * this.kMul) + this.kSum + offset;
+                return (profile * this.kMul) + this.kSum - offset;
             }
         }
 
@@ -793,7 +790,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 foreach (var bay in this.dataContext.Bays.Include(i => i.CurrentMission))
                 {
                     bay.CurrentMission = null;
-                    bay.CurrentWmsMissionOperationId = null;
                     this.Update(bay);
                 }
             }

@@ -447,7 +447,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void NotifyAssignedMissionOperationChanged(BayNumber bayNumber, int missionId)
         {
-            var data = new AssignedMissionOperationChangedMessageData
+            var data = new AssignedMissionChangedMessageData
             {
                 BayNumber = bayNumber,
                 MissionId = missionId
@@ -458,7 +458,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"Mission operation assigned to bay {bayNumber} has changed.",
                 MessageActor.MissionManager,
                 MessageActor.MachineManager,
-                MessageType.AssignedMissionOperationChanged,
+                MessageType.AssignedMissionChanged,
                 bayNumber,
                 BayNumber.None,
                 MessageStatus.OperationExecuting,

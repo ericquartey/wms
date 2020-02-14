@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using Ferretto.VW.MAS.DataModels;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.IODriver
 {
     public class IoStatus

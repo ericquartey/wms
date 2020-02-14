@@ -73,7 +73,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Properties
 
-        protected SetupStepStatus BeltBurnishing => this.SetupStatusCapabilities?.BeltBurnishing ?? new SetupStepStatus();
+        private SetupStepStatus BeltBurnishing => this.SetupStatusCapabilities?.BeltBurnishing ?? new SetupStepStatus();
 
         public ICommand BeltBurnishingCommand =>
             this.beltBurnishingCommand
@@ -94,8 +94,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public bool IsVerticalResolutionCalibration => this.VerticalResolutionCalibration.IsCompleted;
 
+        public SetupStatusCapabilities SetupStatusCapabilities { get; private set; }
+
         public ICommand TestDepositAndPickUpCommand =>
-            this.testDepositAndPickUpCommand
+                    this.testDepositAndPickUpCommand
             ??
             (this.testDepositAndPickUpCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.TestDepositAndPickUp),
@@ -104,7 +106,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                       (this.BeltBurnishing.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus()) &&
                       false));
 
-        protected SetupStepStatus VerticalOffsetCalibration => this.SetupStatusCapabilities?.VerticalOffsetCalibration ?? new SetupStepStatus();
+        private SetupStepStatus VerticalOffsetCalibration => this.SetupStatusCapabilities?.VerticalOffsetCalibration ?? new SetupStepStatus();
 
         public ICommand VerticalOffsetCalibrationCommand =>
             this.verticalOffsetCalibration
@@ -116,7 +118,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                       (this.VerticalOffsetCalibration.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
                 ));
 
-        protected SetupStepStatus VerticalOriginCalibration => this.SetupStatusCapabilities?.VerticalOriginCalibration ?? new SetupStepStatus();
+        private SetupStepStatus VerticalOriginCalibration => this.SetupStatusCapabilities?.VerticalOriginCalibration ?? new SetupStepStatus();
 
         public ICommand VerticalOriginCalibrationCommand =>
             this.verticalOriginCalibration
@@ -126,7 +128,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.CanExecuteCommand() &&
                       this.MachineModeService.MachineMode == MachineMode.Manual));
 
-        protected SetupStepStatus VerticalResolutionCalibration => this.SetupStatusCapabilities?.VerticalResolutionCalibration ?? new SetupStepStatus();
+        private SetupStepStatus VerticalResolutionCalibration => this.SetupStatusCapabilities?.VerticalResolutionCalibration ?? new SetupStepStatus();
 
         public ICommand VerticalResolutionCalibrationCommand =>
             this.verticalResolutionCalibration
@@ -143,8 +145,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.weightAnalysisCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.WeightAnalysis),
                 () => this.CanExecuteCommand() &&
-                (this.VerticalOriginCalibration.IsCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
-            ));
+                (this.VerticalOriginCalibration.IsCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
         public ICommand WeightMeasurementCommand =>
             this.weightMeasurement
@@ -152,10 +153,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.weightMeasurement = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.WeightMeasurement),
                 () => this.CanExecuteCommand() &&
-                (this.VerticalOriginCalibration.IsCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
-            ));
-
-        protected SetupStatusCapabilities SetupStatusCapabilities { get; private set; }
+                (this.VerticalOriginCalibration.IsCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
         #endregion
 

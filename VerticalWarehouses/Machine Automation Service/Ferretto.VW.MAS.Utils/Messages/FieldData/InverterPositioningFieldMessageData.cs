@@ -3,7 +3,7 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
 namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
-    public class InverterPositioningFieldMessageData : FieldMessageData, IInverterPositioningFieldMessageData
+    public sealed class InverterPositioningFieldMessageData : FieldMessageData, IInverterPositioningFieldMessageData
     {
         #region Constructors
 

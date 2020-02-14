@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using System.Threading;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.Utils.Utilities
 {
     public sealed class BlockingConcurrentQueue<T> : ConcurrentQueue<T>, IDisposable

@@ -1,6 +1,6 @@
 ﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord
 {
     public class ControlWordBase : IControlWord

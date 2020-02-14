@@ -369,33 +369,33 @@ namespace Ferretto.VW.Simulator.Services
                             case BayNumber.BayOne:
                                 if (bayPosition.IsUpper)
                                 {
-                                    this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading ? true : false;
+                                    this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
                                 }
                                 else
                                 {
-                                    this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = (isCarousel && e.IsLoading) ? false : true;
+                                    this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = (isCarousel ? !e.IsLoading : e.IsLoading);
                                 }
                                 break;
 
                             case BayNumber.BayTwo:
                                 if (bayPosition.IsUpper)
                                 {
-                                    this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading ? true : false;
+                                    this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
                                 }
                                 else
                                 {
-                                    this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = (isCarousel && e.IsLoading) ? false : true;
+                                    this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = (isCarousel ? !e.IsLoading : e.IsLoading);
                                 }
                                 break;
 
                             case BayNumber.BayThree:
                                 if (bayPosition.IsUpper)
                                 {
-                                    this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading ? true : false;
+                                    this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
                                 }
                                 else
                                 {
-                                    this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = (isCarousel && e.IsLoading) ? false : true;
+                                    this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = (isCarousel ? !e.IsLoading : e.IsLoading);
                                 }
                                 break;
                         }
@@ -503,6 +503,7 @@ namespace Ferretto.VW.Simulator.Services
             {
                 case "LASER ON":
                 case "LASER OFF":
+                    System.Diagnostics.Debug.WriteLine($"Simulation *** {messageText}");
                     client.Client.Send(Encoding.ASCII.GetBytes("OK\r\n"));
                     break;
             }

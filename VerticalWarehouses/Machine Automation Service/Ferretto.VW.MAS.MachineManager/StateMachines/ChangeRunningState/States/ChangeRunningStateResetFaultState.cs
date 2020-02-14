@@ -1,4 +1,4 @@
-﻿// ReSharper disable ArrangeThisQualifier
+﻿
 
 using System;
 using System.Collections.Generic;

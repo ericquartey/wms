@@ -185,8 +185,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsCanStepValue => this.CanBaseExecute();
 
-        public override bool KeepAlive => false;
-
         public IEnumerable<CellPanel> Panels
         {
             get => this.panels;

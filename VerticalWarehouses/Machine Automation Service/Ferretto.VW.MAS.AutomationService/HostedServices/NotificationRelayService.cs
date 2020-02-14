@@ -17,7 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.AutomationService
 {
     public partial class NotificationRelayService : AutomationBackgroundService<CommandMessage, NotificationMessage, CommandEvent, NotificationEvent>
@@ -27,8 +27,6 @@ namespace Ferretto.VW.MAS.AutomationService
         private readonly IApplicationLifetime applicationLifetime;
 
         private readonly IConfiguration configuration;
-
-        private readonly IDataHubClient dataHubClient;
 
         private readonly IHubContext<InstallationHub, IInstallationHub> installationHub;
 
@@ -44,7 +42,6 @@ namespace Ferretto.VW.MAS.AutomationService
             IEventAggregator eventAggregator,
             IHubContext<InstallationHub, IInstallationHub> installationHub,
             ILogger<NotificationRelayService> logger,
-            IDataHubClient dataHubClient,
             IHubContext<OperatorHub, IOperatorHub> operatorHub,
             IServiceScopeFactory serviceScopeFactory,
             IApplicationLifetime applicationLifetime,
@@ -53,13 +50,10 @@ namespace Ferretto.VW.MAS.AutomationService
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.installationHub = installationHub ?? throw new ArgumentNullException(nameof(installationHub));
-            this.dataHubClient = dataHubClient ?? throw new ArgumentNullException(nameof(dataHubClient));
             this.operatorHub = operatorHub ?? throw new ArgumentNullException(nameof(operatorHub));
             this.applicationLifetime = applicationLifetime ?? throw new ArgumentNullException(nameof(applicationLifetime));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
-
-            this.dataHubClient.EntityChanged += this.OnDataHubClientEntityChanged;
 
             this.EventAggregator
                 .GetEvent<PubSubEvent<SystemTimeChangedEventArgs>>()
@@ -76,8 +70,15 @@ namespace Ferretto.VW.MAS.AutomationService
 
             if (this.configuration.IsWmsEnabled())
             {
-                this.dataHubClient.ConnectionStatusChanged += this.DataHubClient_ConnectionStatusChanged;
-                await this.dataHubClient.ConnectAsync();
+                var dataHubClient = this.ServiceScopeFactory
+                    .CreateScope()
+                    .ServiceProvider
+                    .GetRequiredService<IDataHubClient>();
+
+                dataHubClient.EntityChanged += this.OnDataHubClientEntityChanged;
+                dataHubClient.ConnectionStatusChanged += this.DataHubClient_ConnectionStatusChanged;
+
+                await dataHubClient.ConnectAsync();
             }
         }
 

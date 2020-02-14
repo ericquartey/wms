@@ -4,7 +4,7 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
 namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
-    public class SensorsChangedFieldMessageData : FieldMessageData, ISensorsChangedFieldMessageData
+    public sealed class SensorsChangedFieldMessageData : FieldMessageData, ISensorsChangedFieldMessageData
     {
         #region Constructors
 

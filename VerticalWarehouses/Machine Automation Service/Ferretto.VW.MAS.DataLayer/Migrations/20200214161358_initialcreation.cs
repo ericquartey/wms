@@ -177,6 +177,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     DeviceNotifications = table.Column<int>(nullable: false),
                     Direction = table.Column<int>(nullable: false),
                     EjectLoadUnit = table.Column<bool>(nullable: false),
+                    ErrorCode = table.Column<int>(nullable: false),
                     ErrorMovements = table.Column<int>(nullable: false),
                     LoadUnitCellSourceId = table.Column<int>(nullable: true),
                     LoadUnitDestination = table.Column<int>(nullable: false),
@@ -719,7 +720,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     CarouselId = table.Column<int>(nullable: true),
                     ChainOffset = table.Column<double>(nullable: false),
                     CurrentMissionId = table.Column<int>(nullable: true),
-                    CurrentWmsMissionOperationId = table.Column<int>(nullable: true),
                     EmptyLoadMovementId = table.Column<int>(nullable: true),
                     FullLoadMovementId = table.Column<int>(nullable: true),
                     InverterId = table.Column<int>(nullable: true),
@@ -1304,7 +1304,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 4, 6, 16, 17, 3, 44, DateTimeKind.Local).AddTicks(9348), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 4, 14, 17, 13, 58, 82, DateTimeKind.Local).AddTicks(9761), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",

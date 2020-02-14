@@ -5,7 +5,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
-    public class InverterCurrentErrorFieldMessageData : FieldMessageData, IInverterCurrentErrorFieldMessageData
+    public sealed class InverterCurrentErrorFieldMessageData : FieldMessageData, IInverterCurrentErrorFieldMessageData
     {
         #region Constructors
 

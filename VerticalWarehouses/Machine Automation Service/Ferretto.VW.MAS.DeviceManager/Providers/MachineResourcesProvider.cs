@@ -11,7 +11,7 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
+
 
 namespace Ferretto.VW.MAS.DeviceManager.Providers
 {

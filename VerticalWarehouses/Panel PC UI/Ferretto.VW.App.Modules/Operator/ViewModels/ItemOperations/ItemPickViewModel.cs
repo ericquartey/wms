@@ -5,7 +5,6 @@ using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 using Prism.Events;
 
@@ -23,13 +22,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public ItemPickViewModel(
             IWmsImagesProvider wmsImagesProvider,
-            IMissionsWmsWebService missionsWmsWebService,
-            IItemsWmsWebService itemsWmsWebService,
+            IMachineItemsWebService itemsWebService,
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
             IBayManager bayManager,
             IDialogService dialogService)
-            : base(wmsImagesProvider, missionsWmsWebService, itemsWmsWebService, bayManager, eventAggregator, missionOperationsService, dialogService)
+            : base(wmsImagesProvider, itemsWebService, bayManager, eventAggregator, missionOperationsService, dialogService)
         {
         }
 
@@ -52,14 +50,17 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Methods
 
-        public async Task CommandUserActionAsync(UserActionEventArgs userAction)
+        public Task CommandUserActionAsync(UserActionEventArgs userAction)
         {
+            // do nothing
+            return Task.CompletedTask;
         }
 
         public override Task OnAppearedAsync()
         {
             this.Compartments = null;
             this.SelectedCompartment = null;
+
             return base.OnAppearedAsync();
         }
 

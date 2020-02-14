@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.IODriver.StateMachines
 {
     internal abstract class IoStateBase : IIoState

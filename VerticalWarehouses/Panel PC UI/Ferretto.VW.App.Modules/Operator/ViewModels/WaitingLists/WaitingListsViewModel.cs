@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -10,7 +9,6 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Operator.ViewModels
@@ -22,13 +20,13 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private const int PollIntervalMilliseconds = 5000;
 
-        private readonly IAreasWmsWebService areasWmsWebService;
+        private readonly IMachineAreasWebService areasWebService;
 
         private readonly IBayManager bayManager;
 
         private readonly IMachineIdentityWebService identityService;
 
-        private readonly IItemListsWmsWebService itemListsWmsWebService;
+        private readonly IMachineItemListsWebService itemListsWebService;
 
         private readonly IList<ItemListExecution> lists = new List<ItemListExecution>();
 
@@ -54,14 +52,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public WaitingListsViewModel(
             IMachineIdentityWebService identityService,
-            IItemListsWmsWebService itemListsWmsWebService,
-            IAreasWmsWebService areasWmsWebService,
+            IMachineItemListsWebService itemListsWebService,
+            IMachineAreasWebService areasWebService,
             IBayManager bayManager)
             : base(PresentationMode.Operator)
         {
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
-            this.itemListsWmsWebService = itemListsWmsWebService ?? throw new ArgumentNullException(nameof(itemListsWmsWebService));
-            this.areasWmsWebService = areasWmsWebService ?? throw new ArgumentNullException(nameof(areasWmsWebService));
+            this.itemListsWebService = itemListsWebService ?? throw new ArgumentNullException(nameof(itemListsWebService));
+            this.areasWebService = areasWebService ?? throw new ArgumentNullException(nameof(areasWebService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
         }
 
@@ -146,7 +144,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                             {
                                 try
                                 {
-                                    var list = await this.itemListsWmsWebService.GetByIdAsync(listId.Value);
+                                    var list = await this.itemListsWebService.GetByIdAsync(listId.Value);
                                     this.selectedList = new ItemListExecution(list, this.bayManager.Identity.Id);
                                     this.ShowDetails();
                                 }
@@ -166,7 +164,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                             {
                                 try
                                 {
-                                    var list = await this.itemListsWmsWebService.GetByIdAsync(listId.Value);
+                                    var list = await this.itemListsWebService.GetByIdAsync(listId.Value);
                                     this.selectedList = new ItemListExecution(list, this.bayManager.Identity.Id);
                                     await this.ExecuteListAsync();
                                 }
@@ -192,7 +190,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 }
 
                 var bay = await this.bayManager.GetBayAsync();
-                await this.itemListsWmsWebService.ExecuteAsync(this.selectedList.Id, this.areaId.Value, bay.Id);
+                await this.itemListsWebService.ExecuteAsync(this.selectedList.Id, this.areaId.Value, bay.Id);
                 await this.LoadListsAsync();
             }
             catch
@@ -281,7 +279,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.IsWaitingForResponse = true;
 
                 var lastItemListId = this.selectedList?.Id;
-                var newLists = await this.areasWmsWebService.GetItemListsAsync(this.areaId.Value);
+                var newLists = await this.areasWebService.GetItemListsAsync(this.areaId.Value);
 
                 this.lists.Clear();
                 newLists.ForEach(l => this.lists.Add(new ItemListExecution(l, this.machineId)));

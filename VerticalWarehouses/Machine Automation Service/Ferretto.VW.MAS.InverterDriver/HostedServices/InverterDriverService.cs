@@ -21,8 +21,6 @@ using Microsoft.Extensions.Logging;
 using Prism.Events;
 using static Ferretto.VW.MAS.Utils.Utilities.BufferUtility;
 
-// ReSharper disable ArrangeThisQualifier
-// ReSharper disable ParameterHidesMember
 namespace Ferretto.VW.MAS.InverterDriver
 {
     internal partial class InverterDriverService : AutomationBackgroundService<FieldCommandMessage, FieldNotificationMessage, FieldCommandEvent, FieldNotificationEvent>

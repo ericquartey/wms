@@ -1,6 +1,5 @@
-﻿using Ferretto.VW.App.Controls.Interfaces;
-using Ferretto.VW.App.Services;
-using Ferretto.WMS.Data.WebAPI.Contracts;
+﻿using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Operator.ViewModels
@@ -11,13 +10,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public LoadingUnitCheckViewModel(
             IWmsImagesProvider wmsImagesProvider,
-            IItemsWmsWebService itemsWmsWebService,
-            IMissionsWmsWebService missionsWmsWebService,
+            IMachineItemsWebService itemsWebService,
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
             IBayManager bayManager,
             IDialogService dialogService)
-            : base(wmsImagesProvider, missionsWmsWebService, itemsWmsWebService, bayManager, eventAggregator, missionOperationsService, dialogService)
+            : base(wmsImagesProvider, itemsWebService, bayManager, eventAggregator, missionOperationsService, dialogService)
         {
         }
 

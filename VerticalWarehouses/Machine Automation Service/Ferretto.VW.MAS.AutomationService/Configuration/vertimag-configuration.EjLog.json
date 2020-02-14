@@ -4,25 +4,25 @@
     {
       "Tare": 120,
       "MaxNetWeight": 800,
-      "Height": 100,
+      "Height": 200,
       "Id": 43 // same ID as on EjLog
     },
     {
       "Tare": 120,
       "MaxNetWeight": 800,
-      "Height": 100,
+      "Height": 200,
       "Id": 44 // same ID as on EjLog
     },
     {
       "Tare": 120,
       "MaxNetWeight": 800,
-      "Height": 100,
+      "Height": 200,
       "Id": 45 // same ID as on EjLog
     },
     {
       "Tare": 120,
       "MaxNetWeight": 800,
-      "Height": 100,
+      "Height": 200,
       "Id": 46 // same ID as on EjLog
     }
   ],
@@ -52,6 +52,7 @@
           {
             "Height": 755,
             "MaxSingleHeight": 395,
+            "ProfileOffset": 50,
             "Location": "InternalBay1Up"
           }
         ],
@@ -118,11 +119,13 @@
             "Height": 645,
             "MaxSingleHeight": 320,
             "MaxDoubleHeight": 695,
+            "ProfileOffset": 50,
             "Location": "InternalBay2Down"
           },
           {
             "Height": 1143,
             "MaxSingleHeight": 320,
+            "ProfileOffset": 370,
             "Location": "InternalBay2Up"
           }
         ],

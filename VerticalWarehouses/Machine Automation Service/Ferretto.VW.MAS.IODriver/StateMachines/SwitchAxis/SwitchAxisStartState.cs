@@ -2,7 +2,7 @@
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 {
     internal sealed class SwitchAxisStartState : IoStateBase
