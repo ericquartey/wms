@@ -60,7 +60,7 @@
             "Location": "InternalBay1Up",
             "MaxDoubleHeight": 0.0,
             "MaxSingleHeight": 695.0,
-            "ProfileOffset": 0.0
+            "ProfileOffset": 50.0
           }
         ],
         "Resolution": 369.8453,
@@ -102,11 +102,13 @@
           {
             "Height": 772,
             "MaxSingleHeight": 395,
+            "ProfileOffset": 50,
             "Location": "InternalBay2Down"
           },
           {
             "Height": 1190,
             "MaxSingleHeight": 395,
+            "ProfileOffset": 370,
             "Location": "InternalBay2Up"
           }
         ],
