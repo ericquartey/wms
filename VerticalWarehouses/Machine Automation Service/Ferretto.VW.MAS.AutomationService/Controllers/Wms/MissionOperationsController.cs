@@ -94,8 +94,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var compartment = mission.LoadingUnit.Compartments?.SingleOrDefault(c => c.Id == operation.CompartmentId);
             if (compartment != null && compartment.XPosition.HasValue && compartment.YPosition.HasValue)
             {
-                var loadingUnitLaserX = mission.LoadingUnit.Width / 2;
-                var loadingUnitLaserY = mission.LoadingUnit.Depth / 2;
+                var laserOriginX = mission.LoadingUnit.Width / 2;
+                var laserOriginY = mission.LoadingUnit.Depth / 2;
 
                 var compartmentX = compartment.XPosition.Value;
                 var compartmentY = compartment.YPosition.Value;
@@ -108,8 +108,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     compartmentY = mission.LoadingUnit.Depth - compartmentY;
                 }
 
-                var compartmentLaserX = compartmentX - loadingUnitLaserX;
-                var compartmentLaserY = compartmentY - loadingUnitLaserY;
+                // x coordinate is flipped
+                var compartmentLaserX = -(compartmentX - laserOriginX);
+                var compartmentLaserY = compartmentY - laserOriginY;
 
                 laserProvider.MoveToPositionAndSwitchOn(this.BayNumber, compartmentLaserX, compartmentLaserY);
             }
