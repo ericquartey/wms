@@ -64,7 +64,7 @@
             "Location": "InternalBay1Up"
           }
         ],
-        "Resolution": 369.8453,
+        "Resolution": 374.0607161,
         "Shutter": {
           "Inverter": {
             "Type": "Agl",
@@ -97,7 +97,7 @@
           "Speed": 110
         },
         "Carousel": {
-          "ElevatorDistance": 453.5,
+          "ElevatorDistance": 448.6245,
           "HomingFastSpeed": 22,
           "HomingCreepSpeed": 5,
           "ManualMovements": {
