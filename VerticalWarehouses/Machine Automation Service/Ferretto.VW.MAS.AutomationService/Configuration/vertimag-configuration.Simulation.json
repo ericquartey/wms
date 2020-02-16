@@ -101,14 +101,15 @@
         "Positions": [
           {
             "Height": 772,
-            "MaxSingleHeight": 395,
+            "MaxSingleHeight": 320,
+            "MaxDoubleHeight": 695,
             "ProfileOffset": 50,
             "Location": "InternalBay2Down"
           },
           {
             "Height": 1190,
-            "MaxSingleHeight": 395,
-            "ProfileOffset": 370,
+            "MaxSingleHeight": 320,
+            "ProfileOffset": -370,
             "Location": "InternalBay2Up"
           }
         ],
