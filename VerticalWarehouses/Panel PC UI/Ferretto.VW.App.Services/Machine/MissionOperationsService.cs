@@ -235,16 +235,17 @@ namespace Ferretto.VW.App.Services
             {
                 var machineMissions = await this.missionsWebService.GetAllAsync();
 
-                var activeMission = machineMissions.SingleOrDefault(m =>
+                var activeMissions = machineMissions.Where(m =>
                     m.Step is MissionStep.WaitPick
                     &&
-                    m.TargetBay == this.bayNumber);
+                    m.TargetBay == this.bayNumber)
+                    .OrderBy(o => o.LoadUnitDestination);
 
-                this.logger.Debug(activeMission is null
+                this.logger.Debug(!activeMissions.Any()
                     ? "No active mission on bay."
-                    : $"Active mission has id {activeMission.Id}.");
+                    : $"Active mission has id {activeMissions.FirstOrDefault().Id}.");
 
-                return activeMission;
+                return activeMissions.FirstOrDefault();
             }
             catch (Exception ex)
             {

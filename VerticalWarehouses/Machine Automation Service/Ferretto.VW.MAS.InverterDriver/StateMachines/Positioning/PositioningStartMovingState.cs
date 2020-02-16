@@ -3,7 +3,6 @@ using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
     internal class PositioningStartMovingState : InverterStateBase
@@ -121,6 +120,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             else
             {
                 this.Logger.LogTrace("Moving towards target position.");
+                // TODO if position doesn't change raise an alarm
             }
 
             return true; //INFO Next status word request handled by timer
