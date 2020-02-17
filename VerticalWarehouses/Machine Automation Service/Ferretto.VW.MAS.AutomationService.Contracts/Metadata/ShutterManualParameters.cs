@@ -20,12 +20,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(1)]
             public double FeedRate { get; set; }
 
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ShutterManualParameters_HighSpeedDurationClose))]
-            [Id(5)]
+            [ScaffoldColumn(false)]
             public double HighSpeedDurationClose { get; set; }
 
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ShutterManualParameters_HighSpeedDurationOpen))]
-            [Id(4)]
+            [ScaffoldColumn(false)]
             public double HighSpeedDurationOpen { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ShutterManualParameters_MaxSpeed))]
