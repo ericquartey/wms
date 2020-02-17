@@ -556,7 +556,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Peso netto max cassetto.
+        ///   Looks up a localized string similar to Peso netto massimo cassetto.
         /// </summary>
         public static string Machine_LoadUnitMaxNetWeight {
             get {
@@ -574,7 +574,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Massimo peso lordo macchina.
+        ///   Looks up a localized string similar to Peso lordo massimo macchina.
         /// </summary>
         public static string Machine_MaxGrossWeight {
             get {

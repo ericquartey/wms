@@ -283,13 +283,13 @@
     <value>Alt. max cassetto</value>
   </data>
   <data name="Machine_LoadUnitMaxNetWeight" xml:space="preserve">
-    <value>Peso netto max cassetto</value>
+    <value>Peso netto massimo cassetto</value>
   </data>
   <data name="Machine_LoadUnitTare" xml:space="preserve">
     <value>Tara cassetto</value>
   </data>
   <data name="Machine_MaxGrossWeight" xml:space="preserve">
-    <value>Massimo peso lordo macchina</value>
+    <value>Peso lordo massimo macchina</value>
   </data>
   <data name="Machine_ModelName" xml:space="preserve">
     <value>Modello</value>
