@@ -152,7 +152,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
                     if (position.HasValue)
                     {
-                        this.Logger.LogDebug($"Inverter {this.InverterStatus.SystemIndex} moving towards target position: present {position.Value}, old {this.oldPosition}");
+                        this.Logger.LogTrace($"Inverter {this.InverterStatus.SystemIndex} moving towards target position: present {position.Value}, old {this.oldPosition}");
                         // if position doesn't change raise an alarm
                         if (this.oldPosition.HasValue
                             && position.Value == this.oldPosition.Value
