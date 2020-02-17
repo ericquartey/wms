@@ -86,7 +86,7 @@
                TargetType="Border">
             <Setter Property="BorderThickness" Value="0,0,0,1" />
             <Setter Property="CornerRadius" Value="0" />
-            <Setter Property="SnapsToDevicePixels" Value="True" />  
+            <Setter Property="SnapsToDevicePixels" Value="True" />
         </Style>
 
         <Style TargetType="{x:Type ListView}">
@@ -459,8 +459,8 @@
             </Grid>
             <!--  entities  -->
             <ListView Grid.Row="1"
-                      SelectionChanged="ListView_SelectionChanged"
-                      ItemsSource="{Binding}">
+                      ItemsSource="{Binding}"
+                      SelectionChanged="ListView_SelectionChanged">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Width="60"
@@ -512,6 +512,17 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
                         <GridViewColumn Width="80"
+                                        Header="U.m.">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource CellBorderStyle}">
+                                        <TextBlock Style="{StaticResource CellTextBlockStyle}"
+                                                   Text="{Binding Converter={StaticResource DefaultValueConverter}, ConverterParameter=Unit}" />
+                                    </Border>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="80"
                                         Header="Default">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -544,17 +555,7 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Width="80"
-                                        Header="U.m.">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Border Style="{StaticResource CellBorderStyle}">
-                                        <TextBlock Style="{StaticResource CellTextBlockStyle}"
-                                                   Text="{Binding Converter={StaticResource DefaultValueConverter}, ConverterParameter=Unit}" />
-                                    </Border>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
+
                         <!--<GridViewColumn Width="Auto">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>

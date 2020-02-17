@@ -159,6 +159,9 @@
   <data name="BayShutter" xml:space="preserve">
     <value>Shutter baia {0}</value>
   </data>
+  <data name="Bay_ChainOffset" xml:space="preserve">
+    <value>Offset zero catena</value>
+  </data>
   <data name="Bay_IsActive" xml:space="preserve">
     <value>Attiva</value>
   </data>
@@ -184,13 +187,13 @@
     <value>Giostra</value>
   </data>
   <data name="Carousel_ElevatorDistance" xml:space="preserve">
-    <value>Distanza dalla culla</value>
+    <value>Interasse mensole</value>
   </data>
   <data name="Carousel_HomingCreepSpeed" xml:space="preserve">
     <value>Velocità homing</value>
   </data>
   <data name="Carousel_HomingFastSpeed" xml:space="preserve">
-    <value>Velocità homing (fast)</value>
+    <value>Velocità homing fast</value>
   </data>
   <data name="Deceleration" xml:space="preserve">
     <value>Deceleration</value>
@@ -277,16 +280,16 @@
     <value>Altezza</value>
   </data>
   <data name="Machine_LoadUnitMaxHeight" xml:space="preserve">
-    <value>Alt. max cassetto</value>
+    <value>Altezza massima cassetto</value>
   </data>
   <data name="Machine_LoadUnitMaxNetWeight" xml:space="preserve">
-    <value>Peso netto max cassetto</value>
+    <value>Peso netto massimo cassetto</value>
   </data>
   <data name="Machine_LoadUnitTare" xml:space="preserve">
     <value>Tara cassetto</value>
   </data>
   <data name="Machine_MaxGrossWeight" xml:space="preserve">
-    <value>Peso lordo max cassetto</value>
+    <value>Peso lordo massimo macchina</value>
   </data>
   <data name="Machine_ModelName" xml:space="preserve">
     <value>Modello</value>
