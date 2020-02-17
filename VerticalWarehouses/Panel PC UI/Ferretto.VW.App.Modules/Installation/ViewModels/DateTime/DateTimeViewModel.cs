@@ -220,7 +220,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 var newcurrentDateTime = await this.machineUtcTimeWebService.GetAsync();
                 currentDateTime = newcurrentDateTime.ToLocalTime();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.canGoAutoSync = false;
                 this.IsAuto = false;
@@ -266,7 +266,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.ShowNotification(InstallationApp.SaveSuccessful);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

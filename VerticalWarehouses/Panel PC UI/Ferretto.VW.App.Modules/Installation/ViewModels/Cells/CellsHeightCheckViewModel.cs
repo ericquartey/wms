@@ -291,7 +291,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsElevatorMoving = true;
             }
-            catch (MasWebApiException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.IsElevatorMoving = false;
 
@@ -389,7 +389,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 await this.MachineElevatorWebService.StopAsync();
             }
-            catch (MasWebApiException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

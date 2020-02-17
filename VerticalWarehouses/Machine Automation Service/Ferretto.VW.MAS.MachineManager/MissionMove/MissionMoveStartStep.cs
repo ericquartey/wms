@@ -144,6 +144,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationStart);
 
+            if (this.Mission.MissionType == MissionType.LoadUnitOperation)
+            {
+                this.MachineVolatileDataProvider.Mode = MachineMode.LoadUnitOperations;
+                this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
+            }
             return true;
         }
 
