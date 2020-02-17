@@ -1,2 +1,2 @@
-dotnet ef migrations remove
+rem dotnet ef migrations remove
 pause
