@@ -101,11 +101,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 var machine = this.MachineProvider.Get();
                 if (unitToMove.Height > machine.LoadUnitMaxHeight)
                 {
-                    this.Logger.LogWarning($"Load unit Height {unitToMove.Height} higher than machine max {machine.LoadUnitMaxHeight}: Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId} ");
+                    this.Logger.LogWarning($"Load unit Height {unitToMove.Height} higher than machine max {machine.LoadUnitMaxHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
                 }
                 else if (unitToMove.Height < machine.LoadUnitMinHeight)
                 {
-                    this.Logger.LogWarning($"Load unit Height {unitToMove.Height} lower than machine min {machine.LoadUnitMinHeight}: Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId} ");
+                    this.Logger.LogWarning($"Load unit Height {unitToMove.Height} lower than machine min {machine.LoadUnitMinHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
                 }
                 else if (unitToMove.Height <= bayPosition.MaxSingleHeight)
                 {
@@ -127,17 +127,17 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
-                        this.Logger.LogWarning($"Load unit Height {unitToMove.Height} higher than single {bayPosition.MaxSingleHeight} and upper position occupied: Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId} ");
+                        this.Logger.LogWarning($"Load unit Height {unitToMove.Height} higher than single {bayPosition.MaxSingleHeight} and upper position occupied: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
                     }
                 }
                 else if (bayPosition.MaxDoubleHeight == 0
                     && unitToMove.Height > bayPosition.MaxSingleHeight)
                 {
-                    this.Logger.LogWarning($"Load unit Height {unitToMove.Height} higher than single {bayPosition.MaxSingleHeight}: Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId} ");
+                    this.Logger.LogWarning($"Load unit Height {unitToMove.Height} higher than single {bayPosition.MaxSingleHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
                 }
                 else
                 {
-                    this.Logger.LogWarning($"Load unit Height {unitToMove.Height} higher than double {bayPosition.MaxDoubleHeight}: Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId} ");
+                    this.Logger.LogWarning($"Load unit Height {unitToMove.Height} higher than double {bayPosition.MaxDoubleHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
                 }
             }
 #else
