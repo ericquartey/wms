@@ -74,7 +74,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             return base.CanStart() &&
                    this.LoadingUnitId.HasValue &&
-                   this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations &&
+                   this.MachineModeService.MachineMode == MachineMode.Manual &&
                    this.MachineService.Loadunits.Any(f => f.Id == this.LoadingUnitId && f.Status == LoadingUnitStatus.InLocation) &&
                    (this.MachineStatus.LoadingUnitPositionUpInBay is null ||
                     (!this.MachineService.HasCarousel && this.MachineStatus.LoadingUnitPositionDownInBay is null));
@@ -110,7 +110,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 //await this.MachineLoadingUnitsWebService.EjectLoadingUnitAsync(destination, this.LoadingUnitId.Value);
                 await this.MachineLoadingUnitsWebService.StartMovingLoadingUnitToBayAsync(this.LoadingUnitId.Value, destination);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -191,9 +191,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 await updateTask;
             }
-            catch (Exception e)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
-                this.ShowNotification(e);
+                this.ShowNotification(ex);
             }
         }
 

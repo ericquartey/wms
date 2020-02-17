@@ -199,7 +199,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
                 this.ShowNotification(Resources.OperatorApp.OperationConfirmed);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
                 this.IsBusyConfirmingOperation = false;
@@ -224,7 +224,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
                 this.NavigationService.GoBack();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
                 this.IsBusyConfirmingOperation = false;

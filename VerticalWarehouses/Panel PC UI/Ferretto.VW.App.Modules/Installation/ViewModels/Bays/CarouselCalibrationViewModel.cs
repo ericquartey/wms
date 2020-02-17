@@ -586,7 +586,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.NavigationService.GoBack();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -702,7 +702,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsRetrievingNewResolution = false;
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
                 this.NewResolution = null;
@@ -718,7 +718,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.machineElevatorWebService.MoveManualToVerticalPositionAsync(
                     position, false, false);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

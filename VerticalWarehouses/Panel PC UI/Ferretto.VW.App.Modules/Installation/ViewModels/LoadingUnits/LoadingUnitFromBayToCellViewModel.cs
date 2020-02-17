@@ -41,7 +41,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             return base.CanStart() &&
                    !this.IsMoving &&
-                   this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations &&
+                   this.MachineModeService.MachineMode == MachineMode.Manual &&
                    ((this.SensorsService.IsLoadingUnitInBay && (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper)) ||
                     (!this.MachineService.HasCarousel && this.SensorsService.IsLoadingUnitInMiddleBottomBay && (this.MachineService.Bay.IsDouble || !this.MachineService.BayFirstPositionIsUpper))) &&
                    this.LoadingUnitId.HasValue &&
@@ -100,7 +100,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 await this.MachineLoadingUnitsWebService.InsertLoadingUnitAsync(source, null, this.LoadingUnitId.Value);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

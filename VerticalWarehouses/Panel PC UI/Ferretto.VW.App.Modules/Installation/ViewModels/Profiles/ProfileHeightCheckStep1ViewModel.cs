@@ -112,8 +112,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        protected bool IsValid => this.InputLoadingUnitIdValidation() is null;
-
         public IEnumerable<LoadingUnit> LoadingUnits { get => this.loadingUnits; set => this.loadingUnits = value; }
 
         public bool LodingUnitManual
@@ -147,6 +145,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                (this.stopCommand = new DelegateCommand(
                    async () => await this.StopAsync(),
                    this.CanExecuteStopCommand));
+
+        protected bool IsValid => this.InputLoadingUnitIdValidation() is null;
 
         private bool IsCanExecuteStepCommand =>
             !this.IsExecutingProcedure
@@ -381,7 +381,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.machineLoadingUnitsWebService.EjectLoadingUnitAsync(destination, this.InputLoadingUnitId.Value);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
