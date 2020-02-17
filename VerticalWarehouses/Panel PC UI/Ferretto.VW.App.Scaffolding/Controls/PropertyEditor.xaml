@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:Ferretto.VW.App.Scaffolding.Controls"
-             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:cctrls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:ctrlConverters="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
              xmlns:converters="clr-namespace:Ferretto.VW.App.Scaffolding.Converters"
              xmlns:behaviors="clr-namespace:Ferretto.VW.App.Controls.Behaviors;assembly=Ferretto.VW.App.Controls"
@@ -145,24 +146,50 @@
                 </ComboBox>
             </DataTemplate>
 
-            <!-- string (deprecated*) -->
-            <DataTemplate x:Key="NewStringDataTemplate">
+            <!-- boolean -->
+            <DataTemplate x:Key="BooleanDataTemplate">
                 <DataTemplate.Resources>
                     <converters:TwoWayConverter x:Key="TwoWayConverter" />
                 </DataTemplate.Resources>
 
-                <ctrls:PpcTextBox DataContext="{Binding}" HorizontalAlignment="Stretch"
-                              Keyboard="{Binding Path=.,Converter={StaticResource KeyboardTypeConverter}}"
-                              FontSize="{DynamicResource FontSize_High}"
-                              IsEnabled="{Binding Path=.,Converter={StaticResource IsEditableConverter}}" x:Name="field">
+                <cctrls:PpcCheckBox DataContext="{Binding}"
+                     IsEnabled="{Binding Path=.,Converter={StaticResource IsEditableConverter}}" x:Name="field">
+                    <cctrls:PpcCheckBox.IsChecked>
+                        <Binding Path="Value" UpdateSourceTrigger="PropertyChanged"
+                             Converter="{StaticResource TwoWayConverter}" ConverterCulture="{x:Static g11n:CultureInfo.CurrentCulture}"
+                             RelativeSource="{RelativeSource Mode=FindAncestor,AncestorType=UserControl}" Mode="TwoWay">                            
+                        </Binding>
+                    </cctrls:PpcCheckBox.IsChecked>
+                </cctrls:PpcCheckBox>
+            </DataTemplate>
 
-                    <ctrls:PpcTextBox.InputText>
+            <!-- number -->
+            <DataTemplate x:Key="NumericDataTemplate">
+                <DataTemplate.Resources>
+                    <converters:TwoWayConverter x:Key="TwoWayConverter" />
+                </DataTemplate.Resources>
+
+                <ctrls:PpcSpinEdit DataContext="{Binding}"                                   
+                     IsEnabled="{Binding Path=.,Converter={StaticResource IsEditableConverter}}" x:Name="field">
+                    <ctrls:PpcSpinEdit.Resources>
+                        <validation:BindingProxy x:Key="valueBridge" Data="{Binding Path=EditValue, ElementName=field}" />
+                        <validation:BindingProxy x:Key="entityBridge" Data="{Binding Path=DataContext, ElementName=field}" />
+                    </ctrls:PpcSpinEdit.Resources>
+                    <ctrls:PpcSpinEdit.EditValue>
                         <Binding Path="Value" UpdateSourceTrigger="PropertyChanged"
                              Converter="{StaticResource TwoWayConverter}" ConverterCulture="{x:Static g11n:CultureInfo.CurrentCulture}"
                              RelativeSource="{RelativeSource Mode=FindAncestor,AncestorType=UserControl}" Mode="TwoWay">
+                            <Binding.ValidationRules>
+                                <validation:CompositeValidationRule ValidatesOnTargetUpdated="True" Validated="CompositeValidationRule_Validated">
+                                    <validation:CompositeValidationRule.CompositeValidator>
+                                        <validation:CompositeValidator Value="{Binding Data, Source={StaticResource valueBridge}}"
+                                                                   Rules="{Binding Data, Source={StaticResource entityBridge}, Converter={StaticResource ValidationRuleConverter}}" />
+                                    </validation:CompositeValidationRule.CompositeValidator>
+                                </validation:CompositeValidationRule>
+                            </Binding.ValidationRules>
                         </Binding>
-                    </ctrls:PpcTextBox.InputText>
-                </ctrls:PpcTextBox>
+                    </ctrls:PpcSpinEdit.EditValue>
+                </ctrls:PpcSpinEdit>
             </DataTemplate>
 
             <!-- string -->
@@ -228,16 +255,16 @@
                 <!-- footer -->
                 <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="0,15,0,0">
 
-                    <ctrls:PpcButton Content="{x:Static resx:UI.Save}" Click="Confirm_Click"
+                    <cctrls:PpcButton Content="{x:Static resx:UI.Save}" Click="Confirm_Click"
                                      Margin="0,0,15,0">
-                        <ctrls:PpcButton.IsEnabled>
+                        <cctrls:PpcButton.IsEnabled>
                             <MultiBinding Converter="{StaticResource MBTUI}">
                                 <Binding Path="IsValid" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=UserControl}" />
                                 <Binding Path="IsDirty" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=UserControl}" />
                             </MultiBinding>
-                        </ctrls:PpcButton.IsEnabled>
-                    </ctrls:PpcButton>
-                    <ctrls:PpcButton Content="{x:Static resx:UI.Cancel}" Click="Cancel_Click" />
+                        </cctrls:PpcButton.IsEnabled>
+                    </cctrls:PpcButton>
+                    <cctrls:PpcButton Content="{x:Static resx:UI.Cancel}" Click="Cancel_Click" />
                 </StackPanel>
 
                 <!-- validators -->

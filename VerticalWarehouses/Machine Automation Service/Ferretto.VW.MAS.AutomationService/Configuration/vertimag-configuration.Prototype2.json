@@ -77,9 +77,7 @@
           "ManualMovements": {
             "FeedRate": 1,
             "MaxSpeed": 6300,
-            "MinSpeed": 500,
-            "HighSpeedDurationOpen": 18,
-            "HighSpeedDurationClose": 17
+            "MinSpeed": 500
           },
           "AssistedMovements": {
             "FeedRate": 1,
