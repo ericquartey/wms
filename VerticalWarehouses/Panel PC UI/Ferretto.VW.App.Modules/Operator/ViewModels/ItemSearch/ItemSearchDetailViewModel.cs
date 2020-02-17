@@ -104,7 +104,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                     var item = await this.itemsWebService.GetByBarcodeAsync(itemBarcode);
                     this.Item = new ItemInfo(item, this.bayManager.Identity.Id);
                 }
-                catch (Exception ex)
+                catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
                 {
                     this.ShowNotification(ex);
                 }

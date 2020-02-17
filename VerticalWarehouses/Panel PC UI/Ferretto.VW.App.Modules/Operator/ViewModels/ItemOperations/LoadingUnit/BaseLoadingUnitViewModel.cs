@@ -305,7 +305,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                     this.Compartments = MapCompartments(this.ItemsCompartments);
                 }
             }
-            catch
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 // do nothing: details will not be shown
             }

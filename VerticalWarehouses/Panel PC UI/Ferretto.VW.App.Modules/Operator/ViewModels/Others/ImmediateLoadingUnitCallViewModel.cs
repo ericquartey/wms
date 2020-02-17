@@ -150,7 +150,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
                 this.ShowNotification($"Successfully requested loading unit '{this.SelectedLoadingUnit.Id}'.", Services.Models.NotificationSeverity.Success);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

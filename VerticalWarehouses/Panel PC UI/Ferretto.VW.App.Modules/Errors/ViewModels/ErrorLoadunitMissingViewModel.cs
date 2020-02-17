@@ -1146,7 +1146,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             {
                 await this.MachineService.StopMovingByAllAsync();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
