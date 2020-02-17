@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Offset(10)]
             public Carousel Carousel { get; set; }
 
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_MaxGrossWeight))]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Bay_ChainOffset))]
             [Unit("mm")]
             [Id(1)]
             public double ChainOffset { get; set; }
