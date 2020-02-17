@@ -62,7 +62,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [ScaffoldColumn(false)]
             public System.Collections.Generic.IEnumerable<CellPanel> Panels { get; set; }
 
-            [Editable(false)]
+            [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_SerialNumber))]
             [Id(2)]
             public string SerialNumber { get; set; }
