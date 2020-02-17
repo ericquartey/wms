@@ -1272,6 +1272,10 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification("Missioni in errore...", NotificationSeverity.Warning);
                         }
+                        else if (this.machineModeService.MachineMode != MachineMode.Manual)
+                        {
+                            this.ShowNotification("La macchina non è in manuale...", NotificationSeverity.Warning);
+                        }
                         else
                         {
                             this.ClearNotifications();
