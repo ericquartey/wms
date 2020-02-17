@@ -1762,4 +1762,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="SaveCheckPosition" xml:space="preserve">
     <value>Check the new dimensions and press Save to make the changes effective.</value>
   </data>
+  <data name="Interaxle" xml:space="preserve">
+    <value>Interaxle [mm]</value>
+  </data>
 </root>

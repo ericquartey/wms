@@ -2248,6 +2248,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Interaxle [mm].
+        /// </summary>
+        public static string Interaxle {
+            get {
+                return ResourceManager.GetString("Interaxle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid cell id entered.
         /// </summary>
         public static string InvalidCellIdEntered {

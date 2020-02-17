@@ -799,7 +799,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Feed rate parametri manuali shutter.
+        ///   Looks up a localized string similar to Feed rate shutter.
         /// </summary>
         public static string ShutterManualParameters_FeedRate {
             get {
@@ -826,7 +826,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Velocità massima parametri manuali shutter.
+        ///   Looks up a localized string similar to Velocità massima shutter.
         /// </summary>
         public static string ShutterManualParameters_MaxSpeed {
             get {
@@ -835,7 +835,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Velocità minima parametri manuali shutter.
+        ///   Looks up a localized string similar to Velocità minima shutter.
         /// </summary>
         public static string ShutterManualParameters_MinSpeed {
             get {

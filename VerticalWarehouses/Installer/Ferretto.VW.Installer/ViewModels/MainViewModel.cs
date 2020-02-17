@@ -8,12 +8,21 @@ namespace Ferretto.VW.Installer.ViewModels
 {
     public class MainViewModel : BindableBase
     {
+        #region Fields
+
+        private IOperationResult currentMode;
 
         private InstallationService installationService;
 
-        private IOperationResult currentMode;
-        private IOperationResult installViewModel;
+        private IOperationResult installBayViewModel;
+
+        private IOperationResult installTypeViewModel;
+
         private IOperationResult updateViewModel;
+
+        #endregion
+
+        #region Properties
 
         public IOperationResult CurrentMode
         {
@@ -21,6 +30,9 @@ namespace Ferretto.VW.Installer.ViewModels
             set => this.SetProperty(ref this.currentMode, value);
         }
 
+        #endregion
+
+        #region Methods
 
         public void StartInstallation()
         {
@@ -51,6 +63,11 @@ namespace Ferretto.VW.Installer.ViewModels
             this.installationService.Start();
         }
 
+        private void Close()
+        {
+            Application.Current.Shutdown(this.CurrentMode.IsSuccessful ? 0 : -1);
+        }
+
         private void InstallationService_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(OperationMode))
@@ -58,22 +75,26 @@ namespace Ferretto.VW.Installer.ViewModels
                 switch (this.installationService.OperationMode)
                 {
                     case OperationMode.None:
-                        throw new InvalidOperationException("Can't change on current mode:Operation type not supported.");                                                
-                    case OperationMode.Imstall:
-                        this.CurrentMode = this.installViewModel ?? (this.installViewModel = new InstallViewModel(this.installationService));                        
+                        throw new InvalidOperationException("Can't change on current mode:Operation type not supported.");
+
+                    case OperationMode.ImstallType:
+                        this.CurrentMode = this.installTypeViewModel ?? (this.installTypeViewModel = new InstallTypeViewModel(this.installationService));
                         break;
+
+                    case OperationMode.InstallBay:
+                        this.CurrentMode = this.installBayViewModel ?? (this.installBayViewModel = new InstallBayViewModel(this.installationService));
+                        break;
+
                     case OperationMode.Update:
-                        this.CurrentMode = this.updateViewModel ?? (this.updateViewModel = new UpdateViewModel(this.installationService));                        
+                        this.CurrentMode = this.updateViewModel ?? (this.updateViewModel = new UpdateViewModel(this.installationService));
                         break;
+
                     default:
                         break;
                 }
             }
         }
 
-        private void Close()
-        {
-            Application.Current.Shutdown(this.CurrentMode.IsSuccessful ? 0 : -1);
-        }
+        #endregion
     }
 }
