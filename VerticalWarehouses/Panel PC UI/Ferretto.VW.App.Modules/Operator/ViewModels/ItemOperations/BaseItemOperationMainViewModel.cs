@@ -5,13 +5,11 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 using Prism.Events;
 
@@ -58,13 +56,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public BaseItemOperationMainViewModel(
             IWmsImagesProvider wmsImagesProvider,
-            IMissionsWmsWebService missionsWmsWebService,
-            IItemsWmsWebService itemsWmsWebService,
+            IMachineItemsWebService itemsWebService,
             IBayManager bayManager,
             IEventAggregator eventAggregator,
             IMissionOperationsService missionOperationsService,
             IDialogService dialogService)
-            : base(wmsImagesProvider, missionsWmsWebService, itemsWmsWebService, bayManager, missionOperationsService, dialogService)
+            : base(wmsImagesProvider, itemsWebService, bayManager, missionOperationsService, dialogService)
         {
             this.eventAggregator = eventAggregator;
 
@@ -196,16 +193,17 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.IsWaitingForResponse = true;
                 this.ClearNotifications();
 
-                await this.MissionOperationsService.CompleteCurrentAsync(this.InputQuantity.Value);
-
                 this.isOperationConfirmed = true;
+
+                await this.MissionOperationsService.CompleteCurrentAsync(this.InputQuantity.Value);
 
                 this.ShowNotification(Resources.OperatorApp.OperationConfirmed);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
                 this.IsBusyConfirmingOperation = false;
+                this.isOperationConfirmed = false;
             }
             finally
             {
@@ -222,13 +220,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.IsWaitingForResponse = true;
                 this.ClearNotifications();
 
-                await this.MissionOperationsService.CancelCurrentAsync();
-
-                this.ShowNotification(Resources.OperatorApp.OperationCancelledConfirmed);
+                this.ShowNotification(OperatorApp.OperationCancelledConfirmed);
 
                 this.NavigationService.GoBack();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
                 this.IsBusyConfirmingOperation = false;
@@ -241,7 +237,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override void Disappear()
         {
-            this.eventAggregator.GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>().Unsubscribe(this.missionToken);
             this.missionToken?.Dispose();
             this.missionToken = null;
 
@@ -266,9 +261,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             this.missionToken = this.missionToken
                 ??
-                this.eventAggregator.GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>()
+                this.eventAggregator
+                    .GetEvent<PubSubEvent<MissionChangedEventArgs>>()
                     .Subscribe(
-                        async e => await this.OnAssignedMissionOperationChangedAsync(e),
+                        async e => await this.OnMissionChangedAsync(e),
                         ThreadOption.UIThread,
                         false);
 
@@ -288,23 +284,30 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private static IEnumerable<TrayControlCompartment> MapCompartments(IEnumerable<CompartmentMissionInfo> compartmentsFromMission)
         {
-            return compartmentsFromMission
-                .Where(c =>
-                    c.Width.HasValue
-                    ||
-                    c.Depth.HasValue
-                    ||
-                    c.XPosition.HasValue
-                    ||
-                    c.YPosition.HasValue)
-                .Select(c => new TrayControlCompartment
-                {
-                    Depth = c.Depth.Value,
-                    Id = c.Id,
-                    Width = c.Width.Value,
-                    XPosition = c.XPosition.Value,
-                    YPosition = c.YPosition.Value,
-                });
+            try
+            {
+                return compartmentsFromMission
+                    .Where(c =>
+                        c.Width.HasValue
+                        ||
+                        c.Depth.HasValue
+                        ||
+                        c.XPosition.HasValue
+                        ||
+                        c.YPosition.HasValue)
+                    .Select(c => new TrayControlCompartment
+                    {
+                        Depth = c.Depth.Value,
+                        Id = c.Id,
+                        Width = c.Width.Value,
+                        XPosition = c.XPosition.Value,
+                        YPosition = c.YPosition.Value,
+                    });
+            }
+            catch (Exception ex)
+            {
+                return Array.Empty<TrayControlCompartment>();
+            }
         }
 
         private void GetLoadingUnitDetails()
@@ -313,20 +316,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 this.Compartments = null;
                 this.SelectedCompartment = null;
-                return;
             }
-
-            try
+            else
             {
-                this.Compartments = MapCompartments(this.Mission.LoadingUnit.Compartments);
                 this.LoadingUnitWidth = this.Mission.LoadingUnit.Width;
                 this.LoadingUnitDepth = this.Mission.LoadingUnit.Depth;
+
+                this.Compartments = MapCompartments(this.Mission.LoadingUnit.Compartments);
                 this.SelectedCompartment = this.Compartments.SingleOrDefault(c =>
                     c.Id == this.MissionOperation.CompartmentId);
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
             }
         }
 
@@ -371,7 +369,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
         }
 
-        private async Task OnAssignedMissionOperationChangedAsync(AssignedMissionOperationChangedEventArgs e)
+        private async Task OnMissionChangedAsync(MissionChangedEventArgs e)
         {
             if (this.isOperationConfirmed)
             {
@@ -385,6 +383,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 this.IsOperationCanceled = true;
                 this.CanInputQuantity = false;
+
                 var msg = this.GetNoLongerOperationMessageByType();
                 this.DialogService.ShowMessage(msg, OperatorApp.OperationCancelled);
                 this.ShowNotification(msg, Services.Models.NotificationSeverity.Warning);

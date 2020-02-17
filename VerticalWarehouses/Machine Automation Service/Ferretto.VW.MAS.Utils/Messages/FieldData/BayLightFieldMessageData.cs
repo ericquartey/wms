@@ -3,7 +3,7 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
 namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
-    public class BayLightFieldMessageData : FieldMessageData, IBayLightFieldMessageData
+    public sealed class BayLightFieldMessageData : FieldMessageData, IBayLightFieldMessageData
     {
         #region Constructors
 

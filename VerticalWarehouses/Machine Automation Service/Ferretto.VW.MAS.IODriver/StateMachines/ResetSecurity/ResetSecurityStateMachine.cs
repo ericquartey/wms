@@ -4,7 +4,7 @@ using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 {
     internal sealed class ResetSecurityStateMachine : IoStateMachineBase

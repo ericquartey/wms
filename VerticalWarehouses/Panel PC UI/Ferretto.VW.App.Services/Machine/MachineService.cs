@@ -100,7 +100,7 @@ namespace Ferretto.VW.App.Services
 
         private SubscriptionToken machinePowerChangedToken;
 
-        private MachineStatus machineStatus;
+        private Models.MachineStatus machineStatus;
 
         private SubscriptionToken moveLoadingUnitToken;
 
@@ -149,7 +149,7 @@ namespace Ferretto.VW.App.Services
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
             this.missionsWebService = missionsWebService ?? throw new ArgumentNullException(nameof(missionsWebService));
 
-            this.MachineStatus = new MachineStatus();
+            this.MachineStatus = new Models.MachineStatus();
         }
 
         #endregion
@@ -168,10 +168,7 @@ namespace Ferretto.VW.App.Services
             private set => this.SetProperty(ref this.bay, value);
         }
 
-        public bool BayFirstPositionIsUpper
-        {
-            get => this.bay?.Positions?.FirstOrDefault()?.IsUpper ?? false;
-        }
+        public bool BayFirstPositionIsUpper => this.bay?.Positions?.FirstOrDefault()?.IsUpper ?? false;
 
         public MAS.AutomationService.Contracts.BayNumber BayNumber
         {
@@ -243,7 +240,7 @@ namespace Ferretto.VW.App.Services
 
         public MachinePowerState MachinePower => this.machineModeService.MachinePower;
 
-        public MachineStatus MachineStatus { get; }
+        public Models.MachineStatus MachineStatus { get; }
 
         internal string Notification
         {
@@ -322,7 +319,7 @@ namespace Ferretto.VW.App.Services
                     await this.InitializationBay();
                     await this.InitializationLoadUnits();
                 }
-                catch (Exception ex)
+                catch
                 {
                     // do nothing
                 }
@@ -361,7 +358,7 @@ namespace Ferretto.VW.App.Services
 
         public async Task StartAsync()
         {
-            this.machineStatus = new MachineStatus();
+            this.machineStatus = new Models.MachineStatus();
             this.loadingUnits = new List<LoadingUnit>();
 
             this.SubscribeToEvents();
@@ -384,7 +381,6 @@ namespace Ferretto.VW.App.Services
             {
                 this.machineLoadingUnitsWebService?.StopAsync(this.machineStatus.CurrentMissionId, this.BayNumber);
             }
-
             this.machineElevatorWebService?.StopAsync();
             this.machineCarouselWebService?.StopAsync();
             this.shuttersWebService?.StopAsync();
@@ -490,6 +486,7 @@ namespace Ferretto.VW.App.Services
             this.cells = await this.machineCellsWebService.GetAllAsync();
 
             this.Bay = await this.bayManagerService.GetBayAsync();
+
             this.BayNumber = this.Bay.Number;
 
             this.HasBayExternal = this.Bay.IsExternal;
@@ -497,6 +494,8 @@ namespace Ferretto.VW.App.Services
             this.HasShutter = this.Bay.Shutter.Type != ShutterType.NotSpecified;
 
             this.HasCarousel = this.Bay.Carousel != null;
+
+            this.HasBayWithInverter = this.Bay.Inverter != null;
 
             this.IsShutterThreeSensors = this.Bay.Shutter.Type is MAS.AutomationService.Contracts.ShutterType.ThreeSensors;
 
@@ -950,7 +949,7 @@ namespace Ferretto.VW.App.Services
                 }
                 await this.InitializationLoadUnits();
             }
-            catch (Exception ex)
+            catch
             {
                 // do nothing
             }
@@ -1225,6 +1224,10 @@ namespace Ferretto.VW.App.Services
                         if (this.machineModeService.MachinePower != MachinePowerState.Powered)
                         {
                             this.ShowNotification("Manca marcia.", NotificationSeverity.Warning);
+                        }
+                        else if (this.machineModeService.MachineMode != MachineMode.Manual)
+                        {
+                            this.ShowNotification("La macchina non è in manuale...", NotificationSeverity.Warning);
                         }
                         else if (this.sensorsService.IsHorizontalInconsistentBothLow)
                         {

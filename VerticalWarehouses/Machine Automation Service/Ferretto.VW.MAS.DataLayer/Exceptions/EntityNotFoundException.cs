@@ -1,6 +1,6 @@
 ﻿using System;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.DataLayer
 {
     public class EntityNotFoundException : Exception

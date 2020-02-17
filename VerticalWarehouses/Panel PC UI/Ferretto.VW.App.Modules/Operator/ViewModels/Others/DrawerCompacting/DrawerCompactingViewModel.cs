@@ -152,7 +152,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
                 await this.machineCompactingWebService.CompactingAsync();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -172,7 +172,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
                 this.IsStopPressed = true;
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

@@ -1,2 +1,2 @@
-dotnet ef migrations remove --verbose
+rem dotnet ef migrations remove --verbose
 pause

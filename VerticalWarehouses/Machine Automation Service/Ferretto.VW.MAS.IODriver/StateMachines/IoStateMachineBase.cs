@@ -8,7 +8,7 @@ using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.IODriver.StateMachines
 {
     internal abstract class IoStateMachineBase : IIoStateMachine

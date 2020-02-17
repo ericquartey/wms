@@ -24,7 +24,7 @@ using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
+
 
 namespace Ferretto.VW.MAS.InverterDriver
 {

@@ -3,17 +3,13 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
 namespace Ferretto.VW.CommonUtils.Messages.Data
 {
-    public class AssignedMissionOperationChangedMessageData : IMessageData
+    public class AssignedMissionChangedMessageData : IMessageData
     {
         #region Properties
 
         public BayNumber BayNumber { get; set; }
 
         public int? MissionId { get; set; }
-
-        public int? MissionOperationId { get; set; }
-
-        public int PendingMissionsCount { get; set; }
 
         public MessageVerbosity Verbosity { get; set; }
 
@@ -23,7 +19,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public override string ToString()
         {
-            return $"BayId:{this.BayNumber} MissionId:{this.MissionId} MissionOperationId:{this.MissionOperationId} PendingMissionsCount:{this.PendingMissionsCount}";
+            return $"BayId:{this.BayNumber} MissionId:{this.MissionId}";
         }
 
         #endregion

@@ -319,16 +319,16 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             var machineHeight = this.machineProvider.GetHeight();
 
-            var pulleysDistanceMeters = (machineHeight - ElevatorStructuralProperties.PulleysMargin) / 1000;
+            var pulleysDistanceMeters = (machineHeight - ElevatorStructuralProperties.PulleysMargin) / 1000.0;
 
             var properties = this.elevatorDataProvider.GetStructuralProperties();
 
-            var beltSpacingMeters = properties.BeltSpacing / 1000;
+            var beltSpacingMeters = properties.BeltSpacing / 1000.0;
 
-            var targetPositionMeters = targetPosition / 1000;
+            var targetPositionMeters = targetPosition / 1000.0;
 
             return
-                  5000 * grossWeight
+                  5000.0 * grossWeight
                 /
                 ((properties.BeltRigidity / ((2 * pulleysDistanceMeters) - beltSpacingMeters - targetPositionMeters)) + (properties.BeltRigidity / targetPositionMeters));
         }
@@ -342,10 +342,10 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             var properties = this.elevatorDataProvider.GetStructuralProperties();
 
-            const double m = 10.0 / 3;
+            const double m = 10.0 / 3.0;
 
             return
-                64 * (m + 1) * (grossWeight * Math.Pow(properties.PulleyDiameter, 2) * properties.HalfShaftLength)
+                64.0 * (m + 1) * (grossWeight * Math.Pow(properties.PulleyDiameter, 2) * properties.HalfShaftLength)
                 /
                 (Math.PI * Math.Pow(properties.ShaftDiameter, 4) * m * properties.ShaftElasticity);
         }

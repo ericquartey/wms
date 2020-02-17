@@ -8,7 +8,7 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.AutomationService
 {
     public partial class NotificationRelayService
@@ -79,8 +79,8 @@ namespace Ferretto.VW.MAS.AutomationService
                     await this.ResolutionCalibrationMethod(message);
                     break;
 
-                case MessageType.AssignedMissionOperationChanged when message.Data is AssignedMissionOperationChangedMessageData:
-                    await this.OnAssignedMissionOperationChanged(message.Data as AssignedMissionOperationChangedMessageData);
+                case MessageType.AssignedMissionChanged when message.Data is AssignedMissionChangedMessageData:
+                    await this.OnAssignedMissionOperationChanged(message.Data as AssignedMissionChangedMessageData);
                     break;
 
                 case MessageType.ElevatorWeightCheck:

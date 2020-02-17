@@ -17,8 +17,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Constructors
 
-        public CompactingController(
-            IMachineModeProvider machineModeProvider)
+        public CompactingController(IMachineModeProvider machineModeProvider)
         {
             this.machineModeProvider = machineModeProvider ?? throw new ArgumentNullException(nameof(machineModeProvider));
         }

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Services
 {
@@ -6,22 +7,25 @@ namespace Ferretto.VW.App.Services
     {
         #region Properties
 
-        WMS.Data.WebAPI.Contracts.MissionInfo CurrentMission { get; }
+        Mission ActiveMachineMission { get; }
 
-        WMS.Data.WebAPI.Contracts.MissionOperation CurrentMissionOperation { get; }
+        MissionWithLoadingUnitDetails ActiveWmsMission { get; }
+
+        MissionOperation ActiveWmsOperation { get; }
 
         #endregion
 
         #region Methods
 
         /// <exception cref="MasWebApiException"></exception>
-        Task CancelCurrentAsync();
-
-        /// <exception cref="MasWebApiException"></exception>
+        /// <exception cref="System.Net.Http.HttpRequestException"></exception>
         Task CompleteCurrentAsync(double quantity);
 
         /// <exception cref="MasWebApiException"></exception>
+        /// <exception cref="System.Net.Http.HttpRequestException"></exception>
         Task PartiallyCompleteCurrentAsync(double quantity);
+
+        Task RecallLoadingUnitAsync(int id);
 
         Task StartAsync();
 

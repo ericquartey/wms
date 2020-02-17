@@ -6,7 +6,7 @@ using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.MachineManager.Providers
 {
     internal sealed class RunningStateProvider : BaseProvider, IRunningStateProvider

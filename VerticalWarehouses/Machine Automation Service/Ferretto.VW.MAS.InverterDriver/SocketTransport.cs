@@ -10,8 +10,6 @@ using Ferretto.VW.MAS.InverterDriver.Diagnostics;
 using Ferretto.VW.MAS.InverterDriver.Interface;
 using Microsoft.Extensions.Configuration;
 
-// ReSharper disable ParameterHidesMember
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver
 {
     public class SocketTransport : ISocketTransport, IDisposable

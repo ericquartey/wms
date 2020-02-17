@@ -6,7 +6,6 @@ using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DeviceManager.Providers
 {
     internal class ShutterProvider : BaseProvider, IShutterProvider
@@ -84,9 +83,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"feedRate: {parameters.FeedRate}; " +
                 $"speed: {speedRate}; " +
                 $"minspeed: {parameters.MinSpeed}; " +
-                $"maxspeed: {parameters.MaxSpeed}; " +
-                $"highspeeddurationopen: {parameters.HighSpeedDurationOpen}; " +
-                $"highspeeddurationclose: {parameters.HighSpeedDurationClose}");
+                $"maxspeed: {parameters.MaxSpeed}; ");
 
             this.PublishCommand(
                 messageData,

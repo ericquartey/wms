@@ -11,7 +11,6 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Operator.ViewModels
@@ -27,7 +26,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private const int ItemsVisiblePageSize = 10;
 
-        private readonly IAreasWmsWebService areasWmsWebService;
+        private readonly IMachineAreasWebService areasWebService;
 
         private readonly IBarcodeReaderService barcodeReaderService;
 
@@ -36,8 +35,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         private readonly IMachineIdentityWebService identityService;
 
         private readonly List<ItemInfo> items = new List<ItemInfo>();
-
-        private readonly IItemsWmsWebService itemsWmsWebService;
 
         private readonly IWmsDataProvider wmsDataProvider;
 
@@ -78,16 +75,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public ItemSearchMainViewModel(
             IWmsDataProvider wmsDataProvider,
             IMachineIdentityWebService identityService,
-            IItemsWmsWebService itemsWmsWebService,
             IBayManager bayManager,
-            IAreasWmsWebService areasWmsWebService,
+            IMachineAreasWebService areasWebService,
             IBarcodeReaderService barcodeReaderService)
             : base(PresentationMode.Operator)
         {
             this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
-            this.itemsWmsWebService = itemsWmsWebService ?? throw new ArgumentNullException(nameof(itemsWmsWebService));
-            this.areasWmsWebService = areasWmsWebService ?? throw new ArgumentNullException(nameof(areasWmsWebService));
+            this.areasWebService = areasWebService ?? throw new ArgumentNullException(nameof(areasWebService));
             this.barcodeReaderService = barcodeReaderService ?? throw new ArgumentNullException(nameof(barcodeReaderService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
 
@@ -269,7 +264,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.tokenSource = new CancellationTokenSource();
                 await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -298,7 +293,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             try
             {
-                var newItems = await this.areasWmsWebService.GetItemsAsync(
+                var newItems = await this.areasWebService.GetItemsAsync(
                     this.areaId.Value,
                     skip,
                     DefaultPageSize,
@@ -309,7 +304,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
                 this.items.AddRange(newItems.Select(i => new ItemInfo(i, this.bayManager.Identity.Id)));
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
                 this.items.Clear();
@@ -435,7 +430,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             if (itemId.HasValue
                 &&
-                this.items.FirstOrDefault(l => l.Id == itemId.Value) is ItemInfo itemFound)
+                this.items.FirstOrDefault(i => i.Id == itemId.Value) is ItemInfo itemFound)
             {
                 this.currentItemIndex = this.items.IndexOf(itemFound);
             }

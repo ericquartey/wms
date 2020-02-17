@@ -4,7 +4,7 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
 namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
-    public class InverterExceptionFieldMessageData : FieldMessageData, IInverterExceptionFieldMessageData
+    public sealed class InverterExceptionFieldMessageData : FieldMessageData, IInverterExceptionFieldMessageData
     {
         #region Constructors
 

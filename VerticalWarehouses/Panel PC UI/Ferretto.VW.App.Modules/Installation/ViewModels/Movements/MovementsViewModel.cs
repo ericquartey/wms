@@ -43,7 +43,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
-        private readonly IMachineMissionOperationsWebService machineMissionOperationsWebService;
+        private readonly IMachineMissionsWebService machineMissionsWebService;
 
         private readonly IMachineShuttersWebService shuttersWebService;
 
@@ -95,7 +95,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineCarouselWebService machineCarouselWebService,
             Services.IDialogService dialogService,
             IMachineBaysWebService machineBaysWebService,
-            IMachineMissionOperationsWebService machineMissionOperationsWebService,
+            IMachineMissionsWebService machineMissionsWebService,
             IBayManager bayManagerService,
             IInstallationHubClient installationHubClient)
             : base(PresentationMode.Installer)
@@ -108,7 +108,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.machineCarouselWebService = machineCarouselWebService ?? throw new ArgumentNullException(nameof(machineCarouselWebService));
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
-            this.machineMissionOperationsWebService = machineMissionOperationsWebService ?? throw new ArgumentNullException(nameof(machineMissionOperationsWebService));
+            this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
             this.installationHubClient = installationHubClient ?? throw new ArgumentNullException(nameof(installationHubClient));
         }
 
@@ -620,7 +620,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.IsWaitingForResponse = true;
 
-                    await this.machineMissionOperationsWebService.ResetMachineAsync();
+                    await this.machineMissionsWebService.ResetMachineAsync();
 
                     this.ShowNotification(InstallationApp.ResetMachineSuccessfull, Services.Models.NotificationSeverity.Success);
 

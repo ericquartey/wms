@@ -511,7 +511,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.InputLowerBound.Value,
                     this.InputDelay);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
                 this.IsExecutingProcedure = false;

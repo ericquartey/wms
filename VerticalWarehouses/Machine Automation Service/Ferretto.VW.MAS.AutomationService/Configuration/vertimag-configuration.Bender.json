@@ -29,6 +29,7 @@
           {
             "Height": 645,
             "MaxSingleHeight": 695,
+            "ProfileOffset": 50,
             "Location": "InternalBay1Down"
           }
         ],
@@ -47,9 +48,7 @@
           "ManualMovements": {
             "FeedRate": 0.1,
             "MaxSpeed": 31500,
-            "MinSpeed": 2500,
-            "HighSpeedDurationOpen": 16,
-            "HighSpeedDurationClose": 17
+            "MinSpeed": 2500
           },
           "AssistedMovements": {
             "FeedRate": 0.2,

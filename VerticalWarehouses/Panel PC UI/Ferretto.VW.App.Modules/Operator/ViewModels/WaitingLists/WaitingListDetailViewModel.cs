@@ -8,7 +8,6 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Operator.ViewModels
@@ -20,7 +19,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private readonly IMachineIdentityWebService identityService;
 
-        private readonly IItemListsWmsWebService itemListsWmsWebService;
+        private readonly IMachineItemListsWebService itemListsWebService;
 
         private int? areaId;
 
@@ -46,11 +45,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public WaitingListDetailViewModel(
             IMachineIdentityWebService identityService,
-            IItemListsWmsWebService itemListsWmsWebService)
+            IMachineItemListsWebService itemListsWebService)
             : base(PresentationMode.Operator)
         {
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
-            this.itemListsWmsWebService = itemListsWmsWebService ?? throw new ArgumentNullException(nameof(itemListsWmsWebService));
+            this.itemListsWebService = itemListsWebService ?? throw new ArgumentNullException(nameof(itemListsWebService));
 
             this.listRows = new List<ItemListRow>();
         }
@@ -66,7 +65,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public IItemListsWmsWebService ItemListsWmsWebService { get; }
+        public IMachineItemListsWebService ItemListsWebService { get; }
 
         public ItemList List => this.list;
 
@@ -115,19 +114,19 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public async Task ExecuteListAsync()
         {
+            if (!this.areaId.HasValue
+                ||
+                this.selectedListRow is null)
+            {
+                return;
+            }
+
             try
             {
-                if (!this.areaId.HasValue
-                     ||
-                     this.selectedListRow == null)
-                {
-                    return;
-                }
-
-                await this.itemListsWmsWebService.ExecuteAsync(this.selectedListRow.Id, this.areaId.Value);
+                await this.itemListsWebService.ExecuteAsync(this.selectedListRow.Id, this.areaId.Value, null);
                 await this.LoadListRowsAsync();
             }
-            catch
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification("Cannot execute List.", Services.Models.NotificationSeverity.Warning);
             }
@@ -203,11 +202,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             try
             {
-                this.listRows = await this.itemListsWmsWebService.GetRowsAsync(this.list.Id);
+                this.listRows = await this.itemListsWebService.GetRowsAsync(this.list.Id);
                 this.RaisePropertyChanged(nameof(this.ListRows));
                 this.SelectedListRow = this.listRows.FirstOrDefault();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex.ToString(), Services.Models.NotificationSeverity.Error);
             }

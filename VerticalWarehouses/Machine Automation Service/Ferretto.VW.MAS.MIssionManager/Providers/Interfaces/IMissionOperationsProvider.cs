@@ -10,8 +10,6 @@ namespace Ferretto.VW.MAS.MissionManager
 
         Task AbortAsync(int id);
 
-        Task CancelAsync();
-
         Task CompleteAsync(int wmsId, double quantity, string printerName);
 
         Task<MissionOperation> GetByIdAsync(int wmsId);

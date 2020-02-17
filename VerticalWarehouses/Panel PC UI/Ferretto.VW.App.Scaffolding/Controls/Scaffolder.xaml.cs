@@ -338,6 +338,8 @@ namespace Ferretto.VW.App.Scaffolding.Controls
         {
             this.SearchText = default;
             object model = e.NewValue;
+
+
             this._model = model?.Scaffold();
 
             // save the current breadcrumb to avoid towards-root navigation.
@@ -347,6 +349,7 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             // now clear the breadcrumb.
             this.Breadcrumb.Clear();
             this.RebuildElasticDataTable();
+
 
             if (model == null)
             {

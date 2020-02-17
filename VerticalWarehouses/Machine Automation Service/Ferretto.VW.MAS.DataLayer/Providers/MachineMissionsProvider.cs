@@ -15,7 +15,7 @@ using Ferretto.VW.MAS.Utils.Missions;
 using Microsoft.Extensions.DependencyInjection;
 using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
     public class MachineMissionsProvider : IMachineMissionsProvider

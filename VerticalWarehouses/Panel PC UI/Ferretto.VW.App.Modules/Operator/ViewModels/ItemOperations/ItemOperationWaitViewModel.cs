@@ -1,19 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using DevExpress.Xpf.Data.Native;
-using Ferretto.VW.App.Modules.Operator.Services;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
-using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
-using Ferretto.WMS.Data.WebAPI.Contracts;
-using Prism.Events;
-using Prism.Regions;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {

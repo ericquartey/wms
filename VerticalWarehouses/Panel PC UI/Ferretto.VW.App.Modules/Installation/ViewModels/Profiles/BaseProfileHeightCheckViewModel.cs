@@ -359,7 +359,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.bay = await this.bayManager.GetBayAsync();
                 this.BayNumber = this.bay.Number;
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

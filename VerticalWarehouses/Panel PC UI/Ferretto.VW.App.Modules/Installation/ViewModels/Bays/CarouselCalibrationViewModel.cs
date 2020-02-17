@@ -586,7 +586,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.NavigationService.GoBack();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -690,7 +690,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     //await this.shuttersWebService.ResetTestAsync();
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -708,7 +708,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 await this.MachineService.StopMovingByAllAsync();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

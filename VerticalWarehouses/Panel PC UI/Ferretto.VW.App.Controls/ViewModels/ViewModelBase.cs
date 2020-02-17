@@ -92,6 +92,10 @@ namespace Ferretto.VW.App.Controls
             // let the derived classes implement the behaviour of this method
         }
 
+        public virtual void OnNavigatingBack(BackNavigationContext navigationContext)
+        {
+        }
+
         protected virtual void OnDispose()
         {
             // do nothing

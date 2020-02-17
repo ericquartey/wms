@@ -7,7 +7,7 @@ using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.DeviceManager.Providers
 {
     internal class MachineControlProvider : BaseProvider, IMachineControlProvider

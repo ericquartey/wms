@@ -1,10 +1,8 @@
-﻿using Ferretto.VW.MAS.DataLayer;
+﻿using System;
 using Ferretto.VW.MAS.DataModels;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -20,8 +18,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Constructors
 
-        public ConfigurationController(
-            IConfigurationProvider configurationProvider)
+        public ConfigurationController(IConfigurationProvider configurationProvider)
         {
             this.configurationProvider = configurationProvider ?? throw new ArgumentNullException(nameof(configurationProvider));
         }

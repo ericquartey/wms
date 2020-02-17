@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Ferretto.VW.MAS.MachineManager;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
