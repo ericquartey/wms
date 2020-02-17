@@ -286,7 +286,7 @@
     <value>Tara cassetto</value>
   </data>
   <data name="Machine_MaxGrossWeight" xml:space="preserve">
-    <value>Peso lordo max cassetto</value>
+    <value>Massimo peso lordo macchina</value>
   </data>
   <data name="Machine_ModelName" xml:space="preserve">
     <value>Modello</value>

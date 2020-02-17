@@ -7,8 +7,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [Ferretto.VW.MAS.Scaffolding.DataAnnotations.MetadataType(typeof(Machine.Metadata))]
     public partial class Machine
     {
+        #region Classes
+
         private class Metadata
         {
+            #region Properties
+
             [Category(Category = nameof(Vertimag.Bay), ResourceType = typeof(Vertimag))]
             [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
             [Id(200)]
@@ -22,22 +26,24 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public Elevator Elevator { get; set; }
 
             [Editable(false)]
+            [Unit("mm")]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_Height))]
             [Id(3)]
             public double Height { get; set; }
 
-            [Editable(false)]
+            [Editable(true)]
+            [Unit("mm")]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_LoadUnitMaxHeight))]
             [Id(4)]
             public double LoadUnitMaxHeight { get; set; }
 
-            [Editable(false)]
+            [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_LoadUnitMaxNetWeight))]
             [Unit("kg")]
             [Id(5)]
             public double LoadUnitMaxNetWeight { get; set; }
 
-            [Editable(false)]
+            [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_LoadUnitTare))]
             [Unit("kg")]
             [Id(6)]
@@ -48,7 +54,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(7)]
             public double MaxGrossWeight { get; set; }
 
-            [Editable(false)]
+            [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_ModelName))]
             [Id(1)]
             public string ModelName { get; set; }
@@ -59,6 +65,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_SerialNumber))]
             [Id(2)]
             public string SerialNumber { get; set; }
+
+            #endregion
         }
+
+        #endregion
     }
 }

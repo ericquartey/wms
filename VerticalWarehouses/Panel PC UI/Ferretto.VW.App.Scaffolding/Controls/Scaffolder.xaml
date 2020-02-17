@@ -512,6 +512,17 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
                         <GridViewColumn Width="80"
+                                        Header="U.m.">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource CellBorderStyle}">
+                                        <TextBlock Style="{StaticResource CellTextBlockStyle}"
+                                                   Text="{Binding Converter={StaticResource DefaultValueConverter}, ConverterParameter=Unit}" />
+                                    </Border>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="80"
                                         Header="Default">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -544,17 +555,7 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Width="80"
-                                        Header="U.m.">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Border Style="{StaticResource CellBorderStyle}">
-                                        <TextBlock Style="{StaticResource CellTextBlockStyle}"
-                                                   Text="{Binding Converter={StaticResource DefaultValueConverter}, ConverterParameter=Unit}" />
-                                    </Border>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
+
                         <!--<GridViewColumn Width="Auto">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
