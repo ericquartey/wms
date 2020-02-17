@@ -24,6 +24,8 @@ namespace Ferretto.VW.App.Services
 
         void OnNavigatedTo(NavigationContext navigationContext);
 
+        void OnNavigatingBack(BackNavigationContext backNavigationContext);
+
         #endregion
     }
 }
