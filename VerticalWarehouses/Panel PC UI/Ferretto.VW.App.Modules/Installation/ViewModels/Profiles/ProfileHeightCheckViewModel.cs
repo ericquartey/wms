@@ -71,6 +71,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private int? loadingUnitId;
 
+        private double? measuredDx;
+
+        private double? measuredSx;
+
         private DelegateCommand mensurationDxCommand;
 
         private DelegateCommand mensurationSxCommand;
@@ -81,7 +85,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand openShutterCommand;
 
+        private double? profileCalibrateDistanceDx;
+
+        private double? profileCalibrateDistanceSx;
+
         private SubscriptionToken profileCalibrationToken;
+
+        private double? profileStartDistanceDx;
+
+        private double? profileStartDistanceSx;
 
         private SubscriptionToken stepChangedToken;
 
@@ -176,8 +188,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.loadingUnitId, value, this.RaiseCanExecuteChanged);
         }
 
+        public double? MeasuredDx
+        {
+            get => this.measuredDx;
+            set => this.SetProperty(ref this.measuredDx, value, this.RaiseCanExecuteChanged);
+        }
+
+        public double? MeasuredSx
+        {
+            get => this.measuredSx;
+            set => this.SetProperty(ref this.measuredSx, value, this.RaiseCanExecuteChanged);
+        }
+
         public ICommand MensurationDxCommand =>
-            this.mensurationDxCommand
+                            this.mensurationDxCommand
             ??
             (this.mensurationDxCommand = new DelegateCommand(
                 async () => await this.MensurationDxAsync(),
@@ -211,8 +235,32 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.OpenShutterAsync(),
                 this.CanOpenShutter));
 
+        public double? ProfileCalibrateDistanceDx
+        {
+            get => this.profileCalibrateDistanceDx;
+            set => this.SetProperty(ref this.profileCalibrateDistanceDx, value, this.RaiseCanExecuteChanged);
+        }
+
+        public double? ProfileCalibrateDistanceSx
+        {
+            get => this.profileCalibrateDistanceSx;
+            set => this.SetProperty(ref this.profileCalibrateDistanceSx, value, this.RaiseCanExecuteChanged);
+        }
+
+        public double? ProfileStartDistanceDx
+        {
+            get => this.profileStartDistanceDx;
+            set => this.SetProperty(ref this.profileStartDistanceDx, value, this.RaiseCanExecuteChanged);
+        }
+
+        public double? ProfileStartDistanceSx
+        {
+            get => this.profileStartDistanceSx;
+            set => this.SetProperty(ref this.profileStartDistanceSx, value, this.RaiseCanExecuteChanged);
+        }
+
         public ICommand StopCommand =>
-            this.stopCommand
+                                            this.stopCommand
             ??
             (this.stopCommand = new DelegateCommand(
                 async () => await this.StopAsync(),
@@ -268,6 +316,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.EventAggregator.GetEvent<StepChangedPubSubEvent>().Unsubscribe(this.stepChangedToken);
                 this.stepChangedToken?.Dispose();
                 this.stepChangedToken = null;
+            }
+
+            if (this.profileCalibrationToken != null)
+            {
+                this.EventAggregator.GetEvent<NotificationEventUI<ProfileCalibrationMessageData>>().Unsubscribe(this.profileCalibrationToken);
+                this.profileCalibrationToken?.Dispose();
+                this.profileCalibrationToken = null;
             }
         }
 
@@ -597,49 +652,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnProfileCalibrationMessage(NotificationMessageUI<ProfileCalibrationMessageData> message)
         {
-            switch (message.Status)
+            var data = message.Data as ProfileCalibrationMessageData;
+            if (this.CurrentStep == ProfileCheckStep.TuningChainDx)
             {
-                case MessageStatus.NotSpecified:
-                    break;
+                this.ProfileStartDistanceDx = data.ProfileStartDistance;
+                this.ProfileCalibrateDistanceDx = data.ProfileCalibrateDistance;
 
-                case MessageStatus.OperationEnd:
-                    break;
+                this.MeasuredDx = 1d;
 
-                case MessageStatus.OperationError:
-                    break;
+                this.CurrentStep = ProfileCheckStep.ShapePositionSx;
+            }
+            else
+            {
+                this.ProfileStartDistanceSx = data.ProfileStartDistance;
+                this.ProfileCalibrateDistanceSx = data.ProfileCalibrateDistance;
 
-                case MessageStatus.OperationStop:
-                    break;
+                this.MeasuredSx = 1d;
 
-                case MessageStatus.OperationFaultStop:
-                    break;
-
-                case MessageStatus.OperationRunningStop:
-                    break;
-
-                case MessageStatus.OperationStart:
-                    break;
-
-                case MessageStatus.OperationUpdateData:
-                    break;
-
-                case MessageStatus.OperationExecuting:
-                    break;
-
-                case MessageStatus.OperationStepStart:
-                    break;
-
-                case MessageStatus.OperationStepEnd:
-                    break;
-
-                case MessageStatus.OperationStepStop:
-                    break;
-
-                case MessageStatus.OperationWaitResume:
-                    break;
-
-                default:
-                    break;
+                this.CurrentStep = ProfileCheckStep.ResultCheck;
             }
         }
 

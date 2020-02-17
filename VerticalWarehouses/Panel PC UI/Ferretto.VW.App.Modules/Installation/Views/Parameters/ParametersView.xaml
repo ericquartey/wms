@@ -7,6 +7,7 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
             xmlns:dxprg="http://schemas.devexpress.com/winfx/2008/xaml/propertygrid"
+            xmlns:gif="http://wpfanimatedgif.codeplex.com"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
@@ -27,6 +28,23 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+
+        <Image Grid.ColumnSpan="2"
+               Width="60"
+               Margin="30"
+               gif:ImageBehavior.AnimatedSource="{DynamicResource SpinnerImageSource}"
+               gif:ImageBehavior.AutoStart="true">
+            <Image.Visibility>
+                <MultiBinding Converter="{StaticResource MBTUI}">
+                    <Binding Path="IsBusy" />
+                    <Binding Converter="{StaticResource TTUI}"
+                             ConverterParameter="Invert"
+                             ElementName="scaffolder"
+                             Path="FocusStructure" />
+                </MultiBinding>
+            </Image.Visibility>
+        </Image>
+
 
         <Grid Grid.Column="0"
               Margin="0">
