@@ -7,16 +7,20 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
     {
         #region Constructors
 
-        public ProfileCalibrationMessageData(double? profileCalibrateDistance, double? profileStartDistance, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public ProfileCalibrationMessageData(double? profileStartDistance, double? profileCalibrateDistance, double? measured, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
-            this.ProfileCalibrateDistance = profileCalibrateDistance;
             this.ProfileStartDistance = profileStartDistance;
+            this.ProfileCalibrateDistance = profileCalibrateDistance;
+            this.Measured = measured;
+
             this.Verbosity = verbosity;
         }
 
         #endregion
 
         #region Properties
+
+        public double? Measured { get; }
 
         public double? ProfileCalibrateDistance { get; }
 
@@ -30,7 +34,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public override string ToString()
         {
-            return $"ProfileCalibrateDistance:{this.ProfileCalibrateDistance} ProfileStartDistance:{this.ProfileStartDistance}";
+            return $"ProfileStartDistance:{this.ProfileStartDistance} ProfileCalibrateDistance:{this.ProfileCalibrateDistance} Measured:{this.Measured} ";
         }
 
         #endregion
