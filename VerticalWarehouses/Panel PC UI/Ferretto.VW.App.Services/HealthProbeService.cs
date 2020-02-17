@@ -133,7 +133,7 @@ namespace Ferretto.VW.App.Services
         public void Start()
         {
             this.healthProbeMasTask.Start();
-            this.healthProbeWmsTask.Start();
+            this.healthProbeWmsTask?.Start();
         }
 
         public void Stop()
