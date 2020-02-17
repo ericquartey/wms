@@ -1692,4 +1692,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="SaveCheckPosition" xml:space="preserve">
     <value>Verificare le nuove quote e premere Salva per rendere le modifiche effettive.</value>
   </data>
+  <data name="Interaxle" xml:space="preserve">
+    <value>Interasse [mm]</value>
+  </data>
 </root>
