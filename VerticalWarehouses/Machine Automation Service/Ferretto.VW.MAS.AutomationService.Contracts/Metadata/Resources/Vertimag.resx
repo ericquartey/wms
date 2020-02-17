@@ -355,7 +355,7 @@
     <value>ShaftElasticity</value>
   </data>
   <data name="ShutterManualParameters_FeedRate" xml:space="preserve">
-    <value>Feed rate parametri manuali shutter</value>
+    <value>Feed rate movimenti manuali shutter</value>
   </data>
   <data name="ShutterManualParameters_HighSpeedDurationClose" xml:space="preserve">
     <value>Durata chiusura shutter</value>
@@ -364,10 +364,10 @@
     <value>Durata apertura shutter</value>
   </data>
   <data name="ShutterManualParameters_MaxSpeed" xml:space="preserve">
-    <value>Velocità massima parametri manuali shutter</value>
+    <value>Velocità massima movimenti manuali shutter</value>
   </data>
   <data name="ShutterManualParameters_MinSpeed" xml:space="preserve">
-    <value>Velocità minima parametri manuali shutter</value>
+    <value>Velocità minima movimenti manuali shutter</value>
   </data>
   <data name="ShutterType.NotSpecified" xml:space="preserve">
     <value>Non specificato</value>
