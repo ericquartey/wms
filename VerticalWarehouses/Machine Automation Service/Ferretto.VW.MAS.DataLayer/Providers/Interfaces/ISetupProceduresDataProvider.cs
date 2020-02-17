@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         SetupProceduresSet GetAll();
 
-        PositioningProcedure GetBayHeightCheck(BayNumber bayNumber);
+        BayProfileCheckProcedure GetBayProfileCheck(BayNumber bayNumber);
 
         RepeatedTestProcedure GetBeltBurnishingTest();
 
@@ -35,7 +35,9 @@ namespace Ferretto.VW.MAS.DataLayer
         void Import(SetupProceduresSet setupProceduresSet, DataLayerContext context);
 
         RepeatedTestProcedure IncreasePerformedCycles(RepeatedTestProcedure depositAndPickUpTest);
+
         PositioningProcedure InProgressProcedure(PositioningProcedure procedure);
+
         SetupProcedure MarkAsCompleted(SetupProcedure procedureParameters);
 
         RepeatedTestProcedure ResetPerformedCycles(RepeatedTestProcedure procedure);

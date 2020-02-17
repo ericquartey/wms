@@ -740,11 +740,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void MoveHorizontalProfileCalibration(int bayPositionId, BayNumber requestingBay, MessageActor sender)
         {
-            var policy = this.CanLoadFromBay(bayPositionId, requestingBay, isGuided: false);
-            if (!policy.IsAllowed)
-            {
-                throw new InvalidOperationException(policy.Reason);
-            }
+            //var policy = this.CanLoadFromBay(bayPositionId, requestingBay, isGuided: false);
+            //if (!policy.IsAllowed)
+            //{
+            //    throw new InvalidOperationException(policy.Reason);
+            //}
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
 
             var targetPosition = axis.Profiles.FirstOrDefault().TotalDistance;

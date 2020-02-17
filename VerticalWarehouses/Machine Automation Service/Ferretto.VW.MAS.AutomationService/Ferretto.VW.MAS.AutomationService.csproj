@@ -85,10 +85,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Database\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="nlog.Production.config.xslt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

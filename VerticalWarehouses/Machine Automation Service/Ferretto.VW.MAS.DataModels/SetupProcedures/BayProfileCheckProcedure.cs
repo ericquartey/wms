@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Ferretto.VW.MAS.DataModels
+{
+    public sealed class BayProfileCheckProcedure : PositioningProcedure
+    {
+        #region Properties
+
+        public double ProfileCorrectDistance { get; set; } = 150D;
+
+        public double ProfileDegrees { get; set; } = 5D;
+
+        public double ProfileTotalDistance { get; set; } = 400D;
+
+        #endregion
+    }
+}
