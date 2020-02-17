@@ -9,6 +9,9 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Installation.ViewModels"
+            d:DataContext="{d:DesignInstance Type=viewmodels:CarouselCalibrationViewModel,
+                                             IsDesignTimeCreatable=False}"
             d:DesignHeight="700"
             d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
@@ -23,7 +26,7 @@
         <!--#endregion-->
 
         <!--#region DataTemplate Body-->
-        <DataTemplate x:Key="DataTemplatePositionMeter">
+        <DataTemplate x:Key="DataTemplateStartCalibration">
             <Grid Margin="20"
                   DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
                 <Grid.RowDefinitions>
@@ -41,56 +44,54 @@
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Attaccare il metro:"
+                               Text="Prima di cominciare:"
                                TextWrapping="Wrap" />
 
                     <TextBlock Grid.ColumnSpan="2"
                                FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Posizionare l'elevatore ad una altezza tale che permetta di attaccare il metro."
+                               Text="Esegui la procedura di taratura della baia per posizionare la mensola in corrispondenza del sensore."
                                TextWrapping="Wrap" />
                 </StackPanel>
 
                 <controls:PpcButton Grid.Row="1"
-                                    Grid.Column="1"
-                                    Margin="0,-15,15,0"
-                                    VerticalAlignment="Center"
-                                    Command="{Binding MoveToStartPositionCommand}"
-                                    Content="Vai a quota"
-                                    Style="{DynamicResource WizardIntoButton}" />
-
-                <ctrls:PpcSpinEdit Grid.Row="1"
-                                   Width="250"
-                                   Height="90"
-                                   Margin="0,-15,15,0"
-                                   VerticalAlignment="Center"
-                                   EditValue="{Binding StartPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                   IsEnabled="{Binding IsCanStartPosition}"
-                                   LabelText="Quota di partenza"
-                                   MaxValue="{Binding AxisUpperBound}"
-                                   MinValue="{Binding AxisLowerBound}" />
-
-                <TextBlock Grid.Row="2"
-                           Grid.ColumnSpan="2"
-                           FontSize="18"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="Procedere alla rimozione di uno dei carter laterali e al posizionamento del metro. Completare riposizionando il carter e ripristinare lo stato di marcia."
-                           TextWrapping="Wrap" />
-
-                <controls:PpcButton Grid.Row="3"
+                                    Grid.Column="0"
                                     Grid.ColumnSpan="2"
-                                    Command="{Binding MoveToFirstMeasuredCommand}"
-                                    Content="Avanti"
+                                    Margin="0,-15,15,0"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding TuningBayCommand}"
+                                    Content="{x:Static res:InstallationApp.BayCalibration}"
+                                    IsBusy="{Binding IsTuningBay}"
+                                    Visibility="{Binding HasCarousel, Converter={StaticResource BTVC}}" />
+
+                <TextBlock Grid.Row="2"
+                           Grid.ColumnSpan="2"
+                           FontSize="18"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="Controlla che non ci siano cassetti in baia prima di cominciare. Premi su INIZIA per avviare la procedura."
+                           TextWrapping="Wrap" />
+
+                <controls:PpcButton Grid.Row="3"
+                                    Grid.Column="1"
+                                    Command="{Binding MoveToRunningCalibrationCommand}"
+                                    Content="Inizia"
                                     Style="{StaticResource WizardConfirmButton}" />
+
+                <controls:PpcButton Grid.Row="3"
+                                    Command="{Binding ResetCyclesCounterCommand}"
+                                    Content="{Binding CompletionStatus}"
+                                    Style="{StaticResource WizardConfirmButton}" />
+
+
             </Grid>
         </DataTemplate>
 
-        <DataTemplate x:Key="DataTemplateFirstMeasured">
+        <DataTemplate x:Key="DataTemplateRunningCalibration">
             <Grid Margin="20"
                   DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="154" />
+                    <RowDefinition Height="10*" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
@@ -100,181 +101,223 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Eseguire la prima misurazione (1/2):"
-                               TextWrapping="Wrap" />
+                <Border Grid.Column="1"
+                        Width="250"
+                        Height="90"
+                        HorizontalAlignment="Stretch"
+                        Background="{DynamicResource PpcBackground}">
+                    <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                            BorderThickness="{DynamicResource PpcBorderThickness}">
 
-                    <TextBlock FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Posizionare l'elevatore alla quota indicata"
-                               TextWrapping="Wrap" />
-                </StackPanel>
+                        <Grid>
 
-                <ctrls:PpcSpinEdit Grid.Row="1"
-                                   Grid.Column="0"
-                                   Width="250"
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+
+                            <TextBlock Margin="8,4"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       FontSize="{StaticResource FontSize_Normal}"
+                                       FontWeight="Normal"
+                                       Foreground="{DynamicResource FerrettoLightGray}"
+                                       Text="Cicli eseguiti" />
+
+                            <StackPanel Grid.Row="1"
+                                        Margin="4"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Top"
+                                        Orientation="Horizontal">
+                                <TextBlock Margin="4,0,4,4"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="{StaticResource FontSize_Very_High}"
+                                           Foreground="{DynamicResource PpcForeground}"
+                                           Text="{Binding PerformedCycles}" />
+                                <TextBlock Margin="4,0,4,4"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="{StaticResource FontSize_Very_High}"
+                                           Foreground="{DynamicResource PpcForeground}"
+                                           Text="/" />
+                                <TextBlock Margin="4,0,4,4"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="{StaticResource FontSize_Very_High}"
+                                           Foreground="{DynamicResource PpcForeground}"
+                                           Text="{Binding RequiredCycles}" />
+                            </StackPanel>
+
+                            <controls:PpcProgressBar Grid.Row="2"
+                                                     Height="8"
+                                                     Margin="8,4,8,8"
+                                                     Color1="{DynamicResource FerrettoGreen}"
+                                                     Color2="Green"
+                                                     Maximum="100"
+                                                     Minimum="0"
+                                                     Value="{Binding CyclesPercent, Mode=OneWay}" />
+
+                        </Grid>
+
+                    </Border>
+                </Border>
+
+
+                <ctrls:PpcSpinEdit Width="250"
                                    Height="90"
-                                   Margin="0,-15,15,0"
-                                   VerticalAlignment="Center"
-                                   EditValue="{Binding DestinationPosition1, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                   IsEnabled="{Binding IsCanDestinationPosition1}"
-                                   LabelText="Quota di destinazione"
-                                   MaxValue="{Binding AxisUpperBound}"
-                                   MinValue="{Binding AxisLowerBound}" />
-
-                <controls:PpcButton Grid.Row="1"
-                                    Grid.Column="1"
-                                    Margin="0,-15,15,0"
-                                    VerticalAlignment="Center"
-                                    Command="{Binding MoveToStartDestination1Command}"
-                                    Content="Vai a quota"
-                                    Style="{DynamicResource WizardIntoButton}" />
-
-                <TextBlock Grid.Row="2"
-                           Grid.ColumnSpan="2"
-                           VerticalAlignment="Center"
-                           FontSize="18"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="Indicare la quota misurata con il metro e premere Avanti"
-                           TextWrapping="Wrap" />
-
-                <ctrls:PpcSpinEdit Grid.Row="3"
-                                   Grid.Column="0"
-                                   Width="250"
-                                   Height="90"
-                                   Margin="0,0,15,0"
-                                   VerticalAlignment="Center"
-                                   EditValue="{Binding MeasuredPosition1, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                   IsEnabled="{Binding IsCanMeasuredPosition1}"
-                                   LabelText="Quota misurata"
-                                   MaxValue="{Binding AxisUpperBound}"
-                                   MinValue="{Binding AxisLowerBound}" />
-
-                <controls:PpcButton Grid.Row="3"
-                                    Grid.Column="1"
-                                    VerticalAlignment="Center"
-                                    Command="{Binding MoveToLastMeasuredCommand}"
-                                    Content="Avanti"
-                                    Style="{StaticResource WizardConfirmButton}" />
-            </Grid>
-        </DataTemplate>
-
-        <DataTemplate x:Key="DataTemplateLastMeasured">
-            <Grid Margin="20"
-                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="154" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-
-                <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Eseguire la seconda misurazione (2/2):"
-                               TextWrapping="Wrap" />
-
-                    <TextBlock FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Posizionare l'elevatore alla quota indicata"
-                               TextWrapping="Wrap" />
-                </StackPanel>
-
-                <ctrls:PpcSpinEdit Grid.Row="1"
-                                   Grid.Column="0"
-                                   Width="250"
-                                   Height="90"
-                                   Margin="0,-15,15,0"
-                                   EditValue="{Binding DestinationPosition2, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                   IsEnabled="{Binding IsCanDestinationPosition2}"
-                                   LabelText="Quota di destinazione"
-                                   MaxValue="{Binding AxisUpperBound}"
-                                   MinValue="{Binding AxisLowerBound}" />
-
-                <controls:PpcButton Grid.Row="1"
-                                    Grid.Column="1"
-                                    Margin="0,-15,15,0"
-                                    VerticalAlignment="Center"
-                                    Command="{Binding MoveToStartDestination2Command}"
-                                    Content="Vai a quota"
-                                    Style="{DynamicResource WizardIntoButton}" />
-
-                <TextBlock Grid.Row="2"
-                           Grid.ColumnSpan="2"
-                           FontSize="18"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="Indicare la quota misurata con il metro e premere Avanti"
-                           TextWrapping="Wrap" />
-
-                <ctrls:PpcSpinEdit Grid.Row="3"
-                                   Grid.Column="0"
-                                   Width="250"
-                                   Height="90"
-                                   Margin="0,0,15,0"
-                                   EditValue="{Binding MeasuredPosition2, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                   IsEnabled="{Binding IsCanMeasuredPosition2}"
-                                   LabelText="Quota misurata"
-                                   MaxValue="{Binding AxisUpperBound}"
-                                   MinValue="{Binding AxisLowerBound}" />
-
-                <controls:PpcButton Grid.Row="3"
-                                    Grid.Column="1"
-                                    Command="{Binding MoveToConfirmCommand}"
-                                    Content="Avanti"
-                                    Style="{StaticResource WizardConfirmButton}" />
-            </Grid>
-        </DataTemplate>
-
-        <DataTemplate x:Key="DataTemplateConfirm">
-            <Grid Margin="20"
-                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-
-                <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Conferma nuova risoluzione:"
-                               TextWrapping="Wrap" />
-
-                    <TextBlock FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Verificare il nuovo valore di risoluzione calcolato e premere Salva per rendere la modifica effettiva"
-                               TextWrapping="Wrap" />
-                </StackPanel>
-
-                <ctrls:PpcSpinEdit Grid.Row="1"
-                                   Width="250"
-                                   Height="90"
-                                   Margin="0,0,15,0"
                                    EditValue="{Binding NewResolution, StringFormat={}{0:F6}}"
                                    IsEnabled="False"
-                                   LabelText="Nuova risoluzione"
+                                   LabelText="Tempo Rimanente"
                                    Mask="###0.000000" />
 
-                <controls:PpcButton Grid.Row="3"
-                                    Command="{Binding SaveCommand}"
-                                    Content="Salva"
+
+                <StackPanel Grid.Row="1"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            HorizontalAlignment="center"
+                            VerticalAlignment="center">
+                    <TextBlock FontSize="30"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               Text="Calibrazione in corso..."
+                               TextWrapping="Wrap" />
+
+                </StackPanel>
+
+
+
+                <controls:PpcButton Grid.Row="2"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"
+                                    HorizontalAlignment="center"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding StopInPhaseCommand}"
+                                    Content="Arresta procedura"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
 
-        <local:CalibrationStepTemplateSelector x:Key="selector"
-                                               EnumConfirm="{StaticResource DataTemplateConfirm}"
-                                               EnumFirstMeasured="{StaticResource DataTemplateFirstMeasured}"
-                                               EnumLastMeasured="{StaticResource DataTemplateLastMeasured}"
-                                               EnumPositionMeter="{StaticResource DataTemplatePositionMeter}" />
+
+        <DataTemplate x:Key="DataTemplateConfirmAdjustment">
+            <Grid Margin="20"
+                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="3*" />
+                    <RowDefinition Height="3*" />
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="2*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.ColumnSpan="2">
+                    <TextBlock FontSize="24"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               Text="Conferma correzione:"
+                               TextWrapping="Wrap" />
+
+                </StackPanel>
+
+                <TextBlock Grid.Row="1"
+                           Grid.ColumnSpan="2"
+                           FontSize="18"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="Selezionare la direzione e applicare la correzione premendo Applica correzione."
+                           TextWrapping="Wrap" />
+
+                <ctrls:PpcSpinEdit Grid.Row="2"
+                                   Grid.ColumnSpan="2"
+                                   Width="250"
+                                   Height="90"
+                                   Margin="0,-5,0,0"
+                                   HorizontalAlignment="Center"
+                                   EditValue="{Binding NewErrorValue, StringFormat={}{0:F6}}"
+                                   IsEnabled="False"
+                                   LabelText="Errore (mm)"
+                                   Mask="###0.000000" />
+                <RadioButton Grid.Row="3"
+                             Margin="0,0,50,0"
+                             HorizontalAlignment="Right"
+                             GroupName="test"
+                             IsChecked="{Binding IsErrorNegative, Mode=TwoWay}"
+                             IsEnabled="true">
+                    <RadioButton.Content>
+                        <TextBlock Margin="0,20"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   FontSize="40"
+                                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                                   Text="-" />
+                    </RadioButton.Content>
+                </RadioButton>
+
+                <RadioButton Grid.Row="3"
+                             Grid.Column="1"
+                             Margin="50,0,0,0"
+                             GroupName="test"
+                             IsChecked="{Binding IsErrorPositive, Mode=TwoWay}"
+                             IsEnabled="true">
+                    <RadioButton.Content>
+                        <TextBlock Margin="0,20"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   FontSize="40"
+                                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                                   Text="+" />
+                    </RadioButton.Content>
+                </RadioButton>
+
+
+                <controls:PpcButton Grid.Row="4"
+                                    Grid.ColumnSpan="2"
+                                    Margin="0,-15,15,0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding applyCommand}"
+                                    Content="Applica correzione"
+                                    Style="{DynamicResource WizardIntoButton}" />
+
+
+
+
+                <TextBlock Grid.Row="5"
+                           Grid.ColumnSpan="2"
+                           FontSize="18"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="Premere Ripeti per eseguire nuovamente la procedura, Concludi per terminare."
+                           TextWrapping="Wrap" />
+
+                <controls:PpcButton Grid.Row="6"
+                                    Grid.Column="1"
+                                    Margin="0,-5,0,0"
+                                    Command="{Binding SaveCommand}"
+                                    Content="Concludi"
+                                    Style="{StaticResource WizardConfirmButton}" />
+
+                <controls:PpcButton Grid.Row="6"
+                                    Grid.Column="0"
+                                    Margin="0,-5,0,0"
+                                    Command="{Binding MoveStartCalibrationCommand}"
+                                    Content="Ripeti"
+                                    Style="{StaticResource WizardConfirmButton}" />
+            </Grid>
+        </DataTemplate>
+
+        <local:CarouselCalibrationStepTemplateSelector x:Key="selector"
+                                                       EnumConfirmAdjustment="{StaticResource DataTemplateConfirmAdjustment}"
+                                                       EnumRunningCalibration="{StaticResource DataTemplateRunningCalibration}"
+                                                       EnumStartCalibration="{StaticResource DataTemplateStartCalibration}" />
         <!--#endregion-->
     </ctrls:View.Resources>
 
@@ -404,7 +447,7 @@
                                FontSize="{StaticResource FontSize_Normal}"
                                FontWeight="Normal"
                                Foreground="{DynamicResource FerrettoLightGray}"
-                               Text="{x:Static res:InstallationApp.CurrentResolution}" />
+                               Text="{x:Static res:InstallationApp.Interaxle}" />
 
                     <TextBlock Grid.Row="1"
                                Margin="4,0,4,4"
@@ -412,7 +455,7 @@
                                VerticalAlignment="Center"
                                FontSize="{StaticResource FontSize_Very_High}"
                                Foreground="{DynamicResource PpcForeground}"
-                               Text="{Binding CurrentResolution, Mode=OneWay, StringFormat={}{0:F6}}"
+                               Text="{Binding CurrentDistance, Mode=OneWay, StringFormat={}{0:F6}}"
                                TextWrapping="Wrap" />
 
                 </Grid>
@@ -468,7 +511,7 @@
                     Style="{DynamicResource BorderTimeLine}" />
 
             <Grid Grid.Row="1">
-                <Border Background="{Binding HasStepPositionMeter, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                <Border Background="{Binding HasStepStartCalibration, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                         Style="{DynamicResource BorderTimeLineCirle}" />
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                            Text="1" />
@@ -476,7 +519,7 @@
             <Grid Grid.Row="1"
                   Grid.Column="1"
                   Grid.ColumnSpan="2"
-                  Visibility="{Binding HasStepPositionMeter, Converter={StaticResource BTVC}, Mode=OneWay}">
+                  Visibility="{Binding HasStepStartCalibration, Converter={StaticResource BTVC}, Mode=OneWay}">
                 <Path Height="24"
                       VerticalAlignment="Center"
                       StrokeThickness="0"
@@ -485,7 +528,7 @@
             </Grid>
 
             <Grid Grid.Row="2">
-                <Border Background="{Binding HasStepFirstMeasured, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                <Border Background="{Binding HasStepRunningCalibration, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                         Style="{DynamicResource BorderTimeLineCirle}" />
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                            Text="2" />
@@ -493,7 +536,7 @@
             <Grid Grid.Row="2"
                   Grid.Column="1"
                   Grid.ColumnSpan="2"
-                  Visibility="{Binding HasStepFirstMeasured, Converter={StaticResource BTVC}, Mode=OneWay}">
+                  Visibility="{Binding HasStepRunningCalibration, Converter={StaticResource BTVC}, Mode=OneWay}">
                 <Path Height="24"
                       VerticalAlignment="Center"
                       StrokeThickness="0"
@@ -502,7 +545,7 @@
             </Grid>
 
             <Grid Grid.Row="3">
-                <Border Background="{Binding HasStepLastMeasured, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                <Border Background="{Binding HasStepConfirmAdjustment, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                         Style="{DynamicResource BorderTimeLineCirle}" />
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                            Text="3" />
@@ -510,7 +553,7 @@
             <Grid Grid.Row="3"
                   Grid.Column="1"
                   Grid.ColumnSpan="2"
-                  Visibility="{Binding HasStepLastMeasured, Converter={StaticResource BTVC}, Mode=OneWay}">
+                  Visibility="{Binding HasStepConfirmAdjustment, Converter={StaticResource BTVC}, Mode=OneWay}">
                 <Path Height="24"
                       VerticalAlignment="Center"
                       StrokeThickness="0"

@@ -73,7 +73,7 @@
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding BayHeightCommand}"
                                         Content="Permette la regolazione della barriera di rilevamento altezza del cassetto"
-                                        IsCompleted="{Binding IsBayHeightCompleted}"
+                                        IsCompleted="{Binding IsBayProfileCompleted}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 

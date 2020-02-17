@@ -586,7 +586,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsElevatorMoving = true;
             }
-            catch (System.Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.CloseOperation();
 
@@ -610,7 +610,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsCarouselMoving = true;
             }
-            catch (System.Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.CloseOperation();
 
@@ -639,7 +639,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsElevatorMoving = true;
             }
-            catch (System.Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.CloseOperation();
 

@@ -20,6 +20,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(1)]
             public double Id { get; set; }
 
+            [Editable(false)]
             [Id(5)]
             public bool IsUpper { get; set; }
 

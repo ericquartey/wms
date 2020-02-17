@@ -126,7 +126,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
-                        if (!this.CheckBayHeight(destinationBay, destination, mission))
+                        if (mission.MissionType != MissionType.Manual
+                            && !this.CheckBayHeight(destinationBay, destination, mission)
+                            )
                         {
                             if (showErrors)
                             {
@@ -284,7 +286,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                         }
                         // always check upper position first
-                        returnValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, false);
+                        returnValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, false || messageData.Destination == upper);
                         if (returnValue)
                         {
                             // upper position is empty. we can use it only if bottom is also free
@@ -430,6 +432,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MissionType.LoadUnitOperation:
                     returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.LoadUnitOperations
                         || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.Manual
                         );
                     break;
 

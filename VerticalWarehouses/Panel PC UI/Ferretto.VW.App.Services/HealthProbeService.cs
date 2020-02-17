@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -64,7 +65,7 @@ namespace Ferretto.VW.App.Services
             this.healthProbeMasTask = new Task(
                 async () => await this.RunHealthProbeMasAsync(this.tokenSource.Token), this.tokenSource.Token);
 
-            if (!(this.baseWmsAddress is null))
+            if (ConfigurationManager.AppSettings.GetWmsDataServiceEnabled() && !(this.baseWmsAddress is null))
             {
                 this.healthProbeWmsTask = new Task(
                     async () => await this.RunHealthProbeWmsAsync(this.tokenSource.Token), this.tokenSource.Token);
@@ -132,7 +133,7 @@ namespace Ferretto.VW.App.Services
         public void Start()
         {
             this.healthProbeMasTask.Start();
-            this.healthProbeWmsTask.Start();
+            this.healthProbeWmsTask?.Start();
         }
 
         public void Stop()

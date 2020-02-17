@@ -242,7 +242,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                     this.ShowNotification(Resources.LoadLogin.InvalidCredentials, Services.Models.NotificationSeverity.Error);
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

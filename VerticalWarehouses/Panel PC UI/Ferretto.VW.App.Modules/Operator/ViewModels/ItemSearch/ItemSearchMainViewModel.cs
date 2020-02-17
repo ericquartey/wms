@@ -264,7 +264,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.tokenSource = new CancellationTokenSource();
                 await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -304,7 +304,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
                 this.items.AddRange(newItems.Select(i => new ItemInfo(i, this.bayManager.Identity.Id)));
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
                 this.items.Clear();

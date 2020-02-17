@@ -89,7 +89,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.carouselCalibrationCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.CarouselCalibration),
                 () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual && false &&
+                      this.MachineModeService.MachineMode == MachineMode.Manual &&
                (true || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
                 ));
 
@@ -97,7 +97,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public bool IsBayControlCompleted => this.BayControl.IsCompleted;
 
-        public bool IsBayHeightCompleted => false;
+        public bool IsBayProfileCompleted => this.BayProfile.IsCompleted;
 
         public bool IsCarouselCalibrationVisible => this.MachineService.HasCarousel;
 
@@ -119,6 +119,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
         private SetupStepStatus VerticalOriginCalibration => this.SetupStatusCapabilities?.VerticalOriginCalibration ?? new SetupStepStatus();
 
         private SetupStepStatus BayControl => this.BaySetupStatus?.Check ?? new SetupStepStatus();
+
+        private SetupStepStatus BayProfile => this.BaySetupStatus?.Profile ?? new SetupStepStatus();
 
         private BaySetupStatus BaySetupStatus
         {
@@ -170,7 +172,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             base.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.IsBayControlCompleted));
-            this.RaisePropertyChanged(nameof(this.IsBayHeightCompleted));
+            this.RaisePropertyChanged(nameof(this.IsBayProfileCompleted));
             this.RaisePropertyChanged(nameof(this.IsTestShutterCompleted));
 
             this.bayControlCommand?.RaiseCanExecuteChanged();

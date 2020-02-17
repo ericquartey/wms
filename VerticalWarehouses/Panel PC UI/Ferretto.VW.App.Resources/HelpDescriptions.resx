@@ -1664,4 +1664,7 @@
   <data name="HelpMachineStatisticsShutter" xml:space="preserve">
     <value>HelpMachineStatisticsShutter</value>
   </data>
+  <data name="CarouselCalibrationFunctionDescription" xml:space="preserve">
+    <value>The carousel calibration function allows you to calibrate the correct value by performing a series of consecutive automatic movements, then updating the default value proposed by the system. The procedure works in successive steps until correct completion.</value>
+  </data>
 </root>

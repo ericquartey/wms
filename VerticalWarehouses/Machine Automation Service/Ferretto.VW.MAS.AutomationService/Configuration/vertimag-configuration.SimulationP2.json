@@ -42,9 +42,7 @@
           "ManualMovements": {
             "FeedRate": 0.1,
             "MaxSpeed": 40000,
-            "MinSpeed": 5000,
-            "HighSpeedDurationOpen": 14,
-            "HighSpeedDurationClose": 13
+            "MinSpeed": 5000
           },
           "AssistedMovements": {
             "FeedRate": 0.2,
@@ -101,7 +99,7 @@
           {
             "Height": 1143,
             "MaxSingleHeight": 320,
-            "ProfileOffset": 370,
+            "ProfileOffset": -450,
             "Location": "InternalBay2Up"
           }
         ],
@@ -5821,10 +5819,6 @@
     "SerialNumber": "Simulation Prototype #2"
   },
   "SetupProcedures": {
-    "BayHeightCheck": {
-      "Step": 0.5,
-      "FeedRate": 0.2
-    },
     "BeltBurnishingTest": {
       "RequiredCycles": 20
     },
@@ -5878,6 +5872,24 @@
       "FeedRate": 0.2
     },
     "VerticalOriginCalibration": {
+    },
+    "Bay1ProfileCheck": {
+    },
+    "Bay2ProfileCheck": {
+    },
+    "Bay3ProfileCheck": {
+    },
+    "Bay1CarouselTest": {
+    },
+    "Bay1CarouselCalibration": {
+    },
+    "Bay2CarouselTest": {
+    },
+    "Bay2CarouselCalibration": {
+    },
+    "Bay3CarouselTest": {
+    },
+    "Bay3CarouselCalibration": {
     }
   }
 }

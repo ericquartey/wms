@@ -66,9 +66,7 @@
           "ManualMovements": {
             "FeedRate": 0.1,
             "MaxSpeed": 40000,
-            "MinSpeed": 5000,
-            "HighSpeedDurationOpen": 14,
-            "HighSpeedDurationClose": 13
+            "MinSpeed": 5000
           },
           "AssistedMovements": {
             "FeedRate": 0.2,
@@ -125,7 +123,7 @@
           {
             "Height": 1143,
             "MaxSingleHeight": 320,
-            "ProfileOffset": 370,
+            "ProfileOffset": -450,
             "Location": "InternalBay2Up"
           }
         ],

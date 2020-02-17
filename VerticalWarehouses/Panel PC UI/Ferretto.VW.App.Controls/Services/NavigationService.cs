@@ -173,6 +173,14 @@ namespace Ferretto.VW.App.Controls
 
         public void GoBack()
         {
+            // allow cancelation
+            var context = new BackNavigationContext();
+            this.GetActiveViewModel().OnNavigatingBack(context);
+            if (context.Cancel)
+            {
+                return;
+            }
+
             if (!this.navigationStack.Any())
             {
                 this.logger.Warn($"Unable to navigate back because navigation stack is empty.");

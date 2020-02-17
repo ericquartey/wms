@@ -274,7 +274,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.ShowNotification(InstallationApp.SuccessfullChange, Services.Models.NotificationSeverity.Success);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

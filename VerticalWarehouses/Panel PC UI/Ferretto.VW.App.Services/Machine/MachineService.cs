@@ -381,7 +381,6 @@ namespace Ferretto.VW.App.Services
             {
                 this.machineLoadingUnitsWebService?.StopAsync(this.machineStatus.CurrentMissionId, this.BayNumber);
             }
-
             this.machineElevatorWebService?.StopAsync();
             this.machineCarouselWebService?.StopAsync();
             this.shuttersWebService?.StopAsync();
@@ -1225,6 +1224,10 @@ namespace Ferretto.VW.App.Services
                         if (this.machineModeService.MachinePower != MachinePowerState.Powered)
                         {
                             this.ShowNotification("Manca marcia.", NotificationSeverity.Warning);
+                        }
+                        else if (this.machineModeService.MachineMode != MachineMode.Manual)
+                        {
+                            this.ShowNotification("La macchina non è in manuale...", NotificationSeverity.Warning);
                         }
                         else if (this.sensorsService.IsHorizontalInconsistentBothLow)
                         {

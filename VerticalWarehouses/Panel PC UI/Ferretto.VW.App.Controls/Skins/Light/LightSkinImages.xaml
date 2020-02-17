@@ -36,4 +36,10 @@
 
     <BitmapImage x:Key="BgMilestone"
                  UriSource="/Ferretto.VW.App.Controls;Component/Assets/bg-milestone.jpg" />
+
+    <BitmapImage x:Key="Drawer1"
+                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/Dettaglio1.jpg" />
+
+    <BitmapImage x:Key="Drawer2"
+                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/Dettaglio2.jpg" />
 </ResourceDictionary>

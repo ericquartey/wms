@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -13,14 +15,27 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
+        private readonly IBaysDataProvider baysDataProvider;
+
+        private readonly IElevatorDataProvider elevatorDataProvider;
+
+        private readonly ILogger<MissionOperationsController> logger;
+
         private readonly IMissionsDataProvider missionsDataProvider;
 
         #endregion
 
         #region Constructors
 
-        public MissionsController(IMissionsDataProvider missionsDataProvider)
+        public MissionsController(IMissionsDataProvider missionsDataProvider,
+            IBaysDataProvider baysDataProvider,
+            IElevatorDataProvider elevatorDataProvider,
+            ILogger<MissionOperationsController> logger
+            )
         {
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
+            this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
         }
 
@@ -58,6 +73,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
 
             return this.Ok(await missionsWmsWebService.GetDetailsByIdAsync(id));
+        }
+
+        [HttpPost("reset-machine")]
+        public ActionResult ResetMachine()
+        {
+            this.baysDataProvider.ResetMachine();
+            this.elevatorDataProvider.ResetMachine();
+            this.missionsDataProvider.ResetMachine(MessageActor.AutomationService);
+
+            this.logger.LogInformation($"RESET MACHINE.");
+
+            return this.Ok();
         }
 
         #endregion

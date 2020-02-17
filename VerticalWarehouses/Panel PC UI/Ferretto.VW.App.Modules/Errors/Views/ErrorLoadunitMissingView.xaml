@@ -101,7 +101,8 @@
                        Margin="0,15,0,15"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       Source="{DynamicResource UnknownDrawer}"
+                       RenderOptions.BitmapScalingMode="HighQuality"
+                       Source="{DynamicResource Drawer2}"
                        Stretch="UniformToFill" />
 
                 <controls:PpcButton Grid.Row="3"
@@ -201,7 +202,7 @@
                                        Mask="#0"
                                        MaxValue="999"
                                        MinValue="1"
-                                       Visibility="{Binding HasBay1PositionUpVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
+                                       Visibility="{Binding IsBay1PositionUpVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
 
                     <ctrls:PpcSpinEdit Grid.Row="2"
                                        Grid.Column="2"
@@ -216,7 +217,7 @@
                                        Mask="#0"
                                        MaxValue="999"
                                        MinValue="1"
-                                       Visibility="{Binding HasBay1PositionDownVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
+                                       Visibility="{Binding IsBay1PositionDownVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
                 </Grid>
 
                 <controls:PpcButton Grid.Row="3"
@@ -272,7 +273,7 @@
                                        Mask="#0"
                                        MaxValue="999"
                                        MinValue="1"
-                                       Visibility="{Binding HasBay2PositionUpVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
+                                       Visibility="{Binding IsBay2PositionUpVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
 
                     <ctrls:PpcSpinEdit Grid.Row="2"
                                        Grid.Column="2"
@@ -287,7 +288,7 @@
                                        Mask="#0"
                                        MaxValue="999"
                                        MinValue="1"
-                                       Visibility="{Binding HasBay2PositionDownVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
+                                       Visibility="{Binding IsBay2PositionDownVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
                 </Grid>
 
                 <controls:PpcButton Grid.Row="3"
@@ -343,7 +344,7 @@
                                        Mask="#0"
                                        MaxValue="999"
                                        MinValue="1"
-                                       Visibility="{Binding HasBay3PositionUpVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
+                                       Visibility="{Binding IsBay3PositionUpVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
 
                     <ctrls:PpcSpinEdit Grid.Row="2"
                                        Grid.Column="2"
@@ -358,7 +359,7 @@
                                        Mask="#0"
                                        MaxValue="999"
                                        MinValue="1"
-                                       Visibility="{Binding HasBay3PositionDownVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
+                                       Visibility="{Binding IsBay3PositionDownVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
                 </Grid>
 
                 <controls:PpcButton Grid.Row="3"

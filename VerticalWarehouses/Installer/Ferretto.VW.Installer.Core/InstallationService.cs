@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using System.Windows.Media.TextFormatting;
 using System.Xml;
+using Ferretto.VW.MAS.DataModels;
 using Newtonsoft.Json;
 using NLog;
 
@@ -33,6 +36,10 @@ namespace Ferretto.VW.Installer.Core
         private bool isRollbackInProgress;
 
         private bool isUpdate;
+
+        private VertimagConfiguration masConfiguration;
+
+        private IPAddress masIpAddress;
 
         private string masVersion;
 
@@ -67,6 +74,10 @@ namespace Ferretto.VW.Installer.Core
         }
 
         public bool IsUpdate => this.isUpdate;
+
+        public VertimagConfiguration MasConfiguration => this.masConfiguration;
+
+        public IPAddress MasIpAddress => this.masIpAddress;
 
         public string MasVersion
         {
@@ -226,6 +237,17 @@ namespace Ferretto.VW.Installer.Core
             this.RaiseInstallationFinished(!this.IsRollbackInProgress);
         }
 
+        public void SetConfiguration(IPAddress masIpAddress, VertimagConfiguration masConfiguration)
+        {
+            this.masIpAddress = masIpAddress;
+            this.masConfiguration = masConfiguration;
+        }
+
+        public void SetOperation(OperationMode operationMode)
+        {
+            this.OperationMode = operationMode;
+        }
+
         public void Start()
         {
             this.LoadMasVersion();
@@ -234,7 +256,7 @@ namespace Ferretto.VW.Installer.Core
 
             if (this.isInstall)
             {
-                this.OperationMode = OperationMode.Imstall;
+                this.OperationMode = OperationMode.ImstallType;
             }
             else if (this.isUpdate)
             {

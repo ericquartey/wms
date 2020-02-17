@@ -271,6 +271,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 dataContext.AddOrUpdate(b.Shutter?.Inverter, (e) => e.Id);
                 dataContext.AddOrUpdate(b.Shutter?.AssistedMovements, (e) => e.Id);
                 dataContext.AddOrUpdate(b.Shutter?.ManualMovements, (e) => e.Id);
+
+                dataContext.AddOrUpdate(b, (e) => e.Id);
             });
 
             machine.Panels.ForEach((p) =>

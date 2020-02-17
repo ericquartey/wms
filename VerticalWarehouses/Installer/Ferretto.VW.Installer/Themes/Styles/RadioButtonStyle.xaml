@@ -34,7 +34,7 @@
                                      Background="{TemplateBinding Background}"
                                      Cursor="Hand">
                         <BulletDecorator.Bullet>
-                            <Grid Width="32"
+                            <Grid Width="32" Margin="0 -40 0 0"
                                   Height="32">
                                 <!--  Define size of the Bullet  -->
                                 <!--  The two borders  -->

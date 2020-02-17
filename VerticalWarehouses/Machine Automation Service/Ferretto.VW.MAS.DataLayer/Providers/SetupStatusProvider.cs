@@ -69,9 +69,9 @@ namespace Ferretto.VW.MAS.DataLayer
                         IsCompleted = status.Bay1Laser,
                         CanBePerformed = true,
                     },
-                    Shape = new SetupStepStatus
+                    Profile = new SetupStepStatus
                     {
-                        IsCompleted = status.Bay1Shape,
+                        IsCompleted = setup.Bay1ProfileCheck.IsCompleted,
                         CanBePerformed = status.Bay1HeightCheck && verticalOrigin.IsCompleted,
                     },
                     Shutter = new SetupStepStatus
@@ -104,9 +104,9 @@ namespace Ferretto.VW.MAS.DataLayer
                         IsCompleted = status.Bay2Laser,
                         CanBePerformed = true,
                     },
-                    Shape = new SetupStepStatus
+                    Profile = new SetupStepStatus
                     {
-                        IsCompleted = status.Bay2Shape,
+                        IsCompleted = setup.Bay2ProfileCheck.IsCompleted,
                         CanBePerformed = status.Bay2HeightCheck && verticalOrigin.IsCompleted,
                     },
                     Shutter = new SetupStepStatus
@@ -139,9 +139,9 @@ namespace Ferretto.VW.MAS.DataLayer
                         IsCompleted = status.Bay3Laser,
                         CanBePerformed = true,
                     },
-                    Shape = new SetupStepStatus
+                    Profile = new SetupStepStatus
                     {
-                        IsCompleted = status.Bay3Shape,
+                        IsCompleted = setup.Bay3ProfileCheck.IsCompleted,
                         CanBePerformed = status.Bay3HeightCheck && verticalOrigin.IsCompleted,
                     },
                     Shutter = new SetupStepStatus

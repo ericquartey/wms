@@ -19,8 +19,6 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-
-
 namespace Ferretto.VW.MAS.DeviceManager.Positioning
 {
     internal class PositioningExecutingState : StateBase, IDisposable
@@ -760,8 +758,21 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                 }
                                 this.Logger.LogDebug($"Send Profile calibration result: Calibrate Distance {profileCalibrateDistance:0.0000}, Start Distance {profileStartDistance:0.0000}");
 
+                                var procedure = this.setupProceduresDataProvider.GetBayProfileCheck(this.machineData.RequestingBay);
+
+                                double? measured = null;
+
+                                if (profileStartDistance.HasValue && profileCalibrateDistance.HasValue)
+                                {
+                                    measured = (procedure.ProfileCorrectDistance - (profileStartDistance - profileCalibrateDistance)) * Math.Tan(procedure.ProfileDegrees);
+                                }
+                                else
+                                {
+                                    measured = (-procedure.ProfileTotalDistance) * Math.Tan(procedure.ProfileDegrees);
+                                }
+
                                 var notificationMessage = new NotificationMessage(
-                                    new ProfileCalibrationMessageData(profileCalibrateDistance, profileStartDistance),
+                                    new ProfileCalibrationMessageData(profileStartDistance, profileCalibrateDistance, measured),
                                     $"Profile calibration result",
                                     MessageActor.AutomationService,
                                     MessageActor.DeviceManager,

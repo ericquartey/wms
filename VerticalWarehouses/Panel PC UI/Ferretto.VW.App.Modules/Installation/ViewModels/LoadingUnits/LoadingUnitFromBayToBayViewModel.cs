@@ -148,7 +148,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public override bool CanStart()
         {
             return base.CanStart() &&
-                   this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations;
+                   this.MachineModeService.MachineMode == MachineMode.Manual;
         }
 
         public async Task GetLoadingUnits()
@@ -157,7 +157,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.loadingUnits = await this.MachineLoadingUnitsWebService.GetAllAsync();
             }
-            catch (MasWebApiException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
