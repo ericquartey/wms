@@ -127,7 +127,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
                 }
                 */
             }
-            catch
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 // this.statusMessageService.Notify($"Cannot load data. {ex.Message}");
             }
