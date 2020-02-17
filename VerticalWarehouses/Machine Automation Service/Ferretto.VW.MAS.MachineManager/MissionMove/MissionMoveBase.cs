@@ -327,7 +327,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 // if we load from bay and load unit height is not compliant with the bay we go back
                 var sourceBay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
                 if (sourceBay != null
-                    && !this.CheckBayHeight(sourceBay, this.Mission.LoadUnitSource, this.Mission)
+                    && this.Mission.MissionType != MissionType.Manual
+                    && (!this.CheckBayHeight(sourceBay, this.Mission.LoadUnitSource, this.Mission)
+                        //|| true    // TEST
+                        )
                     )
                 {
                     this.Mission.ErrorCode = MachineErrorCode.LoadUnitHeightExceeded;

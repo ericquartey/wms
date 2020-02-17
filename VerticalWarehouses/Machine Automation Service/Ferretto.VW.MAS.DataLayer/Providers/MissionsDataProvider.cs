@@ -12,7 +12,6 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-
 namespace Ferretto.VW.MAS.DataLayer
 {
     internal sealed class MissionsDataProvider : IMissionsDataProvider
@@ -121,12 +120,13 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 mission.Status = MissionStatus.Completed;
 
+                if (this.baysDataProvider.IsMissionInBay(mission))
+                {
+                    this.baysDataProvider.ClearMission(mission.TargetBay);
+                }
+
                 if (mission.WmsId is null)
                 {
-                    if (this.baysDataProvider.IsMissionInBay(mission))
-                    {
-                        this.baysDataProvider.ClearMission(mission.TargetBay);
-                    }
                     this.Delete(mission.Id);
                 }
                 else
