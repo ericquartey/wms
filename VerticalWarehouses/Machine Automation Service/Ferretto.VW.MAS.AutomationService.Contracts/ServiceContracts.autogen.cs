@@ -954,6 +954,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MissionWithLoadingUnitDetails> GetWmsDetailsByIdAsync(int id, System.Threading.CancellationToken cancellationToken);
     
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> ResetMachineAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> ResetMachineAsync(System.Threading.CancellationToken cancellationToken);
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.2.3.0 (NJsonSchema v10.1.5.0 (Newtonsoft.Json v11.0.0.0))")]
@@ -1338,15 +1345,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> PartiallyCompleteAsync(int id, double quantity, string printerName, System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        [System.Obsolete]
-        System.Threading.Tasks.Task<FileResponse> ResetMachineAsync();
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        [System.Obsolete]
-        System.Threading.Tasks.Task<FileResponse> ResetMachineAsync(System.Threading.CancellationToken cancellationToken);
     
     }
 

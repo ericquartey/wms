@@ -20,15 +20,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IBaysDataProvider baysDataProvider;
 
-        private readonly IElevatorDataProvider elevatorDataProvider;
-
-        private readonly ILogger logger;
-
         private readonly IMissionOperationsProvider missionOperationsProvider;
 
         private readonly IMissionOperationsWmsWebService missionOperationsWmsWebService;
-
-        private readonly IMissionsDataProvider missionsDataProvider;
 
         private readonly IMissionsWmsWebService missionsWmsWebService;
 
@@ -37,21 +31,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Constructors
 
         public MissionOperationsController(
-            ILogger<MissionOperationsController> logger,
-            IMissionsDataProvider missionsDataProvider,
             IMissionOperationsProvider missionOperationsProvider,
             IMissionOperationsWmsWebService missionOperationsWmsWebService,
             IMissionsWmsWebService missionsWmsWebService,
-            IBaysDataProvider baysDataProvider,
-            IElevatorDataProvider elevatorDataProvider)
+            IBaysDataProvider baysDataProvider)
         {
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
-            this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.missionOperationsProvider = missionOperationsProvider ?? throw new ArgumentNullException(nameof(missionOperationsProvider));
             this.missionOperationsWmsWebService = missionOperationsWmsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWmsWebService));
             this.missionsWmsWebService = missionsWmsWebService ?? throw new ArgumentNullException(nameof(missionsWmsWebService));
-            this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
         }
 
         #endregion
@@ -136,19 +124,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public async Task<ActionResult> PartiallyCompleteAsync(int id, double quantity, string printerName)
         {
             await this.missionOperationsProvider.PartiallyCompleteAsync(id, quantity, printerName);
-
-            return this.Ok();
-        }
-
-        [HttpPost("reset-machine")]
-        [Obsolete("Vorrei capire se è il punto giusto dove mettere il metodo, per oggi la lascio qui")]
-        public ActionResult ResetMachine()
-        {
-            this.baysDataProvider.ResetMachine();
-            this.elevatorDataProvider.ResetMachine();
-            this.missionsDataProvider.ResetMachine(MessageActor.AutomationService);
-
-            this.logger.LogInformation($"RESET MACHINE.");
 
             return this.Ok();
         }
