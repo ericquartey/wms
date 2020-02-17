@@ -80,6 +80,18 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         private string errorTime;
 
+        private bool isBay1PositionDownVisible;
+
+        private bool isBay1PositionUpVisible;
+
+        private bool isBay2PositionDownVisible;
+
+        private bool isBay2PositionUpVisible;
+
+        private bool isBay3PositionDownVisible;
+
+        private bool isBay3PositionUpVisible;
+
         private SubscriptionToken loadunitsToken;
 
         private int? luIdOnBay1Down;
@@ -248,6 +260,42 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         public bool HasStepLoadunitOnElevator => this.currentStep is ErrorLoadunitMissingStepLoadunitOnElevator;
 
         public bool HasStepStart => this.currentStep is ErrorLoadunitMissingStepStart;
+
+        public bool IsBay1PositionDownVisible
+        {
+            get => this.isBay1PositionDownVisible;
+            set => this.SetProperty(ref this.isBay1PositionDownVisible, value);
+        }
+
+        public bool IsBay1PositionUpVisible
+        {
+            get => this.isBay1PositionUpVisible;
+            set => this.SetProperty(ref this.isBay1PositionUpVisible, value);
+        }
+
+        public bool IsBay2PositionDownVisible
+        {
+            get => this.isBay2PositionDownVisible;
+            set => this.SetProperty(ref this.isBay2PositionDownVisible, value);
+        }
+
+        public bool IsBay2PositionUpVisible
+        {
+            get => this.isBay2PositionUpVisible;
+            set => this.SetProperty(ref this.isBay2PositionUpVisible, value);
+        }
+
+        public bool IsBay3PositionDownVisible
+        {
+            get => this.isBay3PositionDownVisible;
+            set => this.SetProperty(ref this.isBay3PositionDownVisible, value);
+        }
+
+        public bool IsBay3PositionUpVisible
+        {
+            get => this.isBay3PositionUpVisible;
+            set => this.SetProperty(ref this.isBay3PositionUpVisible, value);
+        }
 
         public bool IsMoving
         {
