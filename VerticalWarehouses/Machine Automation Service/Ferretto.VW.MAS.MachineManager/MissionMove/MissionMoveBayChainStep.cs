@@ -62,6 +62,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             try
             {
+                this.Mission.Status = MissionStatus.Executing;
                 this.LoadingUnitMovementProvider.MoveCarousel(this.Mission.LoadUnitId, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions);
             }
             catch (StateMachineException ex)

@@ -147,7 +147,7 @@
             "Type": "Ang"
           },
           "LastIdealPosition": 1970.0,
-          "LowerBound": 350.0,
+          "LowerBound": 300.0,
           "ManualMovements": {
             "FeedRate": 0.1,
             "FeedRateAfterZero": 0.15,
