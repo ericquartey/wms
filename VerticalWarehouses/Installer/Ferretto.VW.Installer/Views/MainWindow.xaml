@@ -13,8 +13,11 @@
         Style="{StaticResource MainWindowStyle}"
         WindowStartupLocation="Manual">
     <Window.Resources>
-        <DataTemplate DataType="{x:Type viewModels:InstallViewModel}">
-            <views:InstallView />
+        <DataTemplate DataType="{x:Type viewModels:InstallTypeViewModel}">
+            <views:InstallTypeView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:InstallBayViewModel}">
+            <views:InstallBayView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:UpdateViewModel}">
             <views:UpdateView />

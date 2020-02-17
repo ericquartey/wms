@@ -3,7 +3,11 @@
     public enum OperationMode
     {
         None,
-        Imstall,
+
+        ImstallType,
+
+        InstallBay,
+
         Update
     }
 }

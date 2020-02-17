@@ -16,6 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Machine Automation Service\Ferretto.VW.MAS.DataModels\Ferretto.VW.MAS.DataModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="System.Net.Http" />
   </ItemGroup>
 
