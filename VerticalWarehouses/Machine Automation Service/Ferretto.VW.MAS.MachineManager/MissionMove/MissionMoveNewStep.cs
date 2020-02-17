@@ -286,7 +286,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                         }
                         // always check upper position first
-                        returnValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, false);
+                        returnValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, false || messageData.Destination == upper);
                         if (returnValue)
                         {
                             // upper position is empty. we can use it only if bottom is also free
