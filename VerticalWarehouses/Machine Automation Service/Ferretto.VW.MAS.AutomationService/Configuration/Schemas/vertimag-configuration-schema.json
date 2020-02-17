@@ -321,9 +321,7 @@
                   "required": [
                     "FeedRate",
                     "MaxSpeed",
-                    "MinSpeed",
-                    "HighSpeedDurationOpen",
-                    "HighSpeedDurationClose"
+                    "MinSpeed"
                   ],
                   "properties": {
                     "FeedRate": {
@@ -342,18 +340,6 @@
                       "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/ManualMovements/properties/MinSpeed",
                       "type": "number",
                       "title": "The Minspeed Schema",
-                      "default": 0
-                    },
-                    "HighSpeedDurationOpen": {
-                      "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/ManualMovements/properties/HighSpeedDurationOpen",
-                      "type": "number",
-                      "title": "The Highspeeddurationopen Schema",
-                      "default": 0
-                    },
-                    "HighSpeedDurationClose": {
-                      "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/ManualMovements/properties/HighSpeedDurationClose",
-                      "type": "number",
-                      "title": "The Highspeeddurationclose Schema",
                       "default": 0
                     }
                   }
