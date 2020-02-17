@@ -126,7 +126,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 await this.itemListsWebService.ExecuteAsync(this.selectedListRow.Id, this.areaId.Value, null);
                 await this.LoadListRowsAsync();
             }
-            catch
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification("Cannot execute List.", Services.Models.NotificationSeverity.Warning);
             }
