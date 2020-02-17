@@ -148,7 +148,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public override bool CanStart()
         {
             return base.CanStart() &&
-                   this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations;
+                   this.MachineModeService.MachineMode == MachineMode.Manual;
         }
 
         public async Task GetLoadingUnits()
