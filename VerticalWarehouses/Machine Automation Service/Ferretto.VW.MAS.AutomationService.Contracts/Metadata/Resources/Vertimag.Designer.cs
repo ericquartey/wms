@@ -88,6 +88,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Offset cinghia.
+        /// </summary>
+        public static string Bay_ChainOffset {
+            get {
+                return ResourceManager.GetString("Bay_ChainOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attiva.
         /// </summary>
         public static string Bay_IsActive {
