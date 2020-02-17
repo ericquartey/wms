@@ -1226,6 +1226,10 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification("Manca marcia.", NotificationSeverity.Warning);
                         }
+                        else if (this.machineModeService.MachineMode != MachineMode.Manual)
+                        {
+                            this.ShowNotification("La macchina non è in manuale...", NotificationSeverity.Warning);
+                        }
                         else if (this.sensorsService.IsHorizontalInconsistentBothLow)
                         {
                             this.ShowNotification("Manca sensore nottolino a zero o presenza cassetto.", NotificationSeverity.Error);
@@ -1271,10 +1275,6 @@ namespace Ferretto.VW.App.Services
                         else if (this.IsMissionInError)
                         {
                             this.ShowNotification("Missioni in errore...", NotificationSeverity.Warning);
-                        }
-                        else if (this.machineModeService.MachineMode != MachineMode.Manual)
-                        {
-                            this.ShowNotification("La macchina non è in manuale...", NotificationSeverity.Warning);
                         }
                         else
                         {
