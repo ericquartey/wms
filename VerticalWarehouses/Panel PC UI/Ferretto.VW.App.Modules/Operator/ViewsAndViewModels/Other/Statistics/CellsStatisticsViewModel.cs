@@ -102,7 +102,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 
                 this.DataGridViewModel = this.dataGridViewModelRef;
             }
-            catch
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 // this.statusMessageService.Notify(ex);
             }

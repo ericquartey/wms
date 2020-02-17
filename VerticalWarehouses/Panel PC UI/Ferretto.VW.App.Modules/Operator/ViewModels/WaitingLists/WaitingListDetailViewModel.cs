@@ -206,7 +206,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.RaisePropertyChanged(nameof(this.ListRows));
                 this.SelectedListRow = this.listRows.FirstOrDefault();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex.ToString(), Services.Models.NotificationSeverity.Error);
             }
