@@ -5,7 +5,7 @@ using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 {
     internal sealed class CalibrateAxisStartHomingState : InverterStateBase

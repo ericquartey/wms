@@ -6,9 +6,9 @@ namespace Ferretto.VW.App.Modules.Operator.Services
     {
         #region Methods
 
-        Task NavigateToDrawerViewAsync();
+        void NavigateToDrawerView();
 
-        Task NavigateToOperatorMenuAsync();
+        void NavigateToOperatorMenu();
 
         #endregion
     }

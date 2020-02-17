@@ -106,9 +106,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public IEnumerable<LoadingUnit> LoadingUnits => new BindingList<LoadingUnit>(this.loadingUnits);
 
         public ICommand LoadingUnitsMissionsCommand =>
-                        this.loadingUnitsMissionsCommand
-                        ??
-                        (this.loadingUnitsMissionsCommand = new DelegateCommand(this.LoadingUnitsMissionsAppear));
+            this.loadingUnitsMissionsCommand
+            ??
+            (this.loadingUnitsMissionsCommand = new DelegateCommand(this.LoadingUnitsMissionsAppear));
 
         public LoadingUnit SelectedLoadingUnit
         {
@@ -150,7 +150,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
                 this.ShowNotification($"Successfully requested loading unit '{this.SelectedLoadingUnit.Id}'.", Services.Models.NotificationSeverity.Success);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

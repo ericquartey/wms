@@ -27,8 +27,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("CurrentMissionId");
 
-                    b.Property<int?>("CurrentWmsMissionOperationId");
-
                     b.Property<int?>("EmptyLoadMovementId");
 
                     b.Property<int?>("FullLoadMovementId");
@@ -993,6 +991,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("EjectLoadUnit");
 
+                    b.Property<int>("ErrorCode");
+
                     b.Property<int>("ErrorMovements");
 
                     b.Property<int?>("LoadUnitCellSourceId");
@@ -1105,7 +1105,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 4, 6, 16, 17, 3, 44, DateTimeKind.Local).AddTicks(9348),
+                            InstallationDate = new DateTime(2017, 4, 14, 17, 13, 58, 82, DateTimeKind.Local).AddTicks(9761),
                             ServiceStatus = 86
                         });
                 });

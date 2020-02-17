@@ -5,9 +5,8 @@ using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/setup/[controller]")]

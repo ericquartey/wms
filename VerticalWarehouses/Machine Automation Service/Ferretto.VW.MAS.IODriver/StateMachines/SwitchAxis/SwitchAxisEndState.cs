@@ -5,7 +5,7 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 {
     internal sealed class SwitchAxisEndState : IoStateBase
@@ -13,6 +13,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
         #region Fields
 
         private readonly Axis axisToSwitchOn;
+
+        private readonly bool hasError;
 
         private readonly IoIndex index;
 
@@ -26,6 +28,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
             Axis axisToSwitchOn,
             IoStatus status,
             IoIndex index,
+            bool hasError,
             ILogger logger,
             IIoStateMachine parentStateMachine)
             : base(parentStateMachine, logger)
@@ -33,6 +36,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
             this.status = status;
             this.axisToSwitchOn = axisToSwitchOn;
             this.index = index;
+            this.hasError = hasError;
 
             logger.LogTrace("1:Method Start");
         }
@@ -57,7 +61,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
                 FieldMessageActor.IoDriver,
                 FieldMessageActor.IoDriver,
                 FieldMessageType.SwitchAxis,
-                MessageStatus.OperationEnd,
+                this.hasError ? MessageStatus.OperationError : MessageStatus.OperationEnd,
                 (byte)this.index);
 
             this.Logger.LogTrace($"1:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");

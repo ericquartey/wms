@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Ferretto.WMS.Data.WebAPI.Contracts;
+﻿using System.Threading.Tasks;
 
 namespace Ferretto.VW.App.Services
 {

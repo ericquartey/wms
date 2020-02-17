@@ -586,44 +586,50 @@ namespace Ferretto.VW.Simulator.Services.Models
             {
                 this.machine = value;
 
-                if (this.Machine != null)
+                if (this.machine != null)
                 {
                     switch (this.InverterRole)
                     {
                         case InverterRole.Main:
-                            this.ImpulsesEncoderPerRound = this.Machine.Elevator.Axes.First().Resolution;
+                            {
+                                this.ImpulsesEncoderPerRound = this.machine.Elevator.Axes.First().Resolution;
+                            }
                             break;
 
                         case InverterRole.ElevatorChain:
-                            this.ImpulsesEncoderPerRound = this.Machine.Elevator.Axes.Last().Resolution;
-                            this.Enabled = this.Machine.Elevator.Axes.Count(x => x.Inverter != null) > 1;
+                            this.ImpulsesEncoderPerRound = this.machine.Elevator.Axes.Last().Resolution;
+                            this.Enabled = this.machine.Elevator.Axes.Count(x => x.Inverter != null) > 1;
                             break;
 
                         case InverterRole.Shutter1:
-                            this.Enabled = this.Machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayOne)?.Shutter != null;
+                            this.Enabled = this.machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayOne)?.Shutter != null;
                             break;
 
                         case InverterRole.Shutter2:
-                            this.Enabled = this.Machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayTwo)?.Shutter != null;
+                            {
+                                this.Enabled = this.machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayTwo)?.Shutter != null;
+                            }
                             break;
 
                         case InverterRole.Shutter3:
-                            this.Enabled = this.Machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayThree)?.Shutter != null;
+                            {
+                                this.Enabled = this.machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayThree)?.Shutter != null;
+                            }
                             break;
 
                         case InverterRole.Bay1:
-                            this.ImpulsesEncoderPerRound = this.Machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayOne)?.Resolution ?? this.ImpulsesEncoderPerRound;
-                            this.Enabled = this.Machine.Bays.Any(x => x.Number == BayNumber.BayOne);
+                            this.ImpulsesEncoderPerRound = this.machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayOne)?.Resolution ?? this.ImpulsesEncoderPerRound;
+                            this.Enabled = this.machine.Bays.Any(x => x.Number == BayNumber.BayOne && x.Inverter != null);
                             break;
 
                         case InverterRole.Bay2:
-                            this.ImpulsesEncoderPerRound = this.Machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayTwo)?.Resolution ?? this.ImpulsesEncoderPerRound;
-                            this.Enabled = this.Machine.Bays.Any(x => x.Number == BayNumber.BayTwo);
+                            this.ImpulsesEncoderPerRound = this.machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayTwo)?.Resolution ?? this.ImpulsesEncoderPerRound;
+                            this.Enabled = this.machine.Bays.Any(x => x.Number == BayNumber.BayTwo && x.Inverter != null);
                             break;
 
                         case InverterRole.Bay3:
-                            this.ImpulsesEncoderPerRound = this.Machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayThree)?.Resolution ?? this.ImpulsesEncoderPerRound;
-                            this.Enabled = this.Machine.Bays.Any(x => x.Number == BayNumber.BayThree);
+                            this.ImpulsesEncoderPerRound = this.machine.Bays.FirstOrDefault(x => x.Number == BayNumber.BayThree)?.Resolution ?? this.ImpulsesEncoderPerRound;
+                            this.Enabled = this.machine.Bays.Any(x => x.Number == BayNumber.BayThree && x.Inverter != null);
                             break;
                     }
                 }

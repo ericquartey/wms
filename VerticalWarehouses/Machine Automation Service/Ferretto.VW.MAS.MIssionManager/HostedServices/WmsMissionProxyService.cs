@@ -106,9 +106,10 @@ namespace Ferretto.VW.MAS.MissionManager
                     .Where(m => localMissions.All(lm => lm.WmsId != m.Id))
                     .Where(m => m.Status == MissionStatus.New);
 
-                this.Logger.LogDebug(newWmsMissions.Any()
-                    ? "A total of {newMissionsCount} new WMS mission(s) are available."
-                    : "No new WMS missions are available.", newWmsMissions.Count());
+                if (newWmsMissions.Any())
+                {
+                    this.Logger.LogDebug("A total of {newMissionsCount} new WMS mission(s) are available.", newWmsMissions.Count());
+                }
 
                 foreach (var wmsMission in newWmsMissions)
                 {

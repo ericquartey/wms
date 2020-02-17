@@ -5,7 +5,6 @@ using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
     internal class PositioningEnableOperationState : InverterStateBase
@@ -143,6 +142,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                                 this.ParentStateMachine.ChangeState(
                                     new PositioningStartMovingState(
                                         this.ParentStateMachine,
+                                        this.data,
                                         this.Inverter,
                                         this.Logger));
                             }

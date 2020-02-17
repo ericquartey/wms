@@ -1,7 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class PositioningMessageData : IPositioningMessageData

@@ -251,7 +251,7 @@
                            Margin="0,30,0,15"
                            FontSize="18"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{x:Static res:InstallationApp.CheckBayElevatorAlignment"
+                           Text="{x:Static res:InstallationApp.CheckBayElevatorAlignment}"
                            TextWrapping="Wrap" />
 
                 <ctrls:PpcSpinEdit Grid.Row="4"

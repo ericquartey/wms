@@ -109,6 +109,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             try
             {
+                await base.OnAppearedAsync();
+
                 this.IsBusy = true;
                 this.IsBackNavigationAllowed = true;
                 this.configuration = await this.machineConfigurationWebService.GetAsync();
@@ -120,7 +122,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 #if DEBUG
                 this.exportableDrives = new ReadOnlyCollection<DriveInfo>(DriveInfo.GetDrives().ToList());
 #endif
-                await base.OnAppearedAsync();
             }
             catch (Exception ex)
             {

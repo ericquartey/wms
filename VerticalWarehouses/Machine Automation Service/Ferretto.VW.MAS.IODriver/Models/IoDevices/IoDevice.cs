@@ -22,7 +22,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.IODriver
 {
     internal sealed partial class IoDevice : IIoDevice, IDisposable

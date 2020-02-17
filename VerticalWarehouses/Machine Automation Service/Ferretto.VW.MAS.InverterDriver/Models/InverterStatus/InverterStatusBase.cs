@@ -4,8 +4,6 @@ using Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.StatusWord;
 
-// ReSharper disable InconsistentNaming
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 {
     public abstract class InverterStatusBase : IInverterStatusBase

@@ -105,8 +105,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public bool IsTestShutterCompleted => this.BayShutter.IsCompleted;
 
+        public SetupStatusCapabilities SetupStatusCapabilities { get; private set; }
+
         public ICommand TestShutterCommand =>
-            this.testShutterCommand
+                    this.testShutterCommand
             ??
             (this.testShutterCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.TestShutter),
@@ -114,11 +116,11 @@ namespace Ferretto.VW.App.Menu.ViewModels
                       (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Test) &&
                       (this.BayShutter.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
-        protected SetupStepStatus VerticalOriginCalibration => this.SetupStatusCapabilities?.VerticalOriginCalibration ?? new SetupStepStatus();
+        private SetupStepStatus VerticalOriginCalibration => this.SetupStatusCapabilities?.VerticalOriginCalibration ?? new SetupStepStatus();
 
-        protected SetupStepStatus BayControl => this.BaySetupStatus?.Check ?? new SetupStepStatus();
+        private SetupStepStatus BayControl => this.BaySetupStatus?.Check ?? new SetupStepStatus();
 
-        protected BaySetupStatus BaySetupStatus
+        private BaySetupStatus BaySetupStatus
         {
             get
             {
@@ -143,9 +145,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             }
         }
 
-        protected SetupStepStatus BayShutter => this.BaySetupStatus?.Shutter ?? new SetupStepStatus();
-
-        protected SetupStatusCapabilities SetupStatusCapabilities { get; private set; }
+        private SetupStepStatus BayShutter => this.BaySetupStatus?.Shutter ?? new SetupStepStatus();
 
         #endregion
 

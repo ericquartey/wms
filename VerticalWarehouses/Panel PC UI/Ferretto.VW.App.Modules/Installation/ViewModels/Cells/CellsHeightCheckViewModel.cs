@@ -76,7 +76,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.MachineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.machineElevatorService = machineElevatorService ?? throw new ArgumentNullException(nameof(machineElevatorService));
 
-            //this.InitializeNavigationMenu();
+            // this.InitializeNavigationMenu();
         }
 
         #endregion
@@ -87,6 +87,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.canInputCellId;
             private set => this.SetProperty(ref this.canInputCellId, value);
+        }
+
+        public IEnumerable<Cell> Cells
+        {
+            get => this.cells;
+            private set
+            {
+                if (this.SetProperty(ref this.cells, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
         }
 
         public double? CurrentPosition
@@ -159,10 +171,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.MoveToCellHeightAsync(),
                 this.CanMoveToCellHeight));
 
+        public PositioningProcedure ProcedureParameters { get; private set; }
+
         public Cell SelectedCell
         {
             get => this.selectedCell;
-            protected set
+            private set
             {
                 if (this.SetProperty(ref this.selectedCell, value))
                 {
@@ -178,23 +192,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.StopAsync(),
                 this.CanStop));
 
-        protected IEnumerable<Cell> Cells
-        {
-            get => this.cells;
-            private set
-            {
-                if (this.SetProperty(ref this.cells, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
+        private IMachineCellsWebService MachineCellsWebService { get; }
 
-        protected IMachineCellsWebService MachineCellsWebService { get; }
-
-        protected IMachineElevatorWebService MachineElevatorWebService { get; }
-
-        protected PositioningProcedure ProcedureParameters { get; private set; }
+        private IMachineElevatorWebService MachineElevatorWebService { get; }
 
         #endregion
 
@@ -245,86 +245,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        protected void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
-        {
-            this.CurrentPosition = e.VerticalPosition;
-        }
-
-        protected void OnPositioningOperationChanged(NotificationMessageUI<PositioningMessageData> message)
-        {
-            if (message.IsErrored())
-            {
-                this.IsElevatorMoving = false;
-                //this.ShowSteps();
-            }
-            else if (message.IsNotRunning())
-            {
-                this.IsElevatorMoving = false;
-                this.isElevatorOperationCompleted = true;
-                //this.ShowSteps();
-
-                switch (message.Status)
-                {
-                    case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
-                        {
-                            //this.NavigateToNextStep();
-
-                            break;
-                        }
-
-                    case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
-                        {
-                            this.IsElevatorMoving = false;
-
-                            this.ShowNotification(
-                                VW.App.Resources.InstallationApp.ProcedureWasStopped,
-                                Services.Models.NotificationSeverity.Warning);
-
-                            break;
-                        }
-                }
-            }
-        }
-
-        protected void OnStepChanged(StepChangedMessage e)
-        {
-            switch (this.CurrentStep)
-            {
-                case CellsHeightCheckStep.Inizialize:
-                    if (e.Next)
-                    {
-                        this.CurrentStep = CellsHeightCheckStep.Measured;
-                    }
-
-                    break;
-
-                case CellsHeightCheckStep.Measured:
-                    if (e.Next)
-                    {
-                        this.CurrentStep = CellsHeightCheckStep.Confirm;
-                    }
-                    else
-                    {
-                        this.CurrentStep = CellsHeightCheckStep.Inizialize;
-                    }
-
-                    break;
-
-                case CellsHeightCheckStep.Confirm:
-                    if (!e.Next)
-                    {
-                        this.CurrentStep = CellsHeightCheckStep.Measured;
-                    }
-
-                    break;
-
-                default:
-                    break;
-            }
-
-            this.RaiseCanExecuteChanged();
-        }
-
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
@@ -371,7 +291,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsElevatorMoving = true;
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.IsElevatorMoving = false;
 
@@ -383,13 +303,93 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
+        {
+            this.CurrentPosition = e.VerticalPosition;
+        }
+
+        private void OnPositioningOperationChanged(NotificationMessageUI<PositioningMessageData> message)
+        {
+            if (message.IsErrored())
+            {
+                this.IsElevatorMoving = false;
+
+                // this.ShowSteps();
+            }
+            else if (message.IsNotRunning())
+            {
+                this.IsElevatorMoving = false;
+                this.isElevatorOperationCompleted = true;
+
+                // this.ShowSteps();
+                switch (message.Status)
+                {
+                    case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
+                        {
+                            // this.NavigateToNextStep();
+                            break;
+                        }
+
+                    case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
+                        {
+                            this.IsElevatorMoving = false;
+
+                            this.ShowNotification(
+                                VW.App.Resources.InstallationApp.ProcedureWasStopped,
+                                Services.Models.NotificationSeverity.Warning);
+
+                            break;
+                        }
+                }
+            }
+        }
+
+        private void OnStepChanged(StepChangedMessage e)
+        {
+            switch (this.CurrentStep)
+            {
+                case CellsHeightCheckStep.Inizialize:
+                    if (e.Next)
+                    {
+                        this.CurrentStep = CellsHeightCheckStep.Measured;
+                    }
+
+                    break;
+
+                case CellsHeightCheckStep.Measured:
+                    if (e.Next)
+                    {
+                        this.CurrentStep = CellsHeightCheckStep.Confirm;
+                    }
+                    else
+                    {
+                        this.CurrentStep = CellsHeightCheckStep.Inizialize;
+                    }
+
+                    break;
+
+                case CellsHeightCheckStep.Confirm:
+                    if (!e.Next)
+                    {
+                        this.CurrentStep = CellsHeightCheckStep.Measured;
+                    }
+
+                    break;
+
+                default:
+                    break;
+            }
+
+            this.RaiseCanExecuteChanged();
+        }
+
         private async Task StopAsync()
         {
             try
             {
                 await this.MachineElevatorWebService.StopAsync();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

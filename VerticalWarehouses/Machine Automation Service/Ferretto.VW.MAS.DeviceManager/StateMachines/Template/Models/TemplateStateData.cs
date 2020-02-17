@@ -2,7 +2,7 @@
 using Ferretto.VW.MAS.DeviceManager.Template.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 
-// ReSharper disable ArrangeThisQualifier
+
 
 namespace Ferretto.VW.MAS.DeviceManager.Template.Models
 {

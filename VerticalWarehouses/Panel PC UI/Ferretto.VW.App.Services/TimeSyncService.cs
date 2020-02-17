@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using NLog;
 using Prism.Events;
 

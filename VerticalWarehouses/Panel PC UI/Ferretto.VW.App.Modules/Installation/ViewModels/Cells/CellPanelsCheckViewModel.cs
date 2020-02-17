@@ -185,8 +185,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsCanStepValue => this.CanBaseExecute();
 
-        public override bool KeepAlive => false;
-
         public IEnumerable<CellPanel> Panels
         {
             get => this.panels;
@@ -334,7 +332,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.Panels = await this.machineCellPanelsWebService.GetAllAsync();
                     this.CurrentPanelNumber = currentPanelNumber;
                 }
-                catch (Exception ex)
+                catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
                 {
                     this.ShowNotification(ex);
                 }
@@ -396,7 +394,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated,
                     Services.Models.NotificationSeverity.Success);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -448,7 +446,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.Displacement += this.StepValue;
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -473,7 +471,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.onGoToCell = true;
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -496,7 +494,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
                 await this.MachineService.StopMovingByAllAsync();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

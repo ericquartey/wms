@@ -4,7 +4,7 @@ using Ferretto.VW.MAS.DeviceManager.InverterPowerEnable.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
 {
     internal class InverterPowerEnableErrorState : StateBase

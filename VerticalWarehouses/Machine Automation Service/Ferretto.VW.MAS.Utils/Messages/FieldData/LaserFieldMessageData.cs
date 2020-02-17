@@ -6,11 +6,11 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
 namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
-    public class LaserFieldMessageData : FieldMessageData, IFieldMessageData
+    public sealed class LaserFieldMessageData : FieldMessageData, IFieldMessageData
     {
         #region Constructors
 
-        protected LaserFieldMessageData(MessageVerbosity verbosity) : base(verbosity)
+        public LaserFieldMessageData(MessageVerbosity verbosity = MessageVerbosity.Debug) : base(verbosity)
         {
         }
 

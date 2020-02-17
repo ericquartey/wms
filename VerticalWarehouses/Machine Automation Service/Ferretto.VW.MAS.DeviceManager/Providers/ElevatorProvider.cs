@@ -16,6 +16,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
     {
         #region Fields
 
+        private const double policyVerticalTolerance = 0.01;
+
         private readonly IBaysDataProvider baysDataProvider;
 
         private readonly ICellsProvider cellsProvider;
@@ -226,7 +228,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             // check #1: the elevator is already in front of the specified position
             var currentBayPosition = this.elevatorDataProvider.GetCurrentBayPosition();
-            if (currentBayPosition?.Id == bayPositionId)
+            if (currentBayPosition?.Id == bayPositionId && Math.Abs((currentBayPosition?.Id ?? 0f) - this.elevatorDataProvider.VerticalPosition) < policyVerticalTolerance)
             {
                 return new ActionPolicy
                 {
@@ -268,9 +270,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             // check #1: the elevator is already in front of the specified cell
             var elevatorCell = this.elevatorDataProvider.GetCurrentCell();
-            if (elevatorCell?.Id == cellId)
+            if (elevatorCell?.Id == cellId && Math.Abs((elevatorCell?.Position ?? 0f) - this.elevatorDataProvider.VerticalPosition) < policyVerticalTolerance)
             {
-                return new ActionPolicy { Reason = Resources.Elevator.TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedCell };
+                return new ActionPolicy
+                {
+                    Reason = Resources.Elevator.TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedCell,
+                    ReasonType = ReasonType.ElevatorInPosition
+                };
             }
 
             // check #2: the elevator must be empty with pawl in zero position

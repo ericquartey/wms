@@ -17,7 +17,7 @@ using Ferretto.VW.Utils.Enumerators;
 using Ferretto.VW.Utils.Extensions;
 using Prism.Regions;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.App.Installation.ViewModels
 {
     [Warning(WarningsArea.Installation)]

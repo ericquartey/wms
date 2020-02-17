@@ -6,6 +6,7 @@ using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using UserAccessLevel = Ferretto.VW.CommonUtils.Messages.Enumerations.UserAccessLevel;
 using UserClaims = Ferretto.VW.CommonUtils.Messages.Data.UserClaims;
@@ -22,23 +23,23 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly ILogger<UsersController> logger;
 
-        private readonly IUsersProvider usersProvider;
+        private readonly IServiceScopeFactory serviceScopeFactory;
 
-        private readonly IUsersWmsWebService usersWmsWebService;
+        private readonly IUsersProvider usersProvider;
 
         #endregion
 
         #region Constructors
 
         public UsersController(
-            IUsersWmsWebService usersWmsWebService,
             IUsersProvider usersProvider,
             IConfiguration configuration,
+            IServiceScopeFactory serviceScopeFactory,
             ILogger<UsersController> logger)
         {
-            this.usersWmsWebService = usersWmsWebService ?? throw new ArgumentNullException(nameof(usersWmsWebService));
             this.usersProvider = usersProvider ?? throw new ArgumentNullException(nameof(usersProvider));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -67,8 +68,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 try
                 {
-                    var claims = await this.usersWmsWebService
-                        .AuthenticateWithResourceOwnerPasswordAsync(userName, password);
+                    var usersWmsWebService = this.serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IUsersWmsWebService>();
+
+                    var claims = await usersWmsWebService.AuthenticateWithResourceOwnerPasswordAsync(userName, password);
 
                     this.logger.LogInformation($"Login success for user '{userName}' by '{this.BayNumber}' through WMS.");
 

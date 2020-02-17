@@ -380,7 +380,8 @@ namespace Ferretto.VW.MAS.DataLayer
                     {
                         return;
                     }
-                    cell.LoadingUnit.IsIntoMachine = false;
+                    var loadingUnit = cell.LoadingUnit;
+                    loadingUnit.IsIntoMachine = false;
 
                     var occupiedCells = this.dataContext.Cells
                         .Include(c => c.LoadingUnit)
@@ -389,10 +390,10 @@ namespace Ferretto.VW.MAS.DataLayer
                             &&
                             c.Position >= cell.Position
                             &&
-                            c.Position <= cell.Position + cell.LoadingUnit.Height + VerticalPositionTolerance)
+                            c.Position <= cell.Position + loadingUnit.Height + VerticalPositionTolerance)
                         .ToArray();
 
-                    var weight = cell.LoadingUnit.GrossWeight;
+                    var weight = loadingUnit.GrossWeight;
                     if (cell.Side is WarehouseSide.Front)
                     {
                         statistics.TotalWeightFront -= weight;
@@ -412,7 +413,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     foreach (var occupiedCell in occupiedCells)
                     {
-                        if (occupiedCell.LoadingUnit != null && occupiedCell.LoadingUnit.Id != cell.LoadingUnit.Id)
+                        if (occupiedCell.LoadingUnit != null && occupiedCell.LoadingUnit.Id != loadingUnit.Id)
                         {
                             throw new InvalidOperationException(Resources.Cells.TheCellUnexpectedlyContainsAnotherLoadingUnit);
                         }

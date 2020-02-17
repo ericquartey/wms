@@ -5,7 +5,7 @@ using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 {
     public class AngInverterStatus : InverterStatusBase, IAngInverterStatus, IPositioningInverterStatus, IHomingInverterStatus

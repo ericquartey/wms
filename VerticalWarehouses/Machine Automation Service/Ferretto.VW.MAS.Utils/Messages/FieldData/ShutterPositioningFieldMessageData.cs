@@ -4,7 +4,7 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
 namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
-    public class ShutterPositioningFieldMessageData : FieldMessageData, IShutterPositioningFieldMessageData
+    public sealed class ShutterPositioningFieldMessageData : FieldMessageData, IShutterPositioningFieldMessageData
     {
         #region Constructors
 

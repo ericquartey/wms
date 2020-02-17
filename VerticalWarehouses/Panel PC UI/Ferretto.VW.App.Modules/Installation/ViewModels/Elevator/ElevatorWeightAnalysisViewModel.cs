@@ -469,7 +469,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.InputNetWeight.Value,
                     this.loadingUnit?.Id);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.IsExecutingProcedure = false;
                 this.ShowNotification(ex);
@@ -488,7 +488,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 await this.machineElevatorWebService.StopAsync();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

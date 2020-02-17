@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly IMachineBaysWebService machineBaysWebService;
 
-        private readonly ISensorsService sensorsService;
+        private readonly Services.ISensorsService sensorsService;
 
         private DelegateCommand confirmEjectLoadingUnitCommand;
 
@@ -54,9 +54,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public LoadingUnitFromBayToBayViewModel(
             IMachineBaysWebService machineBaysWebService,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-            IMachineModeWebService machineModeWebService,
-            ISensorsService sensorsService,
-            IBayManager bayManagerService)
+            Services.ISensorsService sensorsService,
+            Services.IBayManager bayManagerService,
+            IMachineModeWebService machineModeWebService)
             : base(
                 machineLoadingUnitsWebService,
                 machineModeWebService,
@@ -148,22 +148,18 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public override bool CanStart()
         {
             return base.CanStart() &&
-                   this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations;
+                   this.MachineModeService.MachineMode == MachineMode.Manual;
         }
 
         public async Task GetLoadingUnits()
         {
             try
             {
-                var lst = await this.MachineLoadingUnitsWebService.GetAllAsync();
-                this.loadingUnits = lst;
+                this.loadingUnits = await this.MachineLoadingUnitsWebService.GetAllAsync();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
-            }
-            finally
-            {
             }
         }
 
@@ -186,7 +182,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 var loadingUnit = this.MachineStatus.LoadingUnitPositionUpInBay != null ?
                                   this.MachineStatus.LoadingUnitPositionUpInBay?.Id.ToString() :
                                   this.MachineStatus.LoadingUnitPositionDownInBay?.Id.ToString();
-                int id = 0;
+                var id = 0;
                 int.TryParse(loadingUnit, out id);
 
                 this.LoadingUnitId = this.loadingUnits.FirstOrDefault(f => f.Id == id)?.Id;

@@ -1,7 +1,7 @@
 ﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord
 {
     public class TableTravelControlWord : ControlWordBase, ITableTravelControlWord

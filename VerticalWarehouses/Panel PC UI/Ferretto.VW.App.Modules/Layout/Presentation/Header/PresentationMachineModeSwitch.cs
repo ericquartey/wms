@@ -174,30 +174,14 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             }
             else if (this.machineMode is MachineMode.Manual || this.machineMode is MachineMode.Test)
             {
-                var view = this.GetActiveView();
-                if (view.Equals("LoadingUnitFromBayToBayView", StringComparison.InvariantCultureIgnoreCase) ||
-                    view.Equals("LoadingUnitFromBayToCellView", StringComparison.InvariantCultureIgnoreCase) ||
-                    view.Equals("LoadingUnitFromCellToBayView", StringComparison.InvariantCultureIgnoreCase) ||
-                    view.Equals("LoadingUnitFromCellToCellView", StringComparison.InvariantCultureIgnoreCase))
+                var messageBoxResult = this.dialogService.ShowMessage(General.ConfirmMachineModeSwitchAutomatic, General.Automatic, DialogType.Question, DialogButtons.YesNo);
+                if (messageBoxResult == DialogResult.Yes)
                 {
-                    await this.machineModeWebService.SetLoadUnitOperationsAsync();
-                }
-                else
-                {
-                    var messageBoxResult = this.dialogService.ShowMessage(General.ConfirmMachineModeSwitchAutomatic, General.Automatic, DialogType.Question, DialogButtons.YesNo);
-                    if (messageBoxResult == DialogResult.Yes)
-                    {
-                        await this.machineModeWebService.SetAutomaticAsync();
-                    }
+                    await this.machineModeWebService.SetAutomaticAsync();
                 }
             }
             else if (this.machineMode is MachineMode.LoadUnitOperations)
             {
-                //var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, General.LoadUnitOperations, DialogType.Question, DialogButtons.YesNo);
-                //if (messageBoxResult == DialogResult.Yes)
-                //{
-                //    await this.machineModeWebService.SetLoadUnitOperationsAsync();
-                //}
                 await this.machineModeWebService.SetManualAsync();
             }
             else

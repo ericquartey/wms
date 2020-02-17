@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void AddElevatorPseudoBay();
 
-        Bay AssignWmsMission(BayNumber bayNumber, Mission mission, int? wmsMissionOperationId);
+        Bay AssignMission(BayNumber bayNumber, Mission mission);
 
         Bay ClearMission(BayNumber bayNumber);
 

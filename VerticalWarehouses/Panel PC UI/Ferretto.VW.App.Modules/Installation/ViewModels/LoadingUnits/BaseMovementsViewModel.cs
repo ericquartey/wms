@@ -282,11 +282,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             this.IsBackNavigationAllowed = true;
 
-            if (this.MachineModeService.MachineMode != MachineMode.LoadUnitOperations)
-            {
-                await this.MachineModeWebService.SetLoadUnitOperationsAsync();
-            }
-
             this.SubscribeToEvents();
 
             await base.OnAppearedAsync();
@@ -370,6 +365,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             if (e.MachinePowerState != MachinePowerState.Powered)
             {
                 this.RestoreStates();
+                this.IsBackNavigationAllowed = true;
             }
         }
 

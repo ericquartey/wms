@@ -6,7 +6,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
+
 
 namespace Ferretto.VW.App.Services
 {

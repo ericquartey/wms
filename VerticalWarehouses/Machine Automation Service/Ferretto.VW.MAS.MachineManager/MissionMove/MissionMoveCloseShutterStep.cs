@@ -74,6 +74,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         private void CloseShutterEnd()
         {
+            if (this.Mission.ErrorCode != MachineErrorCode.NoError)
+            {
+                this.ErrorsProvider.RecordNew(this.Mission.ErrorCode, this.Mission.TargetBay);
+            }
             IMissionMoveBase newStep;
             if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
                 && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator

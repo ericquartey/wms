@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 || (bay.Positions.FirstOrDefault(p => p.Location == this.Mission.LoadUnitDestination)?.LoadingUnit.Id ?? this.Mission.LoadUnitId) == this.Mission.LoadUnitId
                 )
             {
-                this.BaysDataProvider.AssignWmsMission(this.Mission.TargetBay, this.Mission, null);
+                this.BaysDataProvider.AssignMission(this.Mission.TargetBay, this.Mission);
             }
 
             if (this.Mission.LoadUnitId > 0)

@@ -4,7 +4,7 @@ using Ferretto.VW.MAS.DeviceManager.Template.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
-// ReSharper disable ArrangeThisQualifier
+
 namespace Ferretto.VW.MAS.DeviceManager.Template
 {
     internal class TemplateErrorState : StateBase

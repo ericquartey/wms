@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Net.Http;
 using Ferretto.VW.Devices.BarcodeReader;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Unity;
@@ -12,8 +14,7 @@ namespace Ferretto.VW.App.Accessories
     {
         #region Methods
 
-        public static IContainerRegistry ConfigureBarcodeReaderUiServices(
-            this IContainerRegistry containerRegistry)
+        public static IContainerRegistry ConfigureBarcodeReaderUiServices(this IContainerRegistry containerRegistry)
         {
             if (containerRegistry is null)
             {
