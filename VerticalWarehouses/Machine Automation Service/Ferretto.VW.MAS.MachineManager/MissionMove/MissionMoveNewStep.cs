@@ -432,6 +432,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MissionType.LoadUnitOperation:
                     returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.LoadUnitOperations
                         || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.Manual
                         );
                     break;
 
