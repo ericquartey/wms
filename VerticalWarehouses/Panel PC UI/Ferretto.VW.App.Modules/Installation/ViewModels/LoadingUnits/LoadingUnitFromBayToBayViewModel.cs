@@ -157,7 +157,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.loadingUnits = await this.MachineLoadingUnitsWebService.GetAllAsync();
             }
-            catch (MasWebApiException ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
