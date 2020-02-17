@@ -75,7 +75,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 await this.MachineLoadingUnitsWebService.StartMovingSourceDestinationAsync(LoadingUnitLocation.Cell, LoadingUnitLocation.Cell, this.LoadingUnitCellId, this.DestinationCellId);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

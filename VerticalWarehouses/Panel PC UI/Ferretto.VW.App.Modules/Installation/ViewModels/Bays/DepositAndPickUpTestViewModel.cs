@@ -506,7 +506,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.ExecuteNextStateAsync();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

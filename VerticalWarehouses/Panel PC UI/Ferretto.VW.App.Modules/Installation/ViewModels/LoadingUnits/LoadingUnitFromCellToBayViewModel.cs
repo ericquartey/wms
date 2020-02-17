@@ -110,7 +110,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 //await this.MachineLoadingUnitsWebService.EjectLoadingUnitAsync(destination, this.LoadingUnitId.Value);
                 await this.MachineLoadingUnitsWebService.StartMovingLoadingUnitToBayAsync(this.LoadingUnitId.Value, destination);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -191,7 +191,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 await updateTask;
             }
-            catch (Exception e)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(e);
             }
