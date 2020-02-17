@@ -193,7 +193,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
-                this.ShowNotification(e);
+                this.ShowNotification(ex);
             }
         }
 
