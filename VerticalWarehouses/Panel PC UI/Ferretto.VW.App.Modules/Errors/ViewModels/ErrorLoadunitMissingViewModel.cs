@@ -80,6 +80,18 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         private string errorTime;
 
+        private bool isBay1PositionDownVisible;
+
+        private bool isBay1PositionUpVisible;
+
+        private bool isBay2PositionDownVisible;
+
+        private bool isBay2PositionUpVisible;
+
+        private bool isBay3PositionDownVisible;
+
+        private bool isBay3PositionUpVisible;
+
         private SubscriptionToken loadunitsToken;
 
         private int? luIdOnBay1Down;
@@ -248,6 +260,42 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         public bool HasStepLoadunitOnElevator => this.currentStep is ErrorLoadunitMissingStepLoadunitOnElevator;
 
         public bool HasStepStart => this.currentStep is ErrorLoadunitMissingStepStart;
+
+        public bool IsBay1PositionDownVisible
+        {
+            get => this.isBay1PositionDownVisible;
+            set => this.SetProperty(ref this.isBay1PositionDownVisible, value);
+        }
+
+        public bool IsBay1PositionUpVisible
+        {
+            get => this.isBay1PositionUpVisible;
+            set => this.SetProperty(ref this.isBay1PositionUpVisible, value);
+        }
+
+        public bool IsBay2PositionDownVisible
+        {
+            get => this.isBay2PositionDownVisible;
+            set => this.SetProperty(ref this.isBay2PositionDownVisible, value);
+        }
+
+        public bool IsBay2PositionUpVisible
+        {
+            get => this.isBay2PositionUpVisible;
+            set => this.SetProperty(ref this.isBay2PositionUpVisible, value);
+        }
+
+        public bool IsBay3PositionDownVisible
+        {
+            get => this.isBay3PositionDownVisible;
+            set => this.SetProperty(ref this.isBay3PositionDownVisible, value);
+        }
+
+        public bool IsBay3PositionUpVisible
+        {
+            get => this.isBay3PositionUpVisible;
+            set => this.SetProperty(ref this.isBay3PositionUpVisible, value);
+        }
 
         public bool IsMoving
         {
@@ -590,12 +638,18 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 this.Bay1StepVisible = false;
                 this.Bay2StepVisible = false;
                 this.Bay3StepVisible = false;
+                this.IsBay1PositionUpVisible = false;
+                this.IsBay1PositionDownVisible = false;
+                this.IsBay2PositionUpVisible = false;
+                this.IsBay2PositionDownVisible = false;
+                this.IsBay3PositionUpVisible = false;
+                this.IsBay3PositionDownVisible = false;
 
                 // Elevator
                 this.LuIdOnElevator = null;
                 if (this.SensorsService.IsLoadingUnitOnElevator)
                 {
-                    this.LuIdOnElevator = this.MachineService.Loadunits.First(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0).Id;
+                    this.LuIdOnElevator = this.MachineService.Loadunits?.FirstOrDefault(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0)?.Id;
                 }
 
                 if (this.LuIdOnElevator != null)
@@ -611,13 +665,15 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 if (this.SensorsService.Sensors.LUPresentInBay1 &&
                     this.HasBay1PositionUpVisible)
                 {
-                    this.LuIdOnBay1Up = this.MachineService.Loadunits.First(l => l.Status == LoadingUnitStatus.Undefined && l.Height == 0).Id;
+                    this.LuIdOnBay1Up = this.MachineService.Loadunits?.FirstOrDefault(l => l.Status == LoadingUnitStatus.Undefined && l.Height == 0)?.Id;
+                    this.IsBay1PositionUpVisible = true;
                 }
 
                 if (this.SensorsService.Sensors.LUPresentMiddleBottomBay1 &&
                     this.HasBay1PositionDownVisible)
                 {
-                    this.LuIdOnBay1Down = this.MachineService.Loadunits.First(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0).Id;
+                    this.LuIdOnBay1Down = this.MachineService.Loadunits?.FirstOrDefault(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0)?.Id;
+                    this.IsBay1PositionDownVisible = true;
                 }
 
                 if (this.LuIdOnBay1Up != null || this.LuIdOnBay1Down != null)
@@ -632,13 +688,15 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 if (this.SensorsService.Sensors.LUPresentInBay2 &&
                     this.HasBay2PositionUpVisible)
                 {
-                    this.LuIdOnBay2Up = this.MachineService.Loadunits.First(l => l.Status == LoadingUnitStatus.Undefined && l.Height == 0).Id;
+                    this.LuIdOnBay2Up = this.MachineService.Loadunits?.FirstOrDefault(l => l.Status == LoadingUnitStatus.Undefined && l.Height == 0)?.Id;
+                    this.IsBay2PositionUpVisible = true;
                 }
 
                 if (this.SensorsService.Sensors.LUPresentMiddleBottomBay2 &&
                     this.HasBay2PositionDownVisible)
                 {
-                    this.LuIdOnBay2Down = this.MachineService.Loadunits.First(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0).Id;
+                    this.LuIdOnBay2Down = this.MachineService.Loadunits?.FirstOrDefault(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0)?.Id;
+                    this.IsBay2PositionDownVisible = true;
                 }
 
                 if (this.LuIdOnBay2Up != null || this.LuIdOnBay2Down != null)
@@ -653,13 +711,15 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 if (this.SensorsService.Sensors.LUPresentInBay3 &&
                     this.HasBay3PositionUpVisible)
                 {
-                    this.LuIdOnBay3Up = this.MachineService.Loadunits.First(l => l.Status == LoadingUnitStatus.Undefined && l.Height == 0).Id;
+                    this.LuIdOnBay3Up = this.MachineService.Loadunits?.FirstOrDefault(l => l.Status == LoadingUnitStatus.Undefined && l.Height == 0)?.Id;
+                    this.IsBay3PositionUpVisible = true;
                 }
 
                 if (this.SensorsService.Sensors.LUPresentMiddleBottomBay3 &&
                     this.HasBay3PositionDownVisible)
                 {
-                    this.LuIdOnBay3Down = this.MachineService.Loadunits.First(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0).Id;
+                    this.LuIdOnBay3Down = this.MachineService.Loadunits?.FirstOrDefault(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0)?.Id;
+                    this.IsBay3PositionDownVisible = true;
                 }
 
                 if (this.LuIdOnBay3Up != null || this.LuIdOnBay3Down != null)
@@ -1086,7 +1146,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             {
                 await this.MachineService.StopMovingByAllAsync();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }

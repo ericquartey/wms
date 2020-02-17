@@ -148,7 +148,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                                     this.selectedList = new ItemListExecution(list, this.bayManager.Identity.Id);
                                     this.ShowDetails();
                                 }
-                                catch (Exception ex)
+                                catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
                                 {
                                     this.ShowNotification(ex);
                                 }
@@ -168,7 +168,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                                     this.selectedList = new ItemListExecution(list, this.bayManager.Identity.Id);
                                     await this.ExecuteListAsync();
                                 }
-                                catch (Exception ex)
+                                catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
                                 {
                                     this.ShowNotification(ex);
                                 }
@@ -193,7 +193,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 await this.itemListsWebService.ExecuteAsync(this.selectedList.Id, this.areaId.Value, bay.Id);
                 await this.LoadListsAsync();
             }
-            catch
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification("Cannot execute List.", Services.Models.NotificationSeverity.Warning);
             }
@@ -290,7 +290,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
                 this.SelectLoadingUnit();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.lists?.Clear();
                 this.ShowNotification(ex);
