@@ -7,8 +7,15 @@ namespace Ferretto.VW.App.Scaffolding.Converters
 {
     public class TwoWayConverter : IMultiValueConverter, IValueConverter
     {
-        private PropertyInfo _pinfo;
+        #region Fields
+
         private object _entity;
+
+        private PropertyInfo _pinfo;
+
+        #endregion
+
+        #region Methods
 
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
@@ -34,6 +41,12 @@ namespace Ferretto.VW.App.Scaffolding.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            // nullable?
+            if (targetType.IsGenericType && targetType.IsValueType)
+            {
+                targetType = Nullable.GetUnderlyingType(targetType);
+            }
+
             return System.Convert.ChangeType(value, targetType, culture);
         }
 
@@ -50,5 +63,7 @@ namespace Ferretto.VW.App.Scaffolding.Converters
         {
             return System.Convert.ChangeType(value, targetType, culture);
         }
+
+        #endregion
     }
 }
