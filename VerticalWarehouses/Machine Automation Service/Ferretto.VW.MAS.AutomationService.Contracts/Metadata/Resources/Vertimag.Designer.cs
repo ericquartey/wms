@@ -88,7 +88,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Offset cinghia.
+        ///   Looks up a localized string similar to Offset zero catena.
         /// </summary>
         public static string Bay_ChainOffset {
             get {
@@ -268,7 +268,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Distanza dalla culla.
+        ///   Looks up a localized string similar to Interasse mensole.
         /// </summary>
         public static string Carousel_ElevatorDistance {
             get {
@@ -286,7 +286,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Velocità homing (fast).
+        ///   Looks up a localized string similar to Velocità homing fast.
         /// </summary>
         public static string Carousel_HomingFastSpeed {
             get {
@@ -547,7 +547,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Alt. max cassetto.
+        ///   Looks up a localized string similar to Altezza massima cassetto.
         /// </summary>
         public static string Machine_LoadUnitMaxHeight {
             get {

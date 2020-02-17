@@ -46,14 +46,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(25)]
             public IoDevice IoDevice { get; set; }
 
-            [Editable(false)]
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Bay_IsActive))]
-            [Id(3)]
+            [ScaffoldColumn(false)]
             public bool IsActive { get; set; }
 
-            [Editable(false)]
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Bay_IsDouble))]
-            [Id(4)]
+            [ScaffoldColumn(false)]
             public bool IsDouble { get; set; }
 
             [Editable(false)]
@@ -82,6 +78,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Bay_Resolution))]
             [Id(7)]
+            [Unit("imp/mm")]
             public double Resolution { get; set; }
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.BayShutter))]
