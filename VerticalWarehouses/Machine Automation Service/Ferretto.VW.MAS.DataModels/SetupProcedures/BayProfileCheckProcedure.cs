@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Ferretto.VW.MAS.DataModels
 {
-    public sealed class BayProfileCheckProcedure : PositioningProcedure
+    public sealed class BayProfileCheckProcedure : SetupProcedure
     {
         #region Properties
 

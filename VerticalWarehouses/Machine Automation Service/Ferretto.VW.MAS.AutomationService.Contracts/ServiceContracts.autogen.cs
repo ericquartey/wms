@@ -3108,17 +3108,35 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class SetupProceduresSet : DataModel
     {
+        [Newtonsoft.Json.JsonProperty("Bay1CarouselCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public RepeatedTestProcedure Bay1CarouselCalibration { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Bay1CarouselTest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public RepeatedTestProcedure Bay1CarouselTest { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("Bay1ProfileCheck", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public BayProfileCheckProcedure Bay1ProfileCheck { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Bay1ShutterTest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public RepeatedTestProcedure Bay1ShutterTest { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("Bay2CarouselCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public RepeatedTestProcedure Bay2CarouselCalibration { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Bay2CarouselTest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public RepeatedTestProcedure Bay2CarouselTest { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("Bay2ProfileCheck", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public BayProfileCheckProcedure Bay2ProfileCheck { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Bay2ShutterTest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public RepeatedTestProcedure Bay2ShutterTest { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Bay3CarouselCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public RepeatedTestProcedure Bay3CarouselCalibration { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Bay3CarouselTest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public RepeatedTestProcedure Bay3CarouselTest { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Bay3ProfileCheck", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public BayProfileCheckProcedure Bay3ProfileCheck { get; set; }
@@ -3166,30 +3184,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class BayProfileCheckProcedure : PositioningProcedure
-    {
-        [Newtonsoft.Json.JsonProperty("ProfileCorrectDistance", Required = Newtonsoft.Json.Required.Always)]
-        public double ProfileCorrectDistance { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("ProfileDegrees", Required = Newtonsoft.Json.Required.Always)]
-        public double ProfileDegrees { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("ProfileTotalDistance", Required = Newtonsoft.Json.Required.Always)]
-        public double ProfileTotalDistance { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
-        }
-    
-        public static BayProfileCheckProcedure FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<BayProfileCheckProcedure>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class RepeatedTestProcedure : SetupProcedure
     {
         [Newtonsoft.Json.JsonProperty("InProgress", Required = Newtonsoft.Json.Required.Always)]
@@ -3209,6 +3203,30 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public static RepeatedTestProcedure FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<RepeatedTestProcedure>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class BayProfileCheckProcedure : SetupProcedure
+    {
+        [Newtonsoft.Json.JsonProperty("ProfileCorrectDistance", Required = Newtonsoft.Json.Required.Always)]
+        public double ProfileCorrectDistance { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ProfileDegrees", Required = Newtonsoft.Json.Required.Always)]
+        public double ProfileDegrees { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ProfileTotalDistance", Required = Newtonsoft.Json.Required.Always)]
+        public double ProfileTotalDistance { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static BayProfileCheckProcedure FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<BayProfileCheckProcedure>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }

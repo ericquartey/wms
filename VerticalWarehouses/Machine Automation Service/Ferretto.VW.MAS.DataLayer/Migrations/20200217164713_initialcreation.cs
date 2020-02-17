@@ -226,11 +226,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     FeedRate = table.Column<double>(nullable: false),
                     IsCompleted = table.Column<bool>(nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
-                    InProgress = table.Column<bool>(nullable: true),
-                    Step = table.Column<double>(nullable: true),
                     ProfileCorrectDistance = table.Column<double>(nullable: true),
                     ProfileDegrees = table.Column<double>(nullable: true),
                     ProfileTotalDistance = table.Column<double>(nullable: true),
+                    InProgress = table.Column<bool>(nullable: true),
+                    Step = table.Column<double>(nullable: true),
                     ReferenceCellId = table.Column<int>(nullable: true),
                     RepeatedTestProcedure_InProgress = table.Column<bool>(nullable: true),
                     PerformedCycles = table.Column<int>(nullable: true),
@@ -384,10 +384,16 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    Bay1CarouselCalibrationId = table.Column<int>(nullable: true),
+                    Bay1CarouselTestId = table.Column<int>(nullable: true),
                     Bay1ProfileCheckId = table.Column<int>(nullable: true),
                     Bay1ShutterTestId = table.Column<int>(nullable: true),
+                    Bay2CarouselCalibrationId = table.Column<int>(nullable: true),
+                    Bay2CarouselTestId = table.Column<int>(nullable: true),
                     Bay2ProfileCheckId = table.Column<int>(nullable: true),
                     Bay2ShutterTestId = table.Column<int>(nullable: true),
+                    Bay3CarouselCalibrationId = table.Column<int>(nullable: true),
+                    Bay3CarouselTestId = table.Column<int>(nullable: true),
                     Bay3ProfileCheckId = table.Column<int>(nullable: true),
                     Bay3ShutterTestId = table.Column<int>(nullable: true),
                     BeltBurnishingTestId = table.Column<int>(nullable: true),
@@ -404,6 +410,18 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     table.PrimaryKey("PK_SetupProceduresSets", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_SetupProceduresSets_SetupProcedures_Bay1CarouselCalibrationId",
+                        column: x => x.Bay1CarouselCalibrationId,
+                        principalTable: "SetupProcedures",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SetupProceduresSets_SetupProcedures_Bay1CarouselTestId",
+                        column: x => x.Bay1CarouselTestId,
+                        principalTable: "SetupProcedures",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_SetupProceduresSets_SetupProcedures_Bay1ProfileCheckId",
                         column: x => x.Bay1ProfileCheckId,
                         principalTable: "SetupProcedures",
@@ -416,6 +434,18 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
+                        name: "FK_SetupProceduresSets_SetupProcedures_Bay2CarouselCalibrationId",
+                        column: x => x.Bay2CarouselCalibrationId,
+                        principalTable: "SetupProcedures",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SetupProceduresSets_SetupProcedures_Bay2CarouselTestId",
+                        column: x => x.Bay2CarouselTestId,
+                        principalTable: "SetupProcedures",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_SetupProceduresSets_SetupProcedures_Bay2ProfileCheckId",
                         column: x => x.Bay2ProfileCheckId,
                         principalTable: "SetupProcedures",
@@ -424,6 +454,18 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     table.ForeignKey(
                         name: "FK_SetupProceduresSets_SetupProcedures_Bay2ShutterTestId",
                         column: x => x.Bay2ShutterTestId,
+                        principalTable: "SetupProcedures",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SetupProceduresSets_SetupProcedures_Bay3CarouselCalibrationId",
+                        column: x => x.Bay3CarouselCalibrationId,
+                        principalTable: "SetupProcedures",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SetupProceduresSets_SetupProcedures_Bay3CarouselTestId",
+                        column: x => x.Bay3CarouselTestId,
                         principalTable: "SetupProcedures",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -1304,7 +1346,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 4, 17, 17, 18, 35, 578, DateTimeKind.Local).AddTicks(9505), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 4, 17, 17, 47, 12, 607, DateTimeKind.Local).AddTicks(6278), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -1493,6 +1535,16 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_SetupProceduresSets_Bay1CarouselCalibrationId",
+                table: "SetupProceduresSets",
+                column: "Bay1CarouselCalibrationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SetupProceduresSets_Bay1CarouselTestId",
+                table: "SetupProceduresSets",
+                column: "Bay1CarouselTestId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SetupProceduresSets_Bay1ProfileCheckId",
                 table: "SetupProceduresSets",
                 column: "Bay1ProfileCheckId");
@@ -1503,6 +1555,16 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 column: "Bay1ShutterTestId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SetupProceduresSets_Bay2CarouselCalibrationId",
+                table: "SetupProceduresSets",
+                column: "Bay2CarouselCalibrationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SetupProceduresSets_Bay2CarouselTestId",
+                table: "SetupProceduresSets",
+                column: "Bay2CarouselTestId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SetupProceduresSets_Bay2ProfileCheckId",
                 table: "SetupProceduresSets",
                 column: "Bay2ProfileCheckId");
@@ -1511,6 +1573,16 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "IX_SetupProceduresSets_Bay2ShutterTestId",
                 table: "SetupProceduresSets",
                 column: "Bay2ShutterTestId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SetupProceduresSets_Bay3CarouselCalibrationId",
+                table: "SetupProceduresSets",
+                column: "Bay3CarouselCalibrationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SetupProceduresSets_Bay3CarouselTestId",
+                table: "SetupProceduresSets",
+                column: "Bay3CarouselTestId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SetupProceduresSets_Bay3ProfileCheckId",

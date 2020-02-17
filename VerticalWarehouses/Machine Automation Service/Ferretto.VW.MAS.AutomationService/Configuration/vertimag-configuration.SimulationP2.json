@@ -5819,10 +5819,6 @@
     "SerialNumber": "Simulation Prototype #2"
   },
   "SetupProcedures": {
-    "BayHeightCheck": {
-      "Step": 0.5,
-      "FeedRate": 0.2
-    },
     "BeltBurnishingTest": {
       "RequiredCycles": 20
     },
@@ -5876,6 +5872,24 @@
       "FeedRate": 0.2
     },
     "VerticalOriginCalibration": {
+    },
+    "Bay1ProfileCheck": {
+    },
+    "Bay2ProfileCheck": {
+    },
+    "Bay3ProfileCheck": {
+    },
+    "Bay1CarouselTest": {
+    },
+    "Bay1CarouselCalibration": {
+    },
+    "Bay2CarouselTest": {
+    },
+    "Bay2CarouselCalibration": {
+    },
+    "Bay3CarouselTest": {
+    },
+    "Bay3CarouselCalibration": {
     }
   }
 }
