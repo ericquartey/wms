@@ -121,7 +121,7 @@
     <value>Tutti</value>
   </data>
   <data name="AllDescription" xml:space="preserve">
-    <value>Permette di accedere all'elenco di tutti i parametri indipendemente dalla cattegoria.</value>
+    <value>Permette di accedere all'elenco di tutti i parametri indipendemente dalla categoria.</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Annulla</value>
@@ -136,7 +136,7 @@
     <value>Macchina</value>
   </data>
   <data name="MachineDescription" xml:space="preserve">
-    <value>Permette di accedere all'elenco di tutti i parametri indipendemente dalla cattegoria.</value>
+    <value>Permette di accedere all'elenco di tutti i parametri indipendemente dalla categoria.</value>
   </data>
   <data name="Root" xml:space="preserve">
     <value>Root</value>

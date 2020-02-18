@@ -88,6 +88,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Permette di modificare i parametri e i dispositivi della baia..
+        /// </summary>
+        public static string Bay_CategoryDescription {
+            get {
+                return ResourceManager.GetString("Bay_CategoryDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Offset zero catena.
         /// </summary>
         public static string Bay_ChainOffset {
@@ -313,6 +322,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Permette di modificare i parametri dell&apos;elevatore e dei due assi ad esso associati..
+        /// </summary>
+        public static string Elevator_CategoryDescription {
+            get {
+                return ResourceManager.GetString("Elevator_CategoryDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Asse elevatore {0}.
         /// </summary>
         public static string ElevatorAxis {
@@ -529,11 +547,38 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IP Laser.
+        /// </summary>
+        public static string Laser_IpAddress {
+            get {
+                return ResourceManager.GetString("Laser_IpAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Porta Laser.
+        /// </summary>
+        public static string Laser_TcpPort {
+            get {
+                return ResourceManager.GetString("Laser_TcpPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Macchina.
         /// </summary>
         public static string Machine {
             get {
                 return ResourceManager.GetString("Machine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Permette di modificare i parametri strutturali della macchina..
+        /// </summary>
+        public static string Machine_CategoryDescription {
+            get {
+                return ResourceManager.GetString("Machine_CategoryDescription", resourceCulture);
             }
         }
         

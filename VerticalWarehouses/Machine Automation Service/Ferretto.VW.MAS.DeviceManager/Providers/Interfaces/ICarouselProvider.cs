@@ -32,6 +32,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void Stop(BayNumber bayNumber, MessageActor sender);
 
+        void StopTest(BayNumber bayNumber, MessageActor sender);
+
         #endregion
     }
 }
