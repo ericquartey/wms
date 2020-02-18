@@ -83,9 +83,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 SerialNumber = machine.SerialNumber,
                 TrayCount = loadingUnits.Count(),
                 MaxGrossWeight = machine.MaxGrossWeight,
-                InstallationDate = servicingInfo.InstallationDate,
-                NextServiceDate = servicingInfo.NextServiceDate,
-                LastServiceDate = servicingInfo.LastServiceDate,
+                InstallationDate = servicingInfo?.InstallationDate,
+                NextServiceDate = servicingInfo?.NextServiceDate,
+                LastServiceDate = servicingInfo?.LastServiceDate,
                 IsOneTonMachine = this.machineVolatileDataProvider.IsOneTonMachine.Value,
             };
 

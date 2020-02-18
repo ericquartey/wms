@@ -8,7 +8,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int Id { get; set; }
 
-        public DateTime InstallationDate { get; set; }
+        public DateTime? InstallationDate { get; set; }
 
         public DateTime? LastServiceDate { get; set; }
 
