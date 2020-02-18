@@ -70,7 +70,7 @@ namespace Ferretto.VW.App.Scaffolding.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Permette di accedere all&apos;elenco di tutti i parametri indipendemente dalla cattegoria..
+        ///   Looks up a localized string similar to Permette di accedere all&apos;elenco di tutti i parametri indipendemente dalla categoria..
         /// </summary>
         public static string AllDescription {
             get {
@@ -115,7 +115,7 @@ namespace Ferretto.VW.App.Scaffolding.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Permette di accedere all&apos;elenco di tutti i parametri indipendemente dalla cattegoria..
+        ///   Looks up a localized string similar to Permette di accedere all&apos;elenco di tutti i parametri indipendemente dalla categoria..
         /// </summary>
         public static string MachineDescription {
             get {

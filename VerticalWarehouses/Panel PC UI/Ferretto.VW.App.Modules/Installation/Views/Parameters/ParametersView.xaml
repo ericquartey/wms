@@ -67,7 +67,6 @@
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding GoToImport}"
                                     Content="Importa"
-                                    IsBusy="{Binding IsBusy}"
                                     Kind="Magnify"
                                     Style="{DynamicResource PpcButtonMenuStyle}"
                                     Visibility="{Binding IsNavigating, ElementName=scaffolder, Converter={StaticResource TTUI}, ConverterParameter=Invert}" />
@@ -79,7 +78,6 @@
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding GoToExport}"
                                     Content="{x:Static res:InstallationApp.Export}"
-                                    IsBusy="{Binding IsBusy}"
                                     Kind="Magnify"
                                     Style="{DynamicResource PpcButtonMenuStyle}"
                                     Visibility="{Binding IsNavigating, ElementName=scaffolder, Converter={StaticResource TTUI}, ConverterParameter=Invert}" />
