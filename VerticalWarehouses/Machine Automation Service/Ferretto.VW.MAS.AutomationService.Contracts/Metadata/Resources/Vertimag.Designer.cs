@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AssistedMovements.
+        ///   Looks up a localized string similar to Movimenti guidati.
         /// </summary>
         public static string AssistedMovements {
             get {
@@ -412,7 +412,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to EmptyLoadMovement.
+        ///   Looks up a localized string similar to Movimenti a vuoto.
         /// </summary>
         public static string EmptyLoadMovement {
             get {
@@ -439,7 +439,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FullLoadMovement.
+        ///   Looks up a localized string similar to Movimenti a pieno carico.
         /// </summary>
         public static string FullLoadMovement {
             get {
@@ -646,7 +646,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ManualMovements.
+        ///   Looks up a localized string similar to Movimenti manuali.
         /// </summary>
         public static string ManualMovements {
             get {
