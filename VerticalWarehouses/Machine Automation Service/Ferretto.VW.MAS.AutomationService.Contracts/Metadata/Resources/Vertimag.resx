@@ -121,7 +121,7 @@
     <value>Acceleration</value>
   </data>
   <data name="AssistedMovements" xml:space="preserve">
-    <value>AssistedMovements</value>
+    <value>Movimenti guidati</value>
   </data>
   <data name="Bay" xml:space="preserve">
     <value>Baia {0}</value>
@@ -235,7 +235,7 @@
     <value>Permette di modificare i parametri dell'elevatore e dei due assi ad esso associati.</value>
   </data>
   <data name="EmptyLoadMovement" xml:space="preserve">
-    <value>EmptyLoadMovement</value>
+    <value>Movimenti a vuoto</value>
   </data>
   <data name="FeedRate" xml:space="preserve">
     <value>FeedRate</value>
@@ -244,7 +244,7 @@
     <value>FeedRateAfterZero</value>
   </data>
   <data name="FullLoadMovement" xml:space="preserve">
-    <value>FullLoadMovement</value>
+    <value>Movimenti a pieno carico</value>
   </data>
   <data name="HalfShaftLength" xml:space="preserve">
     <value>Lunghezza semi albero</value>
@@ -313,7 +313,7 @@
     <value>Matricola</value>
   </data>
   <data name="ManualMovements" xml:space="preserve">
-    <value>ManualMovements</value>
+    <value>Movimenti manuali</value>
   </data>
   <data name="MeasureConst0" xml:space="preserve">
     <value>MeasureConst0</value>
