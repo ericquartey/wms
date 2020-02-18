@@ -3196,6 +3196,22 @@
       "FeedRate": 1.0,
       "RequiredCycles": 20
     },
+    "Bay2ProfileCheck": {
+    },
+    "Bay3ProfileCheck": {
+    },
+    "Bay1CarouselTest": {
+    },
+    "Bay1CarouselCalibration": {
+    },
+    "Bay2CarouselTest": {
+    },
+    "Bay2CarouselCalibration": {
+    },
+    "Bay3CarouselTest": {
+    },
+    "Bay3CarouselCalibration": {
+    },
     "VerticalOffsetCalibration": {
       "ReferenceCellId": 50, //TEMP Temporary value for software test
       "Step": 0.5,
