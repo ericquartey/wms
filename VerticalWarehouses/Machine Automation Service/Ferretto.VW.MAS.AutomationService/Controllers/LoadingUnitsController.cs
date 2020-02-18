@@ -245,6 +245,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpGet("remove-loadunit")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult RemoveLoadUnit(int loadingUnitId)
+        {
+            this.loadingUnitsDataProvider.Remove(loadingUnitId);
+            return this.Accepted();
+        }
+
         [HttpGet("resume-moving")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]

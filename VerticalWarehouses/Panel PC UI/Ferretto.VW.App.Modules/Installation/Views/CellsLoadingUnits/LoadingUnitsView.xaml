@@ -38,7 +38,7 @@
         <controls:CustomControlLoadingUnitsDataGrid Grid.Row="1"
                                                     Grid.ColumnSpan="2"
                                                     ItemsSource="{Binding LoadingUnits}"
-                                                    SelectedItem="{Binding SelectedLU, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                    SelectedItem="{Binding SelectedLU, Mode=TwoWay}" />
         <Border Grid.Row="2"
                 Grid.ColumnSpan="2"
                 Margin="0,15,0,0"
@@ -58,97 +58,101 @@
                     <ColumnDefinition />
                     <ColumnDefinition />
                     <ColumnDefinition />
+                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
                 <controls:PpcTextBox Grid.Column="0"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.Id}"
-                                     IsEnabled="False"
+                                     InputText="{Binding SelectedId, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsEnabledEditing}"
                                      LabelText="Id" />
 
                 <controls:PpcTextBox Grid.Column="1"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.Code}"
-                                     IsEnabled="False"
+                                     InputText="{Binding SelectedCode, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsEnabledEditing}"
                                      LabelText="Code" />
 
                 <controls:PpcTextBox Grid.Column="2"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.Description}"
-                                     IsEnabled="False"
-                                     LabelText="Description" />
+                                     InputText="{Binding SelectedLU.CellId, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsEnabledEditing}"
+                                     LabelText="CellId" />
 
                 <controls:PpcTextBox Grid.Column="3"
+                                     Grid.ColumnSpan="3"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.GrossWeight}"
-                                     IsEnabled="False"
-                                     LabelText="GrossWeight" />
+                                     InputText="{Binding SelectedLU.Description, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsEnabledEditing}"
+                                     LabelText="Description" />
 
-                <controls:PpcTextBox Grid.Column="4"
+                <controls:PpcTextBox Grid.Column="6"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.NetWeight}"
-                                     IsEnabled="False"
-                                     LabelText="NetWeight" />
-
-                <controls:PpcTextBox Grid.Column="5"
-                                     HorizontalAlignment="Stretch"
-                                     VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.MaxNetWeight}"
-                                     IsEnabled="False"
-                                     LabelText="Height" />
+                                     InputText="{Binding SelectedLU.MissionsCount, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsEnabledEditing}"
+                                     LabelText="MissionsCount" />
 
                 <controls:PpcTextBox Grid.Row="1"
                                      Grid.Column="0"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.Height}"
-                                     IsEnabled="False"
-                                     LabelText="Height" />
+                                     InputText="{Binding SelectedLU.GrossWeight, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsEnabledEditing}"
+                                     LabelText="GrossWeight" />
 
                 <controls:PpcTextBox Grid.Row="1"
                                      Grid.Column="1"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.MissionsCount}"
-                                     IsEnabled="False"
-                                     LabelText="MissionsCount" />
+                                     InputText="{Binding SelectedLU.NetWeight, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsEnabledEditing}"
+                                     LabelText="NetWeight" />
 
                 <controls:PpcTextBox Grid.Row="1"
                                      Grid.Column="2"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.Status}"
-                                     IsEnabled="False"
-                                     LabelText="Status" />
+                                     InputText="{Binding SelectedLU.MaxNetWeight, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsEnabledEditing}"
+                                     LabelText="MaxNetWeight" />
 
                 <controls:PpcTextBox Grid.Row="1"
                                      Grid.Column="3"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.Tare}"
-                                     IsEnabled="False"
-                                     LabelText="Tare" />
+                                     InputText="{Binding SelectedLU.Height, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsEnabledEditing}"
+                                     LabelText="Height" />
 
                 <controls:PpcTextBox Grid.Row="1"
                                      Grid.Column="4"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.IsIntoMachine}"
-                                     IsEnabled="False"
-                                     LabelText="IsIntoMachine" />
+                                     InputText="{Binding SelectedLU.Status, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsEnabledEditing}"
+                                     LabelText="Status" />
 
                 <controls:PpcTextBox Grid.Row="1"
                                      Grid.Column="5"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.CellId}"
-                                     IsEnabled="False"
-                                     LabelText="CellId" />
+                                     InputText="{Binding SelectedLU.Tare, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsEnabledEditing}"
+                                     LabelText="Tare" />
+
+                <controls:PpcTextBox Grid.Row="1"
+                                     Grid.Column="6"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"
+                                     InputText="{Binding SelectedLU.IsIntoMachine, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsEnabledEditing}"
+                                     LabelText="IsIntoMachine" />
+
             </Grid>
         </Border>
 
@@ -157,11 +161,11 @@
               Grid.ColumnSpan="2"
               Margin="0,15,0,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <controls:PpcButton Grid.Column="0"
@@ -172,12 +176,14 @@
             <controls:PpcButton Grid.Column="1"
                                 Margin="0,0,15,0"
                                 Command="{Binding FreeDrawerCommand}"
-                                Content="Libera cassetto" />
+                                Content="Libera cassetto"
+                                Visibility="Collapsed" />
 
             <controls:PpcButton Grid.Column="2"
                                 Margin="0,0,15,0"
                                 Command="{Binding InsertDrawerCommand}"
-                                Content="Inserisci cassetto" />
+                                Content="Inserisci cassetto"
+                                Visibility="Collapsed" />
 
             <controls:PpcButton Grid.Column="3"
                                 Margin="0,0,15,0"
@@ -186,14 +192,25 @@
 
             <controls:PpcButton Grid.Column="4"
                                 Margin="0"
+                                HorizontalAlignment="Right"
                                 Command="{Binding StopMovingCommand}"
                                 Content="{x:Static res:InstallationApp.Stop}"
-                                Style="{DynamicResource PpcButtonStopStyle}" />
+                                Style="{DynamicResource PpcButtonStopStyle}"
+                                Visibility="{Binding IsMoving, Converter={StaticResource ResourceKey=BTVC}}" />
 
             <controls:PpcButton Grid.Column="4"
                                 Margin="0"
+                                HorizontalAlignment="Right"
+                                Command="{Binding ImmediateDrawerReturnCommand}"
+                                Content="Rientra cassetto"
+                                Visibility="{Binding IsDrawerReturnVisible, Converter={StaticResource ResourceKey=BTVC}}" />
+
+            <controls:PpcButton Grid.Column="4"
+                                Margin="0"
+                                HorizontalAlignment="Right"
                                 Command="{Binding ImmediateDrawerCallCommand}"
-                                Content="Chiamata cassetto" />
+                                Content="Chiamata cassetto"
+                                Visibility="{Binding IsDrawerCallVisible, Converter={StaticResource ResourceKey=BTVC}}" />
 
         </Grid>
 

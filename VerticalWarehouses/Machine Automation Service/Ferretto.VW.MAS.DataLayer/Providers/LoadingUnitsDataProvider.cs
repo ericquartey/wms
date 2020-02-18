@@ -16,6 +16,8 @@ namespace Ferretto.VW.MAS.DataLayer
         /// </summary>
         private const double MinimumLoadOnBoard = 10.0;
 
+        private readonly ICellsProvider cellsProvider;
+
         private readonly DataLayerContext dataContext;
 
         private readonly ILogger<LoadingUnitsDataProvider> logger;
@@ -29,11 +31,13 @@ namespace Ferretto.VW.MAS.DataLayer
         public LoadingUnitsDataProvider(
             DataLayerContext dataContext,
             IMachineProvider machineProvider,
+            ICellsProvider cellsProvider,
             ILogger<LoadingUnitsDataProvider> logger)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.machineProvider = machineProvider ?? throw new System.ArgumentNullException(nameof(machineProvider));
+            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
         }
 
         #endregion
@@ -212,6 +216,28 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.dataContext.SaveChanges();
             }
         }
+
+        public void Remove(int loadingUnitsId)
+        {
+            var lu = this.dataContext.LoadingUnits.SingleOrDefault(p => p.Id.Equals(loadingUnitsId));
+            if (lu is null)
+            {
+                throw new EntityNotFoundException($"LoadingUnit ID={loadingUnitsId}");
+            }
+
+            if (lu.CellId.HasValue)
+            {
+                this.cellsProvider.SetLoadingUnit(lu.CellId.Value, null);
+            }
+
+            lock (this.dataContext)
+            {
+                this.dataContext.LoadingUnits.Remove(lu);
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        //SetLoadingUnit(int cellId, int? loadingUnitId)
 
         public void SetHeight(int id, double height)
         {

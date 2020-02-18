@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS.DataLayer
         void Import(IEnumerable<LoadingUnit> loadingUnits, DataLayerContext context);
 
         void Insert(int loadingUnitsId);
-
+        void Remove(int loadingUnitsId);
         void SetHeight(int loadingUnitId, double height);
 
         void SetWeight(int loadingUnitId, double loadingUnitGrossWeight);

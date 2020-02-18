@@ -59,6 +59,7 @@ namespace Ferretto.VW.App.Services
         Task StartAsync();
 
         Task StopMovingByAllAsync();
+        Task GetLoadUnits();
 
         #endregion
     }
