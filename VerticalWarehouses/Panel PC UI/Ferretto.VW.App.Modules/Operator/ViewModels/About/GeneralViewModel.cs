@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -6,6 +7,7 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
+using Microsoft.Extensions.Configuration;
 using Prism.Commands;
 using Prism.Events;
 
@@ -18,9 +20,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private readonly IMachineIdentityWebService identityService;
 
+        private readonly IMachineAboutWebService machineAboutWebService;
+
         private Brush machineServiceStatusBrush;
 
         private MachineIdentity model;
+
+        private MachineStatistics statistics;
+
+        private int totalMissionCounter;
 
         private DelegateCommand viewStatusSensorsCommand;
 
@@ -32,10 +40,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Constructors
 
-        public GeneralViewModel(IMachineIdentityWebService identityService)
+        public GeneralViewModel(IMachineIdentityWebService identityService, IMachineAboutWebService machineAboutWebService)
             : base()
         {
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
+
+            this.machineAboutWebService = machineAboutWebService ?? throw new ArgumentNullException(nameof(machineAboutWebService));
 
             this.UpdateWmsServicesStatus(this.HealthProbeService.HealthWmsStatus);
         }
@@ -58,8 +68,24 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public string SoftwareVersion => this.GetType().Assembly.GetName().Version.ToString();
 
+        public MachineStatistics Statistics
+        {
+            get => this.statistics;
+            set => this.SetProperty(ref this.statistics, value);
+        }
+
+        public int TotalDrawersCounter { get => this.MachineService.Loadunits.Count(); }
+
+        public double TotalDrawersWeight { get => this.MachineService.Loadunits.Sum(s => s.GrossWeight); }
+
+        public int TotalMissionCounter
+        {
+            get => this.totalMissionCounter;
+            set => this.SetProperty(ref this.totalMissionCounter, value);
+        }
+
         public ICommand ViewStatusSensorsCommand =>
-            this.viewStatusSensorsCommand
+                            this.viewStatusSensorsCommand
             ??
             (this.viewStatusSensorsCommand = new DelegateCommand(
                 () => this.StatusSensorsCommand(),
@@ -95,9 +121,24 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         protected override async Task OnDataRefreshAsync()
         {
-            this.Model = await this.identityService.GetAsync();
+            try
+            {
+                this.Model = await this.identityService.GetAsync();
 
-            this.MachineServiceStatusBrush = this.GetBrushForServiceStatus(this.Model.ServiceStatus);
+                this.Statistics = await this.identityService.GetStatisticsAsync();
+
+                this.TotalMissionCounter = await this.machineAboutWebService.MissionTotalNumberAsync();
+
+                this.MachineServiceStatusBrush = this.GetBrushForServiceStatus(this.Model.ServiceStatus);
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         protected override Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
