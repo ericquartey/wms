@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(1)]
             [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.BeltRigidity))]
-            [Unit("N/mˉ¹")]
+            [Unit("N/m/mm")]
             public int BeltRigidity { get; set; }
 
             [Id(2)]
@@ -51,6 +51,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Id(7)]
             [Editable(true)]
+            [Unit("N/mm²")]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ShaftElasticity))]
             public double ShaftElasticity { get; set; }
 

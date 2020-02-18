@@ -35,12 +35,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public LoadingUnitLocation LocationUpDown { get; set; }
 
             [Id(7)]
+            [Unit("mm")]
             public double MaxDoubleHeight { get; set; }
 
             [Id(8)]
+            [Unit("mm")]
             public double MaxSingleHeight { get; set; }
 
             [Id(6)]
+            [Unit("mm")]
             public double ProfileOffset { get; set; }
 
             #endregion

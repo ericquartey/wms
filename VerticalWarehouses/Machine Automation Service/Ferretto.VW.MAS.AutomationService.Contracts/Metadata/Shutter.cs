@@ -17,6 +17,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(14)]
             public ShutterManualParameters AssistedMovements { get; set; }
 
+            [ScaffoldColumn(false)]
             public Inverter Inverter { get; set; }
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.Shutter_ManualMovements))]

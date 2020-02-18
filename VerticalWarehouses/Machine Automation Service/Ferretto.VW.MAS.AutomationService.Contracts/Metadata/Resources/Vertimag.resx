@@ -370,19 +370,19 @@
     <value>Modulo di elasticità</value>
   </data>
   <data name="ShutterManualParameters_FeedRate" xml:space="preserve">
-    <value>Feed rate shutter</value>
+    <value>Feed rate serranda</value>
   </data>
   <data name="ShutterManualParameters_HighSpeedDurationClose" xml:space="preserve">
-    <value>Durata chiusura shutter</value>
+    <value>Durata chiusura serranda</value>
   </data>
   <data name="ShutterManualParameters_HighSpeedDurationOpen" xml:space="preserve">
-    <value>Durata apertura shutter</value>
+    <value>Durata apertura serranda</value>
   </data>
   <data name="ShutterManualParameters_MaxSpeed" xml:space="preserve">
-    <value>Velocità massima shutter</value>
+    <value>Velocità massima serranda</value>
   </data>
   <data name="ShutterManualParameters_MinSpeed" xml:space="preserve">
-    <value>Velocità minima shutter</value>
+    <value>Velocità minima serranda</value>
   </data>
   <data name="ShutterType.NotSpecified" xml:space="preserve">
     <value>Non specificato</value>
@@ -394,13 +394,13 @@
     <value>Due sensori</value>
   </data>
   <data name="Shutter_AssistedMovements" xml:space="preserve">
-    <value>Movimenti assistiti shutter</value>
+    <value>Movimenti assistiti serranda</value>
   </data>
   <data name="Shutter_ManualMovements" xml:space="preserve">
-    <value>Movimenti manuali shutter</value>
+    <value>Movimenti manuali serranda</value>
   </data>
   <data name="Shutter_Type" xml:space="preserve">
-    <value>Tipo shutter</value>
+    <value>Tipo serranda</value>
   </data>
   <data name="Speed" xml:space="preserve">
     <value>Speed</value>
