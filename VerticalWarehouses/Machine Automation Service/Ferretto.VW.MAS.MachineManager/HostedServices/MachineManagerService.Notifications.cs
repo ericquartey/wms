@@ -10,11 +10,9 @@ using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
-using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-
 
 namespace Ferretto.VW.MAS.MachineManager
 {

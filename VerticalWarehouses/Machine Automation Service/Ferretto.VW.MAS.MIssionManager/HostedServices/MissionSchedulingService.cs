@@ -576,6 +576,8 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private async Task OnDataLayerReadyAsync(IServiceProvider serviceProvider)
         {
+            var loadUnitsDataProvider = serviceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
+            loadUnitsDataProvider.UpdateWeightStatistics();
             GetPersistedMissions(serviceProvider, this.EventAggregator);
             this.dataLayerIsReady = true;
             await this.InvokeSchedulerAsync(serviceProvider);
