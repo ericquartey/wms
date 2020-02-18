@@ -57,7 +57,7 @@ namespace Ferretto.VW.MAS.MissionManager
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
 
-            if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status != MissionStatus.New))
+            if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status != MissionStatus.New && m.Status != MissionStatus.Waiting))
             {
                 return serviceProvider.GetRequiredService<IMissionSchedulingProvider>().QueueLoadingUnitCompactingMission(serviceProvider);
             }
