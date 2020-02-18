@@ -31,13 +31,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("missiontotalnumber")]
         public ActionResult<int> MissionTotalNumber()
         {
-            return this.Ok(123456);
-        }
-
-        [HttpGet("totaldistance")]
-        public ActionResult<double> TotalDistance()
-        {
-            return this.Ok(123456.8888888);
+            return this.Ok(this.statisticsProvider.MissionTotalNumber());
         }
 
         #endregion

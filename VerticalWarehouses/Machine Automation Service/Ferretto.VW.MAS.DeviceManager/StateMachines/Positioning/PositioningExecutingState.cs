@@ -209,7 +209,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         {
                             var procedure = this.setupProceduresDataProvider.GetBayCarouselCalibration(this.machineData.RequestingBay);
                             this.performedCycles = procedure.PerformedCycles;
-                            this.Logger.LogDebug($"Start BayTest {this.performedCycles} cycle to {this.machineData.MessageData.RequiredCycles}");
+                            this.Logger.LogInformation($"Start BayTest {this.performedCycles} cycle to {this.machineData.MessageData.RequiredCycles}");
                         }
                     }
                     break;
@@ -426,6 +426,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 MessageStatus.OperationExecuting);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+            this.ParentStateMachine.PublishFieldCommandMessage(
+                new FieldCommandMessage(
+                    new InverterSetTimerFieldMessageData(InverterTimer.StatusWord, true, DefaultStatusWordPollingInterval),
+                "Update Inverter status word status",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.DeviceManager,
+                FieldMessageType.InverterSetTimer,
+                (byte)InverterIndex.MainInverter));
 
             if (!this.beltBurnishingMovingUpwards && !this.beltBurnishingMovingToInitialPosition)
             {
@@ -893,7 +902,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             }
                             else
                             {
-                                this.Logger.LogDebug($"Restart BayTest after {this.performedCycles} cycles to {this.machineData.MessageData.RequiredCycles}");
+                                this.Logger.LogInformation($"Start another BayTest after {this.performedCycles} cycles to {this.machineData.MessageData.RequiredCycles}");
 
                                 var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
                                 var inverterIndex = (byte)this.machineData.CurrentInverterIndex;
@@ -906,6 +915,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                     FieldMessageType.Positioning,
                                     inverterIndex);
                                 this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
+
+                                this.ParentStateMachine.PublishFieldCommandMessage(
+                                    new FieldCommandMessage(
+                                        new InverterSetTimerFieldMessageData(InverterTimer.StatusWord, true, DefaultStatusWordPollingInterval),
+                                    "Update Inverter status word status",
+                                    FieldMessageActor.InverterDriver,
+                                    FieldMessageActor.DeviceManager,
+                                    FieldMessageType.InverterSetTimer,
+                                    inverterIndex));
                             }
                         }
                     }
