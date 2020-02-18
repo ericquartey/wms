@@ -305,6 +305,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     insertLoadUnit: false,
                     missionId,
                     CommandAction.Resume);
+
             data.WmsId = wmsId;
             this.SendCommandToMachineManager(
                 data,

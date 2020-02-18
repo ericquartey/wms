@@ -297,6 +297,14 @@ namespace Ferretto.VW.MAS.DataLayer
             dataContext.SaveChanges();
         }
 
+        public void UpdateWeightStatistics()
+        {
+            lock (this.dataContext)
+            {
+                this.machineProvider.UpdateWeightStatistics(this.dataContext);
+            }
+        }
+
         #endregion
     }
 }

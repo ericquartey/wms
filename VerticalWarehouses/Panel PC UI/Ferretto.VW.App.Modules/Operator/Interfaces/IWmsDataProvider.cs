@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Ferretto.VW.App.Services
+namespace Ferretto.VW.App.Modules.Operator
 {
     public interface IWmsDataProvider
     {

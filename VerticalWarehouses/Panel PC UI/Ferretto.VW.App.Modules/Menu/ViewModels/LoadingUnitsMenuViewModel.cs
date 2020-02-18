@@ -103,7 +103,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.loadingUnitsCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.LoadingUnits),
-                ()=> (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations || this.MachineModeService.MachineMode == MachineMode.Test) &&
+                () => (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations || this.MachineModeService.MachineMode == MachineMode.Test) &&
                      this.MachineModeService.MachinePower == MachinePowerState.Powered &&
                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded)));
 
@@ -117,8 +117,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
                       (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations) &&
                       this.VerticalOriginCalibration.IsCompleted));
 
+        public SetupStatusCapabilities SetupStatusCapabilities { get; private set; }
+
         public ICommand TestCompleteCommand =>
-            this.testCompleteCommand
+                    this.testCompleteCommand
             ??
             (this.testCompleteCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.TestComplete),
@@ -126,9 +128,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                       (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Test) &&
                       this.MachineService.IsHoming));
 
-        protected SetupStepStatus VerticalOriginCalibration => this.SetupStatusCapabilities?.VerticalOriginCalibration ?? new SetupStepStatus();
-
-        protected SetupStatusCapabilities SetupStatusCapabilities { get; private set; }
+        private SetupStepStatus VerticalOriginCalibration => this.SetupStatusCapabilities?.VerticalOriginCalibration ?? new SetupStepStatus();
 
         #endregion
 

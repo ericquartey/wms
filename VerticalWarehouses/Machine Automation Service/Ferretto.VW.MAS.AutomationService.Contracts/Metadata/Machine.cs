@@ -15,12 +15,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Category(Category = nameof(Vertimag.Bay), ResourceType = typeof(Vertimag))]
             [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
+            [CategoryDescription(ResourceType = typeof(Vertimag), Description = nameof(Vertimag.Bay_CategoryDescription))]
             [Id(200)]
             [Offset(100)]
             [PullToRoot, Unfold]
             public System.Collections.Generic.IEnumerable<Bay> Bays { get; set; }
 
             [Category(Category = nameof(Vertimag.Elevator), ResourceType = typeof(Vertimag))]
+            [CategoryDescription(ResourceType = typeof(Vertimag), Description = nameof(Vertimag.Elevator_CategoryDescription))]
             [Offset(500)]
             [PullToRoot, Unfold]
             public Elevator Elevator { get; set; }
@@ -62,7 +64,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [ScaffoldColumn(false)]
             public System.Collections.Generic.IEnumerable<CellPanel> Panels { get; set; }
 
-            [Editable(true)]
+            [Editable(false)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_SerialNumber))]
             [Id(2)]
             public string SerialNumber { get; set; }

@@ -264,6 +264,25 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpGet("{id}/resume-moving-wms")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult ResumeWms(int id, int missionId, [FromServices] IBaysDataProvider baysDataProvider)
+        {
+            var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(id);
+
+            this.moveLoadingUnitProvider.ResumeMoveLoadUnit(
+                    missionId,
+                    loadingUnitSource,
+                    LoadingUnitLocation.Cell,
+                    this.BayNumber,
+                    null,
+                    MissionType.IN,
+                    MessageActor.MissionManager);
+
+            return this.Accepted();
+        }
+
         [HttpPost("start-moving-loading-unit-to-bay")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

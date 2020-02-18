@@ -10,7 +10,6 @@ using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-
 namespace Ferretto.VW.MAS.DeviceManager.Providers
 {
     internal class CarouselProvider : BaseProvider, ICarouselProvider
@@ -292,6 +291,58 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.None);
         }
 
+        public void StartTest(BayNumber bayNumber, MessageActor sender)
+        {
+            var policy = this.CanMove(VerticalMovementDirection.Up, bayNumber, MovementCategory.Assisted);
+            if (!policy.IsAllowed)
+            {
+                throw new InvalidOperationException(policy.Reason);
+            }
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+
+            var targetPosition = bay.Carousel.ElevatorDistance;
+
+            var procedureParameters = this.setupProceduresDataProvider.GetBayCarouselCalibration(bayNumber);
+
+            var speed = new[] { bay.FullLoadMovement.Speed * procedureParameters.FeedRate };
+            var acceleration = new[] { bay.FullLoadMovement.Acceleration };
+            var deceleration = new[] { bay.FullLoadMovement.Deceleration };
+            var switchPosition = new[] { 0.0 };
+
+            var messageData = new PositioningMessageData(
+                Axis.BayChain,
+                MovementType.Relative,
+                MovementMode.BayTest,
+                targetPosition,
+                speed,
+                acceleration,
+                deceleration,
+                procedureParameters.RequiredCycles,
+                lowerBound: 0,
+                upperBound: 0,
+                delay: 0,
+                switchPosition,
+                HorizontalMovementDirection.Forwards);
+
+            this.logger.LogDebug(
+                $"Start Carousel Test " +
+                $"bayNumber: {bayNumber}; " +
+                $"targetPosition: {targetPosition}; " +
+                $"feedrate: {procedureParameters.FeedRate}; " +
+                $"speed: {speed}; " +
+                $"acceleration: {acceleration}; " +
+                $"deceleration: {deceleration};");
+
+            this.PublishCommand(
+                messageData,
+                $"Execute {Axis.Horizontal} Positioning Command",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.Positioning,
+                bayNumber,
+                BayNumber.None);
+        }
+
         public void MoveManual(VerticalMovementDirection direction, double distance, int? loadUnitId, BayNumber bayNumber, MessageActor sender)
         {
             var policy = this.CanMove(direction, bayNumber, MovementCategory.Manual);
@@ -362,6 +413,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 MessageActor.DeviceManager,
                 sender,
                 MessageType.Stop,
+                bayNumber,
+                BayNumber.None);
+        }
+
+        public void StopTest(BayNumber bayNumber, MessageActor sender)
+        {
+            this.PublishCommand(
+                null,
+                $"Stop carousel test on bay {bayNumber}",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.StopTest,
                 bayNumber,
                 BayNumber.None);
         }

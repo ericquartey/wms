@@ -35,7 +35,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         MovementType MovementType { get; }
 
-        int RequiredCycles { get; }
+        int RequiredCycles { get; set; }
 
         int? SourceBayPositionId { get; set; }
 

@@ -365,21 +365,15 @@
         <!--#endregion-->
 
         <!--#region Tails-->
-        <controls:CardSensorAxisVertical Grid.Row="2"
-                                         Grid.Column="3"
-                                         Width="230"
-                                         Height="90"
-                                         MinHeight="90"
-                                         Margin="0,15,15,0" />
-        <controls:CardSensorAxisHorizontal Grid.Row="3"
-                                           Grid.Column="3"
-                                           Width="230"
-                                           Height="90"
-                                           MinHeight="90"
-                                           Margin="0,15,15,0" />
 
+        <controls:CardSensorBay Grid.Row="2"
+                                Grid.Column="3"
+                                Width="230"
+                                Height="90"
+                                MinHeight="90"
+                                Margin="0,15,15,0" />
 
-        <Border Grid.Row="4"
+        <Border Grid.Row="3"
                 Grid.Column="3"
                 Height="90"
                 MinHeight="90"
@@ -420,7 +414,7 @@
                 </Grid>
             </Border>
         </Border>
-        <Border Grid.Row="5"
+        <Border Grid.Row="4"
                 Grid.Column="3"
                 Height="90"
                 MinHeight="90"

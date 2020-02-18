@@ -108,7 +108,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            // do nothing
+            switch (message.Type)
+            {
+                case MessageType.StopTest:
+                    if (this.machineData.MessageData.MovementMode == MovementMode.BayTest)
+                    {
+                        this.Logger.LogInformation($"Stop Bay Test on {this.machineData.RequestingBay} after {this.machineData.MessageData.ExecutedCycles} cycles");
+                        this.machineData.MessageData.RequiredCycles = 0;
+                    }
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
@@ -166,6 +178,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 case MovementMode.PositionAndMeasureProfile:
                 case MovementMode.BayChain:
                 case MovementMode.BayChainManual:
+                case MovementMode.BayTest:
                     {
                         var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
 
@@ -191,6 +204,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             this.Logger.LogTrace($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
 
                             this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
+                        }
+                        else if (this.machineData.MessageData.MovementMode == MovementMode.BayTest)
+                        {
+                            var procedure = this.setupProceduresDataProvider.GetBayCarouselCalibration(this.machineData.RequestingBay);
+                            this.performedCycles = procedure.PerformedCycles;
+                            this.Logger.LogDebug($"Start BayTest {this.performedCycles} cycle to {this.machineData.MessageData.RequiredCycles}");
                         }
                     }
                     break;
@@ -796,25 +815,31 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     break;
 
                 case MovementMode.BeltBurnishing:
-                    this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Test;
-                    this.Logger.LogInformation($"Machine status switched to {MachineMode.Test}");
-                    this.machineData.MessageData.ExecutedCycles = this.performedCycles;
-
-                    if (this.performedCycles >= this.machineData.MessageData.RequiredCycles)
                     {
-                        this.Logger.LogDebug("FSM Finished Executing State");
-                        this.machineData.ExecutedSteps = this.performedCycles;
-                        this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
-                    }
-                    else
-                    {
-                        if (this.machineData.MessageData.Delay > 0)
+                        var machineModeProvider = this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>();
+                        if (machineModeProvider.Mode != MachineMode.Test)
                         {
-                            this.delayTimer = new Timer(this.DelayElapsed, null, this.machineData.MessageData.Delay * 1000, Timeout.Infinite);
+                            machineModeProvider.Mode = MachineMode.Test;
+                            this.Logger.LogInformation($"Machine status switched to {MachineMode.Test}");
+                        }
+                        this.machineData.MessageData.ExecutedCycles = this.performedCycles;
+
+                        if (this.performedCycles >= this.machineData.MessageData.RequiredCycles)
+                        {
+                            this.Logger.LogDebug("FSM Finished Executing State");
+                            this.machineData.ExecutedSteps = this.performedCycles;
+                            this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
                         }
                         else
                         {
-                            this.DelayElapsed(null);
+                            if (this.machineData.MessageData.Delay > 0)
+                            {
+                                this.delayTimer = new Timer(this.DelayElapsed, null, this.machineData.MessageData.Delay * 1000, Timeout.Infinite);
+                            }
+                            else
+                            {
+                                this.DelayElapsed(null);
+                            }
                         }
                     }
                     break;
@@ -838,6 +863,52 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                 case MovementMode.BayChainManual:
                     this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+                    break;
+
+                case MovementMode.BayTest:
+                    {
+                        var machineModeProvider = this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>();
+                        if (machineModeProvider.Mode != MachineMode.Test)
+                        {
+                            machineModeProvider.Mode = MachineMode.Test;
+                            this.Logger.LogInformation($"Machine status switched to {MachineMode.Test}");
+                        }
+
+                        var procedure = this.setupProceduresDataProvider.GetBayCarouselCalibration(this.machineData.RequestingBay);
+                        this.performedCycles = this.setupProceduresDataProvider.IncreasePerformedCycles(procedure).PerformedCycles;
+                        this.machineData.MessageData.ExecutedCycles = this.performedCycles;
+
+                        if (this.IsBracketSensorError())
+                        {
+                            this.Logger.LogError($"Bracket sensor error");
+                            this.Stop(StopRequestReason.Stop);
+                        }
+                        else
+                        {
+                            if (this.performedCycles >= this.machineData.MessageData.RequiredCycles)
+                            {
+                                this.Logger.LogDebug("FSM Finished Executing State");
+                                this.machineData.ExecutedSteps = this.performedCycles;
+                                this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+                            }
+                            else
+                            {
+                                this.Logger.LogDebug($"Restart BayTest after {this.performedCycles} cycles to {this.machineData.MessageData.RequiredCycles}");
+
+                                var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
+                                var inverterIndex = (byte)this.machineData.CurrentInverterIndex;
+
+                                var commandMessage = new FieldCommandMessage(
+                                    positioningFieldMessageData,
+                                    $"{this.machineData.MessageData.AxisMovement} Positioning State Started",
+                                    FieldMessageActor.InverterDriver,
+                                    FieldMessageActor.DeviceManager,
+                                    FieldMessageType.Positioning,
+                                    inverterIndex);
+                                this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
+                            }
+                        }
+                    }
                     break;
             }
         }

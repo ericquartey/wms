@@ -1,12 +1,11 @@
 ﻿using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Prism.Commands;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 {
-    public class StatisticsNavigationViewModel : BaseViewModel, IStatisticsNavigationViewModel
+    public class StatisticsNavigationViewModel : BaseViewModel
     {
         #region Fields
 
