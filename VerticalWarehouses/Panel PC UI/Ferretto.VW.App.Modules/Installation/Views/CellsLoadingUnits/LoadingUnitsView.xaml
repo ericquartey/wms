@@ -64,7 +64,7 @@
                 <controls:PpcTextBox Grid.Column="0"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedId, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     InputText="{Binding SelectedId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                      IsEnabled="{Binding IsEnabledEditing}"
                                      LabelText="Id" />
 
