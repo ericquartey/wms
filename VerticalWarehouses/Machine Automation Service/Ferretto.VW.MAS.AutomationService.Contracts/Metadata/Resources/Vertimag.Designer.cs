@@ -817,7 +817,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Movimenti assistiti shutter.
+        ///   Looks up a localized string similar to Mov. guidati serranda.
         /// </summary>
         public static string Shutter_AssistedMovements {
             get {
@@ -826,7 +826,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Movimenti manuali shutter.
+        ///   Looks up a localized string similar to Mov. manuali serranda.
         /// </summary>
         public static string Shutter_ManualMovements {
             get {
@@ -835,7 +835,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tipo shutter.
+        ///   Looks up a localized string similar to Tipo serranda.
         /// </summary>
         public static string Shutter_Type {
             get {
@@ -844,7 +844,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Feed rate shutter.
+        ///   Looks up a localized string similar to Feed rate serranda.
         /// </summary>
         public static string ShutterManualParameters_FeedRate {
             get {
@@ -853,7 +853,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Durata chiusura shutter.
+        ///   Looks up a localized string similar to Durata chiusura serranda.
         /// </summary>
         public static string ShutterManualParameters_HighSpeedDurationClose {
             get {
@@ -862,7 +862,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Durata apertura shutter.
+        ///   Looks up a localized string similar to Durata apertura serranda.
         /// </summary>
         public static string ShutterManualParameters_HighSpeedDurationOpen {
             get {
@@ -871,7 +871,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Velocità massima shutter.
+        ///   Looks up a localized string similar to Velocità massima serranda.
         /// </summary>
         public static string ShutterManualParameters_MaxSpeed {
             get {
@@ -880,7 +880,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Velocità minima shutter.
+        ///   Looks up a localized string similar to Velocità minima serranda.
         /// </summary>
         public static string ShutterManualParameters_MinSpeed {
             get {
