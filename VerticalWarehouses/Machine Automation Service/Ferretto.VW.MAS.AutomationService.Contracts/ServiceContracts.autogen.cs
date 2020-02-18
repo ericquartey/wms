@@ -3590,9 +3590,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Id", Required = Newtonsoft.Json.Required.Always)]
         public int Id { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("InstallationDate", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTimeOffset InstallationDate { get; set; }
+        [Newtonsoft.Json.JsonProperty("InstallationDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? InstallationDate { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsOneTonMachine", Required = Newtonsoft.Json.Required.Always)]
         public bool IsOneTonMachine { get; set; }
