@@ -280,8 +280,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            this.IsBackNavigationAllowed = true;
-
             this.SubscribeToEvents();
 
             await base.OnAppearedAsync();
@@ -314,7 +312,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             try
             {
-                this.IsBackNavigationAllowed = true;
                 this.IsWaitingForResponse = true;
 
                 await this.machineLoadingUnitsWebService.StopAsync(null, this.MachineService.BayNumber);
@@ -344,9 +341,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         protected virtual void Error(Exception ex, string errorMessage)
         {
-            this.IsBackNavigationAllowed = true;
-            //this.IsStopping = false;
-
             this.RestoreStates();
             if (!string.IsNullOrEmpty(errorMessage))
             {
@@ -365,7 +359,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             if (e.MachinePowerState != MachinePowerState.Powered)
             {
                 this.RestoreStates();
-                this.IsBackNavigationAllowed = true;
             }
         }
 
@@ -410,7 +403,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             switch (message.Status)
             {
                 case MessageStatus.OperationStart:
-                    this.IsBackNavigationAllowed = false;
                     this.IsExecutingProcedure = true;
                     this.RaiseCanExecuteChanged();
 
@@ -423,31 +415,24 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     break;
 
                 case MessageStatus.OperationEnd:
+                    if (!this.IsExecutingProcedure)
                     {
-                        this.IsBackNavigationAllowed = true;
-                        if (!this.IsExecutingProcedure)
-                        {
-                            break;
-                        }
-
-                        this.Ended();
-
                         break;
                     }
+
+                    this.Ended();
+
+                    break;
 
                 case MessageStatus.OperationStop:
                 case MessageStatus.OperationFaultStop:
                 case MessageStatus.OperationRunningStop:
-                    {
-                        this.IsBackNavigationAllowed = true;
-                        this.Stopped();
+                    this.Stopped();
 
-                        break;
-                    }
+                    break;
 
                 case MessageStatus.OperationError:
                     this.IsExecutingProcedure = false;
-                    this.IsBackNavigationAllowed = true;
 
                     break;
             }
