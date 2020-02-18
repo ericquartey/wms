@@ -107,23 +107,28 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            try
-            {
-                await base.OnAppearedAsync();
+            this.IsBackNavigationAllowed = true;
 
-                this.IsBusy = true;
-                this.IsBackNavigationAllowed = true;
-                this.configuration = await this.machineConfigurationWebService.GetAsync();
-                this.RaisePropertyChanged(nameof(this.Configuration));
-
-                this.usbWatcher.DrivesChange += this.UsbWatcher_DrivesChange;
-                this.usbWatcher.Start();
+            this.usbWatcher.DrivesChange += this.UsbWatcher_DrivesChange;
+            this.usbWatcher.Start();
 
 #if DEBUG
-                this.exportableDrives = new ReadOnlyCollection<DriveInfo>(DriveInfo.GetDrives().ToList());
+            this.exportableDrives = new ReadOnlyCollection<DriveInfo>(DriveInfo.GetDrives().ToList());
 #endif
+
+            await base.OnAppearedAsync();
+        }
+
+        protected override async Task OnDataRefreshAsync()
+        {
+            try
+            {
+                this.IsBusy = true;
+
+                this.configuration = await this.machineConfigurationWebService.GetAsync();
+                this.RaisePropertyChanged(nameof(this.Configuration));
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -149,12 +154,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private bool CanShowExport()
         {
-            return !this.IsBusy && this.AvailableDrives.Any();
+            return this.AvailableDrives.Any();
         }
 
         private bool CanShowImport()
         {
-            return !this.IsBusy && !this.IsMoving && this.ImportableFiles.Any();
+            return this.ImportableFiles.Any();
         }
 
         private async Task SaveAsync()

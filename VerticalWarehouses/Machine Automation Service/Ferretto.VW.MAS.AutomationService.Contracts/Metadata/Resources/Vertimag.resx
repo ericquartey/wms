@@ -273,8 +273,17 @@
   <data name="Laser" xml:space="preserve">
     <value>Laser</value>
   </data>
+  <data name="Laser_IpAddress" xml:space="preserve">
+    <value>IP Laser</value>
+  </data>
+  <data name="Laser_TcpPort" xml:space="preserve">
+    <value>Porta Laser</value>
+  </data>
   <data name="Machine" xml:space="preserve">
     <value>Macchina</value>
+  </data>
+  <data name="Machine_CategoryDescription" xml:space="preserve">
+    <value>Permette di modificare i parametri della macchina</value>
   </data>
   <data name="Machine_Height" xml:space="preserve">
     <value>Altezza</value>

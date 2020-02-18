@@ -529,11 +529,38 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IP Laser.
+        /// </summary>
+        public static string Laser_IpAddress {
+            get {
+                return ResourceManager.GetString("Laser_IpAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Porta Laser.
+        /// </summary>
+        public static string Laser_TcpPort {
+            get {
+                return ResourceManager.GetString("Laser_TcpPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Macchina.
         /// </summary>
         public static string Machine {
             get {
                 return ResourceManager.GetString("Machine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Permette di modificare i parametri della macchina.
+        /// </summary>
+        public static string Machine_CategoryDescription {
+            get {
+                return ResourceManager.GetString("Machine_CategoryDescription", resourceCulture);
             }
         }
         
