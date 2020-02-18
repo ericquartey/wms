@@ -241,6 +241,42 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Quota.
+        /// </summary>
+        public static string BayPosition_Height {
+            get {
+                return ResourceManager.GetString("BayPosition_Height", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Altezza massima doppia.
+        /// </summary>
+        public static string BayPosition_MaxDoubleHeight {
+            get {
+                return ResourceManager.GetString("BayPosition_MaxDoubleHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Altezza massima standard.
+        /// </summary>
+        public static string BayPosition_MaxSingleHeight {
+            get {
+                return ResourceManager.GetString("BayPosition_MaxSingleHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offset controllo sagoma.
+        /// </summary>
+        public static string BayPosition_ProfileOffset {
+            get {
+                return ResourceManager.GetString("BayPosition_ProfileOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shutter baia {0}.
         /// </summary>
         public static string BayShutter {

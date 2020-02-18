@@ -14,6 +14,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             #region Properties
 
             [Id(3)]
+            [Unit("mm")]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.BayPosition_Height))]
             public double Height { get; set; }
 
             [Editable(false)]
@@ -35,13 +37,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Id(5)]
             [Unit("mm")]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.BayPosition_MaxDoubleHeight))]
             public double MaxDoubleHeight { get; set; }
 
             [Id(6)]
             [Unit("mm")]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.BayPosition_MaxSingleHeight))]
             public double MaxSingleHeight { get; set; }
 
             [Id(4)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.BayPosition_ProfileOffset))]
             [Unit("mm")]
             public double ProfileOffset { get; set; }
 
