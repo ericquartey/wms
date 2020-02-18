@@ -817,7 +817,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Movimenti assistiti serranda.
+        ///   Looks up a localized string similar to Mov. guidati serranda.
         /// </summary>
         public static string Shutter_AssistedMovements {
             get {
@@ -826,7 +826,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Movimenti manuali serranda.
+        ///   Looks up a localized string similar to Mov. manuali serranda.
         /// </summary>
         public static string Shutter_ManualMovements {
             get {

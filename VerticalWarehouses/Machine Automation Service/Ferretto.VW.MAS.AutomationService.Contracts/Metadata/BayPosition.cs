@@ -13,36 +13,35 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             #region Properties
 
-            [Id(4)]
+            [Id(3)]
             public double Height { get; set; }
 
             [Editable(false)]
             [Id(1)]
             public double Id { get; set; }
 
-            [Editable(false)]
-            [Id(5)]
+            [ScaffoldColumn(false)]
             public bool IsUpper { get; set; }
 
             [ScaffoldColumn(false)]
             public LoadingUnit LoadingUnit { get; set; }
 
-            [Id(3)]
+            [Id(2)]
+            [Editable(false)]
             public LoadingUnitLocation Location { get; set; }
 
-            [Editable(false)]
-            [Id(2)]
+            [ScaffoldColumn(false)]
             public LoadingUnitLocation LocationUpDown { get; set; }
 
-            [Id(7)]
+            [Id(5)]
             [Unit("mm")]
             public double MaxDoubleHeight { get; set; }
 
-            [Id(8)]
+            [Id(6)]
             [Unit("mm")]
             public double MaxSingleHeight { get; set; }
 
-            [Id(6)]
+            [Id(4)]
             [Unit("mm")]
             public double ProfileOffset { get; set; }
 

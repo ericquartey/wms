@@ -394,10 +394,10 @@
     <value>Due sensori</value>
   </data>
   <data name="Shutter_AssistedMovements" xml:space="preserve">
-    <value>Movimenti assistiti serranda</value>
+    <value>Mov. guidati serranda</value>
   </data>
   <data name="Shutter_ManualMovements" xml:space="preserve">
-    <value>Movimenti manuali serranda</value>
+    <value>Mov. manuali serranda</value>
   </data>
   <data name="Shutter_Type" xml:space="preserve">
     <value>Tipo serranda</value>
