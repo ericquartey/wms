@@ -11,7 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-
 namespace Ferretto.VW.MAS.DeviceManager.Positioning
 {
     internal class PositioningStateMachine : StateMachineBase
@@ -182,7 +181,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     errorCode = DataModels.MachineErrorCode.LoadUnitPresentOnEmptyElevator;
                 }
             }
-            else if (this.machineData.MessageData.MovementMode == MovementMode.BayChain)
+            else if (this.machineData.MessageData.MovementMode == MovementMode.BayChain ||
+                this.machineData.MessageData.MovementMode == MovementMode.BayTest)
             {
 #if CHECK_BAY_SENSOR
                 ok = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards ?
