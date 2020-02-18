@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -68,8 +65,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.BayControl),
                 () => this.CanExecuteCommand() &&
                       this.MachineModeService.MachineMode == MachineMode.Manual &&
-                      (this.BayControl.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
-                ));
+                      (this.BayControl.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
         public ICommand BayHeightCommand =>
             this.bayHeightCommand
@@ -78,13 +74,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.BayHeight),
                 () => this.CanExecuteCommand() &&
                       this.MachineModeService.MachineMode == MachineMode.Manual &&
-                      (true || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
-                ));
+                      (true || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
         //protected SetupStepStatus CarouselCalibration => this.SetupStatusCapabilities?.CarouselCalibration ?? new SetupStepStatus();
 
         public ICommand CarouselCalibrationCommand =>
-                    this.carouselCalibrationCommand
+            this.carouselCalibrationCommand
             ??
             (this.carouselCalibrationCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.CarouselCalibration),
@@ -101,7 +96,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public bool IsCarouselCalibrationVisible => this.MachineService.HasCarousel;
 
-        public bool IsTestBayVisible => (this.MachineService.HasBayExternal || this.MachineService.HasCarousel);
+        public bool IsTestBayVisible => this.MachineService.HasBayExternal || this.MachineService.HasCarousel;
 
         public bool IsTestShutterCompleted => this.BayShutter.IsCompleted;
 

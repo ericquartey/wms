@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.App.Operator.Views
+﻿namespace Ferretto.VW.App.Modules.Operator.Views
 {
     public partial class DrawerCompactingDetailView
     {

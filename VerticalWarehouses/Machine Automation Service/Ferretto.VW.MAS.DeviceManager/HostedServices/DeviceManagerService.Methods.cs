@@ -492,6 +492,24 @@ namespace Ferretto.VW.MAS.DeviceManager
             }
         }
 
+        private void ProcessStopTest(CommandMessage receivedMessage)
+        {
+            this.Logger.LogTrace("1:Method Start");
+            var stateMachines = this.currentStateMachines.Where(x => x.Key == receivedMessage.RequestingBay && x.Value is PositioningStateMachine);
+            if (stateMachines.Any())
+            {
+                foreach (var fsm in stateMachines)
+                {
+                    var stateMachine = fsm.Value as PositioningStateMachine;
+                    stateMachine.ProcessCommandMessage(receivedMessage);
+                }
+            }
+            else
+            {
+                this.Logger.LogDebug($"StopTest Message ignored, no active positioning state machine for bay {receivedMessage.TargetBay}");
+            }
+        }
+
         private void StartStateMachine(BayNumber bayNumber)
         {
             var stateMachine = this.currentStateMachines[bayNumber];

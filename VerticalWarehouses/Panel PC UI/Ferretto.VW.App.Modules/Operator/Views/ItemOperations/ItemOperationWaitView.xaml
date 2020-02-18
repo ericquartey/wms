@@ -1,4 +1,4 @@
-﻿<ctrls:View x:Class="Ferretto.VW.App.Operator.Views.ItemOperationWaitView"
+﻿<ctrls:View x:Class="Ferretto.VW.App.Modules.Operator.Views.ItemOperationWaitView"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"

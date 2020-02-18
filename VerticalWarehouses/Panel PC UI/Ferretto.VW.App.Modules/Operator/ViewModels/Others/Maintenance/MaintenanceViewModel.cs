@@ -12,7 +12,7 @@ using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.App.Operator.ViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     [Warning(WarningsArea.Maintenance)]
     public class MaintenanceViewModel : BaseOperatorViewModel

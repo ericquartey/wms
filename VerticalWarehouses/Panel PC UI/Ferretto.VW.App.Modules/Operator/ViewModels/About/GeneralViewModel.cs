@@ -11,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Prism.Commands;
 using Prism.Events;
 
-namespace Ferretto.VW.App.Operator.ViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     [Warning(WarningsArea.Information)]
     internal sealed class GeneralViewModel : BaseAboutMenuViewModel

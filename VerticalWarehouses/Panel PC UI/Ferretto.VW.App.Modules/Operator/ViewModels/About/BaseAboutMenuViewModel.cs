@@ -8,7 +8,7 @@ using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Prism.Commands;
 
-namespace Ferretto.VW.App.Operator.ViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     internal abstract class BaseAboutMenuViewModel : BaseMainViewModel
     {

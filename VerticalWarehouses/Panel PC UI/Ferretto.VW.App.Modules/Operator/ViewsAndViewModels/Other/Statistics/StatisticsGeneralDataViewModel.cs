@@ -1,12 +1,11 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 {
-    public class StatisticsGeneralDataViewModel : BaseViewModel, IStatisticsGeneralDataViewModel
+    public class StatisticsGeneralDataViewModel : BaseViewModel
     {
         // private readonly IMachineStatisticsService statisticsService;
 
@@ -18,8 +17,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 
         #region Constructors
 
-        public StatisticsGeneralDataViewModel(
-            IStatisticsNavigationViewModel statisticsNavigationViewModel/*,
+        public StatisticsGeneralDataViewModel(/*,
             IMachineStatisticsService statisticsService*/)
         {
             /*
@@ -28,13 +26,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
                 throw new System.ArgumentNullException(nameof(statisticsService));
             }
             */
-
-            if (statisticsNavigationViewModel == null)
-            {
-                throw new System.ArgumentNullException(nameof(statisticsNavigationViewModel));
-            }
-
-            this.NavigationViewModel = statisticsNavigationViewModel as BindableBase;
 
             // this.statisticsService = statisticsService;
         }

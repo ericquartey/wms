@@ -4,21 +4,19 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 
-namespace Ferretto.VW.App.Operator.ViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     public class ItemInventoryViewModel : BaseItemOperationMainViewModel, IOperationalContextViewModel
     {
         #region Constructors
 
         public ItemInventoryViewModel(
-            IWmsImagesProvider wmsImagesProvider,
             IMachineItemsWebService itemsWebService,
-            IMachineMissionsWebService missionsWebService,
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
             IBayManager bayManager,
             IDialogService dialogService)
-            : base(wmsImagesProvider, itemsWebService, bayManager, eventAggregator, missionOperationsService, dialogService)
+            : base(itemsWebService, bayManager, eventAggregator, missionOperationsService, dialogService)
         {
         }
 

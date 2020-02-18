@@ -1,4 +1,4 @@
-﻿<ctrls:View x:Class="Ferretto.VW.App.Operator.Views.DrawerCompactingView"
+﻿<ctrls:View x:Class="Ferretto.VW.App.Modules.Operator.Views.DrawerCompactingView"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
@@ -8,7 +8,7 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
-            xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Operator.ViewModels"
+            xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Modules.Operator.ViewModels"
             d:DataContext="{d:DesignInstance Type=viewmodels:DrawerCompactingViewModel,
                                              IsDesignTimeCreatable=False}"
             d:DesignHeight="450"

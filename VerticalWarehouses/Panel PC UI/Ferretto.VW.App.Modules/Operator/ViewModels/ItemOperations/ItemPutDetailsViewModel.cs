@@ -4,7 +4,7 @@ using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
-namespace Ferretto.VW.App.Operator.ViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     public class ItemPutDetailsViewModel : BaseItemOperationViewModel
     {
@@ -37,12 +37,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Constructors
 
         public ItemPutDetailsViewModel(
-            IWmsImagesProvider wmsImagesProvider,
             IMachineItemsWebService itemsWebService,
             IMissionOperationsService missionOperationsService,
             IBayManager bayManager,
             IDialogService dialogService)
-            : base(wmsImagesProvider, itemsWebService, bayManager, missionOperationsService, dialogService)
+            : base(itemsWebService, bayManager, missionOperationsService, dialogService)
         {
         }
 

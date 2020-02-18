@@ -108,7 +108,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            // do nothing
+            switch (message.Type)
+            {
+                case MessageType.StopTest:
+                    if (this.machineData.MessageData.MovementMode == MovementMode.BayTest)
+                    {
+                        this.Logger.LogInformation($"Stop Bay Test on {this.machineData.RequestingBay} after {this.machineData.MessageData.ExecutedCycles} cycles");
+                        this.machineData.MessageData.RequiredCycles = 0;
+                    }
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
@@ -197,7 +209,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         {
                             var procedure = this.setupProceduresDataProvider.GetBayCarouselCalibration(this.machineData.RequestingBay);
                             this.performedCycles = procedure.PerformedCycles;
-                            this.Logger.LogDebug($"Start BayTest position {this.performedCycles}");
+                            this.Logger.LogDebug($"Start BayTest {this.performedCycles} cycle to {this.machineData.MessageData.RequiredCycles}");
                         }
                     }
                     break;
@@ -881,7 +893,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             }
                             else
                             {
-                                this.Logger.LogDebug($"Restart BayTest position {this.performedCycles}");
+                                this.Logger.LogDebug($"Restart BayTest after {this.performedCycles} cycles to {this.machineData.MessageData.RequiredCycles}");
 
                                 var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
                                 var inverterIndex = (byte)this.machineData.CurrentInverterIndex;

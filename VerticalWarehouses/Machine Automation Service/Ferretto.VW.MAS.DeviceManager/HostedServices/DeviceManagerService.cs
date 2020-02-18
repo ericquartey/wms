@@ -118,6 +118,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
             if (messageCurrentStateMachine != null
                 && command.Type != MessageType.Stop
+                && command.Type != MessageType.StopTest
                 && command.Type != MessageType.SensorsChanged
                 && command.Type != MessageType.PowerEnable
                 && command.Type != MessageType.ContinueMovement
@@ -160,6 +161,10 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                 case MessageType.Stop:
                     this.ProcessStopMessage(command);
+                    break;
+
+                case MessageType.StopTest:
+                    this.ProcessStopTest(command);
                     break;
 
                 case MessageType.ShutterPositioning:
