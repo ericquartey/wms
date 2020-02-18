@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.Machine))]
             [CategoryDescription(ResourceType = typeof(Vertimag), Description = nameof(Vertimag.Machine_CategoryDescription))]
             [Offset(100)]
-            [PullToRoot, Unfold]
+            [PullToRoot, Unfold]terss
             public Machine Machine { get; set; }
 
             [ScaffoldColumn(false)]

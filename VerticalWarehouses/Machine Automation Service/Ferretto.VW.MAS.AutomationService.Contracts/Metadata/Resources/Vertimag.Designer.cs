@@ -88,6 +88,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Permette di modificare i parametri e i dispositivi della baia..
+        /// </summary>
+        public static string Bay_CategoryDescription {
+            get {
+                return ResourceManager.GetString("Bay_CategoryDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Offset zero catena.
         /// </summary>
         public static string Bay_ChainOffset {
@@ -309,6 +318,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         public static string Elevator {
             get {
                 return ResourceManager.GetString("Elevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Permette di modificare i parametri dell&apos;elevatore e dei due assi ad esso associati (verticale e orizzontale)..
+        /// </summary>
+        public static string Elevator_CategoryDescription {
+            get {
+                return ResourceManager.GetString("Elevator_CategoryDescription", resourceCulture);
             }
         }
         
@@ -556,7 +574,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Permette di modificare i parametri della macchina.
+        ///   Looks up a localized string similar to Permette di modificare i parametri strutturali della macchina..
         /// </summary>
         public static string Machine_CategoryDescription {
             get {
