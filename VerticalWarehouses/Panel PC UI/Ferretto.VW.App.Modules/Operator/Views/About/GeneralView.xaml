@@ -208,7 +208,7 @@
                                    VerticalAlignment="Center"
                                    FontSize="22"
                                    Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
-                                   Text="{Binding Model.NextServiceDate, TargetNullValue='18/12/2017', StringFormat={}{0:dd/MM/yyyy}}"
+                                   Text="{Binding Model.NextServiceDate, TargetNullValue='-', StringFormat={}{0:dd/MM/yyyy}}"
                                    TextWrapping="Wrap" />
 
                         <TextBlock Grid.Row="2"
@@ -224,7 +224,7 @@
                                    VerticalAlignment="Center"
                                    FontSize="22"
                                    Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
-                                   Text="{Binding Model.LastServiceDate, TargetNullValue='18/12/2017', StringFormat={}{0:dd/MM/yyyy}}"
+                                   Text="{Binding Model.LastServiceDate, TargetNullValue='-', StringFormat={}{0:dd/MM/yyyy}}"
                                    TextWrapping="Wrap" />
                     </Grid>
                 </Border>
@@ -259,7 +259,7 @@
                                    VerticalAlignment="Top"
                                    FontSize="36"
                                    Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
-                                   Text="1"
+                                   Text="{Binding Model.Id}"
                                    TextWrapping="Wrap" />
                     </Grid>
                 </Border>
@@ -382,7 +382,7 @@
                                        VerticalAlignment="Top"
                                        FontSize="36"
                                        Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
-                                       Text="{Binding Model.TrayCount}"
+                                       Text="{Binding TotalDrawersCounter}"
                                        TextWrapping="Wrap" />
 
                             <Border Grid.RowSpan="2"
@@ -420,7 +420,7 @@
                                        VerticalAlignment="Top"
                                        FontSize="36"
                                        Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
-                                       Text="1.254.450"
+                                       Text="{Binding TotalMissionCounter}"
                                        TextWrapping="Wrap" />
 
                             <Border Grid.RowSpan="2"
@@ -459,7 +459,7 @@
                                        VerticalAlignment="Top"
                                        FontSize="36"
                                        Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
-                                       Text="35.205"
+                                       Text="{Binding Path=Statistics.TotalVerticalAxisKilometers, StringFormat={}{0:F2}}"
                                        TextWrapping="Wrap" />
 
                             <Border Grid.RowSpan="2"
@@ -495,7 +495,7 @@
                                        VerticalAlignment="Top"
                                        FontSize="36"
                                        Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
-                                       Text="45.120"
+                                       Text="{Binding Path=TotalDrawersWeight, StringFormat={}{0:F2}}"
                                        TextWrapping="Wrap" />
 
                         </Grid>
