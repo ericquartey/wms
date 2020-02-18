@@ -98,7 +98,7 @@
           "Speed": 110
         },
         "Carousel": {
-          "ElevatorDistance": 460,
+          "ElevatorDistance": 444,
           "HomingFastSpeed": 22,
           "HomingCreepSpeed": 5,
           "ManualMovements": {
@@ -2324,30 +2324,6 @@
             "Position": 7545,
             "PanelId": 45,
             "Priority": 443,
-            "IsFree": true,
-            "BlockLevel": "Spaceonly"
-          },
-          {
-            "Id": 445,
-            "Position": 7570,
-            "PanelId": 45,
-            "Priority": 445,
-            "IsFree": true,
-            "BlockLevel": "Spaceonly"
-          },
-          {
-            "Id": 447,
-            "Position": 7595,
-            "PanelId": 45,
-            "Priority": 447,
-            "IsFree": true,
-            "BlockLevel": "Spaceonly"
-          },
-          {
-            "Id": 449,
-            "Position": 7620,
-            "PanelId": 45,
-            "Priority": 449,
             "IsFree": true,
             "BlockLevel": "Spaceonly"
           }
@@ -4842,36 +4818,6 @@
             "Position": 7545,
             "PanelId": 58,
             "Priority": 580,
-            "IsFree": true,
-            "BlockLevel": "SpaceOnly"
-          }
-        ]
-      },
-      {
-        "Side": "back",
-        "Id": 60,
-        "Cells": [
-          {
-            "Id": 582,
-            "Position": 7570,
-            "PanelId": 60,
-            "Priority": 582,
-            "IsFree": true,
-            "BlockLevel": "SpaceOnly"
-          },
-          {
-            "Id": 584,
-            "Position": 7595,
-            "PanelId": 60,
-            "Priority": 584,
-            "IsFree": true,
-            "BlockLevel": "SpaceOnly"
-          },
-          {
-            "Id": 586,
-            "Position": 7620,
-            "PanelId": 60,
-            "Priority": 586,
             "IsFree": true,
             "BlockLevel": "SpaceOnly"
           }
