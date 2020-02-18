@@ -417,6 +417,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.None);
         }
 
+        public void StopTest(BayNumber bayNumber, MessageActor sender)
+        {
+            this.PublishCommand(
+                null,
+                $"Stop carousel test on bay {bayNumber}",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.StopTest,
+                bayNumber,
+                BayNumber.None);
+        }
+
         #endregion
     }
 }

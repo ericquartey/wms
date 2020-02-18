@@ -109,5 +109,7 @@
         FullTest,
 
         ProfileCalibration,
+
+        StopTest,
     }
 }
