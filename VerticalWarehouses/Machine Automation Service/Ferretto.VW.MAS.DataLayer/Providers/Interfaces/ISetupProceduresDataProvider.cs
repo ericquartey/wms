@@ -10,6 +10,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         SetupProceduresSet GetAll();
 
+        RepeatedTestProcedure GetBayCarouselCalibration(BayNumber bayNumber);
+
         BayProfileCheckProcedure GetBayProfileCheck(BayNumber bayNumber);
 
         RepeatedTestProcedure GetBeltBurnishingTest();

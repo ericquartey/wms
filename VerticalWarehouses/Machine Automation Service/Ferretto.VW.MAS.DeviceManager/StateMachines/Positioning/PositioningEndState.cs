@@ -14,7 +14,6 @@ using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.DeviceManager.Positioning
 {
     internal class PositioningEndState : StateBase
@@ -92,7 +91,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                             var notificationMessage = new NotificationMessage(
                                 this.machineData.MessageData,
-                                this.machineData.MessageData.RequiredCycles == 0 ? "Positioning Stopped" : "Belt Burninshing Stopped",
+                                this.machineData.MessageData.RequiredCycles == 0 ? "Positioning Stopped" : "Test Stopped",
                                 MessageActor.DeviceManager,
                                 MessageActor.DeviceManager,
                                 MessageType.Positioning,
@@ -188,7 +187,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             {
                 var stopMessage = new FieldCommandMessage(
                     null,
-                    this.machineData.MessageData.RequiredCycles == 0 ? "Positioning Stopped" : "Belt Burninshing Stopped",
+                    this.machineData.MessageData.RequiredCycles == 0 ? "Positioning Stopped" : "Test Stopped",
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.DeviceManager,
                     FieldMessageType.InverterStop,
@@ -211,7 +210,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                 var notificationMessage = new NotificationMessage(
                     this.machineData.MessageData,
-                    this.machineData.MessageData.RequiredCycles == 0 ? "Positioning Completed" : "Belt Burninshing Completed",
+                    this.machineData.MessageData.RequiredCycles == 0 ? "Positioning Completed" : "Test Completed",
                     MessageActor.DeviceManager,
                     MessageActor.DeviceManager,
                     MessageType.Positioning,
@@ -247,7 +246,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
-            if (this.machineData.MessageData.MovementMode == MovementMode.BeltBurnishing)
+            if (this.machineData.MessageData.MovementMode == MovementMode.BeltBurnishing
+                || this.machineData.MessageData.MovementMode == MovementMode.BayTest
+                )
             {
                 this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Manual;
                 this.Logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
@@ -275,7 +276,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     {
                         // se uno dei due target è null e il suo previous non è null e se è dentro la tolleranza non setto null
                         if ((targetBayPositionId != null && targetCellId != null) ||
-                            (previousBayPosition == null && previousCell == null) ||                            
+                            (previousBayPosition == null && previousCell == null) ||
                             (targetCellId == null && previousCell != null && !elevatorDataProvider.IsVerticalPositionWithinTolerance(previousCell.Position)) ||
                             (targetBayPositionId == null && previousBayPosition != null && !elevatorDataProvider.IsVerticalPositionWithinTolerance(previousBayPosition.Height)) ||
                             (targetCellId != null && previousCell != null && targetCellId != previousCell.Id) ||
@@ -296,7 +297,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             elevatorDataProvider.SetCurrentCell(null);
                         }
                     }
-                    
+
                     transaction.Commit();
                 }
             }
