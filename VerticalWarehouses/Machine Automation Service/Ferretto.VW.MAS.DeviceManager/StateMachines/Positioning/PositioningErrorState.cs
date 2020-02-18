@@ -11,7 +11,6 @@ using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.DeviceManager.Positioning
 {
     internal class PositioningErrorState : StateBase
@@ -125,7 +124,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
-            if (this.machineData.MessageData.MovementMode == MovementMode.BeltBurnishing)
+            if (this.machineData.MessageData.MovementMode == MovementMode.BeltBurnishing
+                || this.machineData.MessageData.MovementMode == MovementMode.BayTest
+                )
             {
                 this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Manual;
                 this.Logger.LogInformation($"Machine status switched to {MachineMode.Manual}");

@@ -4920,6 +4920,8 @@
       "IsCompleted": false
     },
     "Bay1ProfileCheck": {
+      "FeedRate": 0.2,
+      "RequiredCycles": 200
     },
     "Bay2ProfileCheck": {
     },
