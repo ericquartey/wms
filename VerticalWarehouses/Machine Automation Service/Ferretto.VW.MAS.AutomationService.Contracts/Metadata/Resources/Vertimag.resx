@@ -156,6 +156,18 @@
   <data name="BayNumber.ElevatorBay" xml:space="preserve">
     <value>culla</value>
   </data>
+  <data name="BayPosition_Height" xml:space="preserve">
+    <value>Quota</value>
+  </data>
+  <data name="BayPosition_MaxDoubleHeight" xml:space="preserve">
+    <value>Altezza massima doppia</value>
+  </data>
+  <data name="BayPosition_MaxSingleHeight" xml:space="preserve">
+    <value>Altezza massima standard</value>
+  </data>
+  <data name="BayPosition_ProfileOffset" xml:space="preserve">
+    <value>Offset controllo sagoma</value>
+  </data>
   <data name="BayShutter" xml:space="preserve">
     <value>Shutter baia {0}</value>
   </data>
