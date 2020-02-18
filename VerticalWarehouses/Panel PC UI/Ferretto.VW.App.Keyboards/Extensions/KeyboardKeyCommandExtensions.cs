@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using Ferretto.VW.App.Keyboards.Controls;
 
@@ -13,6 +14,8 @@ namespace Ferretto.VW.App.Keyboards
         #region Fields
 
         private const string CmdPattern = @"^\{layout:(?<Cmd>[^\s\}]+)\}$";
+
+        private const string ConvertPattern = @"^\{convert:(?<Converter>[^\s\}]+)\}$";
 
         private const string KeyPattern = @"^\{[^\s\}]+\}$";
 
@@ -26,11 +29,33 @@ namespace Ferretto.VW.App.Keyboards
             {
                 throw new ArgumentNullException(nameof(command));
             }
-            Match layoutCmdMatch = Regex.Match(command.CommandText, CmdPattern);
-            if (layoutCmdMatch?.Success == true)
+            Match layoutCmdMatch, convertCmdMatch;
+            if ((layoutCmdMatch = Regex.Match(command.CommandText, CmdPattern))?.Success == true)
             {
                 string layoutCode = layoutCmdMatch.Groups["Cmd"].Value;
                 button.FindKeyboard()?.RequestLayoutChange(layoutCode);
+            }
+            else if ((convertCmdMatch = Regex.Match(command.CommandText, ConvertPattern))?.Success == true)
+            {
+                string recourceKey = convertCmdMatch.Groups["Converter"].Value;
+                if (button.TryFindResource(recourceKey) is System.Windows.Data.IValueConverter converter)
+                {
+                    var target = System.Windows.Input.Keyboard.FocusedElement;
+                    if (target is TextBox text)
+                    {
+                        var culture = System.Globalization.CultureInfo.CurrentCulture;
+                        text.Text = System.Convert.ToString(converter.Convert(text.Text, typeof(string), null, culture), culture);
+                        text.SelectAll();
+                    }
+                    else if (target != null)
+                    {
+                        throw new NotSupportedException($"Cannot manage input element of type {target.GetType()} using keyboard conversion commands.");
+                    }
+                }
+                else
+                {
+                    throw new ResourceReferenceKeyNotFoundException("Resource Key not found or not castable to IValueConverter.", recourceKey);
+                }
             }
             else
             {

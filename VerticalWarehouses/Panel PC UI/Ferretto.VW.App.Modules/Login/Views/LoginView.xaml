@@ -199,7 +199,6 @@
                                         </Style>
                                     </Label.Style>
                                 </Label>
-
                                 <dxe:PasswordBoxEdit x:Name="txtPassword"
                                                      Margin="0,5"
                                                      FontFamily="{DynamicResource VWAPP_TitleFont}"
@@ -208,7 +207,7 @@
                                                      MouseDoubleClick="OnKeyboardOpenHandler"
                                                      NullText="{x:Static res:LoadLogin.PasswordEnter}"
                                                      Password="{Binding UserLogin.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                     TouchEnter="OnKeyboardOpenHandler" />
+                                                     TouchUp="OnKeyboardOpenHandler" />
 
                                 <Button Margin="0,25"
                                         Padding="5"

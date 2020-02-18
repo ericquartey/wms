@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -29,7 +30,17 @@ namespace Ferretto.VW.App.Keyboards
 
         #region Properties
 
-        public IEnumerable<KeyboardRow> Rows { get; set; } = Array.Empty<KeyboardRow>();
+        public HorizontalAlignment HorizontalAlignment { get; set; } = HorizontalAlignment.Stretch;
+
+        /// <summary>
+        /// Gets or sets the zone definitions.
+        /// </summary>
+        public IEnumerable<KeyboardSet> Sets { get; set; } = Array.Empty<KeyboardSet>();
+
+        /// <summary>
+        /// Gets or sets the keysets.
+        /// </summary>
+        public IEnumerable<KeyboardZone> Zones { get; set; } = Array.Empty<KeyboardZone>();
 
         #endregion
 
