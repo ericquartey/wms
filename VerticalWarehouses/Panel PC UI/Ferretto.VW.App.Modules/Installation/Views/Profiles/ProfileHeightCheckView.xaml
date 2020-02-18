@@ -717,7 +717,7 @@
                                            Grid.Column="1"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
-                                           SensorState="{Binding LuPresentInBay}"
+                                           SensorState="{Binding SensorsService.ProfileCalibrationBay}"
                                            Text="{x:Static res:InstallationApp.HeightReaced}" />
 
                 <TextBlock Grid.Row="3"
@@ -783,12 +783,12 @@
 
                 <controls:PpcButton Grid.Row="3"
                                     Grid.Column="0"
-                                    Command="{Binding ApplyCorrectionCommand}"
+                                    Command="{Binding RepeatCommand}"
                                     Content="Ripeti misurazione"
                                     Style="{StaticResource WizardConfirmButton}" />
                 <controls:PpcButton Grid.Row="3"
                                     Grid.Column="1"
-                                    Command="{Binding ApplyCorrectionCommand}"
+                                    Command="{Binding CompletedCommand}"
                                     Content="Completa"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>

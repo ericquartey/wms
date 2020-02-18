@@ -10,7 +10,6 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
-using Ferretto.VW.MAS.MachineManager;
 using Ferretto.VW.MAS.MachineManager.MissionMove;
 using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
 using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
@@ -58,12 +57,57 @@ namespace Ferretto.VW.MAS.MissionManager
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
 
-            if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status != MissionStatus.New))
+            if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status != MissionStatus.New && m.Status != MissionStatus.Waiting))
             {
                 return serviceProvider.GetRequiredService<IMissionSchedulingProvider>().QueueLoadingUnitCompactingMission(serviceProvider);
             }
             // no more compacting is possible. Exit from compact mode
             return false;
+        }
+
+        public void CompleteCurrentMissionInBay(BayNumber bayNumber, Mission mission, IServiceProvider serviceProvider)
+        {
+            var moveLoadingUnitProvider = serviceProvider.GetRequiredService<IMoveLoadUnitProvider>();
+            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+
+            baysDataProvider.ClearMission(bayNumber);
+            this.NotifyAssignedMissionChanged(bayNumber, null);
+
+            // check if there are other missions for this LU in this bay
+            var nextMission = missionsDataProvider
+                .GetAllActiveMissionsByBay(bayNumber)
+                .FirstOrDefault(m =>
+                    m.LoadUnitId == mission.LoadUnitId
+                    &&
+                    m.WmsId.HasValue
+                    &&
+                    m.WmsId != mission.WmsId);
+
+            if (nextMission is null)
+            {
+                var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(mission.LoadUnitId);
+
+                // send back the loading unit to the cell
+                moveLoadingUnitProvider.ResumeMoveLoadUnit(
+                    mission.Id,
+                    loadingUnitSource,
+                    LoadingUnitLocation.Cell,
+                    bayNumber,
+                    null,
+                    MissionType.IN,
+                    MessageActor.MissionManager);
+            }
+            else
+            {
+                // close current mission
+                this.Logger.LogInformation("Bay {bayNumber}: mission {missionId} Stop.", mission.TargetBay, mission.Id);
+                moveLoadingUnitProvider.StopMove(mission.Id, bayNumber, bayNumber, MessageActor.MissionManager);
+
+                // activate new mission
+                this.Logger.LogInformation("Bay {bayNumber}: mission {missionId} Activate.", mission.TargetBay, nextMission.Id);
+                moveLoadingUnitProvider.ActivateMove(nextMission.Id, nextMission.MissionType, nextMission.LoadUnitId, bayNumber, MessageActor.MissionManager);
+            }
         }
 
         public async Task ScheduleMissionsOnBayAsync(BayNumber bayNumber, IServiceProvider serviceProvider, bool restore = false)
@@ -170,6 +214,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     mission.Step is MissionStep.BayChain)
                 {
                     var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(mission.LoadUnitId);
+
                     this.Logger.LogInformation("Bay {bayNumber}: mission {missionId} Resume waiting.", mission.TargetBay, mission.Id);
                     moveLoadingUnitProvider.ResumeMoveLoadUnit(
                         mission.Id,
@@ -245,16 +290,20 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 return true;
             }
+
             var bays = bayProvider.GetAll();
-            bool generated = false;
+            var generated = false;
             if (this.machineVolatileDataProvider.IsBayHomingExecuted.Any(x => !x.Value)
-                && bays.All(x => x.CurrentMission == null))
+                &&
+                bays.All(x => x.CurrentMission == null))
             {
-                var bayNumber = bays.FirstOrDefault(x => this.machineVolatileDataProvider.IsBayHomingExecuted.ContainsKey(x.Number)
+                var bayNumber = bays.FirstOrDefault(x =>
+                this.machineVolatileDataProvider.IsBayHomingExecuted.ContainsKey(x.Number)
                     && !this.machineVolatileDataProvider.IsBayHomingExecuted[x.Number]
                     && x.Carousel != null
                     && x.CurrentMission == null
                     && x.Positions.All(p => p.LoadingUnit == null))?.Number ?? BayNumber.None;
+
                 if (bayNumber != BayNumber.None)
                 {
                     IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, Calibration.FindSensor, null, false);
@@ -273,6 +322,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     generated = true;
                 }
             }
+
             if (!generated && !isHomingExecuted)
             {
                 IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical, Calibration.FindSensor, null, false);
@@ -290,6 +340,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 this.Logger.LogDebug($"GenerateHoming: Elevator");
                 generated = true;
             }
+
             this.machineVolatileDataProvider.IsHomingActive = generated;
             return generated;
         }
@@ -301,6 +352,11 @@ namespace Ferretto.VW.MAS.MissionManager
         /// <returns></returns>
         private async Task InvokeSchedulerAsync(IServiceProvider serviceProvider)
         {
+            if (serviceProvider is null)
+            {
+                throw new ArgumentNullException(nameof(serviceProvider));
+            }
+
             if (!this.dataLayerIsReady)
             {
                 this.Logger.LogTrace("Mission scheduling is not allowed: data layer is not ready.");
@@ -331,14 +387,14 @@ namespace Ferretto.VW.MAS.MissionManager
                         {
                             if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic)
                             {
-                                if (activeMissions.Any(m => m.MissionType == MissionType.LoadUnitOperation))
-                                {
-                                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToLoadUnitOperations;
-                                    this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
-                                }
-                                else if (activeMissions.Any(m => m.MissionType == MissionType.Compact))
+                                if (activeMissions.Any(m => m.MissionType == MissionType.Compact))
                                 {
                                     this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToCompact;
+                                    this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                                }
+                                else if (activeMissions.Any(m => m.MissionType == MissionType.LoadUnitOperation))
+                                {
+                                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToLoadUnitOperations;
                                     this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                                 }
                             }
@@ -351,17 +407,17 @@ namespace Ferretto.VW.MAS.MissionManager
                         {
                             if (!this.IsLoadUnitMissing(serviceProvider))
                             {
-                                if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations
-                                    || activeMissions.Any(m => m.MissionType == MissionType.LoadUnitOperation)
-                                    )
-                                {
-                                    this.machineVolatileDataProvider.Mode = MachineMode.LoadUnitOperations;
-                                }
-                                else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToCompact
-                                    || activeMissions.Any(m => m.MissionType == MissionType.Compact)
+                                if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToCompact
+                                    || activeMissions.Any(m => m.MissionType == MissionType.Compact && m.Status == MissionStatus.Executing)
                                     )
                                 {
                                     this.machineVolatileDataProvider.Mode = MachineMode.Compact;
+                                }
+                                else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations
+                                    || activeMissions.Any(m => m.MissionType == MissionType.LoadUnitOperation && m.Status == MissionStatus.Executing)
+                                    )
+                                {
+                                    this.machineVolatileDataProvider.Mode = MachineMode.LoadUnitOperations;
                                 }
                                 else
                                 {
@@ -446,6 +502,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                     return true;
                 }
+
                 if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitId == loadUnit.Id))
                 {
                     this.Logger.LogInformation($"Insert load unit {loadUnit.Id} from {LoadingUnitLocation.Elevator} to cell");
@@ -454,6 +511,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     return true;
                 }
             }
+
             if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic)
             {
                 var bayProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
@@ -473,6 +531,7 @@ namespace Ferretto.VW.MAS.MissionManager
                                 this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                                 return true;
                             }
+
                             if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitId == position.LoadingUnit.Id))
                             {
                                 this.Logger.LogInformation($"Insert load unit {position.LoadingUnit.Id} from {position.Location} to cell");
@@ -517,6 +576,8 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private async Task OnDataLayerReadyAsync(IServiceProvider serviceProvider)
         {
+            var loadUnitsDataProvider = serviceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
+            loadUnitsDataProvider.UpdateWeightStatistics();
             GetPersistedMissions(serviceProvider, this.EventAggregator);
             this.dataLayerIsReady = true;
             await this.InvokeSchedulerAsync(serviceProvider);
@@ -629,37 +690,23 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private async Task OnOperationComplete(MissionOperationCompletedMessageData messageData, IServiceProvider serviceProvider)
         {
-            Contract.Requires(serviceProvider != null);
-
-            if (!this.dataLayerIsReady)
+            if (this.dataLayerIsReady)
             {
-                this.Logger.LogTrace("Cannot perform mission scheduling, because data layer is not ready.");
-                return;
+                await this.InvokeSchedulerAsync(serviceProvider);
             }
 
-            await this.InvokeSchedulerAsync(serviceProvider);
-        }
-
-        private async Task ScheduleMissionsOnBaysAsync(IServiceProvider serviceProvider)
-        {
-            foreach (var bay in serviceProvider.GetRequiredService<IBaysDataProvider>().GetAll())
-            {
-                await this.ScheduleMissionsOnBayAsync(bay.Number, serviceProvider);
-            }
+            this.Logger.LogTrace("Cannot perform mission scheduling, because data layer is not ready.");
         }
 
         private async Task ScheduleRestore(IServiceProvider serviceProvider, IBaysDataProvider bayProvider, IEnumerable<Mission> activeMissions)
         {
             if (!activeMissions.Any(m => m.Step >= MissionStep.Error && m.RestoreStep == MissionStep.NotDefined))
             {
-                foreach (var bay in bayProvider.GetAll())
+                foreach (var bay in bayProvider.GetAll().Where(b => b.IsActive))
                 {
                     try
                     {
-                        if (bay.IsActive)
-                        {
-                            await this.ScheduleMissionsOnBayAsync(bay.Number, serviceProvider, true);
-                        }
+                        await this.ScheduleMissionsOnBayAsync(bay.Number, serviceProvider, true);
                     }
                     catch (Exception ex)
                     {
@@ -680,8 +727,6 @@ namespace Ferretto.VW.MAS.MissionManager
             }
 
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
-            var moveLoadingUnitProvider = serviceProvider.GetRequiredService<IMoveLoadUnitProvider>();
-            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
             var missionsWmsWebService = serviceProvider.GetRequiredService<WMS.Data.WebAPI.Contracts.IMissionsWmsWebService>();
 
             var wmsMission = await missionsWmsWebService.GetByIdAsync(mission.WmsId.Value);
@@ -689,6 +734,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Completed
                 &&
                 o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Error);
+
             if (newOperations.Any())
             {
                 if (mission.Status is MissionStatus.New)
@@ -703,7 +749,9 @@ namespace Ferretto.VW.MAS.MissionManager
                     else
                     {
                         this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} Activate.", mission.TargetBay, mission.WmsId.Value);
-                        moveLoadingUnitProvider.ActivateMove(mission.Id, mission.MissionType, mission.LoadUnitId, bayNumber, MessageActor.MissionManager);
+                        serviceProvider
+                            .GetRequiredService<IMoveLoadUnitProvider>()
+                            .ActivateMove(mission.Id, mission.MissionType, mission.LoadUnitId, bayNumber, MessageActor.MissionManager);
                     }
                 }
                 else if (mission.Status is MissionStatus.Waiting)
@@ -711,7 +759,10 @@ namespace Ferretto.VW.MAS.MissionManager
                     var newOperation = newOperations.OrderBy(o => o.Priority).First();
                     this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", mission.TargetBay, mission.WmsId.Value, newOperation.Id);
 
-                    baysDataProvider.AssignMission(mission.TargetBay, mission);
+                    serviceProvider
+                        .GetRequiredService<IBaysDataProvider>()
+                        .AssignMission(mission.TargetBay, mission);
+
                     this.NotifyAssignedMissionChanged(mission.TargetBay, wmsMission.Id);
                 }
             }
@@ -723,41 +774,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
                 this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} completed.", bayNumber, mission.WmsId.Value);
 
-                baysDataProvider.ClearMission(bayNumber);
-                this.NotifyAssignedMissionChanged(bayNumber, null);
-
-                // check if there are other missions for this LU in this bay
-                var nextMission = activeMissions.FirstOrDefault(m =>
-                    m.LoadUnitId == mission.LoadUnitId
-                    &&
-                    m.WmsId.HasValue
-                    &&
-                    m.WmsId != mission.WmsId);
-
-                var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(mission.LoadUnitId);
-
-                if (nextMission is null)
-                {
-                    // send back the loading unit to the cell
-                    moveLoadingUnitProvider.ResumeMoveLoadUnit(
-                        mission.Id,
-                        loadingUnitSource,
-                        LoadingUnitLocation.Cell,
-                        bayNumber,
-                        null,
-                        MissionType.IN,
-                        MessageActor.MissionManager);
-                }
-                else
-                {
-                    // close current mission
-                    this.Logger.LogInformation("Bay {bayNumber}: mission {missionId} Stop.", mission.TargetBay, mission.Id);
-                    moveLoadingUnitProvider.StopMove(mission.Id, bayNumber, bayNumber, MessageActor.MissionManager);
-
-                    // activate new mission
-                    this.Logger.LogInformation("Bay {bayNumber}: mission {missionId} Activate.", mission.TargetBay, nextMission.Id);
-                    moveLoadingUnitProvider.ActivateMove(nextMission.Id, nextMission.MissionType, nextMission.LoadUnitId, bayNumber, MessageActor.MissionManager);
-                }
+                //    this.CompleteCurrentMissionInBay(bayNumber, mission, serviceProvider);
             }
         }
 

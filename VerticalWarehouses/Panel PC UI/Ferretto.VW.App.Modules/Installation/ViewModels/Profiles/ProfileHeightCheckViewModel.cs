@@ -63,6 +63,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand closeShutterCommand;
 
+        private DelegateCommand completedCommand;
+
         private string currentError;
 
         private ProfileCheckStep currentStep;
@@ -94,6 +96,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private double? profileStartDistanceDx;
 
         private double? profileStartDistanceSx;
+
+        private DelegateCommand repeatCommand;
 
         private SubscriptionToken stepChangedToken;
 
@@ -143,6 +147,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.closeShutterCommand = new DelegateCommand(
                 async () => await this.CloseShutterAsync(),
                 this.CanCloseShutter));
+
+        public ICommand CompletedCommand =>
+            this.completedCommand
+            ??
+            (this.completedCommand = new DelegateCommand(
+                async () =>
+                {
+                    await this.machineProfileProcedureWeb.SaveAsync();
+
+                    this.CurrentStep = ProfileCheckStep.Initialize;
+
+                    this.NavigationService.GoBack();
+                }));
 
         public ProfileCheckStep CurrentStep
         {
@@ -201,7 +218,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public ICommand MensurationDxCommand =>
-                            this.mensurationDxCommand
+            this.mensurationDxCommand
             ??
             (this.mensurationDxCommand = new DelegateCommand(
                 async () => await this.MensurationDxAsync(),
@@ -259,8 +276,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.profileStartDistanceSx, value, this.RaiseCanExecuteChanged);
         }
 
+        public ICommand RepeatCommand =>
+            this.repeatCommand
+            ??
+            (this.repeatCommand = new DelegateCommand(
+                () => this.CurrentStep = ProfileCheckStep.ShapePositionDx));
+
         public ICommand StopCommand =>
-                                            this.stopCommand
+            this.stopCommand
             ??
             (this.stopCommand = new DelegateCommand(
                 async () => await this.StopAsync(),
@@ -658,7 +681,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.ProfileStartDistanceDx = data.ProfileStartDistance;
                 this.ProfileCalibrateDistanceDx = data.ProfileCalibrateDistance;
 
-                this.MeasuredDx = 1d;
+                this.MeasuredDx = data.Measured;
 
                 this.CurrentStep = ProfileCheckStep.ShapePositionSx;
             }
@@ -667,7 +690,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.ProfileStartDistanceSx = data.ProfileStartDistance;
                 this.ProfileCalibrateDistanceSx = data.ProfileCalibrateDistance;
 
-                this.MeasuredSx = 1d;
+                this.MeasuredSx = data.Measured;
 
                 this.CurrentStep = ProfileCheckStep.ResultCheck;
             }
@@ -749,12 +772,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 case ProfileCheckStep.TuningChainSx:
                 case ProfileCheckStep.TuningChainDx:
-                    this.ShowPrevStepSinglePage(true, false);
-                    this.ShowNextStepSinglePage(true, false);
-                    break;
-
                 case ProfileCheckStep.ResultCheck:
-                    this.ShowPrevStepSinglePage(true, true);
+                    this.ShowPrevStepSinglePage(true, false);
                     this.ShowNextStepSinglePage(true, false);
                     break;
 

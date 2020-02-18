@@ -7,42 +7,57 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [Ferretto.VW.MAS.Scaffolding.DataAnnotations.MetadataType(typeof(ElevatorStructuralProperties.Metadata))]
     partial class ElevatorStructuralProperties
     {
+        #region Classes
+
         private class Metadata
         {
+            #region Properties
+
             [Id(1)]
-            [Editable(false)]
+            [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.BeltRigidity))]
+            [Unit("N/m/mm")]
             public int BeltRigidity { get; set; }
 
             [Id(2)]
-            [Editable(false)]
+            [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.BeltSpacing))]
+            [Unit("mm")]
             public double BeltSpacing { get; set; }
 
             [Id(3)]
             [Editable(false)]
+            [Unit("kg")]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorWeight))]
             public double ElevatorWeight { get; set; }
 
             [Id(4)]
-            [Editable(false)]
+            [Editable(true)]
+            [Unit("mm")]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.HalfShaftLength))]
             public double HalfShaftLength { get; set; }
 
             [Id(5)]
-            [Editable(false)]
+            [Editable(true)]
+            [Unit("mm")]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.PulleyDiameter))]
             public double PulleyDiameter { get; set; }
 
             [Id(6)]
-            [Editable(false)]
+            [Editable(true)]
+            [Unit("mm")]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ShaftDiameter))]
             public double ShaftDiameter { get; set; }
 
             [Id(7)]
-            [Editable(false)]
+            [Editable(true)]
+            [Unit("N/mm²")]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ShaftElasticity))]
             public double ShaftElasticity { get; set; }
+
+            #endregion
         }
+
+        #endregion
     }
 }

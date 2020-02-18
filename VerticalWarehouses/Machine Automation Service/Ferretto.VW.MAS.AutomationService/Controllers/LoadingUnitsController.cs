@@ -245,6 +245,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpGet("remove-loadunit")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult RemoveLoadUnit(int loadingUnitId)
+        {
+            this.loadingUnitsDataProvider.Remove(loadingUnitId);
+            return this.Accepted();
+        }
+
         [HttpGet("resume-moving")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
@@ -252,6 +261,35 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             this.logger.LogInformation($"Resume mission {missionId} in bay {targetBay}");
             this.moveLoadingUnitProvider.RemoveLoadUnit(missionId, this.BayNumber, targetBay, MessageActor.AutomationService);
+            return this.Accepted();
+        }
+
+        [HttpGet("{id}/resume-moving-wms")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult ResumeWms(int id, int missionId, [FromServices] IBaysDataProvider baysDataProvider)
+        {
+            var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(id);
+
+            this.moveLoadingUnitProvider.ResumeMoveLoadUnit(
+                    missionId,
+                    loadingUnitSource,
+                    LoadingUnitLocation.Cell,
+                    this.BayNumber,
+                    null,
+                    MissionType.IN,
+                    MessageActor.MissionManager);
+
+            return this.Accepted();
+        }
+
+        [HttpPost("save-loadunit")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public IActionResult SaveLoadUnit(DataModels.LoadingUnit loadingUnit)
+        {
+            this.loadingUnitsDataProvider.Save(loadingUnit);
             return this.Accepted();
         }
 

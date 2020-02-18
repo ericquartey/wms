@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
-namespace Ferretto.VW.App.Services
+namespace Ferretto.VW.App.Controls
 {
     internal sealed class WmsImagesProvider : IWmsImagesProvider
     {
@@ -58,7 +58,7 @@ namespace Ferretto.VW.App.Services
 
         private Stream LoadFallbackImage()
         {
-            var sri = Application.GetResourceStream(new Uri($"pack://application:,,,/{Utils.Common.ASSEMBLY_MAINTHEMENAME};Component/Images/{BLANKIMAGE}"));
+            var sri = Application.GetResourceStream(new Uri($"pack://application:,,,/{VW.Utils.Common.ASSEMBLY_MAINTHEMENAME};Component/Images/{BLANKIMAGE}"));
             return new MemoryStream(this.ReadFully(sri.Stream));
         }
 

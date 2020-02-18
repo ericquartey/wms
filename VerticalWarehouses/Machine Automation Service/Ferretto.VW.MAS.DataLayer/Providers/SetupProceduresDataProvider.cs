@@ -38,9 +38,9 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.SetupProceduresSets
-                    .Include(s => s.Bay1HeightCheck)
-                    .Include(s => s.Bay2HeightCheck)
-                    .Include(s => s.Bay3HeightCheck)
+                    .Include(s => s.Bay1ProfileCheck)
+                    .Include(s => s.Bay2ProfileCheck)
+                    .Include(s => s.Bay3ProfileCheck)
                     .Include(s => s.BeltBurnishingTest)
                     .Include(s => s.CellPanelsCheck)
                     .Include(s => s.CellsHeightCheck)
@@ -50,6 +50,9 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(s => s.Bay1ShutterTest)
                     .Include(s => s.Bay2ShutterTest)
                     .Include(s => s.Bay3ShutterTest)
+                    .Include(s => s.Bay1CarouselCalibration)
+                    .Include(s => s.Bay2CarouselCalibration)
+                    .Include(s => s.Bay3CarouselCalibration)
                     .Include(s => s.VerticalResolutionCalibration)
                     .Include(s => s.VerticalOffsetCalibration)
                     .Include(s => s.VerticalOriginCalibration)
@@ -57,12 +60,22 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public PositioningProcedure GetBayHeightCheck(BayNumber bayNumber)
+        public RepeatedTestProcedure GetBayCarouselCalibration(BayNumber bayNumber)
         {
             lock (this.dataContext)
             {
                 return this.dataContext.SetupProceduresSets
-                    .Select(s => bayNumber == BayNumber.BayOne ? s.Bay1HeightCheck : bayNumber == BayNumber.BayTwo ? s.Bay1HeightCheck : s.Bay3HeightCheck)
+                    .Select(s => bayNumber == BayNumber.BayOne ? s.Bay1CarouselCalibration : bayNumber == BayNumber.BayTwo ? s.Bay2CarouselCalibration : s.Bay3CarouselCalibration)
+                    .Single();
+            }
+        }
+
+        public BayProfileCheckProcedure GetBayProfileCheck(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.SetupProceduresSets
+                    .Select(s => bayNumber == BayNumber.BayOne ? s.Bay1ProfileCheck : bayNumber == BayNumber.BayTwo ? s.Bay2ProfileCheck : s.Bay3ProfileCheck)
                     .Single();
             }
         }
@@ -171,7 +184,9 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             _ = setupProceduresSet ?? throw new System.ArgumentNullException(nameof(setupProceduresSet));
 
-            //context.SetupProcedures.Remove(context.SetupProcedures.Find(setupProceduresSet?.BayHeightCheck?.Id));
+            //context.SetupProcedures.Remove(context.SetupProcedures.Find(setupProceduresSet?.Bay1ProfileCheck?.Id));
+            //context.SetupProcedures.Remove(context.SetupProcedures.Find(setupProceduresSet?.Bay2ProfileCheck?.Id));
+            //context.SetupProcedures.Remove(context.SetupProcedures.Find(setupProceduresSet?.Bay3ProfileCheck?.Id));
             //context.SetupProcedures.Remove(context.SetupProcedures.Find(setupProceduresSet?.BeltBurnishingTest?.Id));
             //context.SetupProcedures.Remove(context.SetupProcedures.Find(setupProceduresSet?.CellPanelsCheck?.Id));
             //context.SetupProcedures.Remove(context.SetupProcedures.Find(setupProceduresSet?.CellsHeightCheck?.Id));
@@ -184,9 +199,9 @@ namespace Ferretto.VW.MAS.DataLayer
             //context.SetupProceduresSets.Remove(setupProceduresSet);
 
             context.AddOrUpdate(setupProceduresSet, (e) => e.Id);
-            context.AddOrUpdate(setupProceduresSet?.Bay1HeightCheck, (e) => e.Id);
-            context.AddOrUpdate(setupProceduresSet?.Bay2HeightCheck, (e) => e.Id);
-            context.AddOrUpdate(setupProceduresSet?.Bay3HeightCheck, (e) => e.Id);
+            context.AddOrUpdate(setupProceduresSet?.Bay1ProfileCheck, (e) => e.Id);
+            context.AddOrUpdate(setupProceduresSet?.Bay2ProfileCheck, (e) => e.Id);
+            context.AddOrUpdate(setupProceduresSet?.Bay3ProfileCheck, (e) => e.Id);
             context.AddOrUpdate(setupProceduresSet?.BeltBurnishingTest, (e) => e.Id);
             context.AddOrUpdate(setupProceduresSet?.CellPanelsCheck, (e) => e.Id);
             context.AddOrUpdate(setupProceduresSet?.CellsHeightCheck, (e) => e.Id);
@@ -309,9 +324,9 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             dataContext.AddOrUpdate(setupProceduresSet, (e) => e.Id);
-            dataContext.AddOrUpdate(setupProceduresSet?.Bay1HeightCheck, (e) => e.Id);
-            dataContext.AddOrUpdate(setupProceduresSet?.Bay2HeightCheck, (e) => e.Id);
-            dataContext.AddOrUpdate(setupProceduresSet?.Bay3HeightCheck, (e) => e.Id);
+            dataContext.AddOrUpdate(setupProceduresSet?.Bay1ProfileCheck, (e) => e.Id);
+            dataContext.AddOrUpdate(setupProceduresSet?.Bay2ProfileCheck, (e) => e.Id);
+            dataContext.AddOrUpdate(setupProceduresSet?.Bay3ProfileCheck, (e) => e.Id);
             dataContext.AddOrUpdate(setupProceduresSet?.BeltBurnishingTest, (e) => e.Id);
             dataContext.AddOrUpdate(setupProceduresSet?.CellPanelsCheck, (e) => e.Id);
             dataContext.AddOrUpdate(setupProceduresSet?.CellsHeightCheck, (e) => e.Id);

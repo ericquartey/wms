@@ -1089,7 +1089,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("InstallationDate");
+                    b.Property<DateTime?>("InstallationDate");
 
                     b.Property<DateTime?>("LastServiceDate");
 
@@ -1100,14 +1100,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ServicingInfo");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            InstallationDate = new DateTime(2017, 4, 14, 17, 13, 58, 82, DateTimeKind.Local).AddTicks(9761),
-                            ServiceStatus = 86
-                        });
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.SetupProcedure", b =>
@@ -1134,15 +1126,27 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("Bay1HeightCheckId");
+                    b.Property<int?>("Bay1CarouselCalibrationId");
+
+                    b.Property<int?>("Bay1CarouselTestId");
+
+                    b.Property<int?>("Bay1ProfileCheckId");
 
                     b.Property<int?>("Bay1ShutterTestId");
 
-                    b.Property<int?>("Bay2HeightCheckId");
+                    b.Property<int?>("Bay2CarouselCalibrationId");
+
+                    b.Property<int?>("Bay2CarouselTestId");
+
+                    b.Property<int?>("Bay2ProfileCheckId");
 
                     b.Property<int?>("Bay2ShutterTestId");
 
-                    b.Property<int?>("Bay3HeightCheckId");
+                    b.Property<int?>("Bay3CarouselCalibrationId");
+
+                    b.Property<int?>("Bay3CarouselTestId");
+
+                    b.Property<int?>("Bay3ProfileCheckId");
 
                     b.Property<int?>("Bay3ShutterTestId");
 
@@ -1166,15 +1170,27 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Bay1HeightCheckId");
+                    b.HasIndex("Bay1CarouselCalibrationId");
+
+                    b.HasIndex("Bay1CarouselTestId");
+
+                    b.HasIndex("Bay1ProfileCheckId");
 
                     b.HasIndex("Bay1ShutterTestId");
 
-                    b.HasIndex("Bay2HeightCheckId");
+                    b.HasIndex("Bay2CarouselCalibrationId");
+
+                    b.HasIndex("Bay2CarouselTestId");
+
+                    b.HasIndex("Bay2ProfileCheckId");
 
                     b.HasIndex("Bay2ShutterTestId");
 
-                    b.HasIndex("Bay3HeightCheckId");
+                    b.HasIndex("Bay3CarouselCalibrationId");
+
+                    b.HasIndex("Bay3CarouselTestId");
+
+                    b.HasIndex("Bay3ProfileCheckId");
 
                     b.HasIndex("Bay3ShutterTestId");
 
@@ -1212,23 +1228,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("Bay1Laser");
 
-                    b.Property<bool>("Bay1Shape");
-
                     b.Property<bool>("Bay2FirstLoadingUnit");
 
                     b.Property<bool>("Bay2HeightCheck");
 
                     b.Property<bool>("Bay2Laser");
 
-                    b.Property<bool>("Bay2Shape");
-
                     b.Property<bool>("Bay3FirstLoadingUnit");
 
                     b.Property<bool>("Bay3HeightCheck");
 
                     b.Property<bool>("Bay3Laser");
-
-                    b.Property<bool>("Bay3Shape");
 
                     b.Property<DateTime?>("CompletedDate");
 
@@ -1248,15 +1258,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Bay1FirstLoadingUnit = false,
                             Bay1HeightCheck = false,
                             Bay1Laser = false,
-                            Bay1Shape = false,
                             Bay2FirstLoadingUnit = false,
                             Bay2HeightCheck = false,
                             Bay2Laser = false,
-                            Bay2Shape = false,
                             Bay3FirstLoadingUnit = false,
                             Bay3HeightCheck = false,
                             Bay3Laser = false,
-                            Bay3Shape = false,
                             HorizontalHoming = false,
                             WeightMeasurement = false
                         });
@@ -1425,6 +1432,19 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasIndex("MovementProfileId");
 
                     b.HasDiscriminator().HasValue("StepMovementParameters");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.BayProfileCheckProcedure", b =>
+                {
+                    b.HasBaseType("Ferretto.VW.MAS.DataModels.SetupProcedure");
+
+                    b.Property<double>("ProfileCorrectDistance");
+
+                    b.Property<double>("ProfileDegrees");
+
+                    b.Property<double>("ProfileTotalDistance");
+
+                    b.HasDiscriminator().HasValue("BayProfileCheckProcedure");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.PositioningProcedure", b =>
@@ -1627,25 +1647,49 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.SetupProceduresSet", b =>
                 {
-                    b.HasOne("Ferretto.VW.MAS.DataModels.PositioningProcedure", "Bay1HeightCheck")
+                    b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "Bay1CarouselCalibration")
                         .WithMany()
-                        .HasForeignKey("Bay1HeightCheckId");
+                        .HasForeignKey("Bay1CarouselCalibrationId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "Bay1CarouselTest")
+                        .WithMany()
+                        .HasForeignKey("Bay1CarouselTestId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.BayProfileCheckProcedure", "Bay1ProfileCheck")
+                        .WithMany()
+                        .HasForeignKey("Bay1ProfileCheckId");
 
                     b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "Bay1ShutterTest")
                         .WithMany()
                         .HasForeignKey("Bay1ShutterTestId");
 
-                    b.HasOne("Ferretto.VW.MAS.DataModels.PositioningProcedure", "Bay2HeightCheck")
+                    b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "Bay2CarouselCalibration")
                         .WithMany()
-                        .HasForeignKey("Bay2HeightCheckId");
+                        .HasForeignKey("Bay2CarouselCalibrationId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "Bay2CarouselTest")
+                        .WithMany()
+                        .HasForeignKey("Bay2CarouselTestId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.BayProfileCheckProcedure", "Bay2ProfileCheck")
+                        .WithMany()
+                        .HasForeignKey("Bay2ProfileCheckId");
 
                     b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "Bay2ShutterTest")
                         .WithMany()
                         .HasForeignKey("Bay2ShutterTestId");
 
-                    b.HasOne("Ferretto.VW.MAS.DataModels.PositioningProcedure", "Bay3HeightCheck")
+                    b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "Bay3CarouselCalibration")
                         .WithMany()
-                        .HasForeignKey("Bay3HeightCheckId");
+                        .HasForeignKey("Bay3CarouselCalibrationId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "Bay3CarouselTest")
+                        .WithMany()
+                        .HasForeignKey("Bay3CarouselTestId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.BayProfileCheckProcedure", "Bay3ProfileCheck")
+                        .WithMany()
+                        .HasForeignKey("Bay3ProfileCheckId");
 
                     b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "Bay3ShutterTest")
                         .WithMany()

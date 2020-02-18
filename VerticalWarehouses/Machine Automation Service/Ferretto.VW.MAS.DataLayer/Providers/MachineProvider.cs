@@ -293,6 +293,7 @@ namespace Ferretto.VW.MAS.DataLayer
             machineStat.TotalWeightBack = 0;
             var loadingUnits = dataContext.LoadingUnits
                 .Include(i => i.Cell)
+                .ThenInclude(t => t.Panel)
                 .ToList();
             loadingUnits.ForEach((l) =>
             {

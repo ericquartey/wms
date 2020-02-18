@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.App.Operator.ViewModels;
+using Ferretto.VW.App.Modules.Operator.ViewModels;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 

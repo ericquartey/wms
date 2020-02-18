@@ -37,11 +37,6 @@
             get => this.highSpeedDurationClose;
             set
             {
-                if (value <= 0)
-                {
-                    throw new System.ArgumentOutOfRangeException(nameof(value));
-                }
-
                 this.highSpeedDurationClose = value;
             }
         }
@@ -51,11 +46,6 @@
             get => this.highSpeedDurationOpen;
             set
             {
-                if (value <= 0)
-                {
-                    throw new System.ArgumentOutOfRangeException(nameof(value));
-                }
-
                 this.highSpeedDurationOpen = value;
             }
         }
@@ -65,11 +55,6 @@
             get => this.maxSpeed;
             set
             {
-                if (value <= 0)
-                {
-                    throw new System.ArgumentOutOfRangeException(nameof(value));
-                }
-
                 this.maxSpeed = value;
             }
         }
@@ -79,11 +64,6 @@
             get => this.minSpeed;
             set
             {
-                if (value <= 0)
-                {
-                    throw new System.ArgumentOutOfRangeException(nameof(value));
-                }
-
                 this.minSpeed = value;
             }
         }

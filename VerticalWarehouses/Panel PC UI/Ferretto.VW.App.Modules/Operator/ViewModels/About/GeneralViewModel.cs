@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -6,21 +7,30 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
+using Microsoft.Extensions.Configuration;
 using Prism.Commands;
 using Prism.Events;
 
-namespace Ferretto.VW.App.Operator.ViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     [Warning(WarningsArea.Information)]
     internal sealed class GeneralViewModel : BaseAboutMenuViewModel
     {
         #region Fields
 
+        private readonly IHealthProbeService healthProbeService;
+
         private readonly IMachineIdentityWebService identityService;
+
+        private readonly IMachineAboutWebService machineAboutWebService;
 
         private Brush machineServiceStatusBrush;
 
         private MachineIdentity model;
+
+        private MachineStatistics statistics;
+
+        private int totalMissionCounter;
 
         private DelegateCommand viewStatusSensorsCommand;
 
@@ -32,10 +42,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Constructors
 
-        public GeneralViewModel(IMachineIdentityWebService identityService)
+        public GeneralViewModel(IMachineIdentityWebService identityService, IMachineAboutWebService machineAboutWebService, IHealthProbeService healthProbeService)
             : base()
         {
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
+
+            this.machineAboutWebService = machineAboutWebService ?? throw new ArgumentNullException(nameof(machineAboutWebService));
+
+            this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
 
             this.UpdateWmsServicesStatus(this.HealthProbeService.HealthWmsStatus);
         }
@@ -58,8 +72,24 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public string SoftwareVersion => this.GetType().Assembly.GetName().Version.ToString();
 
+        public MachineStatistics Statistics
+        {
+            get => this.statistics;
+            set => this.SetProperty(ref this.statistics, value);
+        }
+
+        public int TotalDrawersCounter { get => this.MachineService.Loadunits.Count(); }
+
+        public double TotalDrawersWeight { get => this.MachineService.Loadunits.Sum(s => s.GrossWeight); }
+
+        public int TotalMissionCounter
+        {
+            get => this.totalMissionCounter;
+            set => this.SetProperty(ref this.totalMissionCounter, value);
+        }
+
         public ICommand ViewStatusSensorsCommand =>
-            this.viewStatusSensorsCommand
+                            this.viewStatusSensorsCommand
             ??
             (this.viewStatusSensorsCommand = new DelegateCommand(
                 () => this.StatusSensorsCommand(),
@@ -95,13 +125,32 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         protected override async Task OnDataRefreshAsync()
         {
-            this.Model = await this.identityService.GetAsync();
+            try
+            {
+                this.Model = await this.identityService.GetAsync();
 
-            this.MachineServiceStatusBrush = this.GetBrushForServiceStatus(this.Model.ServiceStatus);
+                this.Statistics = await this.identityService.GetStatisticsAsync();
+
+                this.TotalMissionCounter = await this.machineAboutWebService.MissionTotalNumberAsync();
+
+                this.MachineServiceStatusBrush = this.GetBrushForServiceStatus(this.healthProbeService.HealthMasStatus);
+
+                this.UpdateWmsServicesStatus(this.healthProbeService.HealthWmsStatus);
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         protected override Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
         {
+            this.MachineServiceStatusBrush = this.GetBrushForServiceStatus(e.HealthMasStatus);
+
             this.UpdateWmsServicesStatus(e.HealthWmsStatus);
 
             return base.OnHealthStatusChangedAsync(e);
@@ -114,21 +163,19 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.viewStatusSensorsCommand?.RaiseCanExecuteChanged();
         }
 
-        private Brush GetBrushForServiceStatus(MachineServiceStatus serviceStatus)
+        private Brush GetBrushForServiceStatus(HealthStatus serviceStatus)
         {
             switch (serviceStatus)
             {
-                case MachineServiceStatus.Expired:
-                    return Brushes.Red;
-
-                case MachineServiceStatus.Expiring:
+                case HealthStatus.Initialized:
+                case HealthStatus.Initializing:
                     return Brushes.Gold;
 
-                case MachineServiceStatus.Valid:
+                case HealthStatus.Healthy:
                     return Brushes.Green;
 
                 default:
-                    return Brushes.Gray;
+                    return Brushes.Red;
             }
         }
 

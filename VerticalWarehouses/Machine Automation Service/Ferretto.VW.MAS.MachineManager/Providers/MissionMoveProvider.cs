@@ -154,7 +154,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 this.Logger.LogError(ex.NotificationMessage.Description, "Error while activating a State.");
                 //this.eventAggregator.GetEvent<NotificationEvent>().Publish(ex.NotificationMessage);
 
-                newState.OnStop(StopRequestReason.Error);
+                newState.OnStop(StopRequestReason.Abort);
                 return false;
             }
         }

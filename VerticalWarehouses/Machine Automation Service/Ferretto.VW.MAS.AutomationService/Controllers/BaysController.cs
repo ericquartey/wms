@@ -97,12 +97,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(bay);
         }
 
-        [HttpGet("height-check-parameters")]
-        public ActionResult<PositioningProcedure> GetHeightCheckParameters()
-        {
-            return this.Ok(this.setupProceduresDataProvider.GetBayHeightCheck(this.BayNumber));
-        }
-
         [HttpPost("get-light")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

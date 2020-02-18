@@ -22,8 +22,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineCellsWebService machineCellsWebService;
 
-        private IEnumerable<Cell> cells;
-
         private int currentIndex;
 
         private DelegateCommand downDataGridButtonCommand;
@@ -49,11 +47,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public IEnumerable<Cell> Cells
-        {
-            get => this.cells;
-            private set => this.SetProperty(ref this.cells, value, this.RaiseCanExecuteChanged);
-        }
+        public IEnumerable<Cell> Cells => this.MachineService.Cells;
 
         public ICommand DownDataGridButtonCommand =>
             this.downDataGridButtonCommand
@@ -103,25 +97,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await base.OnAppearedAsync();
         }
 
-        protected override async Task OnDataRefreshAsync()
+        protected override void RaiseCanExecuteChanged()
         {
-            await this.RetrieveCellsAsync();
-        }
+            base.RaiseCanExecuteChanged();
 
-        private async Task RetrieveCellsAsync()
-        {
-            try
-            {
-                if (this.healthProbeService.HealthMasStatus == HealthStatus.Healthy || this.healthProbeService.HealthMasStatus == HealthStatus.Degraded)
-                {
-                    this.Cells = await this.machineCellsWebService.GetAllAsync();
-                    this.SelectedCell = this.Cells?.ToList()[this.currentIndex];
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
+            this.RaisePropertyChanged(nameof(this.Cells));
         }
 
         #endregion

@@ -133,6 +133,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The carousel calibration function allows you to calibrate the correct value by performing a series of consecutive automatic movements, then updating the default value proposed by the system. The procedure works in successive steps until correct completion..
+        /// </summary>
+        public static string CarouselCalibrationFunctionDescription {
+            get {
+                return ResourceManager.GetString("CarouselCalibrationFunctionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HelpBCTRActualHeight.
         /// </summary>
         public static string HelpBCTRActualHeight {

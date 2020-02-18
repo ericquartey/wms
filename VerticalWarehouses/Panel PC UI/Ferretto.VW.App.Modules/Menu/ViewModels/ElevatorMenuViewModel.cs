@@ -97,7 +97,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
         public SetupStatusCapabilities SetupStatusCapabilities { get; private set; }
 
         public ICommand TestDepositAndPickUpCommand =>
-                    this.testDepositAndPickUpCommand
+            this.testDepositAndPickUpCommand
             ??
             (this.testDepositAndPickUpCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.TestDepositAndPickUp),
@@ -109,14 +109,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
         private SetupStepStatus VerticalOffsetCalibration => this.SetupStatusCapabilities?.VerticalOffsetCalibration ?? new SetupStepStatus();
 
         public ICommand VerticalOffsetCalibrationCommand =>
-            this.verticalOffsetCalibration
+                    this.verticalOffsetCalibration
             ??
             (this.verticalOffsetCalibration = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.VerticalOffsetCalibration),
                 () => this.CanExecuteCommand() &&
                       this.MachineModeService.MachineMode == MachineMode.Manual &&
-                      (this.VerticalOffsetCalibration.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
-                ));
+                      (this.VerticalOffsetCalibration.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
         private SetupStepStatus VerticalOriginCalibration => this.SetupStatusCapabilities?.VerticalOriginCalibration ?? new SetupStepStatus();
 

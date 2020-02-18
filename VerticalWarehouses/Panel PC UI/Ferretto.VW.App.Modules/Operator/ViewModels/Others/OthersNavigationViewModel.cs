@@ -4,7 +4,7 @@ using System.Windows.Media;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
-namespace Ferretto.VW.App.Operator.ViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     public class OthersNavigationViewModel : BaseOthersViewModel
     {

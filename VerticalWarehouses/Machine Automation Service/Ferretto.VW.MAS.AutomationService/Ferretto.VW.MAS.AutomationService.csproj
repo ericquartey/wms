@@ -85,16 +85,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Database\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="nlog.Production.config.xslt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Properties\app.manifest">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Database\" />
   </ItemGroup>
 
   <Target Name="NSwag" AfterTargets="Build" Condition=" '$(Configuration)' == 'debug' and $(TargetFramework.StartsWith('netcore')) ">

@@ -255,7 +255,7 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             if (entity != null)
             {
                 object value = entity.Property.GetValue(entity.Instance);
-                if (value?.Equals(e.Value) != true)
+                if (value != e.Value && (value?.Equals(e.Value) != true))
                 {
                     entity.Property.SetValue(entity.Instance, Convert.ChangeType(e.Value, entity.Property.PropertyType, System.Globalization.CultureInfo.CurrentCulture));
                     // trigger property change

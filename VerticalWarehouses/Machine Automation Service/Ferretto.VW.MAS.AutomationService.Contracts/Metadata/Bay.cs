@@ -36,14 +36,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [ScaffoldColumn(false)]
             public MovementParameters FullLoadMovement { get; set; }
 
-            [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.BayInverter))]
-            [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
-            [Id(20)]
+            [ScaffoldColumn(false)]
             public Inverter Inverter { get; set; }
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.BayIoDevice))]
             [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
-            [Id(25)]
+            [Id(20)]
             public IoDevice IoDevice { get; set; }
 
             [ScaffoldColumn(false)]

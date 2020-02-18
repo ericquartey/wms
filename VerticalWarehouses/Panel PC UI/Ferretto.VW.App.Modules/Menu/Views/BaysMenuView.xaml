@@ -73,11 +73,11 @@
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding BayHeightCommand}"
                                         Content="Permette la regolazione della barriera di rilevamento altezza del cassetto"
-                                        IsCompleted="{Binding IsBayHeightCompleted}"
+                                        IsCompleted="{Binding IsBayProfileCompleted}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="Calibrazione Giostra"
+                    <controls:PpcButton Title="Calibrazione giostra"
                                         Margin="0,0,30,30"
                                         Padding="-2,1,0,0"
                                         Abbrevation="4.3.3"

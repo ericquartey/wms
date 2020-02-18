@@ -1,7 +1,8 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
-namespace Ferretto.VW.App.Services
+namespace Ferretto.VW.App.Modules.Operator
 {
     internal sealed class WmsDataProvider : IWmsDataProvider
     {

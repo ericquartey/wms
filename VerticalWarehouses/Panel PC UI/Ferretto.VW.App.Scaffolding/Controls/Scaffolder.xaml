@@ -304,20 +304,22 @@
 
         <StackPanel Grid.Row="0"
                     Grid.ColumnSpan="2"
+                    Margin="0,0,0,8"
                     DataContext="{Binding Path=Breadcrumb, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
                     Orientation="Horizontal"
                     Visibility="{Binding Path=Count, Converter={StaticResource TTUI}}">
 
+            <!--  Visibility="{Binding Path=Count, Converter={StaticResource TTUI}}"  -->
             <Button Margin="0,0,0,8"
                     Click="Back_Click"
                     Style="{StaticResource IconButtonStyle}"
-                    Visibility="{Binding Path=Count, Converter={StaticResource TTUI}}">
+                    Visibility="Collapsed">
                 <Button.Content>
                     <icons:PackIconFontAwesome Kind="ReplySolid" />
                 </Button.Content>
             </Button>
 
-            <TextBlock Margin="10,0,0,0"
+            <TextBlock Margin="0,0,0,0"
                        VerticalAlignment="Center"
                        Style="{StaticResource BreadcrumbTextBlock}"
                        Text="{x:Static resx:UI.Root}"

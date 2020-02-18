@@ -15,8 +15,14 @@ namespace Ferretto.VW.App.Controls
             this IContainerRegistry containerRegistry,
             NavigationOptions navigationOptions)
         {
+            if (navigationOptions is null)
+            {
+                throw new System.ArgumentNullException(nameof(navigationOptions));
+            }
+
             containerRegistry.RegisterSingleton<IEventAggregator, EventAggregator>();
             containerRegistry.RegisterSingleton<IDialogService, DialogService>();
+            containerRegistry.RegisterSingleton<IWmsImagesProvider, WmsImagesProvider>();
 
             var navigationService = containerRegistry.GetContainer().Resolve<NavigationService>();
             navigationService.MainContentRegionName = navigationOptions.MainContentRegionName;

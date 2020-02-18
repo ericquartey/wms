@@ -121,7 +121,7 @@
     <value>Acceleration</value>
   </data>
   <data name="AssistedMovements" xml:space="preserve">
-    <value>AssistedMovements</value>
+    <value>Movimenti guidati</value>
   </data>
   <data name="Bay" xml:space="preserve">
     <value>Baia {0}</value>
@@ -156,8 +156,23 @@
   <data name="BayNumber.ElevatorBay" xml:space="preserve">
     <value>culla</value>
   </data>
+  <data name="BayPosition_Height" xml:space="preserve">
+    <value>Quota</value>
+  </data>
+  <data name="BayPosition_MaxDoubleHeight" xml:space="preserve">
+    <value>Altezza massima doppia</value>
+  </data>
+  <data name="BayPosition_MaxSingleHeight" xml:space="preserve">
+    <value>Altezza massima standard</value>
+  </data>
+  <data name="BayPosition_ProfileOffset" xml:space="preserve">
+    <value>Offset controllo sagoma</value>
+  </data>
   <data name="BayShutter" xml:space="preserve">
     <value>Shutter baia {0}</value>
+  </data>
+  <data name="Bay_CategoryDescription" xml:space="preserve">
+    <value>Permette di modificare i parametri e i dispositivi della baia.</value>
   </data>
   <data name="Bay_ChainOffset" xml:space="preserve">
     <value>Offset zero catena</value>
@@ -178,10 +193,10 @@
     <value>Lato</value>
   </data>
   <data name="BeltRigidity" xml:space="preserve">
-    <value>BeltRigidity</value>
+    <value>Rigidezza della cinghia</value>
   </data>
   <data name="BeltSpacing" xml:space="preserve">
-    <value>BeltSpacing</value>
+    <value>Distanza blocchi tensionamento cinghia</value>
   </data>
   <data name="Carousel" xml:space="preserve">
     <value>Giostra</value>
@@ -226,10 +241,13 @@
     <value>Risoluzione</value>
   </data>
   <data name="ElevatorWeight" xml:space="preserve">
-    <value>ElevatorWeight</value>
+    <value>Peso elevatore</value>
+  </data>
+  <data name="Elevator_CategoryDescription" xml:space="preserve">
+    <value>Permette di modificare i parametri dell'elevatore e dei due assi ad esso associati.</value>
   </data>
   <data name="EmptyLoadMovement" xml:space="preserve">
-    <value>EmptyLoadMovement</value>
+    <value>Movimenti a vuoto</value>
   </data>
   <data name="FeedRate" xml:space="preserve">
     <value>FeedRate</value>
@@ -238,10 +256,10 @@
     <value>FeedRateAfterZero</value>
   </data>
   <data name="FullLoadMovement" xml:space="preserve">
-    <value>FullLoadMovement</value>
+    <value>Movimenti a pieno carico</value>
   </data>
   <data name="HalfShaftLength" xml:space="preserve">
-    <value>HalfShaftLength</value>
+    <value>Lunghezza semi albero</value>
   </data>
   <data name="Inverter" xml:space="preserve">
     <value>Inverter</value>
@@ -273,8 +291,17 @@
   <data name="Laser" xml:space="preserve">
     <value>Laser</value>
   </data>
+  <data name="Laser_IpAddress" xml:space="preserve">
+    <value>IP Laser</value>
+  </data>
+  <data name="Laser_TcpPort" xml:space="preserve">
+    <value>Porta Laser</value>
+  </data>
   <data name="Machine" xml:space="preserve">
     <value>Macchina</value>
+  </data>
+  <data name="Machine_CategoryDescription" xml:space="preserve">
+    <value>Permette di modificare i parametri strutturali della macchina.</value>
   </data>
   <data name="Machine_Height" xml:space="preserve">
     <value>Altezza</value>
@@ -298,7 +325,7 @@
     <value>Matricola</value>
   </data>
   <data name="ManualMovements" xml:space="preserve">
-    <value>ManualMovements</value>
+    <value>Movimenti manuali</value>
   </data>
   <data name="MeasureConst0" xml:space="preserve">
     <value>MeasureConst0</value>
@@ -346,28 +373,28 @@
     <value>Posizione {0}</value>
   </data>
   <data name="PulleyDiameter" xml:space="preserve">
-    <value>PulleyDiameter</value>
+    <value>Diametro primitivo puleggia</value>
   </data>
   <data name="ShaftDiameter" xml:space="preserve">
-    <value>ShaftDiameter</value>
+    <value>Diametro albero</value>
   </data>
   <data name="ShaftElasticity" xml:space="preserve">
-    <value>ShaftElasticity</value>
+    <value>Modulo di elasticità</value>
   </data>
   <data name="ShutterManualParameters_FeedRate" xml:space="preserve">
-    <value>Feed rate shutter</value>
+    <value>Feed rate serranda</value>
   </data>
   <data name="ShutterManualParameters_HighSpeedDurationClose" xml:space="preserve">
-    <value>Durata chiusura shutter</value>
+    <value>Durata chiusura serranda</value>
   </data>
   <data name="ShutterManualParameters_HighSpeedDurationOpen" xml:space="preserve">
-    <value>Durata apertura shutter</value>
+    <value>Durata apertura serranda</value>
   </data>
   <data name="ShutterManualParameters_MaxSpeed" xml:space="preserve">
-    <value>Velocità massima shutter</value>
+    <value>Velocità massima serranda</value>
   </data>
   <data name="ShutterManualParameters_MinSpeed" xml:space="preserve">
-    <value>Velocità minima shutter</value>
+    <value>Velocità minima serranda</value>
   </data>
   <data name="ShutterType.NotSpecified" xml:space="preserve">
     <value>Non specificato</value>
@@ -379,13 +406,13 @@
     <value>Due sensori</value>
   </data>
   <data name="Shutter_AssistedMovements" xml:space="preserve">
-    <value>Movimenti assistiti shutter</value>
+    <value>Mov. guidati serranda</value>
   </data>
   <data name="Shutter_ManualMovements" xml:space="preserve">
-    <value>Movimenti manuali shutter</value>
+    <value>Mov. manuali serranda</value>
   </data>
   <data name="Shutter_Type" xml:space="preserve">
-    <value>Tipo shutter</value>
+    <value>Tipo serranda</value>
   </data>
   <data name="Speed" xml:space="preserve">
     <value>Speed</value>

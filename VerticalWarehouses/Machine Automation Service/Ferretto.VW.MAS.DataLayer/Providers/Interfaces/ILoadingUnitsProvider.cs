@@ -22,12 +22,15 @@ namespace Ferretto.VW.MAS.DataLayer
         void Import(IEnumerable<LoadingUnit> loadingUnits, DataLayerContext context);
 
         void Insert(int loadingUnitsId);
-
+        void Remove(int loadingUnitsId);
+        void Save(LoadingUnit loadingUnit);
         void SetHeight(int loadingUnitId, double height);
 
         void SetWeight(int loadingUnitId, double loadingUnitGrossWeight);
 
         void UpdateRange(IEnumerable<LoadingUnit> loadingUnits, DataLayerContext dataContext);
+
+        void UpdateWeightStatistics();
 
         #endregion
     }
