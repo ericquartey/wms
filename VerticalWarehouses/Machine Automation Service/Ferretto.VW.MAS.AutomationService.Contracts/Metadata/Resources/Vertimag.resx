@@ -232,7 +232,7 @@
     <value>ElevatorWeight</value>
   </data>
   <data name="Elevator_CategoryDescription" xml:space="preserve">
-    <value>Permette di modificare i parametri dell'elevatore e dei due assi ad esso associati (verticale e orizzontale).</value>
+    <value>Permette di modificare i parametri dell'elevatore e dei due assi ad esso associati.</value>
   </data>
   <data name="EmptyLoadMovement" xml:space="preserve">
     <value>EmptyLoadMovement</value>
