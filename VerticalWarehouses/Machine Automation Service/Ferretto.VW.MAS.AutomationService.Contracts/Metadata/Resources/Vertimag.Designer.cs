@@ -250,7 +250,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BeltRigidity.
+        ///   Looks up a localized string similar to Rigidezza della cinghia.
         /// </summary>
         public static string BeltRigidity {
             get {
@@ -259,7 +259,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BeltSpacing.
+        ///   Looks up a localized string similar to Distanza blocchi tensionamento cinghia.
         /// </summary>
         public static string BeltSpacing {
             get {
@@ -403,7 +403,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ElevatorWeight.
+        ///   Looks up a localized string similar to Peso elevatore.
         /// </summary>
         public static string ElevatorWeight {
             get {
@@ -448,7 +448,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HalfShaftLength.
+        ///   Looks up a localized string similar to Lunghezza semi albero.
         /// </summary>
         public static string HalfShaftLength {
             get {
@@ -790,7 +790,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PulleyDiameter.
+        ///   Looks up a localized string similar to Diametro primitivo puleggia.
         /// </summary>
         public static string PulleyDiameter {
             get {
@@ -799,7 +799,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ShaftDiameter.
+        ///   Looks up a localized string similar to Diametro albero.
         /// </summary>
         public static string ShaftDiameter {
             get {
@@ -808,7 +808,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ShaftElasticity.
+        ///   Looks up a localized string similar to Modulo di elasticità.
         /// </summary>
         public static string ShaftElasticity {
             get {

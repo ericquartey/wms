@@ -181,10 +181,10 @@
     <value>Lato</value>
   </data>
   <data name="BeltRigidity" xml:space="preserve">
-    <value>BeltRigidity</value>
+    <value>Rigidezza della cinghia</value>
   </data>
   <data name="BeltSpacing" xml:space="preserve">
-    <value>BeltSpacing</value>
+    <value>Distanza blocchi tensionamento cinghia</value>
   </data>
   <data name="Carousel" xml:space="preserve">
     <value>Giostra</value>
@@ -229,7 +229,7 @@
     <value>Risoluzione</value>
   </data>
   <data name="ElevatorWeight" xml:space="preserve">
-    <value>ElevatorWeight</value>
+    <value>Peso elevatore</value>
   </data>
   <data name="Elevator_CategoryDescription" xml:space="preserve">
     <value>Permette di modificare i parametri dell'elevatore e dei due assi ad esso associati.</value>
@@ -247,7 +247,7 @@
     <value>FullLoadMovement</value>
   </data>
   <data name="HalfShaftLength" xml:space="preserve">
-    <value>HalfShaftLength</value>
+    <value>Lunghezza semi albero</value>
   </data>
   <data name="Inverter" xml:space="preserve">
     <value>Inverter</value>
@@ -361,13 +361,13 @@
     <value>Posizione {0}</value>
   </data>
   <data name="PulleyDiameter" xml:space="preserve">
-    <value>PulleyDiameter</value>
+    <value>Diametro primitivo puleggia</value>
   </data>
   <data name="ShaftDiameter" xml:space="preserve">
-    <value>ShaftDiameter</value>
+    <value>Diametro albero</value>
   </data>
   <data name="ShaftElasticity" xml:space="preserve">
-    <value>ShaftElasticity</value>
+    <value>Modulo di elasticità</value>
   </data>
   <data name="ShutterManualParameters_FeedRate" xml:space="preserve">
     <value>Feed rate shutter</value>
