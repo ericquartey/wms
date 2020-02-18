@@ -8,7 +8,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 using Prism.Events;
 
-namespace Ferretto.VW.App.Operator.ViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     public class ItemPickViewModel : BaseItemOperationMainViewModel, IOperationalContextViewModel
     {
@@ -21,13 +21,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Constructors
 
         public ItemPickViewModel(
-            IWmsImagesProvider wmsImagesProvider,
             IMachineItemsWebService itemsWebService,
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
             IBayManager bayManager,
             IDialogService dialogService)
-            : base(wmsImagesProvider, itemsWebService, bayManager, eventAggregator, missionOperationsService, dialogService)
+            : base(itemsWebService, bayManager, eventAggregator, missionOperationsService, dialogService)
         {
         }
 

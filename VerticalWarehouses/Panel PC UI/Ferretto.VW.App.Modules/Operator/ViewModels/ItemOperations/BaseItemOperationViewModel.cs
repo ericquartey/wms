@@ -7,7 +7,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 
-namespace Ferretto.VW.App.Operator.ViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     [Warning(WarningsArea.Picking)]
     public abstract class BaseItemOperationViewModel : BaseOperatorViewModel
@@ -33,14 +33,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Constructors
 
         public BaseItemOperationViewModel(
-            IWmsImagesProvider wmsImagesProvider,
             IMachineItemsWebService itemsWebService,
             IBayManager bayManager,
             IMissionOperationsService missionOperationsService,
             IDialogService dialogService)
             : base(PresentationMode.Operator)
         {
-            this.WmsImagesProvider = wmsImagesProvider ?? throw new ArgumentNullException(nameof(wmsImagesProvider));
             this.BayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.MissionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
@@ -106,8 +104,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         protected IDialogService DialogService { get; private set; }
 
         protected IMissionOperationsService MissionOperationsService { get; }
-
-        protected IWmsImagesProvider WmsImagesProvider { get; }
 
         #endregion
 

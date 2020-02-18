@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Events;
 
-namespace Ferretto.VW.App.Services
+namespace Ferretto.VW.App.Modules.Operator
 {
     internal sealed class MissionOperationsService : IMissionOperationsService
     {
@@ -194,18 +193,21 @@ namespace Ferretto.VW.App.Services
                     newWmsOperationInfo = sortedOperations.FirstOrDefault(o => o.Status is MissionOperationStatus.New);
                 }
 
-                if (newWmsOperationInfo != null)
+                if (newWmsOperationInfo is null)
+                {
+                    this.logger.Debug($"Active WMS mission {newMachineMission.WmsId} has no executable mission operation.");
+
+                    await this.loadingUnitsWebService.ResumeWmsAsync(newMachineMission.LoadUnitId, newMachineMission.Id);
+
+                    newMachineMission = null;
+                    newWmsMission = null;
+                }
+                else
                 {
                     this.logger.Debug($"Active mission has WMS operation {newWmsOperationInfo.Id}.");
                     newWmsOperation = await this.missionOperationsWebService.GetByIdAsync(newWmsOperationInfo.Id);
 
                     await this.missionOperationsWebService.ExecuteAsync(newWmsOperationInfo.Id);
-                }
-                else
-                {
-                    this.logger.Debug($"Active WMS mission {newMachineMission.WmsId} has no executable mission operation.");
-                    newMachineMission = null;
-                    newWmsMission = null;
                 }
             }
 
