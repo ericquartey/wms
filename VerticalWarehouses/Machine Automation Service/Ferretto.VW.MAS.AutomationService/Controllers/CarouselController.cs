@@ -99,6 +99,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult StartCalibration()
         {
+            this.carouselProvider.StartTest(this.BayNumber, MessageActor.AutomationService);
+
             return this.Accepted();
         }
 
