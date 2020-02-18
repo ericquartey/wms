@@ -245,8 +245,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new EntityNotFoundException($"LoadingUnit ID={loadingUnit.Id}");
             }
 
-            this.cellsProvider.SetLoadingUnit(luDb.CellId.Value, null);
-
             if (loadingUnit.CellId.HasValue)
             {
                 if (!this.cellsProvider.CanFitLoadingUnit(loadingUnit.CellId.Value, loadingUnit.Id))
@@ -255,13 +253,15 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
             }
 
-            this.cellsProvider.SetLoadingUnit(loadingUnit.CellId.Value, loadingUnit.Id);
+            this.cellsProvider.SetLoadingUnit(luDb.CellId.Value, null);
 
             lock (this.dataContext)
             {
                 this.dataContext.AddOrUpdate(loadingUnit, f => f.Id);
                 this.dataContext.SaveChanges();
             }
+
+            this.cellsProvider.SetLoadingUnit(loadingUnit.CellId.Value, loadingUnit.Id);
         }
 
         public void SetHeight(int id, double height)
