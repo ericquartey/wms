@@ -283,6 +283,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("save-loadunit")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public IActionResult SaveLoadUnit(DataModels.LoadingUnit loadingUnit)
+        {
+            this.loadingUnitsDataProvider.Save(loadingUnit);
+            return this.Accepted();
+        }
+
         [HttpPost("start-moving-loading-unit-to-bay")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

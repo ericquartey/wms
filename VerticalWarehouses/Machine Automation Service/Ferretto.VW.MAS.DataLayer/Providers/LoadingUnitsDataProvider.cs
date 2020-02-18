@@ -237,7 +237,32 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        //SetLoadingUnit(int cellId, int? loadingUnitId)
+        public void Save(LoadingUnit loadingUnit)
+        {
+            var luDb = this.dataContext.LoadingUnits.SingleOrDefault(p => p.Id.Equals(loadingUnit.Id));
+            if (luDb is null)
+            {
+                throw new EntityNotFoundException($"LoadingUnit ID={loadingUnit.Id}");
+            }
+
+            if (loadingUnit.CellId.HasValue)
+            {
+                if (!this.cellsProvider.CanFitLoadingUnit(loadingUnit.CellId.Value, loadingUnit.Id))
+                {
+                    throw new ArgumentException($"LoadingUnit error cell or height (CellId={loadingUnit.CellId}, Id={loadingUnit.Id})");
+                }
+            }
+
+            this.cellsProvider.SetLoadingUnit(luDb.CellId.Value, null);
+
+            lock (this.dataContext)
+            {
+                this.dataContext.AddOrUpdate(loadingUnit, f => f.Id);
+                this.dataContext.SaveChanges();
+            }
+
+            this.cellsProvider.SetLoadingUnit(loadingUnit.CellId.Value, loadingUnit.Id);
+        }
 
         public void SetHeight(int id, double height)
         {

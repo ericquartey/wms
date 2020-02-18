@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS.AutomationService.Models
 
         public int Id { get; set; }
 
-        public System.DateTime InstallationDate { get; set; }
+        public System.DateTime? InstallationDate { get; set; }
 
         public bool IsOneTonMachine { get; set; }
 

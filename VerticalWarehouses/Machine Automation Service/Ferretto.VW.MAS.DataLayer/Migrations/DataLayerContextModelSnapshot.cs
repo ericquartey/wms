@@ -1089,7 +1089,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("InstallationDate");
+                    b.Property<DateTime?>("InstallationDate");
 
                     b.Property<DateTime?>("LastServiceDate");
 
@@ -1100,14 +1100,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ServicingInfo");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            InstallationDate = new DateTime(2017, 4, 17, 17, 47, 12, 607, DateTimeKind.Local).AddTicks(6278),
-                            ServiceStatus = 86
-                        });
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.SetupProcedure", b =>
