@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,11 +11,12 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
+using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
     [Warning(WarningsArea.Installation)]
-    internal sealed class LoadingUnitsViewModel : BaseMainViewModel
+    internal sealed class LoadingUnitsViewModel : BaseMainViewModel, IDataErrorInfo
     {
         #region Fields
 
@@ -22,19 +24,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
+        private string currentError;
+
         private DelegateCommand freeDrawerCommand;
 
         private DelegateCommand immediateDrawerCallCommand;
 
+        private DelegateCommand immediateDrawerReturnCommand;
+
         private DelegateCommand insertDrawerCommand;
 
-        private bool isExecutingProcedure;
-
-        private IEnumerable<LoadingUnit> loadingUnits;
+        private SubscriptionToken loadunitsToken;
 
         private DelegateCommand removeDrawerCommand;
 
         private DelegateCommand saveDrawerCommand;
+
+        private string selectedCode;
+
+        private int? selectedId;
 
         private LoadingUnit selectedLU;
 
@@ -59,106 +67,254 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
+        public string Error => string.Join(
+            this[nameof(this.SelectedId)],
+            this[nameof(this.SelectedCode)]);
+
         public ICommand FreeDrawerCommand =>
             this.freeDrawerCommand
             ??
             (this.freeDrawerCommand = new DelegateCommand(
-                () => this.ImmediateDrawerCall(),
-                () => !this.IsExecutingProcedure && !this.IsWaitingForResponse && false));
+                async () => await this.FreeDrawer(),
+                () => false));
 
         public ICommand ImmediateDrawerCallCommand =>
             this.immediateDrawerCallCommand
             ??
             (this.immediateDrawerCallCommand = new DelegateCommand(
-                () => this.ImmediateDrawerCall(),
-                () => !this.IsExecutingProcedure && !this.IsWaitingForResponse && false));
+                async () => await this.ImmediateDrawerCallAsync(),
+                () => !this.IsMoving && !this.SensorsService.IsLoadingUnitInBay && this.SelectedLU != null));
+
+        public ICommand ImmediateDrawerReturnCommand =>
+            this.immediateDrawerReturnCommand
+            ??
+            (this.immediateDrawerReturnCommand = new DelegateCommand(
+                async () => await this.ImmediateDrawerReturnAsync(),
+                () => !this.IsMoving && this.SensorsService.IsLoadingUnitInBay && this.MachineStatus.LoadingUnitPositionUpInBay != null));
 
         public ICommand InsertDrawerCommand =>
             this.insertDrawerCommand
             ??
             (this.insertDrawerCommand = new DelegateCommand(
-                () => this.ImmediateDrawerCall(),
-                () => !this.IsExecutingProcedure && !this.IsWaitingForResponse && false));
+                async () => await this.InsertDrawer(),
+                () => false));
 
-        public bool IsExecutingProcedure
-        {
-            get => this.isExecutingProcedure;
-            private set => this.SetProperty(ref this.isExecutingProcedure, value, this.RaiseCanExecuteChanged);
-        }
+        public bool IsDrawerCallVisible => !this.IsMoving && !this.SensorsService.IsLoadingUnitInBay;
 
-        public IEnumerable<LoadingUnit> LoadingUnits
-        {
-            get => this.loadingUnits;
-            private set => this.SetProperty(ref this.loadingUnits, value, this.RaiseCanExecuteChanged);
-        }
+        public bool IsDrawerReturnVisible => !this.IsMoving && this.SensorsService.IsLoadingUnitInBay;
+
+        public bool IsEnabledEditing => !this.IsMoving;
+
+        public IEnumerable<LoadingUnit> LoadingUnits => this.MachineService.Loadunits;
 
         public ICommand RemoveDrawerCommand =>
             this.removeDrawerCommand
             ??
             (this.removeDrawerCommand = new DelegateCommand(
-                () => this.ImmediateDrawerCall(),
-                () => !this.IsExecutingProcedure && !this.IsWaitingForResponse && false));
+                async () => await this.RemoveDrawer(),
+                () => !this.IsMoving &&
+                      !this.SensorsService.IsLoadingUnitInBay &&
+                      this.SelectedLU != null));
 
         public ICommand SaveDrawerCommand =>
             this.saveDrawerCommand
             ??
             (this.saveDrawerCommand = new DelegateCommand(
-                () => this.ImmediateDrawerCall(),
-                () => !this.IsExecutingProcedure && !this.IsWaitingForResponse && false));
+                async () => await this.SaveDrawer(),
+                () => !this.IsMoving && this.SelectedLU != null));
+
+        public string SelectedCode
+        {
+            get => this.selectedCode;
+            set => this.SetProperty(ref this.selectedCode, value);
+        }
+
+        public int? SelectedId
+        {
+            get => this.selectedId;
+            set => this.SetProperty(ref this.selectedId, value);
+        }
 
         public LoadingUnit SelectedLU
         {
             get => this.selectedLU;
-            set => this.SetProperty(ref this.selectedLU, value);
+            set => this.SetProperty(ref this.selectedLU, value, () =>
+            {
+                this.SelectedId = this.SelectedLU?.Id;
+                this.SelectedCode = this.SelectedLU?.Code;
+            });
         }
 
         public ICommand StopMovingCommand =>
-                                                                                    this.stopMovingCommand
+            this.stopMovingCommand
             ??
             (this.stopMovingCommand = new DelegateCommand(
-                () => this.ImmediateDrawerCall(),
-                () => !this.IsExecutingProcedure && !this.IsWaitingForResponse && false));
+                async () => await this.MachineService.StopMovingByAllAsync(),
+                () => this.IsMoving));
+
+        #endregion
+
+        #region Indexers
+
+        public string this[string columnName]
+        {
+            get
+            {
+                this.currentError = null;
+
+                if (this.IsWaitingForResponse)
+                {
+                    return null;
+                }
+
+                switch (columnName)
+                {
+                    case nameof(this.SelectedId):
+                        break;
+
+                    case nameof(this.SelectedCode):
+                        break;
+                }
+
+                if (this.IsVisible && string.IsNullOrEmpty(this.currentError))
+                {
+                    //this.ClearNotifications();
+                }
+
+                return null;
+            }
+        }
 
         #endregion
 
         #region Methods
 
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            if (this.loadunitsToken != null)
+            {
+                this.EventAggregator.GetEvent<LoadUnitsChangedPubSubEvent>().Unsubscribe(this.loadunitsToken);
+                this.loadunitsToken.Dispose();
+                this.loadunitsToken = null;
+            }
+        }
+
+        public async Task ImmediateDrawerCallAsync()
+        {
+            try
+            {
+                await this.machineLoadingUnitsWebService.StartMovingLoadingUnitToBayAsync(this.SelectedLU.Id, this.GetBayPosition());
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
+        public async Task ImmediateDrawerReturnAsync()
+        {
+            try
+            {
+                await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(this.GetBayPosition(), null, this.MachineStatus.LoadingUnitPositionUpInBay.Id);
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
         public override async Task OnAppearedAsync()
         {
+            this.SubscribeToEvents();
+
+            if (this.LoadingUnits.Any())
+            {
+                this.SelectedLU = this.LoadingUnits?.ToList()[0];
+            }
+
             await base.OnAppearedAsync();
-
-            this.IsWaitingForResponse = true;
-
-            await this.RetrieveLoadingUnitsAsync().ContinueWith((e) => { this.IsWaitingForResponse = false; });
-
-            this.IsBackNavigationAllowed = true;
         }
 
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
 
-            this.ClearNotifications();
+            this.stopMovingCommand?.RaiseCanExecuteChanged();
+            this.saveDrawerCommand?.RaiseCanExecuteChanged();
+            this.freeDrawerCommand?.RaiseCanExecuteChanged();
+            this.insertDrawerCommand?.RaiseCanExecuteChanged();
+            this.removeDrawerCommand?.RaiseCanExecuteChanged();
+            this.immediateDrawerCallCommand?.RaiseCanExecuteChanged();
+            this.immediateDrawerReturnCommand?.RaiseCanExecuteChanged();
+
+            this.RaisePropertyChanged(nameof(this.IsDrawerReturnVisible));
+            this.RaisePropertyChanged(nameof(this.IsDrawerCallVisible));
+            this.RaisePropertyChanged(nameof(this.LoadingUnits));
+            this.RaisePropertyChanged(nameof(this.IsEnabledEditing));
         }
 
-        private void ImmediateDrawerCall()
+        private async Task FreeDrawer()
         {
+            throw new NotImplementedException();
         }
 
-        private async Task RetrieveLoadingUnitsAsync()
+        private MAS.AutomationService.Contracts.LoadingUnitLocation GetBayPosition()
+        {
+            if (this.MachineService.BayNumber == MAS.AutomationService.Contracts.BayNumber.BayOne)
+            {
+                return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay1Up;
+            }
+
+            if (this.MachineService.BayNumber == MAS.AutomationService.Contracts.BayNumber.BayTwo)
+            {
+                return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay2Up;
+            }
+
+            if (this.MachineService.BayNumber == MAS.AutomationService.Contracts.BayNumber.BayThree)
+            {
+                return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay3Up;
+            }
+
+            return MAS.AutomationService.Contracts.LoadingUnitLocation.NoLocation;
+        }
+
+        private async Task InsertDrawer()
+        {
+            throw new NotImplementedException();
+        }
+
+        private async Task RemoveDrawer()
         {
             try
             {
-                if (this.healthProbeService.HealthMasStatus == HealthStatus.Healthy || this.healthProbeService.HealthMasStatus == HealthStatus.Degraded)
-                {
-                    this.LoadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
-                    this.SelectedLU = this.LoadingUnits?.ToList()[0];
-                }
+                await this.machineLoadingUnitsWebService.RemoveLoadUnitAsync(this.SelectedLU.Id);
+
+                await this.MachineService.GetLoadUnits();
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
+        }
+
+        private async Task SaveDrawer()
+        {
+            this.SelectedLU.Id = this.SelectedId.Value;
+            this.SelectedLU.Code = this.SelectedCode;
+        }
+
+        private void SubscribeToEvents()
+        {
+            this.loadunitsToken = this.loadunitsToken
+                 ??
+                 this.EventAggregator
+                     .GetEvent<LoadUnitsChangedPubSubEvent>()
+                     .Subscribe(
+                         m => this.RaiseCanExecuteChanged(),
+                         ThreadOption.UIThread,
+                         false);
         }
 
         #endregion

@@ -307,6 +307,11 @@ namespace Ferretto.VW.App.Services
             return MAS.AutomationService.Contracts.LoadingUnitLocation.NoLocation;
         }
 
+        public async Task GetLoadUnits()
+        {
+            this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
+        }
+
         public async Task OnInitializationServiceAsync()
         {
             if (this.healthProbeService.HealthMasStatus is HealthStatus.Healthy
@@ -317,7 +322,7 @@ namespace Ferretto.VW.App.Services
                 {
                     await this.InitializationHoming();
                     await this.InitializationBay();
-                    await this.InitializationLoadUnits();
+                    await this.GetLoadUnits();
                 }
                 catch
                 {
@@ -337,7 +342,7 @@ namespace Ferretto.VW.App.Services
             {
                 await this.InitializationHoming();
                 await this.UpdateBay();
-                await this.InitializationLoadUnits();
+                await this.GetLoadUnits();
                 await this.machineModeService.OnUpdateServiceAsync();
             }
         }
@@ -509,11 +514,6 @@ namespace Ferretto.VW.App.Services
             this.eventAggregator
                 .GetEvent<HomingChangedPubSubEvent>()
                 .Publish(new HomingChangedMessage(this.IsHoming));
-        }
-
-        private async Task InitializationLoadUnits()
-        {
-            this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
         }
 
         private void LoadUnitsNotificationProperty()
@@ -947,7 +947,7 @@ namespace Ferretto.VW.App.Services
                 {
                     await this.UpdateBay();
                 }
-                await this.InitializationLoadUnits();
+                await this.GetLoadUnits();
             }
             catch
             {
