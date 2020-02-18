@@ -56,12 +56,12 @@
         "Number": "BayOne",
         "Positions": [
           {
-            "Height": 445.58,
+            "Height": 470.6,
             "MaxSingleHeight": 395,
             "Location": "InternalBay1Down"
           },
           {
-            "Height": 890.08,
+            "Height": 915.1,
             "MaxSingleHeight": 395,
             "ProfileOffset": 50,
             "Location": "InternalBay1Up"
@@ -145,14 +145,14 @@
             "Type": "Ang"
           },
           "LastIdealPosition": 1970.0,
-          "LowerBound": 444,
+          "LowerBound": 462.5,
           "ManualMovements": {
             "FeedRate": 0.1,
             "FeedRateAfterZero": 0.15,
             "TargetDistance": 30.0,
             "TargetDistanceAfterZero": 30.0
           },
-          "Offset": 481.5,
+          "Offset": 462.5,
           "Orientation": "Vertical",
           "ProfileCalibrateLength": 0.0,
           "ProfileCalibratePosition": 0,
@@ -411,8 +411,8 @@
     "LoadUnitMaxNetWeight": 800.0,
     "LoadUnitTare": 120.0,
     "MaxGrossWeight": 58767.0,
-    "ModelName": "Vertimag 800kg",
-    "SerialNumber": "Eurofork test",
+    "ModelName": "VERTIMAG (NEW 2020) 103XL800-GIO-H7645",
+    "SerialNumber": "MV20-0004",
     "Id": 1,
     "Panels": [
       {
