@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Hubs;
 using NLog;
 using Prism.Events;
 
-namespace Ferretto.VW.App.Modules.Operator.Services
+namespace Ferretto.VW.App.Modules.Operator
 {
     public sealed class OperatorNavigationService : IOperatorNavigationService, IDisposable
     {

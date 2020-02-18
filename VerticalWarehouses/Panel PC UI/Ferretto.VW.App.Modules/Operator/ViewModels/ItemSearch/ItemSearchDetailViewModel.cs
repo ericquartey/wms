@@ -2,13 +2,14 @@
 using System.Threading.Tasks;
 using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Modules.Operator;
 using Ferretto.VW.App.Modules.Operator.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 
-namespace Ferretto.VW.App.Operator.ViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     [Warning(WarningsArea.Picking)]
     public class ItemSearchDetailViewModel : BaseOperatorViewModel, IOperationalContextViewModel
@@ -19,8 +20,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private readonly IMachineItemsWebService itemsWebService;
 
-        private readonly IWmsImagesProvider wmsImagesProvider;
-
         private Item item;
 
         #endregion
@@ -28,12 +27,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Constructors
 
         public ItemSearchDetailViewModel(
-            IWmsImagesProvider wmsImagesProvider,
             IMachineItemsWebService itemsWebService,
             IBayManager bayManager)
             : base(PresentationMode.Operator)
         {
-            this.wmsImagesProvider = wmsImagesProvider ?? throw new ArgumentNullException(nameof(wmsImagesProvider));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
         }

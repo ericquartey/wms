@@ -13,7 +13,7 @@ using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 using Prism.Events;
 
-namespace Ferretto.VW.App.Operator.ViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     [Warning(WarningsArea.Picking)]
     public abstract class BaseItemOperationMainViewModel : BaseItemOperationViewModel
@@ -55,13 +55,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Constructors
 
         public BaseItemOperationMainViewModel(
-            IWmsImagesProvider wmsImagesProvider,
             IMachineItemsWebService itemsWebService,
             IBayManager bayManager,
             IEventAggregator eventAggregator,
             IMissionOperationsService missionOperationsService,
             IDialogService dialogService)
-            : base(wmsImagesProvider, itemsWebService, bayManager, missionOperationsService, dialogService)
+            : base(itemsWebService, bayManager, missionOperationsService, dialogService)
         {
             this.eventAggregator = eventAggregator;
 

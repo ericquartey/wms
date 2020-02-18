@@ -28,6 +28,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void MoveManual(VerticalMovementDirection direction, double distance, int? loadUnitId, BayNumber bayNumber, MessageActor sender);
 
+        void StartTest(BayNumber bayNumber, MessageActor sender);
+
         void Stop(BayNumber bayNumber, MessageActor sender);
 
         #endregion

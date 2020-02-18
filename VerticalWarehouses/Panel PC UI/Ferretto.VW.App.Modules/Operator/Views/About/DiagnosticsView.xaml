@@ -1,4 +1,4 @@
-﻿<ctrls:View x:Class="Ferretto.VW.App.Operator.Views.DiagnosticsView"
+﻿<ctrls:View x:Class="Ferretto.VW.App.Modules.Operator.Views.DiagnosticsView"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
@@ -7,8 +7,8 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
-            xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Operator.ViewModels"
-            xmlns:views="clr-namespace:Ferretto.VW.App.Operator.Views"
+            xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Modules.Operator.ViewModels"
+            xmlns:views="clr-namespace:Ferretto.VW.App.Modules.Operator.Views"
             d:DataContext="{d:DesignInstance Type=viewmodels:StatisticsViewModel,
                                              IsDesignTimeCreatable=False}"
             d:DesignHeight="700"

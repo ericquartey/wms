@@ -2131,6 +2131,22 @@
       "FeedRate": 1.0,
       "IsCompleted": false
     },
+    "Bay2ProfileCheck": {
+    },
+    "Bay3ProfileCheck": {
+    },
+    "Bay1CarouselTest": {
+    },
+    "Bay1CarouselCalibration": {
+    },
+    "Bay2CarouselTest": {
+    },
+    "Bay2CarouselCalibration": {
+    },
+    "Bay3CarouselTest": {
+    },
+    "Bay3CarouselCalibration": {
+    },
     "BeltBurnishingTest": {
       "InProgress": false,
       "PerformedCycles": 200,

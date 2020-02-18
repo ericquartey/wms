@@ -2,7 +2,7 @@
 using Ferretto.VW.App.Services;
 using Prism.Regions;
 
-namespace Ferretto.VW.App.Operator.ViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     public abstract class BaseOperatorViewModel : BaseMainViewModel, IRegionMemberLifetime
     {

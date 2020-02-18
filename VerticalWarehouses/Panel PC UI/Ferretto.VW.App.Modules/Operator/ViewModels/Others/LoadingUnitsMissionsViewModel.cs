@@ -8,7 +8,7 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
-namespace Ferretto.VW.App.Operator.ViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     public class LoadingUnitsMissionsViewModel : BaseOperatorViewModel
     {

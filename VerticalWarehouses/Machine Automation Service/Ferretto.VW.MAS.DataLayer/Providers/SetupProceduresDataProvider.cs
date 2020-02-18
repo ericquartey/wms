@@ -50,9 +50,22 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(s => s.Bay1ShutterTest)
                     .Include(s => s.Bay2ShutterTest)
                     .Include(s => s.Bay3ShutterTest)
+                    .Include(s => s.Bay1CarouselCalibration)
+                    .Include(s => s.Bay2CarouselCalibration)
+                    .Include(s => s.Bay3CarouselCalibration)
                     .Include(s => s.VerticalResolutionCalibration)
                     .Include(s => s.VerticalOffsetCalibration)
                     .Include(s => s.VerticalOriginCalibration)
+                    .Single();
+            }
+        }
+
+        public RepeatedTestProcedure GetBayCarouselCalibration(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.SetupProceduresSets
+                    .Select(s => bayNumber == BayNumber.BayOne ? s.Bay1CarouselCalibration : bayNumber == BayNumber.BayTwo ? s.Bay2CarouselCalibration : s.Bay3CarouselCalibration)
                     .Single();
             }
         }
@@ -62,7 +75,7 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.SetupProceduresSets
-                    .Select(s => bayNumber == BayNumber.BayOne ? s.Bay1ProfileCheck : bayNumber == BayNumber.BayTwo ? s.Bay1ProfileCheck : s.Bay3ProfileCheck)
+                    .Select(s => bayNumber == BayNumber.BayOne ? s.Bay1ProfileCheck : bayNumber == BayNumber.BayTwo ? s.Bay2ProfileCheck : s.Bay3ProfileCheck)
                     .Single();
             }
         }

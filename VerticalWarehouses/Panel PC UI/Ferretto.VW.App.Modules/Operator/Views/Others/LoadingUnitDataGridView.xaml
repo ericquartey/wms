@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Ferretto.VW.App.Operator.Views.LoadingUnitDataGridView"
+﻿<UserControl x:Class="Ferretto.VW.App.Modules.Operator.Views.LoadingUnitDataGridView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
