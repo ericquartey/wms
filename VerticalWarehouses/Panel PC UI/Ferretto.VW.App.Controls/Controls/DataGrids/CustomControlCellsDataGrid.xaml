@@ -9,10 +9,10 @@
     <UserControl.Resources>
         <conv:EnumBlockLevelConverter x:Key="EBLC" />
     </UserControl.Resources>
-    <Border BorderBrush="White"
-            BorderThickness="1">
-        <!--<ScrollViewer HorizontalScrollBarVisibility="Auto"
-                      VerticalScrollBarVisibility="Auto">-->
+
+    <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+            BorderThickness="{DynamicResource PpcBorderThickness}"
+            CornerRadius="2">
         <DataGrid Name="DataGrid"
                   Width="auto"
                   Height="auto"
@@ -26,6 +26,7 @@
                   FontSize="{StaticResource FontSize_High}"
                   HeadersVisibility="Column"
                   HorizontalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
+                  HorizontalScrollBarVisibility="Auto"
                   IsHitTestVisible="False"
                   IsReadOnly="True"
                   ItemsSource="{Binding ItemsSource}"
@@ -33,16 +34,13 @@
                   SelectedItem="{Binding SelectedItem}"
                   SelectionMode="Single"
                   VerticalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
-                  VerticalScrollBarVisibility="Hidden">
+                  VerticalScrollBarVisibility="Auto">
             <DataGrid.Style>
                 <Style TargetType="DataGrid">
                     <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
                     <Setter Property="FontFamily" Value="HelveticaNeue-LightCond" />
                 </Style>
             </DataGrid.Style>
-            <i:Interaction.Behaviors>
-                <Behaviors:ScrollIntoViewDataGridBehaviour />
-            </i:Interaction.Behaviors>
 
             <DataGrid.CellStyle>
                 <Style TargetType="DataGridCell">
@@ -273,7 +271,6 @@
                 </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <!--</ScrollViewer>-->
     </Border>
 
 </UserControl>

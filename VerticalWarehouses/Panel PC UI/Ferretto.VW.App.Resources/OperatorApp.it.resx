@@ -1043,7 +1043,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
     <value>Baia due</value>
   </data>
   <data name="BlockLevelBlocked" xml:space="preserve">
-    <value>c</value>
+    <value>Bloccato</value>
   </data>
   <data name="BayNumberBayNone" xml:space="preserve">
     <value>Nessuna baia</value>
