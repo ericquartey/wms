@@ -256,6 +256,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
             this.Mission.Step = errorState;
+            this.Mission.StepTime = DateTime.UtcNow;
             this.MissionsDataProvider.Update(this.Mission);
 
             var newMessageData = new StopMessageData(StopRequestReason.Error);
@@ -303,6 +304,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     var bayPosition = this.BaysDataProvider.GetPositionByLocation(this.Mission.LoadUnitSource);
                     this.BaysDataProvider.SetLoadingUnit(bayPosition.Id, null);
+                    this.MachineProvider.UpdateBayLoadUnitStatistics(this.Mission.TargetBay);
                 }
 
                 transaction.Commit();

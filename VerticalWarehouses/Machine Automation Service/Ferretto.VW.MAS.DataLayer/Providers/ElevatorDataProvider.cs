@@ -248,22 +248,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void IncreaseCycleQuantity(Orientation orientation)
-        {
-            lock (this.dataContext)
-            {
-                var axis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == orientation);
-                if (axis is null)
-                {
-                    throw new EntityNotFoundException(orientation.ToString());
-                }
-
-                axis.TotalCycles++;
-
-                this.dataContext.SaveChanges();
-            }
-        }
-
         public bool IsVerticalPositionWithinTolerance(double position)
         {
             return

@@ -44,6 +44,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.EjectLoadUnit = false;
             this.Mission.RestoreStep = MissionStep.NotDefined;
             this.Mission.Step = MissionStep.ToTarget;
+            this.Mission.StepTime = DateTime.UtcNow;
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.Mission.StopReason = StopRequestReason.NoReason;
             this.Mission.CloseShutterBayNumber = BayNumber.None;
