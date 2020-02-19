@@ -116,6 +116,16 @@ namespace Ferretto.VW.MAS.DataModels
             }
         }
 
+        /// <summary>
+        /// this parameter can be added to the belt elongation
+        /// </summary>
+        public double VerticalDepositOffset { get; set; }
+
+        /// <summary>
+        /// this parameter is NOT USED at the moment
+        /// </summary>
+        public double VerticalPickupOffset { get; set; }
+
         public WeightMeasurement WeightMeasurement { get; set; }
 
         #endregion

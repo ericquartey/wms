@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20200219141653_initialcreation")]
+    [Migration("20200219154702_initialcreation")]
     partial class initialcreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -255,6 +255,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<double>("Resolution");
 
                     b.Property<double>("UpperBound");
+
+                    b.Property<double>("VerticalDepositOffset");
+
+                    b.Property<double>("VerticalPickupOffset");
 
                     b.Property<int?>("WeightMeasurementId");
 

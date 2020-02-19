@@ -254,6 +254,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double>("UpperBound");
 
+                    b.Property<double>("VerticalDepositOffset");
+
+                    b.Property<double>("VerticalPickupOffset");
+
                     b.Property<int?>("WeightMeasurementId");
 
                     b.HasKey("Id");

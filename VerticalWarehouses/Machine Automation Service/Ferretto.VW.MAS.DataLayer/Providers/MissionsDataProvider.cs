@@ -147,6 +147,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     new Mission
                     {
                         CreationDate = DateTime.UtcNow,
+                        StepTime = DateTime.UtcNow,
                         LoadUnitId = loadingUnitId,
                         TargetBay = bayNumber,
                         MissionType = missionType,
@@ -182,6 +183,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     new Mission
                     {
                         CreationDate = DateTime.UtcNow,
+                        StepTime = DateTime.UtcNow,
                         LoadUnitId = loadingUnitId,
                         LoadUnitSource = LoadingUnitLocation.LoadUnit,
                         MissionType = MissionType.WMS,
@@ -210,6 +212,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     new Mission
                     {
                         CreationDate = DateTime.UtcNow,
+                        StepTime = DateTime.UtcNow,
                         LoadUnitId = loadingUnitId,
                         TargetBay = bayNumber,
                         Status = MissionStatus.New,
