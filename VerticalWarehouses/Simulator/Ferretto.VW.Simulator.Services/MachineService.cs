@@ -131,7 +131,7 @@ namespace Ferretto.VW.Simulator.Services
                     this.MaxTorqueCurrent = 130;
                 }
                 // simulate weight errors
-                this.MaxTorqueCurrent = (int)(this.MaxTorqueCurrent * 1.1);
+                //this.MaxTorqueCurrent = (int)(this.MaxTorqueCurrent * 1.1);
 
                 this.MinProfileHeight.Clear();
                 this.MaxProfileHeight.Clear();
@@ -142,7 +142,7 @@ namespace Ferretto.VW.Simulator.Services
                     this.MinProfileHeight.Add(bayPosition.Location, (int)Math.Round((this.machine.LoadUnitMinHeight - bayPosition.ProfileOffset + 181.25) / 0.090625));
                     var maxHeight = (bayPosition.MaxDoubleHeight > 0) ? bayPosition.MaxDoubleHeight : bayPosition.MaxSingleHeight;
                     // simulate height errors
-                    maxHeight *= 1.1;
+                    //maxHeight *= 1.1;
 
                     this.MaxProfileHeight.Add(bayPosition.Location, (int)Math.Round((maxHeight - bayPosition.ProfileOffset + 181.25) / 0.090625));
                     if (this.MaxProfileHeight[bayPosition.Location] > this.MaxProfileHeight[LoadingUnitLocation.NoLocation])
