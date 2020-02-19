@@ -105,7 +105,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public ActionResult<string> GetSupportToken()
         {
-            var token = this.usersProvider.GetSupportToken();
+            var token = this.usersProvider.GetServiceToken();
 
             this.logger.LogInformation($"Get token: {token}");
 

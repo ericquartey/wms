@@ -8,7 +8,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int AccessLevel { get; set; }
 
-        public bool IsSupport => string.CompareOrdinal(this.Name, "support") == 0;
+        public bool IsService => string.CompareOrdinal(this.Name, "service") == 0;
 
         public string Name { get; set; }
 
@@ -53,10 +53,10 @@ namespace Ferretto.VW.MAS.DataModels
                 PasswordSalt = "iB+IdMnlzvXvitHWJff38A==",
             };
 
-            public static readonly User Support = new User
+            public static readonly User Service = new User
             {
                 Id = -3,
-                Name = "support",
+                Name = "service",
                 AccessLevel = 2,
                 PasswordHash = "",
                 PasswordSalt = "",
