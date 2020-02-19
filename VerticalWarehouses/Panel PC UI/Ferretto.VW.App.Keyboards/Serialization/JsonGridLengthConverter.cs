@@ -20,7 +20,7 @@ namespace Ferretto.VW.App.Keyboards.Serialization
         {
             if (reader.Value is string value)
             {
-                return (GridLength)this._converter.ConvertFromString(value);
+                return (GridLength)this._converter.ConvertFromString(null, CultureInfo.InvariantCulture, value);
             }
             return default;
         }
@@ -29,7 +29,7 @@ namespace Ferretto.VW.App.Keyboards.Serialization
         {
             if (value.HasValue)
             {
-                string output = this._converter.ConvertToString(value.Value);
+                string output = this._converter.ConvertToString(null, CultureInfo.InvariantCulture, value.Value);
                 writer.WriteValue(output);
             }
             else

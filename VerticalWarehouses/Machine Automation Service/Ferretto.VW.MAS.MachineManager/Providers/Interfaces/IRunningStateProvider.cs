@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.MAS.MachineManager.Providers.Interfaces
 {
@@ -8,7 +9,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers.Interfaces
 
         bool IsHoming { get; }
 
-        bool IsRunning { get; }
+        MachinePowerState MachinePowerState { get; }
 
         #endregion
 

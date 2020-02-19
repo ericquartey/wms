@@ -57,7 +57,7 @@ namespace Ferretto.VW.MAS.MissionManager
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
 
-            if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status != MissionStatus.New))
+            if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status != MissionStatus.New && m.Status != MissionStatus.Waiting))
             {
                 return serviceProvider.GetRequiredService<IMissionSchedulingProvider>().QueueLoadingUnitCompactingMission(serviceProvider);
             }
@@ -387,14 +387,14 @@ namespace Ferretto.VW.MAS.MissionManager
                         {
                             if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic)
                             {
-                                if (activeMissions.Any(m => m.MissionType == MissionType.LoadUnitOperation))
-                                {
-                                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToLoadUnitOperations;
-                                    this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
-                                }
-                                else if (activeMissions.Any(m => m.MissionType == MissionType.Compact))
+                                if (activeMissions.Any(m => m.MissionType == MissionType.Compact))
                                 {
                                     this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToCompact;
+                                    this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                                }
+                                else if (activeMissions.Any(m => m.MissionType == MissionType.LoadUnitOperation))
+                                {
+                                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToLoadUnitOperations;
                                     this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                                 }
                             }
@@ -407,17 +407,17 @@ namespace Ferretto.VW.MAS.MissionManager
                         {
                             if (!this.IsLoadUnitMissing(serviceProvider))
                             {
-                                if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations
-                                    || activeMissions.Any(m => m.MissionType == MissionType.LoadUnitOperation)
-                                    )
-                                {
-                                    this.machineVolatileDataProvider.Mode = MachineMode.LoadUnitOperations;
-                                }
-                                else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToCompact
-                                    || activeMissions.Any(m => m.MissionType == MissionType.Compact)
+                                if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToCompact
+                                    || activeMissions.Any(m => m.MissionType == MissionType.Compact && m.Status == MissionStatus.Executing)
                                     )
                                 {
                                     this.machineVolatileDataProvider.Mode = MachineMode.Compact;
+                                }
+                                else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations
+                                    || activeMissions.Any(m => m.MissionType == MissionType.LoadUnitOperation && m.Status == MissionStatus.Executing)
+                                    )
+                                {
+                                    this.machineVolatileDataProvider.Mode = MachineMode.LoadUnitOperations;
                                 }
                                 else
                                 {

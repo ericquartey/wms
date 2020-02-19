@@ -17,7 +17,7 @@ namespace Ferretto.VW.App.Controls.Keyboards
             => PopupKeyboard(ctrl, TextBox.TextProperty, typeof(string), layoutCode, caption, timeout);
 
         public static void PopupKeyboard(this Control ctrl, DependencyProperty dependencyProperty, Type outputType, string layoutCode = KeyboardLayoutCodes.Lowercase,
-            string caption = default, TimeSpan timeout = default)
+            string caption = default, TimeSpan timeout = default, bool isPassword = false)
         {
             // show keyboard
             var dialog = new PpcKeyboards(ctrl, dependencyProperty, outputType);
@@ -27,6 +27,7 @@ namespace Ferretto.VW.App.Controls.Keyboards
                 InputText = Convert.ToString(value, System.Globalization.CultureInfo.CurrentCulture),
                 LabelText = caption,
                 InactiveTimeout = timeout,
+                IsPassword = isPassword
             };
             dialog.Topmost = false;
             dialog.ShowInTaskbar = false;

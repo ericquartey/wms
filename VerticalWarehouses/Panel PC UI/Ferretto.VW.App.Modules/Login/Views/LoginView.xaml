@@ -92,7 +92,8 @@
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Top"
                                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                                               Text="{Binding MachineIdentity.ModelName, FallbackValue=ModelName}" />
+                                               Text="{Binding MachineIdentity.ModelName, FallbackValue=ModelName}"
+                                               TextWrapping="Wrap" />
 
                                     <TextBlock Margin="25,0,25,25"
                                                HorizontalAlignment="Left"
@@ -199,7 +200,6 @@
                                         </Style>
                                     </Label.Style>
                                 </Label>
-
                                 <dxe:PasswordBoxEdit x:Name="txtPassword"
                                                      Margin="0,5"
                                                      FontFamily="{DynamicResource VWAPP_TitleFont}"
@@ -208,7 +208,7 @@
                                                      MouseDoubleClick="OnKeyboardOpenHandler"
                                                      NullText="{x:Static res:LoadLogin.PasswordEnter}"
                                                      Password="{Binding UserLogin.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                     TouchEnter="OnKeyboardOpenHandler" />
+                                                     TouchUp="OnKeyboardOpenHandler" />
 
                                 <Button Margin="0,25"
                                         Padding="5"

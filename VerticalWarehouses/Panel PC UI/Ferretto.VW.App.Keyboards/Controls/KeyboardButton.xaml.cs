@@ -84,7 +84,11 @@ namespace Ferretto.VW.App.Keyboards.Controls
 
         private void UserControl_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            this.ExecuteKeyCommand();
+            if (e.StylusDevice == null)
+            {
+                // REAL mouse event
+                this.ExecuteKeyCommand();
+            }
         }
 
         private void SynchronizeButtonStyle()

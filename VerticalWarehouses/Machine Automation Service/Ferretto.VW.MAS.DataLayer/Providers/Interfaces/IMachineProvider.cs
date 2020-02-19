@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
@@ -25,6 +26,16 @@ namespace Ferretto.VW.MAS.DataLayer
         bool IsOneTonMachine();
 
         void Update(Machine machine, DataLayerContext context);
+
+        void UpdateBayChainStatistics(double distance, BayNumber bayNumber);
+
+        void UpdateBayLoadUnitStatistics(BayNumber bayNumber);
+
+        void UpdateHorizontalAxisStatistics(double distance);
+
+        void UpdateMissionTime(TimeSpan duration);
+
+        void UpdateVerticalAxisStatistics(double distance);
 
         void UpdateWeightStatistics(DataLayerContext dataContext);
 

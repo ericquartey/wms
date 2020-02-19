@@ -60,11 +60,13 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.ServiceHealthStatus = this.healthProbeService.HealthMasStatus;
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
 
+#if DEBUG
             this.UserLogin = new UserLogin
             {
                 UserName = "installer",
-                Password = "password",
+                Password = "vertimag2020",
             };
+#endif
 
             this.UserLogin.PropertyChanged += this.UserLogin_PropertyChanged;
             this.MachineService.PropertyChanged += this.MachineService_PropertyChanged;

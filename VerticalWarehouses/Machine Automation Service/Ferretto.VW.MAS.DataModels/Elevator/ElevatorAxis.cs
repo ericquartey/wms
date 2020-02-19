@@ -13,8 +13,6 @@ namespace Ferretto.VW.MAS.DataModels
 
         private double resolution;
 
-        private int totalCycles = 1;
-
         private double upperBound = 1;
 
         #endregion
@@ -104,20 +102,6 @@ namespace Ferretto.VW.MAS.DataModels
             }
         }
 
-        public int TotalCycles
-        {
-            get => this.totalCycles;
-            set
-            {
-                if (value <= 0)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(value), "Total cycles cannot be negative or zero.");
-                }
-
-                this.totalCycles = value;
-            }
-        }
-
         public double UpperBound
         {
             get => this.upperBound;
@@ -131,6 +115,16 @@ namespace Ferretto.VW.MAS.DataModels
                 this.upperBound = value;
             }
         }
+
+        /// <summary>
+        /// this parameter can be added to the belt elongation
+        /// </summary>
+        public double VerticalDepositOffset { get; set; }
+
+        /// <summary>
+        /// this parameter is NOT USED at the moment
+        /// </summary>
+        public double VerticalPickupOffset { get; set; }
 
         public WeightMeasurement WeightMeasurement { get; set; }
 

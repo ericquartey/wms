@@ -185,6 +185,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         /// <returns></returns>
         private void RestoreDepositStart()
         {
+            this.Mission.StepTime = DateTime.UtcNow;
             this.Mission.StopReason = StopRequestReason.NoReason;
             var destination = this.LoadingUnitMovementProvider.GetLastVerticalPosition();
             var current = this.LoadingUnitMovementProvider.GetCurrentVerticalPosition();

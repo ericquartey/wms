@@ -7,8 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-
-
 namespace Ferretto.VW.MAS.DeviceManager.Homing.Models
 {
     internal class HomingMachineData : IHomingMachineData
@@ -52,6 +50,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing.Models
         [Obsolete("Replace this reference with DI or ServiceProvider.")]
         public IEventAggregator EventAggregator { get; }
 
+        public double HorizontalStartingPosition { get; set; }
+
         public InverterIndex InverterIndexOld { get; set; }
 
         public bool IsOneTonMachine { get; }
@@ -77,6 +77,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing.Models
         public bool ShowErrors { get; }
 
         public BayNumber TargetBay { get; }
+
+        public double VerticalStartingPosition { get; set; }
 
         #endregion
     }

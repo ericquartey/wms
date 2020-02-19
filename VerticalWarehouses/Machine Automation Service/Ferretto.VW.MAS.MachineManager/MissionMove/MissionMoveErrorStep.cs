@@ -127,6 +127,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MissionStep.BayChain:
                     if (this.Mission.ErrorMovements == MissionErrorMovements.None)
                     {
+                        this.Mission.StepTime = DateTime.UtcNow;
                         this.RestoreBayChain();
                     }
                     else
@@ -138,6 +139,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MissionStep.CloseShutter:
                     if (this.Mission.ErrorMovements == MissionErrorMovements.None)
                     {
+                        this.Mission.StepTime = DateTime.UtcNow;
                         this.RestoreCloseShutter();
                     }
                     else
@@ -151,6 +153,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.Mission.NeedMovingBackward = false;
                     {
                         var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        this.Mission.StepTime = DateTime.UtcNow;
                         newStep.OnEnter(null);
                     }
                     break;
@@ -159,6 +162,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MissionStep.BackToTarget:
                     if (this.Mission.ErrorMovements == MissionErrorMovements.None)
                     {
+                        this.Mission.StepTime = DateTime.UtcNow;
                         this.RestoreMoveToTarget();
                     }
                     else
@@ -170,6 +174,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MissionStep.Start:
                     if (this.Mission.ErrorMovements == MissionErrorMovements.None)
                     {
+                        this.Mission.StepTime = DateTime.UtcNow;
                         this.RestoreStartStep();
                     }
                     else
@@ -181,6 +186,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MissionStep.WaitPick:
                     if (this.Mission.ErrorMovements == MissionErrorMovements.None)
                     {
+                        this.Mission.StepTime = DateTime.UtcNow;
                         this.RestoreWaitPick();
                     }
                     else
@@ -195,6 +201,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         this.Mission.StopReason = StopRequestReason.NoReason;
                         var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        this.Mission.StepTime = DateTime.UtcNow;
                         newStep.OnEnter(null);
                     }
                     break;

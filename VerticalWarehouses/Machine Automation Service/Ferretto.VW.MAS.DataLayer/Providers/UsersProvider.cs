@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
 
-            this.dataContext.Users.Local.Add(User.Values.Support);
+            this.dataContext.Users.Local.Add(User.Values.Service);
             this.dataContext.Users.Local.Add(User.Values.Operator);
             this.dataContext.Users.Local.Add(User.Values.Installer);
             this.dataContext.Users.Local.Add(User.Values.Admin);
@@ -103,14 +103,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public string GetSupportToken()
+        public string GetServiceToken()
         {
-            if (!string.IsNullOrEmpty(User.Values.Support.PasswordSalt) && DateTime.UtcNow < User.Values.Support.Validity)
+            if (!string.IsNullOrEmpty(User.Values.Service.PasswordSalt) && DateTime.Now < User.Values.Service.Validity)
             {
-                return User.Values.Support.PasswordSalt;
+                return User.Values.Service.PasswordSalt;
             }
 
-            lock (User.Values.Support)
+            lock (User.Values.Service)
             {
                 var random = new Random();
 
@@ -121,8 +121,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 // Generate a string of six characters as secret key using the above alphabet
                 var secretKey = new string(Enumerable.Repeat(alphabet, 6).Select(s => s[random.Next(s.Length)]).ToArray());
 
-                User.Values.Support.PasswordSalt = secretKey;
-                User.Values.Support.Validity = DateTime.UtcNow.Add(this.tokenValidity);
+                User.Values.Service.PasswordSalt = secretKey;
+                User.Values.Service.Validity = DateTime.Now.Add(this.tokenValidity);
 
                 return secretKey;
             }
@@ -155,7 +155,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private static bool IsPasswordValid(User user, string password, string supportToken, TimeSpan validity)
         {
-            if (!user.IsSupport)
+            if (!user.IsService)
             {
                 var providedPasswordHash = GeneratePasswordHash(password, user.PasswordSalt);
 

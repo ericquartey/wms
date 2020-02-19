@@ -156,6 +156,18 @@
   <data name="BayNumber.ElevatorBay" xml:space="preserve">
     <value>culla</value>
   </data>
+  <data name="BayPosition_Height" xml:space="preserve">
+    <value>Quota</value>
+  </data>
+  <data name="BayPosition_MaxDoubleHeight" xml:space="preserve">
+    <value>Altezza massima doppia</value>
+  </data>
+  <data name="BayPosition_MaxSingleHeight" xml:space="preserve">
+    <value>Altezza massima standard</value>
+  </data>
+  <data name="BayPosition_ProfileOffset" xml:space="preserve">
+    <value>Offset controllo sagoma</value>
+  </data>
   <data name="BayShutter" xml:space="preserve">
     <value>Shutter baia {0}</value>
   </data>
@@ -214,19 +226,25 @@
     <value>Tempo di rilascio in frenata</value>
   </data>
   <data name="ElevatorAxis_ChainOffset" xml:space="preserve">
-    <value>Offset cinghia</value>
+    <value>Offset zero catena</value>
   </data>
   <data name="ElevatorAxis_HomingCreepSpeed" xml:space="preserve">
     <value>Velocità homing</value>
   </data>
   <data name="ElevatorAxis_HomingFastSpeed" xml:space="preserve">
-    <value>Velocità homing (fast)</value>
+    <value>Velocità homing fast</value>
+  </data>
+  <data name="ElevatorAxis_LowerBound" xml:space="preserve">
+    <value>Limite asse inferiore</value>
   </data>
   <data name="ElevatorAxis_Profiles" xml:space="preserve">
     <value>Profiles</value>
   </data>
   <data name="ElevatorAxis_Resolution" xml:space="preserve">
     <value>Risoluzione</value>
+  </data>
+  <data name="ElevatorAxis_UpperBound" xml:space="preserve">
+    <value>Limite asse superiore</value>
   </data>
   <data name="ElevatorWeight" xml:space="preserve">
     <value>Peso elevatore</value>
@@ -316,19 +334,19 @@
     <value>Movimenti manuali</value>
   </data>
   <data name="MeasureConst0" xml:space="preserve">
-    <value>MeasureConst0</value>
+    <value>Costante K0 pesatura</value>
   </data>
   <data name="MeasureConst1" xml:space="preserve">
-    <value>MeasureConst1</value>
+    <value>Costante K1 pesatura</value>
   </data>
   <data name="MeasureConst2" xml:space="preserve">
-    <value>MeasureConst2</value>
+    <value>Costante K2 pesatura</value>
   </data>
   <data name="MeasureSpeed" xml:space="preserve">
-    <value>MeasureSpeed</value>
+    <value>Velocità pesatura</value>
   </data>
   <data name="MeasureTime" xml:space="preserve">
-    <value>MeasureTime</value>
+    <value>Tempo pesatura</value>
   </data>
   <data name="MovementParameters" xml:space="preserve">
     <value>MovementParameters</value>
@@ -370,19 +388,19 @@
     <value>Modulo di elasticità</value>
   </data>
   <data name="ShutterManualParameters_FeedRate" xml:space="preserve">
-    <value>Feed rate shutter</value>
+    <value>Feed rate serranda</value>
   </data>
   <data name="ShutterManualParameters_HighSpeedDurationClose" xml:space="preserve">
-    <value>Durata chiusura shutter</value>
+    <value>Durata chiusura serranda</value>
   </data>
   <data name="ShutterManualParameters_HighSpeedDurationOpen" xml:space="preserve">
-    <value>Durata apertura shutter</value>
+    <value>Durata apertura serranda</value>
   </data>
   <data name="ShutterManualParameters_MaxSpeed" xml:space="preserve">
-    <value>Velocità massima shutter</value>
+    <value>Velocità massima serranda</value>
   </data>
   <data name="ShutterManualParameters_MinSpeed" xml:space="preserve">
-    <value>Velocità minima shutter</value>
+    <value>Velocità minima serranda</value>
   </data>
   <data name="ShutterType.NotSpecified" xml:space="preserve">
     <value>Non specificato</value>
@@ -394,13 +412,13 @@
     <value>Due sensori</value>
   </data>
   <data name="Shutter_AssistedMovements" xml:space="preserve">
-    <value>Movimenti assistiti shutter</value>
+    <value>Mov. guidati serranda</value>
   </data>
   <data name="Shutter_ManualMovements" xml:space="preserve">
-    <value>Movimenti manuali shutter</value>
+    <value>Mov. manuali serranda</value>
   </data>
   <data name="Shutter_Type" xml:space="preserve">
-    <value>Tipo shutter</value>
+    <value>Tipo serranda</value>
   </data>
   <data name="Speed" xml:space="preserve">
     <value>Speed</value>

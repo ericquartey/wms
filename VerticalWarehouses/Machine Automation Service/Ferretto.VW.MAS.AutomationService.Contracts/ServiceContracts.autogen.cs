@@ -236,6 +236,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<CellStatisticsSummary> GetStatisticsAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SaveCellAsync(Cell cell);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SaveCellAsync(Cell cell, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Cell> UpdateHeightAsync(int id, double height);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1693,6 +1700,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Step", Required = Newtonsoft.Json.Required.Always)]
         public MissionStep Step { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("StepTime", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.DateTimeOffset StepTime { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("StopReason", Required = Newtonsoft.Json.Required.Always)]
         public StopRequestReason StopReason { get; set; }
     
@@ -3037,11 +3048,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Resolution", Required = Newtonsoft.Json.Required.Always)]
         public double Resolution { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("TotalCycles", Required = Newtonsoft.Json.Required.Always)]
-        public int TotalCycles { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("UpperBound", Required = Newtonsoft.Json.Required.Always)]
         public double UpperBound { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("VerticalDepositOffset", Required = Newtonsoft.Json.Required.Always)]
+        public double VerticalDepositOffset { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("VerticalPickupOffset", Required = Newtonsoft.Json.Required.Always)]
+        public double VerticalPickupOffset { get; set; }
     
         [Newtonsoft.Json.JsonProperty("WeightMeasurement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public WeightMeasurement WeightMeasurement { get; set; }
@@ -3759,24 +3773,33 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.TimeSpan TotalAutomaticTime { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("TotalBeltCycles", Required = Newtonsoft.Json.Required.Always)]
-        public int TotalBeltCycles { get; set; }
+        [Newtonsoft.Json.JsonProperty("TotalBayChainKilometers1", Required = Newtonsoft.Json.Required.Always)]
+        public double TotalBayChainKilometers1 { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("TotalBayChainKilometers2", Required = Newtonsoft.Json.Required.Always)]
+        public double TotalBayChainKilometers2 { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("TotalBayChainKilometers3", Required = Newtonsoft.Json.Required.Always)]
+        public double TotalBayChainKilometers3 { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("TotalHorizontalAxisCycles", Required = Newtonsoft.Json.Required.Always)]
+        public int TotalHorizontalAxisCycles { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("TotalHorizontalAxisKilometers", Required = Newtonsoft.Json.Required.Always)]
+        public double TotalHorizontalAxisKilometers { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("TotalLoadUnitsInBay1", Required = Newtonsoft.Json.Required.Always)]
+        public int TotalLoadUnitsInBay1 { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("TotalLoadUnitsInBay2", Required = Newtonsoft.Json.Required.Always)]
+        public int TotalLoadUnitsInBay2 { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("TotalLoadUnitsInBay3", Required = Newtonsoft.Json.Required.Always)]
+        public int TotalLoadUnitsInBay3 { get; set; }
     
         [Newtonsoft.Json.JsonProperty("TotalMissionTime", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.TimeSpan TotalMissionTime { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("TotalMovedTrays", Required = Newtonsoft.Json.Required.Always)]
-        public int TotalMovedTrays { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("TotalMovedTraysInBay1", Required = Newtonsoft.Json.Required.Always)]
-        public int TotalMovedTraysInBay1 { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("TotalMovedTraysInBay2", Required = Newtonsoft.Json.Required.Always)]
-        public int TotalMovedTraysInBay2 { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("TotalMovedTraysInBay3", Required = Newtonsoft.Json.Required.Always)]
-        public int TotalMovedTraysInBay3 { get; set; }
     
         [Newtonsoft.Json.JsonProperty("TotalPowerOnTime", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]

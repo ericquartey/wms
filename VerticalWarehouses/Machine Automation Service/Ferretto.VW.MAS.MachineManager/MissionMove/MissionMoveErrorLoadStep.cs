@@ -193,12 +193,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     this.Logger.LogDebug($"{this.GetType().Name}: Load unit detected on board for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
                     this.Mission.RestoreStep = MissionStep.ToTarget;
+                    this.Mission.StepTime = DateTime.UtcNow;
                     var newStep = new MissionMoveErrorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     newStep.OnResume(null);
 
                     return;
                 }
             }
+            this.Mission.StepTime = DateTime.UtcNow;
             this.Mission.StopReason = StopRequestReason.NoReason;
             var origin = this.LoadingUnitMovementProvider.GetLastVerticalPosition();
             var current = this.LoadingUnitMovementProvider.GetCurrentVerticalPosition();

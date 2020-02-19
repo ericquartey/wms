@@ -66,7 +66,7 @@ namespace Ferretto.VW.MAS.AutomationService
             {
                 logger?.LogError(ex, "Application terminated unexpectedly.");
 
-                return -1;
+                throw;
             }
 
             logger?.LogInformation("Application terminated.");

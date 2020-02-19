@@ -7,9 +7,12 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            d:DataContext="{d:DesignInstance Type=viewmodels:CellsViewModel,
+                                             IsDesignTimeCreatable=False}"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="80,15,0,0">
+
+    <Grid Margin="15,0">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -17,63 +20,113 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.ColumnSpan="2"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="Gestione Celle" />
-
-        <controls:CustomControlCellsDataGrid Grid.Row="1"
-                                             ItemsSource="{Binding Cells}"
-                                             SelectedItem="{Binding SelectedCell}" />
-
-        <StackPanel Grid.Row="1"
-                    Grid.Column="1"
-                    Orientation="Vertical">
-            <controls:PpcButton Margin="15,0,15,15"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Top"
-                                Command="{Binding UpDataGridButtonCommand}"
-                                Content="{x:Static resources:OperatorApp.CommonUp}" />
-
-            <controls:PpcButton Margin="15,0,15,15"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Top"
-                                Command="{Binding DownDataGridButtonCommand}"
-                                Content="{x:Static resources:OperatorApp.CommonDown}" />
+        <StackPanel Grid.ColumnSpan="2"
+                    Orientation="Horizontal">
+            <TextBlock Margin="0,10,15,10"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="4.4.1" />
+            <TextBlock Grid.ColumnSpan="2"
+                       Margin="0,10,15,10"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="Gestione Celle" />
         </StackPanel>
 
-        <controls:PpcButton Grid.Row="2"
-                            Grid.Column="1"
-                            Margin="15,15,15,0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
-                            Content="{x:Static resources:OperatorApp.ImmediateDrawerCallDrawerCall}"
-                            Visibility="Collapsed" />
+        <TextBlock Grid.Row="1"
+                   Grid.ColumnSpan="2"
+                   Height="Auto"
+                   Margin="0,0,15,15"
+                   VerticalAlignment="Top"
+                   FontSize="{DynamicResource FontSize_Small}"
+                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                   Text="Editing delle celle"
+                   TextWrapping="Wrap" />
 
-        <Grid Grid.Row="3"
-              Margin="0,15,0,0"
-              Visibility="Collapsed">
+        <controls:CustomControlCellsDataGrid Grid.Row="2"
+                                             ItemsSource="{Binding Cells}"
+                                             SelectedItem="{Binding SelectedCell, Mode=TwoWay}" />
 
+        <Border Grid.Row="3"
+                Grid.ColumnSpan="2"
+                Margin="0,15,0,0"
+                BorderBrush="{DynamicResource PpcBorderBrush}"
+                BorderThickness="{DynamicResource PpcBorderThickness}"
+                CornerRadius="2">
+            <Grid Margin="15">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <controls:PpcTextBox Grid.Column="0"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"
+                                     InputText="{Binding SelectedCell.Id, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="False"
+                                     LabelText="Id" />
+
+                <controls:PpcTextBox Grid.Column="1"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"
+                                     InputText="{Binding SelectedCell.BlockLevel, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsEnabledEditing}"
+                                     LabelText="BlockLevel"
+                                     Visibility="Collapsed" />
+
+                <StackPanel Grid.Column="1"
+                            Margin="0,5,5,5"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch">
+                    <TextBlock Margin="5,5,5,0"
+                               Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+                               Text="BlockLevel" />
+                    <ComboBox MinHeight="32"
+                              Margin="5"
+                              FontFamily="{DynamicResource VWAPP_TitleFont}"
+                              FontSize="{DynamicResource VWAPP_PpcTextBox_TextBox_FontSize}"
+                              ItemsSource="{Binding BlockLevels}"
+                              SelectedValue="{Binding SelectedCell.BlockLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                              Style="{DynamicResource PpcComboBoxStyle}" />
+                </StackPanel>
+
+                <controls:PpcTextBox Grid.Column="2"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"
+                                     InputText="{Binding SelectedCell.Position, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsEnabledEditing}"
+                                     LabelText="Position" />
+
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="4"
+              Grid.Column="0"
+              Grid.ColumnSpan="2"
+              Margin="0,15,0,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <controls:PpcLabeledText HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="Cassetto bloccato."
-                                     LabelText="{x:Static resources:OperatorApp.CommonNote}" />
+            <controls:PpcButton Grid.Column="4"
+                                Margin="0"
+                                HorizontalAlignment="Right"
+                                Command="{Binding SaveCommand}"
+                                Content="Salva cassetto" />
 
-            <controls:PpcTextBox Grid.Column="1"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 LabelText="{x:Static resources:OperatorApp.ImmediateDrawerCallRequiredDrawer}" />
 
         </Grid>
 

@@ -195,14 +195,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         try
                         {
                             mission.DestinationCellId = this.CellsProvider.FindEmptyCell(messageData.LoadUnitId.Value);
+                            returnValue = true;
+                            mission.LoadUnitDestination = LoadingUnitLocation.Cell;
                         }
                         catch (Exception)
                         {
                             this.ErrorsProvider.RecordNew(MachineErrorCode.WarehouseIsFull, this.Mission.TargetBay);
-                            throw new StateMachineException(ErrorDescriptions.WarehouseIsFull, this.Mission.TargetBay, MessageActor.MachineManager);
                         }
-                        returnValue = true;
-                        mission.LoadUnitDestination = LoadingUnitLocation.Cell;
                     }
 
                     if (!returnValue)
@@ -227,7 +226,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case LoadingUnitLocation.LoadUnit:
                     {
                         this.ErrorsProvider.RecordNew(MachineErrorCode.DestinationTypeNotValid, this.Mission.TargetBay);
-                        throw new StateMachineException(ErrorDescriptions.DestinationTypeNotValid, this.Mission.TargetBay, MessageActor.MachineManager);
+                        break;
                     }
 
                 default:
@@ -249,13 +248,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             if (showErrors)
                             {
                                 this.ErrorsProvider.RecordNew(MachineErrorCode.DestinationBayNotCalibrated, this.Mission.TargetBay);
-                                throw new StateMachineException(ErrorDescriptions.DestinationBayNotCalibrated, this.Mission.TargetBay, MessageActor.MachineManager);
                             }
                             else
                             {
                                 this.Logger.LogInformation(ErrorDescriptions.DestinationBayNotCalibrated);
-                                return false;
                             }
+                            return false;
                         }
                         var upper = bay.Positions.FirstOrDefault(p => p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
                         if (upper is LoadingUnitLocation.NoLocation)
@@ -263,13 +261,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             if (showErrors)
                             {
                                 this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedUpper, this.Mission.TargetBay);
-                                throw new StateMachineException(ErrorDescriptions.LoadUnitUndefinedUpper, this.Mission.TargetBay, MessageActor.MachineManager);
                             }
                             else
                             {
                                 this.Logger.LogInformation(ErrorDescriptions.LoadUnitUndefinedUpper);
-                                return false;
                             }
+                            return false;
                         }
                         var bottom = bay.Positions.FirstOrDefault(p => !p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
                         if (bottom is LoadingUnitLocation.NoLocation)
@@ -277,13 +274,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             if (showErrors)
                             {
                                 this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedBottom, this.Mission.TargetBay);
-                                throw new StateMachineException(ErrorDescriptions.LoadUnitUndefinedBottom, this.Mission.TargetBay, MessageActor.MachineManager);
                             }
                             else
                             {
                                 this.Logger.LogInformation(ErrorDescriptions.LoadUnitUndefinedBottom);
-                                return false;
                             }
+                            return false;
                         }
                         // always check upper position first
                         returnValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, false || messageData.Destination == upper);
@@ -308,13 +304,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 if (showErrors)
                                 {
                                     this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
-                                    throw new StateMachineException(ErrorDescriptions.LoadUnitDestinationBay, this.Mission.TargetBay, MessageActor.MachineManager);
                                 }
                                 else
                                 {
                                     this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay);
-                                    return false;
                                 }
+                                return false;
                             }
                         }
                         else
@@ -324,13 +319,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 if (showErrors)
                                 {
                                     this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
-                                    throw new StateMachineException(ErrorDescriptions.LoadUnitDestinationBay, this.Mission.TargetBay, MessageActor.MachineManager);
                                 }
                                 else
                                 {
                                     this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay);
-                                    return false;
                                 }
+                                return false;
                             }
                             // if upper position is not empty we can try lower position
                             returnValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, showErrors);
@@ -456,7 +450,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 default:
                     this.ErrorsProvider.RecordNew(MachineErrorCode.MissionTypeNotValid, this.Mission.TargetBay);
-                    throw new StateMachineException(ErrorDescriptions.MissionTypeNotValid, this.Mission.TargetBay, MessageActor.MachineManager);
+                    break;
             }
             if (!returnValue)
             {
@@ -474,13 +468,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 if (showErrors)
                 {
                     this.ErrorsProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisBay, this.Mission.TargetBay);
-                    throw new StateMachineException(ErrorDescriptions.AnotherMissionIsActiveForThisBay, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
                 else
                 {
                     this.Logger.LogInformation(ErrorDescriptions.AnotherMissionIsActiveForThisBay);
-                    return false;
                 }
+                return false;
             }
 
 #if !CHECK_BAY_SENSOR

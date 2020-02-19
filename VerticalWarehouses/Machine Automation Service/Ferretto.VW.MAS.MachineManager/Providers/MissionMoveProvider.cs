@@ -97,7 +97,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                         }
                         catch (StateMachineException ex)
                         {
-                            this.Logger.LogError(ex.NotificationMessage.Description, "Error while activating a State.");
+                            this.Logger.LogError(ex.NotificationMessage.Description, "State notification error.");
                             //this.eventAggregator.GetEvent<NotificationEvent>().Publish(ex.NotificationMessage);
 
                             state.OnStop(StopRequestReason.Error);
@@ -151,10 +151,10 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             }
             catch (StateMachineException ex)
             {
-                this.Logger.LogError(ex.NotificationMessage.Description, "Error while activating a State.");
+                this.Logger.LogError(ex.NotificationMessage.Description, "Error while starting a mission.");
                 //this.eventAggregator.GetEvent<NotificationEvent>().Publish(ex.NotificationMessage);
 
-                newState.OnStop(StopRequestReason.Error);
+                newState.OnStop(StopRequestReason.Stop);
                 return false;
             }
         }

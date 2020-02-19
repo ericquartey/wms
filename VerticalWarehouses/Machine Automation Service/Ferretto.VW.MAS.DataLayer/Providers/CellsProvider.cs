@@ -210,7 +210,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 // load all cells
                 var cells = this.GetAll(x => x.Position >= verticalAxis.LowerBound
-                             && x.Position < verticalAxis.UpperBound
                              && (compactingType == CompactingType.NoCompacting || x.Side == loadingUnit.Cell.Side)
                              && (compactingType == CompactingType.NoCompacting || x.Position < loadingUnit.Cell.Position))
                     .OrderBy(o => o.Position)
@@ -358,6 +357,15 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void Save(Cell cell)
+        {
+            lock (this.dataContext)
+            {
+                this.dataContext.AddOrUpdate(cell, f => f.Id);
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public void SetLoadingUnit(int cellId, int? loadingUnitId)
         {
             lock (this.dataContext)
@@ -493,6 +501,13 @@ namespace Ferretto.VW.MAS.DataLayer
                     {
                         statistics.TotalWeightBack += weight;
                     }
+                }
+                var machine = this.machineProvider.Get();
+                if (machine != null
+                    && machine.MaxGrossWeight != 0
+                    )
+                {
+                    statistics.WeightCapacityPercentage = ((statistics.TotalWeightFront + statistics.TotalWeightBack) / machine.MaxGrossWeight) * 100;
                 }
                 this.dataContext.SaveChanges();
             }

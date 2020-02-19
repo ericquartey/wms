@@ -10,7 +10,6 @@
         Title="KeyboardWindow"
         Width="800"
         Height="450"
-        AllowsTransparency="True"
         mc:Ignorable="d">
     <Grid Opacity="0.8">
         <Grid.RowDefinitions>
