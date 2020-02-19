@@ -358,6 +358,19 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void UpdateMissionTime(TimeSpan duration)
+        {
+            lock (this.dataContext)
+            {
+                var machineStat = this.dataContext.MachineStatistics.FirstOrDefault();
+                if (machineStat != null)
+                {
+                    machineStat.TotalMissionTime.Add(duration);
+                    this.dataContext.SaveChanges();
+                }
+            }
+        }
+
         /// <summary>
         /// Update vertical axis statistics
         /// </summary>

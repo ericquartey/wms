@@ -1609,6 +1609,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Step", Required = Newtonsoft.Json.Required.Always)]
         public MissionStep Step { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("StepTime", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.DateTimeOffset StepTime { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("StopReason", Required = Newtonsoft.Json.Required.Always)]
         public StopRequestReason StopReason { get; set; }
     

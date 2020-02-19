@@ -152,6 +152,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                                 mission.MissionType = MissionType.Manual;
                                 mission.TargetBay = command.RequestingBay;
                                 mission.CreationDate = DateTime.UtcNow;
+                                mission.StepTime = DateTime.UtcNow;
                             }
                             this.machineMissions.Add(newMission);
                             missionId = newMission.FsmId;
