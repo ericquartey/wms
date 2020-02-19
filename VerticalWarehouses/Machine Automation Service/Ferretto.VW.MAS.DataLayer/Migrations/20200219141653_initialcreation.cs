@@ -195,6 +195,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     RestoreStep = table.Column<int>(nullable: false),
                     Status = table.Column<string>(type: "text", nullable: false),
                     Step = table.Column<int>(nullable: false),
+                    StepTime = table.Column<DateTime>(nullable: false),
                     StopReason = table.Column<int>(nullable: false),
                     TargetBay = table.Column<string>(type: "text", nullable: false),
                     WmsId = table.Column<int>(nullable: true)

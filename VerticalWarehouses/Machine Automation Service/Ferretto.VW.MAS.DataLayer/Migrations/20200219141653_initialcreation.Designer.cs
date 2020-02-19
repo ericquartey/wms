@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20200219114529_initialcreation")]
+    [Migration("20200219141653_initialcreation")]
     partial class initialcreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1035,6 +1035,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .HasColumnType("text");
 
                     b.Property<int>("Step");
+
+                    b.Property<DateTime>("StepTime");
 
                     b.Property<int>("StopReason");
 

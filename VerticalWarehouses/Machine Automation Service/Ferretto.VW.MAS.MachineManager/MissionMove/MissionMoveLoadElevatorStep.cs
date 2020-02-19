@@ -34,6 +34,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             this.Mission.RestoreStep = MissionStep.NotDefined;
             this.Mission.Step = MissionStep.LoadElevator;
+            this.Mission.StepTime = DateTime.UtcNow;
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.Mission.Direction = HorizontalMovementDirection.Backwards;
             this.Mission.StopReason = StopRequestReason.NoReason;

@@ -54,6 +54,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public MissionStep Step { get; set; }
 
+        public DateTime StepTime { get; set; }
+
         public StopRequestReason StopReason { get; set; }
 
         public BayNumber TargetBay { get; set; }

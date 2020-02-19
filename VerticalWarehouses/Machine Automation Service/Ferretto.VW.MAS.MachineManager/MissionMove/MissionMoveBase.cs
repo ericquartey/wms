@@ -256,6 +256,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
             this.Mission.Step = errorState;
+            this.Mission.StepTime = DateTime.UtcNow;
             this.MissionsDataProvider.Update(this.Mission);
 
             var newMessageData = new StopMessageData(StopRequestReason.Error);

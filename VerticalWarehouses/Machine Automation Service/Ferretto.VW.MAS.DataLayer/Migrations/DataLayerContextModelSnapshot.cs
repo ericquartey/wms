@@ -1034,6 +1034,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("Step");
 
+                    b.Property<DateTime>("StepTime");
+
                     b.Property<int>("StopReason");
 
                     b.Property<string>("TargetBay")
