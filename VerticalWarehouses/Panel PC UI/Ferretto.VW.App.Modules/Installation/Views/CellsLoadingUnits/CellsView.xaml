@@ -52,7 +52,7 @@
 
         <controls:CustomControlCellsDataGrid Grid.Row="2"
                                              ItemsSource="{Binding Cells}"
-                                             SelectedItem="{Binding SelectedCell}" />
+                                             SelectedItem="{Binding SelectedCell, Mode=TwoWay}" />
 
         <Border Grid.Row="3"
                 Grid.ColumnSpan="2"
@@ -107,7 +107,7 @@
             <controls:PpcButton Grid.Column="4"
                                 Margin="0"
                                 HorizontalAlignment="Right"
-                                Command="{Binding SaveDrawerCommand}"
+                                Command="{Binding SaveCommand}"
                                 Content="Salva cassetto" />
 
 

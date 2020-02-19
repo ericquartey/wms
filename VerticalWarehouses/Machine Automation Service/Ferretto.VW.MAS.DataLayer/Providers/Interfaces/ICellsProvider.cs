@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS.DataLayer
         Cell GetByLoadingUnitId(int loadingUnitId);
 
         CellStatisticsSummary GetStatistics();
-
+        void Save(Cell cell);
         void SetLoadingUnit(int cellId, int? loadingUnitId);
 
         IEnumerable<Cell> UpdateHeights(int fromCellId, int toCellId, WarehouseSide side, double height);

@@ -245,7 +245,28 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new EntityNotFoundException($"LoadingUnit ID={loadingUnit.Id}");
             }
 
-            if (loadingUnit.CellId.HasValue)
+            if (loadingUnit.CellId.HasValue &&
+                loadingUnit.Height == 0)
+            {
+                throw new ArgumentException($"LoadingUnit with Height to 0 (Id={loadingUnit.Id})");
+            }
+
+            if (luDb.CellId.HasValue &&
+                (luDb.CellId != loadingUnit.CellId ||
+                luDb.Height != loadingUnit.Height))
+            {
+                this.cellsProvider.SetLoadingUnit(luDb.CellId.Value, null);
+
+                lock (this.dataContext)
+                {
+                    luDb.Height = loadingUnit.Height;
+                    this.dataContext.SaveChanges();
+                }
+            }
+
+            if (loadingUnit.CellId.HasValue &&
+                (luDb.CellId != loadingUnit.CellId ||
+                 luDb.Height != loadingUnit.Height))
             {
                 if (!this.cellsProvider.CanFitLoadingUnit(loadingUnit.CellId.Value, loadingUnit.Id))
                 {
@@ -253,15 +274,18 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
             }
 
-            this.cellsProvider.SetLoadingUnit(luDb.CellId.Value, null);
+            if (loadingUnit.CellId.HasValue &&
+                (luDb.CellId != loadingUnit.CellId ||
+                luDb.Height != loadingUnit.Height))
+            {
+                this.cellsProvider.SetLoadingUnit(loadingUnit.CellId.Value, loadingUnit.Id);
+            }
 
             lock (this.dataContext)
             {
                 this.dataContext.AddOrUpdate(loadingUnit, f => f.Id);
                 this.dataContext.SaveChanges();
             }
-
-            this.cellsProvider.SetLoadingUnit(loadingUnit.CellId.Value, loadingUnit.Id);
         }
 
         public void SetHeight(int id, double height)

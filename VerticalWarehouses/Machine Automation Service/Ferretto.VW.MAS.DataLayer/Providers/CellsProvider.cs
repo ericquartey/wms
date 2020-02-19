@@ -357,6 +357,15 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void Save(Cell cell)
+        {
+            lock (this.dataContext)
+            {
+                this.dataContext.AddOrUpdate(cell, f => f.Id);
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public void SetLoadingUnit(int cellId, int? loadingUnitId)
         {
             lock (this.dataContext)

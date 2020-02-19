@@ -307,6 +307,11 @@ namespace Ferretto.VW.App.Services
             return MAS.AutomationService.Contracts.LoadingUnitLocation.NoLocation;
         }
 
+        public async Task GetCells()
+        {
+            this.cells = await this.machineCellsWebService.GetAllAsync();
+        }
+
         public async Task GetLoadUnits()
         {
             this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
@@ -323,6 +328,7 @@ namespace Ferretto.VW.App.Services
                     await this.InitializationHoming();
                     await this.InitializationBay();
                     await this.GetLoadUnits();
+                    await this.GetCells();
                 }
                 catch
                 {
@@ -343,6 +349,7 @@ namespace Ferretto.VW.App.Services
                 await this.InitializationHoming();
                 await this.UpdateBay();
                 await this.GetLoadUnits();
+                await this.GetCells();
                 await this.machineModeService.OnUpdateServiceAsync();
             }
         }
@@ -487,8 +494,6 @@ namespace Ferretto.VW.App.Services
             this.IsMissionInError = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
 
             this.bays = await this.machineBaysWebService.GetAllAsync();
-
-            this.cells = await this.machineCellsWebService.GetAllAsync();
 
             this.Bay = await this.bayManagerService.GetBayAsync();
 
