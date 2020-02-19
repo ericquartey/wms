@@ -886,6 +886,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     ProfileCalibrateSpeed = table.Column<double>(nullable: false),
                     Resolution = table.Column<double>(nullable: false),
                     UpperBound = table.Column<double>(nullable: false),
+                    VerticalDepositOffset = table.Column<double>(nullable: false),
+                    VerticalPickupOffset = table.Column<double>(nullable: false),
                     WeightMeasurementId = table.Column<int>(nullable: true),
                     ElevatorId = table.Column<int>(nullable: true)
                 },
