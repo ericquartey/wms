@@ -18,7 +18,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public ElevatorAxisManualParameters AssistedMovements { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_BrakeActivatePercent))]
-            [Range(0D, 1D, ErrorMessageResourceType = typeof(ErrorMessages), ErrorMessageResourceName = nameof(ErrorMessages.Range))]
+            [Range(0D, 100D, ErrorMessageResourceType = typeof(ErrorMessages), ErrorMessageResourceName = nameof(ErrorMessages.Range))]
+            [Unit("%")]
             [Id(1)]
             public double BrakeActivatePercent { get; set; }
 
@@ -51,15 +52,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public double HomingFastSpeed { get; set; }
 
             [Id(10)]
-            [Unfold]
+            [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.Inverter))]
             public Inverter Inverter { get; set; }
 
             [ScaffoldColumn(false)]
             [Id(6)]
             public double LastIdealPosition { get; set; }
 
-            [ScaffoldColumn(false)]
             [Id(7)]
+            [Unit("mm")]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_LowerBound))]
             public double LowerBound { get; set; }
 
             [Id(25)]
@@ -88,13 +90,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public System.Collections.Generic.IEnumerable<MovementProfile> Profiles { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_Resolution))]
-            [Id(8)]
+            [Id(9)]
+            [Unit("imp/mm")]
             public double Resolution { get; set; }
 
             [ScaffoldColumn(false)]
             public int TotalCycles { get; set; }
 
-            [ScaffoldColumn(false)]
+            [Unit("mm")]
+            [Id(8)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_UpperBound))]
             public double UpperBound { get; set; }
 
             [Id(15)]
