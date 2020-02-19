@@ -99,9 +99,11 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public bool IsMachineRunning { get; set; }
+        public bool IsMachineRunning => (this.MachinePowerState == MachinePowerState.Powered);
 
         public bool? IsOneTonMachine { get; set; }
+
+        public MachinePowerState MachinePowerState { get; set; }
 
         public MachineMode Mode
         {

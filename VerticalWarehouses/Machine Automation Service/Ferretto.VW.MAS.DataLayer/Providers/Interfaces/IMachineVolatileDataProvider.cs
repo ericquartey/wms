@@ -20,9 +20,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool IsHomingExecuted { get; set; }
 
-        bool IsMachineRunning { get; set; }
+        bool IsMachineRunning { get; }
 
         bool? IsOneTonMachine { get; set; }
+
+        MachinePowerState MachinePowerState { get; set; }
 
         MachineMode Mode { get; set; }
 
