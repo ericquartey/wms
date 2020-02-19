@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20200218142115_initialcreation")]
+    [Migration("20200219114529_initialcreation")]
     partial class initialcreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -253,8 +253,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<double>("ProfileCalibrateSpeed");
 
                     b.Property<double>("Resolution");
-
-                    b.Property<int>("TotalCycles");
 
                     b.Property<double>("UpperBound");
 
@@ -924,17 +922,23 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<TimeSpan>("TotalAutomaticTime");
 
-                    b.Property<int>("TotalBeltCycles");
+                    b.Property<double>("TotalBayChainKilometers1");
+
+                    b.Property<double>("TotalBayChainKilometers2");
+
+                    b.Property<double>("TotalBayChainKilometers3");
+
+                    b.Property<int>("TotalHorizontalAxisCycles");
+
+                    b.Property<double>("TotalHorizontalAxisKilometers");
+
+                    b.Property<int>("TotalLoadUnitsInBay1");
+
+                    b.Property<int>("TotalLoadUnitsInBay2");
+
+                    b.Property<int>("TotalLoadUnitsInBay3");
 
                     b.Property<TimeSpan>("TotalMissionTime");
-
-                    b.Property<int>("TotalMovedTrays");
-
-                    b.Property<int>("TotalMovedTraysInBay1");
-
-                    b.Property<int>("TotalMovedTraysInBay2");
-
-                    b.Property<int>("TotalMovedTraysInBay3");
 
                     b.Property<TimeSpan>("TotalPowerOnTime");
 
@@ -957,12 +961,15 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = -1,
                             TotalAutomaticTime = new TimeSpan(0, 0, 0, 0, 0),
-                            TotalBeltCycles = 0,
+                            TotalBayChainKilometers1 = 0.0,
+                            TotalBayChainKilometers2 = 0.0,
+                            TotalBayChainKilometers3 = 0.0,
+                            TotalHorizontalAxisCycles = 0,
+                            TotalHorizontalAxisKilometers = 0.0,
+                            TotalLoadUnitsInBay1 = 0,
+                            TotalLoadUnitsInBay2 = 0,
+                            TotalLoadUnitsInBay3 = 0,
                             TotalMissionTime = new TimeSpan(0, 0, 0, 0, 0),
-                            TotalMovedTrays = 0,
-                            TotalMovedTraysInBay1 = 0,
-                            TotalMovedTraysInBay2 = 0,
-                            TotalMovedTraysInBay3 = 0,
                             TotalPowerOnTime = new TimeSpan(0, 0, 0, 0, 0),
                             TotalVerticalAxisCycles = 0,
                             TotalVerticalAxisKilometers = 0.0,

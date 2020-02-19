@@ -81,7 +81,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (this.dataContext.MachineStatistics.Any())
                 {
-                    summary.TotalLoadingUnits = this.dataContext.MachineStatistics.First().TotalMovedTrays;
+                    var statistics = this.dataContext.MachineStatistics.First();
+                    summary.TotalLoadingUnits = statistics.TotalLoadUnitsInBay1 + statistics.TotalLoadUnitsInBay2 + statistics.TotalLoadUnitsInBay3;
                     if (summary.TotalLoadingUnits > 0)
                     {
                         summary.TotalLoadingUnitsBetweenErrors = summary.TotalLoadingUnits / totalErrors;

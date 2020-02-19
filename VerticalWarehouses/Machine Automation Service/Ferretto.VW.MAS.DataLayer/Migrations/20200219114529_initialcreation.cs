@@ -145,12 +145,15 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     TotalAutomaticTime = table.Column<TimeSpan>(nullable: false),
-                    TotalBeltCycles = table.Column<int>(nullable: false),
+                    TotalBayChainKilometers1 = table.Column<double>(nullable: false),
+                    TotalBayChainKilometers2 = table.Column<double>(nullable: false),
+                    TotalBayChainKilometers3 = table.Column<double>(nullable: false),
+                    TotalHorizontalAxisCycles = table.Column<int>(nullable: false),
+                    TotalHorizontalAxisKilometers = table.Column<double>(nullable: false),
+                    TotalLoadUnitsInBay1 = table.Column<int>(nullable: false),
+                    TotalLoadUnitsInBay2 = table.Column<int>(nullable: false),
+                    TotalLoadUnitsInBay3 = table.Column<int>(nullable: false),
                     TotalMissionTime = table.Column<TimeSpan>(nullable: false),
-                    TotalMovedTrays = table.Column<int>(nullable: false),
-                    TotalMovedTraysInBay1 = table.Column<int>(nullable: false),
-                    TotalMovedTraysInBay2 = table.Column<int>(nullable: false),
-                    TotalMovedTraysInBay3 = table.Column<int>(nullable: false),
                     TotalPowerOnTime = table.Column<TimeSpan>(nullable: false),
                     TotalVerticalAxisCycles = table.Column<int>(nullable: false),
                     TotalVerticalAxisKilometers = table.Column<double>(nullable: false),
@@ -881,7 +884,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     ProfileCalibratePosition = table.Column<int>(nullable: false),
                     ProfileCalibrateSpeed = table.Column<double>(nullable: false),
                     Resolution = table.Column<double>(nullable: false),
-                    TotalCycles = table.Column<int>(nullable: false),
                     UpperBound = table.Column<double>(nullable: false),
                     WeightMeasurementId = table.Column<int>(nullable: true),
                     ElevatorId = table.Column<int>(nullable: true)
@@ -1340,8 +1342,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             migrationBuilder.InsertData(
                 table: "MachineStatistics",
-                columns: new[] { "Id", "TotalAutomaticTime", "TotalBeltCycles", "TotalMissionTime", "TotalMovedTrays", "TotalMovedTraysInBay1", "TotalMovedTraysInBay2", "TotalMovedTraysInBay3", "TotalPowerOnTime", "TotalVerticalAxisCycles", "TotalVerticalAxisKilometers", "TotalWeightBack", "TotalWeightFront", "WeightCapacityPercentage" },
-                values: new object[] { -1, new TimeSpan(0, 0, 0, 0, 0), 0, new TimeSpan(0, 0, 0, 0, 0), 0, 0, 0, 0, new TimeSpan(0, 0, 0, 0, 0), 0, 0.0, 0.0, 0.0, 0.0 });
+                columns: new[] { "Id", "TotalAutomaticTime", "TotalBayChainKilometers1", "TotalBayChainKilometers2", "TotalBayChainKilometers3", "TotalHorizontalAxisCycles", "TotalHorizontalAxisKilometers", "TotalLoadUnitsInBay1", "TotalLoadUnitsInBay2", "TotalLoadUnitsInBay3", "TotalMissionTime", "TotalPowerOnTime", "TotalVerticalAxisCycles", "TotalVerticalAxisKilometers", "TotalWeightBack", "TotalWeightFront", "WeightCapacityPercentage" },
+                values: new object[] { -1, new TimeSpan(0, 0, 0, 0, 0), 0.0, 0.0, 0.0, 0, 0.0, 0, 0, 0, new TimeSpan(0, 0, 0, 0, 0), new TimeSpan(0, 0, 0, 0, 0), 0, 0.0, 0.0, 0.0, 0.0 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
