@@ -26,6 +26,14 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void Update(Machine machine, DataLayerContext context);
 
+        void UpdateBayChainStatistics(double distance, BayNumber bayNumber);
+
+        void UpdateBayLoadUnitStatistics(BayNumber bayNumber);
+
+        void UpdateHorizontalAxisStatistics(double distance);
+
+        void UpdateVerticalAxisStatistics(double distance);
+
         void UpdateWeightStatistics(DataLayerContext dataContext);
 
         #endregion

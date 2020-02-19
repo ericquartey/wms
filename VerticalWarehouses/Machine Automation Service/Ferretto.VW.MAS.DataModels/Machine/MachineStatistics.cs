@@ -13,17 +13,23 @@
 
         public System.TimeSpan TotalAutomaticTime { get; set; }
 
-        public int TotalBeltCycles { get; set; }
+        public double TotalBayChainKilometers1 { get; set; }
+
+        public double TotalBayChainKilometers2 { get; set; }
+
+        public double TotalBayChainKilometers3 { get; set; }
+
+        public int TotalHorizontalAxisCycles { get; set; }
+
+        public double TotalHorizontalAxisKilometers { get; set; }
+
+        public int TotalLoadUnitsInBay1 { get; set; }
+
+        public int TotalLoadUnitsInBay2 { get; set; }
+
+        public int TotalLoadUnitsInBay3 { get; set; }
 
         public System.TimeSpan TotalMissionTime { get; set; }
-
-        public int TotalMovedTrays { get; set; }
-
-        public int TotalMovedTraysInBay1 { get; set; }
-
-        public int TotalMovedTraysInBay2 { get; set; }
-
-        public int TotalMovedTraysInBay3 { get; set; }
 
         public System.TimeSpan TotalPowerOnTime { get; set; }
 

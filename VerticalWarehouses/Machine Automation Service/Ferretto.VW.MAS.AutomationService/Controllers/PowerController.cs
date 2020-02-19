@@ -37,9 +37,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet]
         public ActionResult<CommonUtils.Messages.MachinePowerState> Get()
         {
-            return this.runningStateProvider.IsRunning
-                ? CommonUtils.Messages.MachinePowerState.Powered
-                : CommonUtils.Messages.MachinePowerState.Unpowered;
+            return this.runningStateProvider.MachinePowerState;
         }
 
         [HttpGet("power-ishoming")]

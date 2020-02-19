@@ -1,11 +1,11 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Prism.Events;
-
 
 namespace Ferretto.VW.MAS.MachineManager.Providers
 {
@@ -37,7 +37,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         public bool IsHoming => this.machineVolatileDataProvider.IsHomingExecuted;
 
-        public bool IsRunning => this.machineVolatileDataProvider.IsMachineRunning;
+        public MachinePowerState MachinePowerState => this.machineVolatileDataProvider.MachinePowerState;
 
         #endregion
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading.Tasks;
@@ -116,7 +117,8 @@ namespace Ferretto.VW.MAS.AutomationService
                         machinePowerState = data.Enable ? MachinePowerState.Unpowered : MachinePowerState.Powered;
                         break;
                 }
-                this.machineVolatileDataProvider.IsMachineRunning = (machinePowerState == MachinePowerState.Powered);
+
+                this.machineVolatileDataProvider.MachinePowerState = machinePowerState;
 
                 await this.installationHub.Clients.All.MachinePowerChanged(machinePowerState);
             }

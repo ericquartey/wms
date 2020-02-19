@@ -13,8 +13,6 @@ namespace Ferretto.VW.MAS.DataModels
 
         private double resolution;
 
-        private int totalCycles = 1;
-
         private double upperBound = 1;
 
         #endregion
@@ -101,20 +99,6 @@ namespace Ferretto.VW.MAS.DataModels
                 }
 
                 this.resolution = value;
-            }
-        }
-
-        public int TotalCycles
-        {
-            get => this.totalCycles;
-            set
-            {
-                if (value <= 0)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(value), "Total cycles cannot be negative or zero.");
-                }
-
-                this.totalCycles = value;
             }
         }
 

@@ -35,6 +35,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             this.Mission.RestoreStep = MissionStep.NotDefined;
             this.Mission.Step = MissionStep.BayChain;
+            this.Mission.StepTime = DateTime.UtcNow;
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.Mission.CloseShutterBayNumber = BayNumber.None;
             this.Mission.StopReason = StopRequestReason.NoReason;
@@ -196,6 +197,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     this.Mission.NeedHomingAxis = (this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] ? Axis.None : Axis.BayChain);
                     this.Mission.Status = MissionStatus.Executing;
+                    this.Mission.StepTime = DateTime.UtcNow;
                     this.MissionsDataProvider.Update(this.Mission);
                     this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 

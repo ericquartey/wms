@@ -286,6 +286,96 @@ namespace Ferretto.VW.MAS.DataLayer
             dataContext.SaveChanges();
         }
 
+        public void UpdateBayChainStatistics(double distance, BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                var machineStat = this.dataContext.MachineStatistics.FirstOrDefault();
+                if (machineStat != null)
+                {
+                    switch (bayNumber)
+                    {
+                        case BayNumber.BayOne:
+                            machineStat.TotalBayChainKilometers1 += distance / 1000000;
+                            break;
+
+                        case BayNumber.BayTwo:
+                            machineStat.TotalBayChainKilometers2 += distance / 1000000;
+                            break;
+
+                        case BayNumber.BayThree:
+                            machineStat.TotalBayChainKilometers3 += distance / 1000000;
+                            break;
+
+                        default:
+                            throw new ArgumentOutOfRangeException(nameof(bayNumber));
+                    }
+                    this.dataContext.SaveChanges();
+                }
+            }
+        }
+
+        public void UpdateBayLoadUnitStatistics(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                var machineStat = this.dataContext.MachineStatistics.FirstOrDefault();
+                if (machineStat != null)
+                {
+                    switch (bayNumber)
+                    {
+                        case BayNumber.BayOne:
+                            machineStat.TotalLoadUnitsInBay1++;
+                            break;
+
+                        case BayNumber.BayTwo:
+                            machineStat.TotalLoadUnitsInBay2++;
+                            break;
+
+                        case BayNumber.BayThree:
+                            machineStat.TotalLoadUnitsInBay3++;
+                            break;
+
+                        default:
+                            throw new ArgumentOutOfRangeException(nameof(bayNumber));
+                    }
+                    this.dataContext.SaveChanges();
+                }
+            }
+        }
+
+        public void UpdateHorizontalAxisStatistics(double distance)
+        {
+            lock (this.dataContext)
+            {
+                var machineStat = this.dataContext.MachineStatistics.FirstOrDefault();
+                if (machineStat != null)
+                {
+                    machineStat.TotalHorizontalAxisCycles++;
+                    machineStat.TotalHorizontalAxisKilometers += distance / 1000000;
+                    this.dataContext.SaveChanges();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Update vertical axis statistics
+        /// </summary>
+        /// <param name="distance">space in millimeters</param>
+        public void UpdateVerticalAxisStatistics(double distance)
+        {
+            lock (this.dataContext)
+            {
+                var machineStat = this.dataContext.MachineStatistics.FirstOrDefault();
+                if (machineStat != null)
+                {
+                    machineStat.TotalVerticalAxisCycles++;
+                    machineStat.TotalVerticalAxisKilometers += distance / 1000000;
+                    this.dataContext.SaveChanges();
+                }
+            }
+        }
+
         public void UpdateWeightStatistics(DataLayerContext dataContext)
         {
             var machineStat = dataContext.MachineStatistics.FirstOrDefault();

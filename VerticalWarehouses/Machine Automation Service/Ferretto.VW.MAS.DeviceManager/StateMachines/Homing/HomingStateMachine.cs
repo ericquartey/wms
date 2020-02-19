@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages;
+﻿using System;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
@@ -11,7 +12,6 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-
 
 namespace Ferretto.VW.MAS.DeviceManager.Homing
 {
@@ -100,6 +100,20 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
                 if (message.Status == MessageStatus.OperationEnd)
                 {
+                    if (this.machineData.AxisToCalibrate == Axis.Vertical)
+                    {
+                        using (var scope = this.ServiceScopeFactory.CreateScope())
+                        {
+                            var elevatorProvider = scope.ServiceProvider.GetRequiredService<IElevatorProvider>();
+                            double distance = Math.Abs(elevatorProvider.VerticalPosition - this.machineData.VerticalStartingPosition);
+                            if (distance > 50)
+                            {
+                                var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
+                                machineProvider.UpdateVerticalAxisStatistics(distance);
+                            }
+                        }
+                    }
+
                     this.machineData.NumberOfExecutedSteps++;
                     this.machineData.InverterIndexOld = this.machineData.CurrentInverterIndex;
                     if (this.axisToCalibrate == Axis.HorizontalAndVertical)

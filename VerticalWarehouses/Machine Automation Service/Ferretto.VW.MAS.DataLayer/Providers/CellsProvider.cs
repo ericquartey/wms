@@ -493,6 +493,13 @@ namespace Ferretto.VW.MAS.DataLayer
                         statistics.TotalWeightBack += weight;
                     }
                 }
+                var machine = this.machineProvider.Get();
+                if (machine != null
+                    && machine.MaxGrossWeight != 0
+                    )
+                {
+                    statistics.WeightCapacityPercentage = ((statistics.TotalWeightFront + statistics.TotalWeightBack) / machine.MaxGrossWeight) * 100;
+                }
                 this.dataContext.SaveChanges();
             }
         }

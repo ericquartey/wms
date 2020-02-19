@@ -36,6 +36,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             this.Mission.RestoreStep = MissionStep.NotDefined;
             this.Mission.Step = MissionStep.WaitPick;
+            this.Mission.StepTime = DateTime.UtcNow;
             this.Mission.StopReason = StopRequestReason.NoReason;
             this.Mission.Status = MissionStatus.Waiting;
             this.MissionsDataProvider.Update(this.Mission);

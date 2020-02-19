@@ -15,7 +15,6 @@ using Ferretto.VW.MAS.Utils.Missions;
 using Microsoft.Extensions.DependencyInjection;
 using Prism.Events;
 
-
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
     public class MachineMissionsProvider : IMachineMissionsProvider
@@ -152,7 +151,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                             {
                                 mission.MissionType = MissionType.Manual;
                                 mission.TargetBay = command.RequestingBay;
-                                mission.CreationDate = DateTime.Now;
+                                mission.CreationDate = DateTime.UtcNow;
                             }
                             this.machineMissions.Add(newMission);
                             missionId = newMission.FsmId;
