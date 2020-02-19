@@ -346,8 +346,8 @@ namespace Ferretto.VW.App.Services
                     await this.InitializationHoming();
                     await this.InitializationBay();
                     await this.GetLoadUnits();
-                    await this.GetCells();
                     await this.GetTuningStatus();
+                    await this.GetCells();
                 }
                 catch
                 {
