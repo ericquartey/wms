@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
+using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -22,13 +24,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineCellsWebService machineCellsWebService;
 
+        private SubscriptionToken cellsToken;
+
         private int currentIndex;
 
-        private DelegateCommand downDataGridButtonCommand;
+        private DelegateCommand saveCommand;
 
         private Cell selectedCell;
-
-        private DelegateCommand upDataGridButtonCommand;
 
         #endregion
 
@@ -49,23 +51,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public IEnumerable<Cell> Cells => this.MachineService.Cells;
 
-        public ICommand DownDataGridButtonCommand =>
-            this.downDataGridButtonCommand
-            ??
-            (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(false), this.IsWaitingForResponse));
-
         public override EnableMask EnableMask => EnableMask.Any;
+
+        public bool IsEnabledEditing => !this.IsMoving;
+
+        public ICommand SaveCommand =>
+            this.saveCommand
+            ??
+            (this.saveCommand = new DelegateCommand(
+                async () => await this.Save(),
+                () => !this.IsMoving && this.SelectedCell != null));
 
         public Cell SelectedCell
         {
             get => this.selectedCell;
             set => this.SetProperty(ref this.selectedCell, value);
         }
-
-        public ICommand UpDataGridButtonCommand =>
-            this.upDataGridButtonCommand
-            ??
-            (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(true), this.IsWaitingForResponse));
 
         #endregion
 
@@ -78,7 +79,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 return;
             }
 
-            if (this.Cells.Count() > 0)
+            if (this.Cells.Any())
             {
                 this.currentIndex = isUp ? --this.currentIndex : ++this.currentIndex;
                 if (this.currentIndex < 0 || this.currentIndex >= this.Cells.Count())
@@ -90,9 +91,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            if (this.cellsToken != null)
+            {
+                this.EventAggregator.GetEvent<CellsChangedPubSubEvent>().Unsubscribe(this.cellsToken);
+                this.cellsToken.Dispose();
+                this.cellsToken = null;
+            }
+        }
+
         public override async Task OnAppearedAsync()
         {
-            this.IsBackNavigationAllowed = true;
+            this.SubscribeToEvents();
+
+            if (this.Cells.Any())
+            {
+                this.SelectedCell = this.Cells?.ToList()[0];
+            }
 
             await base.OnAppearedAsync();
         }
@@ -101,7 +119,36 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.RaiseCanExecuteChanged();
 
+            this.saveCommand?.RaiseCanExecuteChanged();
+
             this.RaisePropertyChanged(nameof(this.Cells));
+            this.RaisePropertyChanged(nameof(this.IsEnabledEditing));
+        }
+
+        private async Task Save()
+        {
+            try
+            {
+                await this.machineCellsWebService.SaveCellAsync(this.SelectedCell);
+
+                await this.MachineService.GetCells();
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
+        private void SubscribeToEvents()
+        {
+            this.cellsToken = this.cellsToken
+                 ??
+                 this.EventAggregator
+                     .GetEvent<CellsChangedPubSubEvent>()
+                     .Subscribe(
+                         m => this.RaiseCanExecuteChanged(),
+                         ThreadOption.UIThread,
+                         false);
         }
 
         #endregion
