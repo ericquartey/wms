@@ -80,7 +80,23 @@
                                      VerticalAlignment="Stretch"
                                      InputText="{Binding SelectedCell.BlockLevel, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                      IsEnabled="{Binding IsEnabledEditing}"
-                                     LabelText="BlockLevel" />
+                                     LabelText="BlockLevel"
+                                     Visibility="Collapsed" />
+
+                <StackPanel Grid.Column="1"
+                            Margin="0,5,5,5"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch">
+                    <TextBlock Margin="5,5,5,0"
+                               Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+                               Text="BlockLevel" />
+                    <ComboBox Margin="5"
+                              FontFamily="{DynamicResource VWAPP_TitleFont}"
+                              FontSize="{DynamicResource VWAPP_PpcTextBox_TextBox_FontSize}"
+                              ItemsSource="{Binding BlockLevels}"
+                              SelectedValue="{Binding SelectedCell.BlockLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                              Style="{DynamicResource PpcComboBoxStyle}" />
+                </StackPanel>
 
                 <controls:PpcTextBox Grid.Column="2"
                                      HorizontalAlignment="Stretch"

@@ -299,17 +299,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private bool error = false;
+
         private async Task SaveDrawer()
         {
             try
             {
                 await this.machineLoadingUnitsWebService.SaveLoadUnitAsync(this.SelectedLU);
 
-                await this.MachineService.GetLoadUnits();
+                if (this.error)
+                {
+                    this.ClearNotifications();
+                    this.error = false;
+                }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
+                this.error = true;
                 this.ShowNotification(ex);
+            }
+            finally
+            {
+                await this.MachineService.GetLoadUnits();
             }
         }
 

@@ -239,6 +239,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void Save(LoadingUnit loadingUnit)
         {
+            int? cellIdOld = null;
+            double luHeightOld = 0;
+
             var luDb = this.dataContext.LoadingUnits.SingleOrDefault(p => p.Id.Equals(loadingUnit.Id));
             if (luDb is null)
             {
@@ -255,6 +258,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 (luDb.CellId != loadingUnit.CellId ||
                 luDb.Height != loadingUnit.Height))
             {
+                cellIdOld = luDb.CellId.Value;
+                luHeightOld = luDb.Height;
                 this.cellsProvider.SetLoadingUnit(luDb.CellId.Value, null);
 
                 lock (this.dataContext)
@@ -270,21 +275,37 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 if (!this.cellsProvider.CanFitLoadingUnit(loadingUnit.CellId.Value, loadingUnit.Id))
                 {
+                    lock (this.dataContext)
+                    {
+                        luDb.Height = luHeightOld;
+                        luDb.CellId = cellIdOld;
+                        this.dataContext.SaveChanges();
+                    }
+
+                    if (cellIdOld.HasValue)
+                    {
+                        this.cellsProvider.SetLoadingUnit(cellIdOld.Value, luDb.Id);
+                    }
+
                     throw new ArgumentException($"LoadingUnit error cell or height (CellId={loadingUnit.CellId}, Id={loadingUnit.Id})");
                 }
             }
 
-            if (loadingUnit.CellId.HasValue &&
-                (luDb.CellId != loadingUnit.CellId ||
-                luDb.Height != loadingUnit.Height))
-            {
-                this.cellsProvider.SetLoadingUnit(loadingUnit.CellId.Value, loadingUnit.Id);
-            }
-
             lock (this.dataContext)
             {
-                this.dataContext.AddOrUpdate(loadingUnit, f => f.Id);
+                luDb.Description = loadingUnit.Description;
+                luDb.MissionsCount = loadingUnit.MissionsCount;
+                luDb.GrossWeight = loadingUnit.GrossWeight;
+                luDb.MaxNetWeight = loadingUnit.MaxNetWeight;
+                luDb.Tare = loadingUnit.Tare;
+
                 this.dataContext.SaveChanges();
+            }
+
+            if (loadingUnit.CellId.HasValue &&
+                luDb.CellId != loadingUnit.CellId)
+            {
+                this.cellsProvider.SetLoadingUnit(loadingUnit.CellId.Value, loadingUnit.Id);
             }
         }
 
