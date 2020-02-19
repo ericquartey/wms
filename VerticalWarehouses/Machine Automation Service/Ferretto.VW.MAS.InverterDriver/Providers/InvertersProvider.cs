@@ -138,6 +138,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     var beltDisplacement = this.ComputeDisplacement(positioningData.TargetPosition);
                     this.logger.LogInformation($"Belt elongation for height={positioningData.TargetPosition} is {beltDisplacement:0.00} [mm].");
                     position += beltDisplacement;
+                    position += axis.VerticalDepositOffset;
                 }
             }
             if (positioningData.AxisMovement == Axis.BayChain)

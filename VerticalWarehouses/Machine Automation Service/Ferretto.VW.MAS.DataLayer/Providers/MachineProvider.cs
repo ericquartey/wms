@@ -365,7 +365,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 var machineStat = this.dataContext.MachineStatistics.FirstOrDefault();
                 if (machineStat != null)
                 {
-                    machineStat.TotalMissionTime.Add(duration);
+                    machineStat.TotalMissionTime = machineStat.TotalMissionTime + duration;
                     this.dataContext.SaveChanges();
                 }
             }
