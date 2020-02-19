@@ -12,7 +12,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
         RepeatedTestProcedure GetBayCarouselCalibration(BayNumber bayNumber);
 
+        SetupProcedure GetBayFirstLoadingUnit(BayNumber bayNumber);
+
+        SetupProcedure GetBayHeightCheck(BayNumber bayNumber);
+
+        SetupProcedure GetBayLaser(BayNumber bayNumber);
+
         BayProfileCheckProcedure GetBayProfileCheck(BayNumber bayNumber);
+
+        RepeatedTestProcedure GetBayShutterTest(BayNumber bayNumber);
 
         RepeatedTestProcedure GetBeltBurnishingTest();
 
@@ -26,8 +34,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         SetupProcedure GetShutterHeightCheck();
 
-        RepeatedTestProcedure GetShutterTest(BayNumber bayNumber);
-
         OffsetCalibrationProcedure GetVerticalOffsetCalibration();
 
         SetupProcedure GetVerticalOriginCalibration();
@@ -40,7 +46,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         PositioningProcedure InProgressProcedure(PositioningProcedure procedure);
 
-        SetupProcedure MarkAsCompleted(SetupProcedure procedureParameters);
+        SetupProcedure MarkAsCompleted(SetupProcedure procedure, bool bypassed = false);
 
         RepeatedTestProcedure ResetPerformedCycles(RepeatedTestProcedure procedure);
 

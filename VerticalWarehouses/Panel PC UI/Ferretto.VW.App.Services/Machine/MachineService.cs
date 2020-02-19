@@ -42,6 +42,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
+        private readonly IMachineIdentityWebService machineIdentityWebService;
+
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private readonly IMachineModeService machineModeService;
@@ -94,6 +96,8 @@ namespace Ferretto.VW.App.Services
 
         private bool isShutterThreeSensors;
 
+        private bool isTuningCompleted;
+
         private IEnumerable<LoadingUnit> loadingUnits;
 
         private SubscriptionToken machineModeChangedToken;
@@ -131,7 +135,8 @@ namespace Ferretto.VW.App.Services
             ISensorsService sensorsService,
             IHealthProbeService healthProbeService,
             IBayManager bayManagerService,
-            IMachineMissionsWebService missionsWebService)
+            IMachineMissionsWebService missionsWebService,
+            IMachineIdentityWebService machineIdentityWebService)
         {
             this.regionManager = regionManager ?? throw new ArgumentNullException(nameof(regionManager));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
@@ -148,6 +153,7 @@ namespace Ferretto.VW.App.Services
             this.machineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
             this.missionsWebService = missionsWebService ?? throw new ArgumentNullException(nameof(missionsWebService));
+            this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
 
             this.MachineStatus = new Models.MachineStatus();
         }
@@ -228,6 +234,12 @@ namespace Ferretto.VW.App.Services
         {
             get => this.isShutterThreeSensors;
             set => this.SetProperty(ref this.isShutterThreeSensors, value);
+        }
+
+        public bool IsTuningCompleted
+        {
+            get => this.isTuningCompleted;
+            private set => this.SetProperty(ref this.isTuningCompleted, value);
         }
 
         public IEnumerable<LoadingUnit> Loadunits
@@ -312,6 +324,12 @@ namespace Ferretto.VW.App.Services
             this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
         }
 
+        public async Task GetTuningStatus()
+        {
+            var idService = await this.machineIdentityWebService.GetAsync();
+            this.IsTuningCompleted = idService.InstallationDate.HasValue;
+        }
+
         public async Task OnInitializationServiceAsync()
         {
             if (this.healthProbeService.HealthMasStatus is HealthStatus.Healthy
@@ -323,6 +341,7 @@ namespace Ferretto.VW.App.Services
                     await this.InitializationHoming();
                     await this.InitializationBay();
                     await this.GetLoadUnits();
+                    await this.GetTuningStatus();
                 }
                 catch
                 {
@@ -344,6 +363,7 @@ namespace Ferretto.VW.App.Services
                 await this.UpdateBay();
                 await this.GetLoadUnits();
                 await this.machineModeService.OnUpdateServiceAsync();
+                await this.GetTuningStatus();
             }
         }
 
