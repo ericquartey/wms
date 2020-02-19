@@ -196,6 +196,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to NeedsTest.
+        /// </summary>
+        public static string BlockLevelNeedsTest {
+            get {
+                return ResourceManager.GetString("BlockLevelNeedsTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to None.
         /// </summary>
         public static string BlockLevelNone {

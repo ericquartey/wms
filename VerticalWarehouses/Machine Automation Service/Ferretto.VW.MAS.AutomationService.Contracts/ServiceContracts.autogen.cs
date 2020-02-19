@@ -2462,6 +2462,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"Blocked")]
         Blocked = 3,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"NeedsTest")]
+        NeedsTest = 4,
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]

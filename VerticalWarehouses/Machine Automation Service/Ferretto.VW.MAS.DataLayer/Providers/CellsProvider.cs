@@ -94,10 +94,12 @@ namespace Ferretto.VW.MAS.DataLayer
                 var lastPosition = cellsFrom.LastOrDefault().Position;
                 return !cellsInRange.Any(c => (!c.IsFree && c.Position < loadingUnit.Cell.Position)
                     || (!c.IsFree && c.Position > lastPosition)
-                    || c.BlockLevel == BlockLevel.Blocked);
+                    || c.BlockLevel == BlockLevel.Blocked
+                    || c.BlockLevel == BlockLevel.NeedsTest
+                    );
             }
 
-            return !cellsInRange.Any(c => !c.IsFree || c.BlockLevel == BlockLevel.Blocked);
+            return !cellsInRange.Any(c => !c.IsFree || c.BlockLevel == BlockLevel.Blocked || c.BlockLevel == BlockLevel.NeedsTest);
         }
 
         public int FindDownCell(LoadingUnit loadingUnit)
@@ -120,6 +122,7 @@ namespace Ferretto.VW.MAS.DataLayer
             foreach (var cell in cells)
             {
                 if (cell.BlockLevel == BlockLevel.Blocked
+                    || cell.BlockLevel == BlockLevel.NeedsTest
                     || !cell.IsFree
                     )
                 {
@@ -151,8 +154,9 @@ namespace Ferretto.VW.MAS.DataLayer
         ///     ExactMatchCompacting: The side is fixed and the space is not more than load unit height
         ///     AnySpaceCompacting: The side is fixed
         ///     </param>
+        ///     <param name="isCellTest">finds a cell marked for the first load unit test</param>
         /// <returns>the preferred cellId that fits the LoadUnit</returns>
-        public int FindEmptyCell(int loadingUnitId, CompactingType compactingType = CompactingType.NoCompacting)
+        public int FindEmptyCell(int loadingUnitId, CompactingType compactingType = CompactingType.NoCompacting, bool isCellTest = false)
         {
             var loadingUnit = this.dataContext.LoadingUnits
                 .AsNoTracking()
@@ -215,7 +219,9 @@ namespace Ferretto.VW.MAS.DataLayer
                     .OrderBy(o => o.Position)
                     .ToList();
                 // for each available cell we check if there is space for the requested height
-                Parallel.ForEach(cells.Where(c => c.IsFree && c.BlockLevel == BlockLevel.None), (cell) =>
+                Parallel.ForEach(cells.Where(c => c.IsFree
+                    && (isCellTest ? c.BlockLevel == BlockLevel.NeedsTest : c.BlockLevel == BlockLevel.None)
+                    ), (cell) =>
                 {
                     // load all cells following the selected cell
                     var cellsFollowing = cells.Where(c => c.Panel.Side == cell.Side
@@ -227,7 +233,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         var lastCellPosition = cellsFollowing.Last().Position;
                         if (cellsFollowing.Count() > 1)
                         {
-                            var firstUnavailable = cellsFollowing.FirstOrDefault(c => !c.IsFree || c.BlockLevel == BlockLevel.Blocked);
+                            var firstUnavailable = cellsFollowing.FirstOrDefault(c => !c.IsFree || c.BlockLevel == BlockLevel.Blocked || c.BlockLevel == BlockLevel.NeedsTest);
                             if (firstUnavailable != null)
                             {
                                 lastCellPosition = cellsFollowing.LastOrDefault(c => c.Position < firstUnavailable.Position)?.Position ?? lastCellPosition;
@@ -295,16 +301,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        /*
-        public Cell GetByHeight(double cellHeight, double tolerance, WarehouseSide machineSide)
-        {
-            return this.dataContext.Cells
-                .Include(c => c.LoadingUnit)
-                .Include(c => c.Panel)
-                .SingleOrDefault(c => c.Position < cellHeight + tolerance && c.Position > cellHeight - tolerance && c.Panel.Side == machineSide);
-        }
-        */
-
         public Cell GetById(int cellId)
         {
             return this.dataContext.Cells
@@ -366,6 +362,56 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void SetCellsToTest()
+        {
+            lock (this.dataContext)
+            {
+                var cells = this.dataContext.Cells
+                    .Include(c => c.Panel)
+                    .OrderBy(o => o.Side)
+                    .ThenBy(t => t.Position)
+                    .ToArray();
+
+                cells.ForEach(c => { if (c.BlockLevel == BlockLevel.NeedsTest) { c.BlockLevel = BlockLevel.None; } });
+
+                foreach (var cell in cells)
+                {
+                    if (cell.BlockLevel == BlockLevel.None)
+                    {
+                        var next = cells.FirstOrDefault(c => c.Position > cell.Position && c.Side == cell.Side);
+                        if (next == null || next.BlockLevel != BlockLevel.None)
+                        {
+                            cell.BlockLevel = BlockLevel.NeedsTest;
+                        }
+                        else
+                        {
+                            var prev = cells.LastOrDefault(c => c.Position < cell.Position && c.Side == cell.Side);
+                            if (prev == null || prev.BlockLevel != BlockLevel.None)
+                            {
+                                cell.BlockLevel = BlockLevel.NeedsTest;
+                            }
+                        }
+                    }
+                }
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        /*
+        public Cell GetByHeight(double cellHeight, double tolerance, WarehouseSide machineSide)
+        {
+            return this.dataContext.Cells
+                .Include(c => c.LoadingUnit)
+                .Include(c => c.Panel)
+                .SingleOrDefault(c => c.Position < cellHeight + tolerance && c.Position > cellHeight - tolerance && c.Panel.Side == machineSide);
+        }
+        */
+
+        /// <summary>
+        /// it frees or occupies the cells starting from cellId depending on loadingUnitId is null or not
+        /// </summary>
+        /// <param name="cellId"></param>
+        /// <param name="loadingUnitId"></param>
         public void SetLoadingUnit(int cellId, int? loadingUnitId)
         {
             lock (this.dataContext)
@@ -450,6 +496,11 @@ namespace Ferretto.VW.MAS.DataLayer
                     if (cell.LoadingUnit != null)
                     {
                         throw new InvalidOperationException(Resources.Cells.TheCellAlreadyContainsAnotherLoadingUnit);
+                    }
+
+                    if (cell.BlockLevel == BlockLevel.NeedsTest)
+                    {
+                        cell.BlockLevel = BlockLevel.None;
                     }
 
                     var loadingUnit = this.dataContext.LoadingUnits

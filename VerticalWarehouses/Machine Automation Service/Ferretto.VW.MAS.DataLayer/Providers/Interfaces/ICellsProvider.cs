@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         int FindDownCell(LoadingUnit loadingUnit);
 
-        int FindEmptyCell(int loadingUnitId, CompactingType compactingType = CompactingType.NoCompacting);
+        int FindEmptyCell(int loadingUnitId, CompactingType compactingType = CompactingType.NoCompacting, bool isCellTest = false);
 
         IEnumerable<Cell> GetAll();
 
@@ -22,7 +22,9 @@ namespace Ferretto.VW.MAS.DataLayer
         Cell GetByLoadingUnitId(int loadingUnitId);
 
         CellStatisticsSummary GetStatistics();
+
         void Save(Cell cell);
+
         void SetLoadingUnit(int cellId, int? loadingUnitId);
 
         IEnumerable<Cell> UpdateHeights(int fromCellId, int toCellId, WarehouseSide side, double height);
