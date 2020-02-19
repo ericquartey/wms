@@ -226,13 +226,13 @@
     <value>Tempo di rilascio in frenata</value>
   </data>
   <data name="ElevatorAxis_ChainOffset" xml:space="preserve">
-    <value>Offset cinghia</value>
+    <value>Offset zero catena</value>
   </data>
   <data name="ElevatorAxis_HomingCreepSpeed" xml:space="preserve">
     <value>Velocità homing</value>
   </data>
   <data name="ElevatorAxis_HomingFastSpeed" xml:space="preserve">
-    <value>Velocità homing (fast)</value>
+    <value>Velocità homing fast</value>
   </data>
   <data name="ElevatorAxis_Profiles" xml:space="preserve">
     <value>Profiles</value>

@@ -394,7 +394,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Offset cinghia.
+        ///   Looks up a localized string similar to Offset zero catena.
         /// </summary>
         public static string ElevatorAxis_ChainOffset {
             get {
@@ -412,7 +412,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Velocità homing (fast).
+        ///   Looks up a localized string similar to Velocità homing fast.
         /// </summary>
         public static string ElevatorAxis_HomingFastSpeed {
             get {

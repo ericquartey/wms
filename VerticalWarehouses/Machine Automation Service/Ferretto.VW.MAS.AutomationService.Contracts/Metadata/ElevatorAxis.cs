@@ -18,7 +18,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public ElevatorAxisManualParameters AssistedMovements { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_BrakeActivatePercent))]
-            [Range(0D, 1D, ErrorMessageResourceType = typeof(ErrorMessages), ErrorMessageResourceName = nameof(ErrorMessages.Range))]
+            [Range(0D, 100D, ErrorMessageResourceType = typeof(ErrorMessages), ErrorMessageResourceName = nameof(ErrorMessages.Range))]
+            [Unit("%")]
             [Id(1)]
             public double BrakeActivatePercent { get; set; }
 
@@ -89,6 +90,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_Resolution))]
             [Id(8)]
+            [Unit("imp/mm")]
             public double Resolution { get; set; }
 
             [ScaffoldColumn(false)]
