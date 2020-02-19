@@ -92,7 +92,8 @@
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Top"
                                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                                               Text="{Binding MachineIdentity.ModelName, FallbackValue=ModelName}" />
+                                               Text="{Binding MachineIdentity.ModelName, FallbackValue=ModelName}"
+                                               TextWrapping="Wrap" />
 
                                     <TextBlock Margin="25,0,25,25"
                                                HorizontalAlignment="Left"
