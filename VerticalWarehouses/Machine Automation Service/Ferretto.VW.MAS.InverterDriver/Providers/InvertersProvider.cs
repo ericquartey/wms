@@ -140,12 +140,17 @@ namespace Ferretto.VW.MAS.InverterDriver
                         var beltDisplacement = this.ComputeDisplacement(positioningData.TargetPosition);
                         this.logger.LogInformation($"Vertical positioning with Belt elongation for height={positioningData.TargetPosition:0.00} is {beltDisplacement:0.00} [mm]. VerticalDepositOffset is {axis.VerticalDepositOffset:0.00} [mm].");
                         position += beltDisplacement;
-                        position += axis.VerticalDepositOffset;
+                        if (axis.VerticalDepositOffset.HasValue)
+                        {
+                            position += axis.VerticalDepositOffset.Value;
+                        }
                     }
-                    else
+                    else if (positioningData.IsPickupMission
+                        && axis.VerticalPickupOffset.HasValue
+                        )
                     {
-                        this.logger.LogInformation($"Vertical positioning with  for height={positioningData.TargetPosition:0.00}. VerticalPickupOffset is {axis.VerticalPickupOffset:0.00} [mm].");
-                        position += axis.VerticalPickupOffset;
+                        this.logger.LogInformation($"Vertical positioning for height={positioningData.TargetPosition:0.00}. VerticalPickupOffset is {axis.VerticalPickupOffset:0.00} [mm].");
+                        position += axis.VerticalPickupOffset.Value;
                     }
                 }
             }

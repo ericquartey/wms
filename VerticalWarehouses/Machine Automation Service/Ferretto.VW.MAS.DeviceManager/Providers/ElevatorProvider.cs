@@ -793,6 +793,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             int? targetCellId,
             bool checkHomingDone,
             bool waitContinue,
+            bool isPickupMission,
             BayNumber requestingBay,
             MessageActor sender)
         {
@@ -806,7 +807,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 targetBayPositionId,
                 targetCellId,
                 checkHomingDone,
-                waitContinue);
+                waitContinue,
+                isPickupMission);
         }
 
         public void MoveToBayPosition(int bayPositionId, bool computeElongation, bool performWeighting, BayNumber bayNumber, MessageActor sender)
@@ -1271,7 +1273,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             int? targetBayPositionId,
             int? targetCellId,
             bool checkHomingDone,
-            bool waitContinue)
+            bool waitContinue,
+            bool isPickupMission = false)
         {
             var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
 
@@ -1298,6 +1301,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 this.logger.LogWarning($"Do not measure weight on empty elevator!");
                 movementMode = MovementMode.Position;
+            }
+            if (computeElongation && !isLoadingUnitOnBoard)
+            {
+                this.logger.LogWarning($"Do not compute elongation on empty elevator!");
+                computeElongation = false;
+            }
+            if (isPickupMission && isLoadingUnitOnBoard)
+            {
+                this.logger.LogWarning($"Do not add pickup offset on full elevator!");
+                isPickupMission = false;
             }
 
             var manualParameters = manualMovement ? this.elevatorDataProvider.GetManualMovementsAxis(Orientation.Vertical) :
@@ -1329,7 +1342,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 ComputeElongation = computeElongation,
                 TargetBayPositionId = targetBayPositionId,
                 TargetCellId = targetCellId,
-                WaitContinue = waitContinue
+                WaitContinue = waitContinue,
+                IsPickupMission = isPickupMission
             };
 
             this.logger.LogInformation(
