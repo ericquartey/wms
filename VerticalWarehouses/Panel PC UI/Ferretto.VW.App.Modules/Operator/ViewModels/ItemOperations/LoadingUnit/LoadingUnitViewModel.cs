@@ -78,9 +78,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         }
 
         public ICommand ConfirmOperationCommand =>
-               this.confirmOperationCommand
-                ??
-                (this.confirmOperationCommand = new DelegateCommand(async () => await this.ConfirmOperationAsync(), this.CanConfirmOperation));
+            this.confirmOperationCommand
+            ??
+            (this.confirmOperationCommand = new DelegateCommand(
+                async () => await this.ConfirmOperationAsync(), this.CanConfirmOperation));
 
         public double? InputQuantity
         {
@@ -127,9 +128,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         }
 
         public ICommand OperationCommand =>
-               this.operationCommand
-                ??
-                (this.operationCommand = new DelegateCommand<string>(async (param) => await this.SetTypeOperationAsync(param), this.CanDoOperation));
+            this.operationCommand
+            ??
+            (this.operationCommand = new DelegateCommand<string>(
+                async (param) => await this.SetTypeOperationAsync(param), this.CanDoOperation));
 
         public double QuantityIncrement
         {
@@ -241,15 +243,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanDoOperation(string param)
         {
-            return !(this.SelectedItem is null)
-                   &&
-                   !this.IsWaitingForNewOperation
-                   &&
-                   !this.IsBusyConfirmingRecallOperation
-                   &&
-                   !this.IsBusyConfirmingOperation
-                   &&
-                   this.IsWmsHealthy;
+            return
+                !(this.SelectedItem is null)
+                &&
+                !this.IsWaitingForNewOperation
+                &&
+                !this.IsBusyConfirmingRecallOperation
+                &&
+                !this.IsBusyConfirmingOperation
+                &&
+                this.IsWmsHealthy;
         }
 
         private bool CanRecallLoadingUnit()
