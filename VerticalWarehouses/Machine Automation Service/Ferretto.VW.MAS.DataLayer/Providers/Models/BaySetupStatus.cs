@@ -6,7 +6,7 @@
 
         internal static readonly BaySetupStatus Complete = new BaySetupStatus
         {
-            AllLoadingUnits = SetupStepStatus.Complete,
+            CarouselCalibration = SetupStepStatus.Complete,
             Check = SetupStepStatus.Complete,
             FirstLoadingUnit = SetupStepStatus.Complete,
             Laser = SetupStepStatus.Complete,
@@ -18,7 +18,7 @@
 
         #region Properties
 
-        public SetupStepStatus AllLoadingUnits { get; set; }
+        public SetupStepStatus CarouselCalibration { get; set; }
 
         public SetupStepStatus Check { get; set; }
 

@@ -88,8 +88,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DbSet<SetupProceduresSet> SetupProceduresSets { get; set; }
 
-        public DbSet<SetupStatus> SetupStatus { get; set; }
-
         public DbSet<ShutterManualParameters> ShutterManualParameters { get; set; }
 
         public DbSet<Shutter> Shutters { get; set; }

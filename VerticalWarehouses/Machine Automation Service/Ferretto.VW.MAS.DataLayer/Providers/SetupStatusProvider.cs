@@ -49,11 +49,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public SetupStatusCapabilities Get()
         {
-            var status = this.dataContext.SetupStatus.FirstOrDefault();
-
             var setup = this.setupProceduresDataProvider.GetAll();
-
-            var verticalOrigin = setup.VerticalOriginCalibration;
 
             var statusCapabilities = new SetupStatusCapabilities
             {
@@ -61,34 +57,40 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     Check = new SetupStepStatus
                     {
-                        IsCompleted = status.Bay1HeightCheck,
-                        CanBePerformed = setup.VerticalOffsetCalibration.IsCompleted && verticalOrigin.IsCompleted,
+                        IsCompleted = setup.Bay1HeightCheck.IsCompleted,
+                        CanBePerformed = setup.VerticalOffsetCalibration.IsCompleted && setup.VerticalOriginCalibration.IsCompleted,
+                        IsBypassed = setup.Bay1HeightCheck.IsBypassed,
                     },
                     Laser = new SetupStepStatus
                     {
-                        IsCompleted = status.Bay1Laser,
+                        IsCompleted = setup.Bay1Laser.IsCompleted,
                         CanBePerformed = true,
+                        IsBypassed = setup.Bay1Laser.IsBypassed,
                     },
                     Profile = new SetupStepStatus
                     {
                         IsCompleted = setup.Bay1ProfileCheck.IsCompleted,
-                        CanBePerformed = status.Bay1HeightCheck && verticalOrigin.IsCompleted,
+                        CanBePerformed = setup.Bay1HeightCheck.IsCompleted && setup.VerticalOriginCalibration.IsCompleted,
+                        IsBypassed = setup.Bay1ProfileCheck.IsBypassed,
                     },
                     Shutter = new SetupStepStatus
                     {
                         IsCompleted = setup.Bay1ShutterTest.IsCompleted,
-                        CanBePerformed = verticalOrigin.IsCompleted,
+                        CanBePerformed = setup.VerticalOriginCalibration.IsCompleted,
                         InProgress = setup.Bay1ShutterTest.InProgress,
+                        IsBypassed = setup.Bay1ShutterTest.IsBypassed,
                     },
                     FirstLoadingUnit = new SetupStepStatus
                     {
-                        IsCompleted = status.Bay1FirstLoadingUnit || status.Bay2FirstLoadingUnit || status.Bay3FirstLoadingUnit,
-                        CanBePerformed = status.WeightMeasurement && status.Bay1HeightCheck && verticalOrigin.IsCompleted,
+                        IsCompleted = setup.Bay1FirstLoadingUnit.IsCompleted || setup.Bay2FirstLoadingUnit.IsCompleted || setup.Bay3FirstLoadingUnit.IsCompleted,
+                        CanBePerformed = setup.WeightMeasurement.IsCompleted && setup.Bay1HeightCheck.IsCompleted && setup.VerticalOriginCalibration.IsCompleted,
+                        IsBypassed = setup.Bay1FirstLoadingUnit.IsBypassed,
                     },
-                    AllLoadingUnits = new SetupStepStatus
+                    CarouselCalibration = new SetupStepStatus
                     {
-                        IsCompleted = status.AllLoadingUnits,
-                        CanBePerformed = status.WeightMeasurement && status.Bay1HeightCheck && verticalOrigin.IsCompleted,
+                        IsCompleted = setup.Bay1CarouselCalibration.IsCompleted,
+                        CanBePerformed = setup.VerticalOriginCalibration.IsCompleted,
+                        IsBypassed = setup.Bay1CarouselCalibration.IsBypassed,
                     },
                 },
 
@@ -96,34 +98,40 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     Check = new SetupStepStatus
                     {
-                        IsCompleted = status.Bay2HeightCheck,
-                        CanBePerformed = setup.VerticalOffsetCalibration.IsCompleted && verticalOrigin.IsCompleted,
+                        IsCompleted = setup.Bay2HeightCheck.IsCompleted,
+                        CanBePerformed = setup.VerticalOffsetCalibration.IsCompleted && setup.VerticalOriginCalibration.IsCompleted,
+                        IsBypassed = setup.Bay2HeightCheck.IsBypassed,
                     },
                     Laser = new SetupStepStatus
                     {
-                        IsCompleted = status.Bay2Laser,
+                        IsCompleted = setup.Bay2Laser.IsCompleted,
                         CanBePerformed = true,
+                        IsBypassed = setup.Bay2Laser.IsBypassed,
                     },
                     Profile = new SetupStepStatus
                     {
                         IsCompleted = setup.Bay2ProfileCheck.IsCompleted,
-                        CanBePerformed = status.Bay2HeightCheck && verticalOrigin.IsCompleted,
+                        CanBePerformed = setup.Bay2HeightCheck.IsCompleted && setup.VerticalOriginCalibration.IsCompleted,
+                        IsBypassed = setup.Bay2ProfileCheck.IsBypassed,
                     },
                     Shutter = new SetupStepStatus
                     {
                         IsCompleted = setup.Bay2ShutterTest.IsCompleted,
-                        CanBePerformed = verticalOrigin.IsCompleted,
+                        CanBePerformed = setup.VerticalOriginCalibration.IsCompleted,
                         InProgress = setup.Bay2ShutterTest.InProgress,
+                        IsBypassed = setup.Bay2ShutterTest.IsBypassed,
                     },
                     FirstLoadingUnit = new SetupStepStatus
                     {
-                        IsCompleted = status.Bay1FirstLoadingUnit || status.Bay2FirstLoadingUnit || status.Bay3FirstLoadingUnit,
-                        CanBePerformed = status.WeightMeasurement && status.Bay2HeightCheck && verticalOrigin.IsCompleted,
+                        IsCompleted = setup.Bay1FirstLoadingUnit.IsCompleted || setup.Bay2FirstLoadingUnit.IsCompleted || setup.Bay3FirstLoadingUnit.IsCompleted,
+                        CanBePerformed = setup.WeightMeasurement.IsCompleted && setup.Bay2HeightCheck.IsCompleted && setup.VerticalOriginCalibration.IsCompleted,
+                        IsBypassed = setup.Bay1FirstLoadingUnit.IsBypassed,
                     },
-                    AllLoadingUnits = new SetupStepStatus
+                    CarouselCalibration = new SetupStepStatus
                     {
-                        IsCompleted = status.AllLoadingUnits,
-                        CanBePerformed = status.WeightMeasurement && status.Bay2HeightCheck && verticalOrigin.IsCompleted,
+                        IsCompleted = setup.Bay2CarouselCalibration.IsCompleted,
+                        CanBePerformed = setup.VerticalOriginCalibration.IsCompleted,
+                        IsBypassed = setup.Bay2CarouselCalibration.IsBypassed,
                     },
                 },
 
@@ -131,81 +139,84 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     Check = new SetupStepStatus
                     {
-                        IsCompleted = status.Bay3HeightCheck,
-                        CanBePerformed = setup.VerticalOffsetCalibration.IsCompleted && verticalOrigin.IsCompleted,
+                        IsCompleted = setup.Bay3HeightCheck.IsCompleted,
+                        CanBePerformed = setup.VerticalOffsetCalibration.IsCompleted && setup.VerticalOriginCalibration.IsCompleted,
+                        IsBypassed = setup.Bay3HeightCheck.IsBypassed,
                     },
                     Laser = new SetupStepStatus
                     {
-                        IsCompleted = status.Bay3Laser,
+                        IsCompleted = setup.Bay3Laser.IsCompleted,
                         CanBePerformed = true,
+                        IsBypassed = setup.Bay3Laser.IsBypassed,
                     },
                     Profile = new SetupStepStatus
                     {
                         IsCompleted = setup.Bay3ProfileCheck.IsCompleted,
-                        CanBePerformed = status.Bay3HeightCheck && verticalOrigin.IsCompleted,
+                        CanBePerformed = setup.Bay3HeightCheck.IsCompleted && setup.VerticalOriginCalibration.IsCompleted,
+                        IsBypassed = setup.Bay3ProfileCheck.IsBypassed,
                     },
                     Shutter = new SetupStepStatus
                     {
                         IsCompleted = setup.Bay3ShutterTest.IsCompleted,
-                        CanBePerformed = verticalOrigin.IsCompleted,
+                        CanBePerformed = setup.VerticalOriginCalibration.IsCompleted,
                         InProgress = setup.Bay3ShutterTest.InProgress,
+                        IsBypassed = setup.Bay3ShutterTest.IsBypassed,
                     },
                     FirstLoadingUnit = new SetupStepStatus
                     {
-                        IsCompleted = status.Bay1FirstLoadingUnit || status.Bay2FirstLoadingUnit || status.Bay3FirstLoadingUnit,
-                        CanBePerformed = status.WeightMeasurement && status.Bay3HeightCheck && verticalOrigin.IsCompleted,
+                        IsCompleted = setup.Bay1FirstLoadingUnit.IsCompleted || setup.Bay2FirstLoadingUnit.IsCompleted || setup.Bay3FirstLoadingUnit.IsCompleted,
+                        CanBePerformed = setup.WeightMeasurement.IsCompleted && setup.Bay3HeightCheck.IsCompleted && setup.VerticalOriginCalibration.IsCompleted,
+                        IsBypassed = setup.Bay3FirstLoadingUnit.IsBypassed,
                     },
-                    AllLoadingUnits = new SetupStepStatus
+                    CarouselCalibration = new SetupStepStatus
                     {
-                        IsCompleted = status.AllLoadingUnits,
-                        CanBePerformed = status.WeightMeasurement && status.Bay3HeightCheck && verticalOrigin.IsCompleted,
+                        IsCompleted = setup.Bay3CarouselCalibration.IsCompleted,
+                        CanBePerformed = setup.VerticalOriginCalibration.IsCompleted,
+                        IsBypassed = setup.Bay3CarouselCalibration.IsBypassed,
                     },
                 },
                 BeltBurnishing = new SetupStepStatus
                 {
                     IsCompleted = setup.BeltBurnishingTest.IsCompleted,
-                    CanBePerformed = verticalOrigin.IsCompleted && setup.VerticalOffsetCalibration.IsCompleted && setup.VerticalOriginCalibration.IsCompleted,
+                    CanBePerformed = setup.VerticalOriginCalibration.IsCompleted && setup.VerticalOffsetCalibration.IsCompleted && setup.VerticalOriginCalibration.IsCompleted,
                     InProgress = setup.BeltBurnishingTest.InProgress,
+                    IsBypassed = setup.BeltBurnishingTest.IsBypassed,
                 },
                 CellsHeightCheck = new SetupStepStatus
                 {
                     IsCompleted = setup.CellsHeightCheck.IsCompleted,
-                    CanBePerformed = setup.VerticalOffsetCalibration.IsCompleted && verticalOrigin.IsCompleted,
-                },
-                AllLoadingUnits = new SetupStepStatus
-                {
-                    IsCompleted = status.AllLoadingUnits,
-                    CanBePerformed = (status.Bay1FirstLoadingUnit || status.Bay2FirstLoadingUnit || status.Bay3FirstLoadingUnit) && verticalOrigin.IsCompleted,
-                },
-                HorizontalHoming = new SetupStepStatus
-                {
-                    IsCompleted = status.HorizontalHoming,
-                    CanBePerformed = status.WeightMeasurement && verticalOrigin.IsCompleted,
+                    CanBePerformed = setup.VerticalOffsetCalibration.IsCompleted && setup.VerticalOriginCalibration.IsCompleted,
+                    IsBypassed = setup.CellsHeightCheck.IsBypassed,
                 },
                 CellPanelsCheck = new SetupStepStatus
                 {
                     IsCompleted = setup.CellPanelsCheck.IsCompleted,
                     InProgress = setup.CellPanelsCheck.InProgress,
-                    CanBePerformed = setup.VerticalOffsetCalibration.IsCompleted && verticalOrigin.IsCompleted,
+                    CanBePerformed = setup.VerticalOffsetCalibration.IsCompleted && setup.VerticalOriginCalibration.IsCompleted,
+                    IsBypassed = setup.CellPanelsCheck.IsBypassed,
                 },
                 VerticalOriginCalibration = new SetupStepStatus
                 {
                     IsCompleted = setup.VerticalOriginCalibration.IsCompleted,
+                    IsBypassed = setup.VerticalOriginCalibration.IsBypassed,
                 },
                 VerticalOffsetCalibration = new SetupStepStatus
                 {
                     IsCompleted = setup.VerticalOffsetCalibration.IsCompleted,
-                    CanBePerformed = verticalOrigin.IsCompleted,
+                    CanBePerformed = setup.VerticalOriginCalibration.IsCompleted,
+                    IsBypassed = setup.VerticalOffsetCalibration.IsBypassed,
                 },
                 VerticalResolutionCalibration = new SetupStepStatus
                 {
                     IsCompleted = setup.VerticalResolutionCalibration.IsCompleted,
-                    CanBePerformed = verticalOrigin.IsCompleted,
+                    CanBePerformed = setup.VerticalOriginCalibration.IsCompleted,
+                    IsBypassed = setup.VerticalResolutionCalibration.IsBypassed,
                 },
                 WeightMeasurement = new SetupStepStatus
                 {
-                    IsCompleted = status.WeightMeasurement,
+                    IsCompleted = setup.WeightMeasurement.IsCompleted,
                     CanBePerformed = true, // TODO this should be probably conditioned by the bay checks
+                    IsBypassed = setup.WeightMeasurement.IsBypassed,
                 },
             };
 

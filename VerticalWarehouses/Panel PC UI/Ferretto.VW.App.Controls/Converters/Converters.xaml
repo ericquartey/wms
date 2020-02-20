@@ -12,7 +12,7 @@
                                     Hide="True" />
     <conv:BooleanNegationConverter x:Key="BNC" />
 
-    <dxmvvm:ObjectToBooleanConverter x:Key="OTBC"/>
+    <dxmvvm:ObjectToBooleanConverter x:Key="OTBC" />
     <dxmvvm:ObjectToBooleanConverter x:Key="OTBIC"
                                      Inverse="True" />
 
@@ -35,7 +35,7 @@
 
     <conv:DebugDummyConverter x:Key="DEBUG" />
 
-    <!-- truthy to ui -->
+    <!--  truthy to ui  -->
     <conv:TruthyToUiConverter x:Key="TTUI" />
     <conv:MultiBooleanToUiConverter x:Key="MBTUI" />
 </ResourceDictionary>

@@ -45,6 +45,7 @@ namespace Ferretto.VW.App.Services
         Models.MachineStatus MachineStatus { get; }
 
         bool HasBayWithInverter { get; set; }
+        bool IsTuningCompleted { get; }
 
         #endregion
 
@@ -60,6 +61,8 @@ namespace Ferretto.VW.App.Services
 
         Task StopMovingByAllAsync();
         Task GetLoadUnits();
+        Task GetCells();
+        Task GetTuningStatus();
 
         #endregion
     }

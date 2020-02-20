@@ -23,6 +23,8 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private readonly SubscriptionToken machinePowerChangedToken;
 
+        private readonly IMachineService machineService;
+
         private bool isBusy;
 
         private bool isDisposed;
@@ -37,11 +39,13 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         public PresentationMachinePowerSwitch(
             IMachineModeService machineModeService,
-            IDialogService dialogService)
+            IDialogService dialogService,
+            IMachineService machineService)
             : base(PresentationTypes.MachineMarch)
         {
             this.machineModeService = machineModeService ?? throw new ArgumentNullException(nameof(machineModeService));
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
 
             this.machinePowerChangedToken = this.EventAggregator
                 .GetEvent<PubSubEvent<MachinePowerChangedEventArgs>>()

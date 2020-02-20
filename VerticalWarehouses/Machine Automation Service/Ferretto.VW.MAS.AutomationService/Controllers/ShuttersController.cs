@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("test-parameters")]
         public ActionResult<RepeatedTestProcedure> GetTestParameters()
         {
-            return this.Ok(this.setupProceduresDataProvider.GetShutterTest(this.BayNumber));
+            return this.Ok(this.setupProceduresDataProvider.GetBayShutterTest(this.BayNumber));
         }
 
         [HttpPost("move")]

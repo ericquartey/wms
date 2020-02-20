@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
@@ -31,6 +32,8 @@ namespace Ferretto.VW.MAS.DataLayer
         void UpdateBayLoadUnitStatistics(BayNumber bayNumber);
 
         void UpdateHorizontalAxisStatistics(double distance);
+
+        void UpdateMissionTime(TimeSpan duration);
 
         void UpdateVerticalAxisStatistics(double distance);
 

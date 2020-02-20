@@ -34,6 +34,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command, bool showErrors = true)
         {
+            this.MachineProvider.UpdateMissionTime(DateTime.UtcNow - this.Mission.StepTime);
+
             this.Mission.RestoreStep = MissionStep.NotDefined;
             this.Mission.Step = MissionStep.WaitPick;
             this.Mission.StepTime = DateTime.UtcNow;
@@ -87,6 +89,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     && command.Data is IMoveLoadingUnitMessageData messageData
                     )
                 {
+                    this.Mission.StepTime = DateTime.UtcNow;
                     if (messageData.MissionType == MissionType.NoType)
                     {
                         // Remove LoadUnit

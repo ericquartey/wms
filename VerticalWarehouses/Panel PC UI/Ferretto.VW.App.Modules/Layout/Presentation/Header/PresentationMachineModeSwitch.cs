@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
@@ -26,6 +27,8 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         private readonly IMachineModeWebService machineModeWebService;
 
         private readonly SubscriptionToken machinePowerChangedToken;
+
+        private readonly IMachineService machineService;
 
         private readonly IRegionManager regionManager;
 
@@ -59,13 +62,15 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             IRegionManager regionManager,
             IMachineModeService machineModeService,
             IMachineModeWebService machineModeWebService,
-            IDialogService dialogService)
+            IDialogService dialogService,
+            IMachineService machineService)
             : base(PresentationTypes.MachineMode)
         {
             this.regionManager = regionManager ?? throw new ArgumentNullException(nameof(regionManager));
             this.machineModeService = machineModeService ?? throw new ArgumentNullException(nameof(machineModeService));
             this.machineModeWebService = machineModeWebService ?? throw new ArgumentNullException(nameof(machineModeWebService));
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
 
             this.machineModeChangedToken = this.EventAggregator
               .GetEvent<PubSubEvent<MachineModeChangedEventArgs>>()
@@ -174,10 +179,17 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             }
             else if (this.machineMode is MachineMode.Manual || this.machineMode is MachineMode.Test)
             {
-                var messageBoxResult = this.dialogService.ShowMessage(General.ConfirmMachineModeSwitchAutomatic, General.Automatic, DialogType.Question, DialogButtons.YesNo);
-                if (messageBoxResult == DialogResult.Yes)
+                if (this.machineService.IsTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
                 {
-                    await this.machineModeWebService.SetAutomaticAsync();
+                    var messageBoxResult = this.dialogService.ShowMessage(General.ConfirmMachineModeSwitchAutomatic, General.Automatic, DialogType.Question, DialogButtons.YesNo);
+                    if (messageBoxResult == DialogResult.Yes)
+                    {
+                        await this.machineModeWebService.SetAutomaticAsync();
+                    }
+                }
+                else
+                {
+                    var messageBoxResult = this.dialogService.ShowMessage("Completare tutte le procedure di setup e calibrazione prima di entrare in modalità automatica.", General.MachineRun, DialogType.Information, DialogButtons.OK);
                 }
             }
             else if (this.machineMode is MachineMode.LoadUnitOperations)

@@ -124,20 +124,29 @@ namespace Ferretto.VW.MAS.InverterDriver
                 if (position < axis.LowerBound)
                 {
                     this.errorsProvider.RecordNew(MachineErrorCode.DestinationBelowLowerBound, this.baysDataProvider.GetByInverterIndex(inverter.SystemIndex));
-                    throw new InvalidOperationException($"The requested position ({position}) is less than the axis lower bound ({axis.LowerBound}).");
+                    throw new InvalidOperationException($"The requested position ({position:0.00}) is less than the axis lower bound ({axis.LowerBound:0.00}).");
                 }
                 if (position > axis.UpperBound)
                 {
                     this.errorsProvider.RecordNew(MachineErrorCode.DestinationOverUpperBound, this.baysDataProvider.GetByInverterIndex(inverter.SystemIndex));
-                    throw new InvalidOperationException($"The requested position ({position}) is greater than the axis upper bound ({axis.UpperBound}).");
+                    throw new InvalidOperationException($"The requested position ({position:0.00}) is greater than the axis upper bound ({axis.UpperBound}:0.00).");
                 }
 
                 position -= axis.Offset;
-                if (axis.Orientation == Orientation.Vertical && positioningData.ComputeElongation)
+                if (axis.Orientation == Orientation.Vertical)
                 {
-                    var beltDisplacement = this.ComputeDisplacement(positioningData.TargetPosition);
-                    this.logger.LogInformation($"Belt elongation for height={positioningData.TargetPosition} is {beltDisplacement:0.00} [mm].");
-                    position += beltDisplacement;
+                    if (positioningData.ComputeElongation)
+                    {
+                        var beltDisplacement = this.ComputeDisplacement(positioningData.TargetPosition);
+                        this.logger.LogInformation($"Vertical positioning with Belt elongation for height={positioningData.TargetPosition:0.00} is {beltDisplacement:0.00} [mm]. VerticalDepositOffset is {axis.VerticalDepositOffset:0.00} [mm].");
+                        position += beltDisplacement;
+                        position += axis.VerticalDepositOffset;
+                    }
+                    else
+                    {
+                        this.logger.LogInformation($"Vertical positioning with  for height={positioningData.TargetPosition:0.00}. VerticalPickupOffset is {axis.VerticalPickupOffset:0.00} [mm].");
+                        position += axis.VerticalPickupOffset;
+                    }
                 }
             }
             if (positioningData.AxisMovement == Axis.BayChain)

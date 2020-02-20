@@ -47,6 +47,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly NotificationEvent notificationEvent;
 
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
+
         #endregion
 
         #region Constructors
@@ -59,6 +61,7 @@ namespace Ferretto.VW.MAS.DataLayer
             IConfiguration configuration,
             IElevatorDataProvider elevatorDataProvider,
             IMemoryCache memoryCache,
+            ISetupProceduresDataProvider setupProceduresDataProvider,
             ILogger<DataLayerContext> logger)
             : base(eventAggregator)
         {
@@ -68,6 +71,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.cache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
 
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
             this.cacheOptions = configuration.GetMemoryCacheOptions();
@@ -930,19 +934,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 position.Height = height;
 
-                var status = this.dataContext.SetupStatus.FirstOrDefault();
-                if (bayNumber == BayNumber.BayOne)
-                {
-                    status.Bay1HeightCheck = true;
-                }
-                else if (bayNumber == BayNumber.BayTwo)
-                {
-                    status.Bay2HeightCheck = true;
-                }
-                else if (bayNumber == BayNumber.BayThree)
-                {
-                    status.Bay3HeightCheck = true;
-                }
+                var procedureParameters = this.setupProceduresDataProvider.GetBayHeightCheck(bayNumber);
+                this.setupProceduresDataProvider.MarkAsCompleted(procedureParameters);
 
                 this.dataContext.SaveChanges();
 

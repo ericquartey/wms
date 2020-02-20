@@ -42,6 +42,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
+        private readonly IMachineIdentityWebService machineIdentityWebService;
+
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private readonly IMachineModeService machineModeService;
@@ -94,6 +96,8 @@ namespace Ferretto.VW.App.Services
 
         private bool isShutterThreeSensors;
 
+        private bool isTuningCompleted;
+
         private IEnumerable<LoadingUnit> loadingUnits;
 
         private SubscriptionToken machineModeChangedToken;
@@ -131,7 +135,8 @@ namespace Ferretto.VW.App.Services
             ISensorsService sensorsService,
             IHealthProbeService healthProbeService,
             IBayManager bayManagerService,
-            IMachineMissionsWebService missionsWebService)
+            IMachineMissionsWebService missionsWebService,
+            IMachineIdentityWebService machineIdentityWebService)
         {
             this.regionManager = regionManager ?? throw new ArgumentNullException(nameof(regionManager));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
@@ -148,6 +153,7 @@ namespace Ferretto.VW.App.Services
             this.machineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
             this.missionsWebService = missionsWebService ?? throw new ArgumentNullException(nameof(missionsWebService));
+            this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
 
             this.MachineStatus = new Models.MachineStatus();
         }
@@ -230,6 +236,12 @@ namespace Ferretto.VW.App.Services
             set => this.SetProperty(ref this.isShutterThreeSensors, value);
         }
 
+        public bool IsTuningCompleted
+        {
+            get => this.isTuningCompleted;
+            private set => this.SetProperty(ref this.isTuningCompleted, value);
+        }
+
         public IEnumerable<LoadingUnit> Loadunits
         {
             get => this.loadingUnits;
@@ -307,9 +319,20 @@ namespace Ferretto.VW.App.Services
             return MAS.AutomationService.Contracts.LoadingUnitLocation.NoLocation;
         }
 
+        public async Task GetCells()
+        {
+            this.cells = await this.machineCellsWebService.GetAllAsync();
+        }
+
         public async Task GetLoadUnits()
         {
             this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
+        }
+
+        public async Task GetTuningStatus()
+        {
+            var idService = await this.machineIdentityWebService.GetAsync();
+            this.IsTuningCompleted = idService.InstallationDate.HasValue;
         }
 
         public async Task OnInitializationServiceAsync()
@@ -323,6 +346,8 @@ namespace Ferretto.VW.App.Services
                     await this.InitializationHoming();
                     await this.InitializationBay();
                     await this.GetLoadUnits();
+                    await this.GetTuningStatus();
+                    await this.GetCells();
                 }
                 catch
                 {
@@ -343,7 +368,9 @@ namespace Ferretto.VW.App.Services
                 await this.InitializationHoming();
                 await this.UpdateBay();
                 await this.GetLoadUnits();
+                await this.GetCells();
                 await this.machineModeService.OnUpdateServiceAsync();
+                await this.GetTuningStatus();
             }
         }
 
@@ -487,8 +514,6 @@ namespace Ferretto.VW.App.Services
             this.IsMissionInError = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
 
             this.bays = await this.machineBaysWebService.GetAllAsync();
-
-            this.cells = await this.machineCellsWebService.GetAllAsync();
 
             this.Bay = await this.bayManagerService.GetBayAsync();
 
