@@ -48,6 +48,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.positions.Add(BayNumber.BayThree, 0);
 
             this.LoadUnitsToTest = null;
+            this.BayTestNumber = BayNumber.None;
 
             if (dataLayerService.IsReady)
             {
@@ -66,6 +67,8 @@ namespace Ferretto.VW.MAS.DataLayer
         #endregion
 
         #region Properties
+
+        public BayNumber BayTestNumber { get; set; }
 
         public int CyclesTested { get; set; }
 

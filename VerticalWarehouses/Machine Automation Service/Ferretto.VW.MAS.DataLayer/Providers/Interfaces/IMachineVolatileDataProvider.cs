@@ -8,6 +8,8 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Properties
 
+        BayNumber BayTestNumber { get; set; }
+
         int CyclesTested { get; set; }
 
         int? CyclesToTest { get; set; }

@@ -102,38 +102,36 @@ namespace Ferretto.VW.MAS.MissionManager
             throw new NotImplementedException();
         }
 
-        public bool QueueFirstTestMission(int loadUnitId, BayNumber sourceBayNumber, IServiceProvider serviceProvider)
+        public bool QueueFirstTestMission(int loadUnitId, BayNumber sourceBayNumber, int cycle, IServiceProvider serviceProvider)
         {
-            var loadUnit = this.loadingUnitsDataProvider.GetById(loadUnitId);
             try
             {
                 var cellId = this.cellsProvider.FindEmptyCell(loadUnitId, CompactingType.NoCompacting, isCellTest: true);
                 var moveLoadingUnitProvider = serviceProvider.GetRequiredService<IMoveLoadUnitProvider>();
 
-                if (loadUnit.IsIntoMachine)
+                if (cycle > 0)
                 {
-                    this.logger.LogInformation($"Move from cell {loadUnit.Cell.Id} to cell {cellId} First test");
-                    moveLoadingUnitProvider.MoveFromCellToCell(MissionType.FirstTest, loadUnit.Cell.Id, cellId, sourceBayNumber, MessageActor.MissionManager);
+                    var loadUnit = this.loadingUnitsDataProvider.GetById(loadUnitId);
+                    this.logger.LogInformation($"Move from cell {loadUnit.CellId} to cell {cellId} First test");
+                    moveLoadingUnitProvider.MoveFromCellToCell(MissionType.FirstTest, loadUnit.CellId, cellId, sourceBayNumber, MessageActor.MissionManager);
                     return true;
                 }
+                // first loop: load from bay
                 var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-                var loadUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(loadUnitId);
-                if (loadUnitSource == LoadingUnitLocation.NoLocation)
-                {
-                    this.logger.LogError($"First Test error: Load Unit not found in Bay!");
-                    var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
-                    errorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnBay, sourceBayNumber);
-                    return false;
-                }
+                var loadUnitSource = baysDataProvider.GetByNumber(sourceBayNumber).Positions.OrderBy(p => p.IsUpper).LastOrDefault().Location;
                 this.logger.LogInformation($"Move from bay {sourceBayNumber} to cell {cellId} First test");
-                moveLoadingUnitProvider.MoveFromBayToCell(MissionType.FirstTest, loadUnitSource, cellId, sourceBayNumber, MessageActor.MissionManager);
+                moveLoadingUnitProvider.InsertToCell(MissionType.FirstTest, loadUnitSource, cellId, loadUnitId, sourceBayNumber, MessageActor.MissionManager);
                 return true;
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException e)
             {
                 // no more testing is possible. Exit from test mode
+                //this.logger.LogError(e, e.Message);
             }
-
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, ex.Message);
+            }
             return false;
         }
 

@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             return this.machineVolatileDataProvider.Mode;
         }
 
-        public void RequestChange(MachineMode machineMode, List<int> loadUnits = null, int? cycles = null)
+        public void RequestChange(MachineMode machineMode, BayNumber bayNumber = BayNumber.None, List<int> loadUnits = null, int? cycles = null)
         {
             if (machineMode == this.machineVolatileDataProvider.Mode)
             {
@@ -57,23 +57,20 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     break;
 
                 case MachineMode.Compact:
-                    // TEST
-                    this.machineVolatileDataProvider.LoadUnitsToTest = new List<int>() { 1 };
-                    this.machineVolatileDataProvider.CyclesTested = 0;
-                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFirstTest;
-
-                    //this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToCompact;
+                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToCompact;
                     break;
 
                 case MachineMode.FullTest:
                     this.machineVolatileDataProvider.LoadUnitsToTest = loadUnits;
                     this.machineVolatileDataProvider.CyclesToTest = cycles;
+                    this.machineVolatileDataProvider.BayTestNumber = bayNumber;
                     this.machineVolatileDataProvider.CyclesTested = 0;
                     this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFullTest;
                     break;
 
                 case MachineMode.FirstTest:
                     this.machineVolatileDataProvider.LoadUnitsToTest = loadUnits;
+                    this.machineVolatileDataProvider.BayTestNumber = bayNumber;
                     this.machineVolatileDataProvider.CyclesTested = 0;
                     this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFirstTest;
                     break;
