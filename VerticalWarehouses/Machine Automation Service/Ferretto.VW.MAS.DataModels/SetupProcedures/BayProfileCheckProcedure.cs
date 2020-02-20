@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public double ProfileDegrees { get; set; } = 5D;
 
-        public double ProfileTotalDistance { get; set; } = 400D;
+        public double ProfileTotalDistance { get; set; } = 265D;
 
         #endregion
     }
