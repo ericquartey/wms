@@ -49,6 +49,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
+        private const double policyVerticalTolerance = 0.01;
+
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
@@ -457,7 +459,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     }
                     else
                     {
-                        this.CurrentStep = ProfileCheckStep.TuningChainDx;
+                        this.CurrentStep = ProfileCheckStep.ShapePositionDx;
                     }
 
                     break;
@@ -477,7 +479,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case ProfileCheckStep.ResultCheck:
                     if (!e.Next)
                     {
-                        this.CurrentStep = ProfileCheckStep.TuningChainSx;
+                        this.CurrentStep = ProfileCheckStep.ShapePositionSx;
                     }
 
                     break;
@@ -550,7 +552,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanGoToBayCommand()
         {
             return this.CanBaseExecute() &&
-                   (this.MachineStatus.ElevatorPositionType != ElevatorPositionType.Bay || !this.MachineStatus.BayPositionUpper.GetValueOrDefault());
+                   (this.MachineStatus.ElevatorPositionType != ElevatorPositionType.Bay ||
+                    !this.MachineStatus.BayPositionUpper.GetValueOrDefault() ||
+                    (Math.Abs(this.BayPosition.Height - this.MachineStatus?.ElevatorVerticalPosition ?? 0d) < policyVerticalTolerance));
         }
 
         private bool CanMensurationDx()

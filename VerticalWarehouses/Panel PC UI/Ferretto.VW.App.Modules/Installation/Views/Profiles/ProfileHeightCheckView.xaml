@@ -75,14 +75,16 @@
                                     VerticalAlignment="Center"
                                     Command="{Binding OpenShutterCommand}"
                                     Content="Apri serranda"
-                                    Style="{StaticResource WizardIntoButton}" />
+                                    Style="{StaticResource WizardIntoButton}"
+                                    Visibility="Collapsed" />
 
                 <controls:PpcButton Grid.Row="2"
                                     Grid.Column="1"
                                     VerticalAlignment="Center"
                                     Command="{Binding CloseShutterCommand}"
                                     Content="Chiudi serranda"
-                                    Style="{StaticResource WizardIntoButton}" />
+                                    Style="{StaticResource WizardIntoButton}"
+                                    Visibility="Collapsed" />
 
                 <controls:PpcButton Grid.Row="3"
                                     Grid.Column="1"
@@ -149,7 +151,8 @@
                                     VerticalAlignment="Center"
                                     Command="{Binding OpenShutterCommand}"
                                     Content="Apri serranda"
-                                    Style="{StaticResource WizardIntoButton}" />
+                                    Style="{StaticResource WizardIntoButton}"
+                                    Visibility="Collapsed" />
 
                 <controls:PpcButton Grid.Row="2"
                                     Grid.Column="1"
@@ -157,7 +160,8 @@
                                     VerticalAlignment="Center"
                                     Command="{Binding CloseShutterCommand}"
                                     Content="Chiudi serranda"
-                                    Style="{StaticResource WizardIntoButton}" />
+                                    Style="{StaticResource WizardIntoButton}"
+                                    Visibility="Collapsed" />
 
                 <controls:PpcButton Grid.Row="3"
                                     Grid.Column="1"
@@ -749,16 +753,16 @@
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Risultato misurazione:"
+                               Text="Risultato calibrazione:"
                                TextWrapping="Wrap" />
 
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="In base al risultato della misurazione puoi decidere se completare l'operazione, avendo un risutato inferiore a 1 mm."
+                               Text="In base al risultato della calibrazione puoi decidere se completare l'operazione, avendo un risutato inferiore a 1 mm."
                                TextWrapping="Wrap" />
                     <TextBlock FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Se il risultato della misurazione supera 1 mm bisogna applicare le modifiche suggerite e ripetere la misurazione."
+                               Text="Se il risultato della calibrazione supera 1 mm bisogna applicare le modifiche suggerite e ripetere la misurazione."
                                TextWrapping="Wrap" />
                 </StackPanel>
 
@@ -768,7 +772,7 @@
                                    Margin="0,0,15,0"
                                    EditValue="{Binding MeasuredSx, StringFormat={}{0:F1}}"
                                    IsEnabled="False"
-                                   LabelText="Misurazione lato sinistro (mm)"
+                                   LabelText="Calibrazione lato sinistro (mm)"
                                    Mask="###0.0" />
 
                 <ctrls:PpcSpinEdit Grid.Row="2"
@@ -778,13 +782,13 @@
                                    Margin="0,0,15,0"
                                    EditValue="{Binding MeasuredDx, StringFormat={}{0:F1}}"
                                    IsEnabled="False"
-                                   LabelText="Misurazione lato destro (mm)"
+                                   LabelText="Calibrazione lato destro (mm)"
                                    Mask="###0.0" />
 
                 <controls:PpcButton Grid.Row="3"
                                     Grid.Column="0"
                                     Command="{Binding RepeatCommand}"
-                                    Content="Ripeti misurazione"
+                                    Content="Ripeti Calibrazione"
                                     Style="{StaticResource WizardConfirmButton}" />
                 <controls:PpcButton Grid.Row="3"
                                     Grid.Column="1"
