@@ -3103,7 +3103,16 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nex panel.
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        public static string NextLarge {
+            get {
+                return ResourceManager.GetString("NextLarge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next panel.
         /// </summary>
         public static string NextPanel {
             get {
