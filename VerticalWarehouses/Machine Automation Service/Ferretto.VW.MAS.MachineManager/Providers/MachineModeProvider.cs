@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         public MachineMode GetCurrent()
         {
-            return this.machineVolatileDataProvider.Mode;
+            return this.machineVolatileDataProvider.UiFilteredMode;
         }
 
         public void RequestChange(MachineMode machineMode, BayNumber bayNumber = BayNumber.None, List<int> loadUnits = null, int? cycles = null)

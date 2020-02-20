@@ -36,6 +36,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         MachineMode Mode { get; set; }
 
+        MachineMode UiFilteredMode { get; }
+
         #endregion
 
         #region Methods
