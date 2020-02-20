@@ -14,6 +14,8 @@
 
         OUT,
 
+        FirstTest,
+
         FullTest,
 
         Compact

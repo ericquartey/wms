@@ -119,12 +119,12 @@ namespace Ferretto.VW.MAS.DataModels
         /// <summary>
         /// this parameter is added to the belt elongation
         /// </summary>
-        public double VerticalDepositOffset { get; set; }
+        public double? VerticalDepositOffset { get; set; }
 
         /// <summary>
-        /// this parameter is added when belt elongation is not used
+        /// this parameter is added when positioning for pickup mission
         /// </summary>
-        public double VerticalPickupOffset { get; set; }
+        public double? VerticalPickupOffset { get; set; }
 
         public WeightMeasurement WeightMeasurement { get; set; }
 

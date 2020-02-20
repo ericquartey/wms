@@ -166,6 +166,8 @@
           },
           "LastIdealPosition": 1970.0,
           "LowerBound": 350.0,
+          "VerticalDepositOffset": 0,
+          "VerticalPickupOffset": 0,
           "ManualMovements": {
             "FeedRate": 0.1,
             "FeedRateAfterZero": 0.15,

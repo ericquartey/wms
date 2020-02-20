@@ -1,12 +1,13 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/setup/[controller]")]
     [ApiController]
-    public class SetupStatusController : ControllerBase
+    public class SetupStatusController : ControllerBase, IRequestingBayController
     {
         #region Fields
 
@@ -27,66 +28,82 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #endregion
 
+        #region Properties
+
+        public BayNumber BayNumber { get; set; }
+
+        #endregion
+
         #region Methods
 
         [HttpPost("bay-carousel-calibration-bypass")]
-        public IActionResult BayCarouselCalibrationBypass(BayNumber bayNumber)
+        public IActionResult BayCarouselCalibrationBypass()
         {
-            return this.Ok(this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayCarouselCalibration(bayNumber), true));
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayCarouselCalibration(this.BayNumber), true);
+            return this.Ok();
         }
 
         [HttpPost("bay-first-loading-unit-bypass")]
-        public IActionResult BayFirstLoadingUnitBypass(BayNumber bayNumber)
+        public IActionResult BayFirstLoadingUnitBypass()
         {
-            return this.Ok(this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayFirstLoadingUnit(bayNumber), true));
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayFirstLoadingUnit(this.BayNumber), true);
+            return this.Ok();
         }
 
         [HttpPost("bay-height-check-bypass")]
-        public IActionResult BayHeightCheckBypass(BayNumber bayNumber)
+        public IActionResult BayHeightCheckBypass()
         {
-            return this.Ok(this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayHeightCheck(bayNumber), true));
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayHeightCheck(this.BayNumber), true);
+            return this.Ok();
         }
 
         [HttpPost("bay-laser-bypass")]
-        public IActionResult BayLaserBypass(BayNumber bayNumber)
+        public IActionResult BayLaserBypass()
         {
-            return this.Ok(this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayLaser(bayNumber), true));
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayLaser(this.BayNumber), true);
+            return this.Ok();
         }
 
         [HttpPost("bay-profile-check-bypass")]
-        public IActionResult BayProfileCheckBypass(BayNumber bayNumber)
+        public IActionResult BayProfileCheckBypass()
         {
-            return this.Ok(this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayProfileCheck(bayNumber), true));
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayProfileCheck(this.BayNumber), true);
+            return this.Ok();
         }
 
         [HttpPost("bay-shutter-test-bypass")]
-        public IActionResult BayShutterTestBypass(BayNumber bayNumber)
+        public IActionResult BayShutterTestBypass()
         {
-            return this.Ok(this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayShutterTest(bayNumber), true));
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayShutterTest(this.BayNumber), true);
+            return this.Ok();
         }
 
         [HttpPost("belt-burnishing-test-bypass")]
         public IActionResult BeltBurnishingTestBypass()
         {
-            return this.Ok(this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBeltBurnishingTest(), true));
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBeltBurnishingTest(), true);
+            return this.Ok();
         }
 
         [HttpPost("cells-height-check-bypass")]
         public IActionResult CellsHeightCheckBypass()
         {
-            return this.Ok(this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetCellsHeightCheck(), true));
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetCellsHeightCheck(), true);
+            return this.Ok();
         }
 
         [HttpPost("cell-panels-check-bypass")]
         public IActionResult CellsPanelCheckBypass()
         {
-            return this.Ok(this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetCellPanelsCheck(), true));
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetCellPanelsCheck(), true);
+            return this.Ok();
         }
 
         [HttpPost("deposit-and-pickup-test-bypass")]
         public IActionResult DepositAndPickUpTestBypass()
         {
-            return this.Ok(this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetDepositAndPickUpTest(), true));
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetDepositAndPickUpTest(), true);
+            return this.Ok();
         }
 
         [HttpGet]
@@ -98,13 +115,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("load-first-drawer-test-bypass")]
         public IActionResult LoadFirstDrawerTestBypass()
         {
-            return this.Ok(this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetLoadFirstDrawerTest(), true));
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetLoadFirstDrawerTest(), true);
+            return this.Ok();
         }
 
         [HttpPost("shutter-height-check-bypass")]
         public IActionResult ShutterHeightCheckBypass()
         {
-            return this.Ok(this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetShutterHeightCheck(), true));
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetShutterHeightCheck(), true);
+            return this.Ok();
         }
 
         #endregion

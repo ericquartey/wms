@@ -194,7 +194,7 @@ namespace Ferretto.VW.App.Modules.Operator
                     break;
 
                 case MissionOperationType.LoadingUnitCheck:
-                    viewModelName = Utils.Modules.Operator.ItemOperations.LOADING_UNIT_CHECK;
+                    viewModelName = Utils.Modules.Operator.ItemOperations.LOADING_UNIT;
                     break;
 
                 default:
@@ -206,7 +206,7 @@ namespace Ferretto.VW.App.Modules.Operator
             this.navigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 viewModelName,
-                null,
+                this.missionOperationsService.ActiveWmsMission?.LoadingUnit?.Id,
                 trackCurrentView: this.IsViewTrackable());
         }
 
@@ -244,7 +244,6 @@ namespace Ferretto.VW.App.Modules.Operator
 
                 case Utils.Modules.Operator.ItemOperations.WAIT:
                 case Utils.Modules.Operator.ItemOperations.LOADING_UNIT:
-                case Utils.Modules.Operator.ItemOperations.LOADING_UNIT_CHECK:
                 case Utils.Modules.Operator.ItemOperations.INVENTORY:
                 case Utils.Modules.Operator.ItemOperations.INVENTORY_DETAILS:
                 case Utils.Modules.Operator.ItemOperations.PICK:

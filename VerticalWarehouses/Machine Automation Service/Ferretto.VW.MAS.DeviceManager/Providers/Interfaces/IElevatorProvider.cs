@@ -69,6 +69,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
             int? targetCellId,
             bool checkHomingDone,
             bool waitContinue,
+            bool isPickupMission,
             BayNumber requestingBay,
             MessageActor sender);
 

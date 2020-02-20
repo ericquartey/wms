@@ -569,7 +569,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return this.CanBaseExecute() &&
                    this.SensorsService.IsLoadingUnitInBay &&
-                   string.IsNullOrEmpty(this.Error);
+                   (string.IsNullOrEmpty(this.Error) || !this.MachineService.Loadunits.Any());
         }
 
         private bool CanMoveToShapePositionDx()

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
@@ -35,7 +36,7 @@ namespace Ferretto.VW.App.Modules.Operator
                 var item = await this.itemWebService.GetByIdAsync(itemId);
                 return item.Image;
             }
-            catch
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 return null;
             }
@@ -56,7 +57,7 @@ namespace Ferretto.VW.App.Modules.Operator
                 BayId = bay.Id,
                 MachineId = this.bayManager.Identity.Id,
                 RequestedQuantity = requestedQuantity,
-                RunImmediately = true
+                RunImmediately = true,
             });
         }
 
@@ -75,7 +76,7 @@ namespace Ferretto.VW.App.Modules.Operator
                 BayId = bay.Id,
                 MachineId = this.bayManager.Identity.Id,
                 RequestedQuantity = requestedQuantity,
-                RunImmediately = true
+                RunImmediately = true,
             });
         }
 

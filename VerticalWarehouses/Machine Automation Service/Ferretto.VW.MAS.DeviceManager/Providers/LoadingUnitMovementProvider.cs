@@ -519,6 +519,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     targetCellId,
                     checkHomingDone: false,
                     waitContinue,
+                    isPickupMission: true,
                     requestingBay,
                     MessageActor.MachineManager);
             }

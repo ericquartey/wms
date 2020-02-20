@@ -193,6 +193,8 @@
           "HomingFastSpeed": 25.0,
           "LastIdealPosition": 0.0,
           "LowerBound": 0.0,
+          "VerticalDepositOffset": 0,
+          "VerticalPickupOffset": 0,
           "ManualMovements": {
             "FeedRate": 0.04,
             "FeedRateAfterZero": 0.3,

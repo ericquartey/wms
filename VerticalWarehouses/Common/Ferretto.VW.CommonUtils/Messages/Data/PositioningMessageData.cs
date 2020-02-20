@@ -1,7 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
-
 namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class PositioningMessageData : IPositioningMessageData
@@ -119,6 +118,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public double FeedRate { get; set; }
 
         public bool IsOneTonMachine { get; set; }
+
+        public bool IsPickupMission { get; set; }
 
         public bool IsStartedOnBoard { get; set; }
 
