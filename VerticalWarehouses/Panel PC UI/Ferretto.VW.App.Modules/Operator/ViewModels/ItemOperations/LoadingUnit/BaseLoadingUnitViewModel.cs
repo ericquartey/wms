@@ -151,6 +151,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public bool IsNewLoadingUnit => this.currentLoadingUnitId != this.LoadingUnit?.Id;
 
+        public bool IsNewOperationAvailable
+        {
+            get => this.isNewOperationAvailable;
+            set => this.SetProperty(ref this.isNewOperationAvailable, value);
+        }
+
         public bool IsWaitingForNewOperation
         {
             get => this.isWaitingForNewOperation;
@@ -511,7 +517,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private void OnMissionChanged(MissionChangedEventArgs e)
         {
-            this.isNewOperationAvailable = e.WmsOperation != null;
+            this.IsNewOperationAvailable = e.WmsMission.Operations.Any(o => o.Id != e.WmsOperation?.Id
+                                                                            &&
+                                                                            o.Status != MissionOperationStatus.Completed);
+            this.RaisePropertyChanged();
         }
 
         private void Reset()
@@ -523,7 +532,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.SelectedCompartment = null;
             this.SelectedItem = null;
             this.currentLoadingUnitId = this.LoadingUnit?.Id;
-            this.isNewOperationAvailable = false;
+            this.IsNewOperationAvailable = false;
         }
 
         private void SelectItemCompartment()

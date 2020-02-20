@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Resources;
@@ -170,6 +171,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.ResetOperations();
             }
+
+            this.CheckForNewWmsMissionOperations();
         }
 
         public override void RaisePropertyChanged()
@@ -187,7 +190,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsBusyConfirmingRecallOperation = true;
                 this.IsWaitingForNewOperation = true;
-                await this.missionOperationsService.RecallLoadingUnitAsync(this.LoadingUnit.Id);
+
+                if (!ConfigurationManager.AppSettings.GetWmsDataServiceEnabled())
+                {
+                    await this.missionOperationsService.RecallLoadingUnitAsync(this.LoadingUnit.Id);
+                }
+                else
+                {
+                    await this.missionOperationsService.CompleteCurrentAsync(1);
+                }
 
                 this.NavigationService.GoBack();
             }
@@ -263,6 +274,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 !this.IsBusyConfirmingRecallOperation
                 &&
                 !(this.LoadingUnit is null);
+        }
+
+        private void CheckForNewWmsMissionOperations()
+        {
+            if (this.missionOperationsService.ActiveWmsMission != null)
+            {
+                this.IsNewOperationAvailable = this.missionOperationsService.ActiveWmsMission.Operations.Any(o => o.Id != this.missionOperationsService.ActiveWmsOperation?.Id
+                                                    &&
+                                                    o.Status != MissionOperationStatus.Completed);
+                this.RaisePropertyChanged();
+            }
         }
 
         private async Task ConfirmOperationAsync()
