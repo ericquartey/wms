@@ -542,7 +542,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private void SetItems()
         {
-            this.Items = this.ItemsCompartments.Where(ic => ic.Id == this.selectedCompartment.Id);
+            this.Items = this.ItemsCompartments.Where(ic => ic.Id == this.selectedCompartment.Id && ic.ItemId.HasValue);
         }
 
         private void SetItemsAndCompartment()
