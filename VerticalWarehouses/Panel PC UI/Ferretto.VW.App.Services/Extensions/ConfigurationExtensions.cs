@@ -66,8 +66,9 @@ namespace Ferretto.VW.App.Services
                 throw new ArgumentNullException(nameof(appSettings));
             }
 
+            var sessionUser = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISessionService>();
             var enableOverrideSetupStatusString = appSettings.Get(OverrideSetupStatusKey);
-            return bool.Parse(enableOverrideSetupStatusString);
+            return (bool.Parse(enableOverrideSetupStatusString) || (sessionUser.UserAccessLevel == UserAccessLevel.Admin));
         }
 
         public static bool GetWmsDataServiceEnabled(this NameValueCollection appSettings)

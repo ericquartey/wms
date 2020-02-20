@@ -50,6 +50,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly IMachinePowerWebService machinePowerWebService;
 
+        private readonly IMachineSetupStatusWebService machineSetupStatusWebService;
+
         private readonly IMachineMissionsWebService missionsWebService;
 
         private readonly INavigationService navigationService;
@@ -87,6 +89,8 @@ namespace Ferretto.VW.App.Services
         private bool hasShutter;
 
         private SubscriptionToken healthStatusChangedToken;
+
+        private bool isAxisTuningCompleted;
 
         private bool isDisposed;
 
@@ -136,7 +140,8 @@ namespace Ferretto.VW.App.Services
             IHealthProbeService healthProbeService,
             IBayManager bayManagerService,
             IMachineMissionsWebService missionsWebService,
-            IMachineIdentityWebService machineIdentityWebService)
+            IMachineIdentityWebService machineIdentityWebService,
+            IMachineSetupStatusWebService machineSetupStatusWebService)
         {
             this.regionManager = regionManager ?? throw new ArgumentNullException(nameof(regionManager));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
@@ -154,6 +159,7 @@ namespace Ferretto.VW.App.Services
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
             this.missionsWebService = missionsWebService ?? throw new ArgumentNullException(nameof(missionsWebService));
             this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
+            this.machineSetupStatusWebService = machineSetupStatusWebService ?? throw new ArgumentNullException(nameof(machineSetupStatusWebService));
 
             this.MachineStatus = new Models.MachineStatus();
         }
@@ -216,6 +222,12 @@ namespace Ferretto.VW.App.Services
         {
             get => this.hasShutter;
             set => this.SetProperty(ref this.hasShutter, value);
+        }
+
+        public bool IsAxisTuningCompleted
+        {
+            get => this.isAxisTuningCompleted;
+            private set => this.SetProperty(ref this.isAxisTuningCompleted, value);
         }
 
         public bool IsHoming
@@ -333,6 +345,11 @@ namespace Ferretto.VW.App.Services
         {
             var idService = await this.machineIdentityWebService.GetAsync();
             this.IsTuningCompleted = idService.InstallationDate.HasValue;
+
+            var setupStatus = await this.machineSetupStatusWebService.GetAsync();
+            this.IsAxisTuningCompleted = setupStatus.VerticalOriginCalibration.IsCompleted &&
+                setupStatus.VerticalResolutionCalibration.IsCompleted &&
+                setupStatus.VerticalOffsetCalibration.IsCompleted;
         }
 
         public async Task OnInitializationServiceAsync()
