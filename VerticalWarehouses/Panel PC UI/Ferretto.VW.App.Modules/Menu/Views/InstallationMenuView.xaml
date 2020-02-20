@@ -132,6 +132,13 @@
                                                VerticalAlignment="Top"
                                                Style="{StaticResource VWAPP_ViewTitleSmallTextBlockStyle}"
                                                Text="{Binding Text}" />
+                                    <controls:PpcButton Padding="3,0"
+                                                        Command="{Binding Command}"
+                                                        Content="Bypassed"
+                                                        FontSize="11"
+                                                        Permission="Admin"
+                                                        Style="{DynamicResource PpcBadgeButtonStyle}"
+                                                        Visibility="{Binding Bypassable, Converter={StaticResource ResourceKey=BTVC}}" />
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

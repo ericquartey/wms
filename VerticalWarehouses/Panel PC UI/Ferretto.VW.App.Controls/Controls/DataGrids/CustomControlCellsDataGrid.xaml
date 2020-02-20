@@ -5,11 +5,6 @@
              xmlns:conv="clr-namespace:Ferretto.VW.App.Controls.Converters"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources">
-
-    <UserControl.Resources>
-        <conv:EnumBlockLevelConverter x:Key="EBLC" />
-    </UserControl.Resources>
-
     <Border BorderBrush="{DynamicResource PpcBorderBrush}"
             BorderThickness="{DynamicResource PpcBorderThickness}"
             CornerRadius="2">
@@ -181,7 +176,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn x:Name="Column1"
                                     Width="1.5*"
-                                    Binding="{Binding Path=BlockLevel, Converter={StaticResource EBLC}}"
+                                    Binding="{Binding Path=BlockLevel}"
                                     Header="Status">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">

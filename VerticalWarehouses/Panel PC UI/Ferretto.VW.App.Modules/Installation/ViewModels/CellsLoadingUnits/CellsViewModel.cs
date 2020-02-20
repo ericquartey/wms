@@ -26,8 +26,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken cellsToken;
 
-        private int currentIndex;
-
         private DelegateCommand saveCommand;
 
         private Cell selectedCell;
@@ -48,6 +46,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Properties
+
+        public IEnumerable<BlockLevel> BlockLevels => Enum.GetValues(typeof(BlockLevel)).OfType<BlockLevel>().ToList();
 
         public IEnumerable<Cell> Cells => this.MachineService.Cells;
 
@@ -71,25 +71,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Methods
-
-        public void ChangeSelectedItemAsync(bool isUp)
-        {
-            if (this.Cells == null)
-            {
-                return;
-            }
-
-            if (this.Cells.Any())
-            {
-                this.currentIndex = isUp ? --this.currentIndex : ++this.currentIndex;
-                if (this.currentIndex < 0 || this.currentIndex >= this.Cells.Count())
-                {
-                    this.currentIndex = (this.currentIndex < 0) ? 0 : this.Cells.Count() - 1;
-                }
-
-                this.SelectedCell = this.Cells?.ToList()[this.currentIndex];
-            }
-        }
 
         public override void Disappear()
         {
@@ -122,6 +103,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.saveCommand?.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.Cells));
+            this.RaisePropertyChanged(nameof(this.BlockLevels));
             this.RaisePropertyChanged(nameof(this.IsEnabledEditing));
         }
 

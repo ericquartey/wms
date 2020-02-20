@@ -7,11 +7,15 @@ using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Modules.Operator;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.Utils.Attributes;
-using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
+using Ferretto.VW.App.Modules.Operator.Models;
+using Ferretto.VW.Utils.Enumerators;
+using Ferretto.VW.App.Modules.Menu.Models;
+using System.Windows;
 
 namespace Ferretto.VW.App.Menu.ViewModels
 {
@@ -37,7 +41,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private int proceduresCount;
 
-        private List<dynamic> source = new List<dynamic>();
+        private List<ItemListSetupProcedure> source = new List<ItemListSetupProcedure>();
 
         #endregion
 
@@ -71,7 +75,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             set => this.SetProperty(ref this.proceduresCount, value, this.RaiseCanExecuteChanged);
         }
 
-        public List<dynamic> Source
+        public List<ItemListSetupProcedure> Source
         {
             get
             {
@@ -130,47 +134,173 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     throw new ArgumentException($"Bay {this.MachineService.BayNumber} not allowed", nameof(this.MachineService.BayNumber));
             }
 
-            this.source = new List<dynamic>();
-            this.source.Add(new { Text = InstallationApp.VerticalAxisHomedDone, Status = status.VerticalOriginCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete });
-            this.source.Add(new { Text = InstallationApp.VerticalResolutionDone, Status = status.VerticalResolutionCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete });
-            this.source.Add(new { Text = InstallationApp.VerticalOffsetVerify, Status = status.VerticalOffsetCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete });
-            this.source.Add(new
+            this.source = new List<ItemListSetupProcedure>();
+            this.source.Add(new ItemListSetupProcedure() { Text = InstallationApp.VerticalAxisHomedDone, Status = status.VerticalOriginCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete, Bypassable = false, Command = new DelegateCommand(() => { }), });
+            this.source.Add(new ItemListSetupProcedure() { Text = InstallationApp.VerticalResolutionDone, Status = status.VerticalResolutionCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete, Bypassable = false, Command = new DelegateCommand(() => { }), });
+            this.source.Add(new ItemListSetupProcedure() { Text = InstallationApp.VerticalOffsetVerify, Status = status.VerticalOffsetCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete, Bypassable = false, Command = new DelegateCommand(() => { }), });
+            this.source.Add(new ItemListSetupProcedure()
             {
                 Text = InstallationApp.BeltBurnishingDone,
                 Status = status.BeltBurnishing.InProgress ? InstallationStatus.Inprogress : status.BeltBurnishing.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
+                Bypassable = !status.BeltBurnishing.IsCompleted || !status.BeltBurnishing.IsBypassed,
+                Command = new DelegateCommand(async () =>
+                {
+                    await this.machineSetupStatusWebService.BeltBurnishingTestBypassAsync();
+
+                    //var r = this.source.First(f => f.Text == InstallationApp.CellsControl);
+                    //r.Bypassable = false;
+                    //r.Status = InstallationStatus.Complete;
+                    //this.RaisePropertyChanged(nameof(this.Source));
+                }),
+                //Command = new DelegateCommand(async () =>
+                //{
+                //    Application.Current.Dispatcher.Invoke(() =>
+                //    {
+                //        var r = this.source.First(f => f.Text == InstallationApp.BeltBurnishingDone);
+                //        r.Bypassable = false;
+                //        r.Status = InstallationStatus.Complete;
+                //        this.RaisePropertyChanged(nameof(this.Source));
+                //    }, System.Windows.Threading.DispatcherPriority.ContextIdle);
+
+                //    await this.machineSetupStatusWebService.BeltBurnishingTestBypassAsync();
+                //}),
             });
-            this.source.Add(new { Text = InstallationApp.CellsControl, Status = status.CellPanelsCheck.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete });
-            this.source.Add(new { Text = InstallationApp.BayHeightCheck, Status = bayStatus.Check.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete });
-            this.source.Add(new { Text = InstallationApp.BarrierCalibration, Status = bayStatus.Profile.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete });
+            this.source.Add(new ItemListSetupProcedure()
+            {
+                Text = InstallationApp.CellsControl,
+                Status = status.CellPanelsCheck.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
+                Bypassable = !status.CellPanelsCheck.IsCompleted || !status.CellPanelsCheck.IsBypassed,
+                Command = new DelegateCommand(async () =>
+                                            {
+                                                await this.machineSetupStatusWebService.CellsPanelCheckBypassAsync();
+
+                                                //var r = this.source.First(f => f.Text == InstallationApp.CellsControl);
+                                                //r.Bypassable = false;
+                                                //r.Status = InstallationStatus.Complete;
+                                                //this.RaisePropertyChanged(nameof(this.Source));
+                                            }),
+            });
+            this.source.Add(new ItemListSetupProcedure()
+            {
+                Text = InstallationApp.BayHeightCheck,
+                Status = bayStatus.Check.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
+                Bypassable = !bayStatus.Check.IsCompleted || !bayStatus.Check.IsBypassed,
+                Command = new DelegateCommand(async () =>
+                {
+                    await this.machineSetupStatusWebService.BayHeightCheckBypassAsync(this.MachineService.BayNumber);
+
+                    //var r = this.source.First(f => f.Text == InstallationApp.BayHeightCheck);
+                    //r.Bypassable = false;
+                    //r.Status = InstallationStatus.Complete;
+                    //this.RaisePropertyChanged(nameof(this.Source));
+                }),
+            });
+            this.source.Add(new ItemListSetupProcedure()
+            {
+                Text = InstallationApp.BarrierCalibration,
+                Status = bayStatus.Profile.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
+                Bypassable = !bayStatus.Profile.IsCompleted || !bayStatus.Profile.IsBypassed,
+                Command = new DelegateCommand(async () =>
+                {
+                    await this.machineSetupStatusWebService.BayProfileCheckBypassAsync(this.MachineService.BayNumber);
+
+                    //var r = this.source.First(f => f.Text == InstallationApp.BarrierCalibration);
+                    //r.Bypassable = false;
+                    //r.Status = InstallationStatus.Complete;
+                    //this.RaisePropertyChanged(nameof(this.Source));
+                }),
+            });
 
             if (this.MachineService.HasCarousel)
             {
-                this.source.Add(new { Text = "Test giostra", Status = false ? InstallationStatus.Complete : InstallationStatus.Incomplete });
+                this.source.Add(new ItemListSetupProcedure()
+                {
+                    Text = "Calibrazione giostra",
+                    Status = false ? InstallationStatus.Complete : InstallationStatus.Incomplete,
+                    Bypassable = !bayStatus.CarouselCalibration.IsCompleted || !bayStatus.CarouselCalibration.IsBypassed,
+                    Command = new DelegateCommand(async () =>
+                    {
+                        await this.machineSetupStatusWebService.BayCarouselCalibrationBypassAsync(this.MachineService.BayNumber);
+
+                        //var r = this.source.First(f => f.Text == "Calibrazione giostra");
+                        //r.Bypassable = false;
+                        //r.Status = InstallationStatus.Complete;
+                        //this.RaisePropertyChanged(nameof(this.Source));
+                    }),
+                });
             }
 
             if (this.MachineService.HasBayExternal)
             {
-                this.source.Add(new { Text = "Test baia esterna", Status = false ? InstallationStatus.Complete : InstallationStatus.Incomplete });
+                this.source.Add(new ItemListSetupProcedure()
+                {
+                    Text = "Test baia esterna",
+                    Status = false ? InstallationStatus.Complete : InstallationStatus.Incomplete,
+                    Bypassable = false,
+                    Command = new DelegateCommand(async () =>
+                    {
+                        //await this.machineSetupStatusWebService.CellsPanelCheckBypassAsync();
+
+                        //var r = this.source.First(f => f.Text == "Test baia esterna");
+                        //r.Bypassable = false;
+                        //r.Status = InstallationStatus.Complete;
+                        //this.RaisePropertyChanged(nameof(this.Source));
+                    }),
+                });
             }
 
             if (this.MachineService.HasShutter)
             {
-                this.source.Add(new
+                this.source.Add(new ItemListSetupProcedure()
                 {
                     Text = "Test serranda",
                     Status = bayStatus.Shutter.InProgress ? InstallationStatus.Inprogress : bayStatus.Shutter.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
+                    Bypassable = !bayStatus.Shutter.IsCompleted || !bayStatus.Shutter.IsBypassed,
+                    Command = new DelegateCommand(async () =>
+                    {
+                        await this.machineSetupStatusWebService.BayShutterTestBypassAsync(this.MachineService.BayNumber);
+
+                        //var r = this.source.First(f => f.Text == "Test serranda");
+                        //r.Bypassable = false;
+                        //r.Status = InstallationStatus.Complete;
+                        //this.RaisePropertyChanged(nameof(this.Source));
+                    }),
                 });
             }
 
-            this.source.Add(new { Text = "Completare i test sulle altre baie", Status = false ? InstallationStatus.Complete : InstallationStatus.Incomplete });
-
-            this.source.Add(new
+            this.source.Add(new ItemListSetupProcedure()
             {
-                Text = InstallationApp.LoadFirstDrawerPageHeader,
-                Status = status.AllLoadingUnits.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
+                Text = "Completare i test sulle altre baie",
+                Status = false ? InstallationStatus.Complete : InstallationStatus.Incomplete,
+                Bypassable = false,
+                Command = new DelegateCommand(async () =>
+                {
+                }),
             });
 
-            this.source.Add(new { Text = "Conferma collaudo", Status = status.IsComplete ? InstallationStatus.Complete : InstallationStatus.Incomplete });
+            this.source.Add(new ItemListSetupProcedure()
+            {
+                Text = InstallationApp.LoadFirstDrawerPageHeader,
+                Status = bayStatus.FirstLoadingUnit.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
+                Bypassable = !bayStatus.FirstLoadingUnit.IsCompleted || !bayStatus.FirstLoadingUnit.IsBypassed,
+                Command = new DelegateCommand(async () =>
+                {
+                    await this.machineSetupStatusWebService.BayFirstLoadingUnitBypassAsync(this.MachineService.BayNumber);
+
+                    //var r = this.source.First(f => f.Text == InstallationApp.LoadFirstDrawerPageHeader);
+                    //r.Bypassable = false;
+                    //r.Status = InstallationStatus.Complete;
+                    //this.RaisePropertyChanged(nameof(this.Source));
+                }),
+            });
+
+            this.source.Add(new ItemListSetupProcedure()
+            {
+                Text = "Conferma collaudo",
+                Status = status.IsComplete ? InstallationStatus.Complete : InstallationStatus.Incomplete,
+                Bypassable = false,
+                Command = new DelegateCommand(() => { }),
+            });
 
             this.ProceduresCount = this.source.Count;
             this.ProceduresCompleted = this.source.Count(c => c.Status == InstallationStatus.Complete);

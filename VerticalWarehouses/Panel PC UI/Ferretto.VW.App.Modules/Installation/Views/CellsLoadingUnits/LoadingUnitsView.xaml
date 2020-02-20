@@ -82,15 +82,15 @@
                 <controls:PpcTextBox Grid.Column="0"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.Id, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     InputText="{Binding SelectedLU.Id}"
                                      IsEnabled="False"
                                      LabelText="Id" />
 
                 <controls:PpcTextBox Grid.Column="1"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.Code, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                     IsEnabled="{Binding IsEnabledEditing}"
+                                     InputText="{Binding SelectedLU.Code}"
+                                     IsEnabled="False"
                                      LabelText="Code" />
 
                 <controls:PpcTextBox Grid.Column="2"
@@ -127,8 +127,8 @@
                                      Grid.Column="1"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.NetWeight, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                     IsEnabled="{Binding IsEnabledEditing}"
+                                     InputText="{Binding SelectedLU.NetWeight}"
+                                     IsEnabled="False"
                                      LabelText="NetWeight" />
 
                 <controls:PpcTextBox Grid.Row="1"
@@ -151,8 +151,8 @@
                                      Grid.Column="4"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.Status, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                     IsEnabled="{Binding IsEnabledEditing}"
+                                     InputText="{Binding SelectedLU.Status}"
+                                     IsEnabled="False"
                                      LabelText="Status" />
 
                 <controls:PpcTextBox Grid.Row="1"
@@ -167,8 +167,8 @@
                                      Grid.Column="6"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.IsIntoMachine, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                     IsEnabled="{Binding IsEnabledEditing}"
+                                     InputText="{Binding SelectedLU.IsIntoMachine}"
+                                     IsEnabled="False"
                                      LabelText="IsIntoMachine" />
 
             </Grid>

@@ -24,6 +24,8 @@
             }
         }
 
+        public bool IsBypassed { get; set; }
+
         public bool IsCompleted { get; set; }
 
         #endregion

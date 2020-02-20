@@ -229,6 +229,51 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="PpcBadgeButtonStyle"
+           BasedOn="{StaticResource {x:Type controls:PpcButton}}"
+           TargetType="{x:Type controls:PpcButton}">
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{x:Null}" />
+        <Setter Property="Margin" Value="10" />
+        <Setter Property="Foreground" Value="{DynamicResource FerrettoRed}" />
+        <Setter Property="Height" Value="auto" />
+        <Setter Property="Width" Value="auto" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSize_Very_Small}" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="FontWeight" Value="Light" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:PpcButton}">
+                    <Grid Visibility="{TemplateBinding VisibilityPermission}">
+                        <Border Name="PpcButton_Border"
+                                Width="{TemplateBinding Width}"
+                                Height="{TemplateBinding Height}"
+                                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{DynamicResource FerrettoRed}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="3"
+                                Cursor="Hand"
+                                FlowDirection="LeftToRight">
+                            <Grid x:Name="PpcButton_Grid">
+                                <TextBlock x:Name="PpcButton_Text"
+                                           Margin="{TemplateBinding Padding}"
+                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                           VerticalAlignment="Center"
+                                           FontSize="{TemplateBinding FontSize}"
+                                           Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                                           TextWrapping="Wrap" />
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
     <Style x:Key="PpcButtonMachineModeHeaderStyle"
            BasedOn="{StaticResource PpcHeaderButtonStyle}"
            TargetType="{x:Type controls:PpcButton}">
