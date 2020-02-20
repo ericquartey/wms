@@ -554,7 +554,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return this.CanBaseExecute() &&
                    (this.MachineStatus.ElevatorPositionType != ElevatorPositionType.Bay ||
                     !this.MachineStatus.BayPositionUpper.GetValueOrDefault() ||
-                    (Math.Abs(this.BayPosition.Height - this.MachineStatus?.ElevatorVerticalPosition ?? 0d) < policyVerticalTolerance));
+                    !(Math.Abs(this.BayPosition.Height - this.MachineStatus?.ElevatorVerticalPosition ?? 0d) < policyVerticalTolerance));
         }
 
         private bool CanMensurationDx()
