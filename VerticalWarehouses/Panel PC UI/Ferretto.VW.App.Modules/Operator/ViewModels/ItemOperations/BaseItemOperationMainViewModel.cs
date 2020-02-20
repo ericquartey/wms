@@ -378,7 +378,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.GetLoadingUnitDetails();
             }
-            else
+            else if (this.MissionOperation.Id != e.WmsOperation.Id)
             {
                 this.IsOperationCanceled = true;
                 this.CanInputQuantity = false;

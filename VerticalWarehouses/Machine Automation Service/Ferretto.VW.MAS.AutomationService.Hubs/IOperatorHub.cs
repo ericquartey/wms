@@ -10,6 +10,8 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         Task AssignedMissionChanged(BayNumber bayNumber, int? missionId);
 
+        Task AssignedMissionOperationChanged(BayNumber bayNumber);
+
         Task BayStatusChanged(BayNumber bayNumber, BayStatus bayStatus);
 
         Task ErrorStatusChanged(int code);
