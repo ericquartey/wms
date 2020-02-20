@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
@@ -178,7 +179,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             }
             else if (this.machineMode is MachineMode.Manual || this.machineMode is MachineMode.Test)
             {
-                if (this.machineService.IsTuningCompleted)
+                if (this.machineService.IsTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
                 {
                     var messageBoxResult = this.dialogService.ShowMessage(General.ConfirmMachineModeSwitchAutomatic, General.Automatic, DialogType.Question, DialogButtons.YesNo);
                     if (messageBoxResult == DialogResult.Yes)
