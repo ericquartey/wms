@@ -87,9 +87,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         this.Mission.TargetBay,
                         this.Mission.RestoreConditions,
                         targetBayPositionId,
-                        targetCellId,
-                        waitContinue: false,
-                        isPickupMission: true);
+                        targetCellId);
                 }
             }
             else
