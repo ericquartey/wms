@@ -7,10 +7,6 @@ namespace Ferretto.VW.App
     {
         #region Fields
 
-        private const string WmsServiceHubUrlEnvName = "WMS_DATASERVICE_HUBS_DATA_PATH";
-
-        private const string WmsServiceHubUrlKey = "WMS:DataService:Hubs:Data:Path";
-
         private const string WmsServiceUrlEnvName = "WMS_DATASERVICE_URL";
 
         private const string WmsServiceUrlKey = "WMS:DataService:Url";
@@ -67,29 +63,6 @@ namespace Ferretto.VW.App
             }
 
             return new Uri(appSettings.Get("AutomationService:Url"));
-        }
-
-        public static Uri GetWMSDataServiceHubDataPath(this NameValueCollection appSettings)
-        {
-            if (appSettings is null)
-            {
-                throw new ArgumentNullException(nameof(appSettings));
-            }
-
-            try
-            {
-                var environmentVariable = Environment.GetEnvironmentVariable(WmsServiceHubUrlEnvName);
-                if (!string.IsNullOrWhiteSpace(environmentVariable))
-                {
-                    return new Uri(environmentVariable);
-                }
-
-                return new Uri(appSettings.Get(WmsServiceHubUrlKey));
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"The configuration key '{WmsServiceHubUrlKey}' is not specified or invalid.", ex);
-            }
         }
 
         public static Uri GetWMSDataServiceUrl(this NameValueCollection appSettings)
