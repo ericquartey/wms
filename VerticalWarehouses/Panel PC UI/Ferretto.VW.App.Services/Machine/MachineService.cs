@@ -1279,6 +1279,12 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification("Inconsistenza sensore nottolino a zero e presenza cassetto.", NotificationSeverity.Error);
                         }
+                        else if ((view.Equals("LoadingUnitFromBayToCellView", StringComparison.InvariantCultureIgnoreCase) ||
+                                  view.Equals("ProfileHeightCheckView", StringComparison.InvariantCultureIgnoreCase))
+                                 && !this.sensorsService.IsLoadingUnitInBay && !this.sensorsService.IsLoadingUnitInMiddleBottomBay)
+                        {
+                            this.ShowNotification("Nessun cassetto presente in baia.", NotificationSeverity.Warning);
+                        }
                         else if ((this.MachineStatus.EmbarkedLoadingUnitId.GetValueOrDefault() > 0 && (this.sensorsService.IsZeroChain || !this.sensorsService.IsLoadingUnitOnElevator)) ||
                                  (this.MachineStatus.EmbarkedLoadingUnitId.GetValueOrDefault() == 0 && (!this.sensorsService.IsZeroChain || this.sensorsService.IsLoadingUnitOnElevator)))
                         {
@@ -1288,15 +1294,12 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification("Homing non eseguito.", NotificationSeverity.Error);
                         }
-                        else if (view.Equals("LoadingUnitFromBayToCellView", StringComparison.InvariantCultureIgnoreCase) && !this.sensorsService.IsLoadingUnitInBay && !this.sensorsService.IsLoadingUnitInMiddleBottomBay)
-                        {
-                            this.ShowNotification("Nessun cassetto presente in baia.", NotificationSeverity.Warning);
-                        }
                         else if ((((this.MachineStatus.LoadingUnitPositionDownInBay != null && !this.sensorsService.IsLoadingUnitInMiddleBottomBay && (this.Bay.IsDouble || !this.BayFirstPositionIsUpper)) ||
                                    (this.MachineStatus.LoadingUnitPositionUpInBay != null && !this.sensorsService.IsLoadingUnitInBay && (this.Bay.IsDouble || this.BayFirstPositionIsUpper))) ||
                                   ((this.MachineStatus.LoadingUnitPositionDownInBay == null && this.sensorsService.IsLoadingUnitInMiddleBottomBay && (this.Bay.IsDouble || !this.BayFirstPositionIsUpper)) ||
                                    (this.MachineStatus.LoadingUnitPositionUpInBay == null && this.sensorsService.IsLoadingUnitInBay && (this.Bay.IsDouble || this.BayFirstPositionIsUpper)))) &&
-                                 !view.Equals("LoadingUnitFromBayToCellView", StringComparison.InvariantCultureIgnoreCase))
+                                 !view.Equals("LoadingUnitFromBayToCellView", StringComparison.InvariantCultureIgnoreCase) &&
+                                 !view.Equals("ProfileHeightCheckView", StringComparison.InvariantCultureIgnoreCase))
                         {
                             this.ShowNotification("Inconsistenza sensori di presenza cassetto in baia.", NotificationSeverity.Error);
                         }
