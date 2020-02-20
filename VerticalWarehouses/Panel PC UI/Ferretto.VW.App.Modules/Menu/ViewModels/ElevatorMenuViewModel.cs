@@ -88,6 +88,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public bool IsBeltBurnishing => this.BeltBurnishing.IsCompleted;
 
+        public bool IsBeltBurnishingBypassed => this.BeltBurnishing.IsBypassed;
+
         public bool IsHoming => this.VerticalOriginCalibration.IsCompleted;
 
         public bool IsVerticalOffsetProcedure => this.VerticalOffsetCalibration.IsCompleted;

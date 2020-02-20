@@ -71,6 +71,7 @@
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding CellPanelsCheckCommand}"
                                         Content="Verifica la quota delle celle, suddivise per pannello, tenendo traccia dei posizionamenti di verifica effettuati"
+                                        IsBypassed="{Binding IsCellPanelsCheckProcedureBypassed}"
                                         IsCompleted="{Binding IsCellPanelsCheckProcedure}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
