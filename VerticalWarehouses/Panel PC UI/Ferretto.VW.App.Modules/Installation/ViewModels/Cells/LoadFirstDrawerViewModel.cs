@@ -161,10 +161,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
         protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
         {
             await base.OnMachinePowerChangedAsync(e);
+
             if (e.MachinePowerState == MachinePowerState.Unpowered)
             {
                 this.IsExecutingProcedure = false;
                 this.IsWaitingForResponse = false;
+            }
+        }
+
+        protected override async Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
+        {
+            await base.OnMachineStatusChangedAsync(e);
+
+            if (!this.MachineStatus.IsMoving)
+            {
+                this.IsExecutingProcedure = false;
             }
         }
 
