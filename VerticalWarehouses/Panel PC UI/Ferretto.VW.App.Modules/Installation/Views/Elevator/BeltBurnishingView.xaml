@@ -111,7 +111,7 @@
                            Height="90"
                            Margin="0,15,15,0"
                            EditValue="{Binding InputLowerBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
+                           IsEnabled="{Binding IsEnabledEditing}"
                            LabelText="{x:Static res:InstallationApp.LowerBound}"
                            WidthNumber="230" />
 
@@ -120,7 +120,7 @@
                            Height="90"
                            Margin="0,15,15,0"
                            EditValue="{Binding InputUpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
+                           IsEnabled="{Binding IsEnabledEditing}"
                            LabelText="{x:Static res:InstallationApp.UpperBound}"
                            WidthNumber="230" />
 
@@ -129,7 +129,7 @@
                            Height="90"
                            Margin="0,15,15,0"
                            EditValue="{Binding InputDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
+                           IsEnabled="{Binding IsEnabledEditing}"
                            LabelText="{x:Static res:InstallationApp.DelayBetweenCycles}"
                            WidthNumber="230" />
 
