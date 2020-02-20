@@ -25,10 +25,12 @@ namespace Ferretto.VW.App.Controls.Converters
                 case BlockLevel.Blocked:
                     return Resources.OperatorApp.BlockLevelBlocked;
 
+                case BlockLevel.NeedsTest:
+                    return Resources.OperatorApp.BlockLevelNeedsTest;
+
                 default:
                     return ((BlockLevel)value).ToString();
             }
-
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

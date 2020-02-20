@@ -240,7 +240,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.areaId = machineIdentity.AreaId;
             this.tokenSource = new CancellationTokenSource();
 
-            await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
+            var startIndex = ((this.maxKnownIndexSelection - ItemsVisiblePageSize) > 0) ? this.maxKnownIndexSelection - ItemsVisiblePageSize : 0;
+
+            this.RemoveOldItems(startIndex);
+
+            await this.SearchItemAsync(startIndex, this.tokenSource.Token);
         }
 
         public async Task RequestItemPickAsync()
@@ -424,6 +428,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 !this.IsWaitingForResponse
                 &&
                 this.SelectedItem != null;
+        }
+
+        private void RemoveOldItems(int startIndex)
+        {
+            var itemsToRemove = this.items.Where(i => this.items.IndexOf(i) >= startIndex);
+
+            this.items.RemoveAll(i => itemsToRemove.Any(it => i.Id == it.Id));
         }
 
         private void SetCurrentIndex(int? itemId)

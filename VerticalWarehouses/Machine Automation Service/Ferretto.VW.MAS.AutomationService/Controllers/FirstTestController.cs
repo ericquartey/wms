@@ -8,7 +8,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FullTestController : ControllerBase
+    public class FirstTestController : ControllerBase
     {
         #region Fields
 
@@ -18,7 +18,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Constructors
 
-        public FullTestController(IMachineModeProvider machineModeProvider)
+        public FirstTestController(IMachineModeProvider machineModeProvider)
         {
             this.machineModeProvider = machineModeProvider ?? throw new ArgumentNullException(nameof(machineModeProvider));
         }
@@ -31,9 +31,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult Start(List<int> loadunits, int cycles)
+        public IActionResult Start(int loadunit)
         {
-            this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.FullTest, loadunits, cycles);
+            this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.FirstTest, new List<int>() { loadunit });
             return this.Accepted();
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
@@ -38,7 +39,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             return this.machineVolatileDataProvider.Mode;
         }
 
-        public void RequestChange(MachineMode machineMode)
+        public void RequestChange(MachineMode machineMode, List<int> loadUnits = null, int? cycles = null)
         {
             if (machineMode == this.machineVolatileDataProvider.Mode)
             {
@@ -49,22 +50,32 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             {
                 case MachineMode.Automatic:
                     this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToAutomatic;
-                    this.logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
                     break;
 
                 case MachineMode.Manual:
                     this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToManual;
-                    this.logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
                     break;
 
                 case MachineMode.Compact:
                     this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToCompact;
-                    this.logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                    break;
+
+                case MachineMode.FullTest:
+                    this.machineVolatileDataProvider.LoadUnitsToTest = loadUnits;
+                    this.machineVolatileDataProvider.CyclesToTest = cycles;
+                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFullTest;
+                    break;
+
+                case MachineMode.FirstTest:
+                    this.machineVolatileDataProvider.LoadUnitsToTest = loadUnits;
+                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFirstTest;
                     break;
 
                 default:
                     throw new ArgumentException($"The requested machine mode '{machineMode}' cannot be handled.", nameof(machineMode));
             }
+
+            this.logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
 
             this.SendCommandToMachineManager(
                 new MachineModeMessageData(machineMode),
