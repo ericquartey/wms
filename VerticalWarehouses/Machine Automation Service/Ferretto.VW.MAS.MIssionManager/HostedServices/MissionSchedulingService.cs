@@ -120,35 +120,56 @@ namespace Ferretto.VW.MAS.MissionManager
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
             var machinemachineVolatileDataProvider = serviceProvider.GetRequiredService<IMachineVolatileDataProvider>();
+            var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
+
+            var loadUnitId = machinemachineVolatileDataProvider.LoadUnitsToTest?.FirstOrDefault();
+            if (!loadUnitId.HasValue)
+            {
+                this.Logger.LogError($"First Test error: Load Unit not defined!");
+                errorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedUpper, this.BayTestNumber);
+                return false;
+            }
+            var cellsProvider = serviceProvider.GetRequiredService<ICellsProvider>();
             if (machinemachineVolatileDataProvider.CyclesTested == 0)
             {
                 var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-                var loadUnitId = machinemachineVolatileDataProvider.LoadUnitsToTest?.FirstOrDefault();
-                if (!loadUnitId.HasValue)
-                {
-                    this.Logger.LogError($"First Test error: Load Unit not defined!");
-                    return false;
-                }
-                var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(loadUnitId.Value);
-                if (loadingUnitSource == LoadingUnitLocation.NoLocation)
+                var loadUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(loadUnitId.Value);
+                if (loadUnitSource == LoadingUnitLocation.NoLocation)
                 {
                     this.Logger.LogError($"First Test error: Load Unit not found in Bay!");
+                    errorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnBay, this.BayTestNumber);
                     return false;
                 }
-                this.BayTestNumber = baysDataProvider.GetByLoadingUnitLocation(loadingUnitSource).Number;
-                var cellsProvider = serviceProvider.GetRequiredService<ICellsProvider>();
+                this.BayTestNumber = baysDataProvider.GetByLoadingUnitLocation(loadUnitSource).Number;
                 cellsProvider.SetCellsToTest();
                 this.Logger.LogInformation($"First test started for Load Unit {loadUnitId.Value} on Bay {this.BayTestNumber}");
             }
 
+            var returnValue = false;
             if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status != MissionStatus.New && m.Status != MissionStatus.Waiting))
             {
-                //return serviceProvider.GetRequiredService<IMissionSchedulingProvider>().QueueLoadingUnitCompactingMission(serviceProvider);
+                returnValue = serviceProvider.GetRequiredService<IMissionSchedulingProvider>().QueueFirstTestMission(loadUnitId.Value, this.BayTestNumber, serviceProvider);
             }
-            // testing is finished! Exit from FirstTest mode
-            var setupProceduresDataProvider = serviceProvider.GetRequiredService<ISetupProceduresDataProvider>();
-            setupProceduresDataProvider.MarkAsCompleted(setupProceduresDataProvider.GetBayFirstLoadingUnit(this.BayTestNumber));
-            return false;
+            if (!returnValue)
+            {
+                // testing is finished! Exit from FirstTest mode
+                if (cellsProvider.IsCellToTest())
+                {
+                    this.Logger.LogError($"First Test error for Load Unit {loadUnitId} on Bay {this.BayTestNumber}: Not all cells are tested!");
+                    errorsProvider.RecordNew(MachineErrorCode.FirstTestFailed, this.BayTestNumber);
+                }
+                else
+                {
+                    this.Logger.LogInformation($"First test finished successfully for Load Unit {loadUnitId} on Bay {this.BayTestNumber}");
+                }
+                var setupProceduresDataProvider = serviceProvider.GetRequiredService<ISetupProceduresDataProvider>();
+                setupProceduresDataProvider.MarkAsCompleted(setupProceduresDataProvider.GetBayFirstLoadingUnit(this.BayTestNumber));
+            }
+            else
+            {
+                machinemachineVolatileDataProvider.CyclesTested++;
+            }
+            return returnValue;
         }
 
         public async Task ScheduleMissionsOnBayAsync(BayNumber bayNumber, IServiceProvider serviceProvider, bool restore = false)
@@ -272,12 +293,17 @@ namespace Ferretto.VW.MAS.MissionManager
         private static void GetPersistedMissions(IServiceProvider serviceProvider, IEventAggregator eventAggregator)
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+            var bayProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
 
             var missions = missionsDataProvider.GetAllMissions().ToList();
             foreach (var mission in missions)
             {
                 if (!mission.IsRestoringType())
                 {
+                    if (bayProvider.IsMissionInBay(mission))
+                    {
+                        bayProvider.ClearMission(mission.TargetBay);
+                    }
                     missionsDataProvider.Delete(mission.Id);
                 }
                 else if (mission.Status != MissionStatus.Completed
@@ -294,7 +320,6 @@ namespace Ferretto.VW.MAS.MissionManager
                         || mission.RestoreStep == MissionStep.WaitPick
                         )
                     {
-                        var bayProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
                         var bay = bayProvider.GetByNumber(mission.TargetBay);
                         if (bay != null
                             && bay.Carousel != null)
@@ -518,7 +543,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
                 case MachineMode.FirstTest:
                     {
-                        if (!ScheduleFirstTestMissions(serviceProvider))
+                        if (!this.ScheduleFirstTestMissions(serviceProvider))
                         {
                             this.machineVolatileDataProvider.Mode = MachineMode.Manual;
                             this.Logger.LogInformation($"First test terminated. Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
