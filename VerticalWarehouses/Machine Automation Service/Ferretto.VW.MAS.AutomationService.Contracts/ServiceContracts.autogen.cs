@@ -606,14 +606,33 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.2.3.0 (NJsonSchema v10.1.5.0 (Newtonsoft.Json v11.0.0.0))")]
-    public partial interface IMachineFullTestWebService
+    public partial interface IMachineFirstTestWebService
     {
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task StartAsync(System.Collections.Generic.IEnumerable<int> loadunits, int cycle);
+        System.Threading.Tasks.Task StartAsync(int loadunit);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task StartAsync(System.Collections.Generic.IEnumerable<int> loadunits, int cycle, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task StartAsync(int loadunit, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task StopAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.2.3.0 (NJsonSchema v10.1.5.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial interface IMachineFullTestWebService
+    {
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task StartAsync(System.Collections.Generic.IEnumerable<int> loadunits, int cycles);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task StartAsync(System.Collections.Generic.IEnumerable<int> loadunits, int cycles, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync();
@@ -4723,13 +4742,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         Compact = 5,
     
-        SwitchingToAutomatic = 6,
+        FullTest = 6,
     
-        SwitchingToManual = 7,
+        FirstTest = 7,
     
-        SwitchingToLoadUnitOperations = 8,
+        SwitchingToAutomatic = 8,
     
-        SwitchingToCompact = 9,
+        SwitchingToManual = 9,
+    
+        SwitchingToLoadUnitOperations = 10,
+    
+        SwitchingToCompact = 11,
+    
+        SwitchingToFullTest = 12,
+    
+        SwitchingToFirstTest = 13,
     
     }
     
