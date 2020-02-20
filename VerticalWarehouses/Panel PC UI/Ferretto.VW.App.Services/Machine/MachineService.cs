@@ -1267,7 +1267,7 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification("Manca marcia.", NotificationSeverity.Warning);
                         }
-                        else if (this.machineModeService.MachineMode != MachineMode.Manual)
+                        else if (this.machineModeService.MachineMode != MachineMode.Manual && this.machineModeService.MachineMode != MachineMode.Test)
                         {
                             this.ShowNotification("La macchina non è in manuale...", NotificationSeverity.Warning);
                         }
