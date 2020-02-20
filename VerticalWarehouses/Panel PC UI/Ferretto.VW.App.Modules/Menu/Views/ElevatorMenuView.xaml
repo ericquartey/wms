@@ -105,6 +105,7 @@
                                         BorderBrush="{DynamicResource FerrettoOrange}"
                                         Command="{Binding BeltBurnishingCommand}"
                                         Content="Effettua una serie di cicli di spostamento dell'asse verticale"
+                                        IsBypassed="{Binding IsBeltBurnishingBypassed}"
                                         IsCompleted="{Binding IsBeltBurnishing}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
