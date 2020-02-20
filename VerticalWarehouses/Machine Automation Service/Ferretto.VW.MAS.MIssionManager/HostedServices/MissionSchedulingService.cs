@@ -51,6 +51,12 @@ namespace Ferretto.VW.MAS.MissionManager
 
         #endregion
 
+        #region Properties
+
+        public BayNumber BayTestNumber { get; private set; }
+
+        #endregion
+
         #region Methods
 
         public static bool ScheduleCompactingMissions(IServiceProvider serviceProvider)
@@ -108,6 +114,41 @@ namespace Ferretto.VW.MAS.MissionManager
                 this.Logger.LogInformation("Bay {bayNumber}: mission {missionId} Activate.", mission.TargetBay, nextMission.Id);
                 moveLoadingUnitProvider.ActivateMove(nextMission.Id, nextMission.MissionType, nextMission.LoadUnitId, bayNumber, MessageActor.MissionManager);
             }
+        }
+
+        public bool ScheduleFirstTestMissions(IServiceProvider serviceProvider)
+        {
+            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+            var machinemachineVolatileDataProvider = serviceProvider.GetRequiredService<IMachineVolatileDataProvider>();
+            if (machinemachineVolatileDataProvider.CyclesTested == 0)
+            {
+                var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                var loadUnitId = machinemachineVolatileDataProvider.LoadUnitsToTest?.FirstOrDefault();
+                if (!loadUnitId.HasValue)
+                {
+                    this.Logger.LogError($"First Test error: Load Unit not defined!");
+                    return false;
+                }
+                var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(loadUnitId.Value);
+                if (loadingUnitSource == LoadingUnitLocation.NoLocation)
+                {
+                    this.Logger.LogError($"First Test error: Load Unit not found in Bay!");
+                    return false;
+                }
+                this.BayTestNumber = baysDataProvider.GetByLoadingUnitLocation(loadingUnitSource).Number;
+                var cellsProvider = serviceProvider.GetRequiredService<ICellsProvider>();
+                cellsProvider.SetCellsToTest();
+                this.Logger.LogInformation($"First test started for Load Unit {loadUnitId.Value} on Bay {this.BayTestNumber}");
+            }
+
+            if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status != MissionStatus.New && m.Status != MissionStatus.Waiting))
+            {
+                //return serviceProvider.GetRequiredService<IMissionSchedulingProvider>().QueueLoadingUnitCompactingMission(serviceProvider);
+            }
+            // testing is finished! Exit from FirstTest mode
+            var setupProceduresDataProvider = serviceProvider.GetRequiredService<ISetupProceduresDataProvider>();
+            setupProceduresDataProvider.MarkAsCompleted(setupProceduresDataProvider.GetBayFirstLoadingUnit(this.BayTestNumber));
+            return false;
         }
 
         public async Task ScheduleMissionsOnBayAsync(BayNumber bayNumber, IServiceProvider serviceProvider, bool restore = false)
@@ -377,6 +418,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 case MachineMode.SwitchingToAutomatic:
                 case MachineMode.SwitchingToLoadUnitOperations:
                 case MachineMode.SwitchingToCompact:
+                case MachineMode.SwitchingToFirstTest:
                     {
                         // in this machine mode we generate homing for elevator and bays, but only if there are no missions to restore.
                         // if homing is not possible we switch anyway to automatic mode
@@ -390,6 +432,11 @@ namespace Ferretto.VW.MAS.MissionManager
                                 if (activeMissions.Any(m => m.MissionType == MissionType.Compact))
                                 {
                                     this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToCompact;
+                                    this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                                }
+                                else if (activeMissions.Any(m => m.MissionType == MissionType.FirstTest))
+                                {
+                                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFirstTest;
                                     this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                                 }
                                 else if (activeMissions.Any(m => m.MissionType == MissionType.LoadUnitOperation))
@@ -412,6 +459,12 @@ namespace Ferretto.VW.MAS.MissionManager
                                     )
                                 {
                                     this.machineVolatileDataProvider.Mode = MachineMode.Compact;
+                                }
+                                else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToFirstTest
+                                    || activeMissions.Any(m => m.MissionType == MissionType.FirstTest && m.Status == MissionStatus.Executing)
+                                    )
+                                {
+                                    this.machineVolatileDataProvider.Mode = MachineMode.FirstTest;
                                 }
                                 else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations
                                     || activeMissions.Any(m => m.MissionType == MissionType.LoadUnitOperation && m.Status == MissionStatus.Executing)
@@ -459,6 +512,16 @@ namespace Ferretto.VW.MAS.MissionManager
                         {
                             this.machineVolatileDataProvider.Mode = MachineMode.Manual;
                             this.Logger.LogInformation($"Compacting terminated. Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                        }
+                    }
+                    break;
+
+                case MachineMode.FirstTest:
+                    {
+                        if (!ScheduleFirstTestMissions(serviceProvider))
+                        {
+                            this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                            this.Logger.LogInformation($"First test terminated. Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                         }
                     }
                     break;

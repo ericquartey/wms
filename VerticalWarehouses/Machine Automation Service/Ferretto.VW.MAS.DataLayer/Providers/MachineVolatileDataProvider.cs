@@ -67,6 +67,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Properties
 
+        public int CyclesTested { get; set; }
+
         public int? CyclesToTest { get; set; }
 
         public double ElevatorHorizontalPosition { get; set; }

@@ -2086,9 +2086,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         OUT = 5,
     
-        FullTest = 6,
+        FirstTest = 6,
     
-        Compact = 7,
+        FullTest = 7,
+    
+        Compact = 8,
     
     }
     
@@ -3073,11 +3075,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("UpperBound", Required = Newtonsoft.Json.Required.Always)]
         public double UpperBound { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("VerticalDepositOffset", Required = Newtonsoft.Json.Required.Always)]
-        public double VerticalDepositOffset { get; set; }
+        [Newtonsoft.Json.JsonProperty("VerticalDepositOffset", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? VerticalDepositOffset { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("VerticalPickupOffset", Required = Newtonsoft.Json.Required.Always)]
-        public double VerticalPickupOffset { get; set; }
+        [Newtonsoft.Json.JsonProperty("VerticalPickupOffset", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? VerticalPickupOffset { get; set; }
     
         [Newtonsoft.Json.JsonProperty("WeightMeasurement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public WeightMeasurement WeightMeasurement { get; set; }

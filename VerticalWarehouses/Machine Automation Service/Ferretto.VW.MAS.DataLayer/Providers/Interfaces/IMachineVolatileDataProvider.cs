@@ -8,6 +8,8 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Properties
 
+        int CyclesTested { get; set; }
+
         int? CyclesToTest { get; set; }
 
         double ElevatorHorizontalPosition { get; set; }

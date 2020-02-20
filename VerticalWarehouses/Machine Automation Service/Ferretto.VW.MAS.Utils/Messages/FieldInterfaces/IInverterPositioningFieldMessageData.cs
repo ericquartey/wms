@@ -51,6 +51,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
         int[] TargetSpeed { get; set; }
 
         bool WaitContinue { get; set; }
+        bool IsPickupMission { get; set; }
 
         #endregion
     }

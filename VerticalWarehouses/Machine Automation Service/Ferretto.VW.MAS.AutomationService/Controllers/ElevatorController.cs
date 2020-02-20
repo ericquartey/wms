@@ -224,6 +224,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 targetCellId: null,
                 checkHomingDone: true,
                 waitContinue: false,
+                isPickupMission: false,
                 this.BayNumber,
                 MessageActor.AutomationService);
 
@@ -293,12 +294,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.elevatorProvider.MoveToAbsoluteVerticalPosition(
                 manualMovment: false,
                 targetPosition,
-                false,
+                computeElongation: false,
                 performWeighting,
                 targetBayPositionId: this.elevatorDataProvider.GetCachedCurrentBayPosition()?.Id,
                 targetCellId: this.elevatorDataProvider.GetCachedCurrentCell()?.Id,
                 checkHomingDone: true,
                 waitContinue: false,
+                isPickupMission: false,
                 this.BayNumber,
                 MessageActor.AutomationService);
 

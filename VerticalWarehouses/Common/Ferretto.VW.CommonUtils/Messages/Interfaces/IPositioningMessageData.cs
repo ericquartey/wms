@@ -23,6 +23,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         bool IsOneTonMachine { get; set; }
 
+        bool IsPickupMission { get; set; }
+
         bool IsStartedOnBoard { get; set; }
 
         double? LoadedNetWeight { get; }
