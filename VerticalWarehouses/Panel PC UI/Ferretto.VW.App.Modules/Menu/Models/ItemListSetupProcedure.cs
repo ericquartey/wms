@@ -1,18 +1,50 @@
-﻿using System.Linq;
-using Ferretto.VW.MAS.AutomationService.Contracts;
-using Prism.Commands;
+﻿using System.Windows.Input;
 using Ferretto.VW.App.Menu.ViewModels;
+using Prism.Commands;
+using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Modules.Menu.Models
 {
-    public class ItemListSetupProcedure
+    public class ItemListSetupProcedure : BindableBase
     {
-        public string Text { get; set; }
+        #region Fields
 
-        public InstallationStatus Status { get; set; }
+        private bool bypassable;
 
-        public bool Bypassable { get; set; }
+        private ICommand command;
 
-        public DelegateCommand Command { get; set; }
+        private InstallationStatus status;
+
+        private string text;
+
+        #endregion
+
+        #region Properties
+
+        public bool Bypassable
+        {
+            get => this.bypassable;
+            set => this.SetProperty(ref this.bypassable, value);
+        }
+
+        public ICommand Command
+        {
+            get => this.command;
+            set => this.SetProperty(ref this.command, value);
+        }
+
+        public InstallationStatus Status
+        {
+            get => this.status;
+            set => this.SetProperty(ref this.status, value);
+        }
+
+        public string Text
+        {
+            get => this.text;
+            set => this.SetProperty(ref this.text, value);
+        }
+
+        #endregion
     }
 }

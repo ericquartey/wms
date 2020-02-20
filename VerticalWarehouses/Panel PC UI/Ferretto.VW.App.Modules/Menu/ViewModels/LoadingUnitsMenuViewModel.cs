@@ -207,7 +207,14 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private async Task UpdateSetupStatusAsync()
         {
-            this.SetupStatusCapabilities = await this.machineSetupStatusWebService.GetAsync();
+            try
+            {
+                this.SetupStatusCapabilities = await this.machineSetupStatusWebService.GetAsync();
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
 
             this.RaiseCanExecuteChanged();
         }

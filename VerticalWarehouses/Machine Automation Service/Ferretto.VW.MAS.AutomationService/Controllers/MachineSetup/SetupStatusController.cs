@@ -6,7 +6,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/setup/[controller]")]
     [ApiController]
-    public class SetupStatusController : ControllerBase
+    public class SetupStatusController : ControllerBase, IRequestingBayController
     {
         #region Fields
 
@@ -27,42 +27,48 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #endregion
 
+        #region Properties
+
+        public BayNumber BayNumber { get; set; }
+
+        #endregion
+
         #region Methods
 
         [HttpPost("bay-carousel-calibration-bypass")]
-        public IActionResult BayCarouselCalibrationBypass(BayNumber bayNumber)
+        public IActionResult BayCarouselCalibrationBypass()
         {
-            return this.Ok(this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayCarouselCalibration(bayNumber), true));
+            return this.Ok(this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayCarouselCalibration(this.BayNumber), true));
         }
 
         [HttpPost("bay-first-loading-unit-bypass")]
-        public IActionResult BayFirstLoadingUnitBypass(BayNumber bayNumber)
+        public IActionResult BayFirstLoadingUnitBypass()
         {
-            return this.Ok(this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayFirstLoadingUnit(bayNumber), true));
+            return this.Ok(this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayFirstLoadingUnit(this.BayNumber), true));
         }
 
         [HttpPost("bay-height-check-bypass")]
-        public IActionResult BayHeightCheckBypass(BayNumber bayNumber)
+        public IActionResult BayHeightCheckBypass()
         {
-            return this.Ok(this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayHeightCheck(bayNumber), true));
+            return this.Ok(this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayHeightCheck(this.BayNumber), true));
         }
 
         [HttpPost("bay-laser-bypass")]
-        public IActionResult BayLaserBypass(BayNumber bayNumber)
+        public IActionResult BayLaserBypass()
         {
-            return this.Ok(this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayLaser(bayNumber), true));
+            return this.Ok(this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayLaser(this.BayNumber), true));
         }
 
         [HttpPost("bay-profile-check-bypass")]
-        public IActionResult BayProfileCheckBypass(BayNumber bayNumber)
+        public IActionResult BayProfileCheckBypass()
         {
-            return this.Ok(this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayProfileCheck(bayNumber), true));
+            return this.Ok(this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayProfileCheck(this.BayNumber), true));
         }
 
         [HttpPost("bay-shutter-test-bypass")]
-        public IActionResult BayShutterTestBypass(BayNumber bayNumber)
+        public IActionResult BayShutterTestBypass()
         {
-            return this.Ok(this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayShutterTest(bayNumber), true));
+            return this.Ok(this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayShutterTest(this.BayNumber), true));
         }
 
         [HttpPost("belt-burnishing-test-bypass")]
