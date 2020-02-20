@@ -8,6 +8,8 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Properties
 
+        int? CyclesToTest { get; set; }
+
         double ElevatorHorizontalPosition { get; set; }
 
         double ElevatorVerticalPosition { get; set; }
@@ -23,6 +25,8 @@ namespace Ferretto.VW.MAS.DataLayer
         bool IsMachineRunning { get; }
 
         bool? IsOneTonMachine { get; set; }
+
+        List<int> LoadUnitsToTest { get; set; }
 
         MachinePowerState MachinePowerState { get; set; }
 

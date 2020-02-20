@@ -420,19 +420,23 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             switch (messageData.MissionType)
             {
                 case MissionType.Manual:
-                    returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.Manual);
+                    returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.Manual
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToManual
+                        );
                     break;
 
                 case MissionType.LoadUnitOperation:
                     returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.LoadUnitOperations
                         || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations
                         || this.MachineVolatileDataProvider.Mode == MachineMode.Manual
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToManual
                         );
                     break;
 
                 case MissionType.Compact:
                     returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.Compact
                         || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToCompact
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToManual
                         );
                     break;
 

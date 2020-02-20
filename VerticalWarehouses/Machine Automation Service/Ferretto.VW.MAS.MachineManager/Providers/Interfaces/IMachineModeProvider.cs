@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.MAS.DataLayer;
+﻿using System.Collections.Generic;
 
 namespace Ferretto.VW.MAS.MachineManager
 {
@@ -8,7 +8,7 @@ namespace Ferretto.VW.MAS.MachineManager
 
         CommonUtils.Messages.MachineMode GetCurrent();
 
-        void RequestChange(CommonUtils.Messages.MachineMode machineMode);
+        void RequestChange(CommonUtils.Messages.MachineMode machineMode, List<int> loadUnits = null, int? cycles = null);
 
         #endregion
     }
