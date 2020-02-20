@@ -197,6 +197,8 @@
           "HomingCreepSpeed": 6,
           "UpperBound": 8600,
           "LowerBound": 350,
+          "VerticalDepositOffset": 0,
+          "VerticalPickupOffset": 0,
           "EmptyLoadMovement": {
             "Acceleration": 1000,
             "Deceleration": 1000,
