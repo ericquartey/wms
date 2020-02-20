@@ -84,7 +84,7 @@ namespace Ferretto.VW.App
             }
             catch (Exception ex)
             {
-                throw new Exception($"The configuration key '{WmsServiceUrlKey}' is not specified or invalid.", ex);
+                return null;
             }
         }
 
