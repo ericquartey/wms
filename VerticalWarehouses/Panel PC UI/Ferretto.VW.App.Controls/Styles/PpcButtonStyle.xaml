@@ -754,6 +754,52 @@
                                     </TextBlock>
                                 </Grid>
 
+                                <Grid Grid.RowSpan="2"
+                                      Grid.ColumnSpan="2">
+
+                                    <Grid.Style>
+                                        <Style TargetType="{x:Type Grid}">
+                                            <Setter Property="Grid.Visibility" Value="Collapsed" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsBypassed, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                                                             Value="True">
+                                                    <Setter Property="Grid.Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+
+                                    <Rectangle Grid.Row="0"
+                                               Grid.Column="0"
+                                               Margin="100,22,0,0"
+                                               Opacity="0.8"
+                                               Stroke="{DynamicResource FerrettoRed}"
+                                               StrokeThickness="25">
+                                        <Rectangle.LayoutTransform>
+                                            <TransformGroup>
+                                                <SkewTransform AngleX="275" AngleY="37" CenterX="0.5" CenterY="0.5" />
+                                                <RotateTransform Angle="300" />
+                                            </TransformGroup>
+                                        </Rectangle.LayoutTransform>
+                                    </Rectangle>
+
+                                    <TextBlock Grid.Row="0"
+                                               Grid.Column="0"
+                                               Margin="0,0,-2,4"
+                                               HorizontalAlignment="Right"
+                                               VerticalAlignment="Bottom"
+                                               FontFamily="{DynamicResource VWAPP_TitleFont}"
+                                               FontSize="14"
+                                               FontWeight="Light"
+                                               Text="Bypassed">
+                                        <TextBlock.LayoutTransform>
+                                            <TransformGroup>
+                                                <RotateTransform Angle="296" />
+                                            </TransformGroup>
+                                        </TextBlock.LayoutTransform>
+                                    </TextBlock>
+                                </Grid>
+
                             </Grid>
                         </Border>
                     </Grid>
