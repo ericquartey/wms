@@ -346,7 +346,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     this.source.Add(new ItemListSetupProcedure()
                     {
                         Text = "Calibrazione giostra",
-                        Status = false ? InstallationStatus.Complete : InstallationStatus.Incomplete,
+                        Status = bayStatus.CarouselCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
                         Bypassable = !bayStatus.CarouselCalibration.IsCompleted,
                         Bypassed = bayStatus.CarouselCalibration.IsBypassed,
                         Command = this.BayCarouselCalibrationBypassCommand,

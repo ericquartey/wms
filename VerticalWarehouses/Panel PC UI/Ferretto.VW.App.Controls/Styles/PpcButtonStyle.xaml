@@ -272,9 +272,7 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Background" Value="{TemplateBinding Background}" />
-                <Setter Property="BorderBrush" Value="{TemplateBinding BorderBrush}" />
-                <Setter Property="Foreground" Value="{TemplateBinding Foreground}" />
+                <Setter Property="Background" Value="Transparent" />
             </Trigger>
         </Style.Triggers>
     </Style>
