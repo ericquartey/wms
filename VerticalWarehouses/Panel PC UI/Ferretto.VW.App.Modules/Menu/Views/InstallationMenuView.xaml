@@ -134,11 +134,20 @@
                                                Text="{Binding Text}" />
                                     <controls:PpcButton Padding="3,0"
                                                         Command="{Binding Command}"
-                                                        Content="Bypassed"
+                                                        Content="Bypass"
                                                         FontSize="11"
+                                                        Foreground="{DynamicResource FerrettoYellow}"
                                                         Permission="Admin"
                                                         Style="{DynamicResource PpcBadgeButtonStyle}"
                                                         Visibility="{Binding Bypassable, Converter={StaticResource ResourceKey=BTVC}}" />
+
+                                    <controls:PpcButton Padding="3,0"
+                                                        Content="Bypassed"
+                                                        FontSize="11"
+                                                        Foreground="{DynamicResource FerrettoRed}"
+                                                        IsEnabled="False"
+                                                        Style="{DynamicResource PpcBadgeButtonStyle}"
+                                                        Visibility="{Binding Bypassed, Converter={StaticResource ResourceKey=BTVC}}" />
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
