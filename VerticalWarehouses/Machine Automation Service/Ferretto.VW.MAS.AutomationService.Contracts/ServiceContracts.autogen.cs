@@ -884,46 +884,46 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineSetupStatusWebService
     {
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> BayCarouselCalibrationBypassAsync(BayNumber bayNumber);
+        System.Threading.Tasks.Task<FileResponse> BayCarouselCalibrationBypassAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> BayCarouselCalibrationBypassAsync(BayNumber bayNumber, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<FileResponse> BayCarouselCalibrationBypassAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> BayFirstLoadingUnitBypassAsync(BayNumber bayNumber);
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> BayFirstLoadingUnitBypassAsync(BayNumber bayNumber, System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> BayHeightCheckBypassAsync(BayNumber bayNumber);
+        System.Threading.Tasks.Task<FileResponse> BayFirstLoadingUnitBypassAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> BayHeightCheckBypassAsync(BayNumber bayNumber, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<FileResponse> BayFirstLoadingUnitBypassAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> BayLaserBypassAsync(BayNumber bayNumber);
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> BayLaserBypassAsync(BayNumber bayNumber, System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> BayProfileCheckBypassAsync(BayNumber bayNumber);
+        System.Threading.Tasks.Task<FileResponse> BayHeightCheckBypassAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> BayProfileCheckBypassAsync(BayNumber bayNumber, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<FileResponse> BayHeightCheckBypassAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> BayShutterTestBypassAsync(BayNumber bayNumber);
+        System.Threading.Tasks.Task<FileResponse> BayLaserBypassAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> BayShutterTestBypassAsync(BayNumber bayNumber, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<FileResponse> BayLaserBypassAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> BayProfileCheckBypassAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> BayProfileCheckBypassAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> BayShutterTestBypassAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> BayShutterTestBypassAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> BeltBurnishingTestBypassAsync();
