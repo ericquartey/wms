@@ -1312,7 +1312,8 @@ namespace Ferretto.VW.App.Services
                         }
                         // tranne per la macchina con la baia esterna l'elevatore non si può muovere se c'è la serranda aperta
                         else if (!this.bay.IsExternal &&
-                                 !this.sensorsService.ShutterSensors.Closed)
+                                 !this.sensorsService.ShutterSensors.Closed &&
+                                 !view.Equals("ProfileHeightCheckView", StringComparison.InvariantCultureIgnoreCase))
                         {
                             this.ShowNotification("Serranda non completamente chiusa.", NotificationSeverity.Warning);
                         }
