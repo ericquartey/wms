@@ -185,6 +185,8 @@
           "Resolution": 77.4970626897481,
           "TotalCycles": 1,
           "UpperBound": 4000.0,
+          "VerticalDepositOffset": 0,
+          "VerticalPickupOffset": 0,
           "WeightMeasurement": {
             "MeasureConst0": -723.53,
             "MeasureConst1": 159.73,
