@@ -341,7 +341,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 try
                 {
-                    this.Mission.DestinationCellId = this.CellsProvider.FindEmptyCell(this.Mission.LoadUnitId);
+                    this.Mission.DestinationCellId = this.CellsProvider.FindEmptyCell(this.Mission.LoadUnitId, isCellTest: (this.Mission.MissionType == MissionType.FirstTest));
                 }
                 catch (InvalidOperationException)
                 {

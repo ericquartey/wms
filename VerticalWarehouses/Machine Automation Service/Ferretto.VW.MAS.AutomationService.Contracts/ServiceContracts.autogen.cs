@@ -1963,6 +1963,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         LoadUnitUndefinedBottom = 65,
     
+        FirstTestFailed = 66,
+    
         InverterErrorBaseCode = 1000,
     
         InverterErrorInvalidParameter = 1001,

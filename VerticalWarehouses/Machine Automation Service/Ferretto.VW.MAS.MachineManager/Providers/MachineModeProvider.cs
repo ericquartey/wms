@@ -58,11 +58,11 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
                 case MachineMode.Compact:
                     // TEST
-                    //this.machineVolatileDataProvider.LoadUnitsToTest = new List<int>() { 1 };
-                    //this.machineVolatileDataProvider.CyclesTested = 0;
-                    //this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFirstTest;
+                    this.machineVolatileDataProvider.LoadUnitsToTest = new List<int>() { 1 };
+                    this.machineVolatileDataProvider.CyclesTested = 0;
+                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFirstTest;
 
-                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToCompact;
+                    //this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToCompact;
                     break;
 
                 case MachineMode.FullTest:

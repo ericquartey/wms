@@ -121,6 +121,8 @@ namespace Ferretto.VW.MAS.MissionManager
                 if (loadUnitSource == LoadingUnitLocation.NoLocation)
                 {
                     this.logger.LogError($"First Test error: Load Unit not found in Bay!");
+                    var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
+                    errorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnBay, sourceBayNumber);
                     return false;
                 }
                 this.logger.LogInformation($"Move from bay {sourceBayNumber} to cell {cellId} First test");
