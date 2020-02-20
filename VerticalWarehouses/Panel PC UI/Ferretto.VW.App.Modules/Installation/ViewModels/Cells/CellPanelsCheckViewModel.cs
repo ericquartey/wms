@@ -428,7 +428,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return this.CurrentCell != null &&
                    !this.IsMoving &&
-                   Convert.ToInt32(this.CurrentCell.Position) != Convert.ToInt32(this.MachineStatus?.ElevatorVerticalPosition ?? 0D);
+                   (Convert.ToInt32(this.CurrentCell.Position) != Convert.ToInt32(this.MachineStatus?.ElevatorVerticalPosition ?? 0D) ||
+                    this.CurrentCell.Id != this.MachineStatus?.LogicalPositionId);
         }
 
         private bool CanStop()
