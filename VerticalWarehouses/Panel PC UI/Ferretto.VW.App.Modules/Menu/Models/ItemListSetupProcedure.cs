@@ -11,6 +11,8 @@ namespace Ferretto.VW.App.Modules.Menu.Models
 
         private bool bypassable;
 
+        private bool bypassed;
+
         private ICommand command;
 
         private InstallationStatus status;
@@ -25,6 +27,12 @@ namespace Ferretto.VW.App.Modules.Menu.Models
         {
             get => this.bypassable;
             set => this.SetProperty(ref this.bypassable, value);
+        }
+
+        public bool Bypassed
+        {
+            get => this.bypassed;
+            set => this.SetProperty(ref this.bypassed, value);
         }
 
         public ICommand Command

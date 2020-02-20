@@ -236,7 +236,6 @@
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderBrush" Value="{x:Null}" />
         <Setter Property="Margin" Value="10" />
-        <Setter Property="Foreground" Value="{DynamicResource FerrettoRed}" />
         <Setter Property="Height" Value="auto" />
         <Setter Property="Width" Value="auto" />
         <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
@@ -252,7 +251,7 @@
                                 Height="{TemplateBinding Height}"
                                 HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                                 Background="{TemplateBinding Background}"
-                                BorderBrush="{DynamicResource FerrettoRed}"
+                                BorderBrush="{TemplateBinding Foreground}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="3"
                                 Cursor="Hand"

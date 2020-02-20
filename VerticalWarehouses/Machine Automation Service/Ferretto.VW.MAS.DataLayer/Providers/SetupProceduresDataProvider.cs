@@ -37,7 +37,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.SetupProceduresSets
+                return this.dataContext.SetupProceduresSets.AsNoTracking()
 
                       .Include(s => s.Bay1CarouselCalibration)
                         .Include(s => s.Bay1FirstLoadingUnit)
@@ -81,7 +81,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.SetupProceduresSets
+                return this.dataContext.SetupProceduresSets.AsNoTracking()
                     .Select(s => bayNumber == BayNumber.BayOne ? s.Bay1CarouselCalibration : bayNumber == BayNumber.BayTwo ? s.Bay2CarouselCalibration : s.Bay3CarouselCalibration)
                     .Single();
             }
@@ -91,7 +91,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.SetupProceduresSets
+                return this.dataContext.SetupProceduresSets.AsNoTracking()
                     .Select(s => bayNumber == BayNumber.BayOne ? s.Bay1FirstLoadingUnit : bayNumber == BayNumber.BayTwo ? s.Bay2FirstLoadingUnit : s.Bay3FirstLoadingUnit)
                     .Single();
             }
@@ -101,7 +101,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.SetupProceduresSets
+                return this.dataContext.SetupProceduresSets.AsNoTracking()
                     .Select(s => bayNumber == BayNumber.BayOne ? s.Bay1HeightCheck : bayNumber == BayNumber.BayTwo ? s.Bay2HeightCheck : s.Bay3HeightCheck)
                     .Single();
             }
@@ -111,7 +111,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.SetupProceduresSets
+                return this.dataContext.SetupProceduresSets.AsNoTracking()
                     .Select(s => bayNumber == BayNumber.BayOne ? s.Bay1Laser : bayNumber == BayNumber.BayTwo ? s.Bay2Laser : s.Bay3Laser)
                     .Single();
             }
@@ -121,7 +121,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.SetupProceduresSets
+                return this.dataContext.SetupProceduresSets.AsNoTracking()
                     .Select(s => bayNumber == BayNumber.BayOne ? s.Bay1ProfileCheck : bayNumber == BayNumber.BayTwo ? s.Bay2ProfileCheck : s.Bay3ProfileCheck)
                     .Single();
             }
@@ -131,7 +131,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.SetupProceduresSets
+                return this.dataContext.SetupProceduresSets.AsNoTracking()
                     .Select(s => bayNumber == BayNumber.BayOne ? s.Bay1ShutterTest : bayNumber == BayNumber.BayTwo ? s.Bay2ShutterTest : s.Bay3ShutterTest)
                     .Single();
             }
@@ -141,7 +141,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.SetupProceduresSets
+                return this.dataContext.SetupProceduresSets.AsNoTracking()
                     .Select(s => s.BeltBurnishingTest)
                     .Single();
             }
@@ -151,7 +151,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.SetupProceduresSets
+                return this.dataContext.SetupProceduresSets.AsNoTracking()
                     .Select(s => s.CellPanelsCheck)
                     .Single();
             }
@@ -161,7 +161,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.SetupProceduresSets
+                return this.dataContext.SetupProceduresSets.AsNoTracking()
                     .Select(s => s.CellsHeightCheck)
                     .Single();
             }
@@ -171,7 +171,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.SetupProceduresSets
+                return this.dataContext.SetupProceduresSets.AsNoTracking()
                     .Select(s => s.DepositAndPickUpTest)
                     .Single();
             }
@@ -181,7 +181,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.SetupProceduresSets
+                return this.dataContext.SetupProceduresSets.AsNoTracking()
                     .Select(s => s.LoadFirstDrawerTest)
                     .Single();
             }
@@ -191,7 +191,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.SetupProceduresSets
+                return this.dataContext.SetupProceduresSets.AsNoTracking()
                     .Select(s => s.ShutterHeightCheck)
                     .Single();
             }
@@ -201,7 +201,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.SetupProceduresSets
+                return this.dataContext.SetupProceduresSets.AsNoTracking()
                     .Select(s => s.VerticalOffsetCalibration)
                     .Single();
             }
@@ -211,7 +211,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.SetupProceduresSets
+                return this.dataContext.SetupProceduresSets.AsNoTracking()
                     .Select(s => s.VerticalOriginCalibration)
                     .Single();
             }
@@ -221,7 +221,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.SetupProceduresSets
+                return this.dataContext.SetupProceduresSets.AsNoTracking()
                     .Select(s => s.VerticalResolutionCalibration)
                     .Single();
             }
