@@ -203,7 +203,6 @@ namespace Ferretto.VW.App.Modules.Operator
 
             this.lastActiveMissionId = this.missionOperationsService.ActiveWmsMission.Id;
 
-
             this.navigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 viewModelName,
@@ -245,7 +244,6 @@ namespace Ferretto.VW.App.Modules.Operator
 
                 case Utils.Modules.Operator.ItemOperations.WAIT:
                 case Utils.Modules.Operator.ItemOperations.LOADING_UNIT:
-                case Utils.Modules.Operator.ItemOperations.LOADING_UNIT_CHECK:
                 case Utils.Modules.Operator.ItemOperations.INVENTORY:
                 case Utils.Modules.Operator.ItemOperations.INVENTORY_DETAILS:
                 case Utils.Modules.Operator.ItemOperations.PICK:
