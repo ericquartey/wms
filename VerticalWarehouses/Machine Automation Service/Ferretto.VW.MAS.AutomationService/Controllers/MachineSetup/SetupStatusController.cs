@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -9,6 +10,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     public class SetupStatusController : ControllerBase, IRequestingBayController
     {
         #region Fields
+
+        private readonly ILogger<SetupStatusController> logger;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
@@ -38,7 +41,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("bay-carousel-calibration-bypass")]
         public IActionResult BayCarouselCalibrationBypass()
         {
-            return this.Ok(this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayCarouselCalibration(this.BayNumber), true));
+            this.logger.LogDebug($"BayCarouselCalibrationBypass init");
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayCarouselCalibration(this.BayNumber), true);
+            this.logger.LogDebug($"BayCarouselCalibrationBypass end");
+            return this.Ok();
         }
 
         [HttpPost("bay-first-loading-unit-bypass")]
