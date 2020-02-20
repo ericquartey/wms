@@ -347,7 +347,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     {
                         Text = "Calibrazione giostra",
                         Status = false ? InstallationStatus.Complete : InstallationStatus.Incomplete,
-                        Bypassable = !bayStatus.CarouselCalibration.IsCompleted || !bayStatus.CarouselCalibration.IsBypassed,
+                        Bypassable = !bayStatus.CarouselCalibration.IsCompleted,
                         Bypassed = bayStatus.CarouselCalibration.IsBypassed,
                         Command = this.BayCarouselCalibrationBypassCommand,
                     });

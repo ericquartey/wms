@@ -270,7 +270,13 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{TemplateBinding Background}" />
+                <Setter Property="BorderBrush" Value="{TemplateBinding BorderBrush}" />
+                <Setter Property="Foreground" Value="{TemplateBinding Foreground}" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <Style x:Key="PpcButtonMachineModeHeaderStyle"
