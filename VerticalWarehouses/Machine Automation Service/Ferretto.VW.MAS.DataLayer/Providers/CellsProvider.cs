@@ -205,8 +205,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     throw new InvalidOperationException("LoadUnitMaxHeight is not valid");
                 }
-                loadingUnit.Height = machine.LoadUnitMaxHeight;
-                this.logger.LogInformation($"FindEmptyCell: height is not defined for LU {loadingUnitId}; new height is {loadingUnit.Height} (as configured for max);");
+                loadingUnit.Height = (isCellTest ? machine.LoadUnitMinHeight : machine.LoadUnitMaxHeight);
+                this.logger.LogInformation($"FindEmptyCell: height is not defined for LU {loadingUnitId}; new height is {loadingUnit.Height} (as configured for {(isCellTest ? "min" : "max")});");
             }
             using (var availableCell = new BlockingCollection<AvailableCell>())
             {
@@ -253,7 +253,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (!availableCell.Any())
                 {
-                    if (compactingType == CompactingType.NoCompacting)
+                    if (isCellTest)
+                    {
+                        this.logger.LogError($"FindEmptyCell: cell to test not found for LU {loadingUnitId}; Height {loadingUnit.Height:0.00}; total cells {cells.Count}; ");
+                    }
+                    else if (compactingType == CompactingType.NoCompacting)
                     {
                         this.logger.LogError($"FindEmptyCell: cell not found for LU {loadingUnitId}; Height {loadingUnit.Height:0.00}; total cells {cells.Count}; ");
                     }
@@ -353,6 +357,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool IsCellToTest()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Cells.Any(c => c.BlockLevel == BlockLevel.NeedsTest);
+            }
+        }
+
         public void Save(Cell cell)
         {
             lock (this.dataContext)
@@ -368,6 +380,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 var cells = this.dataContext.Cells
                     .Include(c => c.Panel)
+                    .ToArray()                      // this ToArray is needed to sort correctly
                     .OrderBy(o => o.Side)
                     .ThenBy(t => t.Position)
                     .ToArray();
@@ -389,7 +402,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             next = cells[iCell + 1];
                         }
                         if (next == null
-                            || next.BlockLevel != BlockLevel.None
+                            || (next.BlockLevel != BlockLevel.None && next.BlockLevel != BlockLevel.NeedsTest)
                             )
                         {
                             cell.BlockLevel = BlockLevel.NeedsTest;
@@ -404,7 +417,7 @@ namespace Ferretto.VW.MAS.DataLayer
                                 prev = cells[iCell - 1];
                             }
                             if (prev == null
-                                || prev.BlockLevel != BlockLevel.None
+                                || (prev.BlockLevel != BlockLevel.None && prev.BlockLevel != BlockLevel.NeedsTest)
                                 )
                             {
                                 cell.BlockLevel = BlockLevel.NeedsTest;

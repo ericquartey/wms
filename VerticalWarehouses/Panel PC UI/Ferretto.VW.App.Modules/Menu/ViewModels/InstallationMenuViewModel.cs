@@ -83,6 +83,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
                         var r = this.source.First(f => f.Text == "Calibrazione giostra");
                         r.Bypassable = false;
+                        r.Bypassed = true;
                         r.Status = InstallationStatus.Complete;
                         this.RaisePropertyChanged(nameof(this.Source));
                     }
@@ -104,6 +105,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
                         var r = this.source.First(f => f.Text == InstallationApp.LoadFirstDrawerPageHeader);
                         r.Bypassable = false;
+                        r.Bypassed = true;
                         r.Status = InstallationStatus.Complete;
                         this.RaisePropertyChanged(nameof(this.Source));
                     }
@@ -125,6 +127,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
                         var r = this.source.First(f => f.Text == InstallationApp.BayHeightCheck);
                         r.Bypassable = false;
+                        r.Bypassed = true;
                         r.Status = InstallationStatus.Complete;
                         this.RaisePropertyChanged(nameof(this.Source));
                     }
@@ -146,6 +149,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
                         var r = this.source.First(f => f.Text == InstallationApp.BarrierCalibration);
                         r.Bypassable = false;
+                        r.Bypassed = true;
                         r.Status = InstallationStatus.Complete;
                         this.RaisePropertyChanged(nameof(this.Source));
                     }
@@ -167,6 +171,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
                         var r = this.source.First(f => f.Text == "Test serranda");
                         r.Bypassable = false;
+                        r.Bypassed = true;
                         r.Status = InstallationStatus.Complete;
                         this.RaisePropertyChanged(nameof(this.Source));
                     }
@@ -188,6 +193,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
                         var r = this.source.First(f => f.Text == InstallationApp.BeltBurnishingDone);
                         r.Bypassable = false;
+                        r.Bypassed = true;
                         r.Status = InstallationStatus.Complete;
                         this.RaisePropertyChanged(nameof(this.Source));
                     }
@@ -209,6 +215,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
                         var r = this.source.First(f => f.Text == InstallationApp.CellsControl);
                         r.Bypassable = false;
+                        r.Bypassed = true;
                         r.Status = InstallationStatus.Complete;
                         this.RaisePropertyChanged(nameof(this.Source));
                     }
@@ -298,14 +305,15 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 }
 
                 this.source = new List<ItemListSetupProcedure>();
-                this.source.Add(new ItemListSetupProcedure() { Text = InstallationApp.VerticalAxisHomedDone, Status = status.VerticalOriginCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete, Bypassable = false, Command = new DelegateCommand(() => { }), });
-                this.source.Add(new ItemListSetupProcedure() { Text = InstallationApp.VerticalResolutionDone, Status = status.VerticalResolutionCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete, Bypassable = false, Command = new DelegateCommand(() => { }), });
-                this.source.Add(new ItemListSetupProcedure() { Text = InstallationApp.VerticalOffsetVerify, Status = status.VerticalOffsetCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete, Bypassable = false, Command = new DelegateCommand(() => { }), });
+                this.source.Add(new ItemListSetupProcedure() { Text = InstallationApp.VerticalAxisHomedDone, Status = status.VerticalOriginCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete, Bypassable = false, Bypassed = false, Command = new DelegateCommand(() => { }), });
+                this.source.Add(new ItemListSetupProcedure() { Text = InstallationApp.VerticalResolutionDone, Status = status.VerticalResolutionCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete, Bypassable = false, Bypassed = false, Command = new DelegateCommand(() => { }), });
+                this.source.Add(new ItemListSetupProcedure() { Text = InstallationApp.VerticalOffsetVerify, Status = status.VerticalOffsetCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete, Bypassable = false, Bypassed = false, Command = new DelegateCommand(() => { }), });
                 this.source.Add(new ItemListSetupProcedure()
                 {
                     Text = InstallationApp.BeltBurnishingDone,
                     Status = status.BeltBurnishing.InProgress ? InstallationStatus.Inprogress : status.BeltBurnishing.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
                     Bypassable = !status.BeltBurnishing.IsCompleted || !status.BeltBurnishing.IsBypassed,
+                    Bypassed = status.BeltBurnishing.IsBypassed,
                     Command = this.BeltBurnishingTestBypassCommand,
                 });
                 this.source.Add(new ItemListSetupProcedure()
@@ -313,6 +321,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     Text = InstallationApp.CellsControl,
                     Status = status.CellPanelsCheck.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
                     Bypassable = !status.CellPanelsCheck.IsCompleted || !status.CellPanelsCheck.IsBypassed,
+                    Bypassed = status.CellPanelsCheck.IsBypassed,
                     Command = this.CellsPanelCheckBypassCommand,
                 });
                 this.source.Add(new ItemListSetupProcedure()
@@ -320,6 +329,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     Text = InstallationApp.BayHeightCheck,
                     Status = bayStatus.Check.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
                     Bypassable = !bayStatus.Check.IsCompleted || !bayStatus.Check.IsBypassed,
+                    Bypassed = bayStatus.Check.IsBypassed,
                     Command = this.BayHeightCheckBypassCommand,
                 });
                 this.source.Add(new ItemListSetupProcedure()
@@ -327,6 +337,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     Text = InstallationApp.BarrierCalibration,
                     Status = bayStatus.Profile.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
                     Bypassable = !bayStatus.Profile.IsCompleted || !bayStatus.Profile.IsBypassed,
+                    Bypassed = bayStatus.Profile.IsBypassed,
                     Command = this.BayProfileCheckBypassCommand,
                 });
 
@@ -337,6 +348,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                         Text = "Calibrazione giostra",
                         Status = false ? InstallationStatus.Complete : InstallationStatus.Incomplete,
                         Bypassable = !bayStatus.CarouselCalibration.IsCompleted || !bayStatus.CarouselCalibration.IsBypassed,
+                        Bypassed = bayStatus.CarouselCalibration.IsBypassed,
                         Command = this.BayCarouselCalibrationBypassCommand,
                     });
                 }
@@ -348,6 +360,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                         Text = "Test baia esterna",
                         Status = false ? InstallationStatus.Complete : InstallationStatus.Incomplete,
                         Bypassable = false,
+                        Bypassed = false,
                         Command = null,
                     });
                 }
@@ -359,6 +372,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                         Text = "Test serranda",
                         Status = bayStatus.Shutter.InProgress ? InstallationStatus.Inprogress : bayStatus.Shutter.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
                         Bypassable = !bayStatus.Shutter.IsCompleted || !bayStatus.Shutter.IsBypassed,
+                        Bypassed = bayStatus.Shutter.IsBypassed,
                         Command = this.BayShutterTestBypassCommand,
                     });
                 }
@@ -368,6 +382,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     Text = "Completare i test sulle altre baie",
                     Status = false ? InstallationStatus.Complete : InstallationStatus.Incomplete,
                     Bypassable = false,
+                    Bypassed = false,
                     Command = new DelegateCommand(async () =>
                     {
                     }),
@@ -378,6 +393,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     Text = InstallationApp.LoadFirstDrawerPageHeader,
                     Status = bayStatus.FirstLoadingUnit.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
                     Bypassable = !bayStatus.FirstLoadingUnit.IsCompleted || !bayStatus.FirstLoadingUnit.IsBypassed,
+                    Bypassed = bayStatus.FirstLoadingUnit.IsBypassed,
                     Command = this.BayFirstLoadingUnitBypassCommand,
                 });
 
@@ -386,6 +402,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     Text = "Conferma collaudo",
                     Status = status.IsComplete ? InstallationStatus.Complete : InstallationStatus.Incomplete,
                     Bypassable = false,
+                    Bypassed = false,
                     Command = new DelegateCommand(() => { }),
                 });
 

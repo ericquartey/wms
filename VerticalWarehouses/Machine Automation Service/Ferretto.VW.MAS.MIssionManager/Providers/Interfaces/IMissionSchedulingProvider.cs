@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS.MissionManager
 
         void QueueCellMission(int loadingUnitId, int targetCellId);
 
+        bool QueueFirstTestMission(int loadUnitId, BayNumber sourceBayNumber, IServiceProvider serviceProvider);
+
         bool QueueLoadingUnitCompactingMission(IServiceProvider serviceProvider);
 
         void QueueRecallMission(int loadingUnitId, BayNumber sourceBayNumber);

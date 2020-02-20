@@ -23,6 +23,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         CellStatisticsSummary GetStatistics();
 
+        bool IsCellToTest();
+
         void Save(Cell cell);
 
         void SetCellsToTest();
