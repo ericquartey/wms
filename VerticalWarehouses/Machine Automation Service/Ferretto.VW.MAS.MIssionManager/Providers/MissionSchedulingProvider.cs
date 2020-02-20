@@ -102,6 +102,39 @@ namespace Ferretto.VW.MAS.MissionManager
             throw new NotImplementedException();
         }
 
+        public bool QueueFirstTestMission(int loadUnitId, BayNumber sourceBayNumber, IServiceProvider serviceProvider)
+        {
+            var loadUnit = this.loadingUnitsDataProvider.GetById(loadUnitId);
+            try
+            {
+                var cellId = this.cellsProvider.FindEmptyCell(loadUnitId, CompactingType.NoCompacting, isCellTest: true);
+                var moveLoadingUnitProvider = serviceProvider.GetRequiredService<IMoveLoadUnitProvider>();
+
+                if (loadUnit.IsIntoMachine)
+                {
+                    this.logger.LogInformation($"Move from cell {loadUnit.Cell.Id} to cell {cellId} First test");
+                    moveLoadingUnitProvider.MoveFromCellToCell(MissionType.FirstTest, loadUnit.Cell.Id, cellId, sourceBayNumber, MessageActor.MissionManager);
+                    return true;
+                }
+                var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                var loadUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(loadUnitId);
+                if (loadUnitSource == LoadingUnitLocation.NoLocation)
+                {
+                    this.logger.LogError($"First Test error: Load Unit not found in Bay!");
+                    return false;
+                }
+                this.logger.LogInformation($"Move from bay {sourceBayNumber} to cell {cellId} First test");
+                moveLoadingUnitProvider.MoveFromBayToCell(MissionType.FirstTest, loadUnitSource, cellId, sourceBayNumber, MessageActor.MissionManager);
+                return true;
+            }
+            catch (InvalidOperationException)
+            {
+                // no more testing is possible. Exit from test mode
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// Search for a single compacting mission and activate it.
         /// This method will be repeated after each mission has finished when machine is in Compact mode.
