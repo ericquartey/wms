@@ -281,7 +281,7 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
                                     Command="{Binding MoveToNextCommand}"
-                                    Content="{x:Static res:InstallationApp.Next}"
+                                    Content="{x:Static res:InstallationApp.NextLarge}"
                                     Style="{DynamicResource WizardConfirmButton}" />
 
             </Grid>
@@ -542,7 +542,7 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
                                     Command="{Binding MoveToNextCommand}"
-                                    Content="{x:Static res:InstallationApp.Next}"
+                                    Content="{x:Static res:InstallationApp.NextLarge}"
                                     Style="{DynamicResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>

@@ -61,6 +61,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.TorqueCurrentSample = messageData.TorqueCurrentSample;
             this.FeedRate = messageData.FeedRate;
             this.ComputeElongation = messageData.ComputeElongation;
+            this.IsPickupMission = messageData.IsPickupMission;
 
             this.WaitContinue = messageData.WaitContinue;
             this.RequestingBay = requestingBay;
@@ -77,6 +78,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public HorizontalMovementDirection Direction { get; set; }
 
         public double FeedRate { get; }
+
+        public bool IsPickupMission { get; }
 
         public bool IsProfileCalibrate { get; set; }
 

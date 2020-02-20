@@ -33,6 +33,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
+        private readonly ISessionService sessionService;
+
         private int? completedCyclesThisSession;
 
         private double? currentPosition;
@@ -78,13 +80,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineElevatorWebService machineElevatorWebService,
             IMachineBeltBurnishingProcedureWebService beltBurnishingWebService,
             IMachineElevatorService machineElevatorService,
-            Services.IDialogService dialogService)
+            ISessionService sessionService,
+            IDialogService dialogService)
             : base(PresentationMode.Installer)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.beltBurnishingWebService = beltBurnishingWebService ?? throw new ArgumentNullException(nameof(beltBurnishingWebService));
             this.machineElevatorService = machineElevatorService ?? throw new ArgumentNullException(nameof(machineElevatorService));
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
         }
 
@@ -171,6 +175,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
             }
         }
+
+        public bool IsEnabledEditing => !this.IsExecutingProcedure && this.sessionService.UserAccessLevel is MAS.AutomationService.Contracts.UserAccessLevel.Admin;
 
         public bool IsExecutingProcedure
         {
@@ -399,6 +405,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.startCommand?.RaiseCanExecuteChanged();
             this.stopCommand?.RaiseCanExecuteChanged();
             this.resetCommand?.RaiseCanExecuteChanged();
+
+            this.RaisePropertyChanged(nameof(this.IsEnabledEditing));
         }
 
         private bool CanExecuteResetCommand()
@@ -466,7 +474,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, InstallationApp.BeltBreakIn, DialogType.Question, DialogButtons.YesNo);
+                var messageBoxResult = this.dialogService.ShowMessage("Vuoi davvero resettare il numero totale di cicli completati?", InstallationApp.BeltBreakIn, DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     this.CumulativePerformedCycles = 0;

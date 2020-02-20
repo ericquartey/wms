@@ -50,6 +50,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly IMachinePowerWebService machinePowerWebService;
 
+        private readonly IMachineSetupStatusWebService machineSetupStatusWebService;
+
         private readonly IMachineMissionsWebService missionsWebService;
 
         private readonly INavigationService navigationService;
@@ -87,6 +89,8 @@ namespace Ferretto.VW.App.Services
         private bool hasShutter;
 
         private SubscriptionToken healthStatusChangedToken;
+
+        private bool isAxisTuningCompleted;
 
         private bool isDisposed;
 
@@ -136,7 +140,8 @@ namespace Ferretto.VW.App.Services
             IHealthProbeService healthProbeService,
             IBayManager bayManagerService,
             IMachineMissionsWebService missionsWebService,
-            IMachineIdentityWebService machineIdentityWebService)
+            IMachineIdentityWebService machineIdentityWebService,
+            IMachineSetupStatusWebService machineSetupStatusWebService)
         {
             this.regionManager = regionManager ?? throw new ArgumentNullException(nameof(regionManager));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
@@ -154,6 +159,7 @@ namespace Ferretto.VW.App.Services
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
             this.missionsWebService = missionsWebService ?? throw new ArgumentNullException(nameof(missionsWebService));
             this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
+            this.machineSetupStatusWebService = machineSetupStatusWebService ?? throw new ArgumentNullException(nameof(machineSetupStatusWebService));
 
             this.MachineStatus = new Models.MachineStatus();
         }
@@ -216,6 +222,12 @@ namespace Ferretto.VW.App.Services
         {
             get => this.hasShutter;
             set => this.SetProperty(ref this.hasShutter, value);
+        }
+
+        public bool IsAxisTuningCompleted
+        {
+            get => this.isAxisTuningCompleted;
+            private set => this.SetProperty(ref this.isAxisTuningCompleted, value);
         }
 
         public bool IsHoming
@@ -333,6 +345,11 @@ namespace Ferretto.VW.App.Services
         {
             var idService = await this.machineIdentityWebService.GetAsync();
             this.IsTuningCompleted = idService.InstallationDate.HasValue;
+
+            var setupStatus = await this.machineSetupStatusWebService.GetAsync();
+            this.IsAxisTuningCompleted = setupStatus.VerticalOriginCalibration.IsCompleted &&
+                setupStatus.VerticalResolutionCalibration.IsCompleted &&
+                setupStatus.VerticalOffsetCalibration.IsCompleted;
         }
 
         public async Task OnInitializationServiceAsync()
@@ -1250,7 +1267,7 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification("Manca marcia.", NotificationSeverity.Warning);
                         }
-                        else if (this.machineModeService.MachineMode != MachineMode.Manual)
+                        else if (this.machineModeService.MachineMode != MachineMode.Manual && this.machineModeService.MachineMode != MachineMode.Test)
                         {
                             this.ShowNotification("La macchina non è in manuale...", NotificationSeverity.Warning);
                         }
@@ -1262,6 +1279,12 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification("Inconsistenza sensore nottolino a zero e presenza cassetto.", NotificationSeverity.Error);
                         }
+                        else if ((view.Equals("LoadingUnitFromBayToCellView", StringComparison.InvariantCultureIgnoreCase) ||
+                                  view.Equals("ProfileHeightCheckView", StringComparison.InvariantCultureIgnoreCase))
+                                 && !this.sensorsService.IsLoadingUnitInBay && !this.sensorsService.IsLoadingUnitInMiddleBottomBay)
+                        {
+                            this.ShowNotification("Nessun cassetto presente in baia.", NotificationSeverity.Warning);
+                        }
                         else if ((this.MachineStatus.EmbarkedLoadingUnitId.GetValueOrDefault() > 0 && (this.sensorsService.IsZeroChain || !this.sensorsService.IsLoadingUnitOnElevator)) ||
                                  (this.MachineStatus.EmbarkedLoadingUnitId.GetValueOrDefault() == 0 && (!this.sensorsService.IsZeroChain || this.sensorsService.IsLoadingUnitOnElevator)))
                         {
@@ -1271,15 +1294,12 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification("Homing non eseguito.", NotificationSeverity.Error);
                         }
-                        else if (view.Equals("LoadingUnitFromBayToCellView", StringComparison.InvariantCultureIgnoreCase) && !this.sensorsService.IsLoadingUnitInBay && !this.sensorsService.IsLoadingUnitInMiddleBottomBay)
-                        {
-                            this.ShowNotification("Nessun cassetto presente in baia.", NotificationSeverity.Warning);
-                        }
                         else if ((((this.MachineStatus.LoadingUnitPositionDownInBay != null && !this.sensorsService.IsLoadingUnitInMiddleBottomBay && (this.Bay.IsDouble || !this.BayFirstPositionIsUpper)) ||
                                    (this.MachineStatus.LoadingUnitPositionUpInBay != null && !this.sensorsService.IsLoadingUnitInBay && (this.Bay.IsDouble || this.BayFirstPositionIsUpper))) ||
                                   ((this.MachineStatus.LoadingUnitPositionDownInBay == null && this.sensorsService.IsLoadingUnitInMiddleBottomBay && (this.Bay.IsDouble || !this.BayFirstPositionIsUpper)) ||
                                    (this.MachineStatus.LoadingUnitPositionUpInBay == null && this.sensorsService.IsLoadingUnitInBay && (this.Bay.IsDouble || this.BayFirstPositionIsUpper)))) &&
-                                 !view.Equals("LoadingUnitFromBayToCellView", StringComparison.InvariantCultureIgnoreCase))
+                                 !view.Equals("LoadingUnitFromBayToCellView", StringComparison.InvariantCultureIgnoreCase) &&
+                                 !view.Equals("ProfileHeightCheckView", StringComparison.InvariantCultureIgnoreCase))
                         {
                             this.ShowNotification("Inconsistenza sensori di presenza cassetto in baia.", NotificationSeverity.Error);
                         }
@@ -1292,7 +1312,8 @@ namespace Ferretto.VW.App.Services
                         }
                         // tranne per la macchina con la baia esterna l'elevatore non si può muovere se c'è la serranda aperta
                         else if (!this.bay.IsExternal &&
-                                 !this.sensorsService.ShutterSensors.Closed)
+                                 !this.sensorsService.ShutterSensors.Closed &&
+                                 !view.Equals("ProfileHeightCheckView", StringComparison.InvariantCultureIgnoreCase))
                         {
                             this.ShowNotification("Serranda non completamente chiusa.", NotificationSeverity.Warning);
                         }

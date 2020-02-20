@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -44,6 +45,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private readonly IMachineMissionsWebService machineMissionsWebService;
+
+        private readonly IMachineService machineService;
 
         private readonly IMachineShuttersWebService shuttersWebService;
 
@@ -97,7 +100,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineBaysWebService machineBaysWebService,
             IMachineMissionsWebService machineMissionsWebService,
             IBayManager bayManagerService,
-            IInstallationHubClient installationHubClient)
+            IInstallationHubClient installationHubClient,
+            IMachineService machineService)
             : base(PresentationMode.Installer)
         {
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
@@ -110,6 +114,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
             this.installationHubClient = installationHubClient ?? throw new ArgumentNullException(nameof(installationHubClient));
+            this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
         }
 
         #endregion
@@ -133,7 +138,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.goToMovementsGuidedCommand = new DelegateCommand(
                 () => this.GoToMovementsExecuteCommand(true),
-                this.CanGoToMovementsGuidedExecuteCommand));
+                this.CanGoToMovementsGuidedExecuteCommand
+                ));
 
         public ICommand GoToMovementsManualCommand =>
             this.goToMovementsManualCommand
@@ -282,6 +288,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsElevatorInBay = this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay;
                 this.IsElevatorInCell = this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Cell;
 
+                if (!this.CanGoToMovementsGuidedExecuteCommand())
+                {
+                    this.isMovementsGuided = false;
+                }
+
                 this.GoToMovementsExecuteCommand(this.isMovementsGuided);
 
                 this.InputLoadingUnitIdPropertyChanged();
@@ -423,7 +434,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanGoToMovementsGuidedExecuteCommand()
         {
             return this.MachineModeService?.MachineMode == MachineMode.Manual &&
-                   this.MachineModeService?.MachinePower == MachinePowerState.Powered
+                   this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
+                   (this.machineService.IsAxisTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
                 ;
         }
 

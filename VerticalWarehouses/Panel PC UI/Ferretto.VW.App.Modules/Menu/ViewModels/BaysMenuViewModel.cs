@@ -90,13 +90,19 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
+        public bool IsBayControlBypassed => this.BayControl.IsBypassed;
+
         public bool IsBayControlCompleted => this.BayControl.IsCompleted;
+
+        public bool IsBayProfileBypassed => this.BayProfile.IsBypassed;
 
         public bool IsBayProfileCompleted => this.BayProfile.IsCompleted;
 
         public bool IsCarouselCalibrationVisible => this.MachineService.HasCarousel;
 
         public bool IsTestBayVisible => this.MachineService.HasBayExternal || this.MachineService.HasCarousel;
+
+        public bool IsTestShutterBypassed => this.BayShutter.IsBypassed;
 
         public bool IsTestShutterCompleted => this.BayShutter.IsCompleted;
 

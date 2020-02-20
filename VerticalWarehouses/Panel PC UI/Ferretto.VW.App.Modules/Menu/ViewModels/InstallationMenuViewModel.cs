@@ -35,7 +35,19 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private readonly IMachineSetupStatusWebService machineSetupStatusWebService;
 
+        private DelegateCommand bayCarouselCalibrationBypassCommand;
+
+        private DelegateCommand bayFirstLoadingUnitBypassCommand;
+
+        private DelegateCommand bayHeightCheckBypassCommand;
+
+        private DelegateCommand bayProfileCheckBypassCommand;
+
+        private DelegateCommand bayShutterTestBypassCommand;
+
         private DelegateCommand beltBurnishingTestBypassCommand;
+
+        private DelegateCommand cellsPanelCheckBypassCommand;
 
         private int proceduresCompleted;
 
@@ -59,8 +71,118 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Properties
 
+        public ICommand BayCarouselCalibrationBypassCommand =>
+            this.bayCarouselCalibrationBypassCommand
+            ??
+            (this.bayCarouselCalibrationBypassCommand = new DelegateCommand(
+                async () =>
+                {
+                    try
+                    {
+                        await this.machineSetupStatusWebService.BayCarouselCalibrationBypassAsync();
+
+                        var r = this.source.First(f => f.Text == "Calibrazione giostra");
+                        r.Bypassable = false;
+                        r.Bypassed = true;
+                        r.Status = InstallationStatus.Complete;
+                        this.RaisePropertyChanged(nameof(this.Source));
+                    }
+                    catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+                    {
+                        this.ShowNotification(ex);
+                    }
+                }));
+
+        public ICommand BayFirstLoadingUnitBypassCommand =>
+            this.bayFirstLoadingUnitBypassCommand
+            ??
+            (this.bayFirstLoadingUnitBypassCommand = new DelegateCommand(
+                async () =>
+                {
+                    try
+                    {
+                        await this.machineSetupStatusWebService.BayFirstLoadingUnitBypassAsync();
+
+                        var r = this.source.First(f => f.Text == InstallationApp.LoadFirstDrawerPageHeader);
+                        r.Bypassable = false;
+                        r.Bypassed = true;
+                        r.Status = InstallationStatus.Complete;
+                        this.RaisePropertyChanged(nameof(this.Source));
+                    }
+                    catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+                    {
+                        this.ShowNotification(ex);
+                    }
+                }));
+
+        public ICommand BayHeightCheckBypassCommand =>
+            this.bayHeightCheckBypassCommand
+            ??
+            (this.bayHeightCheckBypassCommand = new DelegateCommand(
+                async () =>
+                {
+                    try
+                    {
+                        await this.machineSetupStatusWebService.BayHeightCheckBypassAsync();
+
+                        var r = this.source.First(f => f.Text == InstallationApp.BayHeightCheck);
+                        r.Bypassable = false;
+                        r.Bypassed = true;
+                        r.Status = InstallationStatus.Complete;
+                        this.RaisePropertyChanged(nameof(this.Source));
+                    }
+                    catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+                    {
+                        this.ShowNotification(ex);
+                    }
+                }));
+
+        public ICommand BayProfileCheckBypassCommand =>
+            this.bayProfileCheckBypassCommand
+            ??
+            (this.bayProfileCheckBypassCommand = new DelegateCommand(
+                async () =>
+                {
+                    try
+                    {
+                        await this.machineSetupStatusWebService.BayProfileCheckBypassAsync();
+
+                        var r = this.source.First(f => f.Text == InstallationApp.BarrierCalibration);
+                        r.Bypassable = false;
+                        r.Bypassed = true;
+                        r.Status = InstallationStatus.Complete;
+                        this.RaisePropertyChanged(nameof(this.Source));
+                    }
+                    catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+                    {
+                        this.ShowNotification(ex);
+                    }
+                }));
+
+        public ICommand BayShutterTestBypassCommand =>
+            this.bayShutterTestBypassCommand
+            ??
+            (this.bayShutterTestBypassCommand = new DelegateCommand(
+                async () =>
+                {
+                    try
+                    {
+                        await this.machineSetupStatusWebService.BayShutterTestBypassAsync();
+
+                        var r = this.source.First(f => f.Text == "Test serranda");
+                        r.Bypassable = false;
+                        r.Bypassed = true;
+                        r.Status = InstallationStatus.Complete;
+                        this.RaisePropertyChanged(nameof(this.Source));
+                    }
+                    catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+                    {
+                        this.ShowNotification(ex);
+                    }
+                }));
+
         public ICommand BeltBurnishingTestBypassCommand =>
-            this.beltBurnishingTestBypassCommand
+                    this.beltBurnishingTestBypassCommand
             ??
             (this.beltBurnishingTestBypassCommand = new DelegateCommand(
                 async () =>
@@ -71,6 +193,29 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
                         var r = this.source.First(f => f.Text == InstallationApp.BeltBurnishingDone);
                         r.Bypassable = false;
+                        r.Bypassed = true;
+                        r.Status = InstallationStatus.Complete;
+                        this.RaisePropertyChanged(nameof(this.Source));
+                    }
+                    catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+                    {
+                        this.ShowNotification(ex);
+                    }
+                }));
+
+        public ICommand CellsPanelCheckBypassCommand =>
+            this.cellsPanelCheckBypassCommand
+            ??
+            (this.cellsPanelCheckBypassCommand = new DelegateCommand(
+                async () =>
+                {
+                    try
+                    {
+                        await this.machineSetupStatusWebService.CellsPanelCheckBypassAsync();
+
+                        var r = this.source.First(f => f.Text == InstallationApp.CellsControl);
+                        r.Bypassable = false;
+                        r.Bypassed = true;
                         r.Status = InstallationStatus.Complete;
                         this.RaisePropertyChanged(nameof(this.Source));
                     }
@@ -160,81 +305,40 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 }
 
                 this.source = new List<ItemListSetupProcedure>();
-                this.source.Add(new ItemListSetupProcedure() { Text = InstallationApp.VerticalAxisHomedDone, Status = status.VerticalOriginCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete, Bypassable = false, Command = new DelegateCommand(() => { }), });
-                this.source.Add(new ItemListSetupProcedure() { Text = InstallationApp.VerticalResolutionDone, Status = status.VerticalResolutionCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete, Bypassable = false, Command = new DelegateCommand(() => { }), });
-                this.source.Add(new ItemListSetupProcedure() { Text = InstallationApp.VerticalOffsetVerify, Status = status.VerticalOffsetCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete, Bypassable = false, Command = new DelegateCommand(() => { }), });
+                this.source.Add(new ItemListSetupProcedure() { Text = InstallationApp.VerticalAxisHomedDone, Status = status.VerticalOriginCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete, Bypassable = false, Bypassed = false, Command = new DelegateCommand(() => { }), });
+                this.source.Add(new ItemListSetupProcedure() { Text = InstallationApp.VerticalResolutionDone, Status = status.VerticalResolutionCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete, Bypassable = false, Bypassed = false, Command = new DelegateCommand(() => { }), });
+                this.source.Add(new ItemListSetupProcedure() { Text = InstallationApp.VerticalOffsetVerify, Status = status.VerticalOffsetCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete, Bypassable = false, Bypassed = false, Command = new DelegateCommand(() => { }), });
                 this.source.Add(new ItemListSetupProcedure()
                 {
                     Text = InstallationApp.BeltBurnishingDone,
                     Status = status.BeltBurnishing.InProgress ? InstallationStatus.Inprogress : status.BeltBurnishing.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
-                    Bypassable = !status.BeltBurnishing.IsCompleted || !status.BeltBurnishing.IsBypassed,
+                    Bypassable = !status.BeltBurnishing.IsCompleted,
+                    Bypassed = status.BeltBurnishing.IsBypassed,
                     Command = this.BeltBurnishingTestBypassCommand,
                 });
                 this.source.Add(new ItemListSetupProcedure()
                 {
                     Text = InstallationApp.CellsControl,
                     Status = status.CellPanelsCheck.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
-                    Bypassable = !status.CellPanelsCheck.IsCompleted || !status.CellPanelsCheck.IsBypassed,
-                    Command = new DelegateCommand(async () =>
-                    {
-                        try
-                        {
-                            await this.machineSetupStatusWebService.CellsPanelCheckBypassAsync();
-
-                            var r = this.source.First(f => f.Text == InstallationApp.CellsControl);
-                            r.Bypassable = false;
-                            r.Status = InstallationStatus.Complete;
-                            this.RaisePropertyChanged(nameof(this.Source));
-                        }
-                        catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-                        {
-                            this.ShowNotification(ex);
-                        }
-                    }),
+                    Bypassable = !status.CellPanelsCheck.IsCompleted,
+                    Bypassed = status.CellPanelsCheck.IsBypassed,
+                    Command = this.CellsPanelCheckBypassCommand,
                 });
                 this.source.Add(new ItemListSetupProcedure()
                 {
                     Text = InstallationApp.BayHeightCheck,
                     Status = bayStatus.Check.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
-                    Bypassable = !bayStatus.Check.IsCompleted || !bayStatus.Check.IsBypassed,
-                    Command = new DelegateCommand(async () =>
-                    {
-                        try
-                        {
-                            await this.machineSetupStatusWebService.BayHeightCheckBypassAsync();
-
-                            var r = this.source.First(f => f.Text == InstallationApp.BayHeightCheck);
-                            r.Bypassable = false;
-                            r.Status = InstallationStatus.Complete;
-                            this.RaisePropertyChanged(nameof(this.Source));
-                        }
-                        catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-                        {
-                            this.ShowNotification(ex);
-                        }
-                    }),
+                    Bypassable = !bayStatus.Check.IsCompleted,
+                    Bypassed = bayStatus.Check.IsBypassed,
+                    Command = this.BayHeightCheckBypassCommand,
                 });
                 this.source.Add(new ItemListSetupProcedure()
                 {
                     Text = InstallationApp.BarrierCalibration,
                     Status = bayStatus.Profile.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
-                    Bypassable = !bayStatus.Profile.IsCompleted || !bayStatus.Profile.IsBypassed,
-                    Command = new DelegateCommand(async () =>
-                    {
-                        try
-                        {
-                            await this.machineSetupStatusWebService.BayProfileCheckBypassAsync();
-
-                            var r = this.source.First(f => f.Text == InstallationApp.BarrierCalibration);
-                            r.Bypassable = false;
-                            r.Status = InstallationStatus.Complete;
-                            this.RaisePropertyChanged(nameof(this.Source));
-                        }
-                        catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-                        {
-                            this.ShowNotification(ex);
-                        }
-                    }),
+                    Bypassable = !bayStatus.Profile.IsCompleted,
+                    Bypassed = bayStatus.Profile.IsBypassed,
+                    Command = this.BayProfileCheckBypassCommand,
                 });
 
                 if (this.MachineService.HasCarousel)
@@ -243,23 +347,9 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     {
                         Text = "Calibrazione giostra",
                         Status = false ? InstallationStatus.Complete : InstallationStatus.Incomplete,
-                        Bypassable = !bayStatus.CarouselCalibration.IsCompleted || !bayStatus.CarouselCalibration.IsBypassed,
-                        Command = new DelegateCommand(async () =>
-                        {
-                            try
-                            {
-                                await this.machineSetupStatusWebService.BayCarouselCalibrationBypassAsync();
-
-                                var r = this.source.First(f => f.Text == "Calibrazione giostra");
-                                r.Bypassable = false;
-                                r.Status = InstallationStatus.Complete;
-                                this.RaisePropertyChanged(nameof(this.Source));
-                            }
-                            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-                            {
-                                this.ShowNotification(ex);
-                            }
-                        }),
+                        Bypassable = !bayStatus.CarouselCalibration.IsCompleted,
+                        Bypassed = bayStatus.CarouselCalibration.IsBypassed,
+                        Command = this.BayCarouselCalibrationBypassCommand,
                     });
                 }
 
@@ -270,22 +360,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
                         Text = "Test baia esterna",
                         Status = false ? InstallationStatus.Complete : InstallationStatus.Incomplete,
                         Bypassable = false,
-                        Command = new DelegateCommand(async () =>
-                        {
-                            try
-                            {
-                                //await this.machineSetupStatusWebService.CellsPanelCheckBypassAsync();
-
-                                //var r = this.source.First(f => f.Text == "Test baia esterna");
-                                //r.Bypassable = false;
-                                //r.Status = InstallationStatus.Complete;
-                                //this.RaisePropertyChanged(nameof(this.Source));
-                            }
-                            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-                            {
-                                this.ShowNotification(ex);
-                            }
-                        }),
+                        Bypassed = false,
+                        Command = null,
                     });
                 }
 
@@ -295,23 +371,9 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     {
                         Text = "Test serranda",
                         Status = bayStatus.Shutter.InProgress ? InstallationStatus.Inprogress : bayStatus.Shutter.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
-                        Bypassable = !bayStatus.Shutter.IsCompleted || !bayStatus.Shutter.IsBypassed,
-                        Command = new DelegateCommand(async () =>
-                        {
-                            try
-                            {
-                                await this.machineSetupStatusWebService.BayShutterTestBypassAsync();
-
-                                var r = this.source.First(f => f.Text == "Test serranda");
-                                r.Bypassable = false;
-                                r.Status = InstallationStatus.Complete;
-                                this.RaisePropertyChanged(nameof(this.Source));
-                            }
-                            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-                            {
-                                this.ShowNotification(ex);
-                            }
-                        }),
+                        Bypassable = !bayStatus.Shutter.IsCompleted,
+                        Bypassed = bayStatus.Shutter.IsBypassed,
+                        Command = this.BayShutterTestBypassCommand,
                     });
                 }
 
@@ -320,6 +382,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     Text = "Completare i test sulle altre baie",
                     Status = false ? InstallationStatus.Complete : InstallationStatus.Incomplete,
                     Bypassable = false,
+                    Bypassed = false,
                     Command = new DelegateCommand(async () =>
                     {
                     }),
@@ -329,23 +392,9 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 {
                     Text = InstallationApp.LoadFirstDrawerPageHeader,
                     Status = bayStatus.FirstLoadingUnit.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
-                    Bypassable = !bayStatus.FirstLoadingUnit.IsCompleted || !bayStatus.FirstLoadingUnit.IsBypassed,
-                    Command = new DelegateCommand(async () =>
-                    {
-                        try
-                        {
-                            await this.machineSetupStatusWebService.BayFirstLoadingUnitBypassAsync();
-
-                            var r = this.source.First(f => f.Text == InstallationApp.LoadFirstDrawerPageHeader);
-                            r.Bypassable = false;
-                            r.Status = InstallationStatus.Complete;
-                            this.RaisePropertyChanged(nameof(this.Source));
-                        }
-                        catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-                        {
-                            this.ShowNotification(ex);
-                        }
-                    }),
+                    Bypassable = !bayStatus.FirstLoadingUnit.IsCompleted,
+                    Bypassed = bayStatus.FirstLoadingUnit.IsBypassed,
+                    Command = this.BayFirstLoadingUnitBypassCommand,
                 });
 
                 this.source.Add(new ItemListSetupProcedure()
@@ -353,6 +402,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     Text = "Conferma collaudo",
                     Status = status.IsComplete ? InstallationStatus.Complete : InstallationStatus.Incomplete,
                     Bypassable = false,
+                    Bypassed = false,
                     Command = new DelegateCommand(() => { }),
                 });
 

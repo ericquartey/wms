@@ -108,6 +108,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.menuComunicationWMSCommand?.RaiseCanExecuteChanged();
             this.menuUsersCommand?.RaiseCanExecuteChanged();
             this.menuParametersCommand?.RaiseCanExecuteChanged();
+            this.menuDateTimeCommand?.RaiseCanExecuteChanged();
             this.menuParameterInverterCommand?.RaiseCanExecuteChanged();
         }
 

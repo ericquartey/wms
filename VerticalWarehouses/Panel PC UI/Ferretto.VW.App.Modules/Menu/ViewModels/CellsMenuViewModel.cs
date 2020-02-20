@@ -111,6 +111,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public bool IsCellPanelsCheckProcedure => this.CellPanelsCheck.IsCompleted;
 
+        public bool IsCellPanelsCheckProcedureBypassed => this.CellPanelsCheck.IsBypassed;
+
         public SetupStatusCapabilities SetupStatusCapabilities { get; private set; }
 
         #endregion

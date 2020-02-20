@@ -641,7 +641,7 @@
     <comment>Button text</comment>
   </data>
   <data name="NextPanel" xml:space="preserve">
-    <value>Nex panel</value>
+    <value>Next panel</value>
   </data>
   <data name="PanelsControlDescription" xml:space="preserve">
     <value>Panels control procedure</value>
@@ -1764,5 +1764,8 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="Interaxle" xml:space="preserve">
     <value>Interaxle [mm]</value>
+  </data>
+  <data name="NextLarge" xml:space="preserve">
+    <value>Next</value>
   </data>
 </root>

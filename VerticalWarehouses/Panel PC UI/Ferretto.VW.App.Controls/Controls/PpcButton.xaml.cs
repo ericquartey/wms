@@ -32,8 +32,11 @@ namespace Ferretto.VW.App.Controls.Controls
         public static readonly DependencyProperty IsBusyProperty = DependencyProperty.Register(
             nameof(IsBusy), typeof(bool), typeof(PpcButton), new PropertyMetadata(false));
 
+        public static readonly DependencyProperty IsBypassedProperty = DependencyProperty.Register(
+           nameof(IsBypassed), typeof(bool), typeof(PpcButton), new PropertyMetadata(false));
+
         public static readonly DependencyProperty IsCompletedProperty = DependencyProperty.Register(
-            nameof(IsCompleted), typeof(bool), typeof(PpcButton), new PropertyMetadata(false));
+                    nameof(IsCompleted), typeof(bool), typeof(PpcButton), new PropertyMetadata(false));
 
         public static readonly DependencyProperty KindFontAwesomeProperty =
             DependencyProperty.Register(nameof(KindFontAwesome), typeof(PackIconFontAwesomeKind?), typeof(PpcButton), new PropertyMetadata(null));
@@ -119,6 +122,12 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             get => (bool)this.GetValue(IsBusyProperty);
             set => this.SetValue(IsBusyProperty, value);
+        }
+
+        public bool IsBypassed
+        {
+            get => (bool)this.GetValue(IsBypassedProperty);
+            set => this.SetValue(IsBypassedProperty, value);
         }
 
         public bool IsCompleted
