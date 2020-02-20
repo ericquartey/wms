@@ -34,14 +34,15 @@
                                      DimensionHeight="{Binding LoadingUnitDepth}"
                                      DimensionWidth="{Binding LoadingUnitWidth}"
                                      GridLinesColor="#3c3c3c"
-                                     IsRotated="{Binding IsBaySideBack}"
                                      IsEnabled="{Binding IsWaitingForNewOperation, Converter={StaticResource BNC}}"
+                                     IsRotated="{Binding IsBaySideBack}"
                                      SelectedColorFilterFunc="{Binding CompartmentColoringFunction}"
                                      SelectedItem="{Binding SelectedCompartment, Mode=TwoWay}"
                                      ShowBackground="False"
                                      ShowRuler="False" />
 
-            <Grid Grid.Row="1" Visibility="{Binding SelectedCompartment, Converter={StaticResource RTVC}}">
+            <Grid Grid.Row="1"
+                  Visibility="{Binding SelectedCompartment, Converter={StaticResource RTVC}}">
                 <Grid Visibility="{Binding IsOperationVisible, Converter={StaticResource BTVIC}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="720" />
@@ -75,13 +76,12 @@
                 <views:LoadingUnitOperationsView Visibility="{Binding IsOperationVisible, Converter={StaticResource BTVC}}" />
             </Grid>
 
-            <TextBlock
-                        Grid.Row="1"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center"
-                        Visibility="{Binding SelectedCompartment, Converter={StaticResource RTVIC}}"
-                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                        Text="{x:Static res:OperatorApp.SelectCompartment}" />
+            <TextBlock Grid.Row="1"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{x:Static res:OperatorApp.SelectCompartment}"
+                       Visibility="{Binding SelectedCompartment, Converter={StaticResource RTVIC}}" />
         </Grid>
 
         <Grid Name="ListGrid"

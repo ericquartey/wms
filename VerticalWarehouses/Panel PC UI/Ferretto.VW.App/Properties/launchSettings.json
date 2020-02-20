@@ -28,8 +28,8 @@
       "commandName": "Project",
       "environmentVariables": {
         "BAY_NUMBER": "1",
+        "WMS_ENABLED": "true",
         "WMS_DATASERVICE_URL": "http://localhost:10000",
-        "WMS_DATASERVICE_HUBS_DATA_PATH": "http://localhost:10000/hubs/data",
         "LOGOUT_WHEN_UNHEALTHY": "False"
       }
     },
@@ -39,7 +39,6 @@
         "BAY_NUMBER": "1",
         "WMS_ENABLED": "true",
         "WMS_DATASERVICE_URL": "http://server_rd.ferrettogroup.com:10000",
-        "WMS_DATASERVICE_HUBS_DATA_PATH": "http://server_rd.ferrettogroup.com:10000/hubs/data",
         "LOGOUT_WHEN_UNHEALTHY": "False"
       }
     },
@@ -49,7 +48,6 @@
         "BAY_NUMBER": "2",
         "WMS_ENABLED": "true",
         "WMS_DATASERVICE_URL": "http://localhost:10000",
-        "WMS_DATASERVICE_HUBS_DATA_PATH": "http://localhost:10000/hubs/data",
         "LOGOUT_WHEN_UNHEALTHY": "False"
       }
     }
