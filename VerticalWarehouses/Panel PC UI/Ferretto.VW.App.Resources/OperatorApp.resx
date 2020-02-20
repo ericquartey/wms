@@ -1539,4 +1539,8 @@ Please put back any moved pieces in their original position.</value>
   <data name="DrawerCompacting" xml:space="preserve">
     <value>Compacting</value>
   </data>
+  <data name="BlockLevelNeedsTest" xml:space="preserve">
+    <value>NeedsTest</value>
+    <comment>BlockLevel</comment>
+  </data>
 </root>

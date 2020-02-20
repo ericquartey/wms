@@ -47,6 +47,8 @@ namespace Ferretto.VW.MAS.DataLayer
             this.positions.Add(BayNumber.BayTwo, 0);
             this.positions.Add(BayNumber.BayThree, 0);
 
+            this.LoadUnitsToTest = null;
+
             if (dataLayerService.IsReady)
             {
                 this.OnDataLayerReady();
@@ -64,6 +66,8 @@ namespace Ferretto.VW.MAS.DataLayer
         #endregion
 
         #region Properties
+
+        public int? CyclesToTest { get; set; }
 
         public double ElevatorHorizontalPosition { get; set; }
 
@@ -102,6 +106,8 @@ namespace Ferretto.VW.MAS.DataLayer
         public bool IsMachineRunning => (this.MachinePowerState == MachinePowerState.Powered);
 
         public bool? IsOneTonMachine { get; set; }
+
+        public List<int> LoadUnitsToTest { get; set; }
 
         public MachinePowerState MachinePowerState { get; set; }
 
