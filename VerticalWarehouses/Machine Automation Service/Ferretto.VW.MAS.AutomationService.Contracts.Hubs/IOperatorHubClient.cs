@@ -8,6 +8,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         event EventHandler<AssignedMissionChangedEventArgs> AssignedMissionChanged;
 
+        event EventHandler<AssignedMissionOperationChangedEventArgs> AssignedMissionOperationChanged;
+
         event EventHandler<BayStatusChangedEventArgs> BayStatusChanged;
 
         event EventHandler<ErrorStatusChangedEventArgs> ErrorStatusChanged;

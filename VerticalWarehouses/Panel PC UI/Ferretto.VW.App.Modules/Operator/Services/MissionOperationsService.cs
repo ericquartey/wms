@@ -51,6 +51,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
             this.operatorHubClient = operatorHubClient ?? throw new ArgumentNullException(nameof(operatorHubClient));
             this.operatorHubClient.AssignedMissionChanged += async (sender, e) => await this.OnAssignedMissionChangedAsync(sender, e);
+            this.operatorHubClient.AssignedMissionOperationChanged += async (sender, e) => await this.OnAssignedMissionOperationChangedAsync(sender, e);
 
             this.bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
         }
@@ -90,6 +91,7 @@ namespace Ferretto.VW.App.Modules.Operator
         public async Task RecallLoadingUnitAsync(int id)
         {
             await this.loadingUnitsWebService.RemoveFromBayAsync(id);
+
             this.ActiveMachineMission = null;
             this.ActiveWmsMission = null;
             this.ActiveWmsOperation = null;
@@ -124,6 +126,15 @@ namespace Ferretto.VW.App.Modules.Operator
             if (e.BayNumber == this.bayNumber)
             {
                 this.logger.Debug($"Mission assigned to bay has changed to '{e.MissionId}'.");
+                await this.RefreshActiveMissionAsync();
+            }
+        }
+
+        private async Task OnAssignedMissionOperationChangedAsync(object sender, AssignedMissionOperationChangedEventArgs e)
+        {
+            if (e.BayNumber == this.bayNumber)
+            {
+                this.logger.Debug($"New mission operations available.");
                 await this.RefreshActiveMissionAsync();
             }
         }
@@ -219,7 +230,9 @@ namespace Ferretto.VW.App.Modules.Operator
                 ||
                 newWmsOperation?.RequestedQuantity != this.ActiveWmsOperation?.RequestedQuantity
                 ||
-                newWmsOperation?.DispatchedQuantity != this.ActiveWmsOperation?.DispatchedQuantity)
+                newWmsOperation?.DispatchedQuantity != this.ActiveWmsOperation?.DispatchedQuantity
+                ||
+                (newWmsMission != null && this.ActiveWmsMission?.Operations.Any(mo => newWmsMission.Operations.Any(nOp => nOp.Id != mo.Id)) == true))
             {
                 this.ActiveMachineMission = newMachineMission;
                 this.ActiveWmsMission = newWmsMission;

@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
             this.missionsDataProvider.Complete(mission.Id);
 
-            this.NotifyNewMachineMissionAvailable(mission);
+            this.NotifyNewMachineMissionAvailable(mission.TargetBay);
         }
 
         public void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber)
@@ -81,7 +81,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
             var mission = this.missionsDataProvider.CreateBayMission(loadingUnitId, targetBayNumber, MissionType.OUT);
 
-            this.NotifyNewMachineMissionAvailable(mission);
+            this.NotifyNewMachineMissionAvailable(mission.TargetBay);
         }
 
         public void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber, int wmsMissionId, int wmsMissionPriority)
@@ -94,7 +94,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
             var mission = this.missionsDataProvider.CreateBayMission(loadingUnitId, targetBayNumber, wmsMissionId, wmsMissionPriority);
 
-            this.NotifyNewMachineMissionAvailable(mission);
+            this.NotifyNewMachineMissionAvailable(mission.TargetBay);
         }
 
         public void QueueCellMission(int loadingUnitId, int targetCellId)
@@ -173,7 +173,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
             var mission = this.missionsDataProvider.CreateRecallMission(loadingUnitId, sourceBayNumber);
 
-            this.NotifyNewMachineMissionAvailable(mission);
+            this.NotifyNewMachineMissionAvailable(mission.TargetBay);
         }
 
         private bool CompactDownCell(IEnumerable<LoadingUnit> loadUnits, out LoadingUnit loadUnitOut, out int? cellId)
@@ -226,20 +226,15 @@ namespace Ferretto.VW.MAS.MissionManager
             return false;
         }
 
-        private void NotifyNewMachineMissionAvailable(Mission mission)
+        private void NotifyNewMachineMissionAvailable(BayNumber bay)
         {
-            if (mission is null)
-            {
-                throw new ArgumentNullException(nameof(mission));
-            }
-
             var notificationMessage = new NotificationMessage(
                 null,
-                $"New machine mission available for bay {mission.TargetBay}.",
+                $"New machine mission available for bay {bay}.",
                 MessageActor.MissionManager,
                 MessageActor.MissionManager,
                 MessageType.NewMachineMissionAvailable,
-                mission.TargetBay);
+                bay);
 
             this.notificationEvent.Publish(notificationMessage);
         }

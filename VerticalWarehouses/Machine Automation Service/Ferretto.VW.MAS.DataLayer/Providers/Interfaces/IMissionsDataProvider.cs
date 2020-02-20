@@ -41,6 +41,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Mission GetById(int id);
 
+        Mission GetByWmsId(int id);
+
         IDbContextTransaction GetContextTransaction();
 
         bool IsMissionInWaitState(BayNumber bayNumber, int loadingUnitId);

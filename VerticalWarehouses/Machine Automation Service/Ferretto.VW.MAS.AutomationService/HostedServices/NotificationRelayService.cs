@@ -11,12 +11,13 @@ using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.JsonPatch.Operations;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore.Update;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-
 
 namespace Ferretto.VW.MAS.AutomationService
 {
@@ -75,7 +76,7 @@ namespace Ferretto.VW.MAS.AutomationService
                     .ServiceProvider
                     .GetRequiredService<IDataHubClient>();
 
-                dataHubClient.EntityChanged += this.OnDataHubClientEntityChanged;
+                dataHubClient.EntityChanged += async (s, e) => await this.OnDataHubClientEntityChangedAsync(s, e);
                 dataHubClient.ConnectionStatusChanged += this.DataHubClient_ConnectionStatusChanged;
 
                 await dataHubClient.ConnectAsync();
@@ -110,7 +111,7 @@ namespace Ferretto.VW.MAS.AutomationService
             this.Logger.LogTrace("Connection to WMS hub changed (connected={isConnected})", e.IsConnected);
             if (e.IsConnected)
             {
-                this.OnDataHubClientEntityChanged(this, new EntityChangedEventArgs(
+                this.OnDataHubClientEntityChangedAsync(this, new EntityChangedEventArgs(
                     nameof(MissionOperation),
                     null, WMS.Data.Hubs.Models.HubEntityOperation.Created,
                     null,
@@ -118,7 +119,7 @@ namespace Ferretto.VW.MAS.AutomationService
             }
         }
 
-        private void OnDataHubClientEntityChanged(object sender, EntityChangedEventArgs e)
+        private async Task OnDataHubClientEntityChangedAsync(object sender, EntityChangedEventArgs e)
         {
             if (e.Operation != WMS.Data.Hubs.Models.HubEntityOperation.Created)
             {
@@ -142,6 +143,18 @@ namespace Ferretto.VW.MAS.AutomationService
                         this.EventAggregator
                             .GetEvent<NotificationEvent>()
                             .Publish(msg);
+
+                        using (var scope = this.ServiceScopeFactory.CreateScope())
+                        {
+                            var missionWebService = scope.ServiceProvider.GetRequiredService<IMissionOperationsWmsWebService>();
+                            var missionDataProvider = scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
+                            if (int.TryParse(e.Id, out int operationId))
+                            {
+                                var oepration = await missionWebService.GetByIdAsync(operationId);
+                                var mission = missionDataProvider.GetByWmsId(oepration.MissionId);
+                                await this.operatorHub.Clients.All.AssignedMissionOperationChanged(mission.TargetBay);
+                            }
+                        }
                         break;
                     }
             }

@@ -57,7 +57,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public string ItemId => this.MissionOperationsService.ActiveWmsOperation?.ItemId.ToString();
+        public string ItemId => this.missionOperation?.ItemId.ToString();
 
         public string MeasureUnit
         {
@@ -135,6 +135,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.Mission = this.MissionOperationsService.ActiveWmsMission;
             this.MissionOperation = this.MissionOperationsService.ActiveWmsOperation;
+
+            if (this.missionOperation.Type == MissionOperationType.LoadingUnitCheck)
+            {
+                return;
+            }
 
             try
             {

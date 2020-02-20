@@ -312,7 +312,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 {
                     Text = InstallationApp.BeltBurnishingDone,
                     Status = status.BeltBurnishing.InProgress ? InstallationStatus.Inprogress : status.BeltBurnishing.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
-                    Bypassable = !status.BeltBurnishing.IsCompleted || !status.BeltBurnishing.IsBypassed,
+                    Bypassable = !status.BeltBurnishing.IsCompleted,
                     Bypassed = status.BeltBurnishing.IsBypassed,
                     Command = this.BeltBurnishingTestBypassCommand,
                 });
@@ -320,7 +320,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 {
                     Text = InstallationApp.CellsControl,
                     Status = status.CellPanelsCheck.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
-                    Bypassable = !status.CellPanelsCheck.IsCompleted || !status.CellPanelsCheck.IsBypassed,
+                    Bypassable = !status.CellPanelsCheck.IsCompleted,
                     Bypassed = status.CellPanelsCheck.IsBypassed,
                     Command = this.CellsPanelCheckBypassCommand,
                 });
@@ -328,7 +328,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 {
                     Text = InstallationApp.BayHeightCheck,
                     Status = bayStatus.Check.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
-                    Bypassable = !bayStatus.Check.IsCompleted || !bayStatus.Check.IsBypassed,
+                    Bypassable = !bayStatus.Check.IsCompleted,
                     Bypassed = bayStatus.Check.IsBypassed,
                     Command = this.BayHeightCheckBypassCommand,
                 });
@@ -336,7 +336,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 {
                     Text = InstallationApp.BarrierCalibration,
                     Status = bayStatus.Profile.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
-                    Bypassable = !bayStatus.Profile.IsCompleted || !bayStatus.Profile.IsBypassed,
+                    Bypassable = !bayStatus.Profile.IsCompleted,
                     Bypassed = bayStatus.Profile.IsBypassed,
                     Command = this.BayProfileCheckBypassCommand,
                 });
@@ -346,8 +346,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     this.source.Add(new ItemListSetupProcedure()
                     {
                         Text = "Calibrazione giostra",
-                        Status = false ? InstallationStatus.Complete : InstallationStatus.Incomplete,
-                        Bypassable = !bayStatus.CarouselCalibration.IsCompleted || !bayStatus.CarouselCalibration.IsBypassed,
+                        Status = bayStatus.CarouselCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
+                        Bypassable = !bayStatus.CarouselCalibration.IsCompleted,
                         Bypassed = bayStatus.CarouselCalibration.IsBypassed,
                         Command = this.BayCarouselCalibrationBypassCommand,
                     });
@@ -371,7 +371,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     {
                         Text = "Test serranda",
                         Status = bayStatus.Shutter.InProgress ? InstallationStatus.Inprogress : bayStatus.Shutter.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
-                        Bypassable = !bayStatus.Shutter.IsCompleted || !bayStatus.Shutter.IsBypassed,
+                        Bypassable = !bayStatus.Shutter.IsCompleted,
                         Bypassed = bayStatus.Shutter.IsBypassed,
                         Command = this.BayShutterTestBypassCommand,
                     });
@@ -392,7 +392,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 {
                     Text = InstallationApp.LoadFirstDrawerPageHeader,
                     Status = bayStatus.FirstLoadingUnit.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
-                    Bypassable = !bayStatus.FirstLoadingUnit.IsCompleted || !bayStatus.FirstLoadingUnit.IsBypassed,
+                    Bypassable = !bayStatus.FirstLoadingUnit.IsCompleted,
                     Bypassed = bayStatus.FirstLoadingUnit.IsBypassed,
                     Command = this.BayFirstLoadingUnitBypassCommand,
                 });

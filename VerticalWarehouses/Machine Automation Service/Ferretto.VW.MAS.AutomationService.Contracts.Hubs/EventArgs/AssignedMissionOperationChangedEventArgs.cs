@@ -5,13 +5,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         #region Constructors
 
         public AssignedMissionOperationChangedEventArgs(
-            BayNumber bayNumber,
-            int? missionId,
-            int? missionOperationId)
+            BayNumber bayNumber)
         {
             this.BayNumber = bayNumber;
-            this.MissionId = missionId;
-            this.MissionOperationId = missionOperationId;
         }
 
         #endregion
@@ -19,10 +15,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         #region Properties
 
         public BayNumber BayNumber { get; }
-
-        public int? MissionId { get; }
-
-        public int? MissionOperationId { get; }
 
         #endregion
     }
