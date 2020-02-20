@@ -25,6 +25,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void Save(Cell cell);
 
+        void SetCellsToTest();
+
         void SetLoadingUnit(int cellId, int? loadingUnitId);
 
         IEnumerable<Cell> UpdateHeights(int fromCellId, int toCellId, WarehouseSide side, double height);

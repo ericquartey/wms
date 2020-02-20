@@ -14,12 +14,20 @@
 
         Compact,
 
+        FullTest,
+
+        FirstTest,
+
         SwitchingToAutomatic,
 
         SwitchingToManual,
 
         SwitchingToLoadUnitOperations,
 
-        SwitchingToCompact
+        SwitchingToCompact,
+
+        SwitchingToFullTest,
+
+        SwitchingToFirstTest,
     }
 }

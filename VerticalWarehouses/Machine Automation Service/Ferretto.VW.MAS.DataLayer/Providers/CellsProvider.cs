@@ -372,21 +372,40 @@ namespace Ferretto.VW.MAS.DataLayer
                     .ThenBy(t => t.Position)
                     .ToArray();
 
+                // remove all cells to test remained by other tests
                 cells.ForEach(c => { if (c.BlockLevel == BlockLevel.NeedsTest) { c.BlockLevel = BlockLevel.None; } });
 
-                foreach (var cell in cells)
+                // find all border cells: the first and last cell by side and cells near not available cells
+                for (int iCell = 0; iCell < cells.Length; iCell++)
                 {
+                    var cell = cells[iCell];
                     if (cell.BlockLevel == BlockLevel.None)
                     {
-                        var next = cells.FirstOrDefault(c => c.Position > cell.Position && c.Side == cell.Side);
-                        if (next == null || next.BlockLevel != BlockLevel.None)
+                        Cell next = null;
+                        if (iCell < cells.Length - 1
+                            && cells[iCell + 1].Side == cell.Side
+                            )
+                        {
+                            next = cells[iCell + 1];
+                        }
+                        if (next == null
+                            || next.BlockLevel != BlockLevel.None
+                            )
                         {
                             cell.BlockLevel = BlockLevel.NeedsTest;
                         }
                         else
                         {
-                            var prev = cells.LastOrDefault(c => c.Position < cell.Position && c.Side == cell.Side);
-                            if (prev == null || prev.BlockLevel != BlockLevel.None)
+                            Cell prev = null;
+                            if (iCell > 0
+                                && cells[iCell - 1].Side == cell.Side
+                                )
+                            {
+                                prev = cells[iCell - 1];
+                            }
+                            if (prev == null
+                                || prev.BlockLevel != BlockLevel.None
+                                )
                             {
                                 cell.BlockLevel = BlockLevel.NeedsTest;
                             }
