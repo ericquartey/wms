@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 new InjectionFactory(c => new MachineCellsWebService(urlString, resolveFunction(c))));
 
             container.RegisterType<IMachineCellPanelsWebService>(
-               new InjectionFactory(c => new MachineCellPanelsWebService(urlString, resolveFunction(c))));
+                new InjectionFactory(c => new MachineCellPanelsWebService(urlString, resolveFunction(c))));
 
             container.RegisterType<IMachineElevatorWebService>(
                 new InjectionFactory(c => new MachineElevatorWebService(urlString, resolveFunction(c))));
@@ -50,7 +50,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             container.RegisterType<IMachineIdentityWebService>(
                 new InjectionFactory(c => new MachineIdentityWebService(urlString, resolveFunction(c))));
-
 
             container.RegisterType<IMachineSetupStatusWebService>(
                 new InjectionFactory(c => new MachineSetupStatusWebService(urlString, resolveFunction(c))));
@@ -132,6 +131,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             container.RegisterType<IMachineItemsWebService>(
                 new InjectionFactory(c => new MachineItemsWebService(urlString, resolveFunction(c))));
+
+            container.RegisterType<IMachineFirstTestWebService>(
+                new InjectionFactory(c => new MachineFirstTestWebService(urlString, resolveFunction(c))));
 
             return containerRegistry;
         }
