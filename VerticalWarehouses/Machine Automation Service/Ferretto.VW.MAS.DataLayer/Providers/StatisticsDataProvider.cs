@@ -55,7 +55,8 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.LoadingUnits.Sum(s => s.MissionsCount);
+                var statistics = this.dataContext.MachineStatistics.First();
+                return statistics.TotalLoadUnitsInBay1 + statistics.TotalLoadUnitsInBay2 + statistics.TotalLoadUnitsInBay3;
             }
         }
 
@@ -63,7 +64,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.LoadingUnits.Sum(s => s.MissionsCount) * 120.2;
+                return this.dataContext.MachineStatistics.First().TotalVerticalAxisKilometers;
             }
         }
 

@@ -81,6 +81,9 @@ namespace Ferretto.VW.MAS.DataModels
             }
         }
 
+        /// <summary>
+        /// to be used to calculate ABC rotation class
+        /// </summary>
         public int MissionsCount
         {
             get => this.missionsCount;
