@@ -476,7 +476,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.ShowNotification(InstallationApp.AxisVerticalOffsetUpdated, Services.Models.NotificationSeverity.Success);
 
-                this.CurrentStep = VerticalOffsetCalibrationStep.Confirm;
+                this.CurrentStep = VerticalOffsetCalibrationStep.Start;
 
                 this.NavigationService.GoBack();
             }
