@@ -16,8 +16,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Category(Category = nameof(Vertimag.ElevatorAxis), ResourceType = typeof(Vertimag))]
             [CategoryParameter(nameof(ElevatorAxis.Orientation), ValueStringifierType = typeof(EnumValueStringifier))]
-            [FilterProperties(typeof(ElevatorAxis), nameof(ElevatorAxis.Orientation), Orientation.Vertical, nameof(ElevatorAxis.ProfileCalibrateLength), nameof(ElevatorAxis.ProfileCalibratePosition), nameof(ElevatorAxis.ProfileCalibrateSpeed))]
-            [FilterProperties(typeof(ElevatorAxis), nameof(ElevatorAxis.Orientation), Orientation.Horizontal, nameof(ElevatorAxis.VerticalDepositOffset), nameof(ElevatorAxis.VerticalPickupOffset))]
+            [FilterProperties(nameof(ElevatorAxis.Orientation), Orientation.Vertical, nameof(ElevatorAxis.ProfileCalibrateLength), nameof(ElevatorAxis.ProfileCalibratePosition), nameof(ElevatorAxis.ProfileCalibrateSpeed))]
+            [FilterProperties(nameof(ElevatorAxis.Orientation), Orientation.Horizontal, nameof(ElevatorAxis.VerticalDepositOffset), nameof(ElevatorAxis.VerticalPickupOffset))]
             [Offset(50)]
             [Id(10)]
             public IEnumerable<ElevatorAxis> Axes { get; set; }

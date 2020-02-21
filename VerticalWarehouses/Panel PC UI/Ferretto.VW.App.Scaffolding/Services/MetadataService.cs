@@ -128,7 +128,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                         offset = offsetAttribute.Offset;
                     }
 
-                    List<string> exclusionList = null;
+                    List<string> exclusionList = new List<string>();
                     if (prop.TryGetCustomAttribute<HidePropertiesAttribute>(out var hidePropertiesAttribute))
                     {
                         exclusionList = hidePropertiesAttribute.PropertyList;
@@ -214,6 +214,11 @@ namespace Ferretto.VW.App.Scaffolding.Services
                             var category = GetCategoryName(prop, instance, this._culture);
                             string categoryDescription = GetCategoryDescription(prop);
                             var tget = target.Children.FirstOrDefault(c => c.Category == category.Name);
+                            if (filterAttributes != null)
+                            {
+                                exclusionList = exclusionList.Union(filterAttributes.SelectMany(x => x.GetExclusionList(instance))).ToList();
+                            }
+
                             if (tget == null)
                             {
                                 tget = new ScaffoldedStructureInternal

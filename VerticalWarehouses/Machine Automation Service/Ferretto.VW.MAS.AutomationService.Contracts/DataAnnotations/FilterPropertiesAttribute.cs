@@ -11,14 +11,11 @@ namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
     {
         #region Constructors
 
-        public FilterPropertiesAttribute(Type type, string propertyName, object value, params string[] propertyList)
+        public FilterPropertiesAttribute(string propertyName, object value, params string[] propertyList)
         {
-            this.Type = type ?? throw new ArgumentNullException(nameof(type));
             this.PropertyName = propertyName ?? throw new ArgumentNullException(nameof(propertyName));
             this.Value = value ?? throw new ArgumentNullException(nameof(value));
             this.PropertyList = new List<string>(propertyList ?? throw new ArgumentNullException(nameof(propertyList)));
-
-            this.PropertyInfo = type.GetProperty(propertyName);
         }
 
         #endregion
@@ -29,11 +26,7 @@ namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
 
         public string PropertyName { get; }
 
-        public Type Type { get; }
-
         public object Value { get; }
-
-        private PropertyInfo PropertyInfo { get; }
 
         #endregion
 
@@ -41,12 +34,14 @@ namespace Ferretto.VW.MAS.Scaffolding.DataAnnotations
 
         public List<string> GetExclusionList(object item)
         {
-            var currentValue = this.PropertyInfo.GetValue(item);
             var result = new List<string>();
-
-            if (currentValue.Equals(this.Value))
+            if (item != null)
             {
-                return this.PropertyList;
+                var currentValue = item.GetType().GetProperty(this.PropertyName).GetValue(item);
+                if (currentValue != null && currentValue.Equals(this.Value))
+                {
+                    return this.PropertyList;
+                }
             }
             return result;
         }
