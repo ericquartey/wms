@@ -1998,6 +1998,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         FirstTestFailed = 66,
     
+        WarehouseNotEmpty = 67,
+    
         InverterErrorBaseCode = 1000,
     
         InverterErrorInvalidParameter = 1001,

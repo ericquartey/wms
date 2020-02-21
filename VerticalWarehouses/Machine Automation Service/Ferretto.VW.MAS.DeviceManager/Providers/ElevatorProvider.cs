@@ -1340,7 +1340,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if (this.machineVolatileDataProvider.Mode == MachineMode.FirstTest)
             {
                 // during first load unit test the feedrate is fixed to half speed
-                feedRate = 0.5;
+                feedRate /= 2;
             }
             var speed = new[] { movementParameters.Speed * (sender == MessageActor.AutomationService ? feedRate : 1) };
 

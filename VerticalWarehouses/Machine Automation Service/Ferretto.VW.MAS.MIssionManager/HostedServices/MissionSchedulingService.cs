@@ -144,7 +144,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 if (loadingUnitsDataProvider.CountIntoMachine() > 0)
                 {
                     this.Logger.LogError($"First Test error: warehouse is not empty!");
-                    errorsProvider.RecordNew(MachineErrorCode.WarehouseIsFull, machineProvider.BayTestNumber);
+                    errorsProvider.RecordNew(MachineErrorCode.WarehouseNotEmpty, machineProvider.BayTestNumber);
                     return false;
                 }
                 machineProvider.RequiredCycles = cellsProvider.SetCellsToTest();
