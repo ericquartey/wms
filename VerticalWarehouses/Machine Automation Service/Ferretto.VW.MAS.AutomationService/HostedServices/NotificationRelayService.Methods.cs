@@ -192,6 +192,15 @@ namespace Ferretto.VW.MAS.AutomationService
             await this.installationHub.Clients.All.MoveLoadingUnit(messageToUi);
         }
 
+        private async Task OnMoveTest(NotificationMessage receivedMessage)
+        {
+            if (receivedMessage.Data is MoveTestMessageData)
+            {
+                var messageToUi = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+                await this.installationHub.Clients.All.MoveTest(messageToUi);
+            }
+        }
+
         private async Task OnPositioningChanged(NotificationMessage receivedMessage)
         {
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
