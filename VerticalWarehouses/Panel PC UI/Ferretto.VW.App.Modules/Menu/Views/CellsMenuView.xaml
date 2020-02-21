@@ -83,6 +83,8 @@
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding CellsHeightCheckCommand}"
                                         Content="Verifica la quota di una o più celle"
+                                        IsBypassed="{Binding IsCellsHeightCheckProcedureBypassed}"
+                                        IsCompleted="{Binding IsCellsHeightCheckProcedure}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
@@ -103,6 +105,8 @@
                                         BorderBrush="{DynamicResource FerrettoOrange}"
                                         Command="{Binding BayFirstLoadingUnitCommand}"
                                         Content="Carico primo cassetto e test celle"
+                                        IsBypassed="{Binding IsBayFirstLoadingUnitProcedureBypassed}"
+                                        IsCompleted="{Binding IsBayFirstLoadingUnitProcedure}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
