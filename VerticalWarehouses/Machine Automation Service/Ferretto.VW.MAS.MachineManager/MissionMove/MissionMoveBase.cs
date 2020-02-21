@@ -292,7 +292,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         try
                         {
                             this.CellsProvider.SetLoadingUnit(sourceCellId.Value, null);
-                            this.MachineProvider.UpdateServiceStatistics();
+                            if (this.Mission.LoadUnitDestination == LoadingUnitLocation.Cell)
+                            {
+                                this.MachineProvider.UpdateServiceStatistics();
+                            }
                         }
                         catch (Exception ex)
                         {
