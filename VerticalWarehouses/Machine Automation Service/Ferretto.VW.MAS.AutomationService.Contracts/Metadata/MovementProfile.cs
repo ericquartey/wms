@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public IEnumerable<StepMovementParameters> Steps { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.TotalDistance))]
-            [Unit("mm/s")]
+            [Unit("mm")]
             [Id(1)]
             public double TotalDistance { get; set; }
 
