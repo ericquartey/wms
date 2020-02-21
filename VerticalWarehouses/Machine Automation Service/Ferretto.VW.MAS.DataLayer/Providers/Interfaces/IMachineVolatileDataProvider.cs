@@ -10,9 +10,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         BayNumber BayTestNumber { get; set; }
 
-        int CyclesTested { get; set; }
+        int ExecutedCycles { get; set; }
 
-        int? CyclesToTest { get; set; }
+        int? RequiredCycles { get; set; }
 
         double ElevatorHorizontalPosition { get; set; }
 
