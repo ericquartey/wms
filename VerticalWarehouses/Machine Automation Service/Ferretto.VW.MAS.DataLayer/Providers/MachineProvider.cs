@@ -339,6 +339,18 @@ namespace Ferretto.VW.MAS.DataLayer
                         default:
                             throw new ArgumentOutOfRangeException(nameof(bayNumber));
                     }
+                    var servicingInfo = this.dataContext.ServicingInfo.FirstOrDefault();
+                    if (servicingInfo != null)
+                    {
+                        if (servicingInfo.TotalMissions.HasValue)
+                        {
+                            servicingInfo.TotalMissions++;
+                        }
+                        else
+                        {
+                            servicingInfo.TotalMissions = 1;
+                        }
+                    }
                     this.dataContext.SaveChanges();
                 }
             }

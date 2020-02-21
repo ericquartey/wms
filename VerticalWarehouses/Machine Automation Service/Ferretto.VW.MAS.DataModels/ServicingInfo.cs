@@ -14,6 +14,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public DateTime? NextServiceDate { get; set; }
 
+        public int? TotalMissions { get; set; }
+
         public MachineServiceStatus ServiceStatus { get; set; } = MachineServiceStatus.Valid;
 
         #endregion
