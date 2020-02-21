@@ -1695,4 +1695,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="Interaxle" xml:space="preserve">
     <value>Interasse [mm]</value>
   </data>
+  <data name="FirstTest" xml:space="preserve">
+    <value>Primo Test</value>
+  </data>
 </root>
