@@ -42,6 +42,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineShuttersWebService machineShuttersWebService;
 
+        private readonly IMachineVerticalOriginProcedureWebService verticalOriginProcedureWebService;
+
         private BayCheckStep currentStep;
 
         private DelegateCommand displacementCommand;
@@ -49,6 +51,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private decimal? displacementDown;
 
         private decimal? displacementUp;
+
+        private double lowerBound;
 
         private DelegateCommand moveToBayPositionCommand;
 
@@ -78,12 +82,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineElevatorWebService machineElevatorWebService,
             IMachineShuttersWebService machineShuttersWebService,
             IMachineBaysWebService machineBaysWebService,
+            IMachineVerticalOriginProcedureWebService verticalOriginProcedureWebService,
             IDialogService dialogService)
             : base(PresentationMode.Installer)
         {
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.machineShuttersWebService = machineShuttersWebService ?? throw new ArgumentNullException(nameof(machineShuttersWebService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
+            this.verticalOriginProcedureWebService = verticalOriginProcedureWebService ?? throw new ArgumentNullException(nameof(verticalOriginProcedureWebService));
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
 
             this.CurrentStep = BayCheckStep.PositionUp;
@@ -144,6 +150,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool HasStepPositionUp => this.currentStep is BayCheckStep.PositionUp;
 
         public bool IsCanStepValue => this.CanBaseExecute();
+
+        public double LowerBound
+        {
+            get => this.lowerBound;
+            set => this.SetProperty(ref this.lowerBound, value);
+        }
 
         public ICommand MoveToBayPositionCommand =>
             this.moveToBayPositionCommand
@@ -272,7 +284,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected override async Task OnDataRefreshAsync()
         {
-            await this.SensorsService.RefreshAsync(true);
+            try
+            {
+                await this.SensorsService.RefreshAsync(true);
+                await this.GetLowerBound();
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -292,11 +316,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                //var messageBoxResult = this.dialogService.ShowMessage("", InstallationApp.HighPositionControl, DialogType.Question, DialogButtons.YesNo);
-                //if (messageBoxResult == DialogResult.No)
-                //{
-                //    return;
-                //}
+                if (this.LowerBound > this.NewPositionDown)
+                {
+                    var messageBoxResult = this.dialogService.ShowMessage("Il seguente risultato modificherà il valore LowerBound della macchina, continuare?", InstallationApp.LowPositionControl, DialogType.Question, DialogButtons.YesNo);
+                    if (messageBoxResult == DialogResult.No)
+                    {
+                        return;
+                    }
+
+                    await this.machineElevatorWebService.UpdateVerticalLowerBoundAsync(this.NewPositionDown);
+
+                    await this.GetLowerBound();
+                }
 
                 this.IsWaitingForResponse = true;
 
@@ -429,6 +460,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        private async Task GetLowerBound()
+        {
+            var procedureParameters = await this.verticalOriginProcedureWebService.GetParametersAsync();
+
+            this.LowerBound = procedureParameters.LowerBound;
         }
 
         private void MachineService_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

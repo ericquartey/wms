@@ -1115,6 +1115,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("ServiceStatus");
 
+                    b.Property<int?>("TotalMissions");
+
                     b.HasKey("Id");
 
                     b.ToTable("ServicingInfo");
