@@ -214,6 +214,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     InstallationDate = table.Column<DateTime>(nullable: true),
                     LastServiceDate = table.Column<DateTime>(nullable: true),
                     NextServiceDate = table.Column<DateTime>(nullable: true),
+                    TotalMissions = table.Column<int>(nullable: true),
                     ServiceStatus = table.Column<int>(nullable: false)
                 },
                 constraints: table =>

@@ -315,7 +315,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void UpdateBayLoadUnitStatistics(BayNumber bayNumber)
+        public void UpdateBayLoadUnitStatistics(BayNumber bayNumber, int loadUnitId)
         {
             lock (this.dataContext)
             {
@@ -339,6 +339,19 @@ namespace Ferretto.VW.MAS.DataLayer
                         default:
                             throw new ArgumentOutOfRangeException(nameof(bayNumber));
                     }
+
+                    var loadUnit = this.dataContext.LoadingUnits.FirstOrDefault(l => l.Id == loadUnitId);
+                    if (loadUnit != null)
+                    {
+                        loadUnit.MissionsCount++;
+                    }
+
+                    var servicingInfo = this.dataContext.ServicingInfo.FirstOrDefault();
+                    if (servicingInfo != null)
+                    {
+                        servicingInfo.TotalMissions = (servicingInfo.TotalMissions.HasValue ? servicingInfo.TotalMissions + 1 : 1);
+                    }
+
                     this.dataContext.SaveChanges();
                 }
             }

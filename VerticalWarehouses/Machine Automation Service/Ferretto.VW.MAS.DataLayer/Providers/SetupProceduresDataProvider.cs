@@ -328,6 +328,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     existingProcedure.IsBypassed = true;
                 }
+                else if (!bypassed && existingProcedure.IsBypassed)
+                {
+                    existingProcedure.IsBypassed = false;
+                }
 
                 if (existingProcedure is RepeatedTestProcedure repeatedTestProcedure)
                 {

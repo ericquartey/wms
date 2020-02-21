@@ -385,6 +385,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("vertical/lowerbound")]
+        public IActionResult UpdateVerticalLowerBound(double newLowerBound)
+        {
+            this.elevatorDataProvider.UpdateVerticalLowerBound(newLowerBound);
+            return this.Ok();
+        }
+
         [HttpPost("vertical/resolution")]
         public IActionResult UpdateVerticalResolution(double newResolution)
         {

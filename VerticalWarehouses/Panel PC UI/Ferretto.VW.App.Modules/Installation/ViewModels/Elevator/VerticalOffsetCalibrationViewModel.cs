@@ -33,6 +33,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
+        private readonly IDialogService dialogService;
+
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
         private readonly IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService;
@@ -91,13 +93,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineElevatorWebService machineElevatorWebService,
             IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService,
             IMachineVerticalOriginProcedureWebService verticalOriginProcedureWebService,
-            IMachineVerticalOffsetProcedureWebService verticalOffsetWebService)
+            IMachineVerticalOffsetProcedureWebService verticalOffsetWebService,
+            IDialogService dialogService)
             : base(PresentationMode.Installer)
         {
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.verticalOriginProcedureWebService = verticalOriginProcedureWebService ?? throw new ArgumentNullException(nameof(verticalOriginProcedureWebService));
             this.verticalOffsetWebService = verticalOffsetWebService ?? throw new ArgumentNullException(nameof(verticalOffsetWebService));
             this.resolutionCalibrationWebService = resolutionCalibrationWebService ?? throw new ArgumentNullException(nameof(resolutionCalibrationWebService));
+            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
 
             this.CurrentStep = VerticalOffsetCalibrationStep.Start;
         }
@@ -372,10 +376,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (!this.CurrentVerticalOffset.HasValue || this.AxisUpperBound == 0 || this.AxisLowerBound == 0 || this.StartPosition == 0)
                 {
                     await this.RetrieveVerticalOffset();
-
-                    var procedureParameters = await this.verticalOriginProcedureWebService.GetParametersAsync();
-                    this.AxisUpperBound = procedureParameters.UpperBound;
-                    this.AxisLowerBound = procedureParameters.LowerBound;
+                    await this.GetLowerBound();
 
                     var procedureCalibrationParameters = await this.resolutionCalibrationWebService.GetParametersAsync();
                     this.StartPosition = procedureCalibrationParameters.StartPosition;
@@ -452,6 +453,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
+                if (this.AxisLowerBound > this.NewDisplacement)
+                {
+                    var messageBoxResult = this.dialogService.ShowMessage("Il seguente risultato modificherà il valore LowerBound della macchina, continuare?", InstallationApp.VerticalOffsetCalibration, DialogType.Question, DialogButtons.YesNo);
+                    if (messageBoxResult == DialogResult.No)
+                    {
+                        return;
+                    }
+
+                    await this.machineElevatorWebService.UpdateVerticalLowerBoundAsync(this.NewDisplacement);
+
+                    await this.GetLowerBound();
+                }
+
                 this.IsWaitingForResponse = true;
 
                 await this.verticalOffsetWebService.CompleteAsync(this.NewDisplacement);
@@ -554,6 +568,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        private async Task GetLowerBound()
+        {
+            var procedureParameters = await this.verticalOriginProcedureWebService.GetParametersAsync();
+            this.AxisUpperBound = procedureParameters.UpperBound;
+            this.AxisLowerBound = procedureParameters.LowerBound;
         }
 
         private async Task RetrieveVerticalOffset()
