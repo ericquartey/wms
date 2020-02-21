@@ -11,6 +11,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
+        private readonly IServicingProvider servicingProvider;
+
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
         private readonly ISetupStatusProvider setupStatusProvider;
@@ -20,10 +22,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Constructors
 
         public SetupStatusController(ISetupStatusProvider setupStatusProvider,
-            ISetupProceduresDataProvider setupProceduresDataProvider)
+            ISetupProceduresDataProvider setupProceduresDataProvider,
+            IServicingProvider servicingProvider)
         {
             this.setupStatusProvider = setupStatusProvider ?? throw new System.ArgumentNullException(nameof(setupStatusProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new System.ArgumentNullException(nameof(setupProceduresDataProvider));
+            this.servicingProvider = servicingProvider ?? throw new System.ArgumentNullException(nameof(servicingProvider));
         }
 
         #endregion
@@ -96,6 +100,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult CellsPanelCheckBypass()
         {
             this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetCellPanelsCheck(), true);
+            return this.Ok();
+        }
+
+        [HttpPost("confirm-setup")]
+        public IActionResult ConfirmSetup()
+        {
+            this.servicingProvider.SetInstallationDate();
             return this.Ok();
         }
 

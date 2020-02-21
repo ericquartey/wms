@@ -19,6 +19,12 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
+        <controls:PpcButton Margin="15,15,0,0"
+                            HorizontalAlignment="Right"
+                            Command="{Binding ConfirmSetupCommand}"
+                            Content="Conferma Collaudo"
+                            Visibility="{Binding IsGeneralActive, Converter={StaticResource ResourceKey=BTVC}}" />
+
         <controls:PpcButton Grid.Column="1"
                             Margin="15,15,0,0"
                             Command="{Binding MenuMovementsCommand}"
