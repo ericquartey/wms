@@ -24,6 +24,8 @@
 
         public SetupStepStatus FirstLoadingUnit { get; set; }
 
+        public bool IsAllTestCompleted { get; set; }
+
         public SetupStepStatus Laser { get; set; }
 
         public SetupStepStatus Profile { get; set; }
