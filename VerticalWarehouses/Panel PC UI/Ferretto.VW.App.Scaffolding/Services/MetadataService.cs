@@ -25,6 +25,12 @@ namespace Ferretto.VW.App.Scaffolding.Services
             return attribute != null;
         }
 
+        public static bool TryGetCustomAttributes<T>(this MemberInfo member, out T[] attributes) where T : Attribute
+        {
+            attributes = (member ?? throw new ArgumentNullException(nameof(member))).GetCustomAttributes<T>().ToArray();
+            return attributes != null;
+        }
+
         private static Models.ScaffoldedEntity Publish(this ScaffoldedEntityInternal entity)
             => new Models.ScaffoldedEntity(entity.Property, entity.Instance, entity.Metadata, entity.Id);
 
@@ -128,6 +134,8 @@ namespace Ferretto.VW.App.Scaffolding.Services
                         exclusionList = hidePropertiesAttribute.PropertyList;
                     }
 
+                    prop.TryGetCustomAttributes<FilterPropertiesAttribute>(out var filterAttributes);
+
                     #region array? (must have Category AND CategoryParameter attributes)
 
                     // flattening
@@ -185,6 +193,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                                     Category = category.Name,
                                     Parent = target,
                                     Description = categoryDescription,
+                                    ExclusionList = filterAttributes.SelectMany(x => x.GetExclusionList(item)).ToList(),
                                     CategoryParameter = category.FirstParameter,
                                     Id = target.Id + id + (offset * index)
                                 };

@@ -312,7 +312,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     var bayPosition = this.BaysDataProvider.GetPositionByLocation(this.Mission.LoadUnitSource);
                     this.BaysDataProvider.SetLoadingUnit(bayPosition.Id, null);
-                    this.MachineProvider.UpdateBayLoadUnitStatistics(this.Mission.TargetBay);
+                    this.MachineProvider.UpdateBayLoadUnitStatistics(this.Mission.TargetBay, this.Mission.LoadUnitId);
                 }
 
                 transaction.Commit();
