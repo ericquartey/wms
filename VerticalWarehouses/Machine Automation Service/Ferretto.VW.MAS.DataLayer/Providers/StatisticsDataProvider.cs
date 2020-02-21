@@ -55,8 +55,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var statistics = this.dataContext.MachineStatistics.First();
-                return statistics.TotalLoadUnitsInBay1 + statistics.TotalLoadUnitsInBay2 + statistics.TotalLoadUnitsInBay3;
+                return this.dataContext.ServicingInfo.FirstOrDefault()?.TotalMissions ?? 0;
             }
         }
 

@@ -346,12 +346,6 @@ namespace Ferretto.VW.MAS.DataLayer
                         loadUnit.MissionsCount++;
                     }
 
-                    var servicingInfo = this.dataContext.ServicingInfo.FirstOrDefault();
-                    if (servicingInfo != null)
-                    {
-                        servicingInfo.TotalMissions = (servicingInfo.TotalMissions.HasValue ? servicingInfo.TotalMissions + 1 : 1);
-                    }
-
                     this.dataContext.SaveChanges();
                 }
             }
@@ -379,6 +373,19 @@ namespace Ferretto.VW.MAS.DataLayer
                 if (machineStat != null)
                 {
                     machineStat.TotalMissionTime = machineStat.TotalMissionTime + duration;
+                    this.dataContext.SaveChanges();
+                }
+            }
+        }
+
+        public void UpdateServiceStatistics()
+        {
+            lock (this.dataContext)
+            {
+                var servicingInfo = this.dataContext.ServicingInfo.FirstOrDefault();
+                if (servicingInfo != null)
+                {
+                    servicingInfo.TotalMissions = (servicingInfo.TotalMissions.HasValue ? servicingInfo.TotalMissions + 1 : 1);
                     this.dataContext.SaveChanges();
                 }
             }
