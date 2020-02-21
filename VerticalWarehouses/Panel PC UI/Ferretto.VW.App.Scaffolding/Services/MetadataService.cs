@@ -161,7 +161,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                                 }
 
                                 var category = GetCategoryName(elementType, format, item, this._culture, categoryParameters.ToArray());
-                                string categoryDescription = GetCategoryDescription(elementType);
+                                string categoryDescription = GetCategoryDescription(prop);
                                 var newBranch = target.Children.FirstOrDefault(b => b.Category == category.Name);
                                 if (newBranch != null)
                                 {
