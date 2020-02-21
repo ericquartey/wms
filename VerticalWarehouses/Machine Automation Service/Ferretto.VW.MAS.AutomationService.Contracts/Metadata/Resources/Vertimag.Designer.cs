@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Acceleration.
+        ///   Looks up a localized string similar to Accelerazione.
         /// </summary>
         public static string Acceleration {
             get {
@@ -340,7 +340,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deceleration.
+        ///   Looks up a localized string similar to Decelerazione.
         /// </summary>
         public static string Deceleration {
             get {
@@ -1015,7 +1015,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Speed.
+        ///   Looks up a localized string similar to Velocità.
         /// </summary>
         public static string Speed {
             get {

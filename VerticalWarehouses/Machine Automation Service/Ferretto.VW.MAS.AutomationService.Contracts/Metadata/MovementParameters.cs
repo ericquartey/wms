@@ -14,22 +14,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             #region Properties
 
             [Id(1)]
-            [Editable(false)]
+            [Editable(true)]
+            [Unit("mm/s²")]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Acceleration))]
             public double Acceleration { get; set; }
 
             [Id(2)]
-            [Editable(false)]
+            [Editable(true)]
+            [Unit("mm/s²")]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Deceleration))]
             public double Deceleration { get; set; }
 
-            [Id(4)]
-            [Editable(false)]
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.FeedRate))]
-            public double FeedRate { get; set; }
-
             [Id(3)]
-            [Editable(false)]
+            [Editable(true)]
+            [Unit("mm/s")]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Speed))]
             public double Speed { get; set; }
 

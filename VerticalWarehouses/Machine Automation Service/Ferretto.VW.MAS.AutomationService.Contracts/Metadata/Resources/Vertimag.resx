@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Acceleration" xml:space="preserve">
-    <value>Acceleration</value>
+    <value>Accelerazione</value>
   </data>
   <data name="AssistedMovements" xml:space="preserve">
     <value>Movimenti guidati</value>
@@ -211,7 +211,7 @@
     <value>Velocità homing fast</value>
   </data>
   <data name="Deceleration" xml:space="preserve">
-    <value>Deceleration</value>
+    <value>Decelerazione</value>
   </data>
   <data name="Elevator" xml:space="preserve">
     <value>Elevatore</value>
@@ -436,7 +436,7 @@
     <value>Tipo serranda</value>
   </data>
   <data name="Speed" xml:space="preserve">
-    <value>Speed</value>
+    <value>Velocità</value>
   </data>
   <data name="TargetDistance" xml:space="preserve">
     <value>Max spazio percorribile con comandi manuali</value>
