@@ -90,7 +90,7 @@
                                FontSize="{StaticResource FontSize_Normal}"
                                FontWeight="Normal"
                                Foreground="{DynamicResource FerrettoLightGray}"
-                               Text="Cicli totali completati" />
+                               Text="Cicli sessione" />
 
                     <TextBlock Grid.Row="1"
                                Margin="4,0,4,4"
@@ -98,7 +98,7 @@
                                VerticalAlignment="Center"
                                FontSize="{StaticResource FontSize_Very_High}"
                                Foreground="{DynamicResource PpcForeground}"
-                               Text="{Binding CumulativePerformedCycles}"
+                               Text="{Binding PerformedCyclesThisSession}"
                                TextWrapping="Wrap" />
 
                 </Grid>
@@ -161,7 +161,7 @@
                                FontSize="{StaticResource FontSize_Normal}"
                                FontWeight="Normal"
                                Foreground="{DynamicResource FerrettoLightGray}"
-                               Text="Cicli sessione" />
+                               Text="Cicli totali completati" />
 
                     <StackPanel Grid.Row="1"
                                 Margin="4"
@@ -173,7 +173,7 @@
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Very_High}"
                                    Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding PerformedCyclesThisSession}" />
+                                   Text="{Binding CumulativePerformedCycles}" />
                         <TextBlock Margin="4,0,4,4"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
