@@ -11,6 +11,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         MachineErrorCode CheckWeight(int id);
 
+        int CountIntoMachine();
+
         IEnumerable<LoadingUnit> GetAll();
 
         /// <summary>

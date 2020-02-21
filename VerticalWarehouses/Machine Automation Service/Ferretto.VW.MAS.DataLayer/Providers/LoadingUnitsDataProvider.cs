@@ -93,6 +93,15 @@ namespace Ferretto.VW.MAS.DataLayer
             return check;
         }
 
+        public int CountIntoMachine()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.LoadingUnits
+                    .Count(l => l.IsIntoMachine);
+            }
+        }
+
         public IEnumerable<LoadingUnit> GetAll()
         {
             lock (this.dataContext)
