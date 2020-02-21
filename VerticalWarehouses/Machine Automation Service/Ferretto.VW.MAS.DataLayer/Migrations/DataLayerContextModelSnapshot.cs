@@ -288,9 +288,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double>("FeedRateAfterZero");
 
-                    b.Property<double>("TargetDistance");
+                    b.Property<double?>("TargetDistance");
 
-                    b.Property<double>("TargetDistanceAfterZero");
+                    b.Property<double?>("TargetDistanceAfterZero");
 
                     b.HasKey("Id");
 
@@ -656,6 +656,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 65,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 66,
                             TotalErrors = 0
                         },
                         new

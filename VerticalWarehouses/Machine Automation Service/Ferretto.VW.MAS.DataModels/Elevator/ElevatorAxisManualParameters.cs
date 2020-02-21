@@ -44,9 +44,9 @@ namespace Ferretto.VW.MAS.DataModels
             }
         }
 
-        public double TargetDistance { get; set; }
+        public double? TargetDistance { get; set; }
 
-        public double TargetDistanceAfterZero { get; set; }
+        public double? TargetDistanceAfterZero { get; set; }
 
         #endregion
     }
