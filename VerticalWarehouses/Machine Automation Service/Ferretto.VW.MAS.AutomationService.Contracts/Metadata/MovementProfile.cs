@@ -21,10 +21,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Category("Steps {0}")]
             [CategoryParameter(nameof(StepMovementParameters.Number))]
+            [Offset(10)]
             public IEnumerable<StepMovementParameters> Steps { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.TotalDistance))]
             [Unit("mm/s")]
+            [Id(1)]
             public double TotalDistance { get; set; }
 
             #endregion
