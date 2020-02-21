@@ -62,16 +62,16 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
                 case MachineMode.FullTest:
                     this.machineVolatileDataProvider.LoadUnitsToTest = loadUnits;
-                    this.machineVolatileDataProvider.CyclesToTest = cycles;
+                    this.machineVolatileDataProvider.RequiredCycles = cycles;
                     this.machineVolatileDataProvider.BayTestNumber = bayNumber;
-                    this.machineVolatileDataProvider.CyclesTested = 0;
+                    this.machineVolatileDataProvider.ExecutedCycles = 0;
                     this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFullTest;
                     break;
 
                 case MachineMode.FirstTest:
                     this.machineVolatileDataProvider.LoadUnitsToTest = loadUnits;
                     this.machineVolatileDataProvider.BayTestNumber = bayNumber;
-                    this.machineVolatileDataProvider.CyclesTested = 0;
+                    this.machineVolatileDataProvider.ExecutedCycles = 0;
                     this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFirstTest;
                     break;
 

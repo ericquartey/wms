@@ -70,13 +70,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public BayNumber BayTestNumber { get; set; }
 
-        public int CyclesTested { get; set; }
-
-        public int? CyclesToTest { get; set; }
-
         public double ElevatorHorizontalPosition { get; set; }
 
         public double ElevatorVerticalPosition { get; set; }
+
+        public int ExecutedCycles { get; set; }
 
         public Dictionary<BayNumber, bool> IsBayHomingExecuted { get; set; }
 
@@ -138,6 +136,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
             }
         }
+
+        public int? RequiredCycles { get; set; }
 
         public MachineMode UiFilteredMode
         {

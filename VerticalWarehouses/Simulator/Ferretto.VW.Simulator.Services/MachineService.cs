@@ -141,6 +141,11 @@ namespace Ferretto.VW.Simulator.Services
                 {
                     this.MinProfileHeight.Add(bayPosition.Location, (int)Math.Round((this.machine.LoadUnitMinHeight - bayPosition.ProfileOffset + 181.25) / 0.090625));
                     var maxHeight = (bayPosition.MaxDoubleHeight > 0) ? bayPosition.MaxDoubleHeight : bayPosition.MaxSingleHeight;
+                    if (maxHeight > this.machine.LoadUnitMaxHeight)
+                    {
+                        Debug.WriteLine($"{DateTime.Now}: Warning: configuration error! max bay height {maxHeight} > LoadUnitMaxHeight {this.machine.LoadUnitMaxHeight}");
+                        maxHeight = this.machine.LoadUnitMaxHeight;
+                    }
                     // simulate height errors
                     //maxHeight *= 1.1;
 
@@ -148,6 +153,7 @@ namespace Ferretto.VW.Simulator.Services
                     if (this.MaxProfileHeight[bayPosition.Location] > this.MaxProfileHeight[LoadingUnitLocation.NoLocation])
                     {
                         // warning: configuration error!!!
+                        Debug.WriteLine($"{DateTime.Now}: Warning: configuration error! max profile height {this.MaxProfileHeight[bayPosition.Location]} > 10000");
                         this.MaxProfileHeight[bayPosition.Location] = this.MaxProfileHeight[LoadingUnitLocation.NoLocation];
                     }
                 }
