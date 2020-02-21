@@ -257,7 +257,10 @@ namespace Ferretto.VW.App.Scaffolding.Controls
                 object value = entity.Property.GetValue(entity.Instance);
                 if (value != e.Value && (value?.Equals(e.Value) != true))
                 {
-                    entity.Property.SetValue(entity.Instance, Convert.ChangeType(e.Value, entity.Property.PropertyType, System.Globalization.CultureInfo.CurrentCulture));
+                    Type t = Nullable.GetUnderlyingType(entity.Property.PropertyType) ?? entity.Property.PropertyType;
+                    object safeValue = (value == null) ? null : Convert.ChangeType(e.Value, t, System.Globalization.CultureInfo.CurrentCulture);
+                    entity.Property.SetValue(entity.Instance, safeValue);
+
                     // trigger property change
                     CollectionViewSource.GetDefaultView(this.Entities).Refresh();
                     // broadcast commit
