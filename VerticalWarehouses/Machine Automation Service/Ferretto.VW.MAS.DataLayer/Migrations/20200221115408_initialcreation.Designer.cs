@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20200221085853_initialcreation")]
+    [Migration("20200221115408_initialcreation")]
     partial class initialcreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1116,6 +1116,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<DateTime?>("NextServiceDate");
 
                     b.Property<int>("ServiceStatus");
+
+                    b.Property<int?>("TotalMissions");
 
                     b.HasKey("Id");
 
