@@ -79,7 +79,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var operation = await this.missionOperationsWmsWebService.ExecuteAsync(id);
             var mission = await this.missionsWmsWebService.GetDetailsByIdAsync(operation.MissionId);
 
-            var compartment = mission.LoadingUnit.Compartments?.SingleOrDefault(c => c.Id == operation.CompartmentId);
+            var compartment = mission.LoadingUnit?.Compartments?.SingleOrDefault(c => c.Id == operation.CompartmentId);
             if (compartment != null && compartment.XPosition.HasValue && compartment.YPosition.HasValue)
             {
                 var laserOriginX = mission.LoadingUnit.Width / 2;

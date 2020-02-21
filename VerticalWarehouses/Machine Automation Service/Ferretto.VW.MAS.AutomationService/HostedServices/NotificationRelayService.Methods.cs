@@ -134,6 +134,11 @@ namespace Ferretto.VW.MAS.AutomationService
             }
 
             baysDataProvider.AddElevatorPseudoBay();
+
+            var client = serviceProvider.GetRequiredService<System.Net.Http.HttpClient>();
+            client.DefaultRequestHeaders.Add(
+                   "Machine-Id",
+                   serviceProvider.GetRequiredService<IMachineProvider>().GetIdentity().ToString(System.Globalization.CultureInfo.InvariantCulture));
         }
 
         private async Task OnElevatorPositionChanged(ElevatorPositionMessageData data)

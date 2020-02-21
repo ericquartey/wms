@@ -26,6 +26,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
+        [HttpPut("{id}/update")]
         public async Task<ActionResult<CompartmentDetails>> UpdateAsync(CompartmentDetails compartment, int id)
         {
             var updatedCompartment = await this.compartmentsWmsWebService.UpdateAsync(compartment, id);
