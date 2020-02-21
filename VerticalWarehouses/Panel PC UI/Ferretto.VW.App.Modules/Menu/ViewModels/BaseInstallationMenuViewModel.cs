@@ -17,6 +17,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
     {
         #region Fields
 
+        private DelegateCommand confirmSetupCommand;
+
         private bool isAccessoriesActive;
 
         private bool isBaysActive;
@@ -24,6 +26,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
         private bool isCellsActive;
 
         private bool isElevatorActive;
+
+        private bool isExecutingProcedure;
 
         private bool isGeneralActive;
 
@@ -83,6 +87,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Properties
 
+        public ICommand ConfirmSetupCommand =>
+               this.confirmSetupCommand
+               ??
+               (this.confirmSetupCommand = new DelegateCommand(
+                 async () => await this.ConfirmSetupAsync(),
+                 () => this.ConfirmSetupEnabled()));
+
         public override EnableMask EnableMask => EnableMask.Any;
 
         public bool IsAccessoriesActive
@@ -107,6 +118,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
         {
             get => this.isElevatorActive;
             set => this.SetProperty(ref this.isElevatorActive, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsExecutingProcedure
+        {
+            get { return this.isExecutingProcedure; }
+            set { this.SetProperty(ref this.isExecutingProcedure, value, this.RaiseCanExecuteChanged); }
         }
 
         public bool IsGeneralActive
@@ -185,6 +202,16 @@ namespace Ferretto.VW.App.Menu.ViewModels
         #endregion
 
         #region Methods
+
+        public virtual Task ConfirmSetupAsync()
+        {
+            return Task.CompletedTask;
+        }
+
+        public virtual bool ConfirmSetupEnabled()
+        {
+            return true;
+        }
 
         public override void Disappear()
         {
@@ -277,6 +304,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.menuOtherCommand?.RaiseCanExecuteChanged();
             this.menuMovementsCommand?.RaiseCanExecuteChanged();
             this.viewStatusSensorsCommand?.RaiseCanExecuteChanged();
+            this.confirmSetupCommand?.RaiseCanExecuteChanged();
         }
 
         private bool CanExecuteMovementsCommand()
