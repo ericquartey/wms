@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
             this.missionsDataProvider.Complete(mission.Id);
 
-            this.NotifyNewMachineMissionAvailable(mission);
+            this.NotifyNewMachineMissionAvailable(mission.TargetBay);
         }
 
         public void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber)
@@ -81,7 +81,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
             var mission = this.missionsDataProvider.CreateBayMission(loadingUnitId, targetBayNumber, MissionType.OUT);
 
-            this.NotifyNewMachineMissionAvailable(mission);
+            this.NotifyNewMachineMissionAvailable(mission.TargetBay);
         }
 
         public void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber, int wmsMissionId, int wmsMissionPriority)
@@ -94,7 +94,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
             var mission = this.missionsDataProvider.CreateBayMission(loadingUnitId, targetBayNumber, wmsMissionId, wmsMissionPriority);
 
-            this.NotifyNewMachineMissionAvailable(mission);
+            this.NotifyNewMachineMissionAvailable(mission.TargetBay);
         }
 
         public void QueueCellMission(int loadingUnitId, int targetCellId)
@@ -102,36 +102,36 @@ namespace Ferretto.VW.MAS.MissionManager
             throw new NotImplementedException();
         }
 
-        public bool QueueFirstTestMission(int loadUnitId, BayNumber sourceBayNumber, IServiceProvider serviceProvider)
+        public bool QueueFirstTestMission(int loadUnitId, BayNumber sourceBayNumber, int cycle, IServiceProvider serviceProvider)
         {
-            var loadUnit = this.loadingUnitsDataProvider.GetById(loadUnitId);
             try
             {
                 var cellId = this.cellsProvider.FindEmptyCell(loadUnitId, CompactingType.NoCompacting, isCellTest: true);
                 var moveLoadingUnitProvider = serviceProvider.GetRequiredService<IMoveLoadUnitProvider>();
 
-                if (loadUnit.IsIntoMachine)
+                if (cycle > 0)
                 {
-                    this.logger.LogInformation($"Move from cell {loadUnit.Cell.Id} to cell {cellId} First test");
-                    moveLoadingUnitProvider.MoveFromCellToCell(MissionType.FirstTest, loadUnit.Cell.Id, cellId, sourceBayNumber, MessageActor.MissionManager);
+                    var loadUnit = this.loadingUnitsDataProvider.GetById(loadUnitId);
+                    this.logger.LogInformation($"Move from cell {loadUnit.CellId} to cell {cellId} First test");
+                    moveLoadingUnitProvider.MoveFromCellToCell(MissionType.FirstTest, loadUnit.CellId, cellId, sourceBayNumber, MessageActor.MissionManager);
                     return true;
                 }
+                // first loop: load from bay
                 var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-                var loadUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(loadUnitId);
-                if (loadUnitSource == LoadingUnitLocation.NoLocation)
-                {
-                    this.logger.LogError($"First Test error: Load Unit not found in Bay!");
-                    return false;
-                }
+                var loadUnitSource = baysDataProvider.GetByNumber(sourceBayNumber).Positions.OrderBy(p => p.IsUpper).LastOrDefault().Location;
                 this.logger.LogInformation($"Move from bay {sourceBayNumber} to cell {cellId} First test");
-                moveLoadingUnitProvider.MoveFromBayToCell(MissionType.FirstTest, loadUnitSource, cellId, sourceBayNumber, MessageActor.MissionManager);
+                moveLoadingUnitProvider.InsertToCell(MissionType.FirstTest, loadUnitSource, cellId, loadUnitId, sourceBayNumber, MessageActor.MissionManager);
                 return true;
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException e)
             {
                 // no more testing is possible. Exit from test mode
+                //this.logger.LogError(e, e.Message);
             }
-
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, ex.Message);
+            }
             return false;
         }
 
@@ -173,7 +173,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
             var mission = this.missionsDataProvider.CreateRecallMission(loadingUnitId, sourceBayNumber);
 
-            this.NotifyNewMachineMissionAvailable(mission);
+            this.NotifyNewMachineMissionAvailable(mission.TargetBay);
         }
 
         private bool CompactDownCell(IEnumerable<LoadingUnit> loadUnits, out LoadingUnit loadUnitOut, out int? cellId)
@@ -226,20 +226,15 @@ namespace Ferretto.VW.MAS.MissionManager
             return false;
         }
 
-        private void NotifyNewMachineMissionAvailable(Mission mission)
+        private void NotifyNewMachineMissionAvailable(BayNumber bay)
         {
-            if (mission is null)
-            {
-                throw new ArgumentNullException(nameof(mission));
-            }
-
             var notificationMessage = new NotificationMessage(
                 null,
-                $"New machine mission available for bay {mission.TargetBay}.",
+                $"New machine mission available for bay {bay}.",
                 MessageActor.MissionManager,
                 MessageActor.MissionManager,
                 MessageType.NewMachineMissionAvailable,
-                mission.TargetBay);
+                bay);
 
             this.notificationEvent.Publish(notificationMessage);
         }

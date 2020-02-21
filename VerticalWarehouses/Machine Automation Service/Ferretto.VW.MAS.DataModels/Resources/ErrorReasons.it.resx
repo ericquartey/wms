@@ -273,4 +273,7 @@
   <data name="DestinationBayNotCalibrated" xml:space="preserve">
     <value>Baia di destinazione priva di taratura.</value>
   </data>
+  <data name="FirstTestFailed" xml:space="preserve">
+    <value>Il test del Primo Cassetto è fallito: non tutte le celle sono state collaudate.</value>
+  </data>
 </root>

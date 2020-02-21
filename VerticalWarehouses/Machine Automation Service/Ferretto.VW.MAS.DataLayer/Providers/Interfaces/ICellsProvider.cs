@@ -9,7 +9,7 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
-        bool CanFitLoadingUnit(int cellId, int loadingUnitId);
+        bool CanFitLoadingUnit(int cellId, int loadingUnitId, bool isCellTest = false);
 
         int FindDownCell(LoadingUnit loadingUnit);
 

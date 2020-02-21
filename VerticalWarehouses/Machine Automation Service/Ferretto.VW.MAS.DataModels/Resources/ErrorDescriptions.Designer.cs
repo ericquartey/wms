@@ -223,6 +223,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to First load unit test failed: Not all cells could be tested!.
+        /// </summary>
+        public static string FirstTestFailed {
+            get {
+                return ResourceManager.GetString("FirstTestFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inconsistenza stato sensori elevatore.
         /// </summary>
         public static string InvalidPresenceSensors {

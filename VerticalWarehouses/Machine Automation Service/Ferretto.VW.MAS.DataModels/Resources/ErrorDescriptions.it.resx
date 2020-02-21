@@ -255,4 +255,7 @@
   <data name="SecuritySensorWasTriggered" xml:space="preserve">
     <value>Uno o più sensori dei pannelli laterali è stato interrotto</value>
   </data>
+  <data name="FirstTestFailed" xml:space="preserve">
+    <value>Il test del Primo Cassetto è fallito: non tutte le celle sono state collaudate.</value>
+  </data>
 </root>

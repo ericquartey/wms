@@ -46,7 +46,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Methods
 
-        public bool CanFitLoadingUnit(int cellId, int loadingUnitId)
+        public bool CanFitLoadingUnit(int cellId, int loadingUnitId, bool isCellTest = false)
         {
             var cell = this.GetById(cellId);
 
@@ -55,7 +55,9 @@ namespace Ferretto.VW.MAS.DataLayer
                 return false;
             }
 
-            if (cell.BlockLevel != BlockLevel.None)
+            if (cell.BlockLevel != BlockLevel.None
+                && (!isCellTest || cell.BlockLevel != BlockLevel.NeedsTest)
+                )
             {
                 return false;
             }
@@ -95,11 +97,14 @@ namespace Ferretto.VW.MAS.DataLayer
                 return !cellsInRange.Any(c => (!c.IsFree && c.Position < loadingUnit.Cell.Position)
                     || (!c.IsFree && c.Position > lastPosition)
                     || c.BlockLevel == BlockLevel.Blocked
-                    || c.BlockLevel == BlockLevel.NeedsTest
+                    || (!isCellTest && c.BlockLevel == BlockLevel.NeedsTest)
                     );
             }
 
-            return !cellsInRange.Any(c => !c.IsFree || c.BlockLevel == BlockLevel.Blocked || c.BlockLevel == BlockLevel.NeedsTest);
+            return !cellsInRange.Any(c => !c.IsFree
+                || c.BlockLevel == BlockLevel.Blocked
+                || (!isCellTest && c.BlockLevel == BlockLevel.NeedsTest)
+                );
         }
 
         public int FindDownCell(LoadingUnit loadingUnit)

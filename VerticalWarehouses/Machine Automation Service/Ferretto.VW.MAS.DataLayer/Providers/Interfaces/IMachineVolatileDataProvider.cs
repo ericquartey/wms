@@ -8,6 +8,8 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Properties
 
+        BayNumber BayTestNumber { get; set; }
+
         int CyclesTested { get; set; }
 
         int? CyclesToTest { get; set; }
@@ -33,6 +35,8 @@ namespace Ferretto.VW.MAS.DataLayer
         MachinePowerState MachinePowerState { get; set; }
 
         MachineMode Mode { get; set; }
+
+        MachineMode UiFilteredMode { get; }
 
         #endregion
 

@@ -320,6 +320,19 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public Mission GetByWmsId(int id)
+        {
+            lock (this.dataContext)
+            {
+                var mission = this.dataContext.Missions.SingleOrDefault(m => m.WmsId == id);
+                if (mission is null)
+                {
+                    throw new EntityNotFoundException(nameof(mission));
+                }
+                return mission;
+            }
+        }
+
         public IDbContextTransaction GetContextTransaction()
         {
             return this.dataContext.Database.BeginTransaction();
