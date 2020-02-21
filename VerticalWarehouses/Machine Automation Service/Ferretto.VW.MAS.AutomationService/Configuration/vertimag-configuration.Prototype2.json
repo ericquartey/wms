@@ -5807,22 +5807,6 @@
       "FeedRate": 1.0,
       "RequiredCycles": 20
     },
-    "Bay2ProfileCheck": {
-    },
-    "Bay3ProfileCheck": {
-    },
-    "Bay1CarouselTest": {
-    },
-    "Bay1CarouselCalibration": {
-    },
-    "Bay2CarouselTest": {
-    },
-    "Bay2CarouselCalibration": {
-    },
-    "Bay3CarouselTest": {
-    },
-    "Bay3CarouselCalibration": {
-    },
     "VerticalOffsetCalibration": {
       "ReferenceCellId": 50,
       "Step": 0.5,
@@ -5835,6 +5819,34 @@
       "FeedRate": 0.2
     },
     "VerticalOriginCalibration": {
+    },
+    "Bay1ProfileCheck": {
+    },
+    "Bay2ProfileCheck": {
+    },
+    "Bay3ProfileCheck": {
+    },
+    "Bay1CarouselCalibration": {
+    },
+    "Bay2CarouselCalibration": {
+    },
+    "Bay3CarouselCalibration": {
+    },
+    "Bay1FirstLoadingUnit": {
+    },
+    "Bay2FirstLoadingUnit": {
+    },
+    "Bay3FirstLoadingUnit": {
+    },
+    "Bay1Laser": {
+    },
+    "Bay2Laser": {
+    },
+    "Bay3Laser": {
+    },
+    "ShutterHeightCheck": {
+    },
+    "WeightMeasurement": {
     }
   }
 }

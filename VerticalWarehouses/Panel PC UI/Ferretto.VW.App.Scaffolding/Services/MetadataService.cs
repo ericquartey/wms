@@ -214,7 +214,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                             var category = GetCategoryName(prop, instance, this._culture);
                             string categoryDescription = GetCategoryDescription(prop);
                             var tget = target.Children.FirstOrDefault(c => c.Category == category.Name);
-                            if (filterAttributes != null)
+                            if (filterAttributes.Length > 0)
                             {
                                 exclusionList = exclusionList.Union(filterAttributes.SelectMany(x => x.GetExclusionList(instance))).ToList();
                             }
