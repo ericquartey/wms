@@ -93,7 +93,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Category("Profilo {0}")]
             [CategoryParameter(nameof(MovementProfile.Name), ValueStringifierType = typeof(EnumValueStringifier))]
             [Id(100)]
-            [Offset(10)]
+            [Offset(50)]
             public System.Collections.Generic.IEnumerable<MovementProfile> Profiles { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_Resolution))]

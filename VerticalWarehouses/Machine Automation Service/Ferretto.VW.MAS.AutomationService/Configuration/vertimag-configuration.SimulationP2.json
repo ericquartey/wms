@@ -381,7 +381,7 @@
     "ModelName": "Simulation Vertimag 1000kg",
     "LoadUnitTare": 120,
     "LoadUnitMaxNetWeight": 930,
-    "LoadUnitMaxHeight": 695, // note: use 145 to execute first LU test
+    "LoadUnitMaxHeight": 145, // note: use 145 to execute first LU test
     "LoadUnitMinHeight": 145.0,
     "Panels": [
       {

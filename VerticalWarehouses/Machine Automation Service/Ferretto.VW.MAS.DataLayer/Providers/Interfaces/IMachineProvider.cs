@@ -35,6 +35,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void UpdateMissionTime(TimeSpan duration);
 
+        void UpdateServiceStatistics();
+
         void UpdateVerticalAxisStatistics(double distance);
 
         void UpdateWeightStatistics(DataLayerContext dataContext);

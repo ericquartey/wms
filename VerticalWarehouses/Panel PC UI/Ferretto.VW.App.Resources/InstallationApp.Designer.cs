@@ -1510,6 +1510,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to First Test.
+        /// </summary>
+        public static string FirstTest {
+            get {
+                return ResourceManager.GetString("FirstTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Forwards.
         /// </summary>
         public static string Forwards {

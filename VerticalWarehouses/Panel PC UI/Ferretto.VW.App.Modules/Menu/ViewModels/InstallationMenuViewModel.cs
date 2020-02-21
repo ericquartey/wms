@@ -311,6 +311,15 @@ namespace Ferretto.VW.App.Menu.ViewModels
             return this.SetupListCompleted && !this.machineService.IsTuningCompleted && !this.IsExecutingProcedure;
         }
 
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            this.source = new List<ItemListSetupProcedure>();
+
+            this.RaisePropertyChanged(nameof(this.Source));
+        }
+
         public async override Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();

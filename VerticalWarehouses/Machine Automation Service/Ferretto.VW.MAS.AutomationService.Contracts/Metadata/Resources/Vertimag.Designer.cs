@@ -1024,6 +1024,33 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Usa correzione peso.
+        /// </summary>
+        public static string StepMovementParameters_AdjustByWeight {
+            get {
+                return ResourceManager.GetString("StepMovementParameters_AdjustByWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Numero.
+        /// </summary>
+        public static string StepMovementParameters_Number {
+            get {
+                return ResourceManager.GetString("StepMovementParameters_Number", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Posizione.
+        /// </summary>
+        public static string StepMovementParameters_Position {
+            get {
+                return ResourceManager.GetString("StepMovementParameters_Position", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max spazio percorribile con comandi manuali.
         /// </summary>
         public static string TargetDistance {

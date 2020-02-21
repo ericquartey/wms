@@ -311,7 +311,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private void GetLoadingUnitDetails()
         {
-            if (this.Mission is null)
+            if (this.Mission is null || this.Mission.LoadingUnit is null)
             {
                 this.Compartments = null;
                 this.SelectedCompartment = null;
