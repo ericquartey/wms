@@ -430,7 +430,7 @@
     },
     "Height": 9460,
     "MaxGrossWeight": 50000,
-    "ModelName": "Simulation Vertimag 1000kg",
+    "ModelName": "EjLog Vertimag (1000kg)",
     "LoadUnitTare": 120,
     "LoadUnitMaxNetWeight": 930,
     "LoadUnitMaxHeight": 695,
@@ -5870,7 +5870,7 @@
       }
     ],
     "ProductionDate": "2019-10-19T16:39:57-08:00",
-    "SerialNumber": "Simulation Prototype #2"
+    "SerialNumber": "EjLog Prototype #2"
   },
   "SetupProcedures": {
     "BeltBurnishingTest": {

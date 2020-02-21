@@ -216,10 +216,22 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveToBay(int id)
+        public async Task<IActionResult> MoveToBayAsync(int id, [FromServices] IConfiguration configuration)
         {
-            this.logger.LogInformation($"Move load unit {id} to bay {this.BayNumber}");
-            this.missionSchedulingProvider.QueueBayMission(id, this.BayNumber);
+            if (configuration.IsWmsEnabled())
+            {
+                using (var scope = this.serviceScopeFactory.CreateScope())
+                {
+                    var loadingUnitsWmsWebService = scope.ServiceProvider.GetRequiredService<ILoadingUnitsWmsWebService>();
+
+                    await loadingUnitsWmsWebService.WithdrawAsync(id, (int)this.BayNumber);
+                }
+            }
+            else
+            {
+                this.logger.LogInformation($"Move load unit {id} to bay {this.BayNumber}");
+                this.missionSchedulingProvider.QueueBayMission(id, this.BayNumber);
+            }
 
             return this.Accepted();
         }
