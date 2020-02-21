@@ -697,8 +697,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
 
             var targetPosition = this.machineVolatileDataProvider.IsHomingExecuted
-                ? axis.ManualMovements.TargetDistanceAfterZero
-                : axis.ManualMovements.TargetDistance;
+                ? axis.ManualMovements.TargetDistanceAfterZero.Value
+                : axis.ManualMovements.TargetDistance.Value;
             if (distance > 0)
             {
                 targetPosition = distance;
@@ -967,7 +967,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             else
             {
                 feedRate = parameters.FeedRate;
-                targetPosition = parameters.TargetDistance * (direction == VerticalMovementDirection.Up ? 1 : -1);
+                targetPosition = parameters.TargetDistance.Value * (direction == VerticalMovementDirection.Up ? 1 : -1);
             }
 
             var speed = new[] { verticalAxis.FullLoadMovement.Speed * feedRate };

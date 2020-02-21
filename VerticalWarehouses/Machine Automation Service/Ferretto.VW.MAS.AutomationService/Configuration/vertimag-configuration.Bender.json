@@ -106,9 +106,7 @@
           },
           "AssistedMovements": {
             "FeedRate": 0.15,
-            "FeedRateAfterZero": 0.2,
-            "TargetDistance": 30,
-            "TargetDistanceAfterZero": 30
+            "FeedRateAfterZero": 0.2
           }
         },
         {

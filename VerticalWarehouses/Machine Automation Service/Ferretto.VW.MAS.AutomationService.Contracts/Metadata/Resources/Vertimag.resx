@@ -256,10 +256,10 @@
     <value>Movimenti a vuoto</value>
   </data>
   <data name="FeedRate" xml:space="preserve">
-    <value>FeedRate</value>
+    <value>Feed Rate</value>
   </data>
   <data name="FeedRateAfterZero" xml:space="preserve">
-    <value>FeedRateAfterZero</value>
+    <value>Feed Rate dopo zero asse</value>
   </data>
   <data name="FullLoadMovement" xml:space="preserve">
     <value>Movimenti a pieno carico</value>
@@ -424,10 +424,10 @@
     <value>Speed</value>
   </data>
   <data name="TargetDistance" xml:space="preserve">
-    <value>TargetDistance</value>
+    <value>Max spazio percorribile con comandi manuali</value>
   </data>
   <data name="TargetDistanceAfterZero" xml:space="preserve">
-    <value>TargetDistanceAfterZero</value>
+    <value>Max spazio percorribile con comandi manuali dopo zero asse</value>
   </data>
   <data name="TotalDistance" xml:space="preserve">
     <value>Totale distanza</value>
