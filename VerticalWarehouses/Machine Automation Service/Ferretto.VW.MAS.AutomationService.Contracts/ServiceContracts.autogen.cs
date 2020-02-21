@@ -3126,11 +3126,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("FeedRateAfterZero", Required = Newtonsoft.Json.Required.Always)]
         public double FeedRateAfterZero { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("TargetDistance", Required = Newtonsoft.Json.Required.Always)]
-        public double TargetDistance { get; set; }
+        [Newtonsoft.Json.JsonProperty("TargetDistance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? TargetDistance { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("TargetDistanceAfterZero", Required = Newtonsoft.Json.Required.Always)]
-        public double TargetDistanceAfterZero { get; set; }
+        [Newtonsoft.Json.JsonProperty("TargetDistanceAfterZero", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? TargetDistanceAfterZero { get; set; }
     
         public string ToJson() 
         {
