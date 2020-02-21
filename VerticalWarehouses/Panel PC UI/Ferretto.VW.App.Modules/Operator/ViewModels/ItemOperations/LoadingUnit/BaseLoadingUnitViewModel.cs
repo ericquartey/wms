@@ -517,10 +517,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private void OnMissionChanged(MissionChangedEventArgs e)
         {
-            this.IsNewOperationAvailable = e.WmsMission.Operations.Any(o => o.Id != e.WmsOperation?.Id
-                                                                            &&
-                                                                            o.Status != MissionOperationStatus.Completed);
-            this.RaisePropertyChanged();
+            if (ConfigurationManager.AppSettings.GetWmsDataServiceEnabled())
+            {
+                this.IsNewOperationAvailable = e.WmsMission.Operations.Any(o => o.Id != e.WmsOperation?.Id
+                                                                                &&
+                                                                                o.Status != MissionOperationStatus.Completed);
+                this.RaisePropertyChanged();
+            }
         }
 
         private void Reset()

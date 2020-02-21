@@ -315,7 +315,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void UpdateBayLoadUnitStatistics(BayNumber bayNumber)
+        public void UpdateBayLoadUnitStatistics(BayNumber bayNumber, int loadUnitId)
         {
             lock (this.dataContext)
             {
@@ -339,18 +339,13 @@ namespace Ferretto.VW.MAS.DataLayer
                         default:
                             throw new ArgumentOutOfRangeException(nameof(bayNumber));
                     }
-                    var servicingInfo = this.dataContext.ServicingInfo.FirstOrDefault();
-                    if (servicingInfo != null)
+
+                    var loadUnit = this.dataContext.LoadingUnits.FirstOrDefault(l => l.Id == loadUnitId);
+                    if (loadUnit != null)
                     {
-                        if (servicingInfo.TotalMissions.HasValue)
-                        {
-                            servicingInfo.TotalMissions++;
-                        }
-                        else
-                        {
-                            servicingInfo.TotalMissions = 1;
-                        }
+                        loadUnit.MissionsCount++;
                     }
+
                     this.dataContext.SaveChanges();
                 }
             }
@@ -378,6 +373,19 @@ namespace Ferretto.VW.MAS.DataLayer
                 if (machineStat != null)
                 {
                     machineStat.TotalMissionTime = machineStat.TotalMissionTime + duration;
+                    this.dataContext.SaveChanges();
+                }
+            }
+        }
+
+        public void UpdateServiceStatistics()
+        {
+            lock (this.dataContext)
+            {
+                var servicingInfo = this.dataContext.ServicingInfo.FirstOrDefault();
+                if (servicingInfo != null)
+                {
+                    servicingInfo.TotalMissions = (servicingInfo.TotalMissions.HasValue ? servicingInfo.TotalMissions + 1 : 1);
                     this.dataContext.SaveChanges();
                 }
             }

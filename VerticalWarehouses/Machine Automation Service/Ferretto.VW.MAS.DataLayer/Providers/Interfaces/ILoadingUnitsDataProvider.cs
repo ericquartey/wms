@@ -13,6 +13,12 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IEnumerable<LoadingUnit> GetAll();
 
+        /// <summary>
+        /// Gets the specified loading unit from the database.
+        /// </summary>
+        /// <param name="id">The id of the loading unit to retrieve.</param>
+        /// <returns>The requested loading unit.</returns>
+        /// <exception cref="EntityNotFoundException">An exception is thrown if no loading unit with the specified id exists in the database.</exception>
         LoadingUnit GetById(int id);
 
         IEnumerable<LoadingUnitSpaceStatistics> GetSpaceStatistics();
@@ -22,8 +28,11 @@ namespace Ferretto.VW.MAS.DataLayer
         void Import(IEnumerable<LoadingUnit> loadingUnits, DataLayerContext context);
 
         void Insert(int loadingUnitsId);
+
         void Remove(int loadingUnitsId);
+
         void Save(LoadingUnit loadingUnit);
+
         void SetHeight(int loadingUnitId, double height);
 
         void SetWeight(int loadingUnitId, double loadingUnitGrossWeight);

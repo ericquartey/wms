@@ -292,6 +292,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         try
                         {
                             this.CellsProvider.SetLoadingUnit(sourceCellId.Value, null);
+                            this.MachineProvider.UpdateServiceStatistics();
                         }
                         catch (Exception ex)
                         {
@@ -312,7 +313,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     var bayPosition = this.BaysDataProvider.GetPositionByLocation(this.Mission.LoadUnitSource);
                     this.BaysDataProvider.SetLoadingUnit(bayPosition.Id, null);
-                    this.MachineProvider.UpdateBayLoadUnitStatistics(this.Mission.TargetBay);
+                    this.MachineProvider.UpdateBayLoadUnitStatistics(this.Mission.TargetBay, this.Mission.LoadUnitId);
+                    this.MachineProvider.UpdateServiceStatistics();
                 }
 
                 transaction.Commit();

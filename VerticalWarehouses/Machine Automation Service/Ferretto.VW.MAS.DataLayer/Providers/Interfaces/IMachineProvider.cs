@@ -29,11 +29,13 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void UpdateBayChainStatistics(double distance, BayNumber bayNumber);
 
-        void UpdateBayLoadUnitStatistics(BayNumber bayNumber);
+        void UpdateBayLoadUnitStatistics(BayNumber bayNumber, int loadUnitId);
 
         void UpdateHorizontalAxisStatistics(double distance);
 
         void UpdateMissionTime(TimeSpan duration);
+
+        void UpdateServiceStatistics();
 
         void UpdateVerticalAxisStatistics(double distance);
 
