@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             #region Properties
 
-            [Id(20)]
+            [Id(30)]
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.AssistedMovements))]
             public ElevatorAxisManualParameters AssistedMovements { get; set; }
 
@@ -33,11 +33,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(3)]
             public double ChainOffset { get; set; }
 
-            [Id(30)]
+            [Id(40)]
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.EmptyLoadMovement))]
             public MovementParameters EmptyLoadMovement { get; set; }
 
-            [Id(35)]
+            [Id(45)]
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.FullLoadMovement))]
             public MovementParameters FullLoadMovement { get; set; }
 
@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(5)]
             public double HomingFastSpeed { get; set; }
 
-            [Id(10)]
+            [Id(20)]
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.Inverter))]
             public Inverter Inverter { get; set; }
 
@@ -64,7 +64,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_LowerBound))]
             public double LowerBound { get; set; }
 
-            [Id(25)]
+            [Id(35)]
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.ManualMovements))]
             public ElevatorAxisManualParameters ManualMovements { get; set; }
 
@@ -102,7 +102,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_UpperBound))]
             public double UpperBound { get; set; }
 
-            [Id(15)]
+            [Unit("mm")]
+            [Id(10)]
+            public double? VerticalDepositOffset { get; set; }
+
+            [Unit("mm")]
+            [Id(11)]
+            public double? VerticalPickupOffset { get; set; }
+
+            [Id(25)]
             [Unfold]
             public WeightMeasurement WeightMeasurement { get; set; }
 
