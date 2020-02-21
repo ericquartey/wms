@@ -8,6 +8,8 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
+        private readonly IBaysDataProvider baysDataProvider;
+
         private readonly IConfiguration configuration;
 
         private readonly DataLayerContext dataContext;
@@ -24,12 +26,14 @@ namespace Ferretto.VW.MAS.DataLayer
             DataLayerContext dataContext,
             ISetupProceduresDataProvider setupProceduresDataProvider,
             IVerticalOriginVolatileSetupStatusProvider verticalOriginSetupStatusProvider,
+            IBaysDataProvider baysDataProvider,
             IConfiguration configuration)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
             this.verticalOriginSetupStatusProvider = verticalOriginSetupStatusProvider ?? throw new ArgumentNullException(nameof(verticalOriginSetupStatusProvider));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
         }
 
         #endregion
@@ -50,6 +54,54 @@ namespace Ferretto.VW.MAS.DataLayer
         public SetupStatusCapabilities Get()
         {
             var setup = this.setupProceduresDataProvider.GetAll();
+
+            DataModels.Bay bay1 = new DataModels.Bay();
+            DataModels.Bay bay2 = new DataModels.Bay();
+            DataModels.Bay bay3 = new DataModels.Bay();
+            try
+            {
+                bay1 = this.baysDataProvider.GetAll().Where(a => a.Number == CommonUtils.Messages.Enumerations.BayNumber.BayOne)?.First() ?? new DataModels.Bay();
+                bay2 = this.baysDataProvider.GetAll().Where(a => a.Number == CommonUtils.Messages.Enumerations.BayNumber.BayTwo)?.First() ?? new DataModels.Bay();
+                bay3 = this.baysDataProvider.GetAll().Where(a => a.Number == CommonUtils.Messages.Enumerations.BayNumber.BayThree)?.First() ?? new DataModels.Bay();
+            }
+            catch (Exception ex)
+            {
+            }
+
+            //DataModels.Bay bay1 = this.baysDataProvider.GetByNumber(CommonUtils.Messages.Enumerations.BayNumber.BayOne) ?? new DataModels.Bay();
+            //DataModels.Bay bay2 = this.baysDataProvider.GetByNumber(CommonUtils.Messages.Enumerations.BayNumber.BayTwo) ?? new DataModels.Bay();
+            //DataModels.Bay bay3 = this.baysDataProvider.GetByNumber(CommonUtils.Messages.Enumerations.BayNumber.BayThree) ?? new DataModels.Bay();
+
+            bool bay1AllTestCompleted = false;
+            bool bay2AllTestCompleted = false;
+            bool bay3AllTestCompleted = false;
+
+            if (!(bay1 is null))
+            {
+                bay1AllTestCompleted = (setup.Bay1CarouselCalibration.IsCompleted || bay1.Carousel is null) &&
+                               (setup.Bay1ShutterTest.IsCompleted || bay1.Shutter is null) &&
+                                setup.Bay1HeightCheck.IsCompleted &&
+                               (setup.Bay1Laser.IsCompleted || bay1.Laser is null) &&
+                                setup.Bay1ProfileCheck.IsCompleted;
+            }
+
+            if (!(bay2 is null))
+            {
+                bay3AllTestCompleted = (setup.Bay2CarouselCalibration.IsCompleted || bay2.Carousel is null) &&
+                               (setup.Bay2ShutterTest.IsCompleted || bay2.Shutter is null) &&
+                                setup.Bay2HeightCheck.IsCompleted &&
+                               (setup.Bay2Laser.IsCompleted || bay2.Laser is null) &&
+                                setup.Bay2ProfileCheck.IsCompleted;
+            }
+
+            if (!(bay3 is null))
+            {
+                bay3AllTestCompleted = (setup.Bay3CarouselCalibration.IsCompleted || bay3.Carousel is null) &&
+                               (setup.Bay3ShutterTest.IsCompleted || bay3.Shutter is null) &&
+                                setup.Bay3HeightCheck.IsCompleted &&
+                               (setup.Bay3Laser.IsCompleted || bay3.Laser is null) &&
+                                setup.Bay3ProfileCheck.IsCompleted;
+            }
 
             var statusCapabilities = new SetupStatusCapabilities
             {
@@ -92,6 +144,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         CanBePerformed = setup.VerticalOriginCalibration.IsCompleted,
                         IsBypassed = setup.Bay1CarouselCalibration.IsBypassed,
                     },
+                    IsAllTestCompleted = bay1AllTestCompleted,
                 },
 
                 Bay2 = new BaySetupStatus
@@ -133,6 +186,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         CanBePerformed = setup.VerticalOriginCalibration.IsCompleted,
                         IsBypassed = setup.Bay2CarouselCalibration.IsBypassed,
                     },
+                    IsAllTestCompleted = bay2AllTestCompleted,
                 },
 
                 Bay3 = new BaySetupStatus
@@ -174,7 +228,10 @@ namespace Ferretto.VW.MAS.DataLayer
                         CanBePerformed = setup.VerticalOriginCalibration.IsCompleted,
                         IsBypassed = setup.Bay3CarouselCalibration.IsBypassed,
                     },
+
+                    IsAllTestCompleted = bay3AllTestCompleted,
                 },
+
                 BeltBurnishing = new SetupStepStatus
                 {
                     IsCompleted = setup.BeltBurnishingTest.IsCompleted,
@@ -182,12 +239,14 @@ namespace Ferretto.VW.MAS.DataLayer
                     InProgress = setup.BeltBurnishingTest.InProgress,
                     IsBypassed = setup.BeltBurnishingTest.IsBypassed,
                 },
+
                 CellsHeightCheck = new SetupStepStatus
                 {
                     IsCompleted = setup.CellsHeightCheck.IsCompleted,
                     CanBePerformed = setup.VerticalOffsetCalibration.IsCompleted && setup.VerticalOriginCalibration.IsCompleted,
                     IsBypassed = setup.CellsHeightCheck.IsBypassed,
                 },
+
                 CellPanelsCheck = new SetupStepStatus
                 {
                     IsCompleted = setup.CellPanelsCheck.IsCompleted,
