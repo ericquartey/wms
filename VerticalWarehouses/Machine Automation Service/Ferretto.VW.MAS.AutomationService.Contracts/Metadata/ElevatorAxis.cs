@@ -15,6 +15,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Id(20)]
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.AssistedMovements))]
+            [HideProperties(nameof(ElevatorAxisManualParameters.TargetDistance), nameof(ElevatorAxisManualParameters.TargetDistanceAfterZero))]
             public ElevatorAxisManualParameters AssistedMovements { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_BrakeActivatePercent))]
