@@ -2129,22 +2129,6 @@
       "FeedRate": 1.0,
       "IsCompleted": false
     },
-    "Bay2ProfileCheck": {
-    },
-    "Bay3ProfileCheck": {
-    },
-    "Bay1CarouselTest": {
-    },
-    "Bay1CarouselCalibration": {
-    },
-    "Bay2CarouselTest": {
-    },
-    "Bay2CarouselCalibration": {
-    },
-    "Bay3CarouselTest": {
-    },
-    "Bay3CarouselCalibration": {
-    },
     "BeltBurnishingTest": {
       "InProgress": false,
       "PerformedCycles": 200,
@@ -2192,6 +2176,40 @@
       "StartPosition": 500.0,
       "FeedRate": 0.2,
       "IsCompleted": true
+    },
+    "Bay1ProfileCheck": {
+    },
+    "Bay2ProfileCheck": {
+    },
+    "Bay3ProfileCheck": {
+    },
+    "Bay1CarouselTest": {
+    },
+    "Bay1CarouselCalibration": {
+    },
+    "Bay2CarouselTest": {
+    },
+    "Bay2CarouselCalibration": {
+    },
+    "Bay3CarouselTest": {
+    },
+    "Bay3CarouselCalibration": {
+    },
+    "Bay1FirstLoadingUnit": {
+    },
+    "Bay2FirstLoadingUnit": {
+    },
+    "Bay3FirstLoadingUnit": {
+    },
+    "Bay1Laser": {
+    },
+    "Bay2Laser": {
+    },
+    "Bay3Laser": {
+    },
+    "ShutterHeightCheck": {
+    },
+    "WeightMeasurement": {
     }
   }
 }

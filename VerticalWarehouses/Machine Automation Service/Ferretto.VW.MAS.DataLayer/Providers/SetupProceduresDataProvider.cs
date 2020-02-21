@@ -277,7 +277,10 @@ namespace Ferretto.VW.MAS.DataLayer
                     repeatedTestProcedure.PerformedCycles++;
                     repeatedTestProcedure.IsCompleted = repeatedTestProcedure.PerformedCycles >= repeatedTestProcedure.RequiredCycles;
                     repeatedTestProcedure.InProgress = !repeatedTestProcedure.IsCompleted;
-
+                    if (repeatedTestProcedure.IsCompleted)
+                    {
+                        repeatedTestProcedure.IsBypassed = false;
+                    }
                     this.dataContext.SetupProcedures.Update(repeatedTestProcedure);
                     this.dataContext.SaveChanges();
 
