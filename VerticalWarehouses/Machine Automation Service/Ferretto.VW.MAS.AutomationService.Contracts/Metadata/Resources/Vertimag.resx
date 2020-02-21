@@ -438,6 +438,15 @@
   <data name="Speed" xml:space="preserve">
     <value>Velocità</value>
   </data>
+  <data name="StepMovementParameters_AdjustByWeight" xml:space="preserve">
+    <value>Usa correzione peso</value>
+  </data>
+  <data name="StepMovementParameters_Number" xml:space="preserve">
+    <value>Numero</value>
+  </data>
+  <data name="StepMovementParameters_Position" xml:space="preserve">
+    <value>Posizione</value>
+  </data>
   <data name="TargetDistance" xml:space="preserve">
     <value>Max spazio percorribile con comandi manuali</value>
   </data>
