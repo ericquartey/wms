@@ -16,10 +16,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public double Acceleration { get; set; }
 
             [Id(2)]
+            [Editable(false)]
             public bool AdjustByWeight { get; set; }
-
-            [ScaffoldColumn(false)]
-            public double Deceleration { get; set; }
 
             [Id(3)]
             public int Number { get; set; }
