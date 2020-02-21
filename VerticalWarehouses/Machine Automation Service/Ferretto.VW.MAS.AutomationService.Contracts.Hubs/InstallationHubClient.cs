@@ -95,6 +95,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             connection.On<NotificationMessageUI<ProfileCalibrationMessageData>>(
                 nameof(IInstallationHub.ProfileCalibration), this.OnProfileCalibrationNotify);
 
+            connection.On<NotificationMessageUI<MoveTestMessageData>>(
+                nameof(IInstallationHub.MoveTest), this.OnMoveTestNotify);
+
             connection.On<bool, BayNumber>(
                 nameof(IInstallationHub.BayLightChanged), this.OnBayLightChanged);
 
@@ -169,7 +172,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
-        private void OnMoveLoadingUnit(NotificationMessageUI<ProfileCalibrationMessageData> message)
+        private void OnMoveTestNotify(NotificationMessageUI<MoveTestMessageData> message)
         {
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

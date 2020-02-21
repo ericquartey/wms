@@ -106,9 +106,9 @@
 
         BayLight,
 
-        FullTest,
-
         ProfileCalibration,
+
+        MoveTest,
 
         StopTest,
     }

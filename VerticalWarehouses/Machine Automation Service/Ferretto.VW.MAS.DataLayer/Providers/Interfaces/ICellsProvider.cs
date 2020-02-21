@@ -27,7 +27,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void Save(Cell cell);
 
-        void SetCellsToTest();
+        int SetCellsToTest();
 
         void SetLoadingUnit(int cellId, int? loadingUnitId);
 
