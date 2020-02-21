@@ -134,6 +134,14 @@ namespace Ferretto.VW.MAS.AutomationService
             }
 
             baysDataProvider.AddElevatorPseudoBay();
+
+            if (this.configuration.IsWmsEnabled())
+            {
+                var client = serviceProvider.GetRequiredService<System.Net.Http.HttpClient>();
+                client.DefaultRequestHeaders.Add(
+                       "Machine-Id",
+                       serviceProvider.GetRequiredService<IMachineProvider>().GetIdentity().ToString(System.Globalization.CultureInfo.InvariantCulture));
+            }
         }
 
         private async Task OnElevatorPositionChanged(ElevatorPositionMessageData data)
@@ -182,6 +190,15 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             var messageToUi = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
             await this.installationHub.Clients.All.MoveLoadingUnit(messageToUi);
+        }
+
+        private async Task OnMoveTest(NotificationMessage receivedMessage)
+        {
+            if (receivedMessage.Data is MoveTestMessageData)
+            {
+                var messageToUi = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+                await this.installationHub.Clients.All.MoveTest(messageToUi);
+            }
         }
 
         private async Task OnPositioningChanged(NotificationMessage receivedMessage)

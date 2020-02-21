@@ -8,23 +8,10 @@ namespace Ferretto.VW.MAS.DataLayer
 {
     internal sealed class MachineMissionsVolatileProvider : IMachineMissionsVolatileProvider
     {
-        #region Fields
-
-        private readonly IEventAggregator eventAggregator;
-
-        private readonly IServiceScopeFactory serviceScopeFactory;
-
-        #endregion
-
         #region Constructors
 
-        public MachineMissionsVolatileProvider(
-            IServiceScopeFactory serviceScopeFactory,
-            IEventAggregator eventAggregator)
+        public MachineMissionsVolatileProvider()
         {
-            this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
-            this.eventAggregator = eventAggregator ?? throw new System.ArgumentNullException(nameof(eventAggregator));
-
             this.MachineMissions = new List<IMission>();
         }
 

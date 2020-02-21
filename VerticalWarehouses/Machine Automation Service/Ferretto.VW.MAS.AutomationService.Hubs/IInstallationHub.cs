@@ -35,6 +35,8 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         Task MoveLoadingUnit(IBaseNotificationMessageUI message);
 
+        Task MoveTest(IBaseNotificationMessageUI message);
+
         Task PositioningNotify(IBaseNotificationMessageUI message);
 
         Task PowerEnableNotify(IBaseNotificationMessageUI message);

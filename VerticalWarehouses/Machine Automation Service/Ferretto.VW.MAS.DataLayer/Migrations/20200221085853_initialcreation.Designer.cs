@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20200220110426_initialcreation")]
+    [Migration("20200221085853_initialcreation")]
     partial class initialcreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -290,9 +290,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double>("FeedRateAfterZero");
 
-                    b.Property<double>("TargetDistance");
+                    b.Property<double?>("TargetDistance");
 
-                    b.Property<double>("TargetDistanceAfterZero");
+                    b.Property<double?>("TargetDistanceAfterZero");
 
                     b.HasKey("Id");
 
@@ -658,6 +658,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 65,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 66,
                             TotalErrors = 0
                         },
                         new

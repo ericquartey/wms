@@ -32,6 +32,17 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void SetInstallationDate()
+        {
+            lock (this.dataContext)
+            {
+                var s = new ServicingInfo();
+                s.InstallationDate = DateTime.Now;
+                this.dataContext.ServicingInfo.Add(s);
+                this.dataContext.SaveChanges();
+            }
+        }
+
         #endregion
     }
 }

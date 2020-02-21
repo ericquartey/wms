@@ -130,11 +130,21 @@ namespace Ferretto.VW.MAS.MissionManager
                 var loadUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(loadUnitId.Value);
                 if (loadUnitSource != LoadingUnitLocation.NoLocation)
                 {
-                    this.Logger.LogError($"First Test error: Load Unit not found in Bay!");
-                    errorsProvider.RecordNew(MachineErrorCode.LoadUnitNotFound, machinemachineVolatileDataProvider.BayTestNumber);
+                    var bayNumber = baysDataProvider.GetByLoadingUnitLocation(loadUnitSource)?.Number ?? BayNumber.None;
+                    if (bayNumber != machinemachineVolatileDataProvider.BayTestNumber)
+                    {
+                        this.Logger.LogError($"First Test error: Load Unit not found in Bay!");
+                        errorsProvider.RecordNew(MachineErrorCode.LoadUnitNotFound, machinemachineVolatileDataProvider.BayTestNumber);
+                        return false;
+                    }
+                }
+                machinemachineVolatileDataProvider.CyclesToTest = cellsProvider.SetCellsToTest();
+                if (machinemachineVolatileDataProvider.CyclesToTest.Value == 0)
+                {
+                    this.Logger.LogError($"First Test error: no cell to test found!");
+                    errorsProvider.RecordNew(MachineErrorCode.FirstTestFailed, machinemachineVolatileDataProvider.BayTestNumber);
                     return false;
                 }
-                cellsProvider.SetCellsToTest();
                 this.Logger.LogInformation($"First test started for Load Unit {loadUnitId.Value} on Bay {machinemachineVolatileDataProvider.BayTestNumber}");
             }
 
@@ -144,17 +154,20 @@ namespace Ferretto.VW.MAS.MissionManager
                 var missionSchedulingProvider = serviceProvider.GetRequiredService<IMissionSchedulingProvider>();
                 returnValue = missionSchedulingProvider.QueueFirstTestMission(loadUnitId.Value, machinemachineVolatileDataProvider.BayTestNumber, machinemachineVolatileDataProvider.CyclesTested, serviceProvider);
             }
+            var messageStatus = MessageStatus.OperationExecuting;
             if (!returnValue)
             {
                 // testing is finished! Exit from FirstTest mode
-                if (cellsProvider.IsCellToTest())
+                if (machinemachineVolatileDataProvider.CyclesTested < machinemachineVolatileDataProvider.CyclesToTest.Value)
                 {
                     this.Logger.LogError($"First Test error for Load Unit {loadUnitId} on Bay {machinemachineVolatileDataProvider.BayTestNumber}: Not all cells are tested!");
                     errorsProvider.RecordNew(MachineErrorCode.FirstTestFailed, machinemachineVolatileDataProvider.BayTestNumber);
+                    messageStatus = MessageStatus.OperationError;
                 }
                 else
                 {
                     this.Logger.LogInformation($"First test finished successfully for Load Unit {loadUnitId} on Bay {machinemachineVolatileDataProvider.BayTestNumber}");
+                    messageStatus = MessageStatus.OperationEnd;
                 }
                 var setupProceduresDataProvider = serviceProvider.GetRequiredService<ISetupProceduresDataProvider>();
                 setupProceduresDataProvider.MarkAsCompleted(setupProceduresDataProvider.GetBayFirstLoadingUnit(machinemachineVolatileDataProvider.BayTestNumber));
@@ -163,6 +176,24 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 machinemachineVolatileDataProvider.CyclesTested++;
             }
+
+            var notificationMessage = new NotificationMessage(
+                new MoveTestMessageData(machinemachineVolatileDataProvider.CyclesTested,
+                    machinemachineVolatileDataProvider.CyclesToTest.Value,
+                    machinemachineVolatileDataProvider.LoadUnitsToTest),
+                $"First Load Unit Test result",
+                MessageActor.Any,
+                MessageActor.MissionManager,
+                MessageType.MoveTest,
+                machinemachineVolatileDataProvider.BayTestNumber,
+                machinemachineVolatileDataProvider.BayTestNumber,
+                messageStatus
+                );
+
+            this.EventAggregator
+                .GetEvent<NotificationEvent>()
+                .Publish(notificationMessage);
+
             return returnValue;
         }
 
@@ -826,7 +857,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     var sourceCell = cellsProvider.GetByLoadingUnitId(mission.LoadUnitId);
                     if (sourceCell is null)
                     {
-                        this.Logger.LogDebug($"Bay {bayNumber}: WMS mission {mission.WmsId} can not start because LoadUnit {mission.LoadUnitId} is not in a cell.");
+                        this.Logger.LogDebug($"Bay {bayNumber}: WMS mission {mission.WmsId} cannot start because LoadUnit {mission.LoadUnitId} is not in a cell.");
                     }
                     else
                     {

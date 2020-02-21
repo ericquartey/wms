@@ -8,7 +8,6 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.AutomationService
 {
     public partial class NotificationRelayService
@@ -129,6 +128,10 @@ namespace Ferretto.VW.MAS.AutomationService
 
                 case MessageType.ProfileCalibration:
                     await this.OnProfileCalibration(message);
+                    break;
+
+                case MessageType.MoveTest:
+                    await this.OnMoveTest(message);
                     break;
             }
         }
