@@ -92,6 +92,12 @@ namespace Ferretto.VW.MAS.MissionManager
                 loadingUnitId,
                 targetBayNumber);
 
+            var loadingUnit = this.loadingUnitsDataProvider.GetById(loadingUnitId);
+            if(!loadingUnit.IsIntoMachine)
+            {
+                throw new InvalidOperationException($"The loading unit {loadingUnitId} is not contained in the machine.");
+            }
+
             var mission = this.missionsDataProvider.CreateBayMission(loadingUnitId, targetBayNumber, wmsMissionId, wmsMissionPriority);
 
             this.NotifyNewMachineMissionAvailable(mission.TargetBay);
