@@ -55,7 +55,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.ServicingInfo.FirstOrDefault()?.TotalMissions ?? 0;
+                return this.dataContext.ServicingInfo.LastOrDefault()?.TotalMissions ?? 0;
             }
         }
 

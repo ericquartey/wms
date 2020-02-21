@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using Ferretto.VW.MAS.DataModels;
 
-
 namespace Ferretto.VW.MAS.DataLayer
 {
     internal sealed class ServicingProvider : IServicingProvider
@@ -28,7 +27,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.ServicingInfo.FirstOrDefault();
+                return this.dataContext.ServicingInfo.LastOrDefault();
             }
         }
 
