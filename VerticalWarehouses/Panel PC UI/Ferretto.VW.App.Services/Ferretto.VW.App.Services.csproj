@@ -32,9 +32,5 @@
     <ProjectReference Include="..\Ferretto.VW.App.Resources\Ferretto.VW.App.Resources.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Utils\Ferretto.VW.Utils.csproj" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <Folder Include="Wms\" />
-  </ItemGroup>
 
 </Project>

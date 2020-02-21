@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -32,6 +33,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     internal sealed class BayCheckViewModel : BaseMainViewModel
     {
         #region Fields
+
+        private readonly IDialogService dialogService;
 
         private readonly IMachineBaysWebService machineBaysWebService;
 
@@ -74,12 +77,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public BayCheckViewModel(
             IMachineElevatorWebService machineElevatorWebService,
             IMachineShuttersWebService machineShuttersWebService,
-            IMachineBaysWebService machineBaysWebService)
+            IMachineBaysWebService machineBaysWebService,
+            IDialogService dialogService)
             : base(PresentationMode.Installer)
         {
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.machineShuttersWebService = machineShuttersWebService ?? throw new ArgumentNullException(nameof(machineShuttersWebService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
+            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
 
             this.CurrentStep = BayCheckStep.PositionUp;
         }
@@ -287,6 +292,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
+                //var messageBoxResult = this.dialogService.ShowMessage("", InstallationApp.HighPositionControl, DialogType.Question, DialogButtons.YesNo);
+                //if (messageBoxResult == DialogResult.No)
+                //{
+                //    return;
+                //}
+
                 this.IsWaitingForResponse = true;
 
                 // Up

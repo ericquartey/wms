@@ -88,6 +88,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation
                 && this.Mission.MissionType != MissionType.Manual
                 && this.Mission.MissionType != MissionType.LoadUnitOperation
+                && this.Mission.MissionType != MissionType.FirstTest
                 )
             {
                 var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);

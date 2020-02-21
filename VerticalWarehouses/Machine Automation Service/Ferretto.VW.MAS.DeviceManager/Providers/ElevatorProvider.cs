@@ -24,6 +24,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly IElevatorDataProvider elevatorDataProvider;
 
+        private readonly IErrorsProvider errorsProvider;
+
         private readonly ILoadingUnitsDataProvider loadingUnitsDataProvider;
 
         private readonly ILogger<ElevatorProvider> logger;
@@ -51,6 +53,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             ILogger<ElevatorProvider> logger,
             ISetupProceduresDataProvider setupProceduresDataProvider,
             IElevatorDataProvider elevatorDataProvider,
+            IErrorsProvider errorsProvider,
             ISetupStatusProvider setupStatusProvider,
             IBaysDataProvider baysDataProvider,
             ICellsProvider cellsProvider,
@@ -65,6 +68,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
+            this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
             this.setupStatusProvider = setupStatusProvider ?? throw new ArgumentNullException(nameof(setupStatusProvider));
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
@@ -697,8 +701,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
 
             var targetPosition = this.machineVolatileDataProvider.IsHomingExecuted
-                ? axis.ManualMovements.TargetDistanceAfterZero
-                : axis.ManualMovements.TargetDistance;
+                ? axis.ManualMovements.TargetDistanceAfterZero.Value
+                : axis.ManualMovements.TargetDistance.Value;
             if (distance > 0)
             {
                 targetPosition = distance;
@@ -967,7 +971,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             else
             {
                 feedRate = parameters.FeedRate;
-                targetPosition = parameters.TargetDistance * (direction == VerticalMovementDirection.Up ? 1 : -1);
+                targetPosition = parameters.TargetDistance.Value * (direction == VerticalMovementDirection.Up ? 1 : -1);
             }
 
             var speed = new[] { verticalAxis.FullLoadMovement.Speed * feedRate };
@@ -1285,8 +1289,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 throw new InvalidOperationException(string.Format(Resources.Elevator.OffsetOutOfBounds, verticalAxis.Offset, lowerBound, upperBound));
             }
 
-            if (targetPosition < lowerBound || targetPosition > upperBound)
+            if (targetPosition < lowerBound)
             {
+                this.errorsProvider.RecordNew(MachineErrorCode.DestinationBelowLowerBound, requestingBay);
+                throw new InvalidOperationException(string.Format(Resources.Elevator.TargetPositionOutOfBounds, targetPosition, lowerBound, upperBound));
+            }
+            if (targetPosition > upperBound)
+            {
+                this.errorsProvider.RecordNew(MachineErrorCode.DestinationOverUpperBound, requestingBay);
                 throw new InvalidOperationException(string.Format(Resources.Elevator.TargetPositionOutOfBounds, targetPosition, lowerBound, upperBound));
             }
 

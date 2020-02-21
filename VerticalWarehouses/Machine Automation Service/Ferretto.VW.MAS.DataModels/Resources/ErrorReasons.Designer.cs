@@ -223,6 +223,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to First load unit  test failed: Not all cells could be tested!.
+        /// </summary>
+        public static string FirstTestFailed {
+            get {
+                return ResourceManager.GetString("FirstTestFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The {0} Axis movement Acceleration configuration is invalid: Empty load acceleration lower than full load acceleration.
         /// </summary>
         public static string InvalidAxisAccelerationConfiguration {

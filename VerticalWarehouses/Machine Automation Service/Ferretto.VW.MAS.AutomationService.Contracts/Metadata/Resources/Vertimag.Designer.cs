@@ -475,7 +475,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FeedRate.
+        ///   Looks up a localized string similar to Feed Rate.
         /// </summary>
         public static string FeedRate {
             get {
@@ -484,7 +484,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FeedRateAfterZero.
+        ///   Looks up a localized string similar to Feed Rate dopo zero asse.
         /// </summary>
         public static string FeedRateAfterZero {
             get {
@@ -979,7 +979,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TargetDistance.
+        ///   Looks up a localized string similar to Max spazio percorribile con comandi manuali.
         /// </summary>
         public static string TargetDistance {
             get {
@@ -988,7 +988,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TargetDistanceAfterZero.
+        ///   Looks up a localized string similar to Max spazio percorribile con comandi manuali dopo zero asse.
         /// </summary>
         public static string TargetDistanceAfterZero {
             get {

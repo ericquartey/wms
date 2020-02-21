@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.MachineManager;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FirstTestController : ControllerBase
+    public class FirstTestController : ControllerBase, IRequestingBayController
     {
         #region Fields
 
@@ -25,6 +26,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #endregion
 
+        #region Properties
+
+        public BayNumber BayNumber { get; set; }
+
+        #endregion
+
         #region Methods
 
         [HttpPost("start")]
@@ -33,7 +40,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Start(int loadunit)
         {
-            this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.FirstTest, new List<int>() { loadunit });
+            this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.FirstTest, this.BayNumber, new List<int>() { loadunit });
             return this.Accepted();
         }
 

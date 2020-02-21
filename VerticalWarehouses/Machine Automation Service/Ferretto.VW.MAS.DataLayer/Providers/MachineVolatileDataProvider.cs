@@ -48,6 +48,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.positions.Add(BayNumber.BayThree, 0);
 
             this.LoadUnitsToTest = null;
+            this.BayTestNumber = BayNumber.None;
 
             if (dataLayerService.IsReady)
             {
@@ -66,6 +67,8 @@ namespace Ferretto.VW.MAS.DataLayer
         #endregion
 
         #region Properties
+
+        public BayNumber BayTestNumber { get; set; }
 
         public int CyclesTested { get; set; }
 
@@ -127,11 +130,44 @@ namespace Ferretto.VW.MAS.DataLayer
                         .Publish(
                             new NotificationMessage
                             {
-                                Data = new MachineModeMessageData(this.mode),
+                                Data = new MachineModeMessageData(this.UiFilteredMode),
                                 Destination = MessageActor.Any,
                                 Source = MessageActor.DataLayer,
                                 Type = MessageType.MachineMode,
                             });
+                }
+            }
+        }
+
+        public MachineMode UiFilteredMode
+        {
+            get
+            {
+                switch (this.Mode)
+                {
+                    case MachineMode.Automatic:
+                    case MachineMode.Manual:
+                    case MachineMode.LoadUnitOperations:
+                    case MachineMode.Test:
+                    case MachineMode.Compact:
+                        return this.Mode;
+
+                    case MachineMode.FullTest:
+                    case MachineMode.FirstTest:
+                        return MachineMode.Test;
+
+                    case MachineMode.SwitchingToAutomatic:
+                    case MachineMode.SwitchingToManual:
+                        return this.Mode;
+
+                    case MachineMode.SwitchingToLoadUnitOperations:
+                    case MachineMode.SwitchingToCompact:
+                    case MachineMode.SwitchingToFullTest:
+                    case MachineMode.SwitchingToFirstTest:
+                        return MachineMode.SwitchingToManual;
+
+                    default:
+                        return MachineMode.NotSpecified;
                 }
             }
         }

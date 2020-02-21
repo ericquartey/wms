@@ -143,7 +143,7 @@
           "ChainOffset": 0,
           "HomingFastSpeed": 25,
           "HomingCreepSpeed": 6,
-          "UpperBound": 8600,
+          "UpperBound": 8750,
           "LowerBound": 350,
           "VerticalDepositOffset": 0,
           "VerticalPickupOffset": 0,
@@ -172,9 +172,7 @@
           },
           "AssistedMovements": {
             "FeedRate": 0.15,
-            "FeedRateAfterZero": 0.9,
-            "TargetDistance": 30,
-            "TargetDistanceAfterZero": 30
+            "FeedRateAfterZero": 0.9
           }
         },
         {
@@ -404,7 +402,7 @@
             "Position": 1463.0,
             "Priority": 3,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 3
           },
           {
@@ -413,7 +411,7 @@
             "Position": 1488.0,
             "Priority": 5,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 5
           },
           {
@@ -422,7 +420,7 @@
             "Position": 1513.0,
             "Priority": 7,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 7
           },
           {
@@ -431,7 +429,7 @@
             "Position": 1538.0,
             "Priority": 9,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 9
           },
           {
@@ -440,7 +438,7 @@
             "Position": 1563.0,
             "Priority": 11,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 11
           },
           {
@@ -449,7 +447,7 @@
             "Position": 1588.0,
             "Priority": 13,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 13
           },
           {
@@ -458,7 +456,7 @@
             "Position": 1613.0,
             "Priority": 15,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 15
           },
           {
@@ -467,7 +465,7 @@
             "Position": 1638.0,
             "Priority": 17,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 17
           },
           {
@@ -476,7 +474,7 @@
             "Position": 1663.0,
             "Priority": 19,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 19
           },
           {
@@ -485,7 +483,7 @@
             "Position": 1688.0,
             "Priority": 21,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 21
           },
           {
@@ -494,7 +492,7 @@
             "Position": 1713.0,
             "Priority": 23,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 23
           },
           {
@@ -503,7 +501,7 @@
             "Position": 1738.0,
             "Priority": 25,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 25
           },
           {
@@ -512,7 +510,7 @@
             "Position": 1763.0,
             "Priority": 27,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 27
           },
           {
@@ -521,7 +519,7 @@
             "Position": 1788.0,
             "Priority": 29,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 29
           },
           {
@@ -530,7 +528,7 @@
             "Position": 1813.0,
             "Priority": 31,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 31
           },
           {
@@ -539,7 +537,7 @@
             "Position": 1838.0,
             "Priority": 33,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 33
           },
           {
@@ -548,7 +546,7 @@
             "Position": 1863.0,
             "Priority": 35,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 35
           },
           {
@@ -557,7 +555,7 @@
             "Position": 1888.0,
             "Priority": 37,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 37
           },
           {
@@ -566,7 +564,7 @@
             "Position": 1913.0,
             "Priority": 39,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 39
           },
           {
@@ -575,7 +573,7 @@
             "Position": 1938.0,
             "Priority": 41,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 41
           },
           {
@@ -584,7 +582,7 @@
             "Position": 1963.0,
             "Priority": 43,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 43
           },
           {
@@ -593,7 +591,7 @@
             "Position": 1988.0,
             "Priority": 45,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 45
           },
           {
@@ -602,7 +600,7 @@
             "Position": 2013.0,
             "Priority": 47,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 47
           },
           {
@@ -611,7 +609,7 @@
             "Position": 2038.0,
             "Priority": 49,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 49
           },
           {
@@ -620,7 +618,7 @@
             "Position": 2063.0,
             "Priority": 51,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 51
           },
           {
@@ -629,7 +627,7 @@
             "Position": 2088.0,
             "Priority": 53,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 53
           },
           {
@@ -638,7 +636,7 @@
             "Position": 2113.0,
             "Priority": 55,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 55
           },
           {
@@ -647,7 +645,7 @@
             "Position": 2138.0,
             "Priority": 57,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 57
           },
           {
@@ -656,7 +654,7 @@
             "Position": 2163.0,
             "Priority": 59,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 59
           },
           {
@@ -665,7 +663,7 @@
             "Position": 2188.0,
             "Priority": 61,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 61
           },
           {
@@ -674,7 +672,7 @@
             "Position": 2213.0,
             "Priority": 63,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 63
           },
           {
@@ -683,7 +681,7 @@
             "Position": 2238.0,
             "Priority": 65,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 65
           },
           {
@@ -692,7 +690,7 @@
             "Position": 2263.0,
             "Priority": 67,
             "Side": "Front",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 67
           },
           {
@@ -3018,7 +3016,7 @@
             "Id": 583
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 1,
             "Position": 8740.0,
             "Priority": 585,
@@ -3027,7 +3025,7 @@
             "Id": 585
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 1,
             "Position": 8765.0,
             "Priority": 587,
@@ -3036,7 +3034,7 @@
             "Id": 587
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 1,
             "Position": 8790.0,
             "Priority": 589,
@@ -3045,7 +3043,7 @@
             "Id": 589
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 1,
             "Position": 8815.0,
             "Priority": 591,
@@ -3054,7 +3052,7 @@
             "Id": 591
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 1,
             "Position": 8840.0,
             "Priority": 593,
@@ -3063,7 +3061,7 @@
             "Id": 593
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 1,
             "Position": 8865.0,
             "Priority": 595,
@@ -3072,7 +3070,7 @@
             "Id": 595
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 1,
             "Position": 8890.0,
             "Priority": 597,
@@ -3081,7 +3079,7 @@
             "Id": 597
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 1,
             "Position": 8915.0,
             "Priority": 599,
@@ -3090,7 +3088,7 @@
             "Id": 599
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 1,
             "Position": 8940.0,
             "Priority": 601,
@@ -3110,7 +3108,7 @@
             "Position": 1438.0,
             "Priority": 2,
             "Side": "Back",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 2
           },
           {
@@ -3119,7 +3117,7 @@
             "Position": 1464.0,
             "Priority": 4,
             "Side": "Back",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 4
           },
           {
@@ -3128,7 +3126,7 @@
             "Position": 1489.0,
             "Priority": 6,
             "Side": "Back",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 6
           },
           {
@@ -3137,7 +3135,7 @@
             "Position": 1514.0,
             "Priority": 8,
             "Side": "Back",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 8
           },
           {
@@ -3146,7 +3144,7 @@
             "Position": 1539.0,
             "Priority": 10,
             "Side": "Back",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 10
           },
           {
@@ -3155,7 +3153,7 @@
             "Position": 1564.0,
             "Priority": 12,
             "Side": "Back",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 12
           },
           {
@@ -3164,7 +3162,7 @@
             "Position": 1589.0,
             "Priority": 14,
             "Side": "Back",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 14
           },
           {
@@ -3173,7 +3171,7 @@
             "Position": 1614.0,
             "Priority": 16,
             "Side": "Back",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 16
           },
           {
@@ -3182,7 +3180,7 @@
             "Position": 1639.0,
             "Priority": 18,
             "Side": "Back",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 18
           },
           {
@@ -3191,7 +3189,7 @@
             "Position": 1664.0,
             "Priority": 20,
             "Side": "Back",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 20
           },
           {
@@ -3200,7 +3198,7 @@
             "Position": 1689.0,
             "Priority": 22,
             "Side": "Back",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 22
           },
           {
@@ -3209,7 +3207,7 @@
             "Position": 1714.0,
             "Priority": 24,
             "Side": "Back",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 24
           },
           {
@@ -3218,7 +3216,7 @@
             "Position": 1739.0,
             "Priority": 26,
             "Side": "Back",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 26
           },
           {
@@ -3227,7 +3225,7 @@
             "Position": 1764.0,
             "Priority": 28,
             "Side": "Back",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 28
           },
           {
@@ -3236,7 +3234,7 @@
             "Position": 1789.0,
             "Priority": 30,
             "Side": "Back",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 30
           },
           {
@@ -3245,7 +3243,7 @@
             "Position": 1814.0,
             "Priority": 32,
             "Side": "Back",
-            "IsFree": false,
+            "IsFree": true,
             "Id": 32
           },
           {
@@ -5733,7 +5731,7 @@
             "Id": 584
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 2,
             "Position": 8740.0,
             "Priority": 586,
@@ -5742,7 +5740,7 @@
             "Id": 586
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 2,
             "Position": 8765.0,
             "Priority": 588,
@@ -5751,7 +5749,7 @@
             "Id": 588
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 2,
             "Position": 8790.0,
             "Priority": 590,
@@ -5760,7 +5758,7 @@
             "Id": 590
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 2,
             "Position": 8815.0,
             "Priority": 592,
@@ -5769,7 +5767,7 @@
             "Id": 592
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 2,
             "Position": 8840.0,
             "Priority": 594,
@@ -5778,7 +5776,7 @@
             "Id": 594
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 2,
             "Position": 8865.0,
             "Priority": 596,
@@ -5787,7 +5785,7 @@
             "Id": 596
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 2,
             "Position": 8890.0,
             "Priority": 598,
@@ -5796,7 +5794,7 @@
             "Id": 598
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 2,
             "Position": 8915.0,
             "Priority": 600,
@@ -5805,7 +5803,7 @@
             "Id": 600
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 2,
             "Position": 8940.0,
             "Priority": 602,
