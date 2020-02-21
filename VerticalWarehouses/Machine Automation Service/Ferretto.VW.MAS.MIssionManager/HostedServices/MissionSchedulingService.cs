@@ -826,7 +826,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     var sourceCell = cellsProvider.GetByLoadingUnitId(mission.LoadUnitId);
                     if (sourceCell is null)
                     {
-                        this.Logger.LogDebug($"Bay {bayNumber}: WMS mission {mission.WmsId} can not start because LoadUnit {mission.LoadUnitId} is not in a cell.");
+                        this.Logger.LogDebug($"Bay {bayNumber}: WMS mission {mission.WmsId} cannot start because LoadUnit {mission.LoadUnitId} is not in a cell.");
                     }
                     else
                     {
