@@ -67,76 +67,8 @@
 
         <Border Grid.Row="2"
                 Grid.Column="3"
-                Margin="0,30,15,0"
-                Background="{DynamicResource PpcBackground}">
-            <Border BorderBrush="{DynamicResource PpcBorderBrush}"
-                    BorderThickness="{DynamicResource PpcBorderThickness}">
-
-                <Grid Grid.Column="8"
-                      Grid.ColumnSpan="4">
-
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Margin="8,4"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Normal}"
-                               FontWeight="Normal"
-                               Foreground="{DynamicResource FerrettoLightGray}"
-                               Text="Cicli sessione" />
-
-                    <TextBlock Grid.Row="1"
-                               Margin="4,0,4,4"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Very_High}"
-                               Foreground="{DynamicResource PpcForeground}"
-                               Text="{Binding PerformedCyclesThisSession}"
-                               TextWrapping="Wrap" />
-
-                </Grid>
-
-            </Border>
-        </Border>
-
-        <ctrls:PpcSpinEdit Grid.Row="3"
-                           Grid.Column="0"
-                           Height="90"
-                           Margin="0,15,15,0"
-                           EditValue="{Binding InputLowerBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                           IsEnabled="{Binding IsEnabledEditing}"
-                           LabelText="{x:Static res:InstallationApp.LowerBound}"
-                           WidthNumber="230" />
-
-        <ctrls:PpcSpinEdit Grid.Row="3"
-                           Grid.Column="1"
-                           Height="90"
-                           Margin="0,15,15,0"
-                           EditValue="{Binding InputUpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                           IsEnabled="{Binding IsEnabledEditing}"
-                           LabelText="{x:Static res:InstallationApp.UpperBound}"
-                           WidthNumber="230" />
-
-        <ctrls:PpcSpinEdit Grid.Row="3"
-                           Grid.Column="2"
-                           Height="90"
-                           Margin="0,15,15,0"
-                           EditValue="{Binding InputDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                           IsEnabled="{Binding IsEnabledEditing}"
-                           LabelText="{x:Static res:InstallationApp.DelayBetweenCycles}"
-                           WidthNumber="230" />
-
-        <Border Grid.Row="3"
-                Grid.Column="3"
                 Height="90"
-                Margin="0,15,15,0"
+                Margin="0,30,15,0"
                 Background="{DynamicResource PpcBackground}">
             <Border BorderBrush="{DynamicResource PpcBorderBrush}"
                     BorderThickness="{DynamicResource PpcBorderThickness}">
@@ -153,7 +85,6 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-
 
                     <TextBlock Margin="8,4"
                                HorizontalAlignment="Left"
@@ -196,6 +127,74 @@
                                              Maximum="100"
                                              Minimum="0"
                                              Value="{Binding CyclesPercent, Mode=OneWay}" />
+
+                </Grid>
+
+            </Border>
+        </Border>
+
+        <ctrls:PpcSpinEdit Grid.Row="3"
+                           Grid.Column="0"
+                           Height="90"
+                           Margin="0,15,15,0"
+                           EditValue="{Binding InputLowerBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           IsEnabled="{Binding IsEnabledEditing}"
+                           LabelText="{x:Static res:InstallationApp.LowerBound}"
+                           WidthNumber="230" />
+
+        <ctrls:PpcSpinEdit Grid.Row="3"
+                           Grid.Column="1"
+                           Height="90"
+                           Margin="0,15,15,0"
+                           EditValue="{Binding InputUpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           IsEnabled="{Binding IsEnabledEditing}"
+                           LabelText="{x:Static res:InstallationApp.UpperBound}"
+                           WidthNumber="230" />
+
+        <ctrls:PpcSpinEdit Grid.Row="3"
+                           Grid.Column="2"
+                           Height="90"
+                           Margin="0,15,15,0"
+                           EditValue="{Binding InputDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           IsEnabled="{Binding IsEnabledEditing}"
+                           LabelText="{x:Static res:InstallationApp.DelayBetweenCycles}"
+                           WidthNumber="230" />
+
+        <Border Grid.Row="3"
+                Grid.Column="3"
+                Margin="0,15,15,0"
+                Background="{DynamicResource PpcBackground}">
+            <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                    BorderThickness="{DynamicResource PpcBorderThickness}">
+
+                <Grid Grid.Column="8"
+                      Grid.ColumnSpan="4">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Margin="8,4"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               FontSize="{StaticResource FontSize_Normal}"
+                               FontWeight="Normal"
+                               Foreground="{DynamicResource FerrettoLightGray}"
+                               Text="Cicli sessione" />
+
+                    <TextBlock Grid.Row="1"
+                               Margin="4,0,4,4"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="{StaticResource FontSize_Very_High}"
+                               Foreground="{DynamicResource PpcForeground}"
+                               Text="{Binding PerformedCyclesThisSession}"
+                               TextWrapping="Wrap" />
 
                 </Grid>
 

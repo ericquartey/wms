@@ -455,7 +455,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (message.Data?.MovementMode == MovementMode.BeltBurnishing)
             {
                 this.CumulativePerformedCycles = message.Data.ExecutedCycles;
-                this.CyclesPercent = ((double)this.PerformedCyclesThisSession / (double)message.Data.RequiredCycles) * 100.0;
+                this.CyclesPercent = ((double)(this.CumulativePerformedCycles ?? 0) / (double)this.InputRequiredCycles) * 100.0;
             }
 
             if (message.Status == MessageStatus.OperationEnd &&
@@ -479,6 +479,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.CumulativePerformedCycles = 0;
                     this.PerformedCyclesThisSession = 0;
+                    this.CyclesPercent = 0;
 
                     await this.beltBurnishingWebService.ResetAsync();
                 }
