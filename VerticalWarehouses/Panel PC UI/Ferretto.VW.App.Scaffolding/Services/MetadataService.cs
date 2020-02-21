@@ -122,6 +122,12 @@ namespace Ferretto.VW.App.Scaffolding.Services
                         offset = offsetAttribute.Offset;
                     }
 
+                    List<string> exclusionList;
+                    if (prop.TryGetCustomAttribute<HidePropertiesAttribute>(out var hidePropertiesAttribute))
+                    {
+                        exclusionList = hidePropertiesAttribute.PropertyList;
+                    }
+
                     #region array? (must have Category AND CategoryParameter attributes)
 
                     // flattening
