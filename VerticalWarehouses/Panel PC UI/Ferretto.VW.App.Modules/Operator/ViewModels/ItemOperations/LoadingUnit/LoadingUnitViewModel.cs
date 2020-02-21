@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Configuration;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using CommonServiceLocator;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -173,6 +176,29 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
 
             this.CheckForNewWmsMissionOperations();
+
+            await Task.Run(async () =>
+            {
+                await Task.Delay(5000);
+                await this.missionOperationsService.RecallLoadingUnitAsync(this.LoadingUnit.Id);
+
+                var missionsWebService = ServiceLocator.Current.GetInstance<IMachineMissionsWebService>();
+                var hasActiveMissions = false;
+                do
+                {
+                    await Task.Delay(1000);
+                    var missions = await missionsWebService.GetAllAsync();
+                    hasActiveMissions = missions.Any();
+                    this.Logger.Info($"There are still {missions.Count()} active missions ... ");
+                }
+                while (!hasActiveMissions);
+                this.Logger.Info($"Requesting call for loading unit {this.LoadingUnit.Id} ... ");
+
+                var machineLoadingUnitsWebService = ServiceLocator.Current.GetInstance<IMachineLoadingUnitsWebService>();
+                await machineLoadingUnitsWebService.MoveToBayAsync(this.LoadingUnit.Id);
+
+                Application.Current.Dispatcher.Invoke(() => this.NavigationService.GoBack());
+            });
         }
 
         public override void RaisePropertyChanged()
