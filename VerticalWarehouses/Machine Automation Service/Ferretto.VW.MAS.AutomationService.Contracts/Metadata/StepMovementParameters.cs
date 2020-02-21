@@ -12,20 +12,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             #region Properties
 
-            [Id(1)]
+            [Id(4)]
             public double Acceleration { get; set; }
 
-            [Id(2)]
+            [Id(5)]
             [Editable(false)]
             public bool AdjustByWeight { get; set; }
 
-            [Id(3)]
+            [Id(1)]
+            [Editable(false)]
             public int Number { get; set; }
 
-            [Id(4)]
+            [Id(2)]
             public double Position { get; set; }
 
-            [Id(5)]
+            [Id(3)]
             public double Speed { get; set; }
 
             #endregion
