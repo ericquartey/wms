@@ -237,6 +237,15 @@
   <data name="ElevatorAxis_LowerBound" xml:space="preserve">
     <value>Limite asse inferiore</value>
   </data>
+  <data name="ElevatorAxis_ProfileCalibrateLength" xml:space="preserve">
+    <value>Distanza max calibrazione sagoma</value>
+  </data>
+  <data name="ElevatorAxis_ProfileCalibratePosition" xml:space="preserve">
+    <value>Distanza sagoma lettura 6a ftc</value>
+  </data>
+  <data name="ElevatorAxis_ProfileCalibrateSpeed" xml:space="preserve">
+    <value>Velocità calibrazione sagoma</value>
+  </data>
   <data name="ElevatorAxis_Profiles" xml:space="preserve">
     <value>Profiles</value>
   </data>
@@ -245,6 +254,12 @@
   </data>
   <data name="ElevatorAxis_UpperBound" xml:space="preserve">
     <value>Limite asse superiore</value>
+  </data>
+  <data name="ElevatorAxis_VerticalDepositOffset" xml:space="preserve">
+    <value>Offset posizionamento in deposito</value>
+  </data>
+  <data name="ElevatorAxis_VerticalPickupOffset" xml:space="preserve">
+    <value>Offset posizionamento in prelievo</value>
   </data>
   <data name="ElevatorWeight" xml:space="preserve">
     <value>Peso elevatore</value>

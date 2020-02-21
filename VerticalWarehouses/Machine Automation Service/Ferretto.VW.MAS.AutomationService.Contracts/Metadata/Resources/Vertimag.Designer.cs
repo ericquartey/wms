@@ -430,6 +430,33 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Distanza max calibrazione sagoma.
+        /// </summary>
+        public static string ElevatorAxis_ProfileCalibrateLength {
+            get {
+                return ResourceManager.GetString("ElevatorAxis_ProfileCalibrateLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Distanza sagoma lettura 6a ftc.
+        /// </summary>
+        public static string ElevatorAxis_ProfileCalibratePosition {
+            get {
+                return ResourceManager.GetString("ElevatorAxis_ProfileCalibratePosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Velocità calibrazione sagoma.
+        /// </summary>
+        public static string ElevatorAxis_ProfileCalibrateSpeed {
+            get {
+                return ResourceManager.GetString("ElevatorAxis_ProfileCalibrateSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Profiles.
         /// </summary>
         public static string ElevatorAxis_Profiles {
@@ -453,6 +480,24 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         public static string ElevatorAxis_UpperBound {
             get {
                 return ResourceManager.GetString("ElevatorAxis_UpperBound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offset posizionamento in deposito.
+        /// </summary>
+        public static string ElevatorAxis_VerticalDepositOffset {
+            get {
+                return ResourceManager.GetString("ElevatorAxis_VerticalDepositOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offset posizionamento in prelievo.
+        /// </summary>
+        public static string ElevatorAxis_VerticalPickupOffset {
+            get {
+                return ResourceManager.GetString("ElevatorAxis_VerticalPickupOffset", resourceCulture);
             }
         }
         
