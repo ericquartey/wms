@@ -23,11 +23,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Id(3)]
             [Editable(true)]
+            [Unit("mm")]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.TargetDistance))]
             public double TargetDistance { get; set; }
 
             [Id(4)]
             [Editable(true)]
+            [Unit("mm")]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.TargetDistanceAfterZero))]
             public double TargetDistanceAfterZero { get; set; }
 

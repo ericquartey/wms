@@ -84,7 +84,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                 var modelType = type.GetCustomAttribute<Ferretto.VW.MAS.Scaffolding.DataAnnotations.MetadataTypeAttribute>()?.MetadataClassType ?? type;
                 Dictionary<string, List<Type>> dict = new Dictionary<string, List<Type>>();
 
-                foreach (var prop in GetMemberInfos(modelType))
+                foreach (var prop in GetMemberInfos(modelType).Where(x => !branch.ExclusionList?.Contains(x.Name) ?? true))
                 {
                     PropertyInfo actualProp = type.GetProperty(prop.Name);
                     Type propertyType = prop.MemberType == MemberTypes.Field ? ((FieldInfo)prop).FieldType : ((PropertyInfo)prop).PropertyType;
@@ -120,6 +120,12 @@ namespace Ferretto.VW.App.Scaffolding.Services
                     if (prop.TryGetCustomAttribute<OffsetAttribute>(out var offsetAttribute))
                     {
                         offset = offsetAttribute.Offset;
+                    }
+
+                    List<string> exclusionList = null;
+                    if (prop.TryGetCustomAttribute<HidePropertiesAttribute>(out var hidePropertiesAttribute))
+                    {
+                        exclusionList = hidePropertiesAttribute.PropertyList;
                     }
 
                     #region array? (must have Category AND CategoryParameter attributes)
@@ -205,6 +211,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                                 {
                                     Category = category.Name,
                                     Parent = target,
+                                    ExclusionList = exclusionList,
                                     Description = categoryDescription,
                                     CategoryParameter = category.FirstParameter,
                                     Id = target.Id + id + offset
@@ -399,6 +406,8 @@ namespace Ferretto.VW.App.Scaffolding.Services
         public string Description { get; set; }
 
         public List<ScaffoldedEntityInternal> Entities { get; set; } = new List<ScaffoldedEntityInternal>();
+
+        public List<string> ExclusionList { get; set; }
 
         public int Id { get; set; }
 

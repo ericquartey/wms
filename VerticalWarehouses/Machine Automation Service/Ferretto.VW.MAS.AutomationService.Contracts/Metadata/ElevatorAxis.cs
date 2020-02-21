@@ -15,6 +15,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Id(30)]
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.AssistedMovements))]
+            [HideProperties(nameof(ElevatorAxisManualParameters.TargetDistance), nameof(ElevatorAxisManualParameters.TargetDistanceAfterZero))]
             public ElevatorAxisManualParameters AssistedMovements { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_BrakeActivatePercent))]
@@ -74,13 +75,19 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [ScaffoldColumn(false)]
             public Orientation Orientation { get; set; }
 
-            [ScaffoldColumn(false)]
+            [Id(12)]
+            [Unit("mm")]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_ProfileCalibrateLength))]
             public double ProfileCalibrateLength { get; set; }
 
-            [ScaffoldColumn(false)]
+            [Id(13)]
+            [Unit("mm")]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_ProfileCalibratePosition))]
             public int ProfileCalibratePosition { get; set; }
 
-            [ScaffoldColumn(false)]
+            [Id(14)]
+            [Unit("mm/s")]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_ProfileCalibrateSpeed))]
             public double ProfileCalibrateSpeed { get; set; }
 
             [Category("Profilo {0}")]
@@ -94,9 +101,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Unit("imp/mm")]
             public double Resolution { get; set; }
 
-            [ScaffoldColumn(false)]
-            public int TotalCycles { get; set; }
-
             [Unit("mm")]
             [Id(8)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_UpperBound))]
@@ -104,10 +108,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Unit("mm")]
             [Id(10)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_VerticalDepositOffset))]
             public double? VerticalDepositOffset { get; set; }
 
             [Unit("mm")]
             [Id(11)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_VerticalPickupOffset))]
             public double? VerticalPickupOffset { get; set; }
 
             [Id(25)]
