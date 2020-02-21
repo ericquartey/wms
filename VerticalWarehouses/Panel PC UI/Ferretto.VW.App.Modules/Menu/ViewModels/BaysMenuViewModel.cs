@@ -76,10 +76,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
                       this.MachineModeService.MachineMode == MachineMode.Manual &&
                       (true || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
-        //protected SetupStepStatus CarouselCalibration => this.SetupStatusCapabilities?.CarouselCalibration ?? new SetupStepStatus();
+        private SetupStepStatus CarouselCalibration => this.BaySetupStatus?.CarouselCalibration ?? new SetupStepStatus();
 
         public ICommand CarouselCalibrationCommand =>
-            this.carouselCalibrationCommand
+                    this.carouselCalibrationCommand
             ??
             (this.carouselCalibrationCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.CarouselCalibration),
@@ -92,11 +92,15 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public bool IsBayControlBypassed => this.BayControl.IsBypassed;
 
-        public bool IsBayControlCompleted => this.BayControl.IsCompleted;
+        public bool IsBayControlCompleted => this.BayControl.IsCompleted && !this.BayControl.IsBypassed;
 
         public bool IsBayProfileBypassed => this.BayProfile.IsBypassed;
 
-        public bool IsBayProfileCompleted => this.BayProfile.IsCompleted;
+        public bool IsBayProfileCompleted => this.BayProfile.IsCompleted && !this.BayProfile.IsBypassed;
+
+        public bool IsCarouselCalibrationBypassed => this.CarouselCalibration.IsBypassed;
+
+        public bool IsCarouselCalibrationCompleted => this.CarouselCalibration.IsCompleted && !this.CarouselCalibration.IsBypassed;
 
         public bool IsCarouselCalibrationVisible => this.MachineService.HasCarousel;
 
@@ -104,7 +108,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public bool IsTestShutterBypassed => this.BayShutter.IsBypassed;
 
-        public bool IsTestShutterCompleted => this.BayShutter.IsCompleted;
+        public bool IsTestShutterCompleted => this.BayShutter.IsCompleted && !this.BayShutter.IsBypassed;
 
         public SetupStatusCapabilities SetupStatusCapabilities { get; private set; }
 
@@ -156,6 +160,15 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            this.RaisePropertyChanged(nameof(this.IsBayControlBypassed));
+            this.RaisePropertyChanged(nameof(this.IsBayControlCompleted));
+            this.RaisePropertyChanged(nameof(this.IsBayProfileBypassed));
+            this.RaisePropertyChanged(nameof(this.IsBayProfileCompleted));
+            this.RaisePropertyChanged(nameof(this.IsTestShutterBypassed));
+            this.RaisePropertyChanged(nameof(this.IsTestShutterCompleted));
+            this.RaisePropertyChanged(nameof(this.IsCarouselCalibrationBypassed));
+            this.RaisePropertyChanged(nameof(this.IsCarouselCalibrationCompleted));
+
             this.RaisePropertyChanged(nameof(this.IsCarouselCalibrationVisible));
 
             await base.OnAppearedAsync();

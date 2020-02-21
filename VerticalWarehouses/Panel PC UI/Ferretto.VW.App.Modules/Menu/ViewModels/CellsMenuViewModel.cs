@@ -70,6 +70,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
                       this.MachineModeService.MachineMode == MachineMode.Manual &&
                       (this.MachineService.IsHoming || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
+        public BaySetupStatus BaysSetupStatus { get; private set; }
+
         private SetupStepStatus CellPanelsCheck => this.SetupStatusCapabilities?.CellPanelsCheck ?? new SetupStepStatus();
 
         public ICommand CellPanelsCheckCommand =>
@@ -109,9 +111,19 @@ namespace Ferretto.VW.App.Menu.ViewModels
                       (this.CellsHeightCheck.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus()) &&
                       false));
 
-        public bool IsCellPanelsCheckProcedure => this.CellPanelsCheck.IsCompleted;
+        private SetupStepStatus FirstLoadingUnit => this.BaysSetupStatus?.FirstLoadingUnit ?? new SetupStepStatus();
+
+        public bool IsBayFirstLoadingUnitProcedure => this.FirstLoadingUnit.IsCompleted && !this.FirstLoadingUnit.IsBypassed;
+
+        public bool IsBayFirstLoadingUnitProcedureBypassed => this.FirstLoadingUnit.IsBypassed;
+
+        public bool IsCellPanelsCheckProcedure => this.CellPanelsCheck.IsCompleted && !this.CellPanelsCheck.IsBypassed;
 
         public bool IsCellPanelsCheckProcedureBypassed => this.CellPanelsCheck.IsBypassed;
+
+        public bool IsCellsHeightCheckProcedure => this.CellsHeightCheck.IsCompleted && !this.CellsHeightCheck.IsBypassed;
+
+        public bool IsCellsHeightCheckProcedureBypassed => this.CellsHeightCheck.IsBypassed;
 
         public SetupStatusCapabilities SetupStatusCapabilities { get; private set; }
 
@@ -129,6 +141,11 @@ namespace Ferretto.VW.App.Menu.ViewModels
             base.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.IsCellPanelsCheckProcedure));
+            this.RaisePropertyChanged(nameof(this.IsCellPanelsCheckProcedureBypassed));
+            this.RaisePropertyChanged(nameof(this.IsCellsHeightCheckProcedure));
+            this.RaisePropertyChanged(nameof(this.IsCellsHeightCheckProcedureBypassed));
+            this.RaisePropertyChanged(nameof(this.IsBayFirstLoadingUnitProcedure));
+            this.RaisePropertyChanged(nameof(this.IsBayFirstLoadingUnitProcedureBypassed));
 
             this.cellsCommand?.RaiseCanExecuteChanged();
             this.cellPanelsCheckCommand?.RaiseCanExecuteChanged();
@@ -186,6 +203,24 @@ namespace Ferretto.VW.App.Menu.ViewModels
         private async Task UpdateSetupStatusAsync()
         {
             this.SetupStatusCapabilities = await this.machineSetupStatusWebService.GetAsync();
+
+            switch (this.MachineService.BayNumber)
+            {
+                case BayNumber.BayOne:
+                    this.BaysSetupStatus = this.SetupStatusCapabilities.Bay1;
+                    break;
+
+                case BayNumber.BayTwo:
+                    this.BaysSetupStatus = this.SetupStatusCapabilities.Bay2;
+                    break;
+
+                case BayNumber.BayThree:
+                    this.BaysSetupStatus = this.SetupStatusCapabilities.Bay3;
+                    break;
+
+                default:
+                    throw new ArgumentException($"Bay {this.MachineService.BayNumber} not allowed", nameof(this.MachineService.BayNumber));
+            }
 
             this.RaiseCanExecuteChanged();
         }
