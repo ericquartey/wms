@@ -118,7 +118,11 @@ namespace Ferretto.VW.MAS.MissionManager
                 }
                 // first loop: load from bay
                 var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-                var loadUnitSource = baysDataProvider.GetByNumber(sourceBayNumber).Positions.OrderBy(p => p.IsUpper).LastOrDefault().Location;
+                var loadUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(loadUnitId);
+                if (loadUnitSource == LoadingUnitLocation.NoLocation)
+                {
+                    loadUnitSource = baysDataProvider.GetByNumber(sourceBayNumber).Positions.OrderBy(p => p.IsUpper).LastOrDefault().Location;
+                }
                 this.logger.LogInformation($"Move from bay {sourceBayNumber} to cell {cellId} First test");
                 moveLoadingUnitProvider.InsertToCell(MissionType.FirstTest, loadUnitSource, cellId, loadUnitId, sourceBayNumber, MessageActor.MissionManager);
                 return true;
