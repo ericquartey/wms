@@ -124,7 +124,7 @@ namespace Ferretto.VW.MAS.AutomationService
             }
         }
 
-        private void OnDataLayerReady(IServiceProvider serviceProvider)
+        private async Task OnDataLayerReady(IServiceProvider serviceProvider)
         {
             var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
             var bays = baysDataProvider.GetAll();

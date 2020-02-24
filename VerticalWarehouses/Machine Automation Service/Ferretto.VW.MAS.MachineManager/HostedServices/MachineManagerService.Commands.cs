@@ -55,7 +55,8 @@ namespace Ferretto.VW.MAS.MachineManager
                 return;
             }
 
-            if (!this.isDataLayerReady)
+            var machineVolatileDataProvider = serviceProvider.GetRequiredService<IMachineVolatileDataProvider>();
+            if (!machineVolatileDataProvider.IsAutomationServiceReady)
             {
                 this.Logger.LogError($"Failed to start Change Running State machine mission: DataLayer is not ready!");
                 this.NotifyCommandError(command);
@@ -124,7 +125,8 @@ namespace Ferretto.VW.MAS.MachineManager
                 throw new ArgumentNullException(nameof(serviceProvider));
             }
 
-            if (!this.isDataLayerReady)
+            var machineVolatileDataProvider = serviceProvider.GetRequiredService<IMachineVolatileDataProvider>();
+            if (!machineVolatileDataProvider.IsAutomationServiceReady)
             {
                 this.Logger.LogError($"Unable to start load unit movement: dataLayer is not ready.");
                 this.NotifyCommandError(command);
@@ -147,7 +149,6 @@ namespace Ferretto.VW.MAS.MachineManager
                                 {
                                     if (!missionMoveProvider.StartMission(mission, command, serviceProvider, true))
                                     {
-                                        var machineVolatileDataProvider = serviceProvider.GetRequiredService<IMachineVolatileDataProvider>();
                                         machineVolatileDataProvider.Mode = MachineMode.Manual;
                                         this.Logger.LogInformation($"Start Mission error: Machine status switched to {machineVolatileDataProvider.Mode}");
                                     }

@@ -491,16 +491,19 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     Command = this.BayFirstLoadingUnitBypassCommand,
                 });
 
-                this.source.Add(new ItemListSetupProcedure()
+                if (this.MachineService.Bays.Count(x => x.Number != BayNumber.ElevatorBay) > 1)
                 {
-                    Text = "Completare i test sulle altre baie",
-                    Status = otherBaysSetupCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
-                    Bypassable = false,
-                    Bypassed = false,
-                    Command = new DelegateCommand(async () =>
+                    this.source.Add(new ItemListSetupProcedure()
                     {
-                    }),
-                });
+                        Text = "Completare i test sulle altre baie",
+                        Status = otherBaysSetupCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
+                        Bypassable = false,
+                        Bypassed = false,
+                        Command = new DelegateCommand(async () =>
+                        {
+                        }),
+                    });
+                }
 
                 await this.MachineService.GetTuningStatus();
 

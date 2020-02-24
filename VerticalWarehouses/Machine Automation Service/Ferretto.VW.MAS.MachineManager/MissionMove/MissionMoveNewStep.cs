@@ -198,7 +198,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             returnValue = true;
                             mission.LoadUnitDestination = LoadingUnitLocation.Cell;
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
                             this.ErrorsProvider.RecordNew(MachineErrorCode.WarehouseIsFull, this.Mission.TargetBay);
                         }

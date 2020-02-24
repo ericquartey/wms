@@ -33,6 +33,7 @@ namespace Ferretto.VW.MAS.DataLayer
             IEventAggregator eventAggregator,
             IDataLayerService dataLayerService)
         {
+            this.MachinePowerState = MachinePowerState.NotSpecified;
             this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             this.eventAggregator = eventAggregator ?? throw new System.ArgumentNullException(nameof(eventAggregator));
 
@@ -75,6 +76,8 @@ namespace Ferretto.VW.MAS.DataLayer
         public double ElevatorVerticalPosition { get; set; }
 
         public int ExecutedCycles { get; set; }
+
+        public bool IsAutomationServiceReady { get; set; }
 
         public Dictionary<BayNumber, bool> IsBayHomingExecuted { get; set; }
 

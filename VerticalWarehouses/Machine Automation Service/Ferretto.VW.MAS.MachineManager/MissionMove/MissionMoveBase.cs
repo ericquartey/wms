@@ -94,7 +94,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var unitToMove = this.LoadingUnitsDataProvider.GetById(mission.LoadUnitId);
             var bayPosition = locationBay.Positions.First(w => w.Location == bayLocation);
             var bay = this.BaysDataProvider.GetByNumber(locationBay.Number);
-            const double tolerance = 2.5;
+            const double tolerance = 2.5;       // TODO use a parameter for this value??
             if (unitToMove != null
                 && bay != null
                 )
@@ -108,12 +108,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     this.Logger.LogWarning($"Load unit Height {unitToMove.Height} lower than machine min {machine.LoadUnitMinHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
                 }
-                else if (unitToMove.Height < bayPosition.MaxSingleHeight - tolerance)
+                else if (unitToMove.Height < bayPosition.MaxSingleHeight + tolerance)
                 {
                     returnValue = true;
                 }
                 else if (bayPosition.MaxDoubleHeight > 0
-                    && unitToMove.Height < bayPosition.MaxDoubleHeight - tolerance
+                    && unitToMove.Height < bayPosition.MaxDoubleHeight + tolerance
                     )
                 {
                     if (bay.Positions.Count() == 1)
