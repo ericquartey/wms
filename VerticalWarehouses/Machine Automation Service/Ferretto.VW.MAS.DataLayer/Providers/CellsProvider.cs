@@ -19,6 +19,13 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private const double VerticalPositionTolerance = 12.5;
 
+        private static readonly Func<DataLayerContext, int, Cell> GetByIdCompile =
+            EF.CompileQuery((DataLayerContext context, int cellId) =>
+                context.Cells.AsNoTracking()
+                .Include(c => c.Panel)
+                .Include(c => c.LoadingUnit)
+                .SingleOrDefault(c => c.Id == cellId));
+
         private readonly DataLayerContext dataContext;
 
         private readonly IElevatorDataProvider elevatorDataProvider;
@@ -312,10 +319,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public Cell GetById(int cellId)
         {
-            return this.dataContext.Cells
-                .Include(c => c.Panel)
-                .Include(c => c.LoadingUnit)
-                .SingleOrDefault(c => c.Id == cellId);
+            return GetByIdCompile(this.dataContext, cellId);
         }
 
         public Cell GetByLoadingUnitId(int loadingUnitId)
