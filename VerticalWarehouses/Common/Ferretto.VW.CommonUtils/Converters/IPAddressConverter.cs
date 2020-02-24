@@ -19,6 +19,11 @@ namespace Ferretto.VW.CommonUtils.Converters
                 throw new ArgumentNullException(nameof(reader));
             }
 
+            if (reader.Value is null)
+            {
+                return null;
+            }
+
             return System.Net.IPAddress.Parse((string)reader.Value);
         }
 

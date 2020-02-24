@@ -2,23 +2,33 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Ferretto.VW.App.Scaffolding.Controls
+namespace Ferretto.VW.Installer.Controls
 {
     /// <summary>
     /// Interaction logic for IPAddressBox.xaml
     /// </summary>
     public partial class IPAddressBox : UserControl
     {
+        #region Fields
+
+        public static readonly DependencyProperty IPAddressProperty
+            = DependencyProperty.Register("IPAddress", typeof(System.Net.IPAddress), typeof(IPAddressBox));
+
+        public static readonly DependencyProperty IsReadOnlyProperty
+            = DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(IPAddressBox), new PropertyMetadata(false));
+
+        #endregion
+
+        #region Constructors
+
         public IPAddressBox()
         {
             this.InitializeComponent();
         }
 
-        public static readonly DependencyProperty IsReadOnlyProperty
-            = DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(IPAddressBox), new PropertyMetadata(false));
+        #endregion
 
-        public static readonly DependencyProperty IPAddressProperty
-            = DependencyProperty.Register("IPAddress", typeof(System.Net.IPAddress), typeof(IPAddressBox));
+        #region Properties
 
         public System.Net.IPAddress IPAddress
         {
@@ -31,6 +41,10 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             get => (bool)this.GetValue(IsReadOnlyProperty);
             set => this.SetValue(IsReadOnlyProperty, value);
         }
+
+        #endregion
+
+        #region Methods
 
         private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
@@ -47,5 +61,7 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             bool accept = byte.TryParse(previewText, out byte _);
             e.Handled = !accept;
         }
+
+        #endregion
     }
 }
