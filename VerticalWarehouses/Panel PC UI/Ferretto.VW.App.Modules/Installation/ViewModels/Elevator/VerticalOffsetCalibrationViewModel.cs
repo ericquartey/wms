@@ -453,18 +453,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                if (this.AxisLowerBound > this.NewDisplacement)
-                {
-                    var messageBoxResult = this.dialogService.ShowMessage("Il seguente risultato modificherà il valore LowerBound della macchina, continuare?", InstallationApp.VerticalOffsetCalibration, DialogType.Question, DialogButtons.YesNo);
-                    if (messageBoxResult == DialogResult.No)
-                    {
-                        return;
-                    }
+                //if (this.AxisLowerBound > this.NewDisplacement)
+                //{
+                //    var messageBoxResult = this.dialogService.ShowMessage("Il seguente risultato modificherà il valore LowerBound della macchina, continuare?", InstallationApp.VerticalOffsetCalibration, DialogType.Question, DialogButtons.YesNo);
+                //    if (messageBoxResult == DialogResult.No)
+                //    {
+                //        return;
+                //    }
 
-                    await this.machineElevatorWebService.UpdateVerticalLowerBoundAsync(this.NewDisplacement);
+                //    await this.machineElevatorWebService.UpdateVerticalLowerBoundAsync(this.NewDisplacement);
 
-                    await this.GetLowerBound();
-                }
+                //    await this.GetLowerBound();
+                //}
 
                 this.IsWaitingForResponse = true;
 
@@ -476,7 +476,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.ShowNotification(InstallationApp.AxisVerticalOffsetUpdated, Services.Models.NotificationSeverity.Success);
 
-                this.CurrentStep = VerticalOffsetCalibrationStep.Confirm;
+                this.CurrentStep = VerticalOffsetCalibrationStep.Start;
 
                 this.NavigationService.GoBack();
             }

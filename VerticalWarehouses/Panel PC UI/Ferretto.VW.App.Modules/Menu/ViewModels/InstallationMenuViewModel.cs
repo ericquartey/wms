@@ -311,6 +311,15 @@ namespace Ferretto.VW.App.Menu.ViewModels
             return this.SetupListCompleted && !this.machineService.IsTuningCompleted && !this.IsExecutingProcedure;
         }
 
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            this.source = new List<ItemListSetupProcedure>();
+
+            this.RaisePropertyChanged(nameof(this.Source));
+        }
+
         public async override Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
@@ -373,6 +382,31 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
                     default:
                         throw new ArgumentException($"Bay {this.MachineService.BayNumber} not allowed", nameof(this.MachineService.BayNumber));
+                }
+
+                var activeOtherBaysNumber = this.MachineService.Bays.Where(b => b.Number != this.MachineService.Bay.Number && b.Number != BayNumber.ElevatorBay).Select(b => b.Number);
+
+                List<BaySetupStatus> activeOtherBaysStatus = new List<BaySetupStatus>();
+                bool otherBaysSetupCompleted = true;
+                foreach (BayNumber bayNumber in activeOtherBaysNumber)
+                {
+                    switch (bayNumber)
+                    {
+                        case BayNumber.BayOne:
+                            otherBaysSetupCompleted &= status.Bay1.IsAllTestCompleted;
+                            break;
+
+                        case BayNumber.BayTwo:
+                            otherBaysSetupCompleted &= status.Bay2.IsAllTestCompleted;
+                            break;
+
+                        case BayNumber.BayThree:
+                            otherBaysSetupCompleted &= status.Bay3.IsAllTestCompleted;
+                            break;
+
+                        default:
+                            throw new ArgumentException($"Bay {this.MachineService.BayNumber} not allowed", nameof(this.MachineService.BayNumber));
+                    }
                 }
 
                 this.source = new List<ItemListSetupProcedure>();
@@ -460,7 +494,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 this.source.Add(new ItemListSetupProcedure()
                 {
                     Text = "Completare i test sulle altre baie",
-                    Status = true ? InstallationStatus.Complete : InstallationStatus.Incomplete,
+                    Status = otherBaysSetupCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
                     Bypassable = false,
                     Bypassed = false,
                     Command = new DelegateCommand(async () =>

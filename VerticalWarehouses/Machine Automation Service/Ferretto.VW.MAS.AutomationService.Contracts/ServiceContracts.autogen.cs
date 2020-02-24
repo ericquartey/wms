@@ -1998,6 +1998,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         FirstTestFailed = 66,
     
+        WarehouseNotEmpty = 67,
+    
         InverterErrorBaseCode = 1000,
     
         InverterErrorInvalidParameter = 1001,
@@ -4401,6 +4403,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("FirstLoadingUnit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupStepStatus FirstLoadingUnit { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsAllTestCompleted", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsAllTestCompleted { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Laser", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupStepStatus Laser { get; set; }

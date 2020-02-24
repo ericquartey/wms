@@ -754,6 +754,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Livello alto baia vuoto..
         /// </summary>
         public static string TopLevelBayEmpty {
@@ -772,11 +781,20 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Il magazzino risulta pieno e non è possibile determinare una cella libera per il cassetto selezionato..
+        ///   Looks up a localized string similar to The warehouse is full. It is not possible to find any free cell for the Load Unit..
         /// </summary>
         public static string WarehouseIsFull {
             get {
                 return ResourceManager.GetString("WarehouseIsFull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The warehouse is not empty. The first load unit test is not allowed..
+        /// </summary>
+        public static string WarehouseNotEmpty {
+            get {
+                return ResourceManager.GetString("WarehouseNotEmpty", resourceCulture);
             }
         }
         

@@ -382,7 +382,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var servicingInfo = this.dataContext.ServicingInfo.FirstOrDefault();
+                var servicingInfo = this.dataContext.ServicingInfo.LastOrDefault();
                 if (servicingInfo != null)
                 {
                     servicingInfo.TotalMissions = (servicingInfo.TotalMissions.HasValue ? servicingInfo.TotalMissions + 1 : 1);

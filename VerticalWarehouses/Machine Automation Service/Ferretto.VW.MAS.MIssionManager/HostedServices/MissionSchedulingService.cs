@@ -139,6 +139,14 @@ namespace Ferretto.VW.MAS.MissionManager
                         return false;
                     }
                 }
+
+                var loadingUnitsDataProvider = serviceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
+                if (loadingUnitsDataProvider.CountIntoMachine() > 0)
+                {
+                    this.Logger.LogError($"First Test error: warehouse is not empty!");
+                    errorsProvider.RecordNew(MachineErrorCode.WarehouseNotEmpty, machineProvider.BayTestNumber);
+                    return false;
+                }
                 machineProvider.RequiredCycles = cellsProvider.SetCellsToTest();
                 if (machineProvider.RequiredCycles.Value == 0)
                 {

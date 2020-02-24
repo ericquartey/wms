@@ -55,6 +55,7 @@ namespace Ferretto.VW.MAS.MachineManager
                     // performance optimization
                     serviceProvider.GetRequiredService<ICellsProvider>().GetAll();
                     serviceProvider.GetRequiredService<IMachineProvider>().Get();
+                    serviceProvider.GetRequiredService<ISetupProceduresDataProvider>().GetAll();
 
                     this.isDataLayerReady = true;
                     break;

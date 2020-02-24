@@ -16,6 +16,11 @@ namespace Ferretto.VW.MAS.DataModels
 
         #region Methods
 
+        /// <summary>
+        /// In horizontal movements some steps can be scaled by weight, depending on AdjustByWeight parameter.
+        /// </summary>
+        /// <param name="scalingFactor">min value 0, max value 1.The higher is scalingFactor the lower goes speed/Acceleration </param>
+        /// <param name="axis"></param>
         public void ScaleMovementsByWeight(double scalingFactor, ElevatorAxis axis)
         {
             if (axis is null)

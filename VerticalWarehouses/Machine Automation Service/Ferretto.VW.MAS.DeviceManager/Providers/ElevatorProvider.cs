@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Enumerations;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
@@ -552,7 +553,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         /// <param name="isLoadingUnitOnBoard">true: elevator is full before the movement. It must match the presence sensors</param>
         /// <param name="loadingUnitId">This id is stored in Elevator table before the movement. null means no LoadUnit</param>
         /// <param name="loadingUnitGrossWeight">This weight is stored in LoadingUnits table before the movement.</param>
-        /// <param name="waitContinue">true: the inverter positioning state machine stops after the transmission of parameters and waits for a Continue command before enabling inverter</param>
+        /// <param name="waitContinue">true: the inverter positioning state machine stops after the transmission of parameters and waits for a Continue command before enabling inverter
+        ///                             the scope is to wait for the shutter to open or close before moving </param>
         /// <param name="requestingBay"></param>
         /// <param name="sender"></param>
         public void MoveHorizontalAuto(
@@ -616,7 +618,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             // if weight is unknown we move as full weight
             double scalingFactor = 1;
-            if (loadingUnitId.HasValue && !measure)
+            if (loadingUnitId.HasValue
+                && !measure
+                && this.machineVolatileDataProvider.Mode != MachineMode.FirstTest
+                )
             {
                 var loadUnit = this.loadingUnitsDataProvider.GetById(loadingUnitId.Value);
                 if (loadUnit.MaxNetWeight > 0 && loadUnit.GrossWeight > 0)
@@ -1332,6 +1337,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var acceleration = new[] { movementParameters.Acceleration };
             var deceleration = new[] { movementParameters.Deceleration };
             var feedRate = homingDone ? manualParameters.FeedRateAfterZero : manualParameters.FeedRate;
+            if (this.machineVolatileDataProvider.Mode == MachineMode.FirstTest)
+            {
+                // during first load unit test the feedrate is fixed to half speed
+                feedRate /= 2;
+            }
             var speed = new[] { movementParameters.Speed * (sender == MessageActor.AutomationService ? feedRate : 1) };
 
             var switchPosition = new[] { 0.0 };
