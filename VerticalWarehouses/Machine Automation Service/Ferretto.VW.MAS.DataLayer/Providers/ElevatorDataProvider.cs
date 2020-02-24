@@ -67,12 +67,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(e => e.StructuralProperties)
                     .Single());
 
-        private static readonly Func<DataLayerContext, Elevator> LoadLoadingUnitCompile =
-                EF.CompileQuery((DataLayerContext context) =>
-                context.Elevators
-                    .Include(e => e.LoadingUnit)
-                    .Single());
-
         private readonly IMemoryCache cache;
 
         private readonly MemoryCacheEntryOptions cacheOptions;
@@ -280,18 +274,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.machineVolatileDataProvider.ElevatorVerticalPosition - VerticalPositionValidationTolerance < position
                 &&
                 this.machineVolatileDataProvider.ElevatorVerticalPosition + VerticalPositionValidationTolerance > position;
-        }
-
-        public void LoadLoadingUnit(int id)
-        {
-            lock (this.dataContext)
-            {
-                var elevator = LoadLoadingUnitCompile(this.dataContext);
-
-                elevator.LoadingUnitId = id;
-
-                this.dataContext.SaveChanges();
-            }
         }
 
         public void ResetMachine()
