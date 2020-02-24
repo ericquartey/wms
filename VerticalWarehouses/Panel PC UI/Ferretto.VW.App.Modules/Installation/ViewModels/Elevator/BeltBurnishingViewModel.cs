@@ -457,12 +457,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsExecutingProcedure = false;
             }
 
-            if (message.Status == MessageStatus.OperationExecuting && !this.IsExecutingProcedure)
-            {
-                this.IsExecutingProcedure = true;
-                this.PerformedCyclesThisSession = 0;
-            }
-
             if (message.IsErrored())
             {
                 this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped, Services.Models.NotificationSeverity.Warning);
@@ -471,8 +465,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             if (message.Data?.MovementMode == MovementMode.BeltBurnishing)
             {
+                if (this.PerformedCyclesThisSession == null && this.CumulativePerformedCycles.HasValue)
+                {
+                    this.totalPerformedCyclesBeforeStart = this.CumulativePerformedCycles.Value;
+                }
+
                 this.CumulativePerformedCycles = message.Data.ExecutedCycles;
-                if (this.InputRequiredCycles != null)
+                if (this.InputRequiredCycles.HasValue)
                 {
                     this.CyclesPercent = ((double)(this.CumulativePerformedCycles ?? 0) / (double)this.InputRequiredCycles) * 100.0;
                 }
