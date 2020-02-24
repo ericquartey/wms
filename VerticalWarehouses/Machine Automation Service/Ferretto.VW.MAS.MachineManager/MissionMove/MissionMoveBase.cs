@@ -243,6 +243,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     if (this.Mission.ErrorCode != MachineErrorCode.NoError)
                     {
                         this.ErrorsProvider.RecordNew(this.Mission.ErrorCode, this.Mission.TargetBay);
+
+                        this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+                        this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
                     }
 
                     if (this.Mission.MissionType == MissionType.OUT
