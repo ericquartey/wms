@@ -254,7 +254,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
            (this.moveToRunningCalibrationCommand = new DelegateCommand(
                () =>
                {
-                   this.CurrentStep = CarouselCalibrationStep.RunningCalibration;
                    this.CalibrationCarouselAsync();
                },
                this.CanToRunningCalibration));
@@ -540,6 +539,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CurrentResolution = await this.machineElevatorWebService.GetVerticalResolutionAsync();
 
                 this.IsExecutingProcedure = this.MachineService.MachineStatus.IsMoving;
+
+                this.RaiseCanExecuteChanged();
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -596,6 +597,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.stopCommand?.RaiseCanExecuteChanged();
             this.stopInPhaseCommand?.RaiseCanExecuteChanged();
+            this.resetCyclesCounterCommand?.RaiseCanExecuteChanged();
 
             this.moveToStartCalibrationCommand?.RaiseCanExecuteChanged();
             this.moveToRunningCalibrationCommand?.RaiseCanExecuteChanged();
@@ -671,6 +673,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return
                    this.PerformedCycles > 0 &&
+                   !this.IsMoving &&
                    !this.IsExecutingProcedure &&
                    string.IsNullOrWhiteSpace(this.Error);
         }
@@ -695,7 +698,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanToRunningCalibration()
         {
-            return this.CanBaseExecute();
+            return !this.IsKeyboardOpened &&
+                   !this.IsMoving &&
+                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh &&
+                   !this.SensorsService.IsLoadingUnitOnElevator &&
+                   (this.PerformedCycles < this.RequiredCycles);
         }
 
         private bool CanToStartCalibration()
@@ -736,9 +744,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Desideri resettare i cicli eseguiti?", DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
-                    this.PerformedCycles = 0;
-                    //TBD
-                    //await this.shuttersWebService.ResetTestAsync();
+                    await this.machineCarouselWebService.ResetCalibrationAsync();
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)

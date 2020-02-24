@@ -60,7 +60,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ActionResult<RepeatedTestProcedure> GetParameters()
         {
             var procedureParameters = this.setupProceduresDataProvider.GetBayCarouselCalibration(this.BayNumber);
-            
+
             return this.Ok(procedureParameters);
         }
 
@@ -103,6 +103,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult MoveManual(VerticalMovementDirection direction)
         {
             this.carouselProvider.MoveManual(direction, -1, null, this.BayNumber, MessageActor.AutomationService);
+
+            return this.Accepted();
+        }
+
+        [HttpPost("reset-calibration")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult ResetCalibration()
+        {
+            var procedureParameters = this.setupProceduresDataProvider.GetBayCarouselCalibration(this.BayNumber);
+            this.setupProceduresDataProvider.ResetPerformedCycles(procedureParameters);
 
             return this.Accepted();
         }
