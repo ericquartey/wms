@@ -23,6 +23,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
+        // TODO: Move this to parameters
+        private const int positionOffset = 500; //mm
+
         private readonly IMachineBeltBurnishingProcedureWebService beltBurnishingWebService;
 
         private readonly Services.IDialogService dialogService;
@@ -350,9 +353,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 var bounds = await this.machineElevatorWebService.GetVerticalBoundsAsync();
 
-                this.InputUpperBound = bounds.Upper;
+                this.InputUpperBound = bounds.Upper - positionOffset;
                 this.machineUpperBound = bounds.Upper;
-                this.InputLowerBound = bounds.Lower;
+                this.InputLowerBound = bounds.Lower + positionOffset;
                 this.machineLowerBound = bounds.Lower;
             }
         }
