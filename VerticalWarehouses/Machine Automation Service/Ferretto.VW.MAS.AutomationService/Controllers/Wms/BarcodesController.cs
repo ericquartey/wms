@@ -27,6 +27,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<BarcodeRule>>> GetAllAsync()
         {
             return this.Ok(await this.barcodesWmsWebService.GetAllAsync());
