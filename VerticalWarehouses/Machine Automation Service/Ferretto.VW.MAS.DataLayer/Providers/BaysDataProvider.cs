@@ -39,6 +39,88 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.FullLoadMovement)
                     .Include(b => b.CurrentMission));
 
+        private static readonly Func<DataLayerContext, int, Bay> GetByBayPositionIdCompile =
+                EF.CompileQuery((DataLayerContext context, int bayPositionId) =>
+                context.Bays
+                    .AsNoTracking()
+                    .Include(b => b.Positions)
+                .SingleOrDefault(b => b.Positions.Any(p => p.Id == bayPositionId)));
+
+        private static readonly Func<DataLayerContext, Cell, Bay> GetByCellCompile =
+                EF.CompileQuery((DataLayerContext context, Cell cell) =>
+                context.Bays
+                    .AsNoTracking()
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.Inverter)
+                    .Include(b => b.Carousel)
+                    .Include(b => b.Positions)
+                    .Where(b => b.Side == cell.Side && b.Positions.First().Height < cell.Position)
+                    .OrderBy(o => cell.Position - o.Positions.First().Height)
+                    .FirstOrDefault());
+
+        private static readonly Func<DataLayerContext, IoIndex, Bay> GetByIoIndexCompile =
+                EF.CompileQuery((DataLayerContext context, IoIndex ioIndex) =>
+                context.Bays
+                    .AsNoTracking()
+                    .Include(b => b.Inverter)
+                    .Include(b => b.Positions)
+                        .ThenInclude(s => s.LoadingUnit)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.Inverter)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.ManualMovements)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.AssistedMovements)
+                    .Include(b => b.Carousel)
+                    .Include(b => b.EmptyLoadMovement)
+                    .Include(b => b.FullLoadMovement)
+                    .SingleOrDefault(b => b.IoDevice.Index == ioIndex));
+
+        private static readonly Func<DataLayerContext, LoadingUnitLocation, Bay> GetByLoadingUnitLocationCompile =
+                EF.CompileQuery((DataLayerContext context, LoadingUnitLocation location) =>
+                context.Bays
+                    .AsNoTracking()
+                     .Include(b => b.Shutter)
+                        .ThenInclude(i => i.Inverter)
+                     .Include(b => b.Carousel)
+                     .Include(b => b.Positions)
+                        .ThenInclude(t => t.LoadingUnit)
+                     .Include(b => b.CurrentMission)
+                    .FirstOrDefault(b => b.Positions.Any(p => p.Location == location)));
+
+        private static readonly Func<DataLayerContext, BayNumber, Bay> GetByNumberCompile =
+                                EF.CompileQuery((DataLayerContext context, BayNumber bayNumber) =>
+                context.Bays
+                    .AsNoTracking()
+                    .Include(b => b.Inverter)
+                    .Include(b => b.CurrentMission)
+                    .Include(b => b.Positions)
+                        .ThenInclude(s => s.LoadingUnit)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.Inverter)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.AssistedMovements)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.ManualMovements)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.Inverter)
+                    .Include(b => b.Carousel)
+                        .ThenInclude(s => s.ManualMovements)
+                    .Include(b => b.Carousel)
+                        .ThenInclude(s => s.AssistedMovements)
+                    .Include(b => b.EmptyLoadMovement)
+                    .Include(b => b.FullLoadMovement)
+                    .SingleOrDefault(b => b.Number == bayNumber));
+
+        private static readonly Func<DataLayerContext, LoadingUnitLocation, BayPosition> GetPositionByLocationCompile =
+                EF.CompileQuery((DataLayerContext context, LoadingUnitLocation location) =>
+                context.BayPositions
+                    .AsNoTracking()
+                .Include(b => b.Bay)
+                    .ThenInclude(i => i.Carousel)
+                .Include(b => b.LoadingUnit)
+                .SingleOrDefault(p => p.Location == location));
+
         private readonly IMemoryCache cache;
 
         private readonly MemoryCacheEntryOptions cacheOptions;
@@ -241,10 +323,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var bay = this.dataContext.Bays
-                    .Include(b => b.Positions)
-                    .AsNoTracking()
-                    .SingleOrDefault(b => b.Positions.Any(p => p.Id == bayPositionId));
+                var bay = GetByBayPositionIdCompile(this.dataContext, bayPositionId);
                 if (bay is null)
                 {
                     throw new EntityNotFoundException(bayPositionId);
@@ -258,15 +337,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Bays
-                    .AsNoTracking()
-                    .Include(b => b.Shutter)
-                        .ThenInclude(s => s.Inverter)
-                    .Include(b => b.Carousel)
-                    .Include(b => b.Positions)
-                    .Where(b => b.Side == cell.Side && b.Positions.First().Height < cell.Position)
-                    .OrderBy(o => cell.Position - o.Positions.First().Height)
-                    .FirstOrDefault();
+                return GetByCellCompile(this.dataContext, cell);
             }
         }
 
@@ -345,21 +416,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var bay = this.dataContext.Bays
-                    .AsNoTracking()
-                    .Include(b => b.Inverter)
-                    .Include(b => b.Positions)
-                        .ThenInclude(s => s.LoadingUnit)
-                    .Include(b => b.Shutter)
-                        .ThenInclude(s => s.Inverter)
-                    .Include(b => b.Shutter)
-                        .ThenInclude(s => s.ManualMovements)
-                    .Include(b => b.Shutter)
-                        .ThenInclude(s => s.AssistedMovements)
-                    .Include(b => b.Carousel)
-                    .Include(b => b.EmptyLoadMovement)
-                    .Include(b => b.FullLoadMovement)
-                    .SingleOrDefault(b => b.IoDevice.Index == ioIndex);
+                var bay = GetByIoIndexCompile(this.dataContext, ioIndex);
 
                 if (bay is null)
                 {
@@ -374,15 +431,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Bays
-                    .AsNoTracking()
-                     .Include(b => b.Shutter)
-                        .ThenInclude(i => i.Inverter)
-                     .Include(b => b.Carousel)
-                     .Include(b => b.Positions)
-                        .ThenInclude(t => t.LoadingUnit)
-                     .Include(b => b.CurrentMission)
-                    .FirstOrDefault(b => b.Positions.Any(p => p.Location == location));
+                return GetByLoadingUnitLocationCompile(this.dataContext, location);
             }
         }
 
@@ -429,26 +478,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var bay = this.dataContext.Bays
-                    .Include(b => b.Inverter)
-                    .Include(b => b.CurrentMission)
-                    .Include(b => b.Positions)
-                        .ThenInclude(s => s.LoadingUnit)
-                    .Include(b => b.Shutter)
-                        .ThenInclude(s => s.Inverter)
-                    .Include(b => b.Shutter)
-                        .ThenInclude(s => s.AssistedMovements)
-                    .Include(b => b.Shutter)
-                        .ThenInclude(s => s.ManualMovements)
-                    .Include(b => b.Shutter)
-                        .ThenInclude(s => s.Inverter)
-                    .Include(b => b.Carousel)
-                        .ThenInclude(s => s.ManualMovements)
-                    .Include(b => b.Carousel)
-                        .ThenInclude(s => s.AssistedMovements)
-                    .Include(b => b.EmptyLoadMovement)
-                    .Include(b => b.FullLoadMovement)
-                    .SingleOrDefault(b => b.Number == bayNumber);
+                var bay = GetByNumberCompile(this.dataContext, bayNumber);
 
                 if (bay is null)
                 {
@@ -692,12 +722,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public BayPosition GetPositionByLocation(LoadingUnitLocation location)
         {
-            var bayPosition = this.dataContext.BayPositions
-                .Include(b => b.Bay)
-                    .ThenInclude(i => i.Carousel)
-                .Include(b => b.LoadingUnit)
-                .AsNoTracking()
-                .SingleOrDefault(p => p.Location == location);
+            var bayPosition = GetPositionByLocationCompile(this.dataContext, location);
             if (bayPosition is null)
             {
                 throw new EntityNotFoundException(location.ToString());
