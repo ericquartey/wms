@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Layout.Presentation;
 using Ferretto.VW.App.Services;
@@ -86,7 +87,18 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
             if (message.ClearMessage)
             {
-                this.NotificationMessage = null;
+                if (this.NotificationMessage != null)
+                {
+                    if (this.NotificationSeverity != NotificationSeverity.Success)
+                    {
+                        this.NotificationMessage = null;
+                    }
+                    else
+                    {
+                        _ = Task.Delay(1500).ContinueWith(t => this.NotificationMessage = null, TaskScheduler.Current);
+                    }
+                }
+
                 return;
             }
 

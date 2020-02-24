@@ -32,11 +32,11 @@ namespace Ferretto.VW.MAS.AutomationService
 
         public static int Main(string[] args)
         {
+            var isService = !Debugger.IsAttached && args.Contains(ServiceConsoleArgument);
+
             ILogger logger = null;
             try
             {
-                var isService = !Debugger.IsAttached && args.Contains(ServiceConsoleArgument);
-
                 var pathToContentRoot = isService
                     ? Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)
                     : Directory.GetCurrentDirectory();
@@ -48,8 +48,9 @@ namespace Ferretto.VW.MAS.AutomationService
                     .Build();
 
                 logger = host.Services.GetRequiredService<ILogger<Startup>>();
-
                 logger.LogInformation($"VertiMag Automation Service version {GetVersion()}");
+
+                logger.LogInformation($"Working directory is '{pathToContentRoot}'.");
 
                 if (isService)
                 {
@@ -64,12 +65,12 @@ namespace Ferretto.VW.MAS.AutomationService
             }
             catch (Exception ex)
             {
-                logger?.LogError(ex, "Application terminated unexpectedly.");
+                logger?.LogError(ex, "Service terminated unexpectedly.");
 
                 throw;
             }
 
-            logger?.LogInformation("Application terminated.");
+            logger?.LogInformation("Service exited with no error.");
 
             return NoError;
         }
