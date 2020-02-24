@@ -8,7 +8,6 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
 {
     internal class SwitchOffStartState : InverterStateBase
@@ -95,7 +94,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
                 if (!this.InverterStatus.CommonStatusWord.IsSwitchedOn)
                 {
-                    this.ParentStateMachine.ChangeState(new SwitchOffEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                    this.ParentStateMachine.ChangeState(new SwitchOffWaitState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                     returnValue = true;
                 }
                 else if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
