@@ -117,7 +117,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return ActionPolicy.Allowed;
         }
 
-        public ActionPolicy CanLoadFromBay(int bayPositionId, BayNumber bayNumber, bool isGuided)
+        public ActionPolicy CanLoadFromBay(int bayPositionId, BayNumber bayNumber, bool isGuided, bool enforceLoadUnitPresent = true)
         {
             // check #1: elevator must be located opposite to the specified bay position
             var bayPosition = this.elevatorDataProvider.GetCurrentBayPosition();
@@ -127,7 +127,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             // check #2: a loading unit must be present in the bay position
-            if (!this.IsBayPositionOccupied(bayNumber, bayPositionId))
+            if (enforceLoadUnitPresent && !this.IsBayPositionOccupied(bayNumber, bayPositionId))
             {
                 return new ActionPolicy { Reason = Resources.Elevator.NoLoadingUnitIsPresentInTheSpecifiedBayPosition };
             }
@@ -749,7 +749,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void MoveHorizontalProfileCalibration(int bayPositionId, BayNumber requestingBay, MessageActor sender)
         {
-            var policy = this.CanLoadFromBay(bayPositionId, requestingBay, isGuided: false);
+            var policy = this.CanLoadFromBay(bayPositionId, requestingBay, isGuided: false, enforceLoadUnitPresent: false);
             if (!policy.IsAllowed)
             {
                 throw new InvalidOperationException(policy.Reason);
