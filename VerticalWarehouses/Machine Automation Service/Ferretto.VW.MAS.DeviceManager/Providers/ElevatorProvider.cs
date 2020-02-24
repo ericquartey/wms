@@ -666,7 +666,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"waitContinue: {waitContinue}; " +
                 $"loadUnitId: {loadingUnitId}; " +
                 $"scalingFactor: {scalingFactor:0.4}; " +
-                $"compensation: {compensation}");
+                $"compensation: {compensation:0.2}");
 
             var messageData = new PositioningMessageData(
                 Axis.Horizontal,

@@ -176,7 +176,6 @@ namespace Ferretto.VW.MAS.DataLayer
         public int FindEmptyCell(int loadingUnitId, CompactingType compactingType = CompactingType.NoCompacting, bool isCellTest = false)
         {
             var loadingUnit = this.dataContext.LoadingUnits
-                .AsNoTracking()
                 .Include(i => i.Cell)
                     .ThenInclude(c => c.Panel)
                 .SingleOrDefault(l => l.Id == loadingUnitId);
@@ -223,6 +222,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new InvalidOperationException("LoadUnitMaxHeight is not valid");
                 }
                 loadingUnit.Height = (isCellTest ? machine.LoadUnitMinHeight : machine.LoadUnitMaxHeight);
+                this.dataContext.SaveChanges();
                 this.logger.LogInformation($"FindEmptyCell: height is not defined for LU {loadingUnitId}; new height is {loadingUnit.Height} (as configured for {(isCellTest ? "min" : "max")});");
             }
             using (var availableCell = new BlockingCollection<AvailableCell>())
@@ -314,6 +314,7 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Cells
+                    .AsNoTracking()
                     .Include(c => c.Panel)
                     .Where(predicate)
                     .ToArray();
