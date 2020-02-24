@@ -19,8 +19,13 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private const double VerticalPositionTolerance = 12.5;
 
+        private static readonly Func<DataLayerContext, IEnumerable<Cell>> GetAllCompile =
+            EF.CompileQuery((DataLayerContext context) =>
+                context.Cells.AsNoTracking()
+                .Include(c => c.Panel));
+
         private static readonly Func<DataLayerContext, int, Cell> GetByIdCompile =
-            EF.CompileQuery((DataLayerContext context, int cellId) =>
+                    EF.CompileQuery((DataLayerContext context, int cellId) =>
                 context.Cells.AsNoTracking()
                 .Include(c => c.Panel)
                 .Include(c => c.LoadingUnit)
@@ -300,9 +305,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Cells
-                    .Include(c => c.Panel)
-                    .ToArray();
+                return GetAllCompile(this.dataContext).ToArray();
             }
         }
 

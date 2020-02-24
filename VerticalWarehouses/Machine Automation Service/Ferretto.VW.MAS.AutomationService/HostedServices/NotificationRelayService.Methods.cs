@@ -124,8 +124,10 @@ namespace Ferretto.VW.MAS.AutomationService
             }
         }
 
-        private void OnDataLayerReady(IServiceProvider serviceProvider)
+        private async Task OnDataLayerReady(IServiceProvider serviceProvider)
         {
+            await this.installationHub.Clients.All.MachinePowerChanged(this.machineVolatileDataProvider.MachinePowerState);
+
             var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
             var bays = baysDataProvider.GetAll();
             foreach (var bay in bays.Where(b => b.Carousel == null))
