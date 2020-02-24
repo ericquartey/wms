@@ -836,7 +836,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             lock (this.dataContext)
             {
-                var bay = this.GetByNumber(bayNumber);
+                var bay = this.dataContext.Bays.FirstOrDefault(b => b.Number == bayNumber);
 
                 if (bay is null)
                 {
