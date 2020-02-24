@@ -33,6 +33,47 @@ namespace Ferretto.VW.MAS.DataLayer
         /// </summary>
         private const double VerticalPositionValidationTolerance = 7.5;
 
+        private static readonly Func<DataLayerContext, BayPosition> GetCurrentBayPositionCompile =
+                EF.CompileQuery((DataLayerContext context) =>
+                context.Elevators
+                    .AsNoTracking()
+                    .Select(e => e.BayPosition)
+                        .Include(p => p.LoadingUnit)
+                        .Include(p => p.Bay)
+                    .SingleOrDefault());
+
+        private static readonly Func<DataLayerContext, Cell> GetCurrentCellCompile =
+                EF.CompileQuery((DataLayerContext context) =>
+                context.Elevators
+                    .AsNoTracking()
+                   .Select(e => e.Cell)
+                   .Include(c => c.Panel)
+                   .Include(c => c.LoadingUnit)
+                   .SingleOrDefault());
+
+        private static readonly Func<DataLayerContext, Elevator> GetLoadingUnitOnBoardCompile =
+                EF.CompileQuery((DataLayerContext context) =>
+                context.Elevators
+                    .AsNoTracking()
+                    .Include(e => e.LoadingUnit)
+                    .ThenInclude(l => l.Cell)
+                    .ThenInclude(c => c.Panel)
+                    .Single());
+
+        private static readonly Func<DataLayerContext, Elevator> GetStructuralPropertiesCompile =
+                EF.CompileQuery((DataLayerContext context) =>
+                context.Elevators
+                    .AsNoTracking()
+                    .Include(e => e.StructuralProperties)
+                    .Single());
+
+        private static readonly Func<DataLayerContext, Elevator> LoadLoadingUnitCompile =
+                EF.CompileQuery((DataLayerContext context) =>
+                context.Elevators
+                    .AsNoTracking()
+                    .Include(e => e.LoadingUnit)
+                    .Single());
+
         private readonly IMemoryCache cache;
 
         private readonly MemoryCacheEntryOptions cacheOptions;
@@ -172,11 +213,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var currentBayPosition = this.dataContext.Elevators
-                    .Select(e => e.BayPosition)
-                        .Include(p => p.LoadingUnit)
-                        .Include(p => p.Bay)
-                    .SingleOrDefault();
+                var currentBayPosition = GetCurrentBayPositionCompile(this.dataContext);
 
                 return currentBayPosition;
             }
@@ -186,11 +223,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var currentCell = this.dataContext.Elevators
-                   .Select(e => e.Cell)
-                   .Include(c => c.Panel)
-                   .Include(c => c.LoadingUnit)
-                   .SingleOrDefault();
+                var currentCell = GetCurrentCellCompile(this.dataContext);
 
                 return currentCell;
             }
@@ -224,11 +257,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var elevator = this.dataContext.Elevators.AsNoTracking()
-                    .Include(e => e.LoadingUnit)
-                    .ThenInclude(l => l.Cell)
-                    .ThenInclude(c => c.Panel)
-                    .Single();
+                var elevator = GetLoadingUnitOnBoardCompile(this.dataContext);
 
                 return elevator.LoadingUnit;
             }
@@ -240,9 +269,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var elevator = this.dataContext.Elevators
-                    .Include(e => e.StructuralProperties)
-                    .Single();
+                var elevator = GetStructuralPropertiesCompile(this.dataContext);
 
                 return elevator.StructuralProperties;
             }
@@ -260,10 +287,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var elevator = this.dataContext
-                    .Elevators
-                    .Include(e => e.LoadingUnit)
-                    .Single();
+                var elevator = LoadLoadingUnitCompile(this.dataContext);
 
                 elevator.LoadingUnitId = id;
 
