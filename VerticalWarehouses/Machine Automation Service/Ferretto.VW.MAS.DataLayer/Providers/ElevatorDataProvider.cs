@@ -70,7 +70,6 @@ namespace Ferretto.VW.MAS.DataLayer
         private static readonly Func<DataLayerContext, Elevator> LoadLoadingUnitCompile =
                 EF.CompileQuery((DataLayerContext context) =>
                 context.Elevators
-                    .AsNoTracking()
                     .Include(e => e.LoadingUnit)
                     .Single());
 
