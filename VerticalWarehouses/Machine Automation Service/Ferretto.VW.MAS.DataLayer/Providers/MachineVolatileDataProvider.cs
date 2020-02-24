@@ -77,11 +77,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public int ExecutedCycles { get; set; }
 
+        public bool IsAutomationServiceReady { get; set; }
+
         public Dictionary<BayNumber, bool> IsBayHomingExecuted { get; set; }
 
         public Dictionary<BayNumber, bool> IsBayLightOn { get; set; }
-
-        public bool IsDataLayerReady { get; set; }
 
         public bool IsHomingActive { get; set; }
 

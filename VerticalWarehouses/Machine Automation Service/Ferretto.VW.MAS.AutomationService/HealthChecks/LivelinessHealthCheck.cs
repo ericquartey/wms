@@ -14,11 +14,13 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private readonly IDbContextRedundancyService<DataLayerContext> redundancyService;
 
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
+
         #endregion
 
         #region Constructors
 
-        public LivelinessHealthCheck(IDbContextRedundancyService<DataLayerContext> redundancyService, IDataLayerService dataLayerService)
+        public LivelinessHealthCheck(IDbContextRedundancyService<DataLayerContext> redundancyService, IDataLayerService dataLayerService, IMachineVolatileDataProvider machineVolatileDataProvider)
         {
             if (dataLayerService == null)
             {
@@ -28,6 +30,8 @@ namespace Ferretto.VW.MAS.AutomationService
             this.redundancyService = redundancyService ?? throw new System.ArgumentNullException(nameof(redundancyService));
 
             this.dataLayerService = dataLayerService;
+
+            this.machineVolatileDataProvider = machineVolatileDataProvider;
         }
 
         #endregion
@@ -54,6 +58,12 @@ namespace Ferretto.VW.MAS.AutomationService
             {
                 return Task.FromResult(
                     HealthCheckResult.Unhealthy("Datalayer not ready"));
+            }
+
+            if (!this.machineVolatileDataProvider.IsAutomationServiceReady)
+            {
+                return Task.FromResult(
+                    HealthCheckResult.Unhealthy("Automation Service not ready"));
             }
 
             return Task.FromResult(
