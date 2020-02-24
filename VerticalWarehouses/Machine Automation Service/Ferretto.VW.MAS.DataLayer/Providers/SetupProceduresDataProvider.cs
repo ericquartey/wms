@@ -13,31 +13,9 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
-        private readonly DataLayerContext dataContext;
-
-        private readonly ILogger<SetupProceduresDataProvider> logger;
-
-        #endregion
-
-        #region Constructors
-
-        public SetupProceduresDataProvider(
-            DataLayerContext dataContext,
-            ILogger<SetupProceduresDataProvider> logger)
-        {
-            this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        }
-
-        #endregion
-
-        #region Methods
-
-        public SetupProceduresSet GetAll()
-        {
-            lock (this.dataContext)
-            {
-                return this.dataContext.SetupProceduresSets.AsNoTracking()
+        private static readonly Func<DataLayerContext, SetupProceduresSet> GetAllCompile =
+            EF.CompileQuery((DataLayerContext context) =>
+                context.SetupProceduresSets.AsNoTracking()
 
                       .Include(s => s.Bay1CarouselCalibration)
                         .Include(s => s.Bay1FirstLoadingUnit)
@@ -73,7 +51,33 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     .Include(s => s.WeightMeasurement)
 
-                    .Single();
+                    .Single());
+
+        private readonly DataLayerContext dataContext;
+
+        private readonly ILogger<SetupProceduresDataProvider> logger;
+
+        #endregion
+
+        #region Constructors
+
+        public SetupProceduresDataProvider(
+            DataLayerContext dataContext,
+            ILogger<SetupProceduresDataProvider> logger)
+        {
+            this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+
+        #endregion
+
+        #region Methods
+
+        public SetupProceduresSet GetAll()
+        {
+            lock (this.dataContext)
+            {
+                return GetAllCompile(this.dataContext);
             }
         }
 
