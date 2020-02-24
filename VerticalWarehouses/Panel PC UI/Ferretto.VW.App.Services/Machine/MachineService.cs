@@ -1280,7 +1280,8 @@ namespace Ferretto.VW.App.Services
                             this.ShowNotification("Inconsistenza sensore nottolino a zero e presenza cassetto.", NotificationSeverity.Error);
                         }
                         else if ((view.Equals("LoadingUnitFromBayToCellView", StringComparison.InvariantCultureIgnoreCase) ||
-                                  view.Equals("ProfileHeightCheckView", StringComparison.InvariantCultureIgnoreCase))
+                                  view.Equals("ProfileHeightCheckView", StringComparison.InvariantCultureIgnoreCase) ||
+                                  view.Equals("LoadFirstDrawerView", StringComparison.InvariantCultureIgnoreCase))
                                  && !this.sensorsService.IsLoadingUnitInBay && !this.sensorsService.IsLoadingUnitInMiddleBottomBay)
                         {
                             this.ShowNotification("Nessun cassetto presente in baia.", NotificationSeverity.Warning);
@@ -1299,7 +1300,8 @@ namespace Ferretto.VW.App.Services
                                   ((this.MachineStatus.LoadingUnitPositionDownInBay == null && this.sensorsService.IsLoadingUnitInMiddleBottomBay && (this.Bay.IsDouble || !this.BayFirstPositionIsUpper)) ||
                                    (this.MachineStatus.LoadingUnitPositionUpInBay == null && this.sensorsService.IsLoadingUnitInBay && (this.Bay.IsDouble || this.BayFirstPositionIsUpper)))) &&
                                  !view.Equals("LoadingUnitFromBayToCellView", StringComparison.InvariantCultureIgnoreCase) &&
-                                 !view.Equals("ProfileHeightCheckView", StringComparison.InvariantCultureIgnoreCase))
+                                 !view.Equals("ProfileHeightCheckView", StringComparison.InvariantCultureIgnoreCase) &&
+                                 !view.Equals("LoadFirstDrawerView", StringComparison.InvariantCultureIgnoreCase))
                         {
                             this.ShowNotification("Inconsistenza sensori di presenza cassetto in baia.", NotificationSeverity.Error);
                         }
