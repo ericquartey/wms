@@ -565,6 +565,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Selected cell is blocked.
+        /// </summary>
+        public static string CellSelectedBlocked {
+            get {
+                return ResourceManager.GetString("CellSelectedBlocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cell selected is not present..
         /// </summary>
         public static string CellSelectedNotPresent {
