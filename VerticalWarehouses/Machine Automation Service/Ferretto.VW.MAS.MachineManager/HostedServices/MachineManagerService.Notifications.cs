@@ -54,22 +54,8 @@ namespace Ferretto.VW.MAS.MachineManager
                         serviceProvider.GetRequiredService<ISetupProceduresDataProvider>().GetAll();
 
                         var machineVolatileDataProvider = serviceProvider.GetRequiredService<IMachineVolatileDataProvider>();
-                        machineVolatileDataProvider.IsDataLayerReady = true;
-                        this.Logger.LogInformation("Machine Data layer ready");
-
-                        var notificationData = new ChangeRunningStateMessageData(false);
-
-                        var msg = new NotificationMessage(
-                            notificationData,
-                            $"Started Change Running State to {notificationData.Enable}",
-                            MessageActor.AutomationService,
-                            MessageActor.MachineManager,
-                            MessageType.ChangeRunningState,
-                            BayNumber.BayOne,
-                            BayNumber.BayOne,
-                            MessageStatus.OperationEnd);
-
-                        this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+                        machineVolatileDataProvider.IsAutomationServiceReady = true;
+                        this.Logger.LogInformation("Machine Automation Service ready");
                     }
                     break;
 
