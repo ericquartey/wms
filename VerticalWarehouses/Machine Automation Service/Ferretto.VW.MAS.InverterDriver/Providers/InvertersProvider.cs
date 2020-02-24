@@ -375,6 +375,9 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.elevatorDataProvider.GetAxis(Orientation.Vertical);
             this.elevatorDataProvider.GetLoadingUnitOnBoard();
             this.elevatorDataProvider.GetStructuralProperties();
+            this.machineProvider.GetHeight();
+            this.baysDataProvider.GetByNumber(BayNumber.BayOne);
+            //this.baysDataProvider.GetResolution(InverterIndex.MainInverter);
 
             // retrieve inverters configuration
             inverters = inverters ?? this.digitalDevicesDataProvider
