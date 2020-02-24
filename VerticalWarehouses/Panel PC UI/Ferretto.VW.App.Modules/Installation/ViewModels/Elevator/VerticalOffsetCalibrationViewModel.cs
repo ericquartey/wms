@@ -311,8 +311,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                 return this.currentError;
                             }
 
-                            if (this.CurrentCellId < 1 ||
-                                this.SelectedCell is null)
+                            if (this.SelectedCell?.BlockLevel != BlockLevel.None)
+                            {
+                                this.currentError = InstallationApp.CellSelectedBlocked;
+                                this.ShowNotification(this.currentError, NotificationSeverity.Warning);
+                                return this.currentError;
+                            }
+                            else if (this.SelectedCell is null || this.CurrentCellId is null)
                             {
                                 this.currentError = InstallationApp.CellSelectedNotPresent;
                                 this.ShowNotification(this.currentError, NotificationSeverity.Warning);
@@ -508,7 +513,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanMoveToCellCommand()
         {
             return this.CanBaseExecute() &&
-                   !(this.SelectedCell is null) &&
+                   this.SelectedCell?.BlockLevel == BlockLevel.None &&
                    Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) != Convert.ToInt32(this.SelectedCell?.Position ?? 0);
         }
 
@@ -641,7 +646,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             if (this.CurrentCellId is null)
             {
-                this.SelectedCell = this.MachineService.Cells.FirstOrDefault();
+                this.SelectedCell = this.MachineService.Cells.FirstOrDefault(x => x.BlockLevel != BlockLevel.Blocked);
                 this.CurrentCellId = this.SelectedCell?.Id;
             }
             else
