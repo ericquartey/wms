@@ -164,6 +164,8 @@
                                                      Minimum="0"
                                                      Value="{Binding CyclesPercent, Mode=OneWay}" />
 
+
+
                         </Grid>
 
                     </Border>
@@ -172,10 +174,9 @@
 
                 <ctrls:PpcSpinEdit Width="250"
                                    Height="90"
-                                   EditValue="{Binding NewResolution, StringFormat={}{0:F6}}"
+                                   EditValue="{Binding RemainingTime, StringFormat={}{0}, FallbackValue=00:00}"
                                    IsEnabled="False"
-                                   LabelText="Tempo Rimanente"
-                                   Mask="###0.000000" />
+                                   LabelText="Tempo Rimanente" />
 
 
                 <StackPanel Grid.Row="1"
@@ -373,6 +374,7 @@
                                 MinHeight="90"
                                 Margin="0,15,15,0" />
 
+
         <Border Grid.Row="3"
                 Grid.Column="3"
                 Height="90"
@@ -455,6 +457,7 @@
                 </Grid>
             </Border>
         </Border>
+
 
         <controls:PpcButton Grid.Row="6"
                             Grid.Column="3"
