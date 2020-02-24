@@ -128,6 +128,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task FindZeroAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<RepeatedTestProcedure> GetParametersAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<RepeatedTestProcedure> GetParametersAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<double> GetPositionAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2814,6 +2821,54 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class RepeatedTestProcedure : SetupProcedure
+    {
+        [Newtonsoft.Json.JsonProperty("InProgress", Required = Newtonsoft.Json.Required.Always)]
+        public bool InProgress { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("PerformedCycles", Required = Newtonsoft.Json.Required.Always)]
+        public int PerformedCycles { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("RequiredCycles", Required = Newtonsoft.Json.Required.Always)]
+        public int RequiredCycles { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static RepeatedTestProcedure FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<RepeatedTestProcedure>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class SetupProcedure : DataModel
+    {
+        [Newtonsoft.Json.JsonProperty("FeedRate", Required = Newtonsoft.Json.Required.Always)]
+        public double FeedRate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsBypassed", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsBypassed { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsCompleted", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsCompleted { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static SetupProcedure FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<SetupProcedure>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class CellPanel : DataModel
     {
         [Newtonsoft.Json.JsonProperty("Cells", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2856,30 +2911,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public static PositioningProcedure FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<PositioningProcedure>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class SetupProcedure : DataModel
-    {
-        [Newtonsoft.Json.JsonProperty("FeedRate", Required = Newtonsoft.Json.Required.Always)]
-        public double FeedRate { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("IsBypassed", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsBypassed { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("IsCompleted", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsCompleted { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
-        }
-    
-        public static SetupProcedure FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<SetupProcedure>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -3395,30 +3426,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public static SetupProceduresSet FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<SetupProceduresSet>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.5.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class RepeatedTestProcedure : SetupProcedure
-    {
-        [Newtonsoft.Json.JsonProperty("InProgress", Required = Newtonsoft.Json.Required.Always)]
-        public bool InProgress { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("PerformedCycles", Required = Newtonsoft.Json.Required.Always)]
-        public int PerformedCycles { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("RequiredCycles", Required = Newtonsoft.Json.Required.Always)]
-        public int RequiredCycles { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
-        }
-    
-        public static RepeatedTestProcedure FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<RepeatedTestProcedure>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }

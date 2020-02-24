@@ -1,6 +1,7 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -16,13 +17,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly ICarouselProvider carouselProvider;
 
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
+
         #endregion
 
         #region Constructors
 
-        public CarouselController(ICarouselProvider carouselProvider)
+        public CarouselController(ICarouselProvider carouselProvider,
+            ISetupProceduresDataProvider setupProceduresDataProvider)
         {
             this.carouselProvider = carouselProvider ?? throw new ArgumentNullException(nameof(carouselProvider));
+            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
         }
 
         #endregion
@@ -49,6 +54,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.carouselProvider.Homing(Calibration.FindSensor, null, true, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
+        }
+
+        [HttpGet("parameters")]
+        public ActionResult<RepeatedTestProcedure> GetParameters()
+        {
+            var procedureParameters = this.setupProceduresDataProvider.GetBayCarouselCalibration(this.BayNumber);
+            
+            return this.Ok(procedureParameters);
         }
 
         [HttpGet("position")]
