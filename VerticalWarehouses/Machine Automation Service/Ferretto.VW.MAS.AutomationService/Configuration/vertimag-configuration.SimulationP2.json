@@ -5880,6 +5880,8 @@
     "Bay3ProfileCheck": {
     },
     "Bay1CarouselCalibration": {
+      "RequiredCycles": 200,
+      "FeedRate": 0.2
     },
     "Bay2CarouselCalibration": {
     },

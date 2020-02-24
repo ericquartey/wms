@@ -4,9 +4,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
-             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Scaffolding.Controls"
-             mc:Ignorable="d">
+        xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"             
+        xmlns:ctrls="clr-namespace:Ferretto.VW.Installer.Controls"
+        mc:Ignorable="d">
     <dxmvvm:Interaction.Behaviors>
         <dxmvvm:OpenFileDialogService Title="{Binding Title}"/>
     </dxmvvm:Interaction.Behaviors>
@@ -79,6 +79,42 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="Seriale 123612721813233224" />
         </StackPanel>
+
+        <Grid Grid.Row="1">
+            <WrapPanel>
+
+                <ctrls:PpcButton Title="Origine asse verticale"
+                                        Margin="0,0,30,30"
+                                        Padding="-2,1,0,0"
+                                        Abbrevation="4.2.1"
+                                        BorderBrush="{DynamicResource FerrettoRed}"
+                                        Command="{Binding VerticalOriginCalibrationCommand}"
+                                        Content="Baia 1"
+                                        IsCompleted="{Binding IsHoming}"                                        
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}" />
+
+                <ctrls:PpcButton Title="Risoluzione asse verticale"
+                                        Margin="0,0,30,30"
+                                        Padding="-2,1,0,0"
+                                        Abbrevation="4.2.2"
+                                        BorderBrush="{DynamicResource FerrettoRed}"
+                                        Command="{Binding VerticalResolutionCalibrationCommand}"
+                                        Content="Baia 2"
+                                        IsCompleted="{Binding IsVerticalResolutionCalibration}"                                        
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}" />
+
+                <ctrls:PpcButton Title="Offset asse verticale"
+                                        Margin="0,0,30,30"
+                                        Padding="-2,1,0,0"
+                                        Abbrevation="4.2.3"
+                                        BorderBrush="{DynamicResource FerrettoRed}"
+                                        Command="{Binding VerticalOffsetCalibrationCommand}"
+                                        Content="Baia 3"
+                                        IsCompleted="{Binding IsVerticalOffsetProcedure}"                                        
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}" />
+
+            </WrapPanel>
+        </Grid>
 
         <Button Grid.Row="7"
                 Grid.ColumnSpan="3"

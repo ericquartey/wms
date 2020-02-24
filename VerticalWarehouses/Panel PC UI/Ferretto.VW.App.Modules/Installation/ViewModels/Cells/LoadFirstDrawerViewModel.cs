@@ -30,7 +30,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isExecutingProcedure;
 
-        private int loadunitId = 1;
+        private int? loadunitId = 1;
 
         private SubscriptionToken moveTestToken;
 
@@ -71,11 +71,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get
             {
-                return this.MachineService.Loadunits.Any(l => l.Id == this.loadunitId);
+                return this.loadunitId.HasValue && this.MachineService.Loadunits.Any(l => l.Id == this.loadunitId);
             }
         }
 
-        public int LoadunitId
+        public int? LoadUnitId
         {
             get => this.loadunitId;
             set => this.SetProperty(ref this.loadunitId, value);
@@ -93,10 +93,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                         if (!this.IsLoadunitIdValid)
                         {
-                            await this.machineLoadingUnitsWebService.InsertLoadingUnitOnlyDbAsync(this.loadunitId);
+                            await this.machineLoadingUnitsWebService.InsertLoadingUnitOnlyDbAsync(this.loadunitId.Value);
                         }
 
-                        await this.machineFirstTestWebService.StartAsync(this.LoadunitId);
+                        await this.machineFirstTestWebService.StartAsync(this.LoadUnitId.Value);
                     }
                     catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
                     {
@@ -108,7 +108,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsExecutingProcedure = true;
                     }
                 },
-                () => !this.IsMoving));
+                () => !this.IsMoving && this.MachineModeService.MachineMode == MachineMode.Manual &&
+                   ((this.SensorsService.IsLoadingUnitInBay && (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper)) ||
+                    (!this.MachineService.HasCarousel && this.SensorsService.IsLoadingUnitInMiddleBottomBay && (this.MachineService.Bay.IsDouble || !this.MachineService.BayFirstPositionIsUpper))) &&
+                   this.LoadUnitId.HasValue));
 
         public int Step
         {

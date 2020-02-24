@@ -28,6 +28,8 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private bool canNext;
 
+        private RelayCommand checkMasConfigurationCommand;        
+
         private bool isMasConfiguration;
 
         private bool isMasConfigurationValid;
@@ -39,6 +41,8 @@ namespace Ferretto.VW.Installer.ViewModels
         private VertimagConfiguration masConfiguration;
 
         private IPAddress masIpAddress;
+
+        private IPEndPoint masIpEndpoint;
 
         private string message;
 
@@ -63,6 +67,11 @@ namespace Ferretto.VW.Installer.ViewModels
 
         #region Properties
 
+        public ICommand CheckMasConfigurationCommand =>
+                                this.checkMasConfigurationCommand
+                                ??
+                                (this.checkMasConfigurationCommand = new RelayCommand(async () => await this.EvaluateCanNextAsync(), this.CanCheckMasConfiguration));
+
         public virtual string DefaultExt { get; set; }
 
         public virtual string DefaultFileName { get; set; }
@@ -76,7 +85,7 @@ namespace Ferretto.VW.Installer.ViewModels
         public bool IsMasConfiguration
         {
             get => this.isMasConfiguration;
-            set => this.SetProperty(ref this.isMasConfiguration, value, this.EvaluateCanNext);
+            set => this.SetProperty(ref this.isMasConfiguration, value, async () => await this.EvaluateCanNextAsync());
         }
 
         public bool IsSuccessful => this.isSuccessful;
@@ -84,7 +93,7 @@ namespace Ferretto.VW.Installer.ViewModels
         public IPAddress MasIpAddress
         {
             get => this.masIpAddress;
-            set => this.SetProperty(ref this.masIpAddress, value, this.EvaluateCanNext);
+            set => this.SetProperty(ref this.masIpAddress, value, this.EvaluateCheckMasHost);
         }
 
         public string Message
@@ -101,7 +110,7 @@ namespace Ferretto.VW.Installer.ViewModels
         public ICommand OpenFileCommand =>
                                 this.openFileCommand
                         ??
-                        (this.openFileCommand = new RelayCommand(this.OpenFile, this.CanOpenFile));
+                        (this.openFileCommand = new RelayCommand(async () => await this.OpenFileAsync(), this.CanOpenFile));
 
         public virtual bool OverwritePrompt { get; set; }
 
@@ -134,7 +143,7 @@ namespace Ferretto.VW.Installer.ViewModels
 
         #region Methods
 
-        public void OpenFile()
+        public async Task OpenFileAsync()
         {
             this.OpenFileDialogService.Filter = this.Filter;
             this.OpenFileDialogService.FilterIndex = this.FilterIndex;
@@ -146,11 +155,17 @@ namespace Ferretto.VW.Installer.ViewModels
             }
             else
             {
-                var file = this.OpenFileDialogService.Files.First();                
-                this.LoadConfiguration(file);
+                var file = this.OpenFileDialogService.Files.First();
+                string fileContents;
+                using (var stream = file.OpenText())
+                {
+                    fileContents = stream.ReadToEnd();
+                }
+
+                this.isMasConfigurationValid = this.LoadConfiguration(fileContents);
             }
 
-            this.EvaluateCanNext();
+            await this.EvaluateCanNextAsync();
         }
 
         public void Save()
@@ -159,8 +174,8 @@ namespace Ferretto.VW.Installer.ViewModels
         }
 
         private static void ValidateJson(JObject jsonObject)
-        {
-            using (var streamReader = new StreamReader("./configuration/schemas/vertimag-configuration-schema.json"))
+        {            
+            using (var streamReader = new StreamReader("../Machine Automation Service/configuration/schemas/vertimag-configuration-schema.json"))
             {
                 using (var textReader = new JsonTextReader(streamReader))
                 {
@@ -168,6 +183,11 @@ namespace Ferretto.VW.Installer.ViewModels
                     jsonObject.Validate(schema);
                 }
             }
+        }
+
+        private bool CanCheckMasConfiguration()
+        {
+            return this.masIpEndpoint != null;
         }
 
         private bool CanNext()
@@ -180,7 +200,7 @@ namespace Ferretto.VW.Installer.ViewModels
             return true;
         }
 
-        private bool CheckMasHost()
+        private IPEndPoint CheckMasHost()
         {
             IPAddress ip = null;
             int? ipPort = null;
@@ -192,7 +212,7 @@ namespace Ferretto.VW.Installer.ViewModels
                     var ipEndpoint = new IPEndPoint(this.masIpAddress, port);
                     using (var client = new TcpClient(ipEndpoint))
                     {
-                        return true;
+                        return ipEndpoint;
                     }
                 }
             }
@@ -201,10 +221,10 @@ namespace Ferretto.VW.Installer.ViewModels
                 this.Message = $"Servizio di automazione non raggiungibile host:{ip?.ToString()}:{ipPort} {ex.Message}";
             }
 
-            return false;
+            return null;
         }
 
-        private void EvaluateCanNext()
+        private async Task EvaluateCanNextAsync()
         {
             this.canNext = false;
 
@@ -215,15 +235,44 @@ namespace Ferretto.VW.Installer.ViewModels
 
             if (!this.isMasConfiguration)
             {
-                this.isSlaveConfigurationValid = (this.masIpAddress is null);
-                if (!(this.masIpAddress is null))
+                this.isSlaveConfigurationValid = !(this.masIpEndpoint is null);
+                if (this.isSlaveConfigurationValid)
                 {
-                    this.isSlaveConfigurationValid = this.CheckMasHost();
+                    if (this.masIpEndpoint != null)
+                    {
+                        var masConfiguration = await this.GetConfigurationFromMasAsync(this.masIpEndpoint);
+                        this.isSlaveConfigurationValid = this.LoadConfiguration(masConfiguration);
+                    }
                 }
                 this.canNext = this.isSlaveConfigurationValid;
             }
 
             this.RaiseCanExecuteChanged();
+        }
+
+        private void EvaluateCheckMasHost()
+        {
+            this.masIpEndpoint = this.CheckMasHost();
+            this.RaiseCanExecuteChanged();
+        }
+
+        private async Task<string> GetConfigurationFromMasAsync(IPEndPoint ipEndPoint)
+        {
+            try
+            {
+                using (var httpClient = new System.Net.Http.HttpClient())
+                {
+                    //httpClient.GetAsync.BaseAddress = new Uri("http://" + ipEndPoint.ToString());
+                    var httpResponseMessage = await httpClient.GetAsync(new Uri($"http://{ipEndPoint.Address}:{ipEndPoint.Port}/api/Configuration"));
+                    return await httpResponseMessage.Content.ReadAsStringAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                this.Message = $"Servizio di automazione non raggiungibile host:{ipEndPoint?.ToString()}/Application/Configuration {ex.Message}";
+            }
+
+            return null;
         }
 
         private void Inistialize()
@@ -245,19 +294,13 @@ namespace Ferretto.VW.Installer.ViewModels
             this.IsMasConfiguration = true;
         }
 
-        private void LoadConfiguration(IFileInfo configurationFilePath)
+        private bool LoadConfiguration(string configuration)
         {
             try
             {
-                string fileContents;
-                using (var stream = configurationFilePath.OpenText())
-                {
-                    fileContents = stream.ReadToEnd();
-                }
+                var jsonObject = JObject.Parse(configuration);
 
-                var jsonObject = JObject.Parse(fileContents);
-
-                ValidateJson(jsonObject);
+                // ValidateJson(jsonObject);
 
                 var settings = new JsonSerializerSettings();
                 settings.Converters.Add(new IPAddressConverter());
@@ -265,12 +308,13 @@ namespace Ferretto.VW.Installer.ViewModels
                 this.masConfiguration = JsonConvert.DeserializeObject<VertimagConfiguration>(jsonObject.ToString(), settings);
                 this.masConfiguration.Validate();
 
-                this.isMasConfigurationValid = !(this.masConfiguration is null);
+                return !(this.masConfiguration is null);
             }
             catch
             {
-                this.isMasConfigurationValid = false;
             }
+
+            return false;
         }
 
         private void Next()
@@ -282,6 +326,7 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private void RaiseCanExecuteChanged()
         {
+            this.checkMasConfigurationCommand?.RaiseCanExecuteChanged();
             this.nextCommand?.RaiseCanExecuteChanged();
         }
 

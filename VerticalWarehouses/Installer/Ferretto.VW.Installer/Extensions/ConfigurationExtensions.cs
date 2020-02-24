@@ -6,6 +6,7 @@ namespace Ferretto.VW.Installer
     public static class ConfigurationExtensions
     {
         #region Fields
+        private const string InstallMasPathName = "Install:MAS:Path";
 
         private const string InstallDefaultMasIpaddressName = "Install:Default:MasIpaddress";
 
@@ -14,6 +15,22 @@ namespace Ferretto.VW.Installer
         #endregion
 
         #region Methods
+        public static string GetInstallMasPathName(this NameValueCollection appSettings)
+        {
+            if (appSettings is null)
+            {
+                throw new ArgumentNullException(nameof(appSettings));
+            }
+
+            try
+            {
+                return appSettings.Get(InstallMasPathName);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"The configuration key '{InstallDefaultMasIpaddressName}' is not specified or invalid.", ex);
+            }
+        }
 
         public static string GetInstallDefaultMasIpaddress(this NameValueCollection appSettings)
         {

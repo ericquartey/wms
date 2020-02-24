@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
-             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Scaffolding.Controls"
+             xmlns:ctrls="clr-namespace:Ferretto.VW.Installer.Controls"
              mc:Ignorable="d">
     <dxmvvm:Interaction.Behaviors>
         <dxmvvm:OpenFileDialogService Title="{Binding Title}"/>
@@ -86,7 +86,7 @@
         <RadioButton Grid.Row="4"
                      Grid.Column="1"
                      Grid.ColumnSpan="2"
-                     Margin="50,30,50,0"
+                     Margin="10,30,10,0"
                      HorizontalAlignment="Stretch"
                      HorizontalContentAlignment="Stretch"
                      GroupName="test"
@@ -128,7 +128,7 @@
         <RadioButton Grid.Row="5"
                      Grid.Column="1"
                      Grid.ColumnSpan="2"
-                     Margin="50,0,50,0"
+                     Margin="10,0,10,0"
                      GroupName="test"
                      IsChecked="{Binding IsAuto, Mode=TwoWay}"
                      IsEnabled="{Binding CanGoAutoSync}">
@@ -152,15 +152,29 @@
                                FontSize="{DynamicResource FontSize_High}"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                Text="IP servizio di automazione " />
-                            <ctrls:IPAddressBox
-                               Margin="20,0"
-                               Width="460"
-                               Height="60"
-                               FontSize="34"                               
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Top"
-                               IPAddress="{Binding MasIpAddress, Mode=TwoWay}"
-                              />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <ctrls:IPAddressBox
+                                   Margin="20,0"
+                                   Width="460"
+                                   Height="60"
+                                   FontSize="34"                               
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   IPAddress="{Binding MasIpAddress, Mode=TwoWay}" />
+                                <Button Margin="10 0 0 10"
+                                    Grid.Column="1"
+                                    Width="100"
+                                    Height="60"
+                                    FontSize="18"
+                                    Content="Leggi"
+                                    Style="{StaticResource ButtonStyle}"
+                                    Command="{Binding CheckMasConfigurationCommand}">
+                                </Button>
+                            </Grid>
                         </StackPanel>
                     </Grid>
                 </StackPanel>
