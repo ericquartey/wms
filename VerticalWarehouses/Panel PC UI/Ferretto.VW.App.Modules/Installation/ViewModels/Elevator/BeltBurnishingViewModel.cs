@@ -362,6 +362,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            if (this.MachineService.MachineMode == MachineMode.Test)
+            {
+                this.IsExecutingProcedure = true;
+                this.PerformedCyclesThisSession = 0;
+            }
+
             this.SubscribeToEvents();
 
             await base.OnAppearedAsync();
@@ -375,7 +381,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.GetParameterValuesAsync();
 
-                this.IsExecutingProcedure = this.MachineService.MachineStatus.IsMoving;
+                this.IsExecutingProcedure = this.MachineService.MachineStatus.IsMoving || this.MachineService.MachineMode == MachineMode.Test;
 
                 this.CurrentPosition = this.machineElevatorService.Position.Vertical;
             }
@@ -386,6 +392,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             catch (Exception)
             {
                 throw;
+            }
+            finally
+            {
             }
         }
 
@@ -433,7 +442,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanStopTest()
         {
-            return this.IsMoving;
+            return this.IsMoving || this.IsExecutingProcedure;
         }
 
         private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
@@ -446,7 +455,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (message.IsNotRunning())
             {
                 this.IsExecutingProcedure = false;
-                this.isCompleted = true;
+            }
+
+            if (message.Status == MessageStatus.OperationExecuting && !this.IsExecutingProcedure)
+            {
+                this.IsExecutingProcedure = true;
+                this.PerformedCyclesThisSession = 0;
             }
 
             if (message.IsErrored())
@@ -458,7 +472,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (message.Data?.MovementMode == MovementMode.BeltBurnishing)
             {
                 this.CumulativePerformedCycles = message.Data.ExecutedCycles;
-                this.CyclesPercent = ((double)(this.CumulativePerformedCycles ?? 0) / (double)this.InputRequiredCycles) * 100.0;
+                if (this.InputRequiredCycles != null)
+                {
+                    this.CyclesPercent = ((double)(this.CumulativePerformedCycles ?? 0) / (double)this.InputRequiredCycles) * 100.0;
+                }
+                else
+                {
+                    this.CyclesPercent = null;
+                }
             }
 
             if (message.Status == MessageStatus.OperationEnd &&
@@ -548,11 +569,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
-                this.IsExecutingProcedure = false;
-                this.IsWaitingForResponse = false;
             }
             finally
             {
+                this.IsExecutingProcedure = false;
                 this.IsWaitingForResponse = false;
             }
         }

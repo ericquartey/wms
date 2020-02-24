@@ -91,6 +91,7 @@
                                     <TextBlock Margin="25,25,25,8"
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Top"
+                                               FontSize="22"
                                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                                Text="{Binding MachineIdentity.ModelName, FallbackValue=ModelName}"
                                                TextWrapping="Wrap" />

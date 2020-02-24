@@ -73,7 +73,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.menuDateTimeCommand = new DelegateCommand(
                 () => this.MenuCommandOther(MenuOther.DateTime),
-                this.CanExecuteCommand));
+                () => !(this.MachineModeService.MachineMode == MachineMode.Test || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
+                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded)));
 
         public ICommand MenuParameterInverterCommand =>
             this.menuParameterInverterCommand
@@ -88,7 +89,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.menuParametersCommand = new DelegateCommand(
                 () => this.MenuCommandOther(MenuOther.Parameters),
-                () => !(this.MachineModeService.MachineMode == MachineMode.Test) &&
+                () => !(this.MachineModeService.MachineMode == MachineMode.Test || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
                       (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded)));
 
         public ICommand MenuUsersCommand =>

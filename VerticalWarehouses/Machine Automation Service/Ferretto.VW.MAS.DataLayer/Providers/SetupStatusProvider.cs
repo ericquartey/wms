@@ -55,22 +55,9 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             var setup = this.setupProceduresDataProvider.GetAll();
 
-            DataModels.Bay bay1 = new DataModels.Bay();
-            DataModels.Bay bay2 = new DataModels.Bay();
-            DataModels.Bay bay3 = new DataModels.Bay();
-            try
-            {
-                bay1 = this.baysDataProvider.GetAll().Where(a => a.Number == CommonUtils.Messages.Enumerations.BayNumber.BayOne)?.First() ?? new DataModels.Bay();
-                bay2 = this.baysDataProvider.GetAll().Where(a => a.Number == CommonUtils.Messages.Enumerations.BayNumber.BayTwo)?.First() ?? new DataModels.Bay();
-                bay3 = this.baysDataProvider.GetAll().Where(a => a.Number == CommonUtils.Messages.Enumerations.BayNumber.BayThree)?.First() ?? new DataModels.Bay();
-            }
-            catch (Exception ex)
-            {
-            }
-
-            //DataModels.Bay bay1 = this.baysDataProvider.GetByNumber(CommonUtils.Messages.Enumerations.BayNumber.BayOne) ?? new DataModels.Bay();
-            //DataModels.Bay bay2 = this.baysDataProvider.GetByNumber(CommonUtils.Messages.Enumerations.BayNumber.BayTwo) ?? new DataModels.Bay();
-            //DataModels.Bay bay3 = this.baysDataProvider.GetByNumber(CommonUtils.Messages.Enumerations.BayNumber.BayThree) ?? new DataModels.Bay();
+            DataModels.Bay bay1 = this.baysDataProvider.GetAll().Where(a => a.Number == CommonUtils.Messages.Enumerations.BayNumber.BayOne)?.First() ?? new DataModels.Bay();
+            DataModels.Bay bay2 = this.baysDataProvider.GetAll().Where(a => a.Number == CommonUtils.Messages.Enumerations.BayNumber.BayTwo)?.FirstOrDefault() ?? new DataModels.Bay();
+            DataModels.Bay bay3 = this.baysDataProvider.GetAll().Where(a => a.Number == CommonUtils.Messages.Enumerations.BayNumber.BayThree)?.FirstOrDefault() ?? new DataModels.Bay();
 
             bool bay1AllTestCompleted = false;
             bool bay2AllTestCompleted = false;
@@ -87,7 +74,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             if (!(bay2 is null))
             {
-                bay3AllTestCompleted = (setup.Bay2CarouselCalibration.IsCompleted || bay2.Carousel is null) &&
+                bay2AllTestCompleted = (setup.Bay2CarouselCalibration.IsCompleted || bay2.Carousel is null) &&
                                (setup.Bay2ShutterTest.IsCompleted || bay2.Shutter is null) &&
                                 setup.Bay2HeightCheck.IsCompleted &&
                                (setup.Bay2Laser.IsCompleted || bay2.Laser is null) &&

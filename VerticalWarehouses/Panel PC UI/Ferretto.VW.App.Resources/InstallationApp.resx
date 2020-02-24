@@ -1771,4 +1771,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="FirstTest" xml:space="preserve">
     <value>First Test</value>
   </data>
+  <data name="CellSelectedBlocked" xml:space="preserve">
+    <value>Selected cell is blocked</value>
+  </data>
 </root>

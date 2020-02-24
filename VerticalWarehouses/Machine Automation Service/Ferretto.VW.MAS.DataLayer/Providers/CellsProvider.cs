@@ -19,6 +19,18 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private const double VerticalPositionTolerance = 12.5;
 
+        private static readonly Func<DataLayerContext, IEnumerable<Cell>> GetAllCompile =
+            EF.CompileQuery((DataLayerContext context) =>
+                context.Cells.AsNoTracking()
+                .Include(c => c.Panel));
+
+        private static readonly Func<DataLayerContext, int, Cell> GetByIdCompile =
+                    EF.CompileQuery((DataLayerContext context, int cellId) =>
+                context.Cells.AsNoTracking()
+                .Include(c => c.Panel)
+                .Include(c => c.LoadingUnit)
+                .SingleOrDefault(c => c.Id == cellId));
+
         private readonly DataLayerContext dataContext;
 
         private readonly IElevatorDataProvider elevatorDataProvider;
@@ -164,7 +176,6 @@ namespace Ferretto.VW.MAS.DataLayer
         public int FindEmptyCell(int loadingUnitId, CompactingType compactingType = CompactingType.NoCompacting, bool isCellTest = false)
         {
             var loadingUnit = this.dataContext.LoadingUnits
-                .AsNoTracking()
                 .Include(i => i.Cell)
                     .ThenInclude(c => c.Panel)
                 .SingleOrDefault(l => l.Id == loadingUnitId);
@@ -211,6 +222,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new InvalidOperationException("LoadUnitMaxHeight is not valid");
                 }
                 loadingUnit.Height = (isCellTest ? machine.LoadUnitMinHeight : machine.LoadUnitMaxHeight);
+                this.dataContext.SaveChanges();
                 this.logger.LogInformation($"FindEmptyCell: height is not defined for LU {loadingUnitId}; new height is {loadingUnit.Height} (as configured for {(isCellTest ? "min" : "max")});");
             }
             using (var availableCell = new BlockingCollection<AvailableCell>())
@@ -293,9 +305,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Cells
-                    .Include(c => c.Panel)
-                    .ToArray();
+                return GetAllCompile(this.dataContext).ToArray();
             }
         }
 
@@ -304,6 +314,7 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Cells
+                    .AsNoTracking()
                     .Include(c => c.Panel)
                     .Where(predicate)
                     .ToArray();
@@ -312,10 +323,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public Cell GetById(int cellId)
         {
-            return this.dataContext.Cells
-                .Include(c => c.Panel)
-                .Include(c => c.LoadingUnit)
-                .SingleOrDefault(c => c.Id == cellId);
+            return GetByIdCompile(this.dataContext, cellId);
         }
 
         public Cell GetByLoadingUnitId(int loadingUnitId)

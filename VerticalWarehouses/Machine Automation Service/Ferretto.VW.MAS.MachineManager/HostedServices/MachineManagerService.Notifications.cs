@@ -10,6 +10,7 @@ using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -18,12 +19,6 @@ namespace Ferretto.VW.MAS.MachineManager
 {
     internal partial class MachineManagerService
     {
-        #region Fields
-
-        private bool isDataLayerReady;
-
-        #endregion
-
         #region Methods
 
         protected override bool FilterNotification(NotificationMessage notification)
@@ -52,12 +47,16 @@ namespace Ferretto.VW.MAS.MachineManager
                     break;
 
                 case MessageType.DataLayerReady:
-                    // performance optimization
-                    serviceProvider.GetRequiredService<ICellsProvider>().GetAll();
-                    serviceProvider.GetRequiredService<IMachineProvider>().Get();
-                    serviceProvider.GetRequiredService<ISetupProceduresDataProvider>().GetAll();
+                    {
+                        // performance optimization
+                        serviceProvider.GetRequiredService<ICellsProvider>().GetAll();
+                        serviceProvider.GetRequiredService<IMachineProvider>().Get();
+                        serviceProvider.GetRequiredService<ISetupProceduresDataProvider>().GetAll();
 
-                    this.isDataLayerReady = true;
+                        var machineVolatileDataProvider = serviceProvider.GetRequiredService<IMachineVolatileDataProvider>();
+                        machineVolatileDataProvider.IsAutomationServiceReady = true;
+                        this.Logger.LogInformation("Machine Automation Service ready");
+                    }
                     break;
 
                 case MessageType.Positioning:

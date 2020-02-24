@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,14 +18,14 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
 
         #region Constructors
 
-        public ReadinessFilter(IDataLayerService dataLayerService)
+        public ReadinessFilter(IDataLayerService dataLayerService, IMachineVolatileDataProvider machineVolatileDataProvider)
         {
             if (dataLayerService == null)
             {
                 throw new ArgumentNullException(nameof(dataLayerService));
             }
 
-            this.readinessHealthCheck = new ReadinessHealthCheck(dataLayerService);
+            this.readinessHealthCheck = new ReadinessHealthCheck(dataLayerService, machineVolatileDataProvider);
         }
 
         #endregion
