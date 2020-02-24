@@ -21,6 +21,24 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
+        private static readonly Func<DataLayerContext, IEnumerable<Bay>> GetAllCompile =
+            EF.CompileQuery((DataLayerContext context) =>
+            context.Bays
+                    .AsNoTracking()
+                    .Include(b => b.Inverter)
+                    .Include(b => b.Positions)
+                        .ThenInclude(s => s.LoadingUnit)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.AssistedMovements)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.ManualMovements)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.Inverter)
+                    .Include(b => b.Carousel)
+                    .Include(b => b.EmptyLoadMovement)
+                    .Include(b => b.FullLoadMovement)
+                    .Include(b => b.CurrentMission));
+
         private readonly IMemoryCache cache;
 
         private readonly MemoryCacheEntryOptions cacheOptions;
@@ -183,22 +201,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Bays
-                    .AsNoTracking()
-                    .Include(b => b.Inverter)
-                    .Include(b => b.Positions)
-                        .ThenInclude(s => s.LoadingUnit)
-                    .Include(b => b.Shutter)
-                        .ThenInclude(s => s.AssistedMovements)
-                    .Include(b => b.Shutter)
-                        .ThenInclude(s => s.ManualMovements)
-                    .Include(b => b.Shutter)
-                        .ThenInclude(s => s.Inverter)
-                    .Include(b => b.Carousel)
-                    .Include(b => b.EmptyLoadMovement)
-                    .Include(b => b.FullLoadMovement)
-                    .Include(b => b.CurrentMission)
-                    .ToArray();
+                return GetAllCompile(this.dataContext).ToArray();
             }
         }
 
