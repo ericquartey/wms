@@ -101,7 +101,7 @@
                         <TextBlock Grid.Column="1"
                                    Margin="5,10,5,5"
                                    VerticalAlignment="Center"
-                                   FontSize="22"
+                                   FontSize="18"
                                    Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
                                    Text="{Binding Model.ModelName}"
                                    TextWrapping="Wrap" />
@@ -118,7 +118,7 @@
                                    Grid.Column="1"
                                    Margin="5,5,5,10"
                                    VerticalAlignment="Center"
-                                   FontSize="22"
+                                   FontSize="18"
                                    Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
                                    Text="{Binding Model.SerialNumber}"
                                    TextWrapping="Wrap" />
