@@ -87,7 +87,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             if (!(bay2 is null))
             {
-                bay3AllTestCompleted = (setup.Bay2CarouselCalibration.IsCompleted || bay2.Carousel is null) &&
+                bay2AllTestCompleted = (setup.Bay2CarouselCalibration.IsCompleted || bay2.Carousel is null) &&
                                (setup.Bay2ShutterTest.IsCompleted || bay2.Shutter is null) &&
                                 setup.Bay2HeightCheck.IsCompleted &&
                                (setup.Bay2Laser.IsCompleted || bay2.Laser is null) &&
