@@ -21,6 +21,24 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
+        private static readonly Func<DataLayerContext, IEnumerable<Bay>> GetAllCompile =
+            EF.CompileQuery((DataLayerContext context) =>
+            context.Bays
+                    .AsNoTracking()
+                    .Include(b => b.Inverter)
+                    .Include(b => b.Positions)
+                        .ThenInclude(s => s.LoadingUnit)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.AssistedMovements)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.ManualMovements)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.Inverter)
+                    .Include(b => b.Carousel)
+                    .Include(b => b.EmptyLoadMovement)
+                    .Include(b => b.FullLoadMovement)
+                    .Include(b => b.CurrentMission));
+
         private readonly IMemoryCache cache;
 
         private readonly MemoryCacheEntryOptions cacheOptions;
@@ -183,22 +201,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Bays
-                    .AsNoTracking()
-                    .Include(b => b.Inverter)
-                    .Include(b => b.Positions)
-                        .ThenInclude(s => s.LoadingUnit)
-                    .Include(b => b.Shutter)
-                        .ThenInclude(s => s.AssistedMovements)
-                    .Include(b => b.Shutter)
-                        .ThenInclude(s => s.ManualMovements)
-                    .Include(b => b.Shutter)
-                        .ThenInclude(s => s.Inverter)
-                    .Include(b => b.Carousel)
-                    .Include(b => b.EmptyLoadMovement)
-                    .Include(b => b.FullLoadMovement)
-                    .Include(b => b.CurrentMission)
-                    .ToArray();
+                return GetAllCompile(this.dataContext).ToArray();
             }
         }
 
@@ -206,7 +209,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Bays.Count();
+                return this.dataContext.Bays.AsNoTracking().Count();
             }
         }
 
@@ -240,6 +243,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 var bay = this.dataContext.Bays
                     .Include(b => b.Positions)
+                    .AsNoTracking()
                     .SingleOrDefault(b => b.Positions.Any(p => p.Id == bayPositionId));
                 if (bay is null)
                 {
@@ -674,6 +678,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 var bayPosition = this.dataContext.BayPositions
                     .Include(b => b.LoadingUnit)
+                    .AsNoTracking()
                     .SingleOrDefault(p => p.Id == bayPositionId);
 
                 if (bayPosition is null)
@@ -691,6 +696,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 .Include(b => b.Bay)
                     .ThenInclude(i => i.Carousel)
                 .Include(b => b.LoadingUnit)
+                .AsNoTracking()
                 .SingleOrDefault(p => p.Location == location);
             if (bayPosition is null)
             {

@@ -13,6 +13,61 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
+        private static readonly Func<DataLayerContext, Machine> MachineGetCompile =
+            EF.CompileQuery((DataLayerContext context) =>
+                context.Machines.AsNoTracking()
+                    .Include(m => m.Elevator)
+                        .ThenInclude(e => e.Axes)
+                            .ThenInclude(a => a.EmptyLoadMovement)
+                    .Include(m => m.Elevator)
+                       .ThenInclude(e => e.Axes)
+                           .ThenInclude(a => a.FullLoadMovement)
+                    .Include(m => m.Elevator)
+                       .ThenInclude(e => e.Axes)
+                           .ThenInclude(a => a.WeightMeasurement)
+                    .Include(m => m.Elevator)
+                       .ThenInclude(e => e.Axes)
+                           .ThenInclude(a => a.AssistedMovements)
+                    .Include(m => m.Elevator)
+                       .ThenInclude(e => e.Axes)
+                           .ThenInclude(a => a.ManualMovements)
+                    .Include(m => m.Elevator)
+                       .ThenInclude(e => e.Axes)
+                           .ThenInclude(a => a.Profiles)
+                               .ThenInclude(p => p.Steps)
+                    .Include(m => m.Elevator)
+                       .ThenInclude(e => e.Axes)
+                           .ThenInclude(a => a.Inverter)
+                    .Include(m => m.Elevator)
+                        .ThenInclude(e => e.StructuralProperties)
+                    .Include(m => m.Bays)
+                        .ThenInclude(b => b.Positions)
+                            .ThenInclude(b => b.LoadingUnit)
+                    .Include(m => m.Bays)
+                        .ThenInclude(b => b.Carousel)
+                            .ThenInclude(b => b.ManualMovements)
+                    .Include(m => m.Bays)
+                        .ThenInclude(b => b.Carousel)
+                            .ThenInclude(b => b.AssistedMovements)
+                    .Include(m => m.Bays)
+                        .ThenInclude(b => b.Inverter)
+                    .Include(m => m.Bays)
+                        .ThenInclude(b => b.IoDevice)
+                    .Include(m => m.Bays)
+                        .ThenInclude(b => b.Laser)
+                    .Include(m => m.Bays)
+                        .ThenInclude(b => b.Shutter)
+                            .ThenInclude(b => b.AssistedMovements)
+                    .Include(m => m.Bays)
+                        .ThenInclude(b => b.Shutter)
+                            .ThenInclude(b => b.ManualMovements)
+                    .Include(m => m.Bays)
+                        .ThenInclude(b => b.Shutter)
+                            .ThenInclude(b => b.Inverter)
+                    .Include(m => m.Panels)
+                        .ThenInclude(p => p.Cells)
+                    .Single());
+
         private readonly IMemoryCache cache;
 
         private readonly DataLayerContext dataContext;
@@ -88,59 +143,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var entity =
-                this.dataContext.Machines.AsNoTracking()
-                    .Include(m => m.Elevator)
-                        .ThenInclude(e => e.Axes)
-                            .ThenInclude(a => a.EmptyLoadMovement)
-                    .Include(m => m.Elevator)
-                       .ThenInclude(e => e.Axes)
-                           .ThenInclude(a => a.FullLoadMovement)
-                    .Include(m => m.Elevator)
-                       .ThenInclude(e => e.Axes)
-                           .ThenInclude(a => a.WeightMeasurement)
-                    .Include(m => m.Elevator)
-                       .ThenInclude(e => e.Axes)
-                           .ThenInclude(a => a.AssistedMovements)
-                    .Include(m => m.Elevator)
-                       .ThenInclude(e => e.Axes)
-                           .ThenInclude(a => a.ManualMovements)
-                    .Include(m => m.Elevator)
-                       .ThenInclude(e => e.Axes)
-                           .ThenInclude(a => a.Profiles)
-                               .ThenInclude(p => p.Steps)
-                    .Include(m => m.Elevator)
-                       .ThenInclude(e => e.Axes)
-                           .ThenInclude(a => a.Inverter)
-                    .Include(m => m.Elevator)
-                        .ThenInclude(e => e.StructuralProperties)
-                    .Include(m => m.Bays)
-                        .ThenInclude(b => b.Positions)
-                            .ThenInclude(b => b.LoadingUnit)
-                    .Include(m => m.Bays)
-                        .ThenInclude(b => b.Carousel)
-                            .ThenInclude(b => b.ManualMovements)
-                    .Include(m => m.Bays)
-                        .ThenInclude(b => b.Carousel)
-                            .ThenInclude(b => b.AssistedMovements)
-                    .Include(m => m.Bays)
-                        .ThenInclude(b => b.Inverter)
-                    .Include(m => m.Bays)
-                        .ThenInclude(b => b.IoDevice)
-                    .Include(m => m.Bays)
-                        .ThenInclude(b => b.Laser)
-                    .Include(m => m.Bays)
-                        .ThenInclude(b => b.Shutter)
-                            .ThenInclude(b => b.AssistedMovements)
-                    .Include(m => m.Bays)
-                        .ThenInclude(b => b.Shutter)
-                            .ThenInclude(b => b.ManualMovements)
-                    .Include(m => m.Bays)
-                        .ThenInclude(b => b.Shutter)
-                            .ThenInclude(b => b.Inverter)
-                    .Include(m => m.Panels)
-                        .ThenInclude(p => p.Cells)
-                    .Single();
+                var entity = MachineGetCompile(this.dataContext);
 
                 entity.Elevator?.Axes?.ForEach((axe) =>
                 {
@@ -315,7 +318,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void UpdateBayLoadUnitStatistics(BayNumber bayNumber)
+        public void UpdateBayLoadUnitStatistics(BayNumber bayNumber, int loadUnitId)
         {
             lock (this.dataContext)
             {
@@ -339,6 +342,13 @@ namespace Ferretto.VW.MAS.DataLayer
                         default:
                             throw new ArgumentOutOfRangeException(nameof(bayNumber));
                     }
+
+                    var loadUnit = this.dataContext.LoadingUnits.FirstOrDefault(l => l.Id == loadUnitId);
+                    if (loadUnit != null)
+                    {
+                        loadUnit.MissionsCount++;
+                    }
+
                     this.dataContext.SaveChanges();
                 }
             }
@@ -366,6 +376,19 @@ namespace Ferretto.VW.MAS.DataLayer
                 if (machineStat != null)
                 {
                     machineStat.TotalMissionTime = machineStat.TotalMissionTime + duration;
+                    this.dataContext.SaveChanges();
+                }
+            }
+        }
+
+        public void UpdateServiceStatistics()
+        {
+            lock (this.dataContext)
+            {
+                var servicingInfo = this.dataContext.ServicingInfo.LastOrDefault();
+                if (servicingInfo != null)
+                {
+                    servicingInfo.TotalMissions = (servicingInfo.TotalMissions.HasValue ? servicingInfo.TotalMissions + 1 : 1);
                     this.dataContext.SaveChanges();
                 }
             }

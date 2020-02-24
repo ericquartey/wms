@@ -21,7 +21,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 using Prism.Events;
 
-
 namespace Ferretto.VW.MAS.AutomationService
 {
     public class Startup

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
@@ -11,7 +12,6 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-
 
 namespace Ferretto.VW.MAS.MachineManager
 {
@@ -43,10 +43,6 @@ namespace Ferretto.VW.MAS.MachineManager
                     {
                         this.OnMoveLoadingUnit(command, serviceProvider);
                     }
-                    break;
-
-                case MessageType.FullTest:
-                    this.OnFullTest(command, serviceProvider);
                     break;
             }
             return Task.CompletedTask;
@@ -116,11 +112,6 @@ namespace Ferretto.VW.MAS.MachineManager
             }
         }
 
-        private void OnFullTest(CommandMessage command, IServiceProvider serviceProvider)
-        {
-            throw new NotImplementedException();
-        }
-
         private void OnMoveLoadingUnit(CommandMessage command, IServiceProvider serviceProvider)
         {
             if (command is null)
@@ -154,7 +145,12 @@ namespace Ferretto.VW.MAS.MachineManager
                             {
                                 try
                                 {
-                                    missionMoveProvider.StartMission(mission, command, serviceProvider, true);
+                                    if (!missionMoveProvider.StartMission(mission, command, serviceProvider, true))
+                                    {
+                                        var machineVolatileDataProvider = serviceProvider.GetRequiredService<IMachineVolatileDataProvider>();
+                                        machineVolatileDataProvider.Mode = MachineMode.Manual;
+                                        this.Logger.LogInformation($"Start Mission error: Machine status switched to {machineVolatileDataProvider.Mode}");
+                                    }
                                 }
                                 catch (Exception ex)
                                 {

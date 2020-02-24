@@ -276,4 +276,10 @@
   <data name="FirstTestFailed" xml:space="preserve">
     <value>Il test del Primo Cassetto è fallito: non tutte le celle sono state collaudate.</value>
   </data>
+  <data name="WarehouseIsFull" xml:space="preserve">
+    <value>Il magazzino risulta pieno e non è possibile determinare una cella libera per il cassetto selezionato.</value>
+  </data>
+  <data name="WarehouseNotEmpty" xml:space="preserve">
+    <value>Il magazzino non è vuoto. Il test di carico del primo cassetto non è permesso.</value>
+  </data>
 </root>

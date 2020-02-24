@@ -304,7 +304,7 @@
     <value>Limite peso macchina totale superato. Verificare lo stato di carico della macchina e dei suoi cassetti.</value>
   </data>
   <data name="WarehouseIsFull" xml:space="preserve">
-    <value>Il magazzino risulta pieno e non è possibile determinare una cella libera per il cassetto selezionato.</value>
+    <value>The warehouse is full. It is not possible to find any free cell for the Load Unit.</value>
   </data>
   <data name="LoadUnitMissingOnBay" xml:space="preserve">
     <value>Check the loading unit id on the bay. Check that the loading unit presence sensors are working properly. Put the machine in Automatic.</value>
@@ -365,5 +365,11 @@
   </data>
   <data name="FirstTestFailed" xml:space="preserve">
     <value>First load unit  test failed: Not all cells could be tested!</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="WarehouseNotEmpty" xml:space="preserve">
+    <value>The warehouse is not empty. The first load unit test is not allowed.</value>
   </data>
 </root>

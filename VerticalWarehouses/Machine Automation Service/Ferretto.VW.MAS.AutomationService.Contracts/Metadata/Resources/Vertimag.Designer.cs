@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Acceleration.
+        ///   Looks up a localized string similar to Accelerazione.
         /// </summary>
         public static string Acceleration {
             get {
@@ -340,7 +340,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deceleration.
+        ///   Looks up a localized string similar to Decelerazione.
         /// </summary>
         public static string Deceleration {
             get {
@@ -430,6 +430,33 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Distanza max calibrazione sagoma.
+        /// </summary>
+        public static string ElevatorAxis_ProfileCalibrateLength {
+            get {
+                return ResourceManager.GetString("ElevatorAxis_ProfileCalibrateLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Distanza sagoma lettura 6a ftc.
+        /// </summary>
+        public static string ElevatorAxis_ProfileCalibratePosition {
+            get {
+                return ResourceManager.GetString("ElevatorAxis_ProfileCalibratePosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Velocità calibrazione sagoma.
+        /// </summary>
+        public static string ElevatorAxis_ProfileCalibrateSpeed {
+            get {
+                return ResourceManager.GetString("ElevatorAxis_ProfileCalibrateSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Profiles.
         /// </summary>
         public static string ElevatorAxis_Profiles {
@@ -457,6 +484,24 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Offset posizionamento in deposito.
+        /// </summary>
+        public static string ElevatorAxis_VerticalDepositOffset {
+            get {
+                return ResourceManager.GetString("ElevatorAxis_VerticalDepositOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offset posizionamento in prelievo.
+        /// </summary>
+        public static string ElevatorAxis_VerticalPickupOffset {
+            get {
+                return ResourceManager.GetString("ElevatorAxis_VerticalPickupOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Peso elevatore.
         /// </summary>
         public static string ElevatorWeight {
@@ -475,7 +520,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FeedRate.
+        ///   Looks up a localized string similar to Feed Rate.
         /// </summary>
         public static string FeedRate {
             get {
@@ -484,7 +529,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FeedRateAfterZero.
+        ///   Looks up a localized string similar to Feed Rate dopo zero asse.
         /// </summary>
         public static string FeedRateAfterZero {
             get {
@@ -970,7 +1015,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Speed.
+        ///   Looks up a localized string similar to Velocità.
         /// </summary>
         public static string Speed {
             get {
@@ -979,7 +1024,34 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TargetDistance.
+        ///   Looks up a localized string similar to Usa correzione peso.
+        /// </summary>
+        public static string StepMovementParameters_AdjustByWeight {
+            get {
+                return ResourceManager.GetString("StepMovementParameters_AdjustByWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Numero.
+        /// </summary>
+        public static string StepMovementParameters_Number {
+            get {
+                return ResourceManager.GetString("StepMovementParameters_Number", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Posizione.
+        /// </summary>
+        public static string StepMovementParameters_Position {
+            get {
+                return ResourceManager.GetString("StepMovementParameters_Position", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max spazio percorribile con comandi manuali.
         /// </summary>
         public static string TargetDistance {
             get {
@@ -988,7 +1060,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TargetDistanceAfterZero.
+        ///   Looks up a localized string similar to Max spazio percorribile con comandi manuali dopo zero asse.
         /// </summary>
         public static string TargetDistanceAfterZero {
             get {

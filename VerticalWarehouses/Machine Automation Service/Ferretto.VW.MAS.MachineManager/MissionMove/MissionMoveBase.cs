@@ -94,25 +94,26 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var unitToMove = this.LoadingUnitsDataProvider.GetById(mission.LoadUnitId);
             var bayPosition = locationBay.Positions.First(w => w.Location == bayLocation);
             var bay = this.BaysDataProvider.GetByNumber(locationBay.Number);
+            const double tolerance = 2.5;
             if (unitToMove != null
                 && bay != null
                 )
             {
                 var machine = this.MachineProvider.Get();
-                if (unitToMove.Height > machine.LoadUnitMaxHeight)
+                if (unitToMove.Height > machine.LoadUnitMaxHeight + tolerance)
                 {
                     this.Logger.LogWarning($"Load unit Height {unitToMove.Height} higher than machine max {machine.LoadUnitMaxHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
                 }
-                else if (unitToMove.Height < machine.LoadUnitMinHeight)
+                else if (unitToMove.Height < machine.LoadUnitMinHeight - tolerance)
                 {
                     this.Logger.LogWarning($"Load unit Height {unitToMove.Height} lower than machine min {machine.LoadUnitMinHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
                 }
-                else if (unitToMove.Height <= bayPosition.MaxSingleHeight)
+                else if (unitToMove.Height < bayPosition.MaxSingleHeight - tolerance)
                 {
                     returnValue = true;
                 }
                 else if (bayPosition.MaxDoubleHeight > 0
-                    && unitToMove.Height <= bayPosition.MaxDoubleHeight
+                    && unitToMove.Height < bayPosition.MaxDoubleHeight - tolerance
                     )
                 {
                     if (bay.Positions.Count() == 1)
@@ -131,13 +132,20 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                 }
                 else if (bayPosition.MaxDoubleHeight == 0
-                    && unitToMove.Height > bayPosition.MaxSingleHeight)
+                    && unitToMove.Height > bayPosition.MaxSingleHeight + tolerance)
                 {
                     this.Logger.LogWarning($"Load unit Height {unitToMove.Height} higher than single {bayPosition.MaxSingleHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
                 }
                 else
                 {
                     this.Logger.LogWarning($"Load unit Height {unitToMove.Height} higher than double {bayPosition.MaxDoubleHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
+                }
+                if (returnValue
+                    && mission.MissionType == MissionType.FirstTest
+                    && unitToMove.Height > machine.LoadUnitMinHeight + tolerance)
+                {
+                    returnValue = false;
+                    this.Logger.LogWarning($"First test Load unit Height {unitToMove.Height} higher than machine min {machine.LoadUnitMinHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
                 }
             }
 #else
@@ -284,6 +292,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         try
                         {
                             this.CellsProvider.SetLoadingUnit(sourceCellId.Value, null);
+                            if (this.Mission.LoadUnitDestination == LoadingUnitLocation.Cell)
+                            {
+                                this.MachineProvider.UpdateServiceStatistics();
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -304,7 +316,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     var bayPosition = this.BaysDataProvider.GetPositionByLocation(this.Mission.LoadUnitSource);
                     this.BaysDataProvider.SetLoadingUnit(bayPosition.Id, null);
-                    this.MachineProvider.UpdateBayLoadUnitStatistics(this.Mission.TargetBay);
+                    this.MachineProvider.UpdateBayLoadUnitStatistics(this.Mission.TargetBay, this.Mission.LoadUnitId);
+                    this.MachineProvider.UpdateServiceStatistics();
                 }
 
                 transaction.Commit();

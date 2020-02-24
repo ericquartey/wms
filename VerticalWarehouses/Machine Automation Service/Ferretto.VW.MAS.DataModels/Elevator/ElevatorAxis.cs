@@ -158,6 +158,7 @@ namespace Ferretto.VW.MAS.DataModels
                 "Max gross weight should always be positive (consistency ensured by LoadingUnit class).");
 
             // if weight is unknown we move as full weight
+            // min value 0, max value 1.The higher is scalingFactor the lower goes speed/Acceleration/Deceleration
             var scalingFactor = (loadingUnit.GrossWeight == 0 || loadingUnit.GrossWeight > maxGrossWeight) ? 1 : (loadingUnit.GrossWeight / maxGrossWeight);
 
             return new MovementParameters

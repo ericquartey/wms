@@ -411,6 +411,21 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void UpdateVerticalLowerBound(double newLowerBound)
+        {
+            lock (this.dataContext)
+            {
+                var cacheKey = GetAxisCacheKey(Orientation.Vertical);
+                this.cache.Remove(cacheKey);
+
+                var verticalAxis = this.GetAxis(Orientation.Vertical);
+
+                verticalAxis.LowerBound = newLowerBound;
+                this.dataContext.ElevatorAxes.Update(verticalAxis);
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public void UpdateVerticalOffset(double newOffset)
         {
             lock (this.dataContext)

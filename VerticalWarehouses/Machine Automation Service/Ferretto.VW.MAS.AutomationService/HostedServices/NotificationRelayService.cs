@@ -146,13 +146,20 @@ namespace Ferretto.VW.MAS.AutomationService
 
                         using (var scope = this.ServiceScopeFactory.CreateScope())
                         {
-                            var missionWebService = scope.ServiceProvider.GetRequiredService<IMissionOperationsWmsWebService>();
-                            var missionDataProvider = scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
-                            if (int.TryParse(e.Id, out int operationId))
+                            try
                             {
-                                var oepration = await missionWebService.GetByIdAsync(operationId);
-                                var mission = missionDataProvider.GetByWmsId(oepration.MissionId);
-                                await this.operatorHub.Clients.All.AssignedMissionOperationChanged(mission.TargetBay);
+                                var missionWebService = scope.ServiceProvider.GetRequiredService<IMissionOperationsWmsWebService>();
+                                var missionDataProvider = scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
+                                if (int.TryParse(e.Id, out var operationId))
+                                {
+                                    var oepration = await missionWebService.GetByIdAsync(operationId);
+                                    var mission = missionDataProvider.GetByWmsId(oepration.MissionId);
+                                    await this.operatorHub.Clients.All.AssignedMissionOperationChanged(mission.TargetBay);
+                                }
+                            }
+                            catch
+                            {
+                                // do nothing
                             }
                         }
                         break;

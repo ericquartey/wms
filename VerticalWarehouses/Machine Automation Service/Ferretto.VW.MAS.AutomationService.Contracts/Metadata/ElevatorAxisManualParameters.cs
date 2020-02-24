@@ -10,22 +10,26 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         class Metadata {
 
             [Id(1)]
-            [Editable(false)]
+            [Editable(true)]
+            [Range(0D, 1D, ErrorMessageResourceType = typeof(ErrorMessages), ErrorMessageResourceName = nameof(ErrorMessages.Range))]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.FeedRate))]
             public double FeedRate { get; set; }
 
             [Id(2)]
-            [Editable(false)]
+            [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.FeedRateAfterZero))]
+            [Range(0D, 1D, ErrorMessageResourceType = typeof(ErrorMessages), ErrorMessageResourceName = nameof(ErrorMessages.Range))]
             public double FeedRateAfterZero { get; set; }
 
             [Id(3)]
-            [Editable(false)]
+            [Editable(true)]
+            [Unit("mm")]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.TargetDistance))]
             public double TargetDistance { get; set; }
 
             [Id(4)]
-            [Editable(false)]
+            [Editable(true)]
+            [Unit("mm")]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.TargetDistanceAfterZero))]
             public double TargetDistanceAfterZero { get; set; }
 

@@ -143,7 +143,7 @@
           "ChainOffset": 0,
           "HomingFastSpeed": 25,
           "HomingCreepSpeed": 6,
-          "UpperBound": 8600,
+          "UpperBound": 8750,
           "LowerBound": 350,
           "VerticalDepositOffset": 0,
           "VerticalPickupOffset": 0,
@@ -172,9 +172,7 @@
           },
           "AssistedMovements": {
             "FeedRate": 0.15,
-            "FeedRateAfterZero": 0.9,
-            "TargetDistance": 30,
-            "TargetDistanceAfterZero": 30
+            "FeedRateAfterZero": 0.9
           }
         },
         {
@@ -383,7 +381,7 @@
     "ModelName": "Simulation Vertimag 1000kg",
     "LoadUnitTare": 120,
     "LoadUnitMaxNetWeight": 930,
-    "LoadUnitMaxHeight": 695,
+    "LoadUnitMaxHeight": 695, // note: use 145 to execute first LU test
     "LoadUnitMinHeight": 145.0,
     "Panels": [
       {
@@ -3018,7 +3016,7 @@
             "Id": 583
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 1,
             "Position": 8740.0,
             "Priority": 585,
@@ -3027,7 +3025,7 @@
             "Id": 585
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 1,
             "Position": 8765.0,
             "Priority": 587,
@@ -3036,7 +3034,7 @@
             "Id": 587
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 1,
             "Position": 8790.0,
             "Priority": 589,
@@ -3045,7 +3043,7 @@
             "Id": 589
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 1,
             "Position": 8815.0,
             "Priority": 591,
@@ -3054,7 +3052,7 @@
             "Id": 591
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 1,
             "Position": 8840.0,
             "Priority": 593,
@@ -3063,7 +3061,7 @@
             "Id": 593
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 1,
             "Position": 8865.0,
             "Priority": 595,
@@ -3072,7 +3070,7 @@
             "Id": 595
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 1,
             "Position": 8890.0,
             "Priority": 597,
@@ -3081,7 +3079,7 @@
             "Id": 597
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 1,
             "Position": 8915.0,
             "Priority": 599,
@@ -3090,7 +3088,7 @@
             "Id": 599
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 1,
             "Position": 8940.0,
             "Priority": 601,
@@ -5733,7 +5731,7 @@
             "Id": 584
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 2,
             "Position": 8740.0,
             "Priority": 586,
@@ -5742,7 +5740,7 @@
             "Id": 586
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 2,
             "Position": 8765.0,
             "Priority": 588,
@@ -5751,7 +5749,7 @@
             "Id": 588
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 2,
             "Position": 8790.0,
             "Priority": 590,
@@ -5760,7 +5758,7 @@
             "Id": 590
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 2,
             "Position": 8815.0,
             "Priority": 592,
@@ -5769,7 +5767,7 @@
             "Id": 592
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 2,
             "Position": 8840.0,
             "Priority": 594,
@@ -5778,7 +5776,7 @@
             "Id": 594
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 2,
             "Position": 8865.0,
             "Priority": 596,
@@ -5787,7 +5785,7 @@
             "Id": 596
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 2,
             "Position": 8890.0,
             "Priority": 598,
@@ -5796,7 +5794,7 @@
             "Id": 598
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 2,
             "Position": 8915.0,
             "Priority": 600,
@@ -5805,7 +5803,7 @@
             "Id": 600
           },
           {
-            "BlockLevel": "None",
+            "BlockLevel": "SpaceOnly",
             "PanelId": 2,
             "Position": 8940.0,
             "Priority": 602,

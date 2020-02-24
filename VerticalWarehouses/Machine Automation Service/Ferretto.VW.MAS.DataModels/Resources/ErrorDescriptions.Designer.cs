@@ -763,6 +763,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not empty warehouse..
+        /// </summary>
+        public static string WarehouseNotEmpty {
+            get {
+                return ResourceManager.GetString("WarehouseNotEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inconsistenza stato sensori elevatore.
         /// </summary>
         public static string ZeroSensorActiveWithFullElevator {

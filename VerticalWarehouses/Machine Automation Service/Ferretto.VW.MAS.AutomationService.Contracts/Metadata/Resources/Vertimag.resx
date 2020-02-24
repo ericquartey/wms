@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Acceleration" xml:space="preserve">
-    <value>Acceleration</value>
+    <value>Accelerazione</value>
   </data>
   <data name="AssistedMovements" xml:space="preserve">
     <value>Movimenti guidati</value>
@@ -211,7 +211,7 @@
     <value>Velocità homing fast</value>
   </data>
   <data name="Deceleration" xml:space="preserve">
-    <value>Deceleration</value>
+    <value>Decelerazione</value>
   </data>
   <data name="Elevator" xml:space="preserve">
     <value>Elevatore</value>
@@ -237,6 +237,15 @@
   <data name="ElevatorAxis_LowerBound" xml:space="preserve">
     <value>Limite asse inferiore</value>
   </data>
+  <data name="ElevatorAxis_ProfileCalibrateLength" xml:space="preserve">
+    <value>Distanza max calibrazione sagoma</value>
+  </data>
+  <data name="ElevatorAxis_ProfileCalibratePosition" xml:space="preserve">
+    <value>Distanza sagoma lettura 6a ftc</value>
+  </data>
+  <data name="ElevatorAxis_ProfileCalibrateSpeed" xml:space="preserve">
+    <value>Velocità calibrazione sagoma</value>
+  </data>
   <data name="ElevatorAxis_Profiles" xml:space="preserve">
     <value>Profiles</value>
   </data>
@@ -245,6 +254,12 @@
   </data>
   <data name="ElevatorAxis_UpperBound" xml:space="preserve">
     <value>Limite asse superiore</value>
+  </data>
+  <data name="ElevatorAxis_VerticalDepositOffset" xml:space="preserve">
+    <value>Offset posizionamento in deposito</value>
+  </data>
+  <data name="ElevatorAxis_VerticalPickupOffset" xml:space="preserve">
+    <value>Offset posizionamento in prelievo</value>
   </data>
   <data name="ElevatorWeight" xml:space="preserve">
     <value>Peso elevatore</value>
@@ -256,10 +271,10 @@
     <value>Movimenti a vuoto</value>
   </data>
   <data name="FeedRate" xml:space="preserve">
-    <value>FeedRate</value>
+    <value>Feed Rate</value>
   </data>
   <data name="FeedRateAfterZero" xml:space="preserve">
-    <value>FeedRateAfterZero</value>
+    <value>Feed Rate dopo zero asse</value>
   </data>
   <data name="FullLoadMovement" xml:space="preserve">
     <value>Movimenti a pieno carico</value>
@@ -421,13 +436,22 @@
     <value>Tipo serranda</value>
   </data>
   <data name="Speed" xml:space="preserve">
-    <value>Speed</value>
+    <value>Velocità</value>
+  </data>
+  <data name="StepMovementParameters_AdjustByWeight" xml:space="preserve">
+    <value>Usa correzione peso</value>
+  </data>
+  <data name="StepMovementParameters_Number" xml:space="preserve">
+    <value>Numero</value>
+  </data>
+  <data name="StepMovementParameters_Position" xml:space="preserve">
+    <value>Posizione</value>
   </data>
   <data name="TargetDistance" xml:space="preserve">
-    <value>TargetDistance</value>
+    <value>Max spazio percorribile con comandi manuali</value>
   </data>
   <data name="TargetDistanceAfterZero" xml:space="preserve">
-    <value>TargetDistanceAfterZero</value>
+    <value>Max spazio percorribile con comandi manuali dopo zero asse</value>
   </data>
   <data name="TotalDistance" xml:space="preserve">
     <value>Totale distanza</value>

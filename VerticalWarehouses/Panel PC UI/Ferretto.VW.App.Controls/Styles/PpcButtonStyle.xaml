@@ -308,6 +308,11 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
                 <Setter Property="Content" Value="{x:Static res:InstallationApp.Compact}" />
             </DataTrigger>
+            <DataTrigger Binding="{Binding IsMachineInFirstTest}"
+                         Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
+                <Setter Property="Content" Value="{x:Static res:InstallationApp.FirstTest}" />
+            </DataTrigger>
         </Style.Triggers>
     </Style>
 
@@ -727,19 +732,11 @@
                                         </Style>
                                     </Grid.Style>
 
-                                    <Rectangle Grid.Row="0"
-                                               Grid.Column="0"
-                                               Margin="100,22,0,0"
-                                               Opacity="0.8"
-                                               Stroke="{DynamicResource FerrettoBlue}"
-                                               StrokeThickness="25">
-                                        <Rectangle.LayoutTransform>
-                                            <TransformGroup>
-                                                <SkewTransform AngleX="275" AngleY="37" CenterX="0.5" CenterY="0.5" />
-                                                <RotateTransform Angle="300" />
-                                            </TransformGroup>
-                                        </Rectangle.LayoutTransform>
-                                    </Rectangle>
+                                    <Polygon HorizontalAlignment="Right"
+                                             VerticalAlignment="Bottom"
+                                             Fill="{DynamicResource FerrettoBlue}"
+                                             Opacity="0.8"
+                                             Points="146,150 200,48 200,90 170,150 " />
 
                                     <TextBlock Grid.Row="0"
                                                Grid.Column="0"
@@ -752,7 +749,7 @@
                                                Text="Completato">
                                         <TextBlock.LayoutTransform>
                                             <TransformGroup>
-                                                <RotateTransform Angle="296" />
+                                                <RotateTransform Angle="296" CenterX="0.5" CenterY="0.5" />
                                             </TransformGroup>
                                         </TextBlock.LayoutTransform>
                                     </TextBlock>
@@ -773,35 +770,49 @@
                                         </Style>
                                     </Grid.Style>
 
-                                    <Rectangle Grid.Row="0"
-                                               Grid.Column="0"
-                                               Margin="100,22,0,0"
-                                               Opacity="0.8"
-                                               Stroke="{DynamicResource FerrettoRed}"
-                                               StrokeThickness="25">
-                                        <Rectangle.LayoutTransform>
-                                            <TransformGroup>
-                                                <SkewTransform AngleX="275" AngleY="37" CenterX="0.5" CenterY="0.5" />
-                                                <RotateTransform Angle="300" />
-                                            </TransformGroup>
-                                        </Rectangle.LayoutTransform>
-                                    </Rectangle>
+                                    <Polygon HorizontalAlignment="Right"
+                                             VerticalAlignment="Bottom"
+                                             Fill="{DynamicResource FerrettoRed}"
+                                             Opacity="0.8"
+                                             Points="146,150 200,48 200,90 170,150 " />
 
                                     <TextBlock Grid.Row="0"
                                                Grid.Column="0"
-                                               Margin="0,0,-2,4"
+                                               Margin="0,0,0,10"
                                                HorizontalAlignment="Right"
                                                VerticalAlignment="Bottom"
                                                FontFamily="{DynamicResource VWAPP_TitleFont}"
                                                FontSize="14"
                                                FontWeight="Light"
-                                               Text="Bypassed">
+                                               Text="Bypassato">
                                         <TextBlock.LayoutTransform>
                                             <TransformGroup>
-                                                <RotateTransform Angle="296" />
+                                                <RotateTransform Angle="296" CenterX="0.5" CenterY="0.5" />
                                             </TransformGroup>
                                         </TextBlock.LayoutTransform>
                                     </TextBlock>
+
+                                    <!--<Polygon HorizontalAlignment="Left"
+                                             VerticalAlignment="Bottom"
+                                             Fill="{DynamicResource FerrettoRed}"
+                                             Opacity="0.8"
+                                             Points="54,150 0,48 0,90 30,150 " />
+
+                                    <TextBlock Grid.Row="0"
+                                               Grid.Column="0"
+                                               Margin="2,0,0,5"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Bottom"
+                                               FontFamily="{DynamicResource VWAPP_TitleFont}"
+                                               FontSize="14"
+                                               FontWeight="Light"
+                                               Text="Bypassato">
+                                        <TextBlock.LayoutTransform>
+                                            <TransformGroup>
+                                                <RotateTransform Angle="64" CenterX="0.5" CenterY="0.5" />
+                                            </TransformGroup>
+                                        </TextBlock.LayoutTransform>
+                                    </TextBlock>-->
                                 </Grid>
 
                             </Grid>

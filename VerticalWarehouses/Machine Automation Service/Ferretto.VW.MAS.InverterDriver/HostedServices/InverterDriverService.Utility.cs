@@ -1068,7 +1068,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 if (this.socketTransport.IsConnected
                     && state is InverterIndex.MainInverter
-                    && this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.HeartBeatTimer1) < 2
+                    && this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.HeartBeatTimer1) < 1
                     )
                 {
                     var value = (short)(this.isHeartBeatOn ? 1 : 0);
@@ -1094,7 +1094,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 var readSensorStatusMessage = new InverterMessage(InverterIndex.MainInverter, InverterParameterId.DigitalInputsOutputs);
 
-                if (this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.DigitalInputsOutputs) < 2)
+                if (this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.DigitalInputsOutputs) < 1)
                 {
                     this.Logger.LogTrace($"1:ReadSensorStatusTimer={readSensorStatusMessage} Count:{this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.DigitalInputsOutputs)}");
 

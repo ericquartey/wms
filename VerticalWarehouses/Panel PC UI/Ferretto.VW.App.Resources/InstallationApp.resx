@@ -1768,4 +1768,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="NextLarge" xml:space="preserve">
     <value>Next</value>
   </data>
+  <data name="FirstTest" xml:space="preserve">
+    <value>First Test</value>
+  </data>
 </root>

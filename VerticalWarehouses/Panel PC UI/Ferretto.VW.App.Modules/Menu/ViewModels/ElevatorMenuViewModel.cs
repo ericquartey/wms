@@ -86,7 +86,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public bool IsBeltBurnishing => this.BeltBurnishing.IsCompleted;
+        public bool IsBeltBurnishing => this.BeltBurnishing.IsCompleted && !this.BeltBurnishing.IsBypassed;
 
         public bool IsBeltBurnishingBypassed => this.BeltBurnishing.IsBypassed;
 
@@ -178,6 +178,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.RaisePropertyChanged(nameof(this.IsVerticalOffsetProcedure));
             this.RaisePropertyChanged(nameof(this.IsVerticalResolutionCalibration));
             this.RaisePropertyChanged(nameof(this.IsBeltBurnishing));
+            this.RaisePropertyChanged(nameof(this.IsBeltBurnishingBypassed));
 
             this.beltBurnishingCommand?.RaiseCanExecuteChanged();
             this.verticalOffsetCalibration?.RaiseCanExecuteChanged();

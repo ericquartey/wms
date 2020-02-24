@@ -149,7 +149,7 @@
                            Grid.Column="3"
                            Height="90"
                            Margin="0,15,15,0"
-                           EditValue="{Binding LoadunitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           EditValue="{Binding LoadUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                            LabelText="Id cassetto"
                            MaxValue="999"

@@ -379,7 +379,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void SetCellsToTest()
+        public int SetCellsToTest()
         {
             lock (this.dataContext)
             {
@@ -392,6 +392,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 // remove all cells to test remained by other tests
                 cells.ForEach(c => { if (c.BlockLevel == BlockLevel.NeedsTest) { c.BlockLevel = BlockLevel.None; } });
+
+                var count = 0;
 
                 // find all border cells: the first and last cell by side and cells near not available cells
                 for (int iCell = 0; iCell < cells.Length; iCell++)
@@ -411,6 +413,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             )
                         {
                             cell.BlockLevel = BlockLevel.NeedsTest;
+                            count++;
                         }
                         else
                         {
@@ -426,11 +429,13 @@ namespace Ferretto.VW.MAS.DataLayer
                                 )
                             {
                                 cell.BlockLevel = BlockLevel.NeedsTest;
+                                count++;
                             }
                         }
                     }
                 }
                 this.dataContext.SaveChanges();
+                return count;
             }
         }
 

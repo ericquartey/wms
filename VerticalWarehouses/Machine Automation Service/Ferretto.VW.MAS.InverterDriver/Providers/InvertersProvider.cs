@@ -32,6 +32,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly IErrorsProvider errorsProvider;
 
+        private readonly IEventAggregator eventAggregator;
+
         private readonly ILogger<InverterDriverService> logger;
 
         private readonly IMachineProvider machineProvider;
@@ -54,11 +56,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             ILogger<InverterDriverService> logger
             )
         {
-            if (eventAggregator is null)
-            {
-                throw new ArgumentNullException(nameof(eventAggregator));
-            }
-
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator)); ;
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
@@ -74,7 +72,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
             else
             {
-                eventAggregator.GetEvent<NotificationEvent>().Subscribe((x) =>
+                this.eventAggregator.GetEvent<NotificationEvent>().Subscribe((x) =>
                     this.OnDataLayerReady(),
                     ThreadOption.PublisherThread,
                     false,
@@ -366,6 +364,22 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private void OnDataLayerReady()
         {
+            if (inverters != null)
+            {
+                // already initialized
+                return;
+            }
+
+            // performance optimization
+            this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
+            this.elevatorDataProvider.GetAxis(Orientation.Vertical);
+            this.elevatorDataProvider.GetLoadingUnitOnBoard();
+            this.elevatorDataProvider.GetStructuralProperties();
+            this.machineProvider.GetHeight();
+            this.baysDataProvider.GetByNumber(BayNumber.BayOne);
+            //this.baysDataProvider.GetResolution(InverterIndex.MainInverter);
+
+            // retrieve inverters configuration
             inverters = inverters ?? this.digitalDevicesDataProvider
              .GetAllInverters()
              .Select<Inverter, IInverterStatusBase>(i =>

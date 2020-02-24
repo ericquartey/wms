@@ -11,11 +11,11 @@
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="100,30,100,0">
+    <Grid Margin="100,30,50,0">
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="350" />
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -23,37 +23,43 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.ColumnSpan="2"
-                   HorizontalAlignment="Left"
+        <!--#region Title-->
+        <StackPanel Grid.ColumnSpan="2"
+                    Orientation="Horizontal">
+            <TextBlock Margin="0,10,15,10"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="1.1" />
+            <TextBlock Grid.ColumnSpan="2"
+                       Margin="0,10,15,10"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{x:Static Resources:OperatorApp.NavigationMainMenuDrawerOperation}" />
+        </StackPanel>
+        <!--#endregion-->
+
+
+        <TextBlock Grid.Row="1"
+                   Grid.ColumnSpan="1"
+                   Height="Auto"
+                   Margin="0,0,0,150"
+                   HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static Resources:OperatorApp.NavigationMainMenuDrawerOperation}" />
+                   Text="{Binding LoadingUnitsInfo}"
+                   TextWrapping="Wrap" />
 
-        <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <TextBlock Grid.ColumnSpan="2"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   Style="{StaticResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                   Text="{Binding LoadingUnitsInfo}" />
-
-        </Grid>
-
+        <!--  Text="{Binding LoadingUnitsInfo, FallbackValue='ddddddddddddddddddddddddddddddddddddddddddddddd'}"  -->
 
         <Image Grid.Row="1"
-               Grid.Column="2"
-               Margin="0"
+               Grid.RowSpan="2"
+               Grid.Column="0"
+               Grid.ColumnSpan="2"
+               Margin="0,0,-90,0"
                HorizontalAlignment="Right"
-               VerticalAlignment="Center"
+               VerticalAlignment="Top"
                RenderOptions.BitmapScalingMode="HighQuality"
-               Source="pack://application:,,,/Ferretto.VW.App.Controls;Component/Assets/background_machine.png"
-               Stretch="Uniform" />
+               Source="pack://application:,,,/Ferretto.VW.App.Controls;Component/Assets/Vertimag_Baia_Ergo_Scontorno.png" />
 
     </Grid>
 </ctrls:View>

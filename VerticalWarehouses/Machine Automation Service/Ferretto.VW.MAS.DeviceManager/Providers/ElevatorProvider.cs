@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Enumerations;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
@@ -23,6 +24,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         private readonly ICellsProvider cellsProvider;
 
         private readonly IElevatorDataProvider elevatorDataProvider;
+
+        private readonly IErrorsProvider errorsProvider;
 
         private readonly ILoadingUnitsDataProvider loadingUnitsDataProvider;
 
@@ -51,6 +54,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             ILogger<ElevatorProvider> logger,
             ISetupProceduresDataProvider setupProceduresDataProvider,
             IElevatorDataProvider elevatorDataProvider,
+            IErrorsProvider errorsProvider,
             ISetupStatusProvider setupStatusProvider,
             IBaysDataProvider baysDataProvider,
             ICellsProvider cellsProvider,
@@ -65,6 +69,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
+            this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
             this.setupStatusProvider = setupStatusProvider ?? throw new ArgumentNullException(nameof(setupStatusProvider));
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
@@ -112,7 +117,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return ActionPolicy.Allowed;
         }
 
-        public ActionPolicy CanLoadFromBay(int bayPositionId, BayNumber bayNumber, bool isGuided)
+        public ActionPolicy CanLoadFromBay(int bayPositionId, BayNumber bayNumber, bool isGuided, bool enforceLoadUnitPresent = true)
         {
             // check #1: elevator must be located opposite to the specified bay position
             var bayPosition = this.elevatorDataProvider.GetCurrentBayPosition();
@@ -122,7 +127,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             // check #2: a loading unit must be present in the bay position
-            if (!this.IsBayPositionOccupied(bayNumber, bayPositionId))
+            if (enforceLoadUnitPresent && !this.IsBayPositionOccupied(bayNumber, bayPositionId))
             {
                 return new ActionPolicy { Reason = Resources.Elevator.NoLoadingUnitIsPresentInTheSpecifiedBayPosition };
             }
@@ -548,7 +553,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         /// <param name="isLoadingUnitOnBoard">true: elevator is full before the movement. It must match the presence sensors</param>
         /// <param name="loadingUnitId">This id is stored in Elevator table before the movement. null means no LoadUnit</param>
         /// <param name="loadingUnitGrossWeight">This weight is stored in LoadingUnits table before the movement.</param>
-        /// <param name="waitContinue">true: the inverter positioning state machine stops after the transmission of parameters and waits for a Continue command before enabling inverter</param>
+        /// <param name="waitContinue">true: the inverter positioning state machine stops after the transmission of parameters and waits for a Continue command before enabling inverter
+        ///                             the scope is to wait for the shutter to open or close before moving </param>
         /// <param name="requestingBay"></param>
         /// <param name="sender"></param>
         public void MoveHorizontalAuto(
@@ -612,7 +618,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             // if weight is unknown we move as full weight
             double scalingFactor = 1;
-            if (loadingUnitId.HasValue && !measure)
+            if (loadingUnitId.HasValue
+                && !measure
+                && this.machineVolatileDataProvider.Mode != MachineMode.FirstTest
+                )
             {
                 var loadUnit = this.loadingUnitsDataProvider.GetById(loadingUnitId.Value);
                 if (loadUnit.MaxNetWeight > 0 && loadUnit.GrossWeight > 0)
@@ -697,8 +706,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
 
             var targetPosition = this.machineVolatileDataProvider.IsHomingExecuted
-                ? axis.ManualMovements.TargetDistanceAfterZero
-                : axis.ManualMovements.TargetDistance;
+                ? axis.ManualMovements.TargetDistanceAfterZero.Value
+                : axis.ManualMovements.TargetDistance.Value;
             if (distance > 0)
             {
                 targetPosition = distance;
@@ -740,7 +749,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void MoveHorizontalProfileCalibration(int bayPositionId, BayNumber requestingBay, MessageActor sender)
         {
-            var policy = this.CanLoadFromBay(bayPositionId, requestingBay, isGuided: false);
+            var policy = this.CanLoadFromBay(bayPositionId, requestingBay, isGuided: false, enforceLoadUnitPresent: false);
             if (!policy.IsAllowed)
             {
                 throw new InvalidOperationException(policy.Reason);
@@ -967,7 +976,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             else
             {
                 feedRate = parameters.FeedRate;
-                targetPosition = parameters.TargetDistance * (direction == VerticalMovementDirection.Up ? 1 : -1);
+                targetPosition = parameters.TargetDistance.Value * (direction == VerticalMovementDirection.Up ? 1 : -1);
             }
 
             var speed = new[] { verticalAxis.FullLoadMovement.Speed * feedRate };
@@ -1285,8 +1294,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 throw new InvalidOperationException(string.Format(Resources.Elevator.OffsetOutOfBounds, verticalAxis.Offset, lowerBound, upperBound));
             }
 
-            if (targetPosition < lowerBound || targetPosition > upperBound)
+            if (targetPosition < lowerBound)
             {
+                this.errorsProvider.RecordNew(MachineErrorCode.DestinationBelowLowerBound, requestingBay);
+                throw new InvalidOperationException(string.Format(Resources.Elevator.TargetPositionOutOfBounds, targetPosition, lowerBound, upperBound));
+            }
+            if (targetPosition > upperBound)
+            {
+                this.errorsProvider.RecordNew(MachineErrorCode.DestinationOverUpperBound, requestingBay);
                 throw new InvalidOperationException(string.Format(Resources.Elevator.TargetPositionOutOfBounds, targetPosition, lowerBound, upperBound));
             }
 
@@ -1322,6 +1337,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var acceleration = new[] { movementParameters.Acceleration };
             var deceleration = new[] { movementParameters.Deceleration };
             var feedRate = homingDone ? manualParameters.FeedRateAfterZero : manualParameters.FeedRate;
+            if (this.machineVolatileDataProvider.Mode == MachineMode.FirstTest)
+            {
+                // during first load unit test the feedrate is fixed to half speed
+                feedRate /= 2;
+            }
             var speed = new[] { movementParameters.Speed * (sender == MessageActor.AutomationService ? feedRate : 1) };
 
             var switchPosition = new[] { 0.0 };

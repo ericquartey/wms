@@ -119,9 +119,7 @@
         {
           "AssistedMovements": {
             "FeedRate": 0.3,
-            "FeedRateAfterZero": 0.9,
-            "TargetDistance": 0.0,
-            "TargetDistanceAfterZero": 0.0
+            "FeedRateAfterZero": 0.9
           },
           "BrakeActivatePercent": 10.0,
           "BrakeReleaseTime": 150.0,
@@ -172,9 +170,7 @@
         {
           "AssistedMovements": {
             "FeedRate": 0.3,
-            "FeedRateAfterZero": 0.9,
-            "TargetDistance": 0.0,
-            "TargetDistanceAfterZero": 0.0
+            "FeedRateAfterZero": 0.9
           },
           "BrakeActivatePercent": 0.0,
           "BrakeReleaseTime": 0.0,

@@ -30,7 +30,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isExecutingProcedure;
 
-        private int loadunitId = 1;
+        private int? loadunitId = 1;
+
+        private SubscriptionToken moveTestToken;
 
         private DelegateCommand startCommand;
 
@@ -69,11 +71,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get
             {
-                return this.MachineService.Loadunits.Any(l => l.Id == this.loadunitId);
+                return this.loadunitId.HasValue && this.MachineService.Loadunits.Any(l => l.Id == this.loadunitId);
             }
         }
 
-        public int LoadunitId
+        public int? LoadUnitId
         {
             get => this.loadunitId;
             set => this.SetProperty(ref this.loadunitId, value);
@@ -91,10 +93,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                         if (!this.IsLoadunitIdValid)
                         {
-                            await this.machineLoadingUnitsWebService.InsertLoadingUnitOnlyDbAsync(this.loadunitId);
+                            await this.machineLoadingUnitsWebService.InsertLoadingUnitOnlyDbAsync(this.loadunitId.Value);
                         }
 
-                        await this.machineFirstTestWebService.StartAsync(this.LoadunitId);
+                        await this.machineFirstTestWebService.StartAsync(this.LoadUnitId.Value);
                     }
                     catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
                     {
@@ -106,7 +108,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsExecutingProcedure = true;
                     }
                 },
-                () => !this.IsMoving));
+                () => !this.IsMoving && this.MachineModeService.MachineMode == MachineMode.Manual &&
+                   ((this.SensorsService.IsLoadingUnitInBay && (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper)) ||
+                    (!this.MachineService.HasCarousel && this.SensorsService.IsLoadingUnitInMiddleBottomBay && (this.MachineService.Bay.IsDouble || !this.MachineService.BayFirstPositionIsUpper))) &&
+                   this.LoadUnitId.HasValue));
 
         public int Step
         {
@@ -153,8 +158,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            if (this.moveTestToken != null)
+            {
+                this.EventAggregator.GetEvent<NotificationEventUI<MoveTestMessageData>>().Unsubscribe(this.moveTestToken);
+                this.moveTestToken?.Dispose();
+                this.moveTestToken = null;
+            }
+        }
+
         public override async Task OnAppearedAsync()
         {
+            this.SubscribeToEvents();
+
             await base.OnAppearedAsync();
         }
 
@@ -169,22 +188,39 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        protected override async Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
-        {
-            await base.OnMachineStatusChangedAsync(e);
-
-            if (!this.MachineStatus.IsMoving)
-            {
-                this.IsExecutingProcedure = false;
-            }
-        }
-
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
 
             this.stopCommand?.RaiseCanExecuteChanged();
             this.startCommand?.RaiseCanExecuteChanged();
+        }
+
+        private void SubscribeToEvents()
+        {
+            this.moveTestToken = this.moveTestToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<MoveTestMessageData>>()
+                    .Subscribe(
+                        (m) =>
+                        {
+                            this.Step = m.Data.ExecutedCycles;
+                            this.TotalStep = m.Data.RequiredCycles;
+                            this.StepPercent = (int)(((double)this.Step / (double)this.TotalStep) * 100);
+
+                            if (m.Status == CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd ||
+                                m.Status == CommonUtils.Messages.Enumerations.MessageStatus.OperationStop)
+                            {
+                                this.IsExecutingProcedure = false;
+                            }
+                            else
+                            {
+                                this.IsExecutingProcedure = true;
+                            }
+                        },
+                        ThreadOption.UIThread,
+                        false);
         }
 
         #endregion
