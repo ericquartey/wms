@@ -727,6 +727,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Errore di posizionamento.
+        /// </summary>
+        public static string SensorZeroBayNotActiveAtEnd {
+            get {
+                return ResourceManager.GetString("SensorZeroBayNotActiveAtEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inconsistenza stato sensori baia.
         /// </summary>
         public static string SensorZeroBayNotActiveAtStart {

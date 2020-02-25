@@ -745,20 +745,20 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inconsistenza stato sensori. Il sensore di zero della baia non risulta attivo..
+        ///   Looks up a localized string similar to The Bay Zero Sensor is not active at the end of positioning..
         /// </summary>
-        public static string SensorZeroBayNotActiveAtStart {
+        public static string SensorZeroBayNotActiveAtEnd {
             get {
-                return ResourceManager.GetString("SensorZeroBayNotActiveAtStart", resourceCulture);
+                return ResourceManager.GetString("SensorZeroBayNotActiveAtEnd", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Sensors error. The Bay Zero Sensor is not active..
         /// </summary>
-        public static string String1 {
+        public static string SensorZeroBayNotActiveAtStart {
             get {
-                return ResourceManager.GetString("String1", resourceCulture);
+                return ResourceManager.GetString("SensorZeroBayNotActiveAtStart", resourceCulture);
             }
         }
         

@@ -261,4 +261,10 @@
   <data name="WarehouseNotEmpty" xml:space="preserve">
     <value>Magazzino non vuoto.</value>
   </data>
+  <data name="SensorZeroBayNotActiveAtEnd" xml:space="preserve">
+    <value>Errore posizionamento baia</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtStart" xml:space="preserve">
+    <value>Inconsistenza stato sensori baia</value>
+  </data>
 </root>
