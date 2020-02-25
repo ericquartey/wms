@@ -200,6 +200,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set
             {
                 var panels = value
+                    .ToList()
+                    .Where(w => w.Cells.Any(c => c.BlockLevel.Equals(BlockLevel.None)))
                     .OrderBy(p => p.Side)
                     .ThenBy(p => p.Cells.Min(c => c.Position))
                     .ToArray();
