@@ -1042,9 +1042,9 @@ namespace Ferretto.VW.Simulator.Services.Models
                 this.CurrentAxis == Axis.Horizontal) ||
                 force)
             {
-                if (this.AxisPosition > -3 && this.AxisPosition < 3
-                    && force
+                if (force
                     || (this.ioDeviceMain != null
+                        && this.InverterRole <= InverterRole.ElevatorChain
                         && !this.ioDeviceMain[(int)IoPorts.DrawerInOperatorSide].Value
                         && !this.ioDeviceMain[(int)IoPorts.DrawerInMachineSide].Value
                         )
@@ -1316,6 +1316,11 @@ namespace Ferretto.VW.Simulator.Services.Models
                     // simulate positioning error
                     //this.AxisPosition += (short)(new Random().Next(-3, 3));
                     OnHorizontalMovementComplete?.Invoke(this, new HorizontalMovementEventArgs() { IsLoading = !this.IsStartedOnBoard });
+                }
+                else if (this.InverterRole > InverterRole.ElevatorChain)
+                {
+                    // simulate bay chain error: comment next line
+                    //this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = true;
                 }
                 this.ControlWord &= 0xFFEF;     // Reset Rfg Enable Signal
                 this.StatusWord |= 0x1000;      // Set Point Ack

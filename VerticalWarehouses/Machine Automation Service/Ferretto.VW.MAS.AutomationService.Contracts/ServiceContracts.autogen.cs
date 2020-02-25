@@ -2014,6 +2014,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         WarehouseNotEmpty = 67,
     
+        SensorZeroBayNotActiveAtEnd = 68,
+    
         InverterErrorBaseCode = 1000,
     
         InverterErrorInvalidParameter = 1001,

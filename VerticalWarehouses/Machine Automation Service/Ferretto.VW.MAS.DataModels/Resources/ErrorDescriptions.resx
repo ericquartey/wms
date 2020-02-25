@@ -363,4 +363,7 @@
   <data name="WarehouseNotEmpty" xml:space="preserve">
     <value>Not empty warehouse.</value>
   </data>
+  <data name="SensorZeroBayNotActiveAtEnd" xml:space="preserve">
+    <value>Errore di posizionamento</value>
+  </data>
 </root>
