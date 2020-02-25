@@ -8,7 +8,6 @@
         {
             CarouselCalibration = SetupStepStatus.Complete,
             Check = SetupStepStatus.Complete,
-            FirstLoadingUnit = SetupStepStatus.Complete,
             Laser = SetupStepStatus.Complete,
             Profile = SetupStepStatus.Complete,
             Shutter = SetupStepStatus.Complete,
@@ -21,8 +20,6 @@
         public SetupStepStatus CarouselCalibration { get; set; }
 
         public SetupStepStatus Check { get; set; }
-
-        public SetupStepStatus FirstLoadingUnit { get; set; }
 
         public bool IsAllTestCompleted { get; set; }
 
