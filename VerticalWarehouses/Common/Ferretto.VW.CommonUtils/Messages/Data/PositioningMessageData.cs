@@ -123,6 +123,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public bool IsStartedOnBoard { get; set; }
 
+        public bool IsTestStopped { get; set; }
+
         public double? LoadedNetWeight { get; set; }
 
         public int? LoadingUnitId { get; set; }

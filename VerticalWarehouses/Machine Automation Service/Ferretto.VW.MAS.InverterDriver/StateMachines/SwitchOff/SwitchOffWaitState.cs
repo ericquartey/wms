@@ -34,6 +34,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
 
         public override void Start()
         {
+            this.Logger.LogTrace($"1:SwitchOffWaitState Start");
             this.startTime = DateTime.UtcNow;
         }
 

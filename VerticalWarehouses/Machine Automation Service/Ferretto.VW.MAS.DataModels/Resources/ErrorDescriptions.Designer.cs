@@ -709,11 +709,20 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Uno o più sensori dei pannelli laterali è stato interrotto.
+        ///   Looks up a localized string similar to The left side panel is open..
         /// </summary>
-        public static string SecuritySensorWasTriggered {
+        public static string SecurityLeftSensorWasTriggered {
             get {
-                return ResourceManager.GetString("SecuritySensorWasTriggered", resourceCulture);
+                return ResourceManager.GetString("SecurityLeftSensorWasTriggered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The right side panel is open..
+        /// </summary>
+        public static string SecurityRightSensorWasTriggered {
+            get {
+                return ResourceManager.GetString("SecurityRightSensorWasTriggered", resourceCulture);
             }
         }
         
@@ -723,6 +732,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         public static string SecurityWasTriggered {
             get {
                 return ResourceManager.GetString("SecurityWasTriggered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errore di posizionamento.
+        /// </summary>
+        public static string SensorZeroBayNotActiveAtEnd {
+            get {
+                return ResourceManager.GetString("SensorZeroBayNotActiveAtEnd", resourceCulture);
             }
         }
         

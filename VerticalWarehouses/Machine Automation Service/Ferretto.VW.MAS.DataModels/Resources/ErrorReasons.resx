@@ -229,7 +229,7 @@
     <value>Inconsistenza stato sensori. Il sensore di nottolino a zero risulta non attivo.</value>
   </data>
   <data name="SensorZeroBayNotActiveAtStart" xml:space="preserve">
-    <value>Inconsistenza stato sensori. Il sensore di zero della baia non risulta attivo.</value>
+    <value>Sensors error. The Bay Zero Sensor is not active.</value>
   </data>
   <data name="TopLevelBayOccupied" xml:space="preserve">
     <value>Upper bay position is already occupied by a drawer.</value>
@@ -269,9 +269,6 @@
   </data>
   <data name="SecurityButtonWasTriggered" xml:space="preserve">
     <value>Un pulsante (fungo) di emergenza è stato premuto. Verificare lo stato e riprovare.</value>
-  </data>
-  <data name="SecuritySensorWasTriggered" xml:space="preserve">
-    <value>Uno o più sensori dei pannelli laterali è stato interrotto (aperto). Verificare che i pannelli della macchina siano correttamente posizionati e chiusi.</value>
   </data>
   <data name="LoadUnitOtherBay" xml:space="preserve">
     <value>Cassetto già presente in un'altra baia.</value>
@@ -366,10 +363,16 @@
   <data name="FirstTestFailed" xml:space="preserve">
     <value>First load unit  test failed: Not all cells could be tested!</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
-  </data>
   <data name="WarehouseNotEmpty" xml:space="preserve">
     <value>The warehouse is not empty. The first load unit test is not allowed.</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtEnd" xml:space="preserve">
+    <value>The Bay Zero Sensor is not active at the end of positioning.</value>
+  </data>
+  <data name="SecurityLeftSensorWasTriggered" xml:space="preserve">
+    <value>Il pannello laterale sinistro è aperto. Verificare che i pannelli della macchina siano correttamente posizionati e chiusi.</value>
+  </data>
+  <data name="SecurityRightSensorWasTriggered" xml:space="preserve">
+    <value>The right side panel is open. Please check that all side panels are correctly positioned and closed.</value>
   </data>
 </root>

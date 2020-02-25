@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="NewFolder\**" />
     <Content Remove="Assets\*.*" />
     <Content Remove="Fonts\*.*" />
   </ItemGroup>
@@ -40,13 +41,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Ferretto.VW.App.Keyboards\Ferretto.VW.App.Keyboards.csproj" />
-    <ProjectReference Include="..\Ferretto.VW.App.Resources\Ferretto.VW.App.Resources.csproj" />
-    <ProjectReference Include="..\Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj" />
+    <EmbeddedResource Remove="NewFolder\**" />
+    <None Remove="NewFolder\**" />
+    <Page Remove="NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="NewFolder\" />
+    <ProjectReference Include="..\Ferretto.VW.App.Keyboards\Ferretto.VW.App.Keyboards.csproj" />
+    <ProjectReference Include="..\Ferretto.VW.App.Resources\Ferretto.VW.App.Resources.csproj" />
+    <ProjectReference Include="..\Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj" />
   </ItemGroup>
 
 </Project>

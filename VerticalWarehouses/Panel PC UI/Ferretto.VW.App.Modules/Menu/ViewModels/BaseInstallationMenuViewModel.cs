@@ -94,6 +94,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
                  async () => await this.ConfirmSetupAsync(),
                  () => this.ConfirmSetupEnabled()));
 
+        public virtual bool ConfirmSetupVisible => false;
+
         public override EnableMask EnableMask => EnableMask.Any;
 
         public bool IsAccessoriesActive
@@ -175,7 +177,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.MenuCommand(Menu.General)));
 
         public ICommand MenuLoadingUnitsCommand =>
-                    this.menuLoadingUnitsCommand
+            this.menuLoadingUnitsCommand
             ??
             (this.menuLoadingUnitsCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.LoadingUnits)));
@@ -305,6 +307,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.menuMovementsCommand?.RaiseCanExecuteChanged();
             this.viewStatusSensorsCommand?.RaiseCanExecuteChanged();
             this.confirmSetupCommand?.RaiseCanExecuteChanged();
+
+            this.RaisePropertyChanged(nameof(this.ConfirmSetupVisible));
         }
 
         private bool CanExecuteMovementsCommand()

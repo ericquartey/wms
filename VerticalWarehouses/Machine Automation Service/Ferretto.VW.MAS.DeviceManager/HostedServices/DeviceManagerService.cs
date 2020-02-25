@@ -402,11 +402,16 @@ namespace Ferretto.VW.MAS.DeviceManager
                             .GetRequiredService<IErrorsProvider>()
                             .RecordNew(errorCode);
                     }
-                    if (this.machineResourcesProvider.IsMicroCarterLeftSide
-                        || this.machineResourcesProvider.IsMicroCarterRightSide
-                        )
+                    if (this.machineResourcesProvider.IsMicroCarterLeftSide)
                     {
-                        errorCode = MachineErrorCode.SecuritySensorWasTriggered;
+                        errorCode = MachineErrorCode.SecurityLeftSensorWasTriggered;
+                        scope.ServiceProvider
+                            .GetRequiredService<IErrorsProvider>()
+                            .RecordNew(errorCode);
+                    }
+                    if (this.machineResourcesProvider.IsMicroCarterRightSide)
+                    {
+                        errorCode = MachineErrorCode.SecurityRightSensorWasTriggered;
                         scope.ServiceProvider
                             .GetRequiredService<IErrorsProvider>()
                             .RecordNew(errorCode);

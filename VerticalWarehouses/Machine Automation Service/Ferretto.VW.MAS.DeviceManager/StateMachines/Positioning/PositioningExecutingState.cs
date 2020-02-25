@@ -57,6 +57,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private bool isDisposed;
 
+        private bool isTestStopped;
+
         private int performedCycles;
 
         private IPositioningFieldMessageData positioningDownFieldMessageData;
@@ -116,7 +118,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     if (this.machineData.MessageData.MovementMode == MovementMode.BayTest)
                     {
                         this.Logger.LogInformation($"Stop Bay Test on {this.machineData.RequestingBay} after {this.machineData.MessageData.ExecutedCycles} cycles");
-                        this.machineData.MessageData.RequiredCycles = 0;
+                        this.isTestStopped = true;
                     }
                     break;
 
@@ -912,6 +914,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         if (this.IsBracketSensorError())
                         {
                             this.Logger.LogError($"Bracket sensor error");
+                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.SensorZeroBayNotActiveAtEnd, this.machineData.RequestingBay);
                             this.Stop(StopRequestReason.Stop);
                         }
                         else
@@ -945,18 +948,24 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         this.performedCycles = this.setupProceduresDataProvider.IncreasePerformedCycles(procedure).PerformedCycles;
                         this.machineData.MessageData.ExecutedCycles = this.performedCycles;
 
+                        MessageStatus status;
                         if (this.IsBracketSensorError())
                         {
                             this.Logger.LogError($"Bracket sensor error");
                             this.Stop(StopRequestReason.Stop);
+                            status = MessageStatus.OperationError;
                         }
                         else
                         {
-                            if (this.performedCycles >= this.machineData.MessageData.RequiredCycles)
+                            if (this.performedCycles >= this.machineData.MessageData.RequiredCycles
+                                || this.isTestStopped
+                                )
                             {
                                 this.Logger.LogDebug("FSM Finished Executing State");
                                 this.machineData.ExecutedSteps = this.performedCycles;
+                                this.machineData.MessageData.IsTestStopped = this.isTestStopped;
                                 this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+                                break;
                             }
                             else
                             {
@@ -982,8 +991,21 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                     FieldMessageActor.DeviceManager,
                                     FieldMessageType.InverterSetTimer,
                                     inverterIndex));
+
+                                status = MessageStatus.OperationExecuting;
                             }
                         }
+                        var notificationMessage = new NotificationMessage(
+                            this.machineData.MessageData,
+                            $"BayTest {this.machineData.ExecutedSteps} / {this.machineData.MessageData.RequiredCycles}",
+                            MessageActor.AutomationService,
+                            MessageActor.DeviceManager,
+                            MessageType.Positioning,
+                            this.machineData.RequestingBay,
+                            this.machineData.TargetBay,
+                            status);
+
+                        this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                     }
                     break;
             }

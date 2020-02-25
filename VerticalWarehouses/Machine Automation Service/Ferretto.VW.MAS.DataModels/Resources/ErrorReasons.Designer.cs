@@ -727,11 +727,20 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Uno o più sensori dei pannelli laterali è stato interrotto (aperto). Verificare che i pannelli della macchina siano correttamente posizionati e chiusi..
+        ///   Looks up a localized string similar to Il pannello laterale sinistro è aperto. Verificare che i pannelli della macchina siano correttamente posizionati e chiusi..
         /// </summary>
-        public static string SecuritySensorWasTriggered {
+        public static string SecurityLeftSensorWasTriggered {
             get {
-                return ResourceManager.GetString("SecuritySensorWasTriggered", resourceCulture);
+                return ResourceManager.GetString("SecurityLeftSensorWasTriggered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The right side panel is open. Please check that all side panels are correctly positioned and closed..
+        /// </summary>
+        public static string SecurityRightSensorWasTriggered {
+            get {
+                return ResourceManager.GetString("SecurityRightSensorWasTriggered", resourceCulture);
             }
         }
         
@@ -745,20 +754,20 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inconsistenza stato sensori. Il sensore di zero della baia non risulta attivo..
+        ///   Looks up a localized string similar to The Bay Zero Sensor is not active at the end of positioning..
         /// </summary>
-        public static string SensorZeroBayNotActiveAtStart {
+        public static string SensorZeroBayNotActiveAtEnd {
             get {
-                return ResourceManager.GetString("SensorZeroBayNotActiveAtStart", resourceCulture);
+                return ResourceManager.GetString("SensorZeroBayNotActiveAtEnd", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Sensors error. The Bay Zero Sensor is not active..
         /// </summary>
-        public static string String1 {
+        public static string SensorZeroBayNotActiveAtStart {
             get {
-                return ResourceManager.GetString("String1", resourceCulture);
+                return ResourceManager.GetString("SensorZeroBayNotActiveAtStart", resourceCulture);
             }
         }
         

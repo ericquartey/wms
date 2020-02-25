@@ -117,6 +117,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (this.SetProperty(ref this.currentPanel, value))
                 {
                     this.CurrentCell = this.CurrentPanel?.Cells
+                        .Where(w => w.BlockLevel.Equals(BlockLevel.None))
                         .OrderBy(c => c.Position)
                         .FirstOrDefault();
                 }
@@ -146,8 +147,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.CurrentPanel = this.Panels?.ElementAtOrDefault(value - 1);
 
-                    this.CurrentPanelMinValue = this.CurrentPanel.Cells.Min(m => m.Id);
-                    this.CurrentPanelMaxValue = this.CurrentPanel.Cells.Max(m => m.Id);
+                    this.CurrentPanelMinValue =
+                        this.CurrentPanel.Cells
+                            .Where(w => w.BlockLevel.Equals(BlockLevel.None))
+                            .DefaultIfEmpty(new Cell())
+                            .Min(m => m.Id);
+                    this.CurrentPanelMaxValue =
+                        this.CurrentPanel.Cells
+                            .Where(w => w.BlockLevel.Equals(BlockLevel.None))
+                            .DefaultIfEmpty(new Cell())
+                            .Max(m => m.Id);
 
                     this.CurrentCellId = this.CurrentPanelMinValue;
                 }
@@ -183,7 +192,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsCanStartPosition => this.CanBaseExecute();
 
-        public bool IsCanStepValue => this.CanBaseExecute();
+        public bool IsCanStepValue => this.CanBaseExecute() && this.CurrentCellId > 0;
 
         public IEnumerable<CellPanel> Panels
         {
@@ -191,6 +200,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set
             {
                 var panels = value
+                    .ToList()
+                    .Where(w => w.Cells.Any(c => c.BlockLevel.Equals(BlockLevel.None)))
                     .OrderBy(p => p.Side)
                     .ThenBy(p => p.Cells.Min(c => c.Position))
                     .ToArray();
@@ -248,7 +259,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     case nameof(this.CurrentCellId):
                         if (this.CurrentPanel == null ||
-                            !this.CurrentPanel.Cells.Any(a => a.Id == this.CurrentCellId))
+                            !this.CurrentPanel.Cells
+                            .Where(w => w.BlockLevel.Equals(BlockLevel.None))
+                            .Any(a => a.Id == this.CurrentCellId))
                         {
                             return InstallationApp.CellNotValid;
                         }
@@ -421,6 +434,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanDisplacementCommand()
         {
             return this.CanBaseExecute() &&
+                   this.CurrentCellId > 0 &&
                    this.StepValue != 0;
         }
 
@@ -484,7 +498,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnCurrentCellIdChanged()
         {
-            this.CurrentCell = this.CurrentPanel?.Cells.FirstOrDefault(f => f.Id == this.currentCellId);
+            this.CurrentCell = this.CurrentPanel?.Cells
+                .Where(w => w.BlockLevel.Equals(BlockLevel.None))
+                .FirstOrDefault(f => f.Id == this.currentCellId);
             this.RaiseCanExecuteChanged();
         }
 
