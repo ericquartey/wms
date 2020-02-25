@@ -83,7 +83,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.immediateDrawerCallCommand = new DelegateCommand(
                 async () => await this.ImmediateDrawerCallAsync(),
-                () => !this.IsMoving && !this.SensorsService.IsLoadingUnitInBay && this.SelectedLU != null));
+                () => !this.IsMoving && !this.SensorsService.IsLoadingUnitInBay && this.SelectedLU != null && this.SelectedLU.Status == LoadingUnitStatus.InLocation));
 
         public ICommand ImmediateDrawerReturnCommand =>
             this.immediateDrawerReturnCommand
