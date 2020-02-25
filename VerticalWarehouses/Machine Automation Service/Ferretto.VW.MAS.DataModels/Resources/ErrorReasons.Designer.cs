@@ -727,11 +727,20 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Uno o più sensori dei pannelli laterali è stato interrotto (aperto). Verificare che i pannelli della macchina siano correttamente posizionati e chiusi..
+        ///   Looks up a localized string similar to Il pannello laterale sinistro è aperto. Verificare che i pannelli della macchina siano correttamente posizionati e chiusi..
         /// </summary>
-        public static string SecuritySensorWasTriggered {
+        public static string SecurityLeftSensorWasTriggered {
             get {
-                return ResourceManager.GetString("SecuritySensorWasTriggered", resourceCulture);
+                return ResourceManager.GetString("SecurityLeftSensorWasTriggered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The right side panel is open. Please check that all side panels are correctly positioned and closed..
+        /// </summary>
+        public static string SecurityRightSensorWasTriggered {
+            get {
+                return ResourceManager.GetString("SecurityRightSensorWasTriggered", resourceCulture);
             }
         }
         

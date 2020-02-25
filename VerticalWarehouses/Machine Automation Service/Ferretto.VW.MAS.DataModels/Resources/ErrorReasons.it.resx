@@ -288,4 +288,10 @@
   <data name="SensorZeroBayNotActiveAtStart" xml:space="preserve">
     <value>Inconsistenza stato sensori. Il sensore di zero della baia non risulta attivo.</value>
   </data>
+  <data name="SecurityLeftSensorWasTriggered" xml:space="preserve">
+    <value>Il pannello laterale sinistro è aperto. Verificare che i pannelli della macchina siano correttamente posizionati e chiusi.</value>
+  </data>
+  <data name="SecurityRightSensorWasTriggered" xml:space="preserve">
+    <value>Il pannello laterale destro è aperto. Verificare che i pannelli della macchina siano correttamente posizionati e chiusi.</value>
+  </data>
 </root>

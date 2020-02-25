@@ -22,7 +22,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-
 namespace Ferretto.VW.MAS.IODriver
 {
     internal sealed partial class IoDevice : IIoDevice, IDisposable
@@ -57,6 +56,8 @@ namespace Ferretto.VW.MAS.IODriver
 
         private readonly int port;
 
+        private readonly IServiceScopeFactory serviceScopeFactory;
+
         private readonly CancellationToken stoppingToken;
 
         private readonly ManualResetEventSlim writeEnableEvent;
@@ -70,8 +71,6 @@ namespace Ferretto.VW.MAS.IODriver
         private Timer pollIoTimer;
 
         private byte[] receiveBuffer;
-
-        private readonly IServiceScopeFactory serviceScopeFactory;
 
         #endregion
 
@@ -372,14 +371,16 @@ namespace Ferretto.VW.MAS.IODriver
                     {
                         case ShdFormatDataOperation.Data:
 
-                            inputData[(int)IoPorts.MicroCarterLeftSideBay] = !inputData[(int)IoPorts.MicroCarterLeftSideBay];
-
-                            inputData[(int)IoPorts.MicroCarterRightSideBay] = !inputData[(int)IoPorts.MicroCarterRightSideBay];
-
                             inputData[(int)IoPorts.AntiIntrusionBarrierBay] = !inputData[(int)IoPorts.AntiIntrusionBarrierBay];
 
-                            // INFO The mushroom signal must be inverted
+                            // INFO The emergency button signal must be inverted
                             inputData[(int)IoPorts.MushroomEmergency] = !inputData[(int)IoPorts.MushroomEmergency];
+
+                            // INFO the left carter signal is inverted and it depends from emergency button
+                            inputData[(int)IoPorts.MicroCarterLeftSideBay] = !inputData[(int)IoPorts.MicroCarterLeftSideBay] && !inputData[(int)IoPorts.MushroomEmergency];
+
+                            // INFO the right carter signal is inverted and it depends from emergency button and left carter
+                            inputData[(int)IoPorts.MicroCarterRightSideBay] = !inputData[(int)IoPorts.MicroCarterRightSideBay] && !inputData[(int)IoPorts.MushroomEmergency] && !inputData[(int)IoPorts.MicroCarterLeftSideBay];
 
                             // INFO The sensor presence in bay must be inverted
                             inputData[(int)IoPorts.LoadingUnitInBay] = !inputData[(int)IoPorts.LoadingUnitInBay];

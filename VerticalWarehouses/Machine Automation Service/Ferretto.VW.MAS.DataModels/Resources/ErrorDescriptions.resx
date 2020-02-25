@@ -270,8 +270,8 @@
   <data name="SecurityButtonWasTriggered" xml:space="preserve">
     <value>Un pulsante di emergenza è stato premuto</value>
   </data>
-  <data name="SecuritySensorWasTriggered" xml:space="preserve">
-    <value>Uno o più sensori dei pannelli laterali è stato interrotto</value>
+  <data name="SecurityLeftSensorWasTriggered" xml:space="preserve">
+    <value>The left side panel is open.</value>
   </data>
   <data name="LoadUnitOtherBay" xml:space="preserve">
     <value>Errore cassetto in posizione inattesa</value>
@@ -365,5 +365,8 @@
   </data>
   <data name="SensorZeroBayNotActiveAtEnd" xml:space="preserve">
     <value>Errore di posizionamento</value>
+  </data>
+  <data name="SecurityRightSensorWasTriggered" xml:space="preserve">
+    <value>The right side panel is open.</value>
   </data>
 </root>

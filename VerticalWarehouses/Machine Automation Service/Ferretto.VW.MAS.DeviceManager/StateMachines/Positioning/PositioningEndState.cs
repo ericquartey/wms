@@ -91,7 +91,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                             var notificationMessage = new NotificationMessage(
                                 this.machineData.MessageData,
-                                this.machineData.MessageData.RequiredCycles == 0 ? "Positioning Stopped" : "Test Stopped",
+                                this.machineData.MessageData.ExecutedCycles == 0 ? "Positioning Stopped" : "Test Stopped",
                                 MessageActor.DeviceManager,
                                 MessageActor.DeviceManager,
                                 MessageType.Positioning,
