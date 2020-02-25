@@ -45,7 +45,6 @@ namespace Ferretto.VW.Installer.Core
         #region Properties
 
         public string Description { get; }
-        public bool SkipOnResume { get; }
 
         public TimeSpan? Duration
         {
@@ -76,7 +75,13 @@ namespace Ferretto.VW.Installer.Core
             }
         }
 
+        public MachineRole MachineRole { get; }
+
         public int Number { get; }
+
+        public SetupMode SetupMode { get; }
+
+        public bool SkipOnResume { get; }
 
         public bool SkipRollback { get; set; }
 
