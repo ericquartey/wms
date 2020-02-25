@@ -424,7 +424,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 this.source.Add(new ItemListSetupProcedure()
                 {
                     Text = InstallationApp.CellsControl,
-                    Status = status.CellPanelsCheck.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
+                    Status = status.CellPanelsCheck.InProgress ? InstallationStatus.Inprogress : status.CellPanelsCheck.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
                     Bypassable = !status.CellPanelsCheck.IsCompleted,
                     Bypassed = status.CellPanelsCheck.IsBypassed,
                     Command = this.CellsPanelCheckBypassCommand,
