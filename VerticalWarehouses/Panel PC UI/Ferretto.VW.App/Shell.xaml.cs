@@ -22,8 +22,12 @@ namespace Ferretto.VW.App
         {
             if (e.ChangedButton == MouseButton.Left)
             {
-                this.Left = 0;
-                this.Top = 0;
+                var p = e.GetPosition(this);
+                if (p.X < 250 && p.Y < 70)
+                {
+                    this.Left = 0;
+                    this.Top = 0;
+                }
             }
         }
 
