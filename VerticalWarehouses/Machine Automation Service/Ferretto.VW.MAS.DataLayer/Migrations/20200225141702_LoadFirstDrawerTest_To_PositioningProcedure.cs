@@ -33,7 +33,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 columns: new[] { "Code", "TotalErrors" },
                 values: new object[] { 68, 0 });
 
-            migrationBuilder.Sql("UPDATE SetupProcedures SET Discriminator = 'PositioningProcedure' WHERE Id IN (SELECT LoadFirstDrawerTestId FROM SetupProceduresSets)");
+            migrationBuilder.Sql("UPDATE SetupProcedures SET Discriminator = 'PositioningProcedure', InProgress = 0, Step = 0 WHERE Id IN (SELECT LoadFirstDrawerTestId FROM SetupProceduresSets)");
         }
 
         #endregion

@@ -75,7 +75,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
         private SetupStepStatus CellPanelsCheck => this.SetupStatusCapabilities?.CellPanelsCheck ?? new SetupStepStatus();
 
         public ICommand CellPanelsCheckCommand =>
-                    this.cellPanelsCheckCommand
+            this.cellPanelsCheckCommand
             ??
             (this.cellPanelsCheckCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.CellPanelsCheck),

@@ -127,7 +127,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     },
                     IsAllTestCompleted = bay1AllTestCompleted,
                 },
-
                 Bay2 = new BaySetupStatus
                 {
                     Check = new SetupStepStatus
@@ -163,7 +162,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     },
                     IsAllTestCompleted = bay2AllTestCompleted,
                 },
-
                 Bay3 = new BaySetupStatus
                 {
                     Check = new SetupStepStatus
@@ -222,10 +220,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 },
                 LoadFirstDrawerTest = new SetupStepStatus
                 {
-                    IsCompleted = setup.LoadFirstDrawerTest.IsCompleted,
-                    InProgress = setup.LoadFirstDrawerTest.InProgress,
+                    IsCompleted = setup.LoadFirstDrawerTest?.IsCompleted ?? false,
+                    InProgress = setup.LoadFirstDrawerTest?.InProgress ?? false,
                     CanBePerformed = setup.VerticalOffsetCalibration.IsCompleted && setup.VerticalOriginCalibration.IsCompleted,
-                    IsBypassed = setup.LoadFirstDrawerTest.IsBypassed,
+                    IsBypassed = setup.LoadFirstDrawerTest?.IsBypassed ?? false,
                 },
                 VerticalOriginCalibration = new SetupStepStatus
                 {
