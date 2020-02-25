@@ -149,7 +149,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
             if (this.stateData.StopRequestReason == StopRequestReason.NoReason
                 &&
-                this.machineData.AxisToCalibrate != Axis.BayChain)
+                this.machineData.RequestedAxisToCalibrate == Axis.HorizontalAndVertical)
             {
                 var setupStatusProvider = this.scope.ServiceProvider.GetRequiredService<ISetupStatusProvider>();
 
