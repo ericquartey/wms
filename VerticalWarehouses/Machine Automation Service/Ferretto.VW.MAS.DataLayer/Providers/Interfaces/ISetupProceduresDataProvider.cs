@@ -12,8 +12,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         RepeatedTestProcedure GetBayCarouselCalibration(BayNumber bayNumber);
 
-        SetupProcedure GetBayFirstLoadingUnit(BayNumber bayNumber);
-
         SetupProcedure GetBayHeightCheck(BayNumber bayNumber);
 
         SetupProcedure GetBayLaser(BayNumber bayNumber);
@@ -30,7 +28,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         RepeatedTestProcedure GetDepositAndPickUpTest();
 
-        SetupProcedure GetLoadFirstDrawerTest();
+        PositioningProcedure GetLoadFirstDrawerTest();
 
         SetupProcedure GetShutterHeightCheck();
 

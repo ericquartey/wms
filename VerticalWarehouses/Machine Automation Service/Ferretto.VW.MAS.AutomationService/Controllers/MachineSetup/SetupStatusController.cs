@@ -47,13 +47,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
-        [HttpPost("bay-first-loading-unit-bypass")]
-        public IActionResult BayFirstLoadingUnitBypass()
-        {
-            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayFirstLoadingUnit(this.BayNumber), true);
-            return this.Ok();
-        }
-
         [HttpPost("bay-height-check-bypass")]
         public IActionResult BayHeightCheckBypass()
         {
