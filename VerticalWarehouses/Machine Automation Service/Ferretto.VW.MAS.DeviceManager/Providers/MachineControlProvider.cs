@@ -7,7 +7,6 @@ using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Prism.Events;
 
-
 namespace Ferretto.VW.MAS.DeviceManager.Providers
 {
     internal class MachineControlProvider : BaseProvider, IMachineControlProvider
@@ -183,7 +182,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 {
                     this.PublishCommand(
                         messageData,
-                        $"Requesting operation stop from bay {requestingBay} to bay {bay.Number} for reason {messageData.StopReason}",
+                        $"Requesting operation machine stop from bay {requestingBay} to bay {bay.Number} for reason {messageData.StopReason}",
                         MessageActor.DeviceManager,
                         sender,
                         MessageType.Stop,
@@ -195,7 +194,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 this.PublishCommand(
                     messageData,
-                    $"Requesting operation stop from bay {requestingBay} to bay {targetBay} for reason {messageData.StopReason}",
+                    $"Requesting operation machine stop from bay {requestingBay} to bay {targetBay} for reason {messageData.StopReason}",
                     MessageActor.DeviceManager,
                     sender,
                     MessageType.Stop,
