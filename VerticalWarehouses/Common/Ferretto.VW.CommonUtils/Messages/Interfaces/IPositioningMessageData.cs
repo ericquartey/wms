@@ -27,6 +27,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         bool IsStartedOnBoard { get; set; }
 
+        bool IsTestStopped { get; set; }
+
         double? LoadedNetWeight { get; }
 
         int? LoadingUnitId { get; }
