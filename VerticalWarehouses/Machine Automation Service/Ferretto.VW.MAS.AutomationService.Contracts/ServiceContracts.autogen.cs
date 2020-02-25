@@ -177,6 +177,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task ResetCalibrationAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> SetCalibrationCompletedAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> SetCalibrationCompletedAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StartCalibrationAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -196,6 +203,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopCalibrationAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateElevatorChainDistanceAsync(double value);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateElevatorChainDistanceAsync(double value, System.Threading.CancellationToken cancellationToken);
     
     }
     
