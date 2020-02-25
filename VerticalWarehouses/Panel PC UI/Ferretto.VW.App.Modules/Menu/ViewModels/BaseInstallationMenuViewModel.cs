@@ -213,6 +213,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             return true;
         }
 
+        public virtual bool ConfirmSetupVisible => false;
+
         public override void Disappear()
         {
             base.Disappear();
@@ -305,6 +307,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.menuMovementsCommand?.RaiseCanExecuteChanged();
             this.viewStatusSensorsCommand?.RaiseCanExecuteChanged();
             this.confirmSetupCommand?.RaiseCanExecuteChanged();
+
+            this.RaisePropertyChanged(nameof(this.ConfirmSetupVisible));
         }
 
         private bool CanExecuteMovementsCommand()

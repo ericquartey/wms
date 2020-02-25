@@ -250,6 +250,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     }
                 }));
 
+        public override bool ConfirmSetupVisible => (this.SetupListCompleted && !this.machineService.IsTuningCompleted && !this.IsExecutingProcedure && this.IsGeneralActive);
+
         public int ProceduresCompleted
         {
             get => this.proceduresCompleted;
