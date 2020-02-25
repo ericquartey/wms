@@ -14,7 +14,17 @@ namespace Ferretto.VW.App
             this.InitializeComponent();
 #if DEBUG
             this.MouseDown += this.Shell_MouseDown;
+            this.MouseDoubleClick += this.Shell_MouseDoubleClick;
 #endif
+        }
+
+        private void Shell_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                this.Left = 0;
+                this.Top = 0;
+            }
         }
 
         private void Shell_MouseDown(object sender, MouseButtonEventArgs e)
