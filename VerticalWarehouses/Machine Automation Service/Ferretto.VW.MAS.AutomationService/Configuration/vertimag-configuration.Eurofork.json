@@ -404,7 +404,7 @@
       }
     },
     "Height": 7661.0,
-    "LoadUnitMaxHeight": 145.0,
+    "LoadUnitMaxHeight": 395, // 145.0, first LU test
     "LoadUnitMinHeight": 145.0,
     "LoadUnitMaxNetWeight": 800.0,
     "LoadUnitTare": 120.0,

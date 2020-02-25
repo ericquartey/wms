@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 
-
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/setup/[controller]")]
@@ -92,7 +91,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var messageData = new StopMessageData(StopRequestReason.Stop);
             this.PublishCommand(
                 messageData,
-                "Stop Command",
+                $"Stop Vertical Origin Procedure",
                 MessageActor.DeviceManager,
                 MessageType.Stop);
 
