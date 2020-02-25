@@ -1894,7 +1894,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         SecurityBarrierWasTriggered = 7,
     
-        SecuritySensorWasTriggered = 8,
+        SecurityLeftSensorWasTriggered = 8,
     
         InverterFaultStateDetected = 9,
     
@@ -2015,6 +2015,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         WarehouseNotEmpty = 67,
     
         SensorZeroBayNotActiveAtEnd = 68,
+    
+        SecurityRightSensorWasTriggered = 69,
     
         InverterErrorBaseCode = 1000,
     

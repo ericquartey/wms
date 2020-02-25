@@ -12,7 +12,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-
 namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 {
     internal class ShutterPositioningStateMachine : StateMachineBase
@@ -144,7 +143,10 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                 errorText = ErrorDescriptions.InvalidPresenceSensors;
                 errorCode = DataModels.MachineErrorCode.InvalidPresenceSensors;
             }
-            else if (this.machineData.MachineSensorsStatus.IsDrawerCompletelyOffCradle && !this.machineData.MachineSensorsStatus.IsSensorZeroOnCradle)
+            else if (this.machineData.MachineSensorsStatus.IsDrawerCompletelyOffCradle
+                && !this.machineData.MachineSensorsStatus.IsSensorZeroOnCradle
+                && this.machineData.PositioningMessageData.MovementType != MovementType.Relative
+                )
             {
                 ok = false;
                 errorText = ErrorDescriptions.MissingZeroSensorWithEmptyElevator;
