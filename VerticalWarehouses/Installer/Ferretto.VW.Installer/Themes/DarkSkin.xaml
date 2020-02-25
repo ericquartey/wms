@@ -10,9 +10,8 @@
         <ResourceDictionary Source="/Ferretto.VW.Installer;Component/Themes/Styles/PpcTextBoxStyles.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.Installer;Component/Themes/Styles/DarkPpcTextBox.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.Installer;Component/Themes/Styles/PpcButtonStyle.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.Installer;Component/Themes/Styles/TextBlockStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.Installer;Component/Themes/Converters/Converters.xaml" />
-        
-       
-                     
+  
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

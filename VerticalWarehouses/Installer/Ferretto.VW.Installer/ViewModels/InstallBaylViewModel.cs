@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Configuration;
+using System.Linq;
 using System.Windows.Input;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.Installer.Core;
+using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.Installer.ViewModels
 {
@@ -16,7 +20,12 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private RelayCommand nextCommand;
 
-        private RelayCommand selectBayCommand;
+        private RelayCommand selectBayOneCommand;
+
+        private RelayCommand selectBayThreeCommand;
+
+        private RelayCommand selectBayTwoCommand;
+        private string selectedBayInfo;
 
         #endregion
 
@@ -30,18 +39,41 @@ namespace Ferretto.VW.Installer.ViewModels
         #endregion
 
         #region Properties
+        public string SelectedBayInfo
+        {
+            get => this.selectedBayInfo;
+            set => this.SetProperty(ref this.selectedBayInfo, value);
+        }
 
-        public bool IsSuccessful => throw new NotImplementedException();
+        public bool IsBayOneVisible => (this.installationService.MasConfiguration.Machine.Bays.FirstOrDefault(b => b.Number == BayNumber.BayOne) != null);
+
+        public bool IsBayThreeVisible => (this.installationService.MasConfiguration.Machine.Bays.FirstOrDefault(b => b.Number == BayNumber.BayThree) != null);
+
+        public bool IsBayTwoVisible => (this.installationService.MasConfiguration.Machine.Bays.FirstOrDefault(b => b.Number == BayNumber.BayTwo) != null);
+
+        public bool IsSuccessful => this.isSuccessful;
+
+        public Machine Machine => this.installationService.MasConfiguration.Machine;
 
         public ICommand NextCommand =>
-                        this.nextCommand
+                this.nextCommand
                 ??
                 (this.nextCommand = new RelayCommand(this.Next, this.CanNext));
 
-        public ICommand SelectBayCommand =>
-                this.selectBayCommand
-        ??
-        (this.selectBayCommand = new RelayCommand(this.Next, this.CanNext));
+        public ICommand SelectBayOneCommand =>
+                this.selectBayOneCommand
+                ??
+                (this.selectBayOneCommand = new RelayCommand(() => this.SelectBay(BayNumber.BayOne), this.CanSelectBay));
+
+        public ICommand SelectBayThreeCommand =>
+                this.selectBayThreeCommand
+                ??
+                (this.selectBayThreeCommand = new RelayCommand(() => this.SelectBay(BayNumber.BayThree), this.CanSelectBay));
+
+        public ICommand SelectBayTwoCommand =>
+                this.selectBayTwoCommand
+                ??
+                (this.selectBayTwoCommand = new RelayCommand(() => this.SelectBay(BayNumber.BayTwo), this.CanSelectBay));
 
         public virtual string Title { get; set; }
 
@@ -54,8 +86,34 @@ namespace Ferretto.VW.Installer.ViewModels
             this.isSuccessful = true;
         }
 
-        public void SelectBay()
+        public void SelectBay(BayNumber bayNumber)
         {
+            this.canProcede = false;
+            if (this.installationService.MasConfiguration.Machine.Bays.FirstOrDefault(b => b.Number == bayNumber) is Bay bayFound)
+            {
+                var bayIpaddress = this.GetBayIpaddress(bayFound.Number);
+                this.AddAppConfig("Install:Parameter:MasIpaddress", this.installationService.MasIpAddress.ToString());
+                this.AddAppConfig("Install:Parameter:BayNumber", ((int)bayFound.Number).ToString());
+                this.AddAppConfig("Install:Parameter:PpcIpaddress", bayIpaddress);
+                this.canProcede = true;
+                this.SelectedBayInfo = $"Baia {(int)bayFound.Number} selezionata";
+            }
+            
+
+            this.RaiseCanExecuteChanged();
+        }
+
+        private void AddAppConfig(string parameter, string keyValue)
+        {
+            if (string.IsNullOrEmpty(keyValue))
+            {
+                throw new ArgumentException($"On parameter {parameter}, value is null or empty");
+            }
+
+            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            config.AppSettings.Settings.Remove(parameter);
+            config.AppSettings.Settings.Add(new KeyValueConfigurationElement(parameter, keyValue));
+            config.Save(ConfigurationSaveMode.Modified);
         }
 
         private bool CanNext()
@@ -63,9 +121,9 @@ namespace Ferretto.VW.Installer.ViewModels
             return this.canProcede;
         }
 
-        private bool CanOpenFile()
+        private bool CanSelectBay()
         {
-            return true;
+            return (this.installationService.MasConfiguration != null);
         }
 
         private void EvaluateCanNext()
@@ -74,11 +132,29 @@ namespace Ferretto.VW.Installer.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
+        private string GetBayIpaddress(BayNumber number)
+        {
+            switch (number)
+            {
+                case BayNumber.BayOne:
+                    return ConfigurationManager.AppSettings.GetInstallBay1Ipaddress();
+
+                case BayNumber.BayTwo:
+                    return ConfigurationManager.AppSettings.GetInstallBay2Ipaddress();
+
+                case BayNumber.BayThree:
+                    return ConfigurationManager.AppSettings.GetInstallBay3Ipaddress();
+            }
+
+            return null;
+        }
+
         private void Next()
         {
             try
             {
-                this.installationService.SetOperation(OperationMode.ImstallType);
+                this.installationService.SetOperation(OperationMode.Update);
+                this.isSuccessful = true;
             }
             catch
             {
