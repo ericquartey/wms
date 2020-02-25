@@ -959,6 +959,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             {
                                 this.Logger.LogDebug("FSM Finished Executing State");
                                 this.machineData.ExecutedSteps = this.performedCycles;
+                                this.machineData.MessageData.IsTestStopped = (this.machineData.MessageData.RequiredCycles == 0);
                                 this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
                                 break;
                             }
