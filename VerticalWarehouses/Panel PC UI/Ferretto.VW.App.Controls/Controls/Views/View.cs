@@ -66,7 +66,7 @@ namespace Ferretto.VW.App.Controls
                 {
                     NLog.LogManager
                         .GetCurrentClassLogger()
-                        .Error(ex, "An error occurred while opening view.");
+                        .Error(ex, $"An error occurred while opening view '{this.GetType().Name}'.");
                 }
             }
         }

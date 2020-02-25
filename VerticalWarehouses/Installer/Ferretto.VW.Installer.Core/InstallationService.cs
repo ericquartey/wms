@@ -24,7 +24,7 @@ namespace Ferretto.VW.Installer.Core
         private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings()
         {
             TypeNameHandling = TypeNameHandling.Auto,
-            Formatting = Newtonsoft.Json.Formatting.Indented,
+            Formatting = Newtonsoft.Json.Formatting.Indented
         };
 
         private readonly Logger logger = LogManager.GetCurrentClassLogger();

@@ -252,8 +252,8 @@
   <data name="DestinationBayNotCalibrated" xml:space="preserve">
     <value>Baia di destinazione priva di taratura.</value>
   </data>
-  <data name="SecuritySensorWasTriggered" xml:space="preserve">
-    <value>Uno o più sensori dei pannelli laterali è stato interrotto</value>
+  <data name="SecurityLeftSensorWasTriggered" xml:space="preserve">
+    <value>Il pannello laterale sinistro è aperto.</value>
   </data>
   <data name="FirstTestFailed" xml:space="preserve">
     <value>Il test del Primo Cassetto è fallito: non tutte le celle sono state collaudate.</value>
@@ -266,5 +266,8 @@
   </data>
   <data name="SensorZeroBayNotActiveAtStart" xml:space="preserve">
     <value>Inconsistenza stato sensori baia</value>
+  </data>
+  <data name="SecurityRightSensorWasTriggered" xml:space="preserve">
+    <value>Il pannello laterale destro è aperto</value>
   </data>
 </root>

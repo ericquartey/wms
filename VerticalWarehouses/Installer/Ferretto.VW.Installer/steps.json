@@ -19,16 +19,16 @@
       //"script": "Set-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(EmbeddedInstallationFilePath)\"",
       "script": "Set-ItemProperty $(PPC:Registry:Approve:Path) -Name $(PPC:Registry:Key) -Value ([byte[]](0x03,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00));Enable-ScheduledTask -TaskName Installer",
       "rollbackScript": "Set-ItemProperty $(PPC:Registry:Approve:Path) -Name $(PPC:Registry:Key) -Value ([byte[]](0x02,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00));Disable-ScheduledTask -TaskName Installer",
-      "SkipOnResume": "true"
+      "skipOnResume": "true"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
       "number": 3,
       "title": "Riavvia il sistema",
       "description": "Riavvia il sistema operativo per completare la disabilitazione della protezione.",
-      "script": "shutdown /r /t 0 /f /d p:4:2 /c \"Vertimag Software Setup\"",      
+      "script": "shutdown /r /t 0 /f /d p:4:2 /c \"Vertimag Software Setup\"",
       //"script": "timeout /T 2" // ** fake
-      "skipOnResume" :  "true"
+      "skipOnResume": "true"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
@@ -46,7 +46,9 @@
       "title": "Ferma il MAS",
       "description": "Ferma il servizio di automazione, in modo da poterlo aggiornare.",
       "script": "Stop-Service \"$(MAS:ServiceName)\"",
-      "rollbackScript": "Start-Service \"$(MAS:ServiceName)\""
+      "rollbackScript": "Start-Service \"$(MAS:ServiceName)\"",
+      "machineRole": "master",
+      "setupMode": "update"
       //"script": "timeout /T 2", // ** fake
       //rollbackScript": "timeout /T 2" // ** fake
     },
@@ -54,7 +56,7 @@
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 7,
       "title": "Backup applicazione",
-      "description": "Sposta l'applicazione nella cartella di backup",      
+      "description": "Sposta l'applicazione nella cartella di backup",
       "script": "$stageAs=\"$(Backup:Root:Path)\\Staging\\$(Install:MAS:Path)\";$stagePpc=\"$(Backup:Root:Path)\\Staging\\$(Install:PPC:Path)\";$as=\"$(Install:Root:Path)\\$(Install:MAS:Path)\";$ppc=\"$(Install:Root:Path)\\$(Install:PPC:Path)\";if(Test-Path $stageAs -PathType Container) {Remove-Item $stageAs -Recurse -Force};if(Test-Path $stagePpc -PathType Container) {Remove-Item $stagePpc -Recurse -Force};Copy-Item $as $stageAs -Recurse;Copy-Item $ppc $stagePpc -Recurse;Remove-Item $as -Force -Recurse;Remove-Item $ppc -Force -Recurse",
       "rollbackScript": "$stageAs=\"$(Backup:Root:Path)\\Staging\\$(Install:MAS:Path)\";$stagePpc=\"$(Backup:Root:Path)\\Staging\\$(Install:PPC:Path)\";$as=\"$(Install:Root:Path)\\$(Install:MAS:Path)\";$ppc=\"$(Install:Root:Path)\\$(Install:PPC:Path)\";Copy-Item $stageAs -Recurse  -Exclude (Get-ChildItem $as -Recurse);Copy-Item $stagePpc $ppc -Recurse -Exclude (Get-ChildItem $ppc -Recurse);Remove-Item $stageAs -Force -Recurse;Remove-Item $stagePpc -Force -Recurse"
     },
@@ -64,7 +66,8 @@
       "title": "Backup database",
       "description": "Fa una copia locale dei database del MAS, in preparazione per il backup",
       "automationServicePath": "$(Install:Root:Path)\\$(Install:MAS:Path)",
-      "backupPath": "$(Backup:Root:Path)\\Staging"
+      "backupPath": "$(Backup:Root:Path)\\Staging",
+      "machineRole": "master"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
@@ -102,7 +105,8 @@
       "number": 11,
       "title": "Copia file configurazione MAS",
       "description": "Aggiorna il file di configurazione del MAS.",
-      "script": "cp $(Backup:Root:Path)\\Staging\\$(Install:MAS:Path)\\appsettings.json $(Install:Root:Path)\\$(Install:MAS:Path)\\appsettings.json"
+      "script": "cp $(Backup:Root:Path)\\Staging\\$(Install:MAS:Path)\\appsettings.json $(Install:Root:Path)\\$(Install:MAS:Path)\\appsettings.json",
+      "machineRole": "master"
     },
     /**********************
     {
@@ -118,7 +122,8 @@
       "title": "Avvia il MAS",
       "description": "Avvia il servizio di automazione aggiornato così che il database venga aggiornato.",
       "script": "Start-Service \"$(MAS:ServiceName)\"",
-      "rollbackScript": "Stop-Service \"$(MAS:ServiceName)\""
+      "rollbackScript": "Stop-Service \"$(MAS:ServiceName)\"",
+      "machineRole": "master"
       //"script": "timeout /T 2", // ** fake
       //"rollbackScript": "timeout /T 2" // ** fake
     },
@@ -128,13 +133,14 @@
       "title": "Verifica stato del MAS",
       "description": "Verifica che il servizio di automazione dichiari di essere operativo.",
       "url": "$(MAS:BaseUrl)/health/live",
-      "timeout": "10000"
+      "timeout": "10000",
+      "machineRole": "master"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 13,
       "title": "Cancella backup precedente",
-      "description": "Elimina, se esiste, l'archivio contenente il backup della versione precedente a quella installata prima dell'aggiornamento.",      
+      "description": "Elimina, se esiste, l'archivio contenente il backup della versione precedente a quella installata prima dell'aggiornamento.",
       "script": "if(Test-Path $(Backup:Root:Path)\\Backup.zip -PathType Leaf) { Remove-Item $(Backup:Root:Path)\\Backup.zip -ErrorAction SilentlyContinue }",
       "skipRollback": true
     },
@@ -176,7 +182,7 @@
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
       "number": 17,
       "title": "Controlla stato UWF",
-      "description": "Controlla che la protezione del disco fisso sia abilitata.",      
+      "description": "Controlla che la protezione del disco fisso sia abilitata.",
       "script": "$NAMESPACE = \"root\\standardcimv2\\embedded\";$uwfInstance = Get-WmiObject -Namespace $NAMESPACE -Class UWF_Filter -List;if(!$uwfInstance){throw  \"UWF is NOT installed.\"};$uwfInstance = Get-WmiObject -Namespace $NAMESPACE -Class UWF_Filter;if($uwfInstance.CurrentEnabled){throw  \"UWF is currently NOT disaabled.\"};",
       "rollbackScript": "uwfmgr filter disable",
       //"script": "timeout /T 2", // ** fake

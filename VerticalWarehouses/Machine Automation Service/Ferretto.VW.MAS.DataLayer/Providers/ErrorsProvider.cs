@@ -106,7 +106,8 @@ namespace Ferretto.VW.MAS.DataLayer
             return (error.Code == (int)MachineErrorCode.SecurityWasTriggered
                 || error.Code == (int)MachineErrorCode.SecurityBarrierWasTriggered
                 || error.Code == (int)MachineErrorCode.SecurityButtonWasTriggered
-                || error.Code == (int)MachineErrorCode.SecuritySensorWasTriggered
+                || error.Code == (int)MachineErrorCode.SecurityLeftSensorWasTriggered
+                || error.Code == (int)MachineErrorCode.SecurityRightSensorWasTriggered
                 || error.Code == (int)MachineErrorCode.InverterFaultStateDetected);
         }
 

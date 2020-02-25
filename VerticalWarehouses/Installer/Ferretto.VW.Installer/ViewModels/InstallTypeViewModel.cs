@@ -114,7 +114,9 @@ namespace Ferretto.VW.Installer.ViewModels
 
         public virtual bool OverwritePrompt { get; set; }
 
-        public string PanelPcMasVersion => string.Format("Panel pc ver.{0} Machine automation service ver.{1}", this.installationService?.PanelPcVersion, this.installationService?.MasVersion);
+        public string MasVersion => $"Machine automation service ver.{this.installationService?.MasVersion}";
+
+        public string PanelPcVersion => $"Panel pc ver.{this.installationService?.PanelPcVersion}";
 
         public virtual string ResultFileName { get; protected set; }
 

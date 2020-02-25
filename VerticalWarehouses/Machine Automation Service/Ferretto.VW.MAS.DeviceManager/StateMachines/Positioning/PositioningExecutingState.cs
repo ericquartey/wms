@@ -57,6 +57,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private bool isDisposed;
 
+        private bool isTestStopped;
+
         private int performedCycles;
 
         private IPositioningFieldMessageData positioningDownFieldMessageData;
@@ -116,7 +118,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     if (this.machineData.MessageData.MovementMode == MovementMode.BayTest)
                     {
                         this.Logger.LogInformation($"Stop Bay Test on {this.machineData.RequestingBay} after {this.machineData.MessageData.ExecutedCycles} cycles");
-                        this.machineData.MessageData.RequiredCycles = 0;
+                        this.isTestStopped = true;
                     }
                     break;
 
@@ -955,11 +957,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         }
                         else
                         {
-                            if (this.performedCycles >= this.machineData.MessageData.RequiredCycles)
+                            if (this.performedCycles >= this.machineData.MessageData.RequiredCycles
+                                || this.isTestStopped
+                                )
                             {
                                 this.Logger.LogDebug("FSM Finished Executing State");
                                 this.machineData.ExecutedSteps = this.performedCycles;
-                                this.machineData.MessageData.IsTestStopped = (this.machineData.MessageData.RequiredCycles == 0);
+                                this.machineData.MessageData.IsTestStopped = this.isTestStopped;
                                 this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
                                 break;
                             }

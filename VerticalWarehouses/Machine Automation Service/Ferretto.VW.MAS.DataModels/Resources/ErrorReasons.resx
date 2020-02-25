@@ -270,9 +270,6 @@
   <data name="SecurityButtonWasTriggered" xml:space="preserve">
     <value>Un pulsante (fungo) di emergenza è stato premuto. Verificare lo stato e riprovare.</value>
   </data>
-  <data name="SecuritySensorWasTriggered" xml:space="preserve">
-    <value>Uno o più sensori dei pannelli laterali è stato interrotto (aperto). Verificare che i pannelli della macchina siano correttamente posizionati e chiusi.</value>
-  </data>
   <data name="LoadUnitOtherBay" xml:space="preserve">
     <value>Cassetto già presente in un'altra baia.</value>
   </data>
@@ -371,5 +368,11 @@
   </data>
   <data name="SensorZeroBayNotActiveAtEnd" xml:space="preserve">
     <value>The Bay Zero Sensor is not active at the end of positioning.</value>
+  </data>
+  <data name="SecurityLeftSensorWasTriggered" xml:space="preserve">
+    <value>Il pannello laterale sinistro è aperto. Verificare che i pannelli della macchina siano correttamente posizionati e chiusi.</value>
+  </data>
+  <data name="SecurityRightSensorWasTriggered" xml:space="preserve">
+    <value>The right side panel is open. Please check that all side panels are correctly positioned and closed.</value>
   </data>
 </root>
