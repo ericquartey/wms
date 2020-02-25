@@ -110,7 +110,7 @@
                                    FontSize="{StaticResource FontSize_Very_High}"
                                    Foreground="{DynamicResource PpcForeground}"
                                    TextWrapping="Wrap">
-                            <Run Text="{Binding CurrentPanelNumber, Mode=OneWay}" />
+                            <Run Text="{Binding CurrentPanel.Id, Mode=OneWay}" />
                             <icon:PackIconMaterial Width="22"
                                                    Height="22"
                                                    BorderThickness="1"
