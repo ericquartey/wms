@@ -2702,6 +2702,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("HighSpeedDurationOpen", Required = Newtonsoft.Json.Required.Always)]
         public double HighSpeedDurationOpen { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("HighSpeedHalfDurationClose", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? HighSpeedHalfDurationClose { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("HighSpeedHalfDurationOpen", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? HighSpeedHalfDurationOpen { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("MaxSpeed", Required = Newtonsoft.Json.Required.Always)]
         public double MaxSpeed { get; set; }
     

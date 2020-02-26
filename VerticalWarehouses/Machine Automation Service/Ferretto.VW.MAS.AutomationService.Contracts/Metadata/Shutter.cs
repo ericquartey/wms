@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             #region Properties
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.Shutter_AssistedMovements))]
-            [Id(14)]
+            [Id(15)]
             public ShutterManualParameters AssistedMovements { get; set; }
 
             [ScaffoldColumn(false)]

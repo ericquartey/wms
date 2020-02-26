@@ -1,15 +1,15 @@
 <UserControl x:Class="Ferretto.VW.App.Modules.Operator.Views.ItemsCompartmentsDataGridView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
-             xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources">
+             xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls">
 
     <Grid>
         <ctrls:PpcDataGrid Name="DataGrid"
-                  Width="auto"
-                  Height="auto"
-                  ItemsSource="{Binding ItemsCompartments}"
-                  SelectedItem="{Binding SelectedItemCompartment, Mode=OneWay}">
+                           Width="auto"
+                           Height="auto"
+                           ItemsSource="{Binding ItemsCompartments}"
+                           SelectedItem="{Binding SelectedItemCompartment, Mode=OneWay}">
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="Column1"
                                     Width="100"

@@ -1,7 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
-
 namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class ShutterPositioningMessageData : IShutterPositioningMessageData
@@ -28,6 +27,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             int delay,
             double highSpeedDurationOpen,
             double highSpeedDurationClose,
+            double? highSpeedHalfDurationOpen,
+            double? highSpeedHalfDurationClose,
             double lowerSpeed,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
@@ -40,6 +41,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.Delay = delay;
             this.HighSpeedDurationOpen = highSpeedDurationOpen;
             this.HighSpeedDurationClose = highSpeedDurationClose;
+            this.HighSpeedHalfDurationOpen = highSpeedHalfDurationOpen;
+            this.HighSpeedHalfDurationClose = highSpeedHalfDurationClose;
             this.LowerSpeed = lowerSpeed;
             this.Verbosity = verbosity;
         }
@@ -60,6 +63,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.Delay = shutterPositioningMessageData.Delay;
             this.HighSpeedDurationOpen = shutterPositioningMessageData.HighSpeedDurationOpen;
             this.HighSpeedDurationClose = shutterPositioningMessageData.HighSpeedDurationClose;
+            this.HighSpeedHalfDurationOpen = shutterPositioningMessageData.HighSpeedHalfDurationOpen;
+            this.HighSpeedHalfDurationClose = shutterPositioningMessageData.HighSpeedHalfDurationClose;
             this.LowerSpeed = shutterPositioningMessageData.LowerSpeed;
             this.Verbosity = shutterPositioningMessageData.Verbosity;
             this.PerformedCycles = shutterPositioningMessageData.PerformedCycles;
@@ -74,6 +79,10 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public double HighSpeedDurationClose { get; }
 
         public double HighSpeedDurationOpen { get; }
+
+        public double? HighSpeedHalfDurationClose { get; }
+
+        public double? HighSpeedHalfDurationOpen { get; }
 
         public double LowerSpeed { get; }
 

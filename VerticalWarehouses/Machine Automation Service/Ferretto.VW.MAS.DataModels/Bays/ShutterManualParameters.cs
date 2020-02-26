@@ -10,6 +10,10 @@
 
         private double highSpeedDurationOpen;
 
+        private double? highSpeedHalfDurationClose;
+
+        private double? highSpeedHalfDurationOpen;
+
         private double maxSpeed;
 
         private double minSpeed;
@@ -47,6 +51,24 @@
             set
             {
                 this.highSpeedDurationOpen = value;
+            }
+        }
+
+        public double? HighSpeedHalfDurationClose
+        {
+            get => this.highSpeedHalfDurationClose;
+            set
+            {
+                this.highSpeedHalfDurationClose = value;
+            }
+        }
+
+        public double? HighSpeedHalfDurationOpen
+        {
+            get => this.highSpeedHalfDurationOpen;
+            set
+            {
+                this.highSpeedHalfDurationOpen = value;
             }
         }
 

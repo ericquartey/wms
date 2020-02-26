@@ -970,6 +970,24 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Durata chiusura a metà serranda.
+        /// </summary>
+        public static string ShutterManualParameters_HighSpeedHalfDurationClose {
+            get {
+                return ResourceManager.GetString("ShutterManualParameters_HighSpeedHalfDurationClose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Durata apertura a metà serranda.
+        /// </summary>
+        public static string ShutterManualParameters_HighSpeedHalfDurationOpen {
+            get {
+                return ResourceManager.GetString("ShutterManualParameters_HighSpeedHalfDurationOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Velocità massima serranda.
         /// </summary>
         public static string ShutterManualParameters_MaxSpeed {
