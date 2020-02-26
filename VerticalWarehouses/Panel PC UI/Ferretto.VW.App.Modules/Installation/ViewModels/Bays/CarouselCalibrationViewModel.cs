@@ -638,7 +638,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.RaisePropertyChanged(nameof(this.NewErrorValue));
 
-            this.CompletionStatus = "Reset cicli " + this.PerformedCycles.ToString() + " di " + this.RequiredCycles.ToString();
+            this.CompletionStatus = InstallationApp.ResetCycles + " " + this.PerformedCycles.ToString() + " / " + this.RequiredCycles.ToString();
         }
 
         private async Task ApplyCorrectionAsync()
@@ -807,53 +807,41 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (message.Status == MessageStatus.OperationEnd &&
                 message.Data?.MovementMode == MovementMode.BayTest)
             {
-                this.IsExecutingStopInPhase = false;
+                if (message.Data.IsTestStopped)
+                {
+                    this.ShowNotification("Test stoppato in fase", Services.Models.NotificationSeverity.Success);
+                }
+                else
+                {
+                    this.ShowNotification(VW.App.Resources.InstallationApp.CompletedTest, Services.Models.NotificationSeverity.Success);
+                }
 
-                this.ShowNotification(VW.App.Resources.InstallationApp.CompletedTest, Services.Models.NotificationSeverity.Success);
+                this.IsExecutingStopInPhase = false;
+                this.IsExecutingProcedure = false;
+
+                this.IsCalibrationCompletedOrStopped = true;
 
                 this.PerformedCycles = message.Data.ExecutedCycles;
                 this.SessionPerformedCycles = this.PerformedCycles - this.StartPerformedCycles;
 
-                this.IsCalibrationCompletedOrStopped = true;
                 this.NewErrorValue = 0;
                 this.CurrentStep = CarouselCalibrationStep.ConfirmAdjustment;
-
-                this.IsExecutingProcedure = false;
-
                 this.RaiseCanExecuteChanged();
             }
 
             if (message.Status == MessageStatus.OperationStop &&
                 message.Data?.MovementMode == MovementMode.BayTest)
             {
-                if (message.Data.IsTestStopped)
-                {
-                    this.IsExecutingStopInPhase = false;
-                    this.IsExecutingProcedure = false;
-                    this.ShowNotification("Test stoppato in fase", Services.Models.NotificationSeverity.Success);
-                    this.IsCalibrationCompletedOrStopped = true;
+                this.IsExecutingStopInPhase = false;
+                this.IsExecutingProcedure = false;
+                this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped, Services.Models.NotificationSeverity.Warning);
+                this.PerformedCycles = message.Data.ExecutedCycles;
+                this.SessionPerformedCycles = this.PerformedCycles - this.StartPerformedCycles;
 
-                    this.PerformedCycles = message.Data.ExecutedCycles;
-                    this.SessionPerformedCycles = this.PerformedCycles - this.StartPerformedCycles;
-
-                    this.NewErrorValue = 0;
-                    this.CurrentStep = CarouselCalibrationStep.ConfirmAdjustment;
-
-                    this.RaiseCanExecuteChanged();
-                }
-                else
-                {
-                    this.IsExecutingStopInPhase = false;
-                    this.IsExecutingProcedure = false;
-                    this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped, Services.Models.NotificationSeverity.Warning);
-                    this.PerformedCycles = message.Data.ExecutedCycles;
-                    this.SessionPerformedCycles = this.PerformedCycles - this.StartPerformedCycles;
-
-                    this.IsCalibrationCompletedOrStopped = false;
-                    this.NewErrorValue = 0;
-                    this.CurrentStep = CarouselCalibrationStep.StartCalibration;
-                    this.RaiseCanExecuteChanged();
-                }
+                this.IsCalibrationCompletedOrStopped = false;
+                this.NewErrorValue = 0;
+                this.CurrentStep = CarouselCalibrationStep.StartCalibration;
+                this.RaiseCanExecuteChanged();
 
                 this.IsExecutingProcedure = false;
             }
@@ -1047,8 +1035,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     break;
 
                 case CarouselCalibrationStep.RunningCalibration:
-                    this.ShowPrevStepSinglePage(true, !this.IsMoving);
-                    this.ShowNextStepSinglePage(true, true);// this.moveToConfirmAdjustmentCommand?.CanExecute() ?? false);
+                    this.ShowPrevStepSinglePage(true, false);
+                    this.ShowNextStepSinglePage(true, false);// this.moveToConfirmAdjustmentCommand?.CanExecute() ?? false);
                     break;
 
                 case CarouselCalibrationStep.ConfirmAdjustment:
