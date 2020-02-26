@@ -473,16 +473,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             Application.Current.Dispatcher.BeginInvoke(new Action(async () =>
             {
-                if (e.PropertyName == nameof(this.MachineService.MachineStatus))
-                {
-                    try
-                    {
-                        this.RaisePropertyChanged(nameof(this.ShutterLabel));
-                    }
-                    catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-                    {
-                    }
-                }
+                this.RaisePropertyChanged(nameof(this.ShutterLabel));
             }));
         }
 
