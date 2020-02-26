@@ -15,6 +15,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
+        private readonly IBaysDataProvider baysDataProvider;
+
         private readonly ICarouselProvider carouselProvider;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
@@ -24,9 +26,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Constructors
 
         public CarouselController(ICarouselProvider carouselProvider,
+            IBaysDataProvider baysDataProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider)
         {
             this.carouselProvider = carouselProvider ?? throw new ArgumentNullException(nameof(carouselProvider));
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
         }
 
@@ -118,6 +122,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("set-completed")]
+        public IActionResult SetCalibrationCompleted()
+        {
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayCarouselCalibration(this.BayNumber), false);
+            return this.Ok();
+        }
+
         [HttpPost("start-calibration")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
@@ -143,6 +154,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult StopCalibration()
         {
             this.carouselProvider.StopTest(this.BayNumber, MessageActor.AutomationService);
+            return this.Accepted();
+        }
+
+        [HttpPost("update-elevator-distance")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult UpdateElevatorChainDistance(double value)
+        {
+            this.baysDataProvider.UpdateELevatorDistance(this.BayNumber, value);
             return this.Accepted();
         }
 
