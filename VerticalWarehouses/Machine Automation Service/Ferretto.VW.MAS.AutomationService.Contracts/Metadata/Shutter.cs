@@ -21,7 +21,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public Inverter Inverter { get; set; }
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.Shutter_ManualMovements))]
-            [HideProperties(nameof(ShutterManualParameters.HighSpeedDurationOpen), nameof(ShutterManualParameters.HighSpeedDurationClose))]
+            [HideProperties(nameof(ShutterManualParameters.HighSpeedDurationOpen),
+                            nameof(ShutterManualParameters.HighSpeedDurationClose),
+                            nameof(ShutterManualParameters.HighSpeedHalfDurationOpen),
+                            nameof(ShutterManualParameters.HighSpeedHalfDurationClose))]
             [Id(7)]
             public ShutterManualParameters ManualMovements { get; set; }
 

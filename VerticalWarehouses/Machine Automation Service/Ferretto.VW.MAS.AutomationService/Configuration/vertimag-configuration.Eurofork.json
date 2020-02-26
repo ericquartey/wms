@@ -474,7 +474,7 @@
         "LoadUnitTare": 125.0,
         "MaxGrossWeight": 58767.0,
         "ModelName": "VERTIMAG (NEW 2020) 103XL800-GIO-H7645",
-        "Simulation": false,
+    "Simulation": true,
         "Panels": [
             {
                 "Cells": [

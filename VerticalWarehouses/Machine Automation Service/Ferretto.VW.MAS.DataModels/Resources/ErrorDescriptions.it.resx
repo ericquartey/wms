@@ -270,4 +270,7 @@
   <data name="SecurityRightSensorWasTriggered" xml:space="preserve">
     <value>Il pannello laterale destro è aperto</value>
   </data>
+  <data name="VerticalPositionChanged" xml:space="preserve">
+    <value>Posizione verticale errata.</value>
+  </data>
 </root>

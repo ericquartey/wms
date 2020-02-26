@@ -194,15 +194,15 @@ namespace Ferretto.VW.App.Services
             using (var message = new HttpRequestMessage
             {
                 RequestUri = new Uri(client.BaseAddress, healthCheckPath),
-                Method = new HttpMethod("GET")
+                Method = new HttpMethod(HttpMethod.Get.Method)
             })
             {
-                var readinessResponse = await client.SendAsync(message,
+                var response = await client.SendAsync(message,
                     HttpCompletionOption.ResponseContentRead,
                     cancellationToken);
 
-                var readinessResponseString = await readinessResponse.Content.ReadAsStringAsync();
-                return readinessResponseString;
+                var responseString = await response.Content.ReadAsStringAsync();
+                return responseString;
             }
         }
 
