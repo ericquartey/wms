@@ -294,4 +294,7 @@
   <data name="SecurityRightSensorWasTriggered" xml:space="preserve">
     <value>Il pannello laterale destro è aperto. Verificare che i pannelli della macchina siano correttamente posizionati e chiusi.</value>
   </data>
+  <data name="VerticalPositionChanged" xml:space="preserve">
+    <value>La posizione verticale dell'elevatore è cambiata dopo l'avvio della macchina.</value>
+  </data>
 </root>

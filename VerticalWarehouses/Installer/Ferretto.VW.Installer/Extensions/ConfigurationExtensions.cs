@@ -6,6 +6,8 @@ namespace Ferretto.VW.Installer
     public static class ConfigurationExtensions
     {
         #region Fields
+        
+        private const string UpdateTempPath = "Update:Temp:Path";
 
         private const string InstallBay1Ipaddress = "Install:Bay1:Ipaddress";
 
@@ -21,7 +23,23 @@ namespace Ferretto.VW.Installer
 
         #endregion
 
-        #region Methods
+        #region Methods        
+        public static string GetUpdateTempPath(this NameValueCollection appSettings)
+        {
+            if (appSettings is null)
+            {
+                throw new ArgumentNullException(nameof(appSettings));
+            }
+
+            try
+            {
+                return appSettings.Get(UpdateTempPath);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"The configuration key '{UpdateTempPath}' is not specified or invalid.", ex);
+            }
+        }
 
         public static string GetInstallBay1Ipaddress(this NameValueCollection appSettings)
         {

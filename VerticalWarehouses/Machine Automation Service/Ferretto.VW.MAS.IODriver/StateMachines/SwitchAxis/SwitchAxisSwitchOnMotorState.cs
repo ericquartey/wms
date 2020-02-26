@@ -3,7 +3,6 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 {
     internal sealed class SwitchAxisSwitchOnMotorState : IoStateBase
@@ -65,9 +64,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
                         || feedback)
                     {
                         this.Logger.LogDebug($"3:Change State to EndState: feedback {feedback}, delay {DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds:0.0000}");
-                        this.ParentStateMachine.ChangeState(new SwitchAxisEndState(this.axisToSwitchOn, this.status, this.index, false, this.Logger, this.ParentStateMachine));
-                        // TODO send an OperationError when timeout expires
-                        //this.ParentStateMachine.ChangeState(new SwitchAxisEndState(this.axisToSwitchOn, this.status, this.index, !feedback, this.Logger, this.ParentStateMachine));
+                        // send an OperationError when timeout expires
+                        this.ParentStateMachine.ChangeState(new SwitchAxisEndState(this.axisToSwitchOn, this.status, this.index, !feedback, this.Logger, this.ParentStateMachine));
                     }
                 }
             }

@@ -15,19 +15,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
-        public double? inputQuantity;
-
         private readonly IMachineCompartmentsWebService compartmentsWebService;
 
         private readonly IMachineItemsWebService itemsWebService;
-
-        private readonly IMissionOperationsService missionOperationsService;
 
         private readonly IWmsDataProvider wmsDataProvider;
 
         private bool canInputQuantity;
 
         private DelegateCommand confirmOperationCommand;
+
+        private double? inputQuantity;
 
         private string inputQuantityInfo;
 
@@ -60,11 +58,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
             IWmsDataProvider wmsDataProvider)
-            : base(machineLoadingUnitsWebService, eventAggregator)
+            : base(machineLoadingUnitsWebService, missionOperationsService, eventAggregator)
         {
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
             this.compartmentsWebService = compartmentsWebService ?? throw new ArgumentNullException(nameof(compartmentsWebService));
-            this.missionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
             this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
         }
 
@@ -163,18 +160,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Methods
 
-        public async override Task OnAppearedAsync()
-        {
-            await base.OnAppearedAsync();
-
-            if (this.CanReset)
-            {
-                this.ResetOperations();
-            }
-
-            this.CheckForNewWmsMissionOperations();
-        }
-
         public override void RaisePropertyChanged()
         {
             base.RaisePropertyChanged();
@@ -189,18 +174,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 this.IsBusyConfirmingRecallOperation = true;
-                this.IsWaitingForNewOperation = true;
+                this.IsWaitingForResponse = true;
 
-                if (!ConfigurationManager.AppSettings.GetWmsDataServiceEnabled())
+                if (ConfigurationManager.AppSettings.GetWmsDataServiceEnabled())
                 {
-                    await this.missionOperationsService.RecallLoadingUnitAsync(this.LoadingUnit.Id);
+                    await this.MissionOperationsService.CompleteCurrentAsync(1);
                 }
                 else
                 {
-                    await this.missionOperationsService.CompleteCurrentAsync(1);
+                    await this.MissionOperationsService.RecallLoadingUnitAsync(this.LoadingUnit.Id);
                 }
 
-                this.NavigationService.GoBack();
+                if (!this.IsNewOperationAvailable)
+                {
+                    this.NavigationService.GoBack();
+
+                    this.Reset();
+                }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -208,6 +198,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             finally
             {
+                this.IsWaitingForResponse = false;
                 this.IsBusyConfirmingRecallOperation = false;
             }
         }
@@ -243,7 +234,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             return
                 ConfigurationManager.AppSettings.GetWmsDataServiceEnabled()
                 &&
-                !this.IsWaitingForNewOperation
+                !this.IsWaitingForResponse
                 &&
                 this.InputQuantity.HasValue
                 &&
@@ -255,9 +246,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool CanDoOperation(string param)
         {
             return
-                !(this.SelectedItem is null)
+                this.SelectedItem != null
                 &&
-                !this.IsWaitingForNewOperation
+                !this.IsWaitingForResponse
                 &&
                 !this.IsBusyConfirmingRecallOperation
                 &&
@@ -276,17 +267,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 !(this.LoadingUnit is null);
         }
 
-        private void CheckForNewWmsMissionOperations()
-        {
-            if (this.missionOperationsService.ActiveWmsMission != null)
-            {
-                this.IsNewOperationAvailable = this.missionOperationsService.ActiveWmsMission.Operations.Any(o => o.Id != this.missionOperationsService.ActiveWmsOperation?.Id
-                                                    &&
-                                                    o.Status != MissionOperationStatus.Completed);
-                this.RaisePropertyChanged();
-            }
-        }
-
         private async Task ConfirmOperationAsync()
         {
             try
@@ -295,7 +275,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (this.IsPickVisible)
                 {
-                    this.IsWaitingForNewOperation = true;
+                    this.IsWaitingForResponse = true;
 
                     await this.wmsDataProvider.PickAsync(
                         this.SelectedItem.ItemId.Value,
@@ -303,7 +283,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else if (this.IsPutVisible)
                 {
-                    this.IsWaitingForNewOperation = true;
+                    this.IsWaitingForResponse = true;
 
                     await this.wmsDataProvider.PutAsync(
                         this.SelectedItem.ItemId.Value,
@@ -319,7 +299,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     var newItemCompartment = await this.compartmentsWebService.UpdateAsync(compartment, this.SelectedItemCompartment.Id);
 
-                    await this.ResetLoadDataAsync();
+                    await this.OnDataRefreshAsync();
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
@@ -328,6 +308,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             finally
             {
+                this.IsWaitingForResponse = false;
                 this.IsBusyConfirmingOperation = false;
                 this.RaiseCanExecuteChanged();
             }

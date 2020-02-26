@@ -2039,6 +2039,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         SecurityRightSensorWasTriggered = 69,
     
+        VerticalPositionChanged = 70,
+    
         InverterErrorBaseCode = 1000,
     
         InverterErrorInvalidParameter = 1001,
