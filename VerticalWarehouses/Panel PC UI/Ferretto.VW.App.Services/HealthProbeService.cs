@@ -143,6 +143,8 @@ namespace Ferretto.VW.App.Services
 
         private async Task<HealthStatus> CheckLivelinessStatus(HttpClient client, CancellationToken cancellationToken)
         {
+            this.logger.Debug($"Checking liveliness of service at '{client.BaseAddress}' ...");
+
             try
             {
                 var livelinessResponse = await this.GetHealthCheckStatus(client, this.liveHealthCheckPath, cancellationToken);
@@ -161,6 +163,8 @@ namespace Ferretto.VW.App.Services
 
         private async Task<HealthStatus> CheckReadinessStatus(HttpClient client, CancellationToken cancellationToken)
         {
+            this.logger.Debug($"Checking readiness of service at '{client.BaseAddress}' ...");
+
             try
             {
                 var readinessResponseString = await this.GetHealthCheckStatus(client, this.readyHealthCheckPath, cancellationToken);
@@ -187,17 +191,19 @@ namespace Ferretto.VW.App.Services
 
         private async Task<string> GetHealthCheckStatus(HttpClient client, string healthCheckPath, CancellationToken cancellationToken)
         {
-            var readinessResponse = await client.SendAsync(
-                new System.Net.Http.HttpRequestMessage
-                {
-                    RequestUri = new Uri(client.BaseAddress, healthCheckPath),
-                    Method = new System.Net.Http.HttpMethod("GET")
-                },
-                System.Net.Http.HttpCompletionOption.ResponseContentRead,
-                cancellationToken);
+            using (var message = new HttpRequestMessage
+            {
+                RequestUri = new Uri(client.BaseAddress, healthCheckPath),
+                Method = new HttpMethod(HttpMethod.Get.Method)
+            })
+            {
+                var response = await client.SendAsync(message,
+                    HttpCompletionOption.ResponseContentRead,
+                    cancellationToken);
 
-            var readinessResponseString = await readinessResponse.Content.ReadAsStringAsync();
-            return readinessResponseString;
+                var responseString = await response.Content.ReadAsStringAsync();
+                return responseString;
+            }
         }
 
         private async Task RunHealthProbeMasAsync(CancellationToken cancellationToken)
@@ -208,7 +214,9 @@ namespace Ferretto.VW.App.Services
                 {
                     if (this.HealthMasStatus == HealthStatus.Unknown
                         ||
-                        this.HealthMasStatus == HealthStatus.Unhealthy)
+                        this.HealthMasStatus == HealthStatus.Unhealthy
+                        ||
+                        this.HealthMasStatus == HealthStatus.Initializing)
                     {
                         this.HealthMasStatus = await this.CheckReadinessStatus(client, cancellationToken);
                     }
@@ -231,7 +239,9 @@ namespace Ferretto.VW.App.Services
                 {
                     if (this.HealthWmsStatus == HealthStatus.Unknown
                         ||
-                        this.HealthWmsStatus == HealthStatus.Unhealthy)
+                        this.HealthWmsStatus == HealthStatus.Unhealthy
+                        ||
+                        this.HealthWmsStatus == HealthStatus.Initializing)
                     {
                         this.HealthWmsStatus = await this.CheckReadinessStatus(client, cancellationToken);
                     }

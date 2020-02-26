@@ -4,7 +4,6 @@ using System.Linq;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace Ferretto.VW.MAS.DataLayer
 {
     internal sealed class CellPanelsProvider : ICellPanelsProvider
@@ -90,7 +89,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.SaveChanges();
 
-                if (!this.dataContext.CellPanels.Any(c => !c.IsChecked))
+                if (!this.dataContext.CellPanels.Where(w => w.Cells.Any(a => a.BlockLevel.Equals(BlockLevel.None))).Any(c => !c.IsChecked))
                 {
                     this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetCellPanelsCheck());
                 }

@@ -203,7 +203,9 @@
             "MaxSpeed": 6400,
             "MinSpeed": 1000,
             "HighSpeedDurationOpen": 18,
-            "HighSpeedDurationClose": 17
+            "HighSpeedDurationClose": 17,
+            "HighSpeedHalfDurationOpen": 8,
+            "HighSpeedHalfDurationClose": 7
           }
         },
         "EmptyLoadMovement": {

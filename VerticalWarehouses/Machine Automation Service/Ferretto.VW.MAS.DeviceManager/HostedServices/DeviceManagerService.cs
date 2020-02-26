@@ -530,10 +530,12 @@ namespace Ferretto.VW.MAS.DeviceManager
                     {
                         var notificationData = new PositioningMessageData();
                         var elevatorProvider = serviceProvider.GetRequiredService<IElevatorProvider>();
+                        var machineProvider = serviceProvider.GetRequiredService<IMachineVolatileDataProvider>();
 
                         // TEMP Update X, Y axis positions
                         if (inverterData.CurrentAxis is Axis.Vertical)
                         {
+                            machineProvider.ElevatorVerticalPositionOld = elevatorProvider.VerticalPosition;
                             elevatorProvider.VerticalPosition = inverterData.CurrentPosition.Value;
 
                             notificationData.AxisMovement = inverterData.CurrentAxis;

@@ -14,14 +14,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             #region Properties
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.Shutter_AssistedMovements))]
-            [Id(14)]
+            [Id(15)]
             public ShutterManualParameters AssistedMovements { get; set; }
 
             [ScaffoldColumn(false)]
             public Inverter Inverter { get; set; }
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.Shutter_ManualMovements))]
-            [HideProperties(nameof(ShutterManualParameters.HighSpeedDurationOpen), nameof(ShutterManualParameters.HighSpeedDurationClose))]
+            [HideProperties(nameof(ShutterManualParameters.HighSpeedDurationOpen),
+                            nameof(ShutterManualParameters.HighSpeedDurationClose),
+                            nameof(ShutterManualParameters.HighSpeedHalfDurationOpen),
+                            nameof(ShutterManualParameters.HighSpeedHalfDurationClose))]
             [Id(7)]
             public ShutterManualParameters ManualMovements { get; set; }
 

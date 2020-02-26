@@ -13,7 +13,6 @@ using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
 {
     internal class InverterPowerEnableEncoderState : StateBase
@@ -143,7 +142,19 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
                 else if (data.CurrentAxis == Axis.Vertical)
                 {
                     this.Logger.LogDebug("Vertical position received");
-                    this.ParentStateMachine.ChangeState(new InverterPowerEnableEndState(this.stateData));
+                    var machineProvider = this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>();
+                    if (machineProvider.ElevatorVerticalPositionOld.HasValue &&
+                        Math.Abs(machineProvider.ElevatorVerticalPosition - machineProvider.ElevatorVerticalPositionOld.Value) > 100)
+                    {
+                        this.Logger.LogError($"Vertical position changed after machine start: old value {machineProvider.ElevatorVerticalPositionOld}, new value {machineProvider.ElevatorVerticalPosition}");
+                        this.stateData.FieldMessage = message;
+                        this.errorsProvider.RecordNew(MachineErrorCode.VerticalPositionChanged, this.machineData.RequestingBay);
+                        this.ParentStateMachine.ChangeState(new InverterPowerEnableErrorState(this.stateData));
+                    }
+                    else
+                    {
+                        this.ParentStateMachine.ChangeState(new InverterPowerEnableEndState(this.stateData));
+                    }
                 }
             }
 

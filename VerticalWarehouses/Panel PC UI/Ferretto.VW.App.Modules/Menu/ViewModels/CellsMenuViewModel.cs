@@ -97,7 +97,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.cellsCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.Cells),
-                this.CanExecuteCommand));
+                () => this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy ||
+                      this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded));
 
         private SetupStepStatus CellsHeightCheck => this.SetupStatusCapabilities?.CellsHeightCheck ?? new SetupStepStatus();
 

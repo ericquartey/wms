@@ -2025,6 +2025,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         SecurityRightSensorWasTriggered = 69,
     
+        VerticalPositionChanged = 70,
+    
         InverterErrorBaseCode = 1000,
     
         InverterErrorInvalidParameter = 1001,
@@ -2702,6 +2704,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("HighSpeedDurationOpen", Required = Newtonsoft.Json.Required.Always)]
         public double HighSpeedDurationOpen { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("HighSpeedHalfDurationClose", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? HighSpeedHalfDurationClose { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("HighSpeedHalfDurationOpen", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? HighSpeedHalfDurationOpen { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("MaxSpeed", Required = Newtonsoft.Json.Required.Always)]
         public double MaxSpeed { get; set; }
     
@@ -3052,6 +3060,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("SerialNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string SerialNumber { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Simulation", Required = Newtonsoft.Json.Required.Always)]
+        public bool Simulation { get; set; }
     
         public string ToJson() 
         {
