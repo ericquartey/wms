@@ -375,4 +375,7 @@
   <data name="SecurityRightSensorWasTriggered" xml:space="preserve">
     <value>The right side panel is open. Please check that all side panels are correctly positioned and closed.</value>
   </data>
+  <data name="VerticalPositionChanged" xml:space="preserve">
+    <value>Vertical position has changed after machine start</value>
+  </data>
 </root>
