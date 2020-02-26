@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.MissionManager
 {
@@ -54,11 +55,13 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 return;
             }
+            this.Logger.LogTrace("OnDataLayerReady start");
             this.dataLayerIsReady = true;
 
             this.RetrieveMachineId();
 
             await this.RetrieveNewWmsMissionsAsync();
+            this.Logger.LogTrace("OnDataLayerReady end");
         }
 
         private async Task OnMachineModeChangedAsync()

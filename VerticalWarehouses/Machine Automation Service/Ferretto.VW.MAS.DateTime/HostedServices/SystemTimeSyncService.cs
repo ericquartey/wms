@@ -186,6 +186,7 @@ namespace Ferretto.VW.MAS.TimeManagement
 
         private void OnDataLayerReady(NotificationMessage message)
         {
+            this.logger.LogTrace("OnDataLayerReady start");
             using (var scope = this.serviceScopeFactory.CreateScope())
             {
                 var wmsSettingsProvider = scope.ServiceProvider.GetRequiredService<IWmsSettingsProvider>();
@@ -197,6 +198,7 @@ namespace Ferretto.VW.MAS.TimeManagement
                     this.Enable();
                 }
             }
+            this.logger.LogTrace("OnDataLayerReady end");
         }
 
         private void OnSyncStateChangeRequested(SyncStateChangeRequestEventArgs e)

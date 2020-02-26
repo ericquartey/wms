@@ -269,6 +269,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
             if (message.Type is MessageType.DataLayerReady)
             {
+                this.Logger.LogTrace("OnDataLayerReady start");
                 // TEMP Retrieve the current configuration of IO devices
                 this.RetrieveIoDevicesConfigurationAsync(serviceProvider);
 
@@ -284,6 +285,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                 this.EventAggregator
                     .GetEvent<FieldNotificationEvent>()
                     .Publish(fieldNotification);
+                this.Logger.LogTrace("OnDataLayerReady end");
             }
 
             messageCurrentStateMachine?.ProcessNotificationMessage(message);
