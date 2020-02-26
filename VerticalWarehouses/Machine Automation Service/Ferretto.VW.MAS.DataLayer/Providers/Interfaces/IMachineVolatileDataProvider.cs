@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         double ElevatorVerticalPosition { get; set; }
 
-        double? ElevatorVerticalPositionOld { get; set; }
+        double ElevatorVerticalPositionOld { get; set; }
 
         int ExecutedCycles { get; set; }
 

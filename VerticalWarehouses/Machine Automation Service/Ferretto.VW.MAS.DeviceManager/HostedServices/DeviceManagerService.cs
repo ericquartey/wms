@@ -535,7 +535,6 @@ namespace Ferretto.VW.MAS.DeviceManager
                         // TEMP Update X, Y axis positions
                         if (inverterData.CurrentAxis is Axis.Vertical)
                         {
-                            machineProvider.ElevatorVerticalPositionOld = elevatorProvider.VerticalPosition;
                             elevatorProvider.VerticalPosition = inverterData.CurrentPosition.Value;
 
                             notificationData.AxisMovement = inverterData.CurrentAxis;

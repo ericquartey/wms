@@ -143,8 +143,8 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
                 {
                     this.Logger.LogDebug("Vertical position received");
                     var machineProvider = this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>();
-                    if (machineProvider.ElevatorVerticalPositionOld.HasValue &&
-                        Math.Abs(machineProvider.ElevatorVerticalPosition - machineProvider.ElevatorVerticalPositionOld.Value) > 100)
+                    if (machineProvider.ElevatorVerticalPositionOld != -10000 &&
+                        Math.Abs(machineProvider.ElevatorVerticalPosition - machineProvider.ElevatorVerticalPositionOld) > 10)
                     {
                         this.Logger.LogError($"Vertical position changed after machine start: old value {machineProvider.ElevatorVerticalPositionOld}, new value {machineProvider.ElevatorVerticalPosition}");
                         machineProvider.IsHomingExecuted = false;

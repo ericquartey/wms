@@ -317,6 +317,37 @@ namespace Ferretto.VW.MAS.DeviceManager
                     this.currentStateMachines.Add(BayNumber.BayOne, currentStateMachine);
 
                     this.StartStateMachine(BayNumber.BayOne);
+
+                    if (!data.Enable)
+                    {
+                        this.machineVolatileDataProvider.ElevatorVerticalPositionOld = this.machineVolatileDataProvider.ElevatorVerticalPosition;
+
+                        if (this.machineVolatileDataProvider.IsBayLightOn.Count > 0)
+                        {
+                            for (var bayNumber = BayNumber.BayOne; bayNumber < BayNumber.ElevatorBay; bayNumber++)
+                            {
+                                if (this.machineVolatileDataProvider.IsBayLightOn.ContainsKey(bayNumber)
+                                    && this.machineVolatileDataProvider.IsBayLightOn[bayNumber]
+                                    )
+                                {
+                                    this.machineVolatileDataProvider.IsBayLightOn[bayNumber] = false;
+
+                                    this.EventAggregator
+                                        .GetEvent<NotificationEvent>()
+                                        .Publish(
+                                            new NotificationMessage(
+                                                null,
+                                                $"BayLight={false} completed, Bay={bayNumber}",
+                                                MessageActor.Any,
+                                                MessageActor.DeviceManager,
+                                                MessageType.BayLight,
+                                                bayNumber,
+                                                bayNumber,
+                                                MessageStatus.OperationEnd));
+                                }
+                            }
+                        }
+                    }
                 }
                 else
                 {
