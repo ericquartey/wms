@@ -82,7 +82,17 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                     this.stopReason = messageData.StopReason;
                     var newMessageData = new StopMessageData(this.stopReason);
                     this.machineControlProvider.StopOperation(newMessageData, this.currentBay, MessageActor.MachineManager, commandMessage.RequestingBay);
-                    this.baysDataProvider.Light(this.currentBay, false);
+                    if (this.currentBay != BayNumber.ElevatorBay && this.currentBay != BayNumber.None)
+                    {
+                        if (this.machineVolatileDataProvider.IsBayLightOn.ContainsKey(this.currentBay))
+                        {
+                            this.machineVolatileDataProvider.IsBayLightOn[this.currentBay] = false;
+                        }
+                        else
+                        {
+                            this.machineVolatileDataProvider.IsBayLightOn.Add(this.currentBay, false);
+                        }
+                    }
 
                     this.machineVolatileDataProvider.Mode = MachineMode.Manual;
                     this.Logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
@@ -158,7 +168,17 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                                 {
                                     var newMessageData = new StopMessageData(this.stopReason);
                                     this.machineControlProvider.StopOperation(newMessageData, this.currentBay, MessageActor.MachineManager, notification.RequestingBay);
-                                    this.baysDataProvider.Light(this.currentBay, false);
+                                    if (this.currentBay != BayNumber.ElevatorBay)
+                                    {
+                                        if (this.machineVolatileDataProvider.IsBayLightOn.ContainsKey(this.currentBay))
+                                        {
+                                            this.machineVolatileDataProvider.IsBayLightOn[this.currentBay] = false;
+                                        }
+                                        else
+                                        {
+                                            this.machineVolatileDataProvider.IsBayLightOn.Add(this.currentBay, false);
+                                        }
+                                    }
                                 }
                             }
                             break;
