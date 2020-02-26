@@ -12,7 +12,7 @@
             d:DesignHeight="450"
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
-            ParentModuleName="{ctrls:NameOf Type={x:Type modules:Operator}}"           
+            ParentModuleName="{ctrls:NameOf Type={x:Type modules:Operator}}"
             ParentViewName="{x:Static modules:Operator.OPERATOR_MENU}"
             mc:Ignorable="d">
 
@@ -27,29 +27,28 @@
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:OperatorApp.LoadingUnitInBay}" />
-        
+
         <Border Grid.Row="1"
+                Height="200"
+                Margin="0,0,35,0"
                 VerticalAlignment="Top"
                 Background="{StaticResource PpcBackground}"
                 BorderBrush="{StaticResource PpcBorderBrush}"
-                BorderThickness="{StaticResource PpcBorderThickness}"                
+                BorderThickness="{StaticResource PpcBorderThickness}"
                 CornerRadius="2,0,0,2"
-                Height="200"
-                Margin="0 0 35 0"
                 Visibility="{Binding IsWmsEnabledAndHealthy, Converter={StaticResource BTVIC}}">
-                <TextBlock
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center"
-                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                    Text="{Binding LoadingUnit.Id, StringFormat={x:Static res:OperatorApp.LoadingUnitPresenceId}}" />
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{Binding LoadingUnit.Id, StringFormat={x:Static res:OperatorApp.LoadingUnitPresenceId}}" />
         </Border>
 
         <localControls:LoadingUnitControlView Grid.Row="1"
                                               Margin="0,0,35,0"
-                                              Visibility="{Binding IsWmsEnabledAndHealthy, Converter={StaticResource BTVC}}"/>
+                                              Visibility="{Binding IsWmsEnabledAndHealthy, Converter={StaticResource BTVC}}" />
 
         <StackPanel Grid.Row="2"
-                    Margin="0 10 0 0"
+                    Margin="0,10,0,0"
                     HorizontalAlignment="Left"
                     Orientation="Horizontal">
             <controls:PpcButton Width="180"
@@ -76,50 +75,46 @@
         </StackPanel>
 
         <StackPanel Grid.Row="2"
-                    Margin="0 10 0 0"
+                    Margin="0,10,0,0"
                     HorizontalAlignment="Right"
                     Orientation="Horizontal">
 
-            <controls:PpcButton                                 
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Top"                                    
-                                    Command="{Binding OperationCommand}"
-                                    BorderBrush="{StaticResource FerrettoBlue}"
-                                    CommandParameter="{x:Static res:OperatorApp.Adjustment}"
-                                    IsActive="{Binding IsAdjustmentVisible}"
-                                    Content="{x:Static res:OperatorApp.Adjustment}"
-                                    Style="{DynamicResource PpcButtonMarkStyle}" />
+            <controls:PpcButton HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                BorderBrush="{StaticResource FerrettoBlue}"
+                                Command="{Binding OperationCommand}"
+                                CommandParameter="{x:Static res:OperatorApp.Adjustment}"
+                                Content="{x:Static res:OperatorApp.Adjustment}"
+                                IsActive="{Binding IsAdjustmentVisible}"
+                                Style="{DynamicResource PpcButtonMarkStyle}" />
 
 
-            <controls:PpcButton
-                                    Margin="15 0 0 0"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Top"
-                                    BorderBrush="{StaticResource FerrettoBlue}"
-                                    Command="{Binding OperationCommand}"
-                                    CommandParameter="{x:Static res:OperatorApp.Pick}"
-                                    IsActive="{Binding IsPickVisible}"
-                                    Content="{x:Static res:OperatorApp.Pick}"                                    
-                                    Style="{DynamicResource PpcButtonMarkStyle}"/>
-            <controls:PpcButton
-                                    Margin="15 0 0 0"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Top"
-                                    BorderBrush="{StaticResource FerrettoBlue}"
-                                    Command="{Binding OperationCommand}"
-                                    CommandParameter="{x:Static res:OperatorApp.Put}"
-                                    IsActive="{Binding IsPutVisible}"
-                                    Content="{x:Static res:OperatorApp.Put}"                                    
-                                    Style="{DynamicResource PpcButtonMarkStyle}"/>
+            <controls:PpcButton Margin="15,0,0,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                BorderBrush="{StaticResource FerrettoBlue}"
+                                Command="{Binding OperationCommand}"
+                                CommandParameter="{x:Static res:OperatorApp.Pick}"
+                                Content="{x:Static res:OperatorApp.Pick}"
+                                IsActive="{Binding IsPickVisible}"
+                                Style="{DynamicResource PpcButtonMarkStyle}" />
+            <controls:PpcButton Margin="15,0,0,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                BorderBrush="{StaticResource FerrettoBlue}"
+                                Command="{Binding OperationCommand}"
+                                CommandParameter="{x:Static res:OperatorApp.Put}"
+                                Content="{x:Static res:OperatorApp.Put}"
+                                IsActive="{Binding IsPutVisible}"
+                                Style="{DynamicResource PpcButtonMarkStyle}" />
 
 
-            <controls:PpcButton 
-                                    Margin="15 0 0 0"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Top"
-                                    Command="{Binding RecallLoadingUnitCommand}"                                    
-                                    Content="{Binding RecallLoadingUnitInfo}"
-                                    IsBusy="{Binding IsBusyConfirmingRecallOperation}" />
+            <controls:PpcButton Margin="15,0,0,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                Command="{Binding RecallLoadingUnitCommand}"
+                                Content="{Binding RecallLoadingUnitInfo}"
+                                IsBusy="{Binding IsBusyConfirmingRecallOperation}" />
 
         </StackPanel>
     </Grid>
