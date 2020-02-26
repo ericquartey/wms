@@ -11,8 +11,6 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-
-
 namespace Ferretto.VW.MAS.DeviceManager.Providers
 {
     public class MachineResourcesProvider : IMachineResourcesProvider, ISensorsProvider
@@ -267,7 +265,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                             }
                             else if (this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrierBay1])
                             {
-                                isMarchPossible = false;
+                                //isMarchPossible = false;
                                 reason.Append("Anti Intrusion Barrier Active Bay1; ");
                             }
 
@@ -281,7 +279,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                             }
                             else if (this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrierBay2])
                             {
-                                isMarchPossible = false;
+                                //isMarchPossible = false;
                                 reason.Append("Anti Intrusion Barrier Active Bay2; ");
                             }
 
@@ -295,7 +293,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                             }
                             else if (this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrierBay3])
                             {
-                                isMarchPossible = false;
+                                //isMarchPossible = false;
                                 reason.Append("Anti Intrusion Barrier Active Bay3; ");
                             }
 

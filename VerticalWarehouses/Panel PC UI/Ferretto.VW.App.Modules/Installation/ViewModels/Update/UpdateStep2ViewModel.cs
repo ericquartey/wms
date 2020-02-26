@@ -23,7 +23,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private const string CSVEXTENSION = ".csv";
 
-        private const string UPDATEARG = "-update";
+        private const string UPDATEARG = "--update";
 
         private readonly IDialogService dialogService;
 
