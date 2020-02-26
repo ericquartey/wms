@@ -30,7 +30,7 @@
             "Height": 645,
             "MaxSingleHeight": 695,
             "ProfileOffset": 50,
-            "Location": "InternalBay1Down"
+            "Location": "InternalBay1Up"
           }
         ],
         "IoDevice": {
@@ -3196,6 +3196,8 @@
       "FeedRate": 1.0,
       "RequiredCycles": 20
     },
+    "Bay1ProfileCheck": {
+    },
     "Bay2ProfileCheck": {
     },
     "Bay3ProfileCheck": {
@@ -3224,6 +3226,22 @@
       "FeedRate": 0.2
     },
     "VerticalOriginCalibration": {
+    },
+    "Bay1FirstLoadingUnit": {
+    },
+    "Bay2FirstLoadingUnit": {
+    },
+    "Bay3FirstLoadingUnit": {
+    },
+    "Bay1Laser": {
+    },
+    "Bay2Laser": {
+    },
+    "Bay3Laser": {
+    },
+    "ShutterHeightCheck": {
+    },
+    "WeightMeasurement": {
     }
   }
 }
