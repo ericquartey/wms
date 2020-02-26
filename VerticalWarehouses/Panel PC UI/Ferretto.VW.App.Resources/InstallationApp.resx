@@ -1774,4 +1774,49 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="CellSelectedBlocked" xml:space="preserve">
     <value>Selected cell is blocked</value>
   </data>
+  <data name="BeforeStart" xml:space="preserve">
+    <value>Before we start</value>
+  </data>
+  <data name="CalibrationInProgress" xml:space="preserve">
+    <value>Calibration In Progress ...</value>
+  </data>
+  <data name="CalibrationProcedureRequired" xml:space="preserve">
+    <value>Perform the bay calibration procedure to move the shelf to the sensor.</value>
+  </data>
+  <data name="CheckDrawersThenStart" xml:space="preserve">
+    <value>Check that there are no drawers in the bay before starting. Press on START to begin the procedure</value>
+  </data>
+  <data name="Complete" xml:space="preserve">
+    <value>Complete</value>
+  </data>
+  <data name="ConfirmAdjustment" xml:space="preserve">
+    <value>Confirm Adjustment</value>
+  </data>
+  <data name="CyclesPerformed" xml:space="preserve">
+    <value>Cycles Performed</value>
+  </data>
+  <data name="ErrorInMillimiters" xml:space="preserve">
+    <value>Error (mm)</value>
+  </data>
+  <data name="RemainingTime" xml:space="preserve">
+    <value>Remaining Time</value>
+  </data>
+  <data name="Repeat" xml:space="preserve">
+    <value>Repeat</value>
+  </data>
+  <data name="RepeatOrComplete" xml:space="preserve">
+    <value>Press Repeat to run the procedure again, Complete to finish.</value>
+  </data>
+  <data name="ResetCycles" xml:space="preserve">
+    <value>Reset Cycles</value>
+  </data>
+  <data name="SelectDirectionAndApply" xml:space="preserve">
+    <value>Select the direction and apply the correction by pressing Apply correction button.</value>
+  </data>
+  <data name="StopInProgress" xml:space="preserve">
+    <value>Stop in progress</value>
+  </data>
+  <data name="StopProcedure" xml:space="preserve">
+    <value>Stop Procedure</value>
+  </data>
 </root>

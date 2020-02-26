@@ -44,14 +44,15 @@
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Prima di cominciare:"
-                               TextWrapping="Wrap" />
-
+                               TextWrapping="Wrap">
+                        <Run Text="{x:Static res:InstallationApp.BeforeStart}" /><Run Text=":" />
+                    </TextBlock>
                     <TextBlock Grid.ColumnSpan="2"
                                FontSize="18"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Esegui la procedura di taratura della baia per posizionare la mensola in corrispondenza del sensore."
-                               TextWrapping="Wrap" />
+                               TextWrapping="Wrap">
+                        <Run Text="{x:Static res:InstallationApp.CalibrationProcedureRequired}" /><Run Text="." />
+                    </TextBlock>
                 </StackPanel>
 
                 <controls:PpcButton Grid.Row="1"
@@ -69,13 +70,15 @@
                            Grid.ColumnSpan="2"
                            FontSize="18"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="Controlla che non ci siano cassetti in baia prima di cominciare. Premi su INIZIA per avviare la procedura."
-                           TextWrapping="Wrap" />
+                           TextWrapping="Wrap">
+                    <Run Text="{x:Static res:InstallationApp.CheckDrawersThenStart}" /><Run Text="." />
+
+                </TextBlock>
 
                 <controls:PpcButton Grid.Row="3"
                                     Grid.Column="1"
                                     Command="{Binding StartCalibrationCommand}"
-                                    Content="Inizia"
+                                    Content="{x:Static res:InstallationApp.Start}"
                                     Style="{StaticResource WizardConfirmButton}" />
 
                 <controls:PpcButton Grid.Row="3"
@@ -129,7 +132,7 @@
                                        FontSize="{StaticResource FontSize_Normal}"
                                        FontWeight="Normal"
                                        Foreground="{DynamicResource FerrettoLightGray}"
-                                       Text="Cicli eseguiti" />
+                                       Text="{x:Static res:InstallationApp.CyclesPerformed}" />
 
                             <StackPanel Grid.Row="1"
                                         Margin="4"
@@ -177,7 +180,7 @@
                                    Height="90"
                                    EditValue="{Binding RemainingTime, StringFormat={}{0}, FallbackValue=00:00}"
                                    IsEnabled="False"
-                                   LabelText="Tempo Rimanente" />
+                                   LabelText="{x:Static res:InstallationApp.RemainingTime}" />
 
 
                 <StackPanel Grid.Row="1"
@@ -188,13 +191,13 @@
 
                     <TextBlock FontSize="30"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Calibrazione in corso..."
+                               Text="{x:Static res:InstallationApp.CalibrationInProgress}"
                                TextWrapping="Wrap"
                                Visibility="{Binding IsExecutingProcedure, Converter={StaticResource BTVC}}" />
 
                     <TextBlock FontSize="30"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Arresto in corso..."
+                               Text="{x:Static res:InstallationApp.StopInProgress}"
                                TextWrapping="Wrap"
                                Visibility="{Binding IsExecutingStopInPhase, Converter={StaticResource BTVC}}" />
 
@@ -208,7 +211,7 @@
                                     HorizontalAlignment="center"
                                     VerticalAlignment="Center"
                                     Command="{Binding StopInPhaseCommand}"
-                                    Content="Arresta procedura"
+                                    Content="{x:Static res:InstallationApp.StopProcedure}"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
@@ -234,16 +237,16 @@
                 <StackPanel Grid.ColumnSpan="2">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Conferma correzione:"
-                               TextWrapping="Wrap" />
-
+                               TextWrapping="Wrap">
+                        <Run Text="{x:Static res:InstallationApp.ConfirmAdjustment}" /><Run Text=":" />
+                    </TextBlock>
                 </StackPanel>
 
                 <TextBlock Grid.Row="1"
                            Grid.ColumnSpan="2"
                            FontSize="18"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="Selezionare la direzione e applicare la correzione premendo Applica correzione."
+                           Text="{x:Static res:InstallationApp.SelectDirectionAndApply}"
                            TextWrapping="Wrap" />
 
                 <ctrls:PpcSpinEdit Grid.Row="2"
@@ -254,8 +257,9 @@
                                    HorizontalAlignment="Center"
                                    EditValue="{Binding NewErrorValue, StringFormat={}{0:F0}, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                    IsEnabled="{Binding IsCalibrationCompletedOrStopped}"
-                                   LabelText="Errore (mm)"
+                                   LabelText="{x:Static res:InstallationApp.ErrorInMillimiters}"
                                    MinValue="0" />
+
                 <RadioButton Grid.Row="3"
                              Margin="0,0,50,0"
                              HorizontalAlignment="Right"
@@ -295,7 +299,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Command="{Binding ApplyCommand}"
-                                    Content="Applica correzione"
+                                    Content="{x:Static res:InstallationApp.ApplyCorrection}"
                                     Style="{DynamicResource WizardIntoButton}" />
 
 
@@ -305,21 +309,21 @@
                            Grid.ColumnSpan="2"
                            FontSize="18"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="Premere Ripeti per eseguire nuovamente la procedura, Concludi per terminare."
+                           Text="{x:Static res:InstallationApp.RepeatOrComplete}"
                            TextWrapping="Wrap" />
 
                 <controls:PpcButton Grid.Row="6"
                                     Grid.Column="1"
                                     Margin="0,-5,0,0"
                                     Command="{Binding CompleteCommand}"
-                                    Content="Concludi"
+                                    Content="{x:Static res:InstallationApp.Complete}"
                                     Style="{StaticResource WizardConfirmButton}" />
 
                 <controls:PpcButton Grid.Row="6"
                                     Grid.Column="0"
                                     Margin="0,-5,0,0"
                                     Command="{Binding RepeatCalibrationCommand}"
-                                    Content="Ripeti"
+                                    Content="{x:Static res:InstallationApp.Repeat}"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>

@@ -1701,4 +1701,49 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="CellSelectedBlocked" xml:space="preserve">
     <value>La cella selezionata è bloccata</value>
   </data>
+  <data name="BeforeStart" xml:space="preserve">
+    <value>Prima di cominciare</value>
+  </data>
+  <data name="CalibrationInProgress" xml:space="preserve">
+    <value>Calibrazione in corso ...</value>
+  </data>
+  <data name="CalibrationProcedureRequired" xml:space="preserve">
+    <value>Esegui la procedura di taratura della baia per posizionare la mensola in corrispondenza del sensore</value>
+  </data>
+  <data name="CheckDrawersThenStart" xml:space="preserve">
+    <value>Controlla che non ci siano cassetti in baia prima di cominciare. Premi su INIZIA per avviare la procedura</value>
+  </data>
+  <data name="Complete" xml:space="preserve">
+    <value>Completa</value>
+  </data>
+  <data name="ConfirmAdjustment" xml:space="preserve">
+    <value>Conferma correzione</value>
+  </data>
+  <data name="CyclesPerformed" xml:space="preserve">
+    <value>Cicli Eseguiti</value>
+  </data>
+  <data name="ErrorInMillimiters" xml:space="preserve">
+    <value>Errore (mm)</value>
+  </data>
+  <data name="RemainingTime" xml:space="preserve">
+    <value>Tempo rimanente</value>
+  </data>
+  <data name="Repeat" xml:space="preserve">
+    <value>Ripeti</value>
+  </data>
+  <data name="RepeatOrComplete" xml:space="preserve">
+    <value>Premere Ripeti per eseguire nuovamente la procedura, Concludi per terminare.</value>
+  </data>
+  <data name="ResetCycles" xml:space="preserve">
+    <value>Reset cicli</value>
+  </data>
+  <data name="SelectDirectionAndApply" xml:space="preserve">
+    <value>Selezionare la direzione e applicare la correzione premendo Applica correzione.</value>
+  </data>
+  <data name="StopInProgress" xml:space="preserve">
+    <value>Arresto in fase in corso ...</value>
+  </data>
+  <data name="StopProcedure" xml:space="preserve">
+    <value>Arresta procedura</value>
+  </data>
 </root>
