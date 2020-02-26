@@ -248,9 +248,9 @@
                   "AdjustByWeight": false,
                   "Number": 0,
                   "Position": 125.0,
-                  "Acceleration": 2500.0,
+                  "Acceleration": 5000.0,
                   "Deceleration": 0.0,
-                  "Speed": 600.0,
+                  "Speed": 830.0,
                   "Id": 7
                 },
                 {
@@ -274,7 +274,7 @@
                 {
                   "AdjustByWeight": true,
                   "Number": 3,
-                  "Position": 1066.0,
+                  "Position": 1200.0,
                   "Acceleration": 1700.0,
                   "Deceleration": 0.0,
                   "Speed": 400.0,
@@ -283,14 +283,14 @@
                 {
                   "AdjustByWeight": false,
                   "Number": 4,
-                  "Position": 1230.0,
+                  "Position": 1410.0,
                   "Acceleration": 1000.0,
                   "Deceleration": 0.0,
                   "Speed": 150.0,
                   "Id": 10
                 }
               ],
-              "TotalDistance": 1230.0,
+              "TotalDistance": 1410.0,
               "Id": 1
             },
             {
@@ -300,9 +300,9 @@
                   "AdjustByWeight": false,
                   "Number": 0,
                   "Position": 125.0,
-                  "Acceleration": 2500.0,
+                  "Acceleration": 5000.0,
                   "Deceleration": 0.0,
-                  "Speed": 600.0,
+                  "Speed": 830.0,
                   "Id": 23
                 },
                 {
@@ -326,7 +326,7 @@
                 {
                   "AdjustByWeight": true,
                   "Number": 3,
-                  "Position": 1066.0,
+                  "Position": 1200.0,
                   "Acceleration": 1700.0,
                   "Deceleration": 0.0,
                   "Speed": 400.0,
@@ -335,14 +335,14 @@
                 {
                   "AdjustByWeight": false,
                   "Number": 4,
-                  "Position": 1230.0,
+                  "Position": 1410.0,
                   "Acceleration": 1000.0,
                   "Deceleration": 0.0,
                   "Speed": 150.0,
                   "Id": 20
                 }
               ],
-              "TotalDistance": 1230.0,
+              "TotalDistance": 1410.0,
               "Id": 2
             },
             {
@@ -378,23 +378,23 @@
                 {
                   "AdjustByWeight": false,
                   "Number": 3,
-                  "Position": 986.0,
-                  "Acceleration": 3000.0,
+                  "Position": 1200.0,
+                  "Acceleration": 5000.0,
                   "Deceleration": 0.0,
-                  "Speed": 100.0,
+                  "Speed": 400.0,
                   "Id": 25
                 },
                 {
                   "AdjustByWeight": false,
                   "Number": 4,
-                  "Position": 1230.0,
-                  "Acceleration": 3000.0,
+                  "Position": 1410.0,
+                  "Acceleration": 5000.0,
                   "Deceleration": 0.0,
-                  "Speed": 365.0,
+                  "Speed": 830.0,
                   "Id": 15
                 }
               ],
-              "TotalDistance": 1230.0,
+              "TotalDistance": 1410.0,
               "Id": 3
             },
             {
@@ -430,27 +430,27 @@
                 {
                   "AdjustByWeight": false,
                   "Number": 3,
-                  "Position": 986.0,
-                  "Acceleration": 3000.0,
+                  "Position": 1200.0,
+                  "Acceleration": 5000.0,
                   "Deceleration": 0.0,
-                  "Speed": 100.0,
+                  "Speed": 400.0,
                   "Id": 24
                 },
                 {
                   "AdjustByWeight": false,
                   "Number": 4,
-                  "Position": 1230.0,
-                  "Acceleration": 3000.0,
+                  "Position": 1410.0,
+                  "Acceleration": 5000.0,
                   "Deceleration": 0.0,
-                  "Speed": 365.0,
+                  "Speed": 830.0,
                   "Id": 26
                 }
               ],
-              "TotalDistance": 1230.0,
+              "TotalDistance": 1410.0,
               "Id": 4
             }
           ],
-          "Resolution": 88.3038477,
+          "Resolution": 88.18085145,
           "UpperBound": 1.0,
           "Id": 2
         }
