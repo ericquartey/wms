@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Linq;
 using System.Windows.Input;
+using System.Xml;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.Installer.Core;
 using Ferretto.VW.MAS.DataModels;
@@ -15,6 +16,7 @@ namespace Ferretto.VW.Installer.ViewModels
         private readonly InstallationService installationService;
 
         private bool canProcede;
+        
 
         private bool isSuccessful;
 
@@ -28,6 +30,8 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private string selectedBayInfo;
 
+        private Bay selectedBay;
+
         #endregion
 
         #region Constructors
@@ -40,6 +44,12 @@ namespace Ferretto.VW.Installer.ViewModels
         #endregion
 
         #region Properties
+        public Bay SelectedBay
+    {
+            get => this.selectedBay;
+            set => this.SetProperty(ref this.selectedBay, value);
+        }
+
         public string SelectedBayInfo
         {
             get => this.selectedBayInfo;
@@ -93,10 +103,11 @@ namespace Ferretto.VW.Installer.ViewModels
             if (this.installationService.MasConfiguration.Machine.Bays.FirstOrDefault(b => b.Number == bayNumber) is Bay bayFound)
             {
                 var bayIpaddress = this.GetBayIpaddress(bayFound.Number);
-                this.AddAppConfig("Install:Parameter:MasIpaddress", this.installationService.MasIpAddress.ToString());
-                this.AddAppConfig("Install:Parameter:BayNumber", ((int)bayFound.Number).ToString());
-                this.AddAppConfig("Install:Parameter:PpcIpaddress", bayIpaddress);
+                //this.AddAppConfig("Install:Parameter:MasIpaddress", this.installationService.MasIpAddress.ToString());
+                //this.AddAppConfig("Install:Parameter:BayNumber", ((int)bayFound.Number).ToString());
+                this.AddAppConfig("Install:Parameter:PpcIpaddress", bayIpaddress);                
                 this.canProcede = true;
+                this.SelectedBay = bayFound;
                 this.SelectedBayInfo = $"Baia {(int)bayFound.Number} selezionata";
             }
             
@@ -155,6 +166,32 @@ namespace Ferretto.VW.Installer.ViewModels
             catch
             {
             }
+        }
+
+        private void SavePanelPcConfig()
+        {
+            var xmlDoc = new XmlDocument();
+
+            xmlDoc.Load(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
+
+            foreach (XmlElement element in xmlDoc.DocumentElement)
+            {
+                if (element.Name == "appSettings")
+                {
+                    if (element.ChildNodes.OfType<XmlElement>().FirstOrDefault(a => a.Name == "BayNumber") is XmlElement bayNumberNode)
+                    {
+                        bayNumberNode.Value = ((int)this.selectedBay.Number).ToString();
+                    }
+
+                    if (element.ChildNodes.OfType<XmlElement>().FirstOrDefault(a => a.Name == "AutomationService:Url") is XmlElement ipMasNode)
+                    {
+                        var masIp= (this.installationService.MasIpAddress is null)? ConfigurationManager.AppSettings.GetInstallDefaultMasIpaddress() :this.installationService.MasIpAddress.ToString();                        
+                        ipMasNode.Value = $"{masIp}:{ConfigurationManager.AppSettings.GetInstallDefaultMasIpport()}";
+                    }
+                }
+            }
+
+            xmlDoc.Save(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
         }
 
         private void RaiseCanExecuteChanged()

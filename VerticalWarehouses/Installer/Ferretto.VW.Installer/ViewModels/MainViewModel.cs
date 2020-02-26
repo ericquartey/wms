@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Configuration;
 using System.IO;
 using System.Windows;
 using Ferretto.VW.Installer.Core;
@@ -9,6 +10,7 @@ namespace Ferretto.VW.Installer.ViewModels
     public class MainViewModel : BindableBase
     {
         #region Fields
+        private const string INSTALLER = "installer";
 
         private IOperationResult currentMode;
 
@@ -36,8 +38,10 @@ namespace Ferretto.VW.Installer.ViewModels
 
         public void StartInstallation()
         {
-            var currExeLocation = System.Reflection.Assembly.GetEntryAssembly().Location;
-            Directory.SetCurrentDirectory(System.IO.Path.GetDirectoryName(currExeLocation));
+            //var currExeLocation = System.Reflection.Assembly.GetEntryAssembly().Location;
+            var exeLocation = $"{ConfigurationManager.AppSettings.GetUpdateTempPath()}\\{INSTALLER}";
+            // Directory.SetCurrentDirectory(System.IO.Path.GetDirectoryName(exeLocation));
+            Directory.SetCurrentDirectory(exeLocation);
 
             if (File.Exists("steps-snapshot.json"))
             {
