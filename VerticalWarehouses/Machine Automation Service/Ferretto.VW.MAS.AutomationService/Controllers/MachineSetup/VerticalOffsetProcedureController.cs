@@ -6,7 +6,6 @@ using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/setup/[controller]")]
@@ -46,9 +45,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Methods
 
         [HttpPost("complete")]
-        public IActionResult Complete(double newOffset)
+        public IActionResult CompleteProcedure()
         {
-            this.elevatorDataProvider.UpdateVerticalOffset(newOffset);
+            this.elevatorDataProvider.CompleteProcedure();
 
             return this.Ok();
         }
@@ -89,6 +88,22 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 MessageActor.AutomationService);
 
             return this.Accepted();
+        }
+
+        [HttpPost("update-vertical-offset")]
+        public IActionResult UpdateVerticalOffset(double newOffset)
+        {
+            this.elevatorDataProvider.UpdateVerticalOffset(newOffset);
+
+            return this.Ok();
+        }
+
+        [HttpPost("update-vertical-offset-and-complete")]
+        public IActionResult UpdateVerticalOffsetAndComplete(double newOffset)
+        {
+            this.elevatorDataProvider.UpdateVerticalOffsetAndComplete(newOffset);
+
+            return this.Ok();
         }
 
         #endregion

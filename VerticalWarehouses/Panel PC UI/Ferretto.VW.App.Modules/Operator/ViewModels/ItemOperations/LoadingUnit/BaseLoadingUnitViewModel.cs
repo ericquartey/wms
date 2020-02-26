@@ -43,8 +43,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isNewOperationAvailable;
 
-        private bool isWaitingForNewOperation;
-
         private DelegateCommand itemCompartmentDownCommand;
 
         private DelegateCommand itemCompartmentUpCommand;
@@ -75,54 +73,36 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public BaseLoadingUnitViewModel(
             IMachineLoadingUnitsWebService loadingUnitsWebService,
+            IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator)
             : base(PresentationMode.Operator)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.loadingUnitsWebService = loadingUnitsWebService ?? throw new ArgumentNullException(nameof(loadingUnitsWebService));
-
-            this.CompartmentColoringFunction = (compartment, selectedCompartment) => compartment == selectedCompartment ? "#0288f7" : "#444444";
+            this.MissionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
+            this.CompartmentColoringFunction = (compartment, selectedCompartment) => this.itemsCompartments?.Any(ic => ic.Id == compartment.Id && ic.ItemId != null) == true ? "#444444" : "#222222";
         }
 
         #endregion
 
         #region Properties
 
-        public bool CanReset
-        {
-            get
-            {
-                if (this.IsNewLoadingUnit
-                    &&
-                    !this.isNewOperationAvailable
-                    &&
-                    !this.IsBusyConfirmingOperation
-                    &&
-                    !this.IsBusyConfirmingRecallOperation)
-                {
-                    return true;
-                }
-
-                return false;
-            }
-        }
-
         public ICommand ChangeModeListCommand =>
             this.changeModeListCommand
             ??
-            (this.changeModeListCommand = new DelegateCommand(this.ChangeMode, this.CanChangeListMode));
+            (this.changeModeListCommand = new DelegateCommand(this.ChangeMode, this.CanSwitchToListMode));
 
         public ICommand ChangeModeLoadingUnitCommand =>
                this.changeModeLoadingUnitCommand
                ??
-               (this.changeModeLoadingUnitCommand = new DelegateCommand(this.ChangeMode, this.CanChangeLoadingUnitMode));
+               (this.changeModeLoadingUnitCommand = new DelegateCommand(this.ChangeMode, this.CanSwitchToLoadingUnitMode));
 
         public Func<IDrawableCompartment, IDrawableCompartment, string> CompartmentColoringFunction { get; }
 
         public IEnumerable<TrayControlCompartment> Compartments
         {
             get => this.compartments;
-            set => this.SetProperty(ref this.compartments, value);
+            set => this.SetProperty(ref this.compartments, value, this.RaiseCanExecuteChanged);
         }
 
         public string ConfirmOperationInfo => this.isNewOperationAvailable ? OperatorApp.ConfirmAndNewOperationsAvailable : OperatorApp.Confirm;
@@ -154,16 +134,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public bool IsNewOperationAvailable
         {
             get => this.isNewOperationAvailable;
-            set => this.SetProperty(ref this.isNewOperationAvailable, value);
+            set
+            {
+                if (this.SetProperty(ref this.isNewOperationAvailable, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.RecallLoadingUnitInfo));
+                }
+            }
         }
 
-        public bool IsWaitingForNewOperation
-        {
-            get => this.isWaitingForNewOperation;
-            set => this.SetProperty(ref this.isWaitingForNewOperation, value);
-        }
-
-        public bool IsWmsEnabledAndHealthy => this.IsWmsHealthy && ConfigurationManager.AppSettings.GetWmsDataServiceEnabled();
+        public bool IsWmsEnabledAndHealthy =>
+            this.IsWmsHealthy
+            &&
+            ConfigurationManager.AppSettings.GetWmsDataServiceEnabled();
 
         public override bool IsWmsHealthy
         {
@@ -182,17 +165,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public ICommand ItemCompartmentDownCommand =>
               this.itemCompartmentDownCommand
               ??
-              (this.itemCompartmentDownCommand = new DelegateCommand(() => this.ChangeSelectedItemCompartment(false), this.ItemCompartmentCanDown));
+              (this.itemCompartmentDownCommand = new DelegateCommand(() => this.ChangeSelectedItemCompartment(false), this.CanSelectNextItemCompartment));
 
         public ICommand ItemCompartmentUpCommand =>
               this.itemCompartmentUpCommand
               ??
-              (this.itemCompartmentUpCommand = new DelegateCommand(() => this.ChangeSelectedItemCompartment(true), this.ItemCompartmentCanUp));
+              (this.itemCompartmentUpCommand = new DelegateCommand(() => this.ChangeSelectedItemCompartment(true), this.CanSelectPreviousItemCompartment));
 
         public ICommand ItemDownCommand =>
-                this.itemDownCommand
-                ??
-                (this.itemDownCommand = new DelegateCommand(() => this.ChangeSelectedItem(false), this.ItemCanDown));
+            this.itemDownCommand
+            ??
+            (this.itemDownCommand = new DelegateCommand(() => this.ChangeSelectedItem(false), this.CanSelectNextItem));
 
         public IEnumerable<CompartmentDetails> Items
         {
@@ -203,34 +186,51 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public IEnumerable<CompartmentDetails> ItemsCompartments
         {
             get => this.itemsCompartments;
-            set => this.SetProperty(ref this.itemsCompartments, value);
+            set => this.SetProperty(ref this.itemsCompartments, value, this.RaiseCanExecuteChanged);
         }
 
         public ICommand ItemUpCommand =>
-               this.itemUpCommand
-               ??
-               (this.itemUpCommand = new DelegateCommand(() => this.ChangeSelectedItem(true), this.ItemCanUp));
+            this.itemUpCommand
+            ??
+            (this.itemUpCommand = new DelegateCommand(() => this.ChangeSelectedItem(true), this.CanSelectPreviousItem));
 
-        public MAS.AutomationService.Contracts.LoadingUnit LoadingUnit { get; set; }
+        public LoadingUnit LoadingUnit { get; set; }
 
         public double LoadingUnitDepth
         {
             get => this.loadingUnitDepth;
-            set => this.SetProperty(ref this.loadingUnitDepth, value, this.RaiseCanExecuteChanged);
+            set => this.SetProperty(ref this.loadingUnitDepth, value);
         }
 
         public double LoadingUnitWidth
         {
             get => this.loadingUnitWidth;
-            set => this.SetProperty(ref this.loadingUnitWidth, value, this.RaiseCanExecuteChanged);
+            set => this.SetProperty(ref this.loadingUnitWidth, value);
         }
 
-        public string RecallLoadingUnitInfo => this.isNewOperationAvailable ? OperatorApp.NewOperationsAvailable : OperatorApp.RecallDrawer;
+        public string RecallLoadingUnitInfo => this.isNewOperationAvailable
+            ? OperatorApp.NewOperationsAvailable
+            : OperatorApp.RecallDrawer;
 
         public TrayControlCompartment SelectedCompartment
         {
             get => this.selectedCompartment;
-            set => this.SetProperty(ref this.selectedCompartment, value, this.SetItemsAndCompartment);
+            set
+            {
+                if (this.SetProperty(ref this.selectedCompartment, value, this.SetItemsAndCompartment))
+                {
+                    if (this.selectedCompartment is null)
+                    {
+                        this.SelectedItemCompartment = null;
+                    }
+                    else if (this.SelectedItemCompartment is null || this.SelectedItemCompartment.Id != this.selectedCompartment.Id)
+                    {
+                        var newSelectedItemCompartment = this.itemsCompartments?.FirstOrDefault(c => c.Id == this.selectedCompartment.Id);
+                        this.currentItemCompartmentIndex = this.itemsCompartments.ToList().IndexOf(newSelectedItemCompartment);
+                        this.SelectedItemCompartment = newSelectedItemCompartment;
+                    }
+                }
+            }
         }
 
         public CompartmentDetails SelectedItem
@@ -245,11 +245,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.selectedItemCompartment, value, this.SetSelectedItemAndCompartment);
         }
 
+        protected IMissionOperationsService MissionOperationsService { get; }
+
         #endregion
 
         #region Methods
 
-        public void ChangeSelectedItem(bool isUp)
+        public void ChangeSelectedItem(bool selectPrevious)
         {
             if (this.items is null)
             {
@@ -258,15 +260,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             if (this.items.Any())
             {
-                var newIndex = isUp ? this.currentItemIndex - 1 : this.currentItemIndex + 1;
+                var newIndex = selectPrevious ? this.currentItemIndex - 1 : this.currentItemIndex + 1;
 
                 this.currentItemIndex = Math.Max(0, Math.Min(newIndex, this.items.Count() - 1));
             }
 
-            this.SetSelectItem();
+            this.SetSelectedItem();
         }
 
-        public void ChangeSelectedItemCompartment(bool isUp)
+        public void ChangeSelectedItemCompartment(bool selectPrevious)
         {
             if (this.itemsCompartments is null)
             {
@@ -275,7 +277,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             if (this.itemsCompartments.Any())
             {
-                var newIndex = isUp ? this.currentItemCompartmentIndex - 1 : this.currentItemCompartmentIndex + 1;
+                var newIndex = selectPrevious ? this.currentItemCompartmentIndex - 1 : this.currentItemCompartmentIndex + 1;
 
                 this.currentItemCompartmentIndex = Math.Max(0, Math.Min(newIndex, this.itemsCompartments.Count() - 1));
             }
@@ -296,57 +298,63 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        public async Task LoadDataAsync()
+        public async Task LoadCompartmentsAsync()
         {
+            if (!this.IsWmsEnabledAndHealthy)
+            {
+                return;
+            }
+
             try
             {
-                if (this.IsWmsHealthy && ConfigurationManager.AppSettings.GetWmsDataServiceEnabled())
-                {
-                    var wmsLoadingUnit = await this.loadingUnitsWebService.GetWmsDetailsByIdAsync(this.LoadingUnit.Id);
-                    this.LoadingUnitWidth = wmsLoadingUnit.Width;
-                    this.LoadingUnitDepth = wmsLoadingUnit.Depth;
+                var wmsLoadingUnit = await this.loadingUnitsWebService.GetWmsDetailsByIdAsync(this.LoadingUnit.Id);
+                this.LoadingUnitWidth = wmsLoadingUnit.Width;
+                this.LoadingUnitDepth = wmsLoadingUnit.Depth;
 
-                    this.ItemsCompartments = await this.loadingUnitsWebService.GetCompartmentsAsync(this.LoadingUnit.Id);
-
-                    this.Compartments = MapCompartments(this.ItemsCompartments);
-                }
+                this.ItemsCompartments = await this.loadingUnitsWebService.GetCompartmentsAsync(this.LoadingUnit.Id);
+                this.Compartments = MapCompartments(this.ItemsCompartments);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
-                // do nothing: details will not be shown
+                // compartment details will not be shown
+                this.ItemsCompartments = null;
+                this.Compartments = null;
             }
-
-            this.RaiseCanExecuteChanged();
-            this.RaisePropertyChanged();
         }
 
         public async override Task OnAppearedAsync()
         {
             if (this.Data is int loadingUnitId)
             {
-                this.LoadingUnit = this.MachineService.Loadunits.SingleOrDefault(l => l.Id == loadingUnitId);
+                this.LoadingUnit = this.MachineService.Loadunits.Single(l => l.Id == loadingUnitId);
                 this.RaisePropertyChanged(nameof(this.LoadingUnit));
             }
             else
             {
-                throw new Exception("The Data of this view model shall contain the loading unit identifier.");
+                throw new Exception($"The '{nameof(this.Data)}' property of the '{this.GetType().Name}' view model shall contain a valid loading unit identifier.");
             }
 
             this.missionOperationToken = this.eventAggregator
                 .GetEvent<PubSubEvent<MissionChangedEventArgs>>()
                 .Subscribe(this.OnMissionChanged);
 
-            if (this.CanReset)
+            this.OnMissionChanged(null);
+
+            var canReset =
+                this.IsNewLoadingUnit
+                &&
+                !this.isNewOperationAvailable
+                &&
+                !this.IsBusyConfirmingOperation
+                &&
+                !this.IsBusyConfirmingRecallOperation;
+
+            if (canReset)
             {
                 this.Reset();
             }
 
             await base.OnAppearedAsync();
-
-            if (!this.isWaitingForNewOperation)
-            {
-                await this.ResetLoadDataAsync();
-            }
         }
 
         public virtual void RaisePropertyChanged()
@@ -357,42 +365,28 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.RaisePropertyChanged(nameof(this.SelectedItemCompartment));
         }
 
-        public async Task RecallLoadingUnitAsync()
+        public virtual void ResetOperations()
         {
-            try
-            {
-                this.isWaitingForNewOperation = true;
-                await this.loadingUnitsWebService.RemoveFromBayAsync(this.LoadingUnit.Id);
-
-                this.NavigationService.GoBack();
-            }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-            {
-                this.ShowNotification(ex);
-            }
+            this.IsWaitingForResponse = false;
         }
 
-        public async Task ResetLoadDataAsync()
+        protected override async Task OnDataRefreshAsync()
         {
+            await this.LoadCompartmentsAsync();
+
             var lastCompartmentId = this.SelectedItemCompartment?.Id;
-            var lastItemId = this.SelectedItemCompartment?.ItemId;
-
-            await this.LoadDataAsync();
-
-            if (!(lastCompartmentId is null))
+            if (lastCompartmentId != null)
             {
                 this.SelectedCompartment = this.Compartments.FirstOrDefault(ic => ic.Id == lastCompartmentId);
             }
 
-            if (!(lastItemId is null))
+            var lastItemId = this.SelectedItemCompartment?.ItemId;
+            if (lastItemId != null)
             {
                 this.SelectedItem = this.Items.FirstOrDefault(ic => ic.ItemId == lastItemId);
             }
-        }
 
-        public virtual void ResetOperations()
-        {
-            this.isWaitingForNewOperation = false;
+            await base.OnDataRefreshAsync();
         }
 
         protected async override Task OnMachineModeChangedAsync(MachineModeChangedEventArgs e)
@@ -414,6 +408,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             base.RaiseCanExecuteChanged();
         }
 
+        protected void Reset()
+        {
+            this.currentItemCompartmentIndex = 0;
+            this.currentItemIndex = 0;
+            this.IsListVisibile = false;
+            this.SelectedItemCompartment = null;
+            this.SelectedCompartment = null;
+            this.SelectedItem = null;
+            this.currentLoadingUnitId = this.LoadingUnit?.Id;
+
+            this.ResetOperations();
+        }
+
         private static IEnumerable<TrayControlCompartment> MapCompartments(IEnumerable<CompartmentDetails> compartmentsFromMission)
         {
             return compartmentsFromMission
@@ -428,47 +435,45 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 });
         }
 
-        private bool CanChangeListMode()
-        {
-            if (this.isWaitingForNewOperation
-                ||
-                this.isBusyConfirmingOperation
-                ||
-                this.isBusyConfirmingRecallOperation)
-            {
-                return false;
-            }
+        private bool CanSelectNextItem() =>
+            this.items != null
+            &&
+            this.currentItemIndex < this.items.Count() - 1;
 
-            if (this.itemsCompartments is null)
-            {
-                return false;
-            }
+        private bool CanSelectNextItemCompartment() =>
+            this.itemsCompartments != null
+            &&
+            this.currentItemCompartmentIndex < this.itemsCompartments.Count() - 1;
 
-            return this.itemsCompartments.Any()
-                   &&
-                   !this.isListVisibile;
-        }
+        private bool CanSelectPreviousItem() => this.currentItemIndex > 0;
 
-        private bool CanChangeLoadingUnitMode()
-        {
-            if (this.isWaitingForNewOperation
-                ||
-                this.isBusyConfirmingOperation
-                ||
-                this.isBusyConfirmingRecallOperation)
-            {
-                return false;
-            }
+        private bool CanSelectPreviousItemCompartment() => this.currentItemCompartmentIndex > 0;
 
-            if (this.itemsCompartments is null)
-            {
-                return false;
-            }
+        private bool CanSwitchToListMode() =>
+            !this.isListVisibile
+            &&
+            !this.IsWaitingForResponse
+            &&
+            !this.IsBusyConfirmingOperation
+            &&
+            !this.IsBusyConfirmingRecallOperation
+            &&
+            this.itemsCompartments != null
+            &&
+            this.itemsCompartments.Any();
 
-            return this.itemsCompartments.Any()
-                   &&
-                   this.isListVisibile;
-        }
+        private bool CanSwitchToLoadingUnitMode() =>
+            this.isListVisibile
+            &&
+            !this.IsWaitingForResponse
+            &&
+            !this.IsBusyConfirmingOperation
+            &&
+            !this.IsBusyConfirmingRecallOperation
+            &&
+            this.itemsCompartments != null
+            &&
+            this.itemsCompartments.Any();
 
         private void ChangeMode()
         {
@@ -482,60 +487,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsListVisibile = !this.IsListVisibile;
         }
 
-        private bool ItemCanDown()
-        {
-            if (this.items is null)
-            {
-                return false;
-            }
-
-            return this.currentItemIndex < this.items.Count() - 1;
-        }
-
-        private bool ItemCanUp()
-        {
-            return
-                this.currentItemIndex > 0;
-        }
-
-        private bool ItemCompartmentCanDown()
-        {
-            if (this.itemsCompartments is null)
-            {
-                return false;
-            }
-
-            return
-              this.currentItemCompartmentIndex < this.itemsCompartments.Count() - 1;
-        }
-
-        private bool ItemCompartmentCanUp()
-        {
-            return
-                this.currentItemCompartmentIndex > 0;
-        }
-
         private void OnMissionChanged(MissionChangedEventArgs e)
         {
-            if (ConfigurationManager.AppSettings.GetWmsDataServiceEnabled())
-            {
-                this.IsNewOperationAvailable = !(e.WmsMission is null) && e.WmsMission.Operations.Any(o => o.Id != e.WmsOperation?.Id
-                                                                                &&
-                                                                                o.Status != MissionOperationStatus.Completed);
-                this.RaisePropertyChanged();
-            }
-        }
-
-        private void Reset()
-        {
-            this.currentItemCompartmentIndex = 0;
-            this.currentItemIndex = 0;
-            this.IsListVisibile = false;
-            this.SelectedItemCompartment = null;
-            this.SelectedCompartment = null;
-            this.SelectedItem = null;
-            this.currentLoadingUnitId = this.LoadingUnit?.Id;
-            this.IsNewOperationAvailable = false;
+            this.IsNewOperationAvailable =
+                ConfigurationManager.AppSettings.GetWmsDataServiceEnabled()
+                &&
+                this.MissionOperationsService.ActiveWmsMission != null
+                &&
+                this.MissionOperationsService.ActiveWmsMission.Operations.Any(o =>
+                    o.Status != MissionOperationStatus.Completed
+                    &&
+                    o.Id != this.MissionOperationsService.ActiveWmsOperation?.Id);
         }
 
         private void SelectItemCompartment()
@@ -580,6 +542,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
+        private void SetSelectedItem()
+        {
+            if (this.items?.Any() == true)
+            {
+                this.SelectedItem = this.items.ElementAt(this.currentItemIndex);
+            }
+            else
+            {
+                this.SelectedItem = null;
+            }
+
+            this.RaiseCanExecuteChanged();
+        }
+
         private void SetSelectedItemAndCompartment()
         {
             if (this.selectedItemCompartment is null)
@@ -618,20 +594,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.currentItemCompartmentIndex = this.itemsCompartments.ToList().IndexOf(newSelectedItemCompartment);
                 this.selectedItemCompartment = newSelectedItemCompartment;
                 this.RaisePropertyChanged();
-            }
-
-            this.RaiseCanExecuteChanged();
-        }
-
-        private void SetSelectItem()
-        {
-            if (this.items?.Any() == true)
-            {
-                this.SelectedItem = this.items.ElementAt(this.currentItemIndex);
-            }
-            else
-            {
-                this.SelectedItem = null;
             }
 
             this.RaiseCanExecuteChanged();
