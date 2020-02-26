@@ -749,7 +749,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.EventAggregator
                     .GetEvent<NotificationEventUI<HomingMessageData>>()
                     .Subscribe(
-                        async (m) => await this.OnHomingProcedureStatusChanged(m),
+                        async (m) =>
+                        {
+                            if (this.currentStep == VerticalOffsetCalibrationStep.OriginCalibration)
+                            { await this.OnHomingProcedureStatusChanged(m); }
+                        },
                         ThreadOption.UIThread,
                         false);
         }
