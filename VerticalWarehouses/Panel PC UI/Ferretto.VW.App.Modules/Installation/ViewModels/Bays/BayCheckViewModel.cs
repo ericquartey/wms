@@ -304,6 +304,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             base.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.IsCanStepValue));
+            this.RaisePropertyChanged(nameof(this.BayPositionActive));
 
             this.displacementCommand?.RaiseCanExecuteChanged();
             this.moveToNextCommand?.RaiseCanExecuteChanged();
