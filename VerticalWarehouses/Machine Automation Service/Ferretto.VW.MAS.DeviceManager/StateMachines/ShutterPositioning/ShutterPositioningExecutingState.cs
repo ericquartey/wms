@@ -13,7 +13,6 @@ using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 {
     internal class ShutterPositioningExecutingState : StateBase, IDisposable
@@ -263,6 +262,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                 this.machineData.PositioningMessageData.SpeedRate * directionMultiplier,
                 this.machineData.PositioningMessageData.HighSpeedDurationOpen,
                 this.machineData.PositioningMessageData.HighSpeedDurationClose,
+                this.machineData.PositioningMessageData.HighSpeedHalfDurationOpen,
+                this.machineData.PositioningMessageData.HighSpeedHalfDurationClose,
                 this.machineData.PositioningMessageData.LowerSpeed * directionMultiplier,
                 this.machineData.PositioningMessageData.MovementType);
 
