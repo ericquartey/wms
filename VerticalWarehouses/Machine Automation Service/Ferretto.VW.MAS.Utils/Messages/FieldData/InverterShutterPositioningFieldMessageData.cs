@@ -24,8 +24,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.MovementType = shutterPositioningFieldMessageData.MovementType;
             this.HighSpeedDurationOpen = (int)shutterPositioningFieldMessageData.HighSpeedDurationOpen;
             this.HighSpeedDurationClose = (int)shutterPositioningFieldMessageData.HighSpeedDurationClose;
-            this.HighSpeedHalfDurationOpen = (int)shutterPositioningFieldMessageData.HighSpeedHalfDurationOpen;
-            this.HighSpeedHalfDurationClose = (int)shutterPositioningFieldMessageData.HighSpeedHalfDurationClose;
+            this.HighSpeedHalfDurationOpen = (int?)shutterPositioningFieldMessageData.HighSpeedHalfDurationOpen;
+            this.HighSpeedHalfDurationClose = (int?)shutterPositioningFieldMessageData.HighSpeedHalfDurationClose;
             this.LowerSpeed = (int)shutterPositioningFieldMessageData.LowerSpeed;
         }
 
