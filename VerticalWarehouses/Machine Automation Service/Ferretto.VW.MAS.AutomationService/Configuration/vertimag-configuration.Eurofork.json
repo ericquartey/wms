@@ -211,7 +211,7 @@
                     },
                     "BrakeActivatePercent": 0.0,
                     "BrakeReleaseTime": 0.0,
-                    "ChainOffset": -5.0,
+          			"ChainOffset": -6.5,
                     "EmptyLoadMovement": {
                         "Acceleration": 1500.0,
                         "Deceleration": 1500.0,
