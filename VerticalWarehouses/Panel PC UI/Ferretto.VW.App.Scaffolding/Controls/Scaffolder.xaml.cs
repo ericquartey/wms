@@ -258,7 +258,7 @@ namespace Ferretto.VW.App.Scaffolding.Controls
                 if (value != e.Value && (value?.Equals(e.Value) != true))
                 {
                     Type t = Nullable.GetUnderlyingType(entity.Property.PropertyType) ?? entity.Property.PropertyType;
-                    object safeValue = (value == null) ? null : Convert.ChangeType(e.Value, t, System.Globalization.CultureInfo.CurrentCulture);
+                    object safeValue = (e.Value == null) ? null : Convert.ChangeType(e.Value, t, System.Globalization.CultureInfo.CurrentCulture);
                     entity.Property.SetValue(entity.Instance, safeValue);
 
                     // trigger property change
