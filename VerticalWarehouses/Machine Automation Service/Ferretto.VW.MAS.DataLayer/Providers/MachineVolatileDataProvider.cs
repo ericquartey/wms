@@ -51,6 +51,8 @@ namespace Ferretto.VW.MAS.DataLayer
             this.LoadUnitsToTest = null;
             this.BayTestNumber = BayNumber.None;
 
+            this.ElevatorVerticalPositionOld = null;
+
             if (dataLayerService.IsReady)
             {
                 this.OnDataLayerReady();
@@ -74,6 +76,8 @@ namespace Ferretto.VW.MAS.DataLayer
         public double ElevatorHorizontalPosition { get; set; }
 
         public double ElevatorVerticalPosition { get; set; }
+
+        public double? ElevatorVerticalPositionOld { get; set; }
 
         public int ExecutedCycles { get; set; }
 

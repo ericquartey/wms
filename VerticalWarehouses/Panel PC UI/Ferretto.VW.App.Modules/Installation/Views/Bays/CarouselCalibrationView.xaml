@@ -423,7 +423,7 @@
                                VerticalAlignment="Center"
                                FontSize="{StaticResource FontSize_Very_High}"
                                Foreground="{DynamicResource PpcForeground}"
-                               Text="{Binding CurrentResolution, Mode=OneWay, StringFormat={}{0:F3}}"
+                               Text="{Binding CurrentResolution, Mode=OneWay, StringFormat={}{0:F6}}"
                                TextWrapping="Wrap" />
 
                 </Grid>
