@@ -365,6 +365,9 @@ namespace Ferretto.VW.App.Menu.ViewModels
         {
             try
             {
+                // TODO: Optimize this and next call (make one query to MAS for setup status) - Move everything inside machine service
+                await this.MachineService.GetTuningStatus();
+
                 var status = await this.machineSetupStatusWebService.GetAsync();
 
                 BaySetupStatus bayStatus;
@@ -506,8 +509,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
                         }),
                     });
                 }
-
-                await this.MachineService.GetTuningStatus();
 
                 this.source.Add(new ItemListSetupProcedure()
                 {
