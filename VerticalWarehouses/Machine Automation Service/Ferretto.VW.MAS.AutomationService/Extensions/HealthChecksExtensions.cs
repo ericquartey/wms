@@ -46,7 +46,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
             app.UseHealthChecks("/health/live", new HealthCheckOptions()
             {
-                Predicate = (check) => check.Tags.Contains(LiveHealthCheckTag),
+                Predicate = (check) => check.Tags.Contains(LiveHealthCheckTag) && check.Tags.Contains(ReadyHealthCheckTag),
             });
 
             return app;

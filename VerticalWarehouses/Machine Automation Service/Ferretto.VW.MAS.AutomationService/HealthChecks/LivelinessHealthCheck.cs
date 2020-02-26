@@ -12,9 +12,9 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private readonly IDataLayerService dataLayerService;
 
-        private readonly IDbContextRedundancyService<DataLayerContext> redundancyService;
-
         private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
+
+        private readonly IDbContextRedundancyService<DataLayerContext> redundancyService;
 
         #endregion
 
@@ -54,20 +54,7 @@ namespace Ferretto.VW.MAS.AutomationService
                   HealthCheckResult.Degraded("Standby DB channel is inhibited."));
             }
 
-            if (!this.dataLayerService.IsReady)
-            {
-                return Task.FromResult(
-                    HealthCheckResult.Unhealthy("Datalayer not ready"));
-            }
-
-            if (!this.machineVolatileDataProvider.IsAutomationServiceReady)
-            {
-                return Task.FromResult(
-                    HealthCheckResult.Unhealthy("Automation Service not ready"));
-            }
-
-            return Task.FromResult(
-                HealthCheckResult.Healthy());
+            return Task.FromResult(HealthCheckResult.Healthy());
         }
 
         #endregion
