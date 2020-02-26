@@ -25,6 +25,7 @@ namespace Ferretto.VW.Installer.ViewModels
         private RelayCommand selectBayThreeCommand;
 
         private RelayCommand selectBayTwoCommand;
+
         private string selectedBayInfo;
 
         #endregion
@@ -126,12 +127,6 @@ namespace Ferretto.VW.Installer.ViewModels
             return (this.installationService.MasConfiguration != null);
         }
 
-        private void EvaluateCanNext()
-        {
-            this.canProcede = false;
-            this.RaiseCanExecuteChanged();
-        }
-
         private string GetBayIpaddress(BayNumber number)
         {
             switch (number)
@@ -153,6 +148,7 @@ namespace Ferretto.VW.Installer.ViewModels
         {
             try
             {
+                this.installationService.UpdateMachineRole();
                 this.installationService.SetOperation(OperationMode.Update);
                 this.isSuccessful = true;
             }

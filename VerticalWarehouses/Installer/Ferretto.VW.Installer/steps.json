@@ -47,7 +47,7 @@
       "description": "Ferma il servizio di automazione, in modo da poterlo aggiornare.",
       "script": "Stop-Service \"$(MAS:ServiceName)\"",
       "rollbackScript": "Start-Service \"$(MAS:ServiceName)\"",
-      "machineRole": "master",
+      "machineRole": "Master",
       "setupMode": "update"
       //"script": "timeout /T 2", // ** fake
       //rollbackScript": "timeout /T 2" // ** fake
