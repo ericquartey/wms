@@ -342,9 +342,9 @@
                            Increment="0.5"
                            IsEnabled="{Binding IsCanStepValue}"
                            LabelText="{x:Static res:InstallationApp.StepValue}"
-                           MaxValue="200.0"
-                           MinValue="-200.0" 
-                           Mask="#00.0" />
+                           Mask="#00.0"
+                           MaxValue="265.0"
+                           MinValue="-265.0" />
 
         <controls:PpcButton Grid.Row="6"
                             Grid.Column="1"

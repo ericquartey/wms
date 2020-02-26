@@ -411,6 +411,12 @@
   <data name="ShutterManualParameters_HighSpeedDurationOpen" xml:space="preserve">
     <value>Durata apertura serranda</value>
   </data>
+  <data name="ShutterManualParameters_HighSpeedHalfDurationClose" xml:space="preserve">
+    <value>Durata chiusura a metà serranda</value>
+  </data>
+  <data name="ShutterManualParameters_HighSpeedHalfDurationOpen" xml:space="preserve">
+    <value>Durata apertura a metà serranda</value>
+  </data>
   <data name="ShutterManualParameters_MaxSpeed" xml:space="preserve">
     <value>Velocità massima serranda</value>
   </data>
