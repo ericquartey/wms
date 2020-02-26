@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using System.Windows.Media.TextFormatting;
 using System.Xml;
 using Ferretto.VW.MAS.DataModels;
 using Newtonsoft.Json;
@@ -17,9 +16,9 @@ namespace Ferretto.VW.Installer.Core
     {
         #region Fields
 
-        private const string INSTALLARG = "-install";
+        private const string INSTALLARG = "--install";
 
-        private const string UPDATEARG = "-update";
+        private const string UPDATEARG = "--update";
 
         private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings()
         {
@@ -31,11 +30,7 @@ namespace Ferretto.VW.Installer.Core
 
         private Step activeStep;
 
-        private bool isInstall;
-
         private bool isRollbackInProgress;
-
-        private bool isUpdate;
 
         private VertimagConfiguration masConfiguration;
 
@@ -48,6 +43,17 @@ namespace Ferretto.VW.Installer.Core
         private string panelPcVersion;
 
         private string softwareVersion;
+
+        private SetupMode setupMode;
+
+        private MachineRole machineRole;
+
+        private readonly string fileName;
+
+        public InstallationService(string fileName)
+        {
+            this.fileName = fileName;
+        }
 
         #endregion
 
@@ -65,19 +71,28 @@ namespace Ferretto.VW.Installer.Core
             private set => this.SetProperty(ref this.activeStep, value);
         }
 
-        public bool IsInstall => this.isInstall;
-
         public bool IsRollbackInProgress
         {
             get => this.isRollbackInProgress;
             private set => this.SetProperty(ref this.isRollbackInProgress, value);
         }
 
-        public bool IsUpdate => this.isUpdate;
-
         public VertimagConfiguration MasConfiguration => this.masConfiguration;
 
         public IPAddress MasIpAddress => this.masIpAddress;
+
+        public SetupMode SetupMode
+        {
+            get => this.setupMode;
+            private set => this.SetProperty(ref this.setupMode, value);
+        }
+
+        public MachineRole MachineRole
+        {
+            get => this.machineRole;
+            private set => this.SetProperty(ref this.machineRole, value);
+        }
+
 
         public string MasVersion
         {
@@ -109,22 +124,14 @@ namespace Ferretto.VW.Installer.Core
 
         #region Methods
 
-        public static InstallationService LoadAsync(string fileName)
+        public static InstallationService GetInstance(string fileName)
         {
             if (string.IsNullOrWhiteSpace(fileName))
             {
                 throw new ArgumentException("message", nameof(fileName));
             }
 
-            var stepsJsonFile = File.ReadAllText(fileName);
-
-            var serviceAnon = new { Steps = Array.Empty<Step>() };
-            serviceAnon = JsonConvert.DeserializeAnonymousType(stepsJsonFile, serviceAnon, SerializerSettings);
-
-            return new InstallationService()
-            {
-                Steps = serviceAnon.Steps.OrderBy(s => s.Number).ToArray()
-            };
+            return new InstallationService(fileName);
         }
 
         public void Abort()
@@ -135,7 +142,8 @@ namespace Ferretto.VW.Installer.Core
         public bool CanStart()
         {
             this.SetArgsStartup();
-            if (!(this.isInstall || this.isUpdate))
+
+            if (this.SetupMode == SetupMode.Any)
             {
                 if (this.Steps.FirstOrDefault(s => s.StartTime != null) is null)
                 {
@@ -254,11 +262,11 @@ namespace Ferretto.VW.Installer.Core
             this.LoadPanelPcVersion();
             this.LoadMasVersion();
 
-            if (this.isInstall)
+            if (this.setupMode == SetupMode.Install)
             {
                 this.OperationMode = OperationMode.ImstallType;
             }
-            else if (this.isUpdate)
+            else if (this.setupMode == SetupMode.Update)
             {
                 this.OperationMode = OperationMode.Update;
             }
@@ -342,13 +350,30 @@ namespace Ferretto.VW.Installer.Core
             {
                 if (arg.ToLower(CultureInfo.InvariantCulture) == UPDATEARG)
                 {
-                    this.isUpdate = true;
+                    this.SetupMode = SetupMode.Update;
                 }
                 else if (arg.ToLower(CultureInfo.InvariantCulture) == INSTALLARG)
                 {
-                    this.isInstall = true;
+                    this.SetupMode = SetupMode.Install;
                 }
             }
+        }
+
+        public void UpdateMachineRole()
+        {
+            this.MachineRole = (this.masIpAddress is null) ? MachineRole.Master : MachineRole.Slave;
+            this.LoadSteps();
+        }
+
+        public void LoadSteps()
+        {
+            var stepsJsonFile = File.ReadAllText(this.fileName);
+            var serviceAnon = new { Steps = Array.Empty<Step>() };
+            serviceAnon = JsonConvert.DeserializeAnonymousType(stepsJsonFile, serviceAnon, SerializerSettings);
+            this.Steps = serviceAnon.Steps.Where(s => (s.SetupMode == this.setupMode || s.SetupMode == SetupMode.Any)
+                                                      &&
+                                                      (s.MachineRole == this.machineRole || s.MachineRole == MachineRole.Any))
+                                                      .OrderBy(s => s.Number).ToArray();
         }
 
         #endregion

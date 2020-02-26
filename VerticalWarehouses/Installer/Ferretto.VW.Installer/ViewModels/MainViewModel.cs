@@ -41,17 +41,19 @@ namespace Ferretto.VW.Installer.ViewModels
 
             if (File.Exists("steps-snapshot.json"))
             {
-                this.installationService = InstallationService.LoadAsync("steps-snapshot.json");
+                this.installationService = InstallationService.GetInstance("steps-snapshot.json");
                 //this.installationService = InstallationService.LoadAsync("steps.json");
             }
             else if (File.Exists("steps.json"))
             {
-                this.installationService = InstallationService.LoadAsync("steps.json");
+                this.installationService = InstallationService.GetInstance("steps.json");
             }
             else
             {
                 // no configuration file found
             }
+
+            this.installationService.LoadSteps();
 
             this.installationService.PropertyChanged += this.InstallationService_PropertyChanged;
 
@@ -65,7 +67,7 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private void Close()
         {
-            Application.Current.Shutdown(this.CurrentMode.IsSuccessful ? 0 : -1);
+            Application.Current.Shutdown(this.CurrentMode?.IsSuccessful == true? 0 : -1);
         }
 
         private void InstallationService_PropertyChanged(object sender, PropertyChangedEventArgs e)
