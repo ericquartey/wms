@@ -1188,7 +1188,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var messageData = new StopMessageData(StopRequestReason.Stop);
             this.PublishCommand(
                 messageData,
-                "Stop Command",
+                "Stop Elevator Command",
                 MessageActor.DeviceManager,
                 sender,
                 MessageType.Stop,

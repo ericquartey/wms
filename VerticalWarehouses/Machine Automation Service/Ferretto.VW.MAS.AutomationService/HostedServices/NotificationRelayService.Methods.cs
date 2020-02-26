@@ -126,6 +126,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private async Task OnDataLayerReady(IServiceProvider serviceProvider)
         {
+            this.Logger.LogTrace("OnDataLayerReady start");
             var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
             var bays = baysDataProvider.GetAll();
             foreach (var bay in bays.Where(b => b.Carousel == null))
@@ -142,6 +143,7 @@ namespace Ferretto.VW.MAS.AutomationService
                        "Machine-Id",
                        serviceProvider.GetRequiredService<IMachineProvider>().GetIdentity().ToString(System.Globalization.CultureInfo.InvariantCulture));
             }
+            this.Logger.LogTrace("OnDataLayerReady end");
         }
 
         private async Task OnElevatorPositionChanged(ElevatorPositionMessageData data)

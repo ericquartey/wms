@@ -67,7 +67,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.bayFirstLoadingUnitCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.BayFirstLoadingUnit),
                 () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual &&
+                      (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Test) &&
                       (this.MachineService.IsHoming || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
         public BaySetupStatus BaysSetupStatus { get; private set; }
@@ -75,7 +75,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
         private SetupStepStatus CellPanelsCheck => this.SetupStatusCapabilities?.CellPanelsCheck ?? new SetupStepStatus();
 
         public ICommand CellPanelsCheckCommand =>
-                    this.cellPanelsCheckCommand
+            this.cellPanelsCheckCommand
             ??
             (this.cellPanelsCheckCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.CellPanelsCheck),
@@ -102,7 +102,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
         private SetupStepStatus CellsHeightCheck => this.SetupStatusCapabilities?.CellsHeightCheck ?? new SetupStepStatus();
 
         public ICommand CellsHeightCheckCommand =>
-                            this.cellsHeightCheckCommand
+            this.cellsHeightCheckCommand
             ??
             (this.cellsHeightCheckCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.CellsHeightCheck),
@@ -111,7 +111,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                       (this.CellsHeightCheck.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus()) &&
                       false));
 
-        private SetupStepStatus FirstLoadingUnit => this.BaysSetupStatus?.FirstLoadingUnit ?? new SetupStepStatus();
+        private SetupStepStatus FirstLoadingUnit => this.SetupStatusCapabilities?.LoadFirstDrawerTest ?? new SetupStepStatus();
 
         public bool IsBayFirstLoadingUnitProcedure => this.FirstLoadingUnit.IsCompleted && !this.FirstLoadingUnit.IsBypassed;
 

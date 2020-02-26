@@ -5,17 +5,17 @@
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:converter="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
-            xmlns:modules="clr-namespace:Ferretto.VW.Utils.Modules;assembly=Ferretto.VW.Utils"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:localControls="clr-namespace:Ferretto.VW.App.Modules.Operator.Views"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:modules="clr-namespace:Ferretto.VW.Utils.Modules;assembly=Ferretto.VW.Utils"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
-            ParentModuleName="{ctrls:NameOf Type={x:Type modules:Operator}}"           
-            ParentViewName="{x:Static modules:Operator.OPERATOR_MENU}"
             d:DesignHeight="600"
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
+            ParentModuleName="{ctrls:NameOf Type={x:Type modules:Operator}}"
+            ParentViewName="{x:Static modules:Operator.OPERATOR_MENU}"
             mc:Ignorable="d">
     <Grid Margin="50,30,50,0">
 
@@ -102,13 +102,6 @@
                                     Content="{x:Static resources:OperatorApp.Details}"
                                     Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
-                <controls:PpcButton Grid.Row="4"
-                                    Grid.Column="2"
-                                    Margin="20,0,0,0"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Top"
-                                    Content="{x:Static resources:OperatorApp.DrawerActivityRefillingCapacityMaxAdjust}"
-                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
                 <controls:PpcButton Grid.Row="4"
                                     Grid.Column="2"
