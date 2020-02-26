@@ -62,6 +62,7 @@
                                     Command="{Binding TuningBayCommand}"
                                     Content="{x:Static res:InstallationApp.BayCalibration}"
                                     IsBusy="{Binding IsTuningBay}"
+                                    Style="{StaticResource WizardIntoButton}"
                                     Visibility="{Binding HasCarousel, Converter={StaticResource BTVC}}" />
 
                 <TextBlock Grid.Row="2"
@@ -73,7 +74,7 @@
 
                 <controls:PpcButton Grid.Row="3"
                                     Grid.Column="1"
-                                    Command="{Binding MoveToRunningCalibrationCommand}"
+                                    Command="{Binding StartCalibrationCommand}"
                                     Content="Inizia"
                                     Style="{StaticResource WizardConfirmButton}" />
 
@@ -184,10 +185,18 @@
                             Grid.ColumnSpan="2"
                             HorizontalAlignment="center"
                             VerticalAlignment="center">
+
                     <TextBlock FontSize="30"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                Text="Calibrazione in corso..."
-                               TextWrapping="Wrap" />
+                               TextWrapping="Wrap"
+                               Visibility="{Binding IsExecutingProcedure, Converter={StaticResource BTVC}}" />
+
+                    <TextBlock FontSize="30"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               Text="Arresto in corso..."
+                               TextWrapping="Wrap"
+                               Visibility="{Binding IsExecutingStopInPhase, Converter={StaticResource BTVC}}" />
 
                 </StackPanel>
 
@@ -243,10 +252,10 @@
                                    Height="90"
                                    Margin="0,-5,0,0"
                                    HorizontalAlignment="Center"
-                                   EditValue="{Binding NewErrorValue, StringFormat={}{0:F6}}"
-                                   IsEnabled="False"
+                                   EditValue="{Binding NewErrorValue, StringFormat={}{0:F0}, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                   IsEnabled="{Binding IsCalibrationCompletedOrStopped}"
                                    LabelText="Errore (mm)"
-                                   Mask="###0.000000" />
+                                   MinValue="0" />
                 <RadioButton Grid.Row="3"
                              Margin="0,0,50,0"
                              HorizontalAlignment="Right"
@@ -285,7 +294,7 @@
                                     Margin="0,-15,15,0"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
-                                    Command="{Binding applyCommand}"
+                                    Command="{Binding ApplyCommand}"
                                     Content="Applica correzione"
                                     Style="{DynamicResource WizardIntoButton}" />
 
@@ -302,14 +311,14 @@
                 <controls:PpcButton Grid.Row="6"
                                     Grid.Column="1"
                                     Margin="0,-5,0,0"
-                                    Command="{Binding SaveCommand}"
+                                    Command="{Binding CompleteCommand}"
                                     Content="Concludi"
                                     Style="{StaticResource WizardConfirmButton}" />
 
                 <controls:PpcButton Grid.Row="6"
                                     Grid.Column="0"
                                     Margin="0,-5,0,0"
-                                    Command="{Binding MoveStartCalibrationCommand}"
+                                    Command="{Binding RepeatCalibrationCommand}"
                                     Content="Ripeti"
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
@@ -410,7 +419,7 @@
                                VerticalAlignment="Center"
                                FontSize="{StaticResource FontSize_Very_High}"
                                Foreground="{DynamicResource PpcForeground}"
-                               Text="{Binding CurrentResolution, Mode=OneWay, StringFormat={}{0:F6}}"
+                               Text="{Binding CurrentResolution, Mode=OneWay, StringFormat={}{0:F3}}"
                                TextWrapping="Wrap" />
 
                 </Grid>

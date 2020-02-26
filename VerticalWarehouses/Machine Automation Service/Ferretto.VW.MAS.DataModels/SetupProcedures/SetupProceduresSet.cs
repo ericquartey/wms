@@ -48,7 +48,7 @@
 
         public RepeatedTestProcedure DepositAndPickUpTest { get; set; }
 
-        public SetupProcedure LoadFirstDrawerTest { get; set; }
+        public PositioningProcedure LoadFirstDrawerTest { get; set; }
 
         public SetupProcedure ShutterHeightCheck { get; set; }
 
@@ -58,7 +58,6 @@
 
         public VerticalResolutionCalibrationProcedure VerticalResolutionCalibration { get; set; }
 
-        //public DateTime? CompletedDate { get; set; }
         public SetupProcedure WeightMeasurement { get; set; }
 
         #endregion

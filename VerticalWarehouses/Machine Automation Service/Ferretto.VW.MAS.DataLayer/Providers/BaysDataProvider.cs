@@ -917,6 +917,20 @@ namespace Ferretto.VW.MAS.DataLayer
             this.dataContext.SaveChanges();
         }
 
+        public void UpdateELevatorDistance(BayNumber bayNumber, double distance)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.GetByNumber(bayNumber);
+                if (bay.Carousel != null)
+                {
+                    bay.Carousel.ElevatorDistance = distance;
+                    this.dataContext.AddOrUpdate(bay.Carousel, f => f.Id);
+                    this.dataContext.SaveChanges();
+                }
+            }
+        }
+
         public void UpdateLastIdealPosition(double position, BayNumber bayNumber)
         {
             lock (this.dataContext)

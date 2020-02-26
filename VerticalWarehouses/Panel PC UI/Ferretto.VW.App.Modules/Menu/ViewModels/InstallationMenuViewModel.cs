@@ -116,7 +116,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     {
                         this.IsExecutingProcedure = true;
 
-                        await this.machineSetupStatusWebService.BayFirstLoadingUnitBypassAsync();
+                        await this.machineSetupStatusWebService.LoadFirstDrawerTestBypassAsync();
 
                         await this.UpdateSetupStatusAsync();
                     }
@@ -487,9 +487,9 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 this.source.Add(new ItemListSetupProcedure()
                 {
                     Text = InstallationApp.LoadFirstDrawerPageHeader,
-                    Status = bayStatus.FirstLoadingUnit.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
-                    Bypassable = !bayStatus.FirstLoadingUnit.IsCompleted,
-                    Bypassed = bayStatus.FirstLoadingUnit.IsBypassed,
+                    Status = status.LoadFirstDrawerTest.InProgress ? InstallationStatus.Inprogress : status.LoadFirstDrawerTest.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
+                    Bypassable = !status.LoadFirstDrawerTest.IsCompleted,
+                    Bypassed = status.LoadFirstDrawerTest.IsBypassed,
                     Command = this.BayFirstLoadingUnitBypassCommand,
                 });
 

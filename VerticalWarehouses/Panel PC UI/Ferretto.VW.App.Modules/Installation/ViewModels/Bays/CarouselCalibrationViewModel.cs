@@ -44,9 +44,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand applyCommand;
 
-        private double axisLowerBound;
-
-        private double axisUpperBound;
+        private DelegateCommand completeCommand;
 
         private string completionStatus;
 
@@ -58,21 +56,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private double? cyclesPercent;
 
+        private bool isCalibrationCompletedOrStopped;
+
         private bool isErrorNegative = true;
 
         private bool isErrorPositive = false;
 
         private bool isExecutingProcedure;
 
+        private bool isExecutingStopInPhase;
+
         private bool isTuningBay;
 
         private DateTime lastTime = DateTime.Now;
-
-        private DelegateCommand moveToConfirmAdjustmentCommand;
-
-        private DelegateCommand moveToRunningCalibrationCommand;
-
-        private DelegateCommand moveToStartCalibrationCommand;
 
         private double? newErrorValue;
 
@@ -84,11 +80,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private TimeSpan remainingTime = new TimeSpan();
 
+        private DelegateCommand repeatCalibrationCommand;
+
         private int requiredCycles;
 
         private DelegateCommand resetCyclesCounterCommand;
 
-        private DelegateCommand saveCommand;
+        private int sessionPerformedCycles;
+
+        private DelegateCommand startCalibrationCommand;
+
+        private int startPerformedCycles;
 
         private SubscriptionToken stepChangedToken;
 
@@ -127,24 +129,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.applyCommand
             ??
             (this.applyCommand = new DelegateCommand(
-                async () => await this.ApplyCorrectionAsync()));
+                async () => await this.ApplyCorrectionAsync(), this.CanApply));
 
-        public double AxisLowerBound
-        {
-            get => this.axisLowerBound;
-            set => this.SetProperty(ref this.axisLowerBound, value, this.RaiseCanExecuteChanged);
-        }
-
-        public double AxisUpperBound
-        {
-            get => this.axisUpperBound;
-            set => this.SetProperty(ref this.axisUpperBound, value, this.RaiseCanExecuteChanged);
-        }
+        public ICommand CompleteCommand =>
+            this.completeCommand
+            ??
+            (this.completeCommand = new DelegateCommand(
+                async () => await this.CompleteAsync(), this.CanComplete));
 
         public String CompletionStatus
         {
             get => this.completionStatus;
-            set => this.SetProperty(ref this.completionStatus, value, this.RaiseCanExecuteChanged);
+            set => this.SetProperty(ref this.completionStatus, value);
         }
 
         public double? CurrentDistance
@@ -171,19 +167,30 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.cyclesPercent, value);
         }
 
-        public override EnableMask EnableMask => EnableMask.MachineManualMode | EnableMask.MachinePoweredOn;
+        //public override EnableMask EnableMask => EnableMask.MachineManualMode | EnableMask.MachinePoweredOn;
 
         public string Error => string.Join(
-            this[nameof(this.AxisLowerBound)],
-            this[nameof(this.axisUpperBound)],
             this[nameof(this.CurrentDistance)],
-            this[nameof(this.CurrentResolution)]);
+            this[nameof(this.CurrentResolution)],
+            this[nameof(this.NewErrorValue)]);
 
         public bool HasStepConfirmAdjustment => this.currentStep is CarouselCalibrationStep.ConfirmAdjustment;
 
         public bool HasStepRunningCalibration => this.currentStep is CarouselCalibrationStep.RunningCalibration;
 
         public bool HasStepStartCalibration => this.currentStep is CarouselCalibrationStep.StartCalibration;
+
+        public bool IsCalibrationCompletedOrStopped
+        {
+            get => this.isCalibrationCompletedOrStopped;
+            private set
+            {
+                if (this.SetProperty(ref this.isCalibrationCompletedOrStopped, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
 
         public bool IsErrorNegative
         {
@@ -223,6 +230,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public bool IsExecutingStopInPhase
+        {
+            get => this.isExecutingStopInPhase;
+            private set
+            {
+                if (this.SetProperty(ref this.isExecutingStopInPhase, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public bool IsMoving => (this.MachineService?.MachineStatus?.IsMoving ?? true) || (this.MachineService?.MachineStatus?.IsMovingLoadingUnit ?? true);
 
         public bool IsTuningBay
@@ -231,37 +250,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.isTuningBay, value);
         }
 
-        public ICommand MoveStartCalibrationCommand =>
-            this.moveToStartCalibrationCommand
-            ??
-            (this.moveToStartCalibrationCommand = new DelegateCommand(
-                () => this.CurrentStep = CarouselCalibrationStep.StartCalibration,
-                this.CanToStartCalibration));
-
-        public ICommand MoveToConfirmAdjustmentCommand =>
-                    this.moveToConfirmAdjustmentCommand
-            ??
-            (this.moveToConfirmAdjustmentCommand = new DelegateCommand(
-                () =>
-                {
-                    this.CurrentStep = CarouselCalibrationStep.ConfirmAdjustment;
-                },
-                this.CanToConfirmAdjustment));
-
-        public ICommand MoveToRunningCalibrationCommand =>
-                   this.moveToRunningCalibrationCommand
-           ??
-           (this.moveToRunningCalibrationCommand = new DelegateCommand(
-               () =>
-               {
-                   this.CalibrationCarouselAsync();
-               },
-               this.CanToRunningCalibration));
-
         public double? NewErrorValue
         {
             get => this.newErrorValue;
-            set => this.SetProperty(ref this.newErrorValue, value, this.RaiseCanExecuteChanged);
+            set => this.SetProperty(ref this.newErrorValue, value);
         }
 
         public int PerformedCycles
@@ -282,6 +274,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.remainingTime, value, this.RaiseCanExecuteChanged);
         }
 
+        public ICommand RepeatCalibrationCommand =>
+                                    this.repeatCalibrationCommand
+            ??
+            (this.repeatCalibrationCommand = new DelegateCommand(
+               async () =>
+               {
+                   await this.ResetCyclesCounterAsync();
+                   this.CurrentStep = CarouselCalibrationStep.StartCalibration;
+               },
+                this.CanRepeat));
+
         public int RequiredCycles
         {
             get => this.requiredCycles;
@@ -299,13 +302,39 @@ namespace Ferretto.VW.App.Installation.ViewModels
           ??
           (this.resetCyclesCounterCommand = new DelegateCommand(
               async () => await this.ResetCyclesCounterAsync(),
-              this.CanExecuteResetCyclesCounterCommand));
+              this.CanReset));
 
-        public ICommand SaveCommand =>
-            this.saveCommand
-            ??
-            (this.saveCommand = new DelegateCommand(
-                async () => await this.ApplyCorrectionAsync()));
+        public int SessionPerformedCycles
+        {
+            get => this.sessionPerformedCycles;
+            set
+            {
+                if (this.SetProperty(ref this.sessionPerformedCycles, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public ICommand StartCalibrationCommand =>
+                   this.startCalibrationCommand
+           ??
+           (this.startCalibrationCommand = new DelegateCommand(
+               () =>
+               this.StartCalibrationAsync(),
+               this.CanStartCalibration));
+
+        public int StartPerformedCycles
+        {
+            get => this.startPerformedCycles;
+            set
+            {
+                if (this.SetProperty(ref this.startPerformedCycles, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
 
         public ICommand StopCommand =>
             this.stopCommand
@@ -315,15 +344,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CanStop));
 
         public ICommand StopInPhaseCommand =>
-            this.stopInPhaseCommand
-        ??
-        (this.stopInPhaseCommand = new DelegateCommand(
-            () =>
-            {
-                this.StopInPhaseAsync();
-                this.CurrentStep = CarouselCalibrationStep.StartCalibration;
-            },
-            this.CanToStopInPhase));
+                                                                    this.stopInPhaseCommand
+            ??
+            (this.stopInPhaseCommand = new DelegateCommand(
+                () =>
+                {
+                    this.StopInPhaseAsync();
+                },
+                this.CanStopInPhase));
 
         public ICommand TuningBayCommand =>
             this.tuningBayCommand
@@ -351,118 +379,126 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 switch (columnName)
                 {
-                    //case nameof(this.DestinationPosition1):
-                    //    if (this.CurrentStep == CalibrationStep.FirstMeasured &&
-                    //        !this.IsMoving)
-                    //    {
-                    //        if (!this.DestinationPosition1.HasValue)
-                    //        {
-                    //            this.currentError = InstallationApp.DestinationPositionRequired;
-                    //            this.ShowNotification(this.currentError, NotificationSeverity.Warning);
-                    //            return this.currentError;
-                    //        }
+                    case nameof(this.NewErrorValue):
+                        if (!this.NewErrorValue.HasValue)
+                        {
+                            return "manca il valore";
+                        }
 
-                    //        if (this.DestinationPosition1.Value < 0)
-                    //        {
-                    //            this.currentError = InstallationApp.DestinationPositionMustBePositive;
-                    //            this.ShowNotification(this.currentError, NotificationSeverity.Warning);
-                    //            return this.currentError;
-                    //        }
+                        break;
 
-                    //        if (this.DestinationPosition1.Value < this.axisLowerBound ||
-                    //            this.DestinationPosition1.Value > this.axisUpperBound)
-                    //        {
-                    //            this.currentError = string.Format(InstallationApp.DestinationPositionOutOfRangeAxis, this.AxisLowerBound, this.AxisUpperBound);
-                    //            this.ShowNotification(this.currentError, NotificationSeverity.Warning);
-                    //            return this.currentError;
-                    //        }
-                    //    }
+                        //case nameof(this.DestinationPosition1):
+                        //    if (this.CurrentStep == CalibrationStep.FirstMeasured &&
+                        //        !this.IsMoving)
+                        //    {
+                        //        if (!this.DestinationPosition1.HasValue)
+                        //        {
+                        //            this.currentError = InstallationApp.DestinationPositionRequired;
+                        //            this.ShowNotification(this.currentError, NotificationSeverity.Warning);
+                        //            return this.currentError;
+                        //        }
 
-                    //    break;
+                        //        if (this.DestinationPosition1.Value < 0)
+                        //        {
+                        //            this.currentError = InstallationApp.DestinationPositionMustBePositive;
+                        //            this.ShowNotification(this.currentError, NotificationSeverity.Warning);
+                        //            return this.currentError;
+                        //        }
 
-                    //case nameof(this.MeasuredPosition1):
-                    //    if (this.CurrentStep == CalibrationStep.FirstMeasured &&
-                    //        !this.IsMoving)
-                    //    {
-                    //        if (this.MeasuredPosition1.HasValue &&
-                    //            (this.MeasuredPosition1.Value < this.axisLowerBound ||
-                    //             this.MeasuredPosition1.Value > this.axisUpperBound) &&
-                    //            Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) == Convert.ToInt32(this.DestinationPosition1.Value))
-                    //        {
-                    //            this.currentError = string.Format(InstallationApp.MeasuredPositionOutOfRangeAxis, this.AxisLowerBound, this.AxisUpperBound);
-                    //            this.ShowNotification(this.currentError, NotificationSeverity.Warning);
-                    //            return this.currentError;
-                    //        }
-                    //    }
+                        //        if (this.DestinationPosition1.Value < this.axisLowerBound ||
+                        //            this.DestinationPosition1.Value > this.axisUpperBound)
+                        //        {
+                        //            this.currentError = string.Format(InstallationApp.DestinationPositionOutOfRangeAxis, this.AxisLowerBound, this.AxisUpperBound);
+                        //            this.ShowNotification(this.currentError, NotificationSeverity.Warning);
+                        //            return this.currentError;
+                        //        }
+                        //    }
 
-                    //    break;
+                        //    break;
 
-                    //case nameof(this.StartPosition):
-                    //    if (this.CurrentStep == CalibrationStep.PositionMeter &&
-                    //        !this.IsMoving)
-                    //    {
-                    //        if (this.StartPosition < 0)
-                    //        {
-                    //            this.currentError = InstallationApp.StartPositionMustBePositive;
-                    //            this.ShowNotification(this.currentError, NotificationSeverity.Warning);
-                    //            return this.currentError;
-                    //        }
+                        //case nameof(this.MeasuredPosition1):
+                        //    if (this.CurrentStep == CalibrationStep.FirstMeasured &&
+                        //        !this.IsMoving)
+                        //    {
+                        //        if (this.MeasuredPosition1.HasValue &&
+                        //            (this.MeasuredPosition1.Value < this.axisLowerBound ||
+                        //             this.MeasuredPosition1.Value > this.axisUpperBound) &&
+                        //            Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) == Convert.ToInt32(this.DestinationPosition1.Value))
+                        //        {
+                        //            this.currentError = string.Format(InstallationApp.MeasuredPositionOutOfRangeAxis, this.AxisLowerBound, this.AxisUpperBound);
+                        //            this.ShowNotification(this.currentError, NotificationSeverity.Warning);
+                        //            return this.currentError;
+                        //        }
+                        //    }
 
-                    //        if ((this.StartPosition < this.axisLowerBound ||
-                    //            this.StartPosition > this.axisUpperBound) &&
-                    //            this.axisLowerBound > 0 &&
-                    //            this.axisUpperBound > 0)
-                    //        {
-                    //            this.currentError = string.Format(InstallationApp.StartPositionOutOfRangeAxis, this.AxisLowerBound, this.AxisUpperBound);
-                    //            this.ShowNotification(this.currentError, NotificationSeverity.Warning);
-                    //            return this.currentError;
-                    //        }
-                    //    }
+                        //    break;
 
-                    //    break;
+                        //case nameof(this.StartPosition):
+                        //    if (this.CurrentStep == CalibrationStep.PositionMeter &&
+                        //        !this.IsMoving)
+                        //    {
+                        //        if (this.StartPosition < 0)
+                        //        {
+                        //            this.currentError = InstallationApp.StartPositionMustBePositive;
+                        //            this.ShowNotification(this.currentError, NotificationSeverity.Warning);
+                        //            return this.currentError;
+                        //        }
 
-                    //case nameof(this.MeasuredPosition2):
-                    //case nameof(this.DestinationPosition2):
-                    //    if (this.CurrentStep == CalibrationStep.LastMeasured &&
-                    //        !this.IsMoving)
-                    //    {
-                    //        if (columnName.Equals(nameof(this.DestinationPosition2)))
-                    //        {
-                    //            if (!this.DestinationPosition2.HasValue)
-                    //            {
-                    //                this.currentError = InstallationApp.DestinationPositionRequired;
-                    //                this.ShowNotification(this.currentError, NotificationSeverity.Warning);
-                    //                return this.currentError;
-                    //            }
+                        //        if ((this.StartPosition < this.axisLowerBound ||
+                        //            this.StartPosition > this.axisUpperBound) &&
+                        //            this.axisLowerBound > 0 &&
+                        //            this.axisUpperBound > 0)
+                        //        {
+                        //            this.currentError = string.Format(InstallationApp.StartPositionOutOfRangeAxis, this.AxisLowerBound, this.AxisUpperBound);
+                        //            this.ShowNotification(this.currentError, NotificationSeverity.Warning);
+                        //            return this.currentError;
+                        //        }
+                        //    }
 
-                    //            if (this.DestinationPosition2.Value < 0)
-                    //            {
-                    //                this.currentError = InstallationApp.DestinationPositionMustBePositive;
-                    //                this.ShowNotification(this.currentError, NotificationSeverity.Warning);
-                    //                return this.currentError;
-                    //            }
+                        //    break;
 
-                    //            if (this.DestinationPosition2.Value < this.axisLowerBound ||
-                    //                this.DestinationPosition2.Value > this.axisUpperBound)
-                    //            {
-                    //                this.currentError = string.Format(InstallationApp.DestinationPositionOutOfRangeAxis, this.AxisLowerBound, this.AxisUpperBound);
-                    //                this.ShowNotification(this.currentError, NotificationSeverity.Warning);
-                    //                return this.currentError;
-                    //            }
-                    //        }
+                        //case nameof(this.MeasuredPosition2):
+                        //case nameof(this.DestinationPosition2):
+                        //    if (this.CurrentStep == CalibrationStep.LastMeasured &&
+                        //        !this.IsMoving)
+                        //    {
+                        //        if (columnName.Equals(nameof(this.DestinationPosition2)))
+                        //        {
+                        //            if (!this.DestinationPosition2.HasValue)
+                        //            {
+                        //                this.currentError = InstallationApp.DestinationPositionRequired;
+                        //                this.ShowNotification(this.currentError, NotificationSeverity.Warning);
+                        //                return this.currentError;
+                        //            }
 
-                    //        if (this.MeasuredPosition2.HasValue &&
-                    //            (this.MeasuredPosition2.Value < this.axisLowerBound ||
-                    //             this.MeasuredPosition2.Value > this.axisUpperBound) &&
-                    //            Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) == Convert.ToInt32(this.DestinationPosition2.Value))
-                    //        {
-                    //            this.currentError = string.Format(InstallationApp.MeasuredPositionOutOfRangeAxis, this.AxisLowerBound, this.AxisUpperBound);
-                    //            this.ShowNotification(this.currentError, NotificationSeverity.Warning);
-                    //            return this.currentError;
-                    //        }
-                    //    }
+                        //            if (this.DestinationPosition2.Value < 0)
+                        //            {
+                        //                this.currentError = InstallationApp.DestinationPositionMustBePositive;
+                        //                this.ShowNotification(this.currentError, NotificationSeverity.Warning);
+                        //                return this.currentError;
+                        //            }
 
-                    //    break;
+                        //            if (this.DestinationPosition2.Value < this.axisLowerBound ||
+                        //                this.DestinationPosition2.Value > this.axisUpperBound)
+                        //            {
+                        //                this.currentError = string.Format(InstallationApp.DestinationPositionOutOfRangeAxis, this.AxisLowerBound, this.AxisUpperBound);
+                        //                this.ShowNotification(this.currentError, NotificationSeverity.Warning);
+                        //                return this.currentError;
+                        //            }
+                        //        }
+
+                        //        if (this.MeasuredPosition2.HasValue &&
+                        //            (this.MeasuredPosition2.Value < this.axisLowerBound ||
+                        //             this.MeasuredPosition2.Value > this.axisUpperBound) &&
+                        //            Convert.ToInt32(this.MachineStatus.ElevatorVerticalPosition.Value) == Convert.ToInt32(this.DestinationPosition2.Value))
+                        //        {
+                        //            this.currentError = string.Format(InstallationApp.MeasuredPositionOutOfRangeAxis, this.AxisLowerBound, this.AxisUpperBound);
+                        //            this.ShowNotification(this.currentError, NotificationSeverity.Warning);
+                        //            return this.currentError;
+                        //        }
+                        //    }
+
+                        //    break;
                 }
 
                 if (this.IsVisible /*&& string.IsNullOrEmpty(this.currentError)*/)
@@ -489,6 +525,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.UpdateStatusButtonFooter();
 
+            await this.RetrieveProcedureInformationAsync();
+
+            this.RaiseCanExecuteChanged();
+
             await base.OnAppearedAsync();
         }
 
@@ -500,22 +540,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.RequiredCycles = procedureParameters.RequiredCycles;
                 this.PerformedCycles = procedureParameters.PerformedCycles;
-
-                this.CompletionStatus = "Reset cicli " + this.PerformedCycles.ToString() + " di " + this.RequiredCycles.ToString();
-
-                if (this.oldPerformedCycle == 0)
-                { this.oldPerformedCycle = this.PerformedCycles; }
-                else
-                {
-                    if (this.PerformedCycles > this.oldPerformedCycle)
-                    {
-                        this.oldPerformedCycle = this.PerformedCycles;
-                        var lastCycleTime = DateTime.Now - this.lastTime;
-                        this.lastTime = DateTime.Now;
-
-                        this.RemainingTime = TimeSpan.FromTicks(lastCycleTime.Ticks * (this.RequiredCycles - this.PerformedCycles));
-                    }
-                }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -536,7 +560,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.RetrieveProcedureInformationAsync();
 
                 // devo controllare che non sia cambiata dai parametri o altre baie
-                this.CurrentResolution = await this.machineElevatorWebService.GetVerticalResolutionAsync();
+                this.CurrentResolution = this.MachineService.Bay.Resolution;
+
+                this.CurrentDistance = this.MachineService.Bay.Carousel.ElevatorDistance;
 
                 this.IsExecutingProcedure = this.MachineService.MachineStatus.IsMoving;
 
@@ -599,11 +625,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.stopInPhaseCommand?.RaiseCanExecuteChanged();
             this.resetCyclesCounterCommand?.RaiseCanExecuteChanged();
 
-            this.moveToStartCalibrationCommand?.RaiseCanExecuteChanged();
-            this.moveToRunningCalibrationCommand?.RaiseCanExecuteChanged();
-            this.moveToConfirmAdjustmentCommand?.RaiseCanExecuteChanged();
+            this.repeatCalibrationCommand?.RaiseCanExecuteChanged();
+            this.startCalibrationCommand?.RaiseCanExecuteChanged();
             this.applyCommand?.RaiseCanExecuteChanged();
-            this.saveCommand?.RaiseCanExecuteChanged();
+            this.completeCommand?.RaiseCanExecuteChanged();
+
+            this.RaisePropertyChanged(nameof(this.RemainingTime));
+            this.RaisePropertyChanged(nameof(this.PerformedCycles));
+            this.RaisePropertyChanged(nameof(this.RequiredCycles));
+            this.RaisePropertyChanged(nameof(this.IsExecutingProcedure));
+            this.RaisePropertyChanged(nameof(this.IsExecutingStopInPhase));
+
+            this.RaisePropertyChanged(nameof(this.NewErrorValue));
+
+            this.CompletionStatus = "Reset cicli " + this.PerformedCycles.ToString() + " di " + this.RequiredCycles.ToString();
         }
 
         private async Task ApplyCorrectionAsync()
@@ -614,11 +649,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 var messageBoxResult = this.dialogService.ShowMessage("Vuoi davvero applicare la correzione?", "Calibrazione giostra", DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
+                    var nev = this.NewErrorValue;
+                    var measuredCorrection = this.IsErrorNegative ? -this.NewErrorValue : this.NewErrorValue;
+
+                    var correctionForEachMovement = measuredCorrection / this.SessionPerformedCycles;
+
+                    double newElevatorDistance = (double)correctionForEachMovement + this.MachineService.Bay.Carousel.ElevatorDistance;
+
+                    await this.machineCarouselWebService.UpdateElevatorChainDistanceAsync(newElevatorDistance);
+
+                    await this.MachineService.OnUpdateServiceAsync();
+
+                    this.CurrentDistance = this.MachineService.Bay.Carousel.ElevatorDistance;
+
                     this.ShowNotification(
                             VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated,
                             Services.Models.NotificationSeverity.Success);
-
-                    this.NavigationService.GoBack();
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
@@ -627,30 +673,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             finally
             {
-                this.CurrentStep = CarouselCalibrationStep.StartCalibration;
-                this.IsWaitingForResponse = false;
-            }
-        }
-
-        private async Task CalibrationCarouselAsync()
-        {
-            this.IsWaitingForResponse = true;
-            try
-            {
-                var messageBoxResult = this.dialogService.ShowMessage("Vuoi iniziare la procedura", "Calibrazione giostra", DialogType.Question, DialogButtons.YesNo);
-                if (messageBoxResult == DialogResult.Yes)
-                {
-                    await this.machineCarouselWebService.StartCalibrationAsync();
-                    this.IsExecutingProcedure = true;
-                }
-            }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.CurrentStep = CarouselCalibrationStep.RunningCalibration;
                 this.IsWaitingForResponse = false;
             }
         }
@@ -669,54 +691,45 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    !this.SensorsService.IsLoadingUnitOnElevator;
         }
 
-        private bool CanExecuteResetCyclesCounterCommand()
+        private bool CanComplete()
+        {
+            return this.CanBaseExecute();
+        }
+
+        private bool CanRepeat()
+        {
+            return this.CanBaseExecute();
+        }
+
+        private bool CanReset()
         {
             return
-                   this.PerformedCycles > 0 &&
+                   (this.PerformedCycles > 0) &&
                    !this.IsMoving &&
-                   !this.IsExecutingProcedure &&
-                   string.IsNullOrWhiteSpace(this.Error);
+                   !this.IsExecutingProcedure;
         }
 
-        private bool CanSave()
-        {
-            return this.CanBaseExecute();
-        }
-
-        private bool CanStop()
-        {
-            return
-                this.IsMoving
-                &&
-                !this.IsWaitingForResponse;
-        }
-
-        private bool CanToConfirmAdjustment()
-        {
-            return this.CanBaseExecute();
-        }
-
-        private bool CanToRunningCalibration()
+        private bool CanStartCalibration()
         {
             return !this.IsKeyboardOpened &&
                    !this.IsMoving &&
                    !this.SensorsService.IsHorizontalInconsistentBothLow &&
                    !this.SensorsService.IsHorizontalInconsistentBothHigh &&
-                   !this.SensorsService.IsLoadingUnitOnElevator &&
-                   (this.PerformedCycles < this.RequiredCycles);
+                   !this.SensorsService.IsLoadingUnitOnElevator;
         }
 
-        private bool CanToStartCalibration()
+        private bool CanStop()
         {
-            return this.CanBaseExecute();
+            return
+                this.IsMoving;
         }
 
-        private bool CanToStopInPhase()
+        private bool CanStopInPhase()
         {
             return
                 this.IsMoving
                 &&
-                !this.IsWaitingForResponse;
+                !this.IsWaitingForResponse && !this.IsExecutingStopInPhase;
         }
 
         private bool CanTuneBay()
@@ -728,10 +741,121 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    this.SensorsService.Sensors.ACUBay1S3IND;
         }
 
+        private async Task CompleteAsync()
+        {
+            this.IsWaitingForResponse = true;
+            try
+            {
+                var messageBoxResult = this.dialogService.ShowMessage("Desideri confermare la procedura di calibrazione?", "Calibrazione giostra", DialogType.Question, DialogButtons.YesNo);
+                if (messageBoxResult == DialogResult.Yes)
+                {
+                    this.IsExecutingStopInPhase = false;
+                    this.IsExecutingProcedure = false;
+
+                    await this.machineCarouselWebService.SetCalibrationCompletedAsync();
+
+                    this.ShowNotification(
+                            VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated,
+                            Services.Models.NotificationSeverity.Success);
+                }
+
+                this.NavigationService.GoBack();
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.CurrentStep = CarouselCalibrationStep.StartCalibration;
+                this.IsWaitingForResponse = false;
+            }
+        }
+
         private async void OnPositioningMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
+            if (message.IsNotRunning())
             {
-                await this.RetrieveProcedureInformationAsync();
+                this.IsExecutingProcedure = false;
+            }
+
+            if (message.IsErrored())
+            {
+                this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped, Services.Models.NotificationSeverity.Warning);
+
+                this.IsCalibrationCompletedOrStopped = false;
+                this.NewErrorValue = this.MachineService.Bay.ChainOffset;
+
+                this.IsExecutingProcedure = false;
+            }
+
+            // ad ogni ciclo completato...aggiornamento dati
+            if (message.Status == MessageStatus.OperationExecuting &&
+                message.Data?.MovementMode == MovementMode.BayTest)
+            {
+                // update cycle info
+                if (!this.IsExecutingStopInPhase)
+                {
+                    this.RequiredCycles = message.Data.RequiredCycles;
+                }
+                this.PerformedCycles = message.Data.ExecutedCycles;
+                this.SessionPerformedCycles = this.PerformedCycles - this.StartPerformedCycles;
+
+                this.UpdateRemainingTime();
+            }
+
+            if (message.Status == MessageStatus.OperationEnd &&
+                message.Data?.MovementMode == MovementMode.BayTest)
+            {
+                this.IsExecutingStopInPhase = false;
+
+                this.ShowNotification(VW.App.Resources.InstallationApp.CompletedTest, Services.Models.NotificationSeverity.Success);
+
+                this.PerformedCycles = message.Data.ExecutedCycles;
+                this.SessionPerformedCycles = this.PerformedCycles - this.StartPerformedCycles;
+
+                this.IsCalibrationCompletedOrStopped = true;
+                this.NewErrorValue = 0;
+                this.CurrentStep = CarouselCalibrationStep.ConfirmAdjustment;
+
+                this.IsExecutingProcedure = false;
+
+                this.RaiseCanExecuteChanged();
+            }
+
+            if (message.Status == MessageStatus.OperationStop &&
+                message.Data?.MovementMode == MovementMode.BayTest)
+            {
+                if (message.Data.IsTestStopped)
+                {
+                    this.IsExecutingStopInPhase = false;
+                    this.IsExecutingProcedure = false;
+                    this.ShowNotification("Test stoppato in fase", Services.Models.NotificationSeverity.Success);
+                    this.IsCalibrationCompletedOrStopped = true;
+
+                    this.PerformedCycles = message.Data.ExecutedCycles;
+                    this.SessionPerformedCycles = this.PerformedCycles - this.StartPerformedCycles;
+
+                    this.NewErrorValue = 0;
+                    this.CurrentStep = CarouselCalibrationStep.ConfirmAdjustment;
+
+                    this.RaiseCanExecuteChanged();
+                }
+                else
+                {
+                    this.IsExecutingStopInPhase = false;
+                    this.IsExecutingProcedure = false;
+                    this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped, Services.Models.NotificationSeverity.Warning);
+                    this.PerformedCycles = message.Data.ExecutedCycles;
+                    this.SessionPerformedCycles = this.PerformedCycles - this.StartPerformedCycles;
+
+                    this.IsCalibrationCompletedOrStopped = false;
+                    this.NewErrorValue = 0;
+                    this.CurrentStep = CarouselCalibrationStep.StartCalibration;
+                    this.RaiseCanExecuteChanged();
+                }
+
+                this.IsExecutingProcedure = false;
             }
         }
 
@@ -745,6 +869,44 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     await this.machineCarouselWebService.ResetCalibrationAsync();
+
+                    await this.RetrieveProcedureInformationAsync();
+
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task StartCalibrationAsync()
+        {
+            this.IsWaitingForResponse = true;
+            try
+            {
+                var messageBoxResult = this.dialogService.ShowMessage("Vuoi iniziare la procedura", "Calibrazione giostra", DialogType.Question, DialogButtons.YesNo);
+                if (messageBoxResult == DialogResult.Yes)
+                {
+                    // Update procedure info
+                    this.RetrieveProcedureInformationAsync();
+                    this.StartPerformedCycles = this.PerformedCycles;
+                    this.SessionPerformedCycles = 0;
+
+                    this.oldPerformedCycle = this.PerformedCycles;
+                    this.lastTime = DateTime.Now;
+
+                    this.IsExecutingProcedure = true;
+                    this.RaiseCanExecuteChanged();
+
+                    await this.machineCarouselWebService.StartCalibrationAsync();
+
+                    this.CurrentStep = CarouselCalibrationStep.RunningCalibration;
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
@@ -779,7 +941,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private async Task StopInPhaseAsync()
         {
             this.IsWaitingForResponse = true;
-
+            this.IsExecutingProcedure = false;
+            this.IsExecutingStopInPhase = true;
             try
             {
                 await this.machineCarouselWebService.StopCalibrationAsync();
@@ -824,20 +987,53 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, InstallationApp.BayCalibration, DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
-                    await this.machineCarouselWebService.FindZeroAsync();
                     this.IsTuningBay = true;
+                    await this.machineCarouselWebService.FindZeroAsync();
+
                     this.IsExecutingProcedure = true;
                 }
             }
             catch (Exception ex)
             {
                 this.IsTuningBay = false;
+                this.IsExecutingProcedure = false;
+                this.IsWaitingForResponse = false;
 
                 this.ShowNotification(ex);
             }
             finally
             {
+                this.IsExecutingProcedure = false;
                 this.IsWaitingForResponse = false;
+                this.IsTuningBay = false;
+            }
+        }
+
+        private void UpdateRemainingTime()
+        {
+            try
+            {
+                if ((this.oldPerformedCycle == 0) && (this.PerformedCycles == 0))
+                {; }
+                else
+                {
+                    if (this.PerformedCycles > this.oldPerformedCycle)
+                    {
+                        this.oldPerformedCycle = this.PerformedCycles;
+                        var lastCycleTime = DateTime.Now - this.lastTime;
+                        this.lastTime = DateTime.Now;
+
+                        this.RemainingTime = TimeSpan.FromTicks(lastCycleTime.Ticks * (this.RequiredCycles - this.PerformedCycles));
+                    }
+                }
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -847,7 +1043,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 case CarouselCalibrationStep.StartCalibration:
                     this.ShowPrevStepSinglePage(true, false);
-                    this.ShowNextStepSinglePage(true, this.moveToRunningCalibrationCommand?.CanExecute() ?? false);
+                    //this.ShowNextStepSinglePage(true, this.StartCalibrationCommand?.CanExecute() ?? false);
                     break;
 
                 case CarouselCalibrationStep.RunningCalibration:

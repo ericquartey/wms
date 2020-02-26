@@ -369,6 +369,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 // already initialized
                 return;
             }
+            this.logger.LogTrace("OnDataLayerReady start");
 
             // performance optimization
             this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
@@ -405,6 +406,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 throw new Exception("No main inverter is configured in the system.");
             }
+            this.logger.LogTrace("OnDataLayerReady end");
         }
 
         #endregion

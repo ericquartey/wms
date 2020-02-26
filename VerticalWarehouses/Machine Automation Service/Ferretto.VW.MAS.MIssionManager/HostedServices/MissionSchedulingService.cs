@@ -165,6 +165,10 @@ namespace Ferretto.VW.MAS.MissionManager
                 var missionSchedulingProvider = serviceProvider.GetRequiredService<IMissionSchedulingProvider>();
                 returnValue = missionSchedulingProvider.QueueFirstTestMission(loadUnitId.Value, machineProvider.BayTestNumber, machineProvider.ExecutedCycles, serviceProvider);
             }
+
+            var setupProceduresDataProvider = serviceProvider.GetRequiredService<ISetupProceduresDataProvider>();
+            var setupRecord = setupProceduresDataProvider.GetLoadFirstDrawerTest();
+
             var messageStatus = MessageStatus.OperationExecuting;
             if (!returnValue)
             {
@@ -180,12 +184,12 @@ namespace Ferretto.VW.MAS.MissionManager
                     this.Logger.LogInformation($"First test finished successfully for Load Unit {loadUnitId} on Bay {machineProvider.BayTestNumber}");
                     messageStatus = MessageStatus.OperationEnd;
                 }
-                var setupProceduresDataProvider = serviceProvider.GetRequiredService<ISetupProceduresDataProvider>();
-                setupProceduresDataProvider.MarkAsCompleted(setupProceduresDataProvider.GetBayFirstLoadingUnit(machineProvider.BayTestNumber));
+                setupProceduresDataProvider.MarkAsCompleted(setupRecord);
             }
             else
             {
                 machineProvider.ExecutedCycles++;
+                setupProceduresDataProvider.InProgressProcedure(setupRecord);
             }
 
             var notificationMessage = new NotificationMessage(
@@ -700,11 +704,13 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private async Task OnDataLayerReadyAsync(IServiceProvider serviceProvider)
         {
+            this.Logger.LogTrace("OnDataLayerReady start");
             var loadUnitsDataProvider = serviceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
             loadUnitsDataProvider.UpdateWeightStatistics();
             GetPersistedMissions(serviceProvider, this.EventAggregator);
             this.dataLayerIsReady = true;
             await this.InvokeSchedulerAsync(serviceProvider);
+            this.Logger.LogTrace("OnDataLayerReady end");
         }
 
         private async Task OnHoming(NotificationMessage message, IServiceProvider serviceProvider)

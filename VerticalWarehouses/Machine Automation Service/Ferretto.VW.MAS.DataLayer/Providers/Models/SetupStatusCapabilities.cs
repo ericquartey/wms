@@ -45,6 +45,8 @@
 
         public bool IsComplete { get; set; }
 
+        public SetupStepStatus LoadFirstDrawerTest { get; set; }
+
         public SetupStepStatus VerticalOffsetCalibration { get; set; }
 
         public SetupStepStatus VerticalOriginCalibration { get; set; }

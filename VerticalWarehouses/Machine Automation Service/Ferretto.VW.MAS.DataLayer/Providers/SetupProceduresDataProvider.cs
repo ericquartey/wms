@@ -17,26 +17,23 @@ namespace Ferretto.VW.MAS.DataLayer
             EF.CompileQuery((DataLayerContext context) =>
                 context.SetupProceduresSets.AsNoTracking()
 
-                      .Include(s => s.Bay1CarouselCalibration)
-                        .Include(s => s.Bay1FirstLoadingUnit)
-                         .Include(s => s.Bay1HeightCheck)
-                          .Include(s => s.Bay1Laser)
-                           .Include(s => s.Bay1ProfileCheck)
-                            .Include(s => s.Bay1ShutterTest)
+                    .Include(s => s.Bay1CarouselCalibration)
+                     .Include(s => s.Bay1HeightCheck)
+                      .Include(s => s.Bay1Laser)
+                       .Include(s => s.Bay1ProfileCheck)
+                        .Include(s => s.Bay1ShutterTest)
 
                     .Include(s => s.Bay2CarouselCalibration)
-                        .Include(s => s.Bay2FirstLoadingUnit)
-                         .Include(s => s.Bay2HeightCheck)
-                          .Include(s => s.Bay2Laser)
-                           .Include(s => s.Bay2ProfileCheck)
-                            .Include(s => s.Bay2ShutterTest)
+                     .Include(s => s.Bay2HeightCheck)
+                      .Include(s => s.Bay2Laser)
+                       .Include(s => s.Bay2ProfileCheck)
+                        .Include(s => s.Bay2ShutterTest)
 
                      .Include(s => s.Bay3CarouselCalibration)
-                        .Include(s => s.Bay3FirstLoadingUnit)
-                         .Include(s => s.Bay3HeightCheck)
-                          .Include(s => s.Bay3Laser)
-                           .Include(s => s.Bay3ProfileCheck)
-                            .Include(s => s.Bay3ShutterTest)
+                      .Include(s => s.Bay3HeightCheck)
+                       .Include(s => s.Bay3Laser)
+                        .Include(s => s.Bay3ProfileCheck)
+                         .Include(s => s.Bay3ShutterTest)
 
                     .Include(s => s.BeltBurnishingTest)
                     .Include(s => s.CellPanelsCheck)
@@ -87,16 +84,6 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 return this.dataContext.SetupProceduresSets.AsNoTracking()
                     .Select(s => bayNumber == BayNumber.BayOne ? s.Bay1CarouselCalibration : bayNumber == BayNumber.BayTwo ? s.Bay2CarouselCalibration : s.Bay3CarouselCalibration)
-                    .Single();
-            }
-        }
-
-        public SetupProcedure GetBayFirstLoadingUnit(BayNumber bayNumber)
-        {
-            lock (this.dataContext)
-            {
-                return this.dataContext.SetupProceduresSets.AsNoTracking()
-                    .Select(s => bayNumber == BayNumber.BayOne ? s.Bay1FirstLoadingUnit : bayNumber == BayNumber.BayTwo ? s.Bay2FirstLoadingUnit : s.Bay3FirstLoadingUnit)
                     .Single();
             }
         }
@@ -181,7 +168,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public SetupProcedure GetLoadFirstDrawerTest()
+        public PositioningProcedure GetLoadFirstDrawerTest()
         {
             lock (this.dataContext)
             {
@@ -238,21 +225,18 @@ namespace Ferretto.VW.MAS.DataLayer
             context.AddOrUpdate(setupProceduresSet, (e) => e.Id);
 
             context.AddOrUpdate(setupProceduresSet?.Bay1CarouselCalibration, (e) => e.Id);
-            context.AddOrUpdate(setupProceduresSet?.Bay1FirstLoadingUnit, (e) => e.Id);
             context.AddOrUpdate(setupProceduresSet?.Bay1HeightCheck, (e) => e.Id);
             context.AddOrUpdate(setupProceduresSet?.Bay1Laser, (e) => e.Id);
             context.AddOrUpdate(setupProceduresSet?.Bay1ProfileCheck, (e) => e.Id);
             context.AddOrUpdate(setupProceduresSet?.Bay1ShutterTest, (e) => e.Id);
 
             context.AddOrUpdate(setupProceduresSet?.Bay2CarouselCalibration, (e) => e.Id);
-            context.AddOrUpdate(setupProceduresSet?.Bay2FirstLoadingUnit, (e) => e.Id);
             context.AddOrUpdate(setupProceduresSet?.Bay2HeightCheck, (e) => e.Id);
             context.AddOrUpdate(setupProceduresSet?.Bay2Laser, (e) => e.Id);
             context.AddOrUpdate(setupProceduresSet?.Bay2ProfileCheck, (e) => e.Id);
             context.AddOrUpdate(setupProceduresSet?.Bay2ShutterTest, (e) => e.Id);
 
             context.AddOrUpdate(setupProceduresSet?.Bay3CarouselCalibration, (e) => e.Id);
-            context.AddOrUpdate(setupProceduresSet?.Bay3FirstLoadingUnit, (e) => e.Id);
             context.AddOrUpdate(setupProceduresSet?.Bay3HeightCheck, (e) => e.Id);
             context.AddOrUpdate(setupProceduresSet?.Bay3Laser, (e) => e.Id);
             context.AddOrUpdate(setupProceduresSet?.Bay3ProfileCheck, (e) => e.Id);
@@ -391,21 +375,18 @@ namespace Ferretto.VW.MAS.DataLayer
             dataContext.AddOrUpdate(setupProceduresSet, (e) => e.Id);
 
             dataContext.AddOrUpdate(setupProceduresSet?.Bay1CarouselCalibration, (e) => e.Id);
-            dataContext.AddOrUpdate(setupProceduresSet?.Bay1FirstLoadingUnit, (e) => e.Id);
             dataContext.AddOrUpdate(setupProceduresSet?.Bay1HeightCheck, (e) => e.Id);
             dataContext.AddOrUpdate(setupProceduresSet?.Bay1Laser, (e) => e.Id);
             dataContext.AddOrUpdate(setupProceduresSet?.Bay1ProfileCheck, (e) => e.Id);
             dataContext.AddOrUpdate(setupProceduresSet?.Bay1ShutterTest, (e) => e.Id);
 
             dataContext.AddOrUpdate(setupProceduresSet?.Bay2CarouselCalibration, (e) => e.Id);
-            dataContext.AddOrUpdate(setupProceduresSet?.Bay2FirstLoadingUnit, (e) => e.Id);
             dataContext.AddOrUpdate(setupProceduresSet?.Bay2HeightCheck, (e) => e.Id);
             dataContext.AddOrUpdate(setupProceduresSet?.Bay2Laser, (e) => e.Id);
             dataContext.AddOrUpdate(setupProceduresSet?.Bay2ProfileCheck, (e) => e.Id);
             dataContext.AddOrUpdate(setupProceduresSet?.Bay2ShutterTest, (e) => e.Id);
 
             dataContext.AddOrUpdate(setupProceduresSet?.Bay3CarouselCalibration, (e) => e.Id);
-            dataContext.AddOrUpdate(setupProceduresSet?.Bay3FirstLoadingUnit, (e) => e.Id);
             dataContext.AddOrUpdate(setupProceduresSet?.Bay3HeightCheck, (e) => e.Id);
             dataContext.AddOrUpdate(setupProceduresSet?.Bay3Laser, (e) => e.Id);
             dataContext.AddOrUpdate(setupProceduresSet?.Bay3ProfileCheck, (e) => e.Id);
