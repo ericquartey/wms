@@ -982,6 +982,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 var procedureParameters = this.setupProceduresDataProvider.GetBayHeightCheck(bayNumber);
                 this.setupProceduresDataProvider.MarkAsCompleted(procedureParameters);
 
+                this.dataContext.BayPositions.Update(position);
                 this.dataContext.SaveChanges();
 
                 return this.GetByNumber(bayNumber);

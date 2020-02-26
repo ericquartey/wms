@@ -790,6 +790,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Vertical position has changed after machine start.
+        /// </summary>
+        public static string VerticalPositionChanged {
+            get {
+                return ResourceManager.GetString("VerticalPositionChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The warehouse is full. It is not possible to find any free cell for the Load Unit..
         /// </summary>
         public static string WarehouseIsFull {

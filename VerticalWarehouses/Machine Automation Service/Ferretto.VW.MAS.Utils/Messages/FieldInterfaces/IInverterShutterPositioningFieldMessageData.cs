@@ -10,6 +10,10 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         int HighSpeedDurationOpen { get; set; }
 
+        int? HighSpeedHalfDurationClose { get; set; }
+
+        int? HighSpeedHalfDurationOpen { get; set; }
+
         int LowerSpeed { get; set; }
 
         short MovementDuration { get; set; }

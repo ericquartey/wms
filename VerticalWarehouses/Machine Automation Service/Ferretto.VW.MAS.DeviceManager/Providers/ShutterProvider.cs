@@ -74,6 +74,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 delay: 0,
                 highSpeedDurationOpen: 0,
                 highSpeedDurationClose: 0,
+                highSpeedHalfDurationOpen: null,
+                highSpeedHalfDurationClose: null,
                 lowerSpeed: 0);
 
             this.logger.LogDebug(
@@ -169,6 +171,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 0,
                 parameters.HighSpeedDurationOpen,
                 parameters.HighSpeedDurationClose,
+                parameters.HighSpeedHalfDurationOpen,
+                parameters.HighSpeedHalfDurationClose,
                 lowSpeed);
 
             this.logger.LogDebug(
@@ -233,6 +237,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 delayInMilliseconds,
                 parameters.HighSpeedDurationOpen,
                 parameters.HighSpeedDurationClose,
+                parameters.HighSpeedHalfDurationOpen,
+                parameters.HighSpeedHalfDurationClose,
                 lowSpeed);
 
             this.logger.LogDebug(

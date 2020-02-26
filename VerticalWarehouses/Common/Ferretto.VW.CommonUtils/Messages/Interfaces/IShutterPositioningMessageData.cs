@@ -12,6 +12,10 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         double HighSpeedDurationOpen { get; }
 
+        double? HighSpeedHalfDurationClose { get; }
+
+        double? HighSpeedHalfDurationOpen { get; }
+
         double LowerSpeed { get; }
 
         MovementMode MovementMode { get; set; }

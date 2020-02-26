@@ -27,6 +27,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Unit("s/10")]
             public double HighSpeedDurationOpen { get; set; }
 
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ShutterManualParameters_HighSpeedHalfDurationClose))]
+            [Id(6)]
+            [Unit("s/10")]
+            public double? HighSpeedHalfDurationClose { get; set; }
+
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ShutterManualParameters_HighSpeedHalfDurationOpen))]
+            [Id(7)]
+            [Unit("s/10")]
+            public double? HighSpeedHalfDurationOpen { get; set; }
+
             [ScaffoldColumn(false)]
             public int Id { get; set; }
 
