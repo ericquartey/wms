@@ -76,7 +76,16 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.IoDevices.ToArray();
+                var ioDevices = this.dataContext.IoDevices.ToArray();
+                if (this.dataContext.Machines?.FirstOrDefault()?.Simulation ?? false)
+                {
+                    foreach (var io in ioDevices)
+                    {
+                        io.IpAddress = System.Net.IPAddress.Parse("127.0.0.1");
+                        io.TcpPort += (int)io.Index;
+                    }
+                }
+                return ioDevices;
             }
         }
 
@@ -84,7 +93,18 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Lasers.Include(x => x.Bay).ToArray();
+                var lasers = this.dataContext.Lasers.Include(x => x.Bay).ToArray();
+                if (this.dataContext.Machines?.FirstOrDefault()?.Simulation ?? false)
+                {
+                    int laserId = 0;
+                    foreach (var laser in lasers)
+                    {
+                        laser.IpAddress = System.Net.IPAddress.Parse("127.0.0.1");
+                        laser.TcpPort += laserId;
+                        laserId++;
+                    }
+                }
+                return lasers;
             }
         }
 
@@ -98,6 +118,10 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new EntityNotFoundException((int)index);
                 }
 
+                if (this.dataContext.Machines?.FirstOrDefault()?.Simulation ?? false)
+                {
+                    inverter.IpAddress = System.Net.IPAddress.Parse("127.0.0.1");
+                }
                 return inverter;
             }
         }

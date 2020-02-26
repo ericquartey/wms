@@ -57,6 +57,8 @@ namespace Ferretto.VW.MAS.DataModels
         /// </summary>
         public string SerialNumber { get; set; }
 
+        public bool Simulation { get; set; }
+
         #endregion
 
         #region Methods
