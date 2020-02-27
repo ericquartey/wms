@@ -369,6 +369,8 @@ namespace Ferretto.VW.Installer.Core
 
         public void LoadSteps()
         {
+            try
+            {
             var stepsJsonFile = File.ReadAllText(this.fileName);
             var serviceAnon = new { Steps = Array.Empty<Step>() };
             serviceAnon = JsonConvert.DeserializeAnonymousType(stepsJsonFile, serviceAnon, SerializerSettings);
@@ -376,6 +378,13 @@ namespace Ferretto.VW.Installer.Core
                                                       &&
                                                       (s.MachineRole == this.machineRole || s.MachineRole == MachineRole.Any))
                                                       .OrderBy(s => s.Number).ToArray();
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error(ex, $" Error loading steps {Directory.GetCurrentDirectory()}");
+                throw new InvalidOperationException(
+                                  $"Impossibile continuare, errore durante il caricmento degli steps da \"{Directory.GetCurrentDirectory()}\"");
+            }
         }
 
         #endregion

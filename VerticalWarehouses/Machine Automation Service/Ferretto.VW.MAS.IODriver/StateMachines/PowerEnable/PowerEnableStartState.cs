@@ -1,7 +1,6 @@
 ﻿using Ferretto.VW.MAS.DataModels;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
 {
     internal sealed class PowerEnableStartState : IoStateBase
@@ -62,7 +61,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
         {
             var powerEnableIoMessage = new IoWriteMessage();
 
-            this.Logger.LogTrace($"1:Power Enable ={powerEnableIoMessage}");
+            this.Logger.LogDebug($"1:Power Enable ={powerEnableIoMessage}");
 
             powerEnableIoMessage.PowerEnable = this.enable;
 
