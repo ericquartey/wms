@@ -1746,4 +1746,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="StopProcedure" xml:space="preserve">
     <value>Arresta procedura</value>
   </data>
+  <data name="RaisingsPerformed" xml:space="preserve">
+    <value>Sollevamenti eseguiti</value>
+  </data>
 </root>

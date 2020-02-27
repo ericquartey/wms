@@ -4,7 +4,6 @@ using System.Timers;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 {
     internal sealed class ResetSecurityStartState : IoStateBase, IDisposable
@@ -76,7 +75,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
             resetIoMessage.ResetSecurity = true;
             resetIoMessage.PowerEnable = true;
 
-            this.Logger.LogTrace($"1:Reset Security Pulse={resetIoMessage}");
+            this.Logger.LogDebug($"1:Reset Security Pulse={resetIoMessage}");
 
             lock (this.status)
             {

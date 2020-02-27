@@ -73,9 +73,9 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 
         public override void Start()
         {
-            var switchOnAxisIoMessage = new IoWriteMessage();
+            var switchOnAxisIoMessage = new IoWriteMessage { BayLightOn = this.status.OutputData?[(int)IoPorts.BayLight] ?? false };
 
-            this.Logger.LogTrace($"1:Switch on axis {this.axisToSwitchOn}. IO={switchOnAxisIoMessage}");
+            this.Logger.LogDebug($"1:Switch on axis {this.axisToSwitchOn}. IO={switchOnAxisIoMessage}");
 
             switch (this.axisToSwitchOn)
             {

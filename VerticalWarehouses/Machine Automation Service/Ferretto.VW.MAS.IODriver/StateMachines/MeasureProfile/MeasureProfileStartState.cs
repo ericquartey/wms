@@ -1,7 +1,6 @@
 ﻿using Ferretto.VW.MAS.DataModels;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.IODriver.StateMachines.MeasureProfile
 {
     internal sealed class MeasureProfileStartState : IoStateBase
@@ -62,7 +61,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.MeasureProfile
         {
             var message = new IoWriteMessage(this.status.OutputData);
 
-            this.Logger.LogTrace($"1:Measure Profile ={message}");
+            this.Logger.LogDebug($"1:Measure Profile ={message}");
 
             message.SwitchMeasureProfile(this.enable);
 

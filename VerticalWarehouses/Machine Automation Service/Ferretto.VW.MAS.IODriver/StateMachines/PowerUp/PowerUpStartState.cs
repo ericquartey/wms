@@ -48,6 +48,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
         {
             var message = new IoWriteMessage(this.status.OutputData);
 
+            this.Logger.LogDebug($"1:Power Up ={message}");
+
             this.ParentStateMachine.EnqueueMessage(message);
         }
 
