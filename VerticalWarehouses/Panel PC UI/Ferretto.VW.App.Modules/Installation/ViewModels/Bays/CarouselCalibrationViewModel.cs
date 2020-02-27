@@ -54,6 +54,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private double? cyclesPercent;
 
+        private DateTime firstTime = DateTime.Now;
+
         private bool isCalibrationCompletedOrStopped;
 
         private bool isCalibrationNotCompleted;
@@ -67,9 +69,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isExecutingStopInPhase;
 
         private bool isTuningBay;
-
-        private DateTime lastTime = DateTime.Now;
-
+        
         private double? newErrorValue;
 
         private int oldPerformedCycle = 0;
@@ -753,7 +753,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.SessionPerformedCycles = 0;
 
                     this.oldPerformedCycle = this.PerformedCycles;
-                    this.lastTime = DateTime.Now;
+                    this.firstTime = DateTime.Now;
 
                     this.IsExecutingProcedure = true;
                     this.RaiseCanExecuteChanged();
@@ -875,10 +875,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     if (this.PerformedCycles > this.oldPerformedCycle)
                     {
                         this.oldPerformedCycle = this.PerformedCycles;
-                        var lastCycleTime = DateTime.Now - this.lastTime;
-                        this.lastTime = DateTime.Now;
 
-                        this.RemainingTime = TimeSpan.FromTicks(lastCycleTime.Ticks * (this.RequiredCycles - this.PerformedCycles));
+                        if ((this.PerformedCycles%10)==0)
+                        { 
+                        var totalCycleTime = DateTime.Now - this.firstTime;
+
+                        if (this.PerformedCycles < 0)
+                        { return; }
+
+                        var singleRaisingTicks = totalCycleTime.Ticks / this.PerformedCycles;
+
+                        this.RemainingTime = TimeSpan.FromTicks(singleRaisingTicks * (this.RequiredCycles - this.PerformedCycles));
+                  }
                     }
                 }
             }
