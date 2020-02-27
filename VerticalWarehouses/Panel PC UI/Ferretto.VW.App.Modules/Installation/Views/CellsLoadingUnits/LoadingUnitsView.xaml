@@ -158,9 +158,9 @@
                                Text="Status" />
                     <ComboBox MinHeight="32"
                               Margin="5,4"
-                              IsEnabled="False"
                               FontFamily="{DynamicResource VWAPP_TitleFont}"
                               FontSize="{DynamicResource VWAPP_PpcTextBox_TextBox_FontSize}"
+                              IsEnabled="False"
                               ItemsSource="{Binding Status}"
                               SelectedValue="{Binding SelectedLU.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                               Style="{DynamicResource PpcComboBoxStyle}" />
