@@ -468,13 +468,13 @@
             "Id": 1
         },
         "Height": 7661.0,
-        "LoadUnitMaxHeight": 145, // simulate first load test 395.0,
+    "LoadUnitMaxHeight": 395.0, // 145 to simulate first load test, else 395.0,
         "LoadUnitMaxNetWeight": 800.0,
         "LoadUnitMinHeight": 145.0,
         "LoadUnitTare": 125.0,
         "MaxGrossWeight": 58767.0,
         "ModelName": "VERTIMAG (NEW 2020) 103XL800-GIO-H7645",
-        "Simulation": false,
+        
         "Panels": [
             {
                 "Cells": [
@@ -5450,7 +5450,7 @@
             }
         ],
         "SerialNumber": "MV20-0004",
-    "Simulation": true,
+        "Simulation": true,
         "Id": 1
     },
     "SetupProcedures": {
