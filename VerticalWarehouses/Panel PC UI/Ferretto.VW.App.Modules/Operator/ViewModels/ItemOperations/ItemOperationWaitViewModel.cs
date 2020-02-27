@@ -19,6 +19,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private int loadingUnitsMovements;
 
         private int pendingMissionOperationsCount;
+        private string loadingUnitsInfo;
 
         #endregion
 
@@ -36,20 +37,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public string LoadingUnitsInfo
         {
-            get
+            get => this.loadingUnitsInfo;
+            set => this.SetProperty(ref this.loadingUnitsInfo, value);
+        }
+
+        private string ComputeLoadingUnitInfo()
+        {
+            if (this.loadingUnitsMovements == 0)
             {
-                if (this.loadingUnitsMovements == 0)
-                {
-                    return OperatorApp.NoLoadingUnitsToMove;
-                }
-
-                if (this.loadingUnitsMovements == 1)
-                {
-                    return OperatorApp.LoadingUnitSendToBay;
-                }
-
-                return string.Format(OperatorApp.LoadingUnitsSendToBay, this.loadingUnitsMovements);
+                return OperatorApp.NoLoadingUnitsToMove;
             }
+            else if (this.loadingUnitsMovements == 1)
+            {
+                return OperatorApp.LoadingUnitSendToBay;
+            }
+
+            return string.Format(OperatorApp.LoadingUnitsSendToBay, this.loadingUnitsMovements);
         }
 
         public int PendingMissionOperationsCount
@@ -79,6 +82,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             });
         }
 
+        public override void Disappear()
+        {
+            this.LoadingUnitsInfo = null;
+
+            base.Disappear();
+        }
+
         protected override async Task OnDataRefreshAsync()
         {
             await base.OnDataRefreshAsync();
@@ -90,7 +100,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             var missions = await this.machineMissionsWebService.GetAllAsync();
             this.loadingUnitsMovements = missions.Count(m => m.MissionType == MissionType.OUT || m.MissionType == MissionType.WMS);
-            this.RaisePropertyChanged(nameof(this.LoadingUnitsInfo));
+            this.LoadingUnitsInfo = this.ComputeLoadingUnitInfo();
+
         }
 
         #endregion
