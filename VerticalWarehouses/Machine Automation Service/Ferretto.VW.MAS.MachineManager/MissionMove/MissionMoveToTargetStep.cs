@@ -206,8 +206,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         //check = MachineErrorCode.LoadUnitWeightExceeded;    // TEST
                         if (check == MachineErrorCode.NoError)
                         {
-                            this.BaysDataProvider.Light(this.Mission.TargetBay, false);
-
                             var sourceBay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
                             LoadingUnit lowerUnit = null;
                             if (sourceBay != null

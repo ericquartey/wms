@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
@@ -92,7 +93,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             else
             {
-                var sourceHeight = this.LoadingUnitMovementProvider.GetSourceHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
+                var sourceHeight = this.LoadingUnitMovementProvider.GetSourceHeight(this.Mission, out var sourceBayPositionId, out var sourceCellId);
 
                 if (sourceHeight is null)
                 {
@@ -108,19 +109,31 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                 }
 
-                if (targetCellId != null)
+                if (sourceCellId != null)
                 {
-                    var bay = this.LoadingUnitMovementProvider.GetBayByCell(targetCellId.Value);
+                    var bay = this.LoadingUnitMovementProvider.GetBayByCell(sourceCellId.Value);
                     if (bay != BayNumber.None)
                     {
                         this.Mission.CloseShutterBayNumber = bay;
                     }
                 }
-                else if (this.Mission.RestoreConditions
-                    && targetBayPositionId != null)
+                else if (sourceBayPositionId != null)
                 {
-                    var bay = this.BaysDataProvider.GetByBayPositionId(targetBayPositionId.Value);
-                    this.Mission.CloseShutterBayNumber = bay.Number;
+                    var bay = this.BaysDataProvider.GetByBayPositionId(sourceBayPositionId.Value);
+                    var bayPosition = bay.Positions.First(p => p.Id == sourceBayPositionId.Value);
+                    if (this.MachineVolatileDataProvider.IsBayLightOn.ContainsKey(bay.Number)
+                        && this.MachineVolatileDataProvider.IsBayLightOn[bay.Number]
+                        && (bayPosition.IsUpper
+                            || bay.Positions.FirstOrDefault(p => p.IsUpper)?.LoadingUnit is null)
+                        )
+                    {
+                        this.BaysDataProvider.Light(this.Mission.TargetBay, false);
+                    }
+
+                    if (this.Mission.RestoreConditions)
+                    {
+                        this.Mission.CloseShutterBayNumber = bay.Number;
+                    }
                 }
 
                 if (this.Mission.NeedHomingAxis == Axis.Horizontal)
@@ -137,8 +150,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         MessageActor.MachineManager,
                         this.Mission.TargetBay,
                         this.Mission.RestoreConditions,
-                        targetBayPositionId,
-                        targetCellId);
+                        sourceBayPositionId,
+                        sourceCellId);
                 }
             }
             this.Mission.Status = MissionStatus.Executing;
