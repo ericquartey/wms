@@ -7,6 +7,8 @@ namespace Ferretto.VW.Installer
     {
         #region Fields
         
+        private const string InstallRootPath = "Install:Root:Path";
+
         private const string UpdateTempPath = "Update:Temp:Path";
 
         private const string InstallBay1Ipaddress = "Install:Bay1:Ipaddress";
@@ -19,11 +21,28 @@ namespace Ferretto.VW.Installer
 
         private const string InstallDefaultMasIpportName = "Install:Default:MasIpport";
 
-        private const string InstallMasPathName = "Install:MAS:Path";
+        private const string InstallMasPath = "Install:MAS:Path";
 
         #endregion
 
-        #region Methods        
+        #region Methods
+        public static string GetInstallRootPath(this NameValueCollection appSettings)
+        {
+            if (appSettings is null)
+            {
+                throw new ArgumentNullException(nameof(appSettings));
+            }
+
+            try
+            {
+                return appSettings.Get(InstallRootPath);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"The configuration key '{InstallRootPath}' is not specified or invalid.", ex);
+            }
+        }
+
         public static string GetUpdateTempPath(this NameValueCollection appSettings)
         {
             if (appSettings is null)
@@ -126,7 +145,7 @@ namespace Ferretto.VW.Installer
             }
         }
 
-        public static string GetInstallMasPathName(this NameValueCollection appSettings)
+        public static string GetInstallMasPath(this NameValueCollection appSettings)
         {
             if (appSettings is null)
             {
@@ -135,11 +154,11 @@ namespace Ferretto.VW.Installer
 
             try
             {
-                return appSettings.Get(InstallMasPathName);
+                return appSettings.Get(InstallMasPath);
             }
             catch (Exception ex)
             {
-                throw new Exception($"The configuration key '{InstallMasPathName}' is not specified or invalid.", ex);
+                throw new Exception($"The configuration key '{InstallMasPath}' is not specified or invalid.", ex);
             }
         }
 

@@ -165,6 +165,12 @@ namespace Ferretto.VW.Installer.ViewModels
                 }
 
                 this.isMasConfigurationValid = this.LoadConfiguration(fileContents);
+
+                if (this.isMasConfigurationValid)
+                {
+                    var configurationFilepath = $"{ConfigurationManager.AppSettings.GetUpdateTempPath()}\\{ConfigurationManager.AppSettings.GetInstallMasPath()}\\Configuration\\vertimag-configuration.json";
+                    File.WriteAllText(configurationFilepath, fileContents);
+                }
             }
 
             await this.EvaluateCanNextAsync();
@@ -308,7 +314,7 @@ namespace Ferretto.VW.Installer.ViewModels
                 settings.Converters.Add(new IPAddressConverter());
 
                 this.masConfiguration = JsonConvert.DeserializeObject<VertimagConfiguration>(jsonObject.ToString(), settings);
-                this.masConfiguration.Validate();
+                this.masConfiguration.Validate();                
 
                 return !(this.masConfiguration is null);
             }
