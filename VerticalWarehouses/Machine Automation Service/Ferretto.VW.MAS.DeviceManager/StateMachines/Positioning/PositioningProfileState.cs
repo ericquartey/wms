@@ -10,8 +10,6 @@ using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-
-
 namespace Ferretto.VW.MAS.DeviceManager.Positioning
 {
     internal class PositioningProfileState : StateBase
@@ -19,6 +17,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         #region Fields
 
         private const int MAX_RETRIES = 3;
+
+        private const double tolerance = 2.5;
 
         private readonly IBaysDataProvider baysDataProvider;
 
@@ -81,10 +81,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         {
                             var profileHeight = this.baysDataProvider.ConvertProfileToHeight(data.Profile, this.machineData.MessageData.SourceBayPositionId.Value);
                             this.Logger.LogInformation($"Height measured {profileHeight}mm. Profile {data.Profile / 100.0}%");
-                            if (profileHeight < this.minHeight
+                            if ((profileHeight < this.minHeight - tolerance)
                                 || data.Profile > 10000
-                                || profileHeight < this.machineConfiguration.LoadUnitMinHeight
-                                || profileHeight > this.machineConfiguration.LoadUnitMaxHeight
+                                || (profileHeight < this.machineConfiguration.LoadUnitMinHeight - tolerance)
+                                || (profileHeight > this.machineConfiguration.LoadUnitMaxHeight + tolerance)
                                 )
                             {
                                 this.Logger.LogError($"Measure Profile error {profileHeight}! min height {this.machineConfiguration.LoadUnitMinHeight}, max height {this.machineConfiguration.LoadUnitMaxHeight}");
