@@ -33,6 +33,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
     {
         #region Fields
 
+        private readonly Services.IDialogService dialogService;
+
         private readonly IMachineIdentityWebService machineIdentityWebService;
 
         private readonly IMachineService machineService;
@@ -70,11 +72,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
         public InstallationMenuViewModel(
             IMachineSetupStatusWebService machineSetupStatusWebService,
             IMachineService machineService,
+            IDialogService dialogService,
             IMachineIdentityWebService machineIdentityWebService)
            : base()
         {
             this.machineSetupStatusWebService = machineSetupStatusWebService ?? throw new ArgumentNullException(nameof(machineSetupStatusWebService));
             this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
+            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
         }
 
@@ -92,9 +96,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 {
                     this.IsExecutingProcedure = true;
 
-                    await this.machineSetupStatusWebService.BayCarouselCalibrationBypassAsync();
+                    var messageBoxResult = this.dialogService.ShowMessage("Confermi di voler bypassare l'esecuzione di questo test?", "Calibrazione giostra", DialogType.Question, DialogButtons.YesNo);
+                    if (messageBoxResult == DialogResult.Yes)
+                    {
+                        await this.machineSetupStatusWebService.BayCarouselCalibrationBypassAsync();
 
-                    await this.UpdateSetupStatusAsync();
+                        await this.UpdateSetupStatusAsync();
+                    }
                 }
                 catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
                 {
@@ -115,10 +123,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     try
                     {
                         this.IsExecutingProcedure = true;
+                        var messageBoxResult = this.dialogService.ShowMessage("Confermi di voler bypassare l'esecuzione di questo test?", InstallationApp.LoadFirstDrawerPageHeader, DialogType.Question, DialogButtons.YesNo);
+                        if (messageBoxResult == DialogResult.Yes)
+                        {
+                            await this.machineSetupStatusWebService.LoadFirstDrawerTestBypassAsync();
 
-                        await this.machineSetupStatusWebService.LoadFirstDrawerTestBypassAsync();
-
-                        await this.UpdateSetupStatusAsync();
+                            await this.UpdateSetupStatusAsync();
+                        }
                     }
                     catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
                     {
@@ -140,9 +151,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     {
                         this.IsExecutingProcedure = true;
 
-                        await this.machineSetupStatusWebService.BayHeightCheckBypassAsync();
+                        var messageBoxResult = this.dialogService.ShowMessage("Confermi di voler bypassare l'esecuzione di questo test?", InstallationApp.BayHeightCheck, DialogType.Question, DialogButtons.YesNo);
+                        if (messageBoxResult == DialogResult.Yes)
+                        {
+                            await this.machineSetupStatusWebService.BayHeightCheckBypassAsync();
 
-                        await this.UpdateSetupStatusAsync();
+                            await this.UpdateSetupStatusAsync();
+                        }
                     }
                     catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
                     {
@@ -163,10 +178,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     try
                     {
                         this.IsExecutingProcedure = true;
+                        var messageBoxResult = this.dialogService.ShowMessage("Confermi di voler bypassare l'esecuzione di questo test?", InstallationApp.BarrierCalibration, DialogType.Question, DialogButtons.YesNo);
+                        if (messageBoxResult == DialogResult.Yes)
+                        {
+                            await this.machineSetupStatusWebService.BayProfileCheckBypassAsync();
 
-                        await this.machineSetupStatusWebService.BayProfileCheckBypassAsync();
-
-                        await this.UpdateSetupStatusAsync();
+                            await this.UpdateSetupStatusAsync();
+                        }
                     }
                     catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
                     {
@@ -187,10 +205,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     try
                     {
                         this.IsExecutingProcedure = true;
+                        var messageBoxResult = this.dialogService.ShowMessage("Confermi di voler bypassare l'esecuzione di questo test?", "Test serranda", DialogType.Question, DialogButtons.YesNo);
+                        if (messageBoxResult == DialogResult.Yes)
+                        {
+                            await this.machineSetupStatusWebService.BayShutterTestBypassAsync();
 
-                        await this.machineSetupStatusWebService.BayShutterTestBypassAsync();
-
-                        await this.UpdateSetupStatusAsync();
+                            await this.UpdateSetupStatusAsync();
+                        }
                     }
                     catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
                     {
@@ -211,10 +232,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     try
                     {
                         this.IsExecutingProcedure = true;
+                        var messageBoxResult = this.dialogService.ShowMessage("Confermi di voler bypassare l'esecuzione di questo test?", InstallationApp.BeltBurnishing, DialogType.Question, DialogButtons.YesNo);
+                        if (messageBoxResult == DialogResult.Yes)
+                        {
+                            await this.machineSetupStatusWebService.BeltBurnishingTestBypassAsync();
 
-                        await this.machineSetupStatusWebService.BeltBurnishingTestBypassAsync();
-
-                        await this.UpdateSetupStatusAsync();
+                            await this.UpdateSetupStatusAsync();
+                        }
                     }
                     catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
                     {
@@ -235,10 +259,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     try
                     {
                         this.IsExecutingProcedure = true;
+                        var messageBoxResult = this.dialogService.ShowMessage("Confermi di voler bypassare l'esecuzione di questo test?", InstallationApp.CellsControl, DialogType.Question, DialogButtons.YesNo);
+                        if (messageBoxResult == DialogResult.Yes)
+                        {
+                            await this.machineSetupStatusWebService.CellsPanelCheckBypassAsync();
 
-                        await this.machineSetupStatusWebService.CellsPanelCheckBypassAsync();
-
-                        await this.UpdateSetupStatusAsync();
+                            await this.UpdateSetupStatusAsync();
+                        }
                     }
                     catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
                     {
@@ -350,14 +377,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
         {
             base.RaiseCanExecuteChanged();
 
-            //this.bayCarouselCalibrationBypassCommand?.RaiseCanExecuteChanged();
-            //this.bayFirstLoadingUnitBypassCommand?.RaiseCanExecuteChanged();
-            //this.bayHeightCheckBypassCommand?.RaiseCanExecuteChanged();
-            //this.bayProfileCheckBypassCommand?.RaiseCanExecuteChanged();
-            //this.bayShutterTestBypassCommand?.RaiseCanExecuteChanged();
-            //this.beltBurnishingTestBypassCommand?.RaiseCanExecuteChanged();
-            //this.cellsPanelCheckBypassCommand?.RaiseCanExecuteChanged();
-
             this.RaisePropertyChanged(nameof(this.Source));
         }
 
@@ -391,7 +410,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
                 var activeOtherBaysNumber = this.MachineService.Bays.Where(b => b.Number != this.MachineService.Bay.Number && b.Number != BayNumber.ElevatorBay).Select(b => b.Number);
 
-                List<BaySetupStatus> activeOtherBaysStatus = new List<BaySetupStatus>();
                 bool otherBaysSetupCompleted = true;
                 foreach (BayNumber bayNumber in activeOtherBaysNumber)
                 {
