@@ -3,7 +3,7 @@
                     xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls"
                     xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Styles"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
-    <ControlTemplate x:Key="ComboBoxToggleButton"
+    <ControlTemplate x:Key="FlatComboBoxToggleButton"
                      TargetType="{x:Type ToggleButton}">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -15,7 +15,7 @@
                     Background="{x:Null}"
                     BorderBrush="{DynamicResource PpcBorderBrush}"
                     BorderThickness="0,0,0,1"
-                    CornerRadius="2" />
+                    CornerRadius="2,0,0,2" />
             <Border Grid.Column="0"
                     Margin="1"
                     Background="{x:Null}"
@@ -45,6 +45,51 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
+    <ControlTemplate x:Key="ComboBoxToggleButton"
+                     TargetType="{x:Type ToggleButton}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Border x:Name="Border"
+                    Grid.ColumnSpan="2"
+                    Background="{x:Null}"
+                    BorderBrush="{DynamicResource PpcBorderBrush}"
+                    BorderThickness="1" />
+            <Border x:Name="Body"
+                    Grid.Column="0"
+                    Margin="1"
+                    Background="{x:Null}"
+                    BorderBrush="{x:Null}"
+                    BorderThickness="0" />
+            <Path x:Name="Arrow"
+                  Grid.Column="1"
+                  Margin="0,0,5,0"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  Data="M 4 4 L 14 14 L 24 4 Z"
+                  Fill="{DynamicResource PpcBorderBrush}" />
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="ToggleButton.IsMouseOver" Value="true">
+                <Setter TargetName="Border" Property="Background" Value="#808080" />
+            </Trigger>
+            <Trigger Property="ToggleButton.IsChecked" Value="true">
+                <Setter TargetName="Border" Property="Background" Value="#E0E0E0" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
+                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
+                <Setter TargetName="Border" Property="BorderThickness" Value="2" />
+                <Setter TargetName="Arrow" Property="Visibility" Value="Collapsed" />
+                <Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource PpcButtonForegroundDisabled}" />
+                <Setter TargetName="Body" Property="Grid.ColumnSpan" Value="2" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
     <ControlTemplate x:Key="ComboBoxTextBox"
                      TargetType="{x:Type TextBox}">
         <Border x:Name="PART_ContentHost"
@@ -70,7 +115,7 @@
                                       ClickMode="Press"
                                       Focusable="false"
                                       IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                      Template="{StaticResource ComboBoxToggleButton}" />
+                                      Template="{StaticResource FlatComboBoxToggleButton}" />
                         <ContentPresenter Name="ContentSite"
                                           Margin="3,3,23,3"
                                           HorizontalAlignment="Left"
@@ -166,6 +211,7 @@
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Foreground" Value="{DynamicResource FerrettoLightGray}" />
+                            <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
@@ -194,9 +240,9 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBox">
-                    <Grid>
+                    <Grid Name="Grid">
+
                         <ToggleButton Name="ToggleButton"
-                                      Grid.Column="2"
                                       HorizontalAlignment="Stretch"
                                       Background="{TemplateBinding Background}"
                                       BorderBrush="{TemplateBinding BorderBrush}"
@@ -205,14 +251,15 @@
                                       Foreground="{TemplateBinding Foreground}"
                                       IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                                       Template="{StaticResource ComboBoxToggleButton}" />
+
                         <ContentPresenter Name="ContentSite"
-                                          Margin="10,3,30,3"
                                           HorizontalAlignment="Left"
                                           VerticalAlignment="Center"
                                           Content="{TemplateBinding SelectionBoxItem}"
                                           ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
                                           ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
                                           IsHitTestVisible="False" />
+
                         <TextBox x:Name="PART_EditableTextBox"
                                  Margin="0"
                                  HorizontalAlignment="Center"
@@ -222,6 +269,7 @@
                                  Style="{x:Null}"
                                  Template="{StaticResource ComboBoxTextBox}"
                                  Visibility="Hidden" />
+
                         <Popup Name="Popup"
                                AllowsTransparency="True"
                                Focusable="False"
@@ -248,12 +296,6 @@
                         <Trigger Property="HasItems" Value="false">
                             <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95" />
                         </Trigger>
-                        <Trigger SourceName="ToggleButton" Property="ToggleButton.IsMouseOver" Value="True">
-                            <Setter TargetName="ContentSite" Property="Margin" Value="10,3,30,3" />
-                        </Trigger>
-                        <Trigger SourceName="ToggleButton" Property="ToggleButton.IsChecked" Value="True">
-                            <Setter TargetName="ContentSite" Property="Margin" Value="10,3,30,3" />
-                        </Trigger>
                         <Trigger Property="IsGrouping" Value="true">
                             <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
                         </Trigger>
@@ -265,6 +307,13 @@
                             <Setter Property="IsTabStop" Value="false" />
                             <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible" />
                             <Setter TargetName="ContentSite" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="ContentSite" Property="Margin" Value="5,3,30,3" />
+                        </Trigger>
+                        <Trigger Property="IsEditable" Value="false">
+                            <Setter Property="IsTabStop" Value="true" />
+                            <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="ContentSite" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="ContentSite" Property="Margin" Value="5,3" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

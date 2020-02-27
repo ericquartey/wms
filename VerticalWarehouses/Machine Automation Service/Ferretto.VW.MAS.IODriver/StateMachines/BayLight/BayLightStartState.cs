@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Ferretto.VW.MAS.DataModels;
+﻿using Ferretto.VW.MAS.DataModels;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.IODriver.StateMachines.BayLight
@@ -61,7 +58,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.BayLight
             var message = new IoWriteMessage(this.status.OutputData);
             message.SwitchBayLight(this.enable);
 
-            this.Logger.LogTrace($"1:BayLight ={message.BayLightOn}");
+            this.Logger.LogDebug($"1:BayLight ={message}, enable {this.enable}");
 
             lock (this.status)
             {

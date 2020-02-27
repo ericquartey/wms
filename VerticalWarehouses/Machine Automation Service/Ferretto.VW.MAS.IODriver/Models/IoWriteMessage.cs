@@ -89,7 +89,11 @@ namespace Ferretto.VW.MAS.IODriver
 
         #region Properties
 
-        public bool BayLightOn => this.outputs?[(int)IoPorts.BayLight] ?? false;
+        public bool BayLightOn
+        {
+            get => this.outputs?[(int)IoPorts.BayLight] ?? false;
+            set => this.outputs[(int)IoPorts.BayLight] = value;
+        }
 
         public ShdCodeOperation CodeOperation => this.codeOperation;
 

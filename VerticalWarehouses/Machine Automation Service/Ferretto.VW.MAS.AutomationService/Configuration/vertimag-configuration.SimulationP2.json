@@ -5882,12 +5882,16 @@
     "Bay3ProfileCheck": {
     },
     "Bay1CarouselCalibration": {
-      "RequiredCycles": 200,
-      "FeedRate": 0.2
+      "RequiredCycles": 600,
+      "FeedRate": 0.9
     },
     "Bay2CarouselCalibration": {
+      "RequiredCycles": 600,
+      "FeedRate": 0.9
     },
     "Bay3CarouselCalibration": {
+      "RequiredCycles": 600,
+      "FeedRate": 0.9
     },
     "Bay1FirstLoadingUnit": {
     },

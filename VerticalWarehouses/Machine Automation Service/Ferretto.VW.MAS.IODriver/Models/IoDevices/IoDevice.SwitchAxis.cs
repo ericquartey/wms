@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS.IODriver
                                 this.eventAggregator,
                                 this.logger);
 
-                            this.logger.LogDebug("3:Method Start State Machine");
+                            this.logger.LogTrace("3:Method Start State Machine");
 
                             this.CurrentStateMachine.Start();
                         }

@@ -2,7 +2,6 @@
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 {
     internal sealed class SwitchAxisStartState : IoStateBase
@@ -62,7 +61,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 
         public override void Start()
         {
-            var switchOffAxisIoMessage = new IoWriteMessage { PowerEnable = true };
+            var switchOffAxisIoMessage = new IoWriteMessage { PowerEnable = true, BayLightOn = this.status.OutputData?[(int)IoPorts.BayLight] ?? false };
 
             this.Logger.LogDebug($"1:Switch axis start {this.axisToSwitchOn}. IO={switchOffAxisIoMessage}");
 

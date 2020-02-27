@@ -56,7 +56,7 @@ namespace Ferretto.VW.MAS.MachineManager
 
                         var machineVolatileDataProvider = serviceProvider.GetRequiredService<IMachineVolatileDataProvider>();
                         machineVolatileDataProvider.IsAutomationServiceReady = true;
-                        this.Logger.LogTrace("Machine Automation Service ready");
+                        this.Logger.LogInformation("Machine Automation Service ready");
                     }
                     break;
 

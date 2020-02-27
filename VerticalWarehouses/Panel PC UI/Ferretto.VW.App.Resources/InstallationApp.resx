@@ -1819,4 +1819,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="StopProcedure" xml:space="preserve">
     <value>Stop Procedure</value>
   </data>
+  <data name="RaisingsPerformed" xml:space="preserve">
+    <value>Raisings Performed</value>
+  </data>
 </root>

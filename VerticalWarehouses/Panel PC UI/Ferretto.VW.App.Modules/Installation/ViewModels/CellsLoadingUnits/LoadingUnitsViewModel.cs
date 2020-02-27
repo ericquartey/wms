@@ -24,7 +24,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
+        private readonly ISessionService sessionService;
+
         private string currentError;
+
+        private bool error = false;
 
         private DelegateCommand freeDrawerCommand;
 
@@ -54,11 +58,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public LoadingUnitsViewModel(
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-            IHealthProbeService healthProbeService)
+            IHealthProbeService healthProbeService,
+            ISessionService sessionService)
             : base(PresentationMode.Installer)
         {
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
         }
 
         #endregion
@@ -103,6 +109,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsDrawerReturnVisible => !this.IsMoving && this.SensorsService.IsLoadingUnitInBay;
 
+        public bool IsEditStatus => this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
+
         public bool IsEnabledEditing => !this.IsMoving;
 
         public IEnumerable<LoadingUnit> LoadingUnits => this.MachineService.Loadunits;
@@ -144,6 +152,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.SelectedCode = this.SelectedLU?.Code;
             });
         }
+
+        public IEnumerable<LoadingUnitStatus> Status => Enum.GetValues(typeof(LoadingUnitStatus)).OfType<LoadingUnitStatus>().ToList();
 
         public ICommand StopMovingCommand =>
             this.stopMovingCommand
@@ -253,6 +263,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.IsDrawerCallVisible));
             this.RaisePropertyChanged(nameof(this.LoadingUnits));
             this.RaisePropertyChanged(nameof(this.IsEnabledEditing));
+            this.RaisePropertyChanged(nameof(this.Status));
+            this.RaisePropertyChanged(nameof(this.IsEditStatus));
         }
 
         private async Task FreeDrawer()
@@ -298,8 +310,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.ShowNotification(ex);
             }
         }
-
-        private bool error = false;
 
         private async Task SaveDrawer()
         {

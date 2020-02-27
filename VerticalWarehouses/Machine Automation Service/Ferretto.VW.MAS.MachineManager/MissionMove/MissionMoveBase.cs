@@ -229,7 +229,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             IMissionMoveBase newStep;
             if (bayShutter)
             {
-                this.BaysDataProvider.Light(this.Mission.TargetBay, true);
                 newStep = new MissionMoveCloseShutterStep(this.Mission, this.ServiceProvider, this.EventAggregator);
             }
             else
