@@ -77,8 +77,10 @@ namespace Ferretto.VW.Installer.Core
             private set => this.SetProperty(ref this.isRollbackInProgress, value);
         }
 
+        [JsonIgnore]
         public VertimagConfiguration MasConfiguration => this.masConfiguration;
 
+        [JsonIgnore]
         public IPAddress MasIpAddress => this.masIpAddress;
 
         public SetupMode SetupMode
@@ -258,7 +260,7 @@ namespace Ferretto.VW.Installer.Core
 
         public void Start()
         {
-            this.LoadMasVersion();
+            this.LoadSoftwareVersion();
             this.LoadPanelPcVersion();
             this.LoadMasVersion();
 
@@ -323,7 +325,7 @@ namespace Ferretto.VW.Installer.Core
         }
 
         private void LoadSoftwareVersion()
-        {
+        {            
             this.SoftwareVersion = this.GetVersion("./properties/app.manifest");
         }
 

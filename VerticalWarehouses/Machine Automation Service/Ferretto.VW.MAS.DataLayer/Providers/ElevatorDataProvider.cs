@@ -154,6 +154,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Methods
 
+        public void CompleteProcedure()
+        {
+            lock (this.dataContext)
+            {
+                var procedureParameters = this.setupProceduresDataProvider.GetVerticalOffsetCalibration();
+                this.setupProceduresDataProvider.MarkAsCompleted(procedureParameters);
+            }
+        }
+
         public ElevatorAxisManualParameters GetAssistedMovementsAxis(Orientation orientation) => this.GetAxis(orientation).AssistedMovements;
 
         public ElevatorAxis GetAxis(Orientation orientation)
@@ -432,6 +441,21 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
         public void UpdateVerticalOffset(double newOffset)
+        {
+            lock (this.dataContext)
+            {
+                var cacheKey = GetAxisCacheKey(Orientation.Vertical);
+                this.cache.Remove(cacheKey);
+
+                var verticalAxis = this.GetAxis(Orientation.Vertical);
+
+                verticalAxis.Offset = newOffset;
+                this.dataContext.ElevatorAxes.Update(verticalAxis);
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public void UpdateVerticalOffsetAndComplete(double newOffset)
         {
             lock (this.dataContext)
             {

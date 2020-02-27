@@ -113,7 +113,7 @@
                     </Grid.RowDefinitions>
 
 
-                    <ItemsControl Height="400"
+                    <ItemsControl Height="380"
                                   Margin="0,25,0,0"
                                   ItemsSource="{Binding Source}">
                         <ItemsControl.ItemsPanel>

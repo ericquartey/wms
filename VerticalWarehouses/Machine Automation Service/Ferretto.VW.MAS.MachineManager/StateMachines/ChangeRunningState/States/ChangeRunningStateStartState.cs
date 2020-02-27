@@ -82,8 +82,6 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                     this.stopReason = messageData.StopReason;
                     var newMessageData = new StopMessageData(this.stopReason);
                     this.machineControlProvider.StopOperation(newMessageData, this.currentBay, MessageActor.MachineManager, commandMessage.RequestingBay);
-                    this.baysDataProvider.Light(this.currentBay, false);
-
                     this.machineVolatileDataProvider.Mode = MachineMode.Manual;
                     this.Logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
                 }
@@ -158,7 +156,6 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                                 {
                                     var newMessageData = new StopMessageData(this.stopReason);
                                     this.machineControlProvider.StopOperation(newMessageData, this.currentBay, MessageActor.MachineManager, notification.RequestingBay);
-                                    this.baysDataProvider.Light(this.currentBay, false);
                                 }
                             }
                             break;

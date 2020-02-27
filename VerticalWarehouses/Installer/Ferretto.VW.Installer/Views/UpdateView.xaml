@@ -125,11 +125,6 @@
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
-
-                <!--    <i:Interaction.Behaviors>
-                    <Behaviors:ScrollIntoViewForListBox />
-                </i:Interaction.Behaviors>
-                -->
             </ListBox>
 
             <TextBox Grid.Row="3"
@@ -138,14 +133,6 @@
                      Style="{StaticResource TextBoxConsoleStyle}"
                      Text="{Binding SelectedStep.Log, Mode=OneWay}"
                      VerticalScrollBarVisibility="Auto" />
-
-            <!--
-            <controls:BindableRichTextBox Grid.Row="1"
-                                          Grid.Column="1"
-                                          HorizontalScrollBarVisibility="Auto"
-                                          IsReadOnly="True"
-                                          Source="{Binding SelectedStep.Log, Mode=OneWay}"
-                                          Style="{StaticResource RichTextBoxConsoleStyle}" />-->
 
             <Button Grid.Column="1"
                     Margin="0,10,0,0"

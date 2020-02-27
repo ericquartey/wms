@@ -413,9 +413,54 @@
             </Grid>
         </DataTemplate>
 
+
+        <DataTemplate x:Key="DataTemplateOriginCalibration">
+            <Grid Margin="20"
+                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.ColumnSpan="2">
+                    <TextBlock FontSize="24"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               Text="Eseguire calibrazione dell'origine "
+                               TextWrapping="Wrap" />
+
+                    <TextBlock Grid.ColumnSpan="2"
+                               FontSize="18"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               Text="A causa del cambiamento dell'offset appena eseguito, è richiesta nuovamente la calibrazione dell'origine dell'asse verticale. Premi su Inizia per cominciare."
+                               TextWrapping="Wrap" />
+                </StackPanel>
+
+                <controls:PpcButton Grid.Row="1"
+                                    Margin="0,0,15,0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding StartOriginCalibrationCommand}"
+                                    Content="{x:Static res:InstallationApp.Start}"
+                                    IsBusy="{Binding IsExecutingProcedure}"
+                                    Style="{StaticResource WizardConfirmButton}" />
+
+
+
+
+
+
+
+            </Grid>
+        </DataTemplate>
+
+
         <local:OffsetCalibrationStepTemplateSelector x:Key="selector"
                                                      EnumCellMeasured="{StaticResource DataTemplateCellMeasured}"
                                                      EnumConfirm="{StaticResource DataTemplateConfirm}"
+                                                     EnumOriginCalibration="{StaticResource DataTemplateOriginCalibration}"
                                                      EnumStart="{StaticResource DataTemplateStart}" />
         <!--#endregion-->
     </ctrls:View.Resources>
@@ -548,10 +593,18 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="1" />
-                <RowDefinition Height="4*" />
-                <RowDefinition Height="4*" />
-                <RowDefinition Height="4*" />
+
+                <controls:CollapsibleRow Height="4*"
+                                         IsVisible="true" />
+                <controls:CollapsibleRow Height="4*"
+                                         IsVisible="true" />
+                <controls:CollapsibleRow Height="4*"
+                                         IsVisible="true" />
+                <controls:CollapsibleRow Height="4*"
+                                         IsVisible="{Binding IsOriginCalibrationStepVisible}" />
+
                 <RowDefinition Height="1" />
+
             </Grid.RowDefinitions>
             <!--#region Body-->
             <Border Grid.Row="0"
@@ -616,6 +669,23 @@
                   Grid.Column="1"
                   Grid.ColumnSpan="2"
                   Visibility="{Binding HasStepConfirm, Converter={StaticResource BTVC}, Mode=OneWay}">
+                <Path Height="24"
+                      VerticalAlignment="Center"
+                      StrokeThickness="0"
+                      Style="{DynamicResource BorderTimeLinePath}" />
+                <Path Style="{DynamicResource BorderTimeLinePath}" />
+            </Grid>
+
+            <Grid Grid.Row="4">
+                <Border Background="{Binding HasStepOriginCalibration, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                        Style="{DynamicResource BorderTimeLineCirle}" />
+                <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                           Text="4" />
+            </Grid>
+            <Grid Grid.Row="4"
+                  Grid.Column="1"
+                  Grid.ColumnSpan="2"
+                  Visibility="{Binding HasStepOriginCalibration, Converter={StaticResource BTVC}, Mode=OneWay}">
                 <Path Height="24"
                       VerticalAlignment="Center"
                       StrokeThickness="0"

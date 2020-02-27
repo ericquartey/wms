@@ -629,6 +629,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.startCalibrationCommand?.RaiseCanExecuteChanged();
             this.applyCommand?.RaiseCanExecuteChanged();
             this.completeCommand?.RaiseCanExecuteChanged();
+            this.tuningBayCommand?.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.RemainingTime));
             this.RaisePropertyChanged(nameof(this.PerformedCycles));
@@ -687,8 +688,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return !this.IsKeyboardOpened &&
                    !this.IsMoving &&
                    !this.SensorsService.IsHorizontalInconsistentBothLow &&
-                   !this.SensorsService.IsHorizontalInconsistentBothHigh &&
-                   !this.SensorsService.IsLoadingUnitOnElevator;
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh;
         }
 
         private bool CanComplete()
@@ -714,8 +714,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return !this.IsKeyboardOpened &&
                    !this.IsMoving &&
                    !this.SensorsService.IsHorizontalInconsistentBothLow &&
-                   !this.SensorsService.IsHorizontalInconsistentBothHigh &&
-                   !this.SensorsService.IsLoadingUnitOnElevator;
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh;
         }
 
         private bool CanStop()
@@ -737,8 +736,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return this.CanBaseExecute() &&
                    !this.IsTuningBay &&
                    this.MachineStatus.LoadingUnitPositionDownInBay is null &&
-                   this.MachineStatus.LoadingUnitPositionUpInBay is null &&
-                   this.SensorsService.Sensors.ACUBay1S3IND;
+                   this.MachineStatus.LoadingUnitPositionUpInBay is null
+                   //&&
+                   //!this.SensorsService.Sensors.ACUBay1S3IND
+                   ;
         }
 
         private async Task CompleteAsync()

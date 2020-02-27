@@ -331,10 +331,25 @@
       "HorizontalAlignment": "Right"
     },
     {
+      "Zone": "Enter",
+      "Cells": [
+        {
+          "KeyStyleResource": "AccentKeyboardButtonStyle",
+          "KeyMinWidth": 100,
+          "Key": {
+            "Command": {
+              "CommandText": "{Enter}",
+              "Caption": "{icon:LevelDownAltSolid:90}"
+            }
+          }
+        }
+      ]
+    },
+    {
       "Zone": "3rdRow",
       "Cells": [
         {
-          "KeyMinWidth": 120,
+          "KeyMinWidth": 60,
           "KeyStyleResource": "AccentKeyboardButtonStyle",
           "Key": {
             "Command": {
@@ -342,22 +357,6 @@
               "CommandText": "{layout:Uppercase}"
             }
           }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "<"
-            }
-          },
-          "Width": "Auto"
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": ">"
-            }
-          },
-          "Width": "Auto"
         },
         {
           "Key": {
@@ -430,24 +429,35 @@
             }
           },
           "Width": "Auto"
-        }
-      ],
-      "HorizontalAlignment": "Left"
-    },
-    {
-      "Zone": "Enter",
-      "Cells": [
+        },
         {
-          "KeyStyleResource": "AccentKeyboardButtonStyle",
-          "KeyMinWidth": 100,
           "Key": {
             "Command": {
-              "CommandText": "{Enter}",
-              "Caption": "{icon:LevelDownAltSolid:90}"
+              "CommandText": "<"
+            }
+          },
+          "Width": "Auto"
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": ">"
+            }
+          },
+          "Width": "Auto"
+        },
+        {
+          "Width": "147",
+          "KeyStyleResource": "AccentKeyboardButtonStyle",
+          "Key": {
+            "Command": {
+              "Caption": "{icon:CaretSquareUpRegular}",
+              "CommandText": "{layout:Uppercase}"
             }
           }
         }
-      ]
+      ],
+      "HorizontalAlignment": "Left"
     },
     {
       "Zone": "4thRow",
