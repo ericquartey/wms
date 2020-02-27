@@ -2186,14 +2186,20 @@
     "Bay1CarouselTest": {
     },
     "Bay1CarouselCalibration": {
+      "RequiredCycles": 600,
+      "FeedRate": 0.9
+    },
+    "Bay2CarouselCalibration": {
+      "RequiredCycles": 600,
+      "FeedRate": 0.9
+    },
+    "Bay3CarouselCalibration": {
+      "RequiredCycles": 600,
+      "FeedRate": 0.9
     },
     "Bay2CarouselTest": {
     },
-    "Bay2CarouselCalibration": {
-    },
     "Bay3CarouselTest": {
-    },
-    "Bay3CarouselCalibration": {
     },
     "Bay1FirstLoadingUnit": {
     },

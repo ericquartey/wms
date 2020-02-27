@@ -3528,6 +3528,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Raisings Performed.
+        /// </summary>
+        public static string RaisingsPerformed {
+            get {
+                return ResourceManager.GetString("RaisingsPerformed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ReadFinalPosition.
         /// </summary>
         public static string ReadFinalPosition {
