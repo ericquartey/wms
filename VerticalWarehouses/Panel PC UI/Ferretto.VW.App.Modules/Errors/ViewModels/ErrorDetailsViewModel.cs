@@ -76,11 +76,13 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            await base.OnAppearedAsync();
+            this.ShowPrevStepSinglePage(false, false);
+            this.ShowNextStepSinglePage(false, false);
+            this.ShowAbortStep(false, false);
 
             await this.RetrieveErrorAsync();
 
-            this.IsBackNavigationAllowed = true;
+            await base.OnAppearedAsync();
         }
 
         private bool CanMarkAsResolved()
