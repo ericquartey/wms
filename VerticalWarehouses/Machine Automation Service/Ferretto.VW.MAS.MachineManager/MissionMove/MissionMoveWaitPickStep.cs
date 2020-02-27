@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
@@ -74,6 +75,26 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override void OnNotification(NotificationMessage notification)
         {
+            switch (notification.Status)
+            {
+                case MessageStatus.OperationStop:
+                case MessageStatus.OperationError:
+                case MessageStatus.OperationRunningStop:
+                    if (notification.RequestingBay == this.Mission.TargetBay)
+                    {
+                        this.OnStop(StopRequestReason.Error);
+                    }
+                    break;
+            }
+            switch (notification.Type)
+            {
+                case MessageType.Stop:
+                    if (notification.RequestingBay == this.Mission.TargetBay)
+                    {
+                        this.OnStop(StopRequestReason.Error);
+                    }
+                    break;
+            }
         }
 
         public override void OnResume(CommandMessage command)
