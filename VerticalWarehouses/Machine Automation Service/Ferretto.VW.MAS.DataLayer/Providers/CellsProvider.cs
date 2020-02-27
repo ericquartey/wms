@@ -264,10 +264,18 @@ namespace Ferretto.VW.MAS.DataLayer
                             }
                         }
                         var availableSpace = lastCellPosition - cellsFollowing.First().Position + CellHeight;
-
+                        Cell prevCell = null;
+                        if (compactingType == CompactingType.ExactMatchCompacting)
+                        {
+                            prevCell = cells.LastOrDefault(c => c.Position < cell.Position);
+                        }
                         // check if load unit fits in available space
                         if (availableSpace >= loadUnitHeight + VerticalPositionTolerance
-                            && (compactingType != CompactingType.ExactMatchCompacting || availableSpace < loadUnitHeight + (2 * VerticalPositionTolerance))
+                            && (compactingType != CompactingType.ExactMatchCompacting
+                                || (availableSpace < loadUnitHeight + (4 * VerticalPositionTolerance)
+                                    && (prevCell is null || !prevCell.IsFree || prevCell.BlockLevel == BlockLevel.Blocked)
+                                    )
+                                )
                             )
                         {
                             availableCell.Add(new AvailableCell(cell, availableSpace));

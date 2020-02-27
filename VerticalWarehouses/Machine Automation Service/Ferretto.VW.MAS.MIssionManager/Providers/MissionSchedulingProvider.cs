@@ -93,7 +93,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 targetBayNumber);
 
             var loadingUnit = this.loadingUnitsDataProvider.GetById(loadingUnitId);
-            if(!loadingUnit.IsIntoMachine)
+            if (!loadingUnit.IsIntoMachine)
             {
                 throw new InvalidOperationException($"The loading unit {loadingUnitId} is not contained in the machine.");
             }
@@ -153,7 +153,10 @@ namespace Ferretto.VW.MAS.MissionManager
         /// <param name="serviceProvider"></param>
         public bool QueueLoadingUnitCompactingMission(IServiceProvider serviceProvider)
         {
-            var loadUnits = this.loadingUnitsDataProvider.GetAll().Where(x => x.Cell != null);
+            var loadUnits = this.loadingUnitsDataProvider.GetAll()
+                .Where(x => x.Cell != null)
+                .OrderByDescending(l => l.Cell.Position)
+                .ToList();
             int? cellId;
             LoadingUnit loadUnit;
 
@@ -211,7 +214,7 @@ namespace Ferretto.VW.MAS.MissionManager
             return false;
         }
 
-        private bool CompactFindEmptyCell(IEnumerable<LoadingUnit> loadUnits, CompactingType compactingType, out LoadingUnit loadUnitOut, out int? cellId)
+        private bool CompactFindEmptyCell(List<LoadingUnit> loadUnits, CompactingType compactingType, out LoadingUnit loadUnitOut, out int? cellId)
         {
             loadUnitOut = null;
             cellId = null;
@@ -220,7 +223,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 return false;
             }
             this.logger.LogDebug($"Compacting empty cells {compactingType}");
-            foreach (var loadUnit in loadUnits.OrderByDescending(o => o.Cell.Position))
+            foreach (var loadUnit in loadUnits)
             {
                 try
                 {
