@@ -86,6 +86,8 @@ namespace Ferretto.VW.App.Modules.Operator
                 this.ActiveWmsOperation.Id,
                 quantity,
                 ConfigurationManager.AppSettings.GetLabelPrinterName());
+
+            await this.RefreshActiveMissionAsync();
         }
 
         public async Task RecallLoadingUnitAsync(int id)
@@ -190,55 +192,62 @@ namespace Ferretto.VW.App.Modules.Operator
             MissionOperation newWmsOperation = null;
             MissionOperationInfo newWmsOperationInfo = null;
 
-            if (newMachineMission != null && newMachineMission.WmsId.HasValue)
+            try
             {
-                this.logger.Debug($"Active mission has WMS id {newMachineMission.WmsId}.");
-
-                newWmsMission = await this.missionsWebService.GetWmsDetailsByIdAsync(newMachineMission.WmsId.Value);
-
-                var sortedOperations = newWmsMission.Operations.OrderBy(o => o.Priority).ThenBy(o => o.CreationDate);
-
-                newWmsOperationInfo = sortedOperations.FirstOrDefault(o => o.Status is MissionOperationStatus.Executing);
-                if (newWmsOperationInfo is null)
+                if (newMachineMission != null && newMachineMission.WmsId.HasValue)
                 {
-                    newWmsOperationInfo = sortedOperations.FirstOrDefault(o => o.Status is MissionOperationStatus.New);
+                    this.logger.Debug($"Active mission has WMS id {newMachineMission.WmsId}.");
+
+                    newWmsMission = await this.missionsWebService.GetWmsDetailsByIdAsync(newMachineMission.WmsId.Value);
+
+                    var sortedOperations = newWmsMission.Operations.OrderBy(o => o.Priority).ThenBy(o => o.CreationDate);
+
+                    newWmsOperationInfo = sortedOperations.FirstOrDefault(o => o.Status is MissionOperationStatus.Executing);
+                    if (newWmsOperationInfo is null)
+                    {
+                        newWmsOperationInfo = sortedOperations.FirstOrDefault(o => o.Status is MissionOperationStatus.New);
+                    }
+
+                    if (newWmsOperationInfo is null)
+                    {
+                        this.logger.Debug($"Active WMS mission {newMachineMission.WmsId} has no executable mission operation.");
+
+                        await this.loadingUnitsWebService.ResumeWmsAsync(newMachineMission.LoadUnitId, newMachineMission.Id);
+
+                        newMachineMission = null;
+                        newWmsMission = null;
+                    }
+                    else
+                    {
+                        this.logger.Debug($"Active mission has WMS operation {newWmsOperationInfo.Id}.");
+                        newWmsOperation = await this.missionOperationsWebService.GetByIdAsync(newWmsOperationInfo.Id);
+
+                        await this.missionOperationsWebService.ExecuteAsync(newWmsOperationInfo.Id);
+                    }
                 }
 
-                if (newWmsOperationInfo is null)
+                if (newMachineMission?.Id != this.ActiveMachineMission?.Id
+                   ||
+                   newWmsMission?.Id != this.ActiveWmsMission?.Id
+                   ||
+                   newWmsOperation?.Id != this.ActiveWmsOperation?.Id
+                   ||
+                   newWmsOperation?.RequestedQuantity != this.ActiveWmsOperation?.RequestedQuantity
+                   ||
+                   newWmsOperation?.DispatchedQuantity != this.ActiveWmsOperation?.DispatchedQuantity
+                   ||
+                   (newWmsMission != null && this.ActiveWmsMission?.Operations.Any(mo => newWmsMission.Operations.Any(nOp => nOp.Id != mo.Id)) == true))
                 {
-                    this.logger.Debug($"Active WMS mission {newMachineMission.WmsId} has no executable mission operation.");
+                    this.ActiveMachineMission = newMachineMission;
+                    this.ActiveWmsMission = newWmsMission;
+                    this.ActiveWmsOperation = newWmsOperation;
 
-                    await this.loadingUnitsWebService.ResumeWmsAsync(newMachineMission.LoadUnitId, newMachineMission.Id);
-
-                    newMachineMission = null;
-                    newWmsMission = null;
-                }
-                else
-                {
-                    this.logger.Debug($"Active mission has WMS operation {newWmsOperationInfo.Id}.");
-                    newWmsOperation = await this.missionOperationsWebService.GetByIdAsync(newWmsOperationInfo.Id);
-
-                    await this.missionOperationsWebService.ExecuteAsync(newWmsOperationInfo.Id);
+                    this.RaiseMissionChangedEvent();
                 }
             }
-
-            if (newMachineMission?.Id != this.ActiveMachineMission?.Id
-                ||
-                newWmsMission?.Id != this.ActiveWmsMission?.Id
-                ||
-                newWmsOperation?.Id != this.ActiveWmsOperation?.Id
-                ||
-                newWmsOperation?.RequestedQuantity != this.ActiveWmsOperation?.RequestedQuantity
-                ||
-                newWmsOperation?.DispatchedQuantity != this.ActiveWmsOperation?.DispatchedQuantity
-                ||
-                (newWmsMission != null && this.ActiveWmsMission?.Operations.Any(mo => newWmsMission.Operations.Any(nOp => nOp.Id != mo.Id)) == true))
+            catch (Exception ex)
             {
-                this.ActiveMachineMission = newMachineMission;
-                this.ActiveWmsMission = newWmsMission;
-                this.ActiveWmsOperation = newWmsOperation;
-
-                this.RaiseMissionChangedEvent();
+                System.Diagnostics.Debug.WriteLine(ex.Message);
             }
         }
 

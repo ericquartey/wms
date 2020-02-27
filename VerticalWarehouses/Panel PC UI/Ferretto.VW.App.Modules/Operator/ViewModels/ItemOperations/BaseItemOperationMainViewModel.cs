@@ -38,7 +38,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isOperationCanceled;
 
-        private bool isOperationConfirmed;
+        protected bool IsOperationConfirmed { get; set; }
 
         private double loadingUnitDepth;
 
@@ -159,7 +159,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 &&
                 !this.IsBusyConfirmingOperation
                 &&
-                !this.isOperationConfirmed
+                !this.IsOperationConfirmed
                 &&
                 !this.isOperationCanceled
                 &&
@@ -175,7 +175,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             return
                 !this.IsWaitingForResponse
                 &&
-                !this.isOperationConfirmed
+                !this.IsOperationConfirmed
                 &&
                 this.isOperationCanceled;
         }
@@ -192,7 +192,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsWaitingForResponse = true;
                 this.ClearNotifications();
 
-                this.isOperationConfirmed = true;
+                this.IsOperationConfirmed = true;
 
                 await this.MissionOperationsService.CompleteCurrentAsync(this.InputQuantity.Value);
 
@@ -202,7 +202,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.ShowNotification(ex);
                 this.IsBusyConfirmingOperation = false;
-                this.isOperationConfirmed = false;
+                this.IsOperationConfirmed = false;
             }
             finally
             {
@@ -247,7 +247,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsWaitingForResponse = false;
             this.IsBusyAbortingOperation = false;
             this.IsBusyConfirmingOperation = false;
-            this.isOperationConfirmed = false;
+            this.IsOperationConfirmed = false;
             this.IsOperationCanceled = false;
             this.InputQuantity = null;
             this.SelectedCompartment = null;
@@ -370,15 +370,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private async Task OnMissionChangedAsync(MissionChangedEventArgs e)
         {
-            if (this.isOperationConfirmed)
+            if (this.IsOperationConfirmed)
             {
-                this.isOperationConfirmed = false;
+                this.IsOperationConfirmed = false;
 
                 await this.RetrieveMissionOperationAsync();
 
                 this.GetLoadingUnitDetails();
             }
-            else if (this.MissionOperation.Id != e.WmsOperation.Id)
+            else if (this.MissionOperation?.Id != e.WmsOperation?.Id)
             {
                 this.IsOperationCanceled = true;
                 this.CanInputQuantity = false;
