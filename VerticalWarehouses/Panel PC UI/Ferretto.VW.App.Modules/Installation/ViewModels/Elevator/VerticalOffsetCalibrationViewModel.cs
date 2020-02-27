@@ -145,6 +145,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.currentCellId, value, () =>
             {
                 this.Displacement = null;
+                this.RaisePropertyChanged(nameof(this.Displacement));
                 this.StepValue = 0;
                 this.UpdateSelectedCell();
             });
@@ -204,7 +205,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.moveToCellCommand
             ??
             (this.moveToCellCommand = new DelegateCommand(
-                async () => await this.StartAsync(this.SelectedCell.Position),
+                async () =>
+                {
+                    await this.StartAsync(this.SelectedCell.Position);                    
+                },
                 this.CanMoveToCellCommand));
 
         public ICommand MoveToCellMeasuredCommand =>
@@ -422,7 +426,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (!this.CurrentVerticalOffset.HasValue || this.AxisUpperBound == 0 || this.AxisLowerBound == 0 || this.StartPosition == 0)
                 {
                     await this.RetrieveVerticalOffset();
-                    await this.GetLowerBound();
+                    await this.GetAxisBound();
 
                     var procedureCalibrationParameters = await this.resolutionCalibrationWebService.GetParametersAsync();
                     this.StartPosition = procedureCalibrationParameters.StartPosition;
@@ -502,6 +506,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
+
+                if (this.AxisLowerBound > this.NewDisplacement)
+                {
+                    var messageBoxResult = this.dialogService.ShowMessage("Il seguente risultato modificherà il valore LowerBound della macchina, continuare?", InstallationApp.LowPositionControl, DialogType.Question, DialogButtons.YesNo);
+                    if (messageBoxResult == DialogResult.No)
+                    {
+                        return;
+                    }
+
+                    await this.machineElevatorWebService.UpdateVerticalLowerBoundAsync(this.NewDisplacement);
+
+                    await this.GetAxisBound();
+                }
 
                 if ((this.Displacement.HasValue) && (this.Displacement.Value == 0))
                 {
@@ -627,7 +644,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task GetLowerBound()
+        private async Task GetAxisBound()
         {
             var procedureParameters = await this.verticalOriginProcedureWebService.GetParametersAsync();
             this.AxisUpperBound = procedureParameters.UpperBound;

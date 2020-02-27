@@ -714,8 +714,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return !this.IsKeyboardOpened &&
                    !this.IsMoving &&
                    !this.SensorsService.IsHorizontalInconsistentBothLow &&
-                   !this.SensorsService.IsHorizontalInconsistentBothHigh &&
-                   !this.SensorsService.IsLoadingUnitOnElevator;
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh;
         }
 
         private bool CanStop()
