@@ -56,6 +56,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isCalibrationCompletedOrStopped;
 
+        private bool isCalibrationNotCompleted;
+
         private bool isErrorNegative = true;
 
         private bool isErrorPositive = false;
@@ -148,7 +150,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public CarouselCalibrationStep CurrentStep
         {
             get => this.currentStep;
-            protected set => this.SetProperty(ref this.currentStep, value, this.UpdateStatusButtonFooter);
+            protected set => this.SetProperty(ref this.currentStep, value, () => this.UpdateStatusButtonFooter(false));
         }
 
         public double? CyclesPercent
@@ -156,8 +158,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.cyclesPercent;
             private set => this.SetProperty(ref this.cyclesPercent, value);
         }
-
-        //public override EnableMask EnableMask => EnableMask.MachineManualMode | EnableMask.MachinePoweredOn;
 
         public string Error => string.Join(
             this[nameof(this.CurrentDistance)],
@@ -180,6 +180,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.RaiseCanExecuteChanged();
                 }
             }
+        }
+
+        public bool IsCalibrationNotCompleted
+        {
+            get => this.isCalibrationNotCompleted;
+            set => this.SetProperty(ref this.isCalibrationNotCompleted, value);
         }
 
         public bool IsErrorNegative
@@ -270,7 +276,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.repeatCalibrationCommand = new DelegateCommand(
                () =>
                {
-                   //await this.ResetCyclesCounterAsync();
                    this.CurrentStep = CarouselCalibrationStep.StartCalibration;
                },
                 this.CanRepeat));
@@ -400,7 +405,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.SubscribeToEvents();
 
-            this.UpdateStatusButtonFooter();
+            this.UpdateStatusButtonFooter(true);
 
             await this.RetrieveProcedureInformationAsync();
 
@@ -661,14 +666,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsExecutingProcedure = false;
 
+                this.IsCalibrationNotCompleted = false;
+
+                this.CurrentStep = CarouselCalibrationStep.ConfirmAdjustment;
+
                 if (this.MachineError != null)
                 {
-                    this.CurrentStep = CarouselCalibrationStep.StartCalibration;
+                    this.IsCalibrationNotCompleted = true;
                     return;
-                }
-                else
-                {
-                    this.CurrentStep = CarouselCalibrationStep.ConfirmAdjustment;
                 }
             }
 
@@ -697,6 +702,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.ShowNotification(VW.App.Resources.InstallationApp.CompletedTest, Services.Models.NotificationSeverity.Success);
                 }
 
+                this.IsCalibrationNotCompleted = false;
+
                 this.IsExecutingStopInPhase = false;
                 this.IsExecutingProcedure = false;
 
@@ -712,6 +719,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             if (message.Status == MessageStatus.OperationStop)
             {
+                this.IsCalibrationNotCompleted = true;
                 this.IsExecutingStopInPhase = false;
                 this.IsExecutingProcedure = false;
                 this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped, Services.Models.NotificationSeverity.Warning);
@@ -721,7 +729,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsCalibrationCompletedOrStopped = false;
                 this.NewErrorValue = 0;
 
-                this.CurrentStep = CarouselCalibrationStep.StartCalibration;
+                this.CurrentStep = CarouselCalibrationStep.ConfirmAdjustment;
                 this.RaiseCanExecuteChanged();
 
                 this.IsExecutingProcedure = false;
@@ -884,13 +892,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private void UpdateStatusButtonFooter()
+        private void UpdateStatusButtonFooter(bool force = false)
         {
+            if (!this.IsVisible && !force)
+            {
+                return;
+            }
+
             switch (this.CurrentStep)
             {
                 case CarouselCalibrationStep.StartCalibration:
                     this.ShowPrevStepSinglePage(true, false);
-                    this.ShowNextStepSinglePage(true, true);
+                    this.ShowNextStepSinglePage(true, false);
                     break;
 
                 case CarouselCalibrationStep.RunningCalibration:

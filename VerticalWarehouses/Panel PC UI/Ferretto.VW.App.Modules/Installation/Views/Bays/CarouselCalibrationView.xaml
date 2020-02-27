@@ -155,11 +155,21 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.ColumnSpan="2">
+                <StackPanel Grid.ColumnSpan="2"
+                            Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}">
                     <TextBlock FontSize="24"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                TextWrapping="Wrap">
                         <Run Text="{x:Static res:InstallationApp.ConfirmAdjustment}" /><Run Text=":" />
+                    </TextBlock>
+                </StackPanel>
+
+                <StackPanel Grid.ColumnSpan="2"
+                            Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVC}}">
+                    <TextBlock FontSize="24"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               TextWrapping="Wrap">
+                        <Run Text="Procedura non completata" /><Run Text=":" />
                     </TextBlock>
                 </StackPanel>
 
@@ -168,7 +178,26 @@
                            FontSize="18"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                            Text="{x:Static res:InstallationApp.SelectDirectionAndApply}"
-                           TextWrapping="Wrap" />
+                           TextWrapping="Wrap"
+                           Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}" />
+
+                <TextBlock Grid.Row="1"
+                           Grid.ColumnSpan="2"
+                           FontSize="18"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="Ripetere la procedura in quanto non è terminata correttamente"
+                           TextWrapping="Wrap"
+                           Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVC}}" />
+
+                <controls:PpcButton Grid.Row="2"
+                                    Grid.RowSpan="2"
+                                    Grid.ColumnSpan="2"
+                                    Margin="0,-5,0,0"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding RepeatCalibrationCommand}"
+                                    Content="{x:Static res:InstallationApp.Repeat}"
+                                    Style="{StaticResource WizardConfirmButton}"
+                                    Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVC}}" />
 
                 <ctrls:PpcSpinEdit Grid.Row="2"
                                    Grid.ColumnSpan="2"
@@ -179,14 +208,16 @@
                                    EditValue="{Binding NewErrorValue, StringFormat={}{0:F0}, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                    IsEnabled="{Binding IsCalibrationCompletedOrStopped}"
                                    LabelText="{x:Static res:InstallationApp.ErrorInMillimiters}"
-                                   MinValue="0" />
+                                   MinValue="0"
+                                   Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}" />
 
                 <RadioButton Grid.Row="3"
                              Margin="0,0,50,0"
                              HorizontalAlignment="Right"
                              GroupName="test"
                              IsChecked="{Binding IsErrorNegative, Mode=TwoWay}"
-                             IsEnabled="true">
+                             IsEnabled="true"
+                             Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}">
                     <RadioButton.Content>
                         <TextBlock Margin="0,20"
                                    HorizontalAlignment="Left"
@@ -202,7 +233,8 @@
                              Margin="50,0,0,0"
                              GroupName="test"
                              IsChecked="{Binding IsErrorPositive, Mode=TwoWay}"
-                             IsEnabled="true">
+                             IsEnabled="true"
+                             Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}">
                     <RadioButton.Content>
                         <TextBlock Margin="0,20"
                                    HorizontalAlignment="Left"
@@ -213,7 +245,6 @@
                     </RadioButton.Content>
                 </RadioButton>
 
-
                 <controls:PpcButton Grid.Row="4"
                                     Grid.ColumnSpan="2"
                                     Margin="0,-15,15,0"
@@ -221,31 +252,32 @@
                                     VerticalAlignment="Center"
                                     Command="{Binding ApplyCommand}"
                                     Content="{x:Static res:InstallationApp.ApplyCorrection}"
-                                    Style="{DynamicResource WizardIntoButton}" />
-
-
-
+                                    Style="{DynamicResource WizardIntoButton}"
+                                    Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}" />
 
                 <TextBlock Grid.Row="5"
                            Grid.ColumnSpan="2"
                            FontSize="18"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                            Text="{x:Static res:InstallationApp.RepeatOrComplete}"
-                           TextWrapping="Wrap" />
+                           TextWrapping="Wrap"
+                           Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}" />
 
                 <controls:PpcButton Grid.Row="6"
                                     Grid.Column="1"
                                     Margin="0,-5,0,0"
                                     Command="{Binding CompleteCommand}"
                                     Content="{x:Static res:InstallationApp.Complete}"
-                                    Style="{StaticResource WizardConfirmButton}" />
+                                    Style="{StaticResource WizardConfirmButton}"
+                                    Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}" />
 
                 <controls:PpcButton Grid.Row="6"
                                     Grid.Column="0"
                                     Margin="0,-5,0,0"
                                     Command="{Binding RepeatCalibrationCommand}"
                                     Content="{x:Static res:InstallationApp.Repeat}"
-                                    Style="{StaticResource WizardConfirmButton}" />
+                                    Style="{StaticResource WizardConfirmButton}"
+                                    Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}" />
             </Grid>
         </DataTemplate>
 

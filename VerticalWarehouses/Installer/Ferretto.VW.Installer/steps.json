@@ -5,7 +5,7 @@
       "number": 1,
       "title": "Imposta chiavi di registro",
       "description": "Cambia, aggiunge chiavi di registro per configurazione iniziale.",
-      "script": "Rename-NetAdapter -Name \"Ethernet\" -NewName \"Ethernet-Machine\";Set-ItemProperty HKCU:\\Software\\Microsoft\\Wisp\\Touch -Name TouchMode_hold  -Value '0';uwfmgr.exe registry add-exclusion HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run;uwfmgr.exe registry add-exclusion HKLM\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Schedule;schtasks.exe /Create /SC ONLOGON /TN \"Ferretto\\Installer\" /TR F:\\update\\temp\\installer\\Ferretto.VW.Installer.exe /RL HIGHEST;",      
+      "script": "Rename-NetAdapter -Name \"$(PPC:Ethernet:Machine:FactoryAlias)\" -NewName \"Ethernet-Machine\";Set-ItemProperty HKCU:\\Software\\Microsoft\\Wisp\\Touch -Name TouchMode_hold  -Value '0';uwfmgr.exe registry add-exclusion HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run;uwfmgr.exe registry add-exclusion HKLM\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Schedule;schtasks.exe /Create /SC ONLOGON /TN \"$(Install:TaskScheduler:Installer)\" /TR \"$(Update:Temp:Path)\\$(Install:Installer:Path)\\$(Install:Installer:FilePath)\" /RL HIGHEST /F",
       "setupMode": "install",
       "skipOnResume": "true"
     },
@@ -20,8 +20,18 @@
       "skipOnResume": "true"
     },
     {
-      "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
+      "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 3,
+      "title": "Installazione servizio automazione",
+      "description": "Crea il servizio di automazione da avviare con l'accensione del PanelPc",
+      //"script": "New-Service -name $(MAS:ServiceName) -binaryPathName \"$(Install:Root:Path)\\$(Install:MAS:Path)\\$(Install:MAS:FilePath)\" -displayName \"$(MAS:Service:DisplayName)\" -description \"$(MAS:Service:Description)\" -startupType Automatic",
+      "script": "timeout /T 2", // ** fake
+      "setupMode": "install",
+      "skipOnResume": "true"
+    },
+    {
+      "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
+      "number": 4,
       "title": "Disabilita UWF",
       "description": "Disabilita la protezione del disco fisso (Unified Write Filter) per permettere l'aggiornamento.",
       "script": "uwfmgr filter disable",
@@ -32,37 +42,40 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 4,
+      "number": 5,
       "title": "Auto-avvio installer",
       "description": "Imposta l'installatore in avvio automatico.",
       //"rollbackScript": "Set-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(Install:Root:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath)\"",
       //"script": "Set-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(EmbeddedInstallationFilePath)\"",
-      "script": "Set-ItemProperty $(PPC:Registry:Approve:Path) -Name $(PPC:Registry:Key) -Value ([byte[]](0x03,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00));Enable-ScheduledTask -TaskName Installer",
-      "rollbackScript": "Set-ItemProperty $(PPC:Registry:Approve:Path) -Name $(PPC:Registry:Key) -Value ([byte[]](0x02,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00));Disable-ScheduledTask -TaskName Installer",
-      "skipOnResume": "true"
-    },
-    {
-      "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
-      "number": 5,
-      "title": "Riavvia il sistema",
-      "description": "Riavvia il sistema operativo per completare la disabilitazione della protezione.",
-      //"script": "shutdown /r /t 0 /f /d p:4:2 /c \"Vertimag Software Setup\"",
-      "script": "timeout /T 2", // ** fake
+      "script": "Remove-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key);schtasks.exe /Create /SC ONLOGON /TN \"$(Install:TaskScheduler:Installer)\" /TR \"$(Update:Temp:Path)\\$(Install:Installer:Path)\\$(Install:Installer:FilePath)\" /RL HIGHEST /F",
+      "rollbackScript": "Set-ItemProperty $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(Install:Root:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath)\";schtasks.exe /Delete /TN \"$(Install:TaskScheduler:Installer)\" /F",
+      "setupMode": "update",
       "skipOnResume": "true"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
       "number": 6,
+      "title": "Riavvia il sistema",
+      "description": "Riavvia il sistema operativo per completare la disabilitazione della protezione.",
+      //"script": "shutdown /r /t 0 /f /d p:4:2 /c \"Vertimag Software Setup\"",
+      "script": "timeout /T 2", // ** fake
+      "setupMode": "update",
+      "skipOnResume": "true"
+    },
+    {
+      "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
+      "number": 7,
       "title": "Controlla stato UWF",
       "description": "Controlla che la protezione del disco fisso sia disabilitata.",
       //"script": "$NAMESPACE = \"root\\standardcimv2\\embedded\";$uwfInstance = Get-WmiObject -Namespace $NAMESPACE -Class UWF_Filter -List;if(!$uwfInstance){throw  \"UWF is NOT installed.\"};$uwfInstance = Get-WmiObject -Namespace $NAMESPACE -Class UWF_Filter;if(!$uwfInstance.CurrentEnabled){throw  \"UWF is currently NOT enabled.\"};",
       "script": "timeout /T 2", // ** fake
-      "rollbackScript": "true"
+      "rollbackScript": "true",
       //"rollbackScript": "timeout /T 2" // ** fake
+      "setupMode": "update"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 7,
+      "number": 8,
       "title": "Ferma il MAS",
       "description": "Ferma il servizio di automazione, in modo da poterlo aggiornare.",
       "script": "Stop-Service \"$(MAS:ServiceName)\"",
@@ -74,7 +87,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 8,
+      "number": 9,
       "title": "Backup applicazione",
       "description": "Sposta l'applicazione nella cartella di backup",
       "script": "$stageAs=\"$(Backup:Root:Path)\\Staging\\$(Install:MAS:Path)\";$stagePpc=\"$(Backup:Root:Path)\\Staging\\$(Install:PPC:Path)\";$as=\"$(Install:Root:Path)\\$(Install:MAS:Path)\";$ppc=\"$(Install:Root:Path)\\$(Install:PPC:Path)\";if(Test-Path $stageAs -PathType Container) {Remove-Item $stageAs -Recurse -Force};if(Test-Path $stagePpc -PathType Container) {Remove-Item $stagePpc -Recurse -Force};Copy-Item $as $stageAs -Recurse;Copy-Item $ppc $stagePpc -Recurse;Remove-Item $as -Force -Recurse;Remove-Item $ppc -Force -Recurse",
@@ -83,7 +96,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.DbBackupStep, Ferretto.VW.Installer.Core",
-      "number": 9,
+      "number": 10,
       "title": "Backup database",
       "description": "Fa una copia locale dei database del MAS, in preparazione per il backup",
       "automationServicePath": "$(Install:Root:Path)\\$(Install:MAS:Path)",
@@ -93,7 +106,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 10,
+      "number": 11,
       "title": "Creazione ZIP",
       "description": "Crea un archivio zip con il backup della versione corrente.",
       "script": "if(Test-Path $(Backup:Root:Path)\\Current_Version_Backup.zip -PathType Leaf){del $(Backup:Root:Path)\\Current_Version_Backup.zip}; Compress-Archive $(Backup:Root:Path)\\staging -DestinationPath $(Backup:Root:Path)\\Current_Version_Backup.zip -CompressionLevel Optimal",
@@ -102,7 +115,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 11,
+      "number": 12,
       "title": "Copia nuova versione",
       "description": "Copia la nuova versione nella cartella di destinazione dell'installazione.",
       "script": "Copy-Item $(Update:Temp:Path)\\$(Install:MAS:Path) $(Install:Root:Path) -recurse; Copy-Item $(Update:Temp:Path)\\$(Install:PPC:Path) $(Install:Root:Path) -recurse",
@@ -110,7 +123,7 @@
     },
     /*{
       "$type": "Ferretto.VW.Installer.Core.MergeAppConfig, Ferretto.VW.Installer.Core",
-      "number": 11,
+      "number": 12,
       "title": "Configura App PanelPC",
       "description": "Aggiorna il file di configurazione del Panel PC.",
       "newPathName": "$(Install:Root:Path)\\$(Install:PPC:Path)\\Ferretto.VW.App.exe.config",
@@ -118,14 +131,14 @@
     },*/
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
-      "number": 12,
+      "number": 13,
       "title": "Copia file configurazione App PanelPC",
       "description": "Aggiorna il file di configurazione del Panel PC.",
       "script": "cp $(Backup:Root:Path)\\Staging\\$(Install:PPC:Path)\\Ferretto.VW.App.exe.config $(Install:Root:Path)\\$(Install:PPC:Path)\\Ferretto.VW.App.exe.config"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
-      "number": 13,
+      "number": 14,
       "title": "Copia file configurazione MAS",
       "description": "Aggiorna il file di configurazione del MAS.",
       "script": "cp $(Backup:Root:Path)\\Staging\\$(Install:MAS:Path)\\appsettings.json $(Install:Root:Path)\\$(Install:MAS:Path)\\appsettings.json",
@@ -141,7 +154,7 @@
     */
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 14,
+      "number": 15,
       "title": "Avvia il MAS",
       "description": "Avvia il servizio di automazione aggiornato così che il database venga aggiornato.",
       "script": "Start-Service \"$(MAS:ServiceName)\"",
@@ -152,7 +165,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.MasHealthCheckStep, Ferretto.VW.Installer.Core",
-      "number": 15,
+      "number": 16,
       "title": "Verifica stato del MAS",
       "description": "Verifica che il servizio di automazione dichiari di essere operativo.",
       "url": "$(MAS:BaseUrl)/health/live",
@@ -161,7 +174,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 16,
+      "number": 17,
       "title": "Cancella backup precedente",
       "description": "Elimina, se esiste, l'archivio contenente il backup della versione precedente a quella installata prima dell'aggiornamento.",
       "script": "if(Test-Path $(Backup:Root:Path)\\Backup.zip -PathType Leaf) { Remove-Item $(Backup:Root:Path)\\Backup.zip -ErrorAction SilentlyContinue }",
@@ -170,7 +183,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 17,
+      "number": 18,
       "title": "Rinomina backup corrente",
       "description": "Rinomina lo zip della versione corrente.",
       "script": "Rename-Item $(Backup:Root:Path)\\Current_Version_Backup.zip $(Backup:Root:Path)\\Backup.zip",
@@ -179,7 +192,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 18,
+      "number": 19,
       "title": "Cancella file temporanei",
       "description": "Elimina i file temporanei creati durante la fase di aggiornamento.",
       "script": "Remove-Item $(Backup:Root:Path)\\Staging -Recurse",
@@ -187,7 +200,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
-      "number": 19,
+      "number": 20,
       "title": "Riabilita UWF",
       "description": "Riabilita la protezione del disco fisso per sigillare il PanelPC.",
       //"script": "uwfmgr filter enable",
@@ -198,7 +211,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
-      "number": 20,
+      "number": 21,
       "title": "Riavvia il sistema",
       "description": "Riavvia il sistema operativo per completare l'abilitazione della protezione.",
       //"script": "shutdown /r /t 0 /f /d p:4:2 /c \"Vertimag Software Setup\"",
@@ -207,7 +220,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
-      "number": 21,
+      "number": 22,
       "title": "Controlla stato UWF",
       "description": "Controlla che la protezione del disco fisso sia abilitata.",
       //"script": "$NAMESPACE = \"root\\standardcimv2\\embedded\";$uwfInstance = Get-WmiObject -Namespace $NAMESPACE -Class UWF_Filter -List;if(!$uwfInstance){throw  \"UWF is NOT installed.\"};$uwfInstance = Get-WmiObject -Namespace $NAMESPACE -Class UWF_Filter;if($uwfInstance.CurrentEnabled){throw  \"UWF is currently NOT disaabled.\"};",
@@ -217,17 +230,17 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 22,
+      "number": 23,
       "title": "Auto Avvio PPC",
       "description": "Imposta l'applicazione del PanelPC in avvio automatico dopo il login.",
       //"script": "Set-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(Install:Root:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath)\"",
       //"rollbackScript": "\"Set-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(EmbeddedInstallationFilePath)\""
-      "script": "Set-ItemProperty $(PPC:Registry:Approve:Path) -Name $(PPC:Registry:Key) -Value ([byte[]](0x02,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00));Disable-ScheduledTask -TaskName Installer",
-      "rollbackScript": "Set-ItemProperty $(PPC:Registry:Approve:Path) -Name $(PPC:Registry:Key) -Value ([byte[]](0x03,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00));Disable-ScheduledTask -TaskName Installer"
+      "script": "Set-ItemProperty $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(Install:Root:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath)\";schtasks.exe /Delete /TN \"$(Install:TaskScheduler:Installer)\" /F",
+      "rollbackScript": "Remove-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key);schtasks.exe /Create /SC ONLOGON /TN \"$(Install:TaskScheduler:Installer)\" /TR \"$(Update:Temp:Path)\\$(Install:Installer:Path)\\$(Install:Installer:FilePath)\" /RL HIGHEST /F"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
-      "number": 23,
+      "number": 24,
       "title": "Riavvia il sistema",
       "description": "Riavvia il sistema operativo per l'auto avvio del software PanelPC.",
       //"script": "shutdown /r /t 0 /f /d p:4:2 /c \"Vertimag Software Setup\"",
