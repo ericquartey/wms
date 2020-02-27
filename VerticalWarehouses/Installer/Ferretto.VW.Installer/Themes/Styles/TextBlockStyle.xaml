@@ -9,7 +9,7 @@
         <Setter Property="FontSize" Value="18" />
         <Setter Property="Margin" Value="10,0,0,0" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
     </Style>
 
     <Style x:Key="VWAPP_ViewTitleTextBlockStyle"

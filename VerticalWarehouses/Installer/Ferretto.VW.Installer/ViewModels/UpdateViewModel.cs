@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Ferretto.VW.Installer.Core;
 
 namespace Ferretto.VW.Installer.ViewModels
@@ -38,6 +40,8 @@ namespace Ferretto.VW.Installer.ViewModels
 
             this.installationService.PropertyChanged += this.InstallationService_PropertyChanged;
             this.installationService.Finished += this.OnInstallationServiceFinished;
+
+            //this.SelectedStep = this.Steps.FirstOrDefault();
 
             this.StartInstallation();
         }
@@ -151,9 +155,12 @@ namespace Ferretto.VW.Installer.ViewModels
         }
 
         private void RaiseCanExecuteChanged()
-        {
-            this.closeCommand?.RaiseCanExecuteChanged();
-            this.abortCommand?.RaiseCanExecuteChanged();
+        {            
+            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    this.closeCommand?.RaiseCanExecuteChanged();
+                    this.abortCommand?.RaiseCanExecuteChanged();                    
+                }), DispatcherPriority.Background);            
         }
 
         #endregion
