@@ -333,6 +333,9 @@
   <data name="Machine_LoadUnitMaxNetWeight" xml:space="preserve">
     <value>Peso netto massimo cassetto</value>
   </data>
+  <data name="Machine_LoadUnitMinHeight" xml:space="preserve">
+    <value>Altezza minima cassetto</value>
+  </data>
   <data name="Machine_LoadUnitTare" xml:space="preserve">
     <value>Tara cassetto</value>
   </data>

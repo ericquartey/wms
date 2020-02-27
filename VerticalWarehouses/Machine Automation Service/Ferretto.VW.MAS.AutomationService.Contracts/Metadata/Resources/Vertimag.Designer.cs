@@ -709,6 +709,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Altezza minima cassetto.
+        /// </summary>
+        public static string Machine_LoadUnitMinHeight {
+            get {
+                return ResourceManager.GetString("Machine_LoadUnitMinHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tara cassetto.
         /// </summary>
         public static string Machine_LoadUnitTare {

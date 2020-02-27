@@ -42,18 +42,24 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_LoadUnitMaxNetWeight))]
             [Unit("kg")]
-            [Id(5)]
+            [Id(6)]
             public double LoadUnitMaxNetWeight { get; set; }
+
+            [Editable(true)]
+            [Unit("mm")]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_LoadUnitMinHeight))]
+            [Id(5)]
+            public double LoadUnitMinHeight { get; set; }
 
             [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_LoadUnitTare))]
             [Unit("kg")]
-            [Id(6)]
+            [Id(7)]
             public double LoadUnitTare { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_MaxGrossWeight))]
             [Unit("kg")]
-            [Id(7)]
+            [Id(8)]
             public double MaxGrossWeight { get; set; }
 
             [Editable(false)]
