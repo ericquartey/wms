@@ -76,16 +76,11 @@
                 </TextBlock>
 
                 <controls:PpcButton Grid.Row="3"
-                                    Grid.Column="1"
+                                    Grid.ColumnSpan="2"
+                                    HorizontalAlignment="Center"
                                     Command="{Binding StartCalibrationCommand}"
                                     Content="{x:Static res:InstallationApp.Start}"
                                     Style="{StaticResource WizardConfirmButton}" />
-
-                <controls:PpcButton Grid.Row="3"
-                                    Command="{Binding ResetCyclesCounterCommand}"
-                                    Content="{Binding CompletionStatus}"
-                                    Style="{StaticResource WizardConfirmButton}" />
-
 
             </Grid>
         </DataTemplate>
@@ -105,83 +100,12 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="1"
-                        Width="250"
-                        Height="90"
-                        HorizontalAlignment="Stretch"
-                        Background="{DynamicResource PpcBackground}">
-                    <Border BorderBrush="{DynamicResource PpcBorderBrush}"
-                            BorderThickness="{DynamicResource PpcBorderThickness}">
-
-                        <Grid>
-
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-
-                            <TextBlock Margin="8,4"
-                                       HorizontalAlignment="Left"
-                                       VerticalAlignment="Center"
-                                       FontSize="{StaticResource FontSize_Normal}"
-                                       FontWeight="Normal"
-                                       Foreground="{DynamicResource FerrettoLightGray}"
-                                       Text="{x:Static res:InstallationApp.CyclesPerformed}" />
-
-                            <StackPanel Grid.Row="1"
-                                        Margin="4"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Top"
-                                        Orientation="Horizontal">
-                                <TextBlock Margin="4,0,4,4"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Very_High}"
-                                           Foreground="{DynamicResource PpcForeground}"
-                                           Text="{Binding PerformedCycles}" />
-                                <TextBlock Margin="4,0,4,4"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Very_High}"
-                                           Foreground="{DynamicResource PpcForeground}"
-                                           Text="/" />
-                                <TextBlock Margin="4,0,4,4"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Very_High}"
-                                           Foreground="{DynamicResource PpcForeground}"
-                                           Text="{Binding RequiredCycles}" />
-                            </StackPanel>
-
-                            <controls:PpcProgressBar Grid.Row="2"
-                                                     Height="8"
-                                                     Margin="8,4,8,8"
-                                                     Color1="{DynamicResource FerrettoGreen}"
-                                                     Color2="Green"
-                                                     Maximum="100"
-                                                     Minimum="0"
-                                                     Value="{Binding CyclesPercent, Mode=OneWay}" />
-
-
-
-                        </Grid>
-
-                    </Border>
-                </Border>
-
-
-                <ctrls:PpcSpinEdit Width="250"
+                <ctrls:PpcSpinEdit Grid.ColumnSpan="2"
+                                   Width="250"
                                    Height="90"
                                    EditValue="{Binding RemainingTime, StringFormat={}{0}, FallbackValue=00:00}"
                                    IsEnabled="False"
                                    LabelText="{x:Static res:InstallationApp.RemainingTime}" />
-
 
                 <StackPanel Grid.Row="1"
                             Grid.Column="0"
@@ -203,8 +127,6 @@
 
                 </StackPanel>
 
-
-
                 <controls:PpcButton Grid.Row="2"
                                     Grid.Column="0"
                                     Grid.ColumnSpan="2"
@@ -215,7 +137,6 @@
                                     Style="{StaticResource WizardConfirmButton}" />
             </Grid>
         </DataTemplate>
-
 
         <DataTemplate x:Key="DataTemplateConfirmAdjustment">
             <Grid Margin="20"
@@ -382,7 +303,7 @@
 
         <controls:CardSensorBay Grid.Row="2"
                                 Grid.Column="3"
-                                Width="230"
+                                Width="250"
                                 Height="90"
                                 MinHeight="90"
                                 Margin="0,15,15,0" />
@@ -429,6 +350,7 @@
                 </Grid>
             </Border>
         </Border>
+
         <Border Grid.Row="4"
                 Grid.Column="3"
                 Height="90"
@@ -471,6 +393,74 @@
             </Border>
         </Border>
 
+        <Border Grid.Row="5"
+                Grid.Column="3"
+                Width="250"
+                Height="90"
+                Margin="0,15,15,0"
+                HorizontalAlignment="Stretch"
+                Background="{DynamicResource PpcBackground}">
+            <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                    BorderThickness="{DynamicResource PpcBorderThickness}">
+
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Margin="8,4"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               FontSize="{StaticResource FontSize_Normal}"
+                               FontWeight="Normal"
+                               Foreground="{DynamicResource FerrettoLightGray}"
+                               Text="{x:Static res:InstallationApp.RaisingsPerformed}" />
+
+                    <StackPanel Grid.Row="1"
+                                Margin="4"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Top"
+                                Orientation="Horizontal">
+                        <TextBlock Margin="4,0,4,4"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="{StaticResource FontSize_Very_High}"
+                                   Foreground="{DynamicResource PpcForeground}"
+                                   Text="{Binding PerformedCycles}" />
+                        <TextBlock Margin="4,0,4,4"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="{StaticResource FontSize_Very_High}"
+                                   Foreground="{DynamicResource PpcForeground}"
+                                   Text="/" />
+                        <TextBlock Margin="4,0,4,4"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="{StaticResource FontSize_Very_High}"
+                                   Foreground="{DynamicResource PpcForeground}"
+                                   Text="{Binding RequiredCycles}" />
+                    </StackPanel>
+
+                    <controls:PpcProgressBar Grid.Row="2"
+                                             Height="8"
+                                             Margin="8,4,8,8"
+                                             Color1="{DynamicResource FerrettoGreen}"
+                                             Color2="Green"
+                                             Maximum="100"
+                                             Minimum="0"
+                                             Value="{Binding CyclesPercent, Mode=OneWay}" />
+
+                </Grid>
+
+            </Border>
+        </Border>
 
         <controls:PpcButton Grid.Row="6"
                             Grid.Column="3"

@@ -66,7 +66,7 @@
           },
           "Id": 1
         },
-        "ChainOffset": -6.5,
+        "ChainOffset": -8,
         "Inverter": {
           "Index": "Slave3",
           "TcpPort": 0,
@@ -106,7 +106,7 @@
             "Id": 2
           }
         ],
-        "Resolution": 374.0607161,
+        "Resolution": 296.2282068,
         "Shutter": {
           "AssistedMovements": {
             "FeedRate": 0.2,
@@ -354,7 +354,7 @@
                   "Position": 200.0,
                   "Acceleration": 1000.0,
                   "Deceleration": 0.0,
-                  "Speed": 100.0,
+                  "Speed": 200.0,
                   "Id": 19
                 },
                 {
@@ -372,7 +372,7 @@
                   "Position": 716.0,
                   "Acceleration": 1000.0,
                   "Deceleration": 0.0,
-                  "Speed": 325.0,
+                  "Speed": 600.0,
                   "Id": 17
                 },
                 {
@@ -415,7 +415,7 @@
                   "Position": 350.0,
                   "Acceleration": 1000.0,
                   "Deceleration": 0.0,
-                  "Speed": 100.0,
+                  "Speed": 200.0,
                   "Id": 8
                 },
                 {
@@ -424,7 +424,7 @@
                   "Position": 716.0,
                   "Acceleration": 1000.0,
                   "Deceleration": 0.0,
-                  "Speed": 325.0,
+                  "Speed": 600.0,
                   "Id": 14
                 },
                 {
@@ -474,6 +474,7 @@
     "LoadUnitTare": 125.0,
     "MaxGrossWeight": 58767.0,
     "ModelName": "VERTIMAG (NEW 2020) 103XL800-GIO-H7645",
+
     "Panels": [
       {
         "Cells": [
@@ -5456,8 +5457,8 @@
     "Bay1CarouselCalibration": {
       "InProgress": false,
       "PerformedCycles": 0,
-      "RequiredCycles": 200,
-      "FeedRate": 0.2,
+      "RequiredCycles": 600,
+      "FeedRate": 0.9,
       "IsBypassed": false,
       "IsCompleted": false,
       "Id": 26
@@ -5495,8 +5496,8 @@
     "Bay2CarouselCalibration": {
       "InProgress": false,
       "PerformedCycles": 0,
-      "RequiredCycles": 0,
-      "FeedRate": 1.0,
+      "RequiredCycles": 600,
+      "FeedRate": 0.9,
       "IsBypassed": false,
       "IsCompleted": false,
       "Id": 20
@@ -5534,8 +5535,8 @@
     "Bay3CarouselCalibration": {
       "InProgress": false,
       "PerformedCycles": 0,
-      "RequiredCycles": 0,
-      "FeedRate": 1.0,
+      "RequiredCycles": 600,
+      "FeedRate": 0.9,
       "IsBypassed": false,
       "IsCompleted": false,
       "Id": 14

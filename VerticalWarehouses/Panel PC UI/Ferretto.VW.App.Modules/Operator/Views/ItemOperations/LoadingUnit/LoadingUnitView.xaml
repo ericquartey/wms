@@ -60,7 +60,7 @@
                                 Foreground="{DynamicResource FerrettoPureWhite}"
                                 Kind="Grid"
                                 TextBlock.TextAlignment="Right"
-                                Visibility="{Binding IsListVisibile, Converter={StaticResource BTVC}}" />
+                                Visibility="{Binding IsListModeEnabled, Converter={StaticResource BTVC}}" />
 
             <controls:PpcButton Width="180"
                                 Height="60"
@@ -70,7 +70,7 @@
                                 Content="{x:Static res:OperatorApp.List}"
                                 Foreground="{DynamicResource FerrettoPureWhite}"
                                 Kind="Table"
-                                Visibility="{Binding IsListVisibile, Converter={StaticResource BTVIC}}" />
+                                Visibility="{Binding IsListModeEnabled, Converter={StaticResource BTVIC}}" />
 
         </StackPanel>
 
@@ -88,7 +88,6 @@
                                 IsActive="{Binding IsAdjustmentVisible}"
                                 Style="{DynamicResource PpcButtonMarkStyle}" />
 
-
             <controls:PpcButton Margin="15,0,0,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
@@ -98,6 +97,7 @@
                                 Content="{x:Static res:OperatorApp.Pick}"
                                 IsActive="{Binding IsPickVisible}"
                                 Style="{DynamicResource PpcButtonMarkStyle}" />
+
             <controls:PpcButton Margin="15,0,0,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
@@ -107,7 +107,6 @@
                                 Content="{x:Static res:OperatorApp.Put}"
                                 IsActive="{Binding IsPutVisible}"
                                 Style="{DynamicResource PpcButtonMarkStyle}" />
-
 
             <controls:PpcButton Margin="15,0,0,0"
                                 HorizontalAlignment="Right"

@@ -13,7 +13,7 @@
     <Grid>
         <Grid Name="TrayControlGrid"
               Grid.Row="0"
-              Visibility="{Binding IsListVisibile, Converter={StaticResource BTVIC}}">
+              Visibility="{Binding IsListModeEnabled, Converter={StaticResource BTVIC}}">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"
@@ -49,7 +49,7 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
-                    <views:ItemsDataGridView Visibility="{Binding IsListVisibile, Converter={StaticResource BTVIC}}" />
+                    <views:ItemsDataGridView Visibility="{Binding IsListModeEnabled, Converter={StaticResource BTVIC}}" />
 
                     <Grid Grid.Column="1"
                           Margin="0,0,0,0"
@@ -86,7 +86,7 @@
 
         <Grid Name="ListGrid"
               Grid.Row="0"
-              Visibility="{Binding IsListVisibile, Converter={StaticResource BTVC}}">
+              Visibility="{Binding IsListModeEnabled, Converter={StaticResource BTVC}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="720" />
                 <ColumnDefinition />
