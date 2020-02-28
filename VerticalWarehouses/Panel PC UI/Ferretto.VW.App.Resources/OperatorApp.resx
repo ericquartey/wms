@@ -1077,7 +1077,7 @@
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityLocalCallHeight" xml:space="preserve">
-    <value>Height [mm]</value>
+    <value>Height (mm)</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityLocalCallGrossWeight" xml:space="preserve">
