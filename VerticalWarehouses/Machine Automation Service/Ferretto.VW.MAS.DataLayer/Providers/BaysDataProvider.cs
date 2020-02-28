@@ -912,8 +912,11 @@ namespace Ferretto.VW.MAS.DataLayer
                     loadingUnit.Height = height.Value;
                 }
                 position.LoadingUnit = loadingUnit;
+
+                this.dataContext.LoadingUnits.Update(loadingUnit);
             }
 
+            this.dataContext.BayPositions.Update(position);
             this.dataContext.SaveChanges();
         }
 

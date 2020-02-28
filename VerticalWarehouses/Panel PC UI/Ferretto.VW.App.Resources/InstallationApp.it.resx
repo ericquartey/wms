@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="UpperBound" xml:space="preserve">
-    <value>Limite superiore [mm]</value>
+    <value>Limite superiore (mm)</value>
   </data>
   <data name="Stop" xml:space="preserve">
     <value>Stop</value>
@@ -208,10 +208,10 @@
     <value>Calibrazione asse non effettuata</value>
   </data>
   <data name="LowerBound" xml:space="preserve">
-    <value>Limite inferiore [mm]</value>
+    <value>Limite inferiore (mm)</value>
   </data>
   <data name="Offset" xml:space="preserve">
-    <value>Offset [mm]</value>
+    <value>Offset (mm)</value>
   </data>
   <data name="Output" xml:space="preserve">
     <value>Risultato</value>
@@ -320,16 +320,16 @@
     <value>Vai a quota iniziale</value>
   </data>
   <data name="InitialPosition" xml:space="preserve">
-    <value>Quota iniziale [mm]</value>
+    <value>Quota iniziale (mm)</value>
   </data>
   <data name="MeasuredLenght" xml:space="preserve">
-    <value>Spostamento misurato [mm]</value>
+    <value>Spostamento misurato (mm)</value>
   </data>
   <data name="NewResolution" xml:space="preserve">
     <value>Nuova risoluzione (imp/mm)</value>
   </data>
   <data name="RepositionLenght" xml:space="preserve">
-    <value>Lunghezza spostamento [mm]</value>
+    <value>Lunghezza spostamento (mm)</value>
   </data>
   <data name="ResolutionModified" xml:space="preserve">
     <value>Risoluzione modificata correttamente.</value>
@@ -338,7 +338,7 @@
     <value>Risoluzione attuale (imp/mm)</value>
   </data>
   <data name="DesiredMovement" xml:space="preserve">
-    <value>Spostamento desiderato [mm]</value>
+    <value>Spostamento desiderato (mm)</value>
   </data>
   <data name="InsertDesiredMovement" xml:space="preserve">
     <value>Inserire lo spostamento desiderato.</value>
@@ -350,7 +350,7 @@
     <value>Inserire lo spostamento misurato.</value>
   </data>
   <data name="MeasuredMovement" xml:space="preserve">
-    <value>Corsa misurata [mm]</value>
+    <value>Corsa misurata (mm)</value>
   </data>
   <data name="VerticalResolutionCalibration" xml:space="preserve">
     <value>Calibrazione risoluzione asse verticale</value>
@@ -368,10 +368,10 @@
     <value>Cicli completati (sessione)</value>
   </data>
   <data name="CurrentPosition" xml:space="preserve">
-    <value>Posizione attuale [mm]</value>
+    <value>Posizione attuale (mm)</value>
   </data>
   <data name="DelayBetweenCycles" xml:space="preserve">
-    <value>Ritardo tra cicli [s]</value>
+    <value>Ritardo tra cicli (s)</value>
   </data>
   <data name="Middle" xml:space="preserve">
     <value>Intermedia</value>
@@ -395,13 +395,13 @@
     <value>Raggi attivati</value>
   </data>
   <data name="CurrentHeight" xml:space="preserve">
-    <value>Quota corrente [mm]</value>
+    <value>Quota corrente (mm)</value>
   </data>
   <data name="GateCalibrated" xml:space="preserve">
     <value>Barriera calibrata.</value>
   </data>
   <data name="GateCorrection" xml:space="preserve">
-    <value>Correzione barriera [mm]</value>
+    <value>Correzione barriera (mm)</value>
   </data>
   <data name="GateOutOfTolerance" xml:space="preserve">
     <value>La barriera è fuori tolleranza</value>
@@ -413,13 +413,13 @@
     <value>Controllo pannelli</value>
   </data>
   <data name="SpeedMMSec" xml:space="preserve">
-    <value>Velocità [mm/s]</value>
+    <value>Velocità (mm/s)</value>
   </data>
   <data name="SystemErrorMM" xml:space="preserve">
-    <value>Errore di sistema [mm]</value>
+    <value>Errore di sistema (mm)</value>
   </data>
   <data name="Tolerance" xml:space="preserve">
-    <value>Tolleranza richiesta (+/-) [mm]</value>
+    <value>Tolleranza richiesta (+/-) (mm)</value>
   </data>
   <data name="VerticalOffsetCalibration" xml:space="preserve">
     <value>Calibrazione offset asse verticale</value>
@@ -437,13 +437,13 @@
     <value>Barriera misura altezza </value>
   </data>
   <data name="AcceptableWeightTolerance" xml:space="preserve">
-    <value>Tolleranza richiesta [%]</value>
+    <value>Tolleranza richiesta (%)</value>
   </data>
   <data name="InsertedWeight" xml:space="preserve">
-    <value>Peso inserito [kg]</value>
+    <value>Peso inserito (kg)</value>
   </data>
   <data name="MeasuredWeight" xml:space="preserve">
-    <value>Peso misurato [kg]</value>
+    <value>Peso misurato (kg)</value>
   </data>
   <data name="MeasuredWeightInTolerance" xml:space="preserve">
     <value>Il peso misurato rientra nella tolleranza.</value>
@@ -452,13 +452,13 @@
     <value>Il peso misurato è fuori tolleranza.</value>
   </data>
   <data name="TestRun" xml:space="preserve">
-    <value>Corsa di test [mm]</value>
+    <value>Corsa di test (mm)</value>
   </data>
   <data name="CorrectOffset" xml:space="preserve">
-    <value>Offset corretto [mm]</value>
+    <value>Offset corretto (mm)</value>
   </data>
   <data name="CurrentOffset" xml:space="preserve">
-    <value>Offset attuale [mm]</value>
+    <value>Offset attuale (mm)</value>
   </data>
   <data name="DoCorrectOffset" xml:space="preserve">
     <value>Chiudi procedura</value>
@@ -467,16 +467,16 @@
     <value>Accetta</value>
   </data>
   <data name="ReferenceCellHeight" xml:space="preserve">
-    <value>Quota cella selezionata [mm]</value>
+    <value>Quota cella selezionata (mm)</value>
   </data>
   <data name="CellNumber" xml:space="preserve">
     <value>Numero Cella</value>
   </data>
   <data name="StepValue" xml:space="preserve">
-    <value>Valore step [mm]</value>
+    <value>Valore step (mm)</value>
   </data>
   <data name="CellHeight" xml:space="preserve">
-    <value>Quota Cella [mm]</value>
+    <value>Quota Cella (mm)</value>
   </data>
   <data name="CellsPanelControl" xml:space="preserve">
     <value>Controllo pannelli mensola</value>
@@ -488,7 +488,7 @@
     <value>Pannello attuale</value>
   </data>
   <data name="PanelCorrection" xml:space="preserve">
-    <value>Correzione pannello [mm]</value>
+    <value>Correzione pannello (mm)</value>
   </data>
   <data name="TotalPanels" xml:space="preserve">
     <value>Pannelli totali:</value>
@@ -548,10 +548,10 @@
     <value>Controllo quote celle</value>
   </data>
   <data name="CellCorrection" xml:space="preserve">
-    <value>Correzione Quota Cella [mm]</value>
+    <value>Correzione Quota Cella (mm)</value>
   </data>
   <data name="MeasuredInitialPosition" xml:space="preserve">
-    <value>Quota iniziale misurata [mm]</value>
+    <value>Quota iniziale misurata (mm)</value>
   </data>
   <data name="MoveToInitialPosition" xml:space="preserve">
     <value>Sposta nella posizione iniziale</value>
@@ -584,7 +584,7 @@
     <value>Sensore A serranda</value>
   </data>
   <data name="FinalPosition" xml:space="preserve">
-    <value>Quota finale [mm]</value>
+    <value>Quota finale (mm)</value>
   </data>
   <data name="StartResolutionProcedure" xml:space="preserve">
     <value>Avvia procedura</value>
@@ -602,7 +602,7 @@
     <value>Verifica posizione pannelli mensola</value>
   </data>
   <data name="ReadFinalPosition" xml:space="preserve">
-    <value>Quota finale letta [mm]</value>
+    <value>Quota finale letta (mm)</value>
   </data>
   <data name="Gate1HeightReached" xml:space="preserve">
     <value>Altezza raggiunta</value>
@@ -623,7 +623,7 @@
     <value>Cella finale</value>
   </data>
   <data name="CellsSideControlCorrection" xml:space="preserve">
-    <value>Correzione richiesta [mm]</value>
+    <value>Correzione richiesta (mm)</value>
   </data>
   <data name="CellsSideControlSelectedSide" xml:space="preserve">
     <value>Lato selezionato</value>
@@ -638,7 +638,7 @@
     <value>Totale cassetti</value>
   </data>
   <data name="LoadingDrawersMaxWeight" xml:space="preserve">
-    <value>Portata max. [kg]</value>
+    <value>Portata max. (kg)</value>
   </data>
   <data name="LoadingDrawersInsertedDrawers" xml:space="preserve">
     <value>Cassetti inseriti</value>
@@ -671,7 +671,7 @@
     <value>Cassetto da inserire</value>
   </data>
   <data name="LoadFirstDrawerMaxWeight" xml:space="preserve">
-    <value>Portata massima cassetto [kg]</value>
+    <value>Portata massima cassetto (kg)</value>
   </data>
   <data name="LoadFirstDrawerStartLoading" xml:space="preserve">
     <value>Inserisci cassetto</value>
@@ -686,13 +686,13 @@
     <value>Posizione nella baia</value>
   </data>
   <data name="BayHeight" xml:space="preserve">
-    <value>Quota baia [mm]</value>
+    <value>Quota baia (mm)</value>
   </data>
   <data name="BayHeightCheckActualHeight" xml:space="preserve">
-    <value>Posizione attuale [mm]</value>
+    <value>Posizione attuale (mm)</value>
   </data>
   <data name="BayHeightCheckCorrectionValue" xml:space="preserve">
-    <value>Valore della correzione [mm]</value>
+    <value>Valore della correzione (mm)</value>
   </data>
   <data name="BayHeightCheckNextPosition" xml:space="preserve">
     <value>Prossima posizione</value>
@@ -867,10 +867,10 @@
     <value>Passo 3</value>
   </data>
   <data name="MeasuredFinalPosition" xml:space="preserve">
-    <value>Quota finale misurata [mm]</value>
+    <value>Quota finale misurata (mm)</value>
   </data>
   <data name="MeasuredDistance" xml:space="preserve">
-    <value>Corsa misurata [mm]</value>
+    <value>Corsa misurata (mm)</value>
   </data>
   <data name="CellSide" xml:space="preserve">
     <value>Lato Cella</value>
@@ -885,7 +885,7 @@
     <value>Posizione alta</value>
   </data>
   <data name="Displacement" xml:space="preserve">
-    <value>Spostamento [mm]</value>
+    <value>Spostamento (mm)</value>
   </data>
   <data name="ExternalBay" xml:space="preserve">
     <value>Baia Esterna</value>
@@ -909,7 +909,7 @@
     <value>Baia</value>
   </data>
   <data name="ElevatorVerticalPosition" xml:space="preserve">
-    <value>Posizione Verticale [mm]</value>
+    <value>Posizione Verticale (mm)</value>
   </data>
   <data name="BayPosition" xml:space="preserve">
     <value>Posizione Baia</value>
@@ -942,10 +942,10 @@
     <value>Imbarca</value>
   </data>
   <data name="TrayWeight" xml:space="preserve">
-    <value>Peso Cassetto [kg]</value>
+    <value>Peso Cassetto (kg)</value>
   </data>
   <data name="ElevatorHorizontalPosition" xml:space="preserve">
-    <value>Posizione Orizzontale [mm]</value>
+    <value>Posizione Orizzontale (mm)</value>
   </data>
   <data name="ElevatorIsInInitialPosition" xml:space="preserve">
     <value>L'elevatore si trova nella posizione iniziale.</value>
@@ -960,11 +960,11 @@
     <value>Risoluzione dell'asse verticale aggiornata.</value>
   </data>
   <data name="SelectLowerBound" xml:space="preserve">
-    <value>Seleziona limite inferiore [mm]</value>
+    <value>Seleziona limite inferiore (mm)</value>
     <comment>Label text</comment>
   </data>
   <data name="SelectUpperBound" xml:space="preserve">
-    <value>Seleziona limite superiore [mm]</value>
+    <value>Seleziona limite superiore (mm)</value>
     <comment>Label text</comment>
   </data>
   <data name="TimeDelay" xml:space="preserve">
@@ -1077,10 +1077,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Analisi Peso</value>
   </data>
   <data name="TrayTare" xml:space="preserve">
-    <value>Tara Cassetto [kg]</value>
+    <value>Tara Cassetto (kg)</value>
   </data>
   <data name="NetWeight" xml:space="preserve">
-    <value>Peso Netto [kg]</value>
+    <value>Peso Netto (kg)</value>
   </data>
   <data name="DisembarkBackwards" xml:space="preserve">
     <value>Scarica indietro</value>
@@ -1191,10 +1191,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Test Serranda</value>
   </data>
   <data name="BayPositionDownHeight" xml:space="preserve">
-    <value>Quota posiz. bassa [mm]</value>
+    <value>Quota posiz. bassa (mm)</value>
   </data>
   <data name="BayPositionUpHeight" xml:space="preserve">
-    <value>Quota posiz. alta [mm]</value>
+    <value>Quota posiz. alta (mm)</value>
   </data>
   <data name="TrayInBayPositionDown" xml:space="preserve">
     <value>Presenza in posiz. bassa</value>
@@ -1669,10 +1669,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Posizionare l'elevatore all'altezza della baia e aprire la serranda se presente.</value>
   </data>
   <data name="BayPositionDownHeightNew" xml:space="preserve">
-    <value>Nuova quota posiz. bassa [mm]</value>
+    <value>Nuova quota posiz. bassa (mm)</value>
   </data>
   <data name="BayPositionUpHeightNew" xml:space="preserve">
-    <value>Nuova quota posiz. alta [mm]</value>
+    <value>Nuova quota posiz. alta (mm)</value>
   </data>
   <data name="CheckBayElevatorAlignment" xml:space="preserve">
     <value>Verificare l'allineamento della baia e dell'elevatore. Nel caso non fossero allineate, procedere a correggere la posizione dell'elevatore.</value>
@@ -1693,7 +1693,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Verificare le nuove quote e premere Salva per rendere le modifiche effettive.</value>
   </data>
   <data name="Interaxle" xml:space="preserve">
-    <value>Interasse [mm]</value>
+    <value>Interasse (mm)</value>
   </data>
   <data name="FirstTest" xml:space="preserve">
     <value>Primo Test</value>

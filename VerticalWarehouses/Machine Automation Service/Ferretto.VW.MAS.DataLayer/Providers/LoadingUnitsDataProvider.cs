@@ -307,6 +307,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 luDb.GrossWeight = loadingUnit.GrossWeight;
                 luDb.MaxNetWeight = loadingUnit.MaxNetWeight;
                 luDb.Tare = loadingUnit.Tare;
+                luDb.Status = loadingUnit.Status;
 
                 this.dataContext.SaveChanges();
             }

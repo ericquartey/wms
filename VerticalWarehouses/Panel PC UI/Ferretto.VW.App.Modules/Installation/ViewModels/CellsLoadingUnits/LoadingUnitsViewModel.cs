@@ -22,6 +22,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IHealthProbeService healthProbeService;
 
+        private readonly IMachineBaysWebService machineBaysWebService;
+
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private readonly ISessionService sessionService;
@@ -44,6 +46,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand saveDrawerCommand;
 
+        private int? selectedBayPositionId;
+
         private string selectedCode;
 
         private int? selectedId;
@@ -58,12 +62,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public LoadingUnitsViewModel(
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+            IMachineBaysWebService machineBaysWebService,
             IHealthProbeService healthProbeService,
             ISessionService sessionService)
             : base(PresentationMode.Installer)
         {
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
+            this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
         }
 
@@ -128,8 +134,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.saveDrawerCommand
             ??
             (this.saveDrawerCommand = new DelegateCommand(
-                async () => await this.SaveDrawer(),
+                async () => await this.SaveDrawerAsync(),
                 () => !this.IsMoving && this.SelectedLU != null));
+
+        public int? SelectedBayPositionId
+        {
+            get => this.selectedBayPositionId;
+            set => this.SetProperty(ref this.selectedBayPositionId, value);
+        }
 
         public string SelectedCode
         {
@@ -150,6 +162,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.SelectedId = this.SelectedLU?.Id;
                 this.SelectedCode = this.SelectedLU?.Code;
+                this.SelectedBayPositionId = null;
             });
         }
 
@@ -311,11 +324,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task SaveDrawer()
+        private async Task SaveDrawerAsync()
         {
             try
             {
                 await this.machineLoadingUnitsWebService.SaveLoadUnitAsync(this.SelectedLU);
+
+                if (this.SelectedLU.Status == LoadingUnitStatus.InBay && this.SelectedBayPositionId.HasValue)
+                {
+                    await this.machineBaysWebService.SetLoadUnitOnBayAsync(this.SelectedBayPositionId.Value, this.SelectedLU.Id);
+                }
 
                 if (this.error)
                 {
