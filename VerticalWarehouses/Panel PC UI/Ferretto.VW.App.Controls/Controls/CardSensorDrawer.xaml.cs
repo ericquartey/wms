@@ -23,6 +23,10 @@ namespace Ferretto.VW.App.Controls.Controls
             DependencyProperty.Register(nameof(GrossWeight), typeof(double?), typeof(CardSensorDrawer));
 
         [Browsable(false)]
+        public static readonly DependencyProperty NetWeightProperty =
+           DependencyProperty.Register(nameof(NetWeight), typeof(double?), typeof(CardSensorDrawer));
+
+        [Browsable(false)]
         public static readonly DependencyProperty HeightProperty =
             DependencyProperty.Register(nameof(Height), typeof(double?), typeof(CardSensorDrawer));
 
@@ -69,6 +73,11 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             get => (double?)this.GetValue(GrossWeightProperty);
             set => this.SetValue(GrossWeightProperty, value);
+        }
+        public double? NetWeight
+        {
+            get => (double?)this.GetValue(NetWeightProperty);
+            set => this.SetValue(NetWeightProperty, value);
         }
 
         public double? Height
@@ -122,12 +131,14 @@ namespace Ferretto.VW.App.Controls.Controls
             if (lu is null)
             {
                 this.GrossWeight = null;
+                this.NetWeight = null;
                 this.Position = null;
                 this.Height = null;
             }
             else
             {
                 this.GrossWeight = lu.GrossWeight;
+                this.NetWeight = lu.NetWeight;
                 this.Height = lu.Height;
             }
         }
