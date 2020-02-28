@@ -87,11 +87,10 @@
                             Margin="0,5,5,5"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch">
-                    <TextBlock Margin="5,1,5,0"
+                    <TextBlock Margin="5,0,5,0"
                                Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
-                               Text="BlockLevel" />
-                    <ComboBox MinHeight="32"
-                              Margin="5,4"
+                               Text="Block Level" />
+                    <ComboBox Margin="5,4,5,5"
                               FontFamily="{DynamicResource VWAPP_TitleFont}"
                               FontSize="{DynamicResource VWAPP_PpcTextBox_TextBox_FontSize}"
                               ItemsSource="{Binding BlockLevels}"

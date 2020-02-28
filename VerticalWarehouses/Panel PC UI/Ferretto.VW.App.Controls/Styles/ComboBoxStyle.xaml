@@ -3,49 +3,15 @@
                     xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls"
                     xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Styles"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
-    <ControlTemplate x:Key="FlatComboBoxToggleButton"
-                     TargetType="{x:Type ToggleButton}">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition Width="30" />
-            </Grid.ColumnDefinitions>
-            <Border x:Name="Border"
-                    Grid.ColumnSpan="2"
-                    Background="{x:Null}"
-                    BorderBrush="{DynamicResource PpcBorderBrush}"
-                    BorderThickness="0,0,0,1"
-                    CornerRadius="2,0,0,2" />
-            <Border Grid.Column="0"
-                    Margin="1"
-                    Background="{x:Null}"
-                    BorderBrush="{x:Null}"
-                    BorderThickness="0"
-                    CornerRadius="2,0,0,2" />
-            <Path x:Name="Arrow"
-                  Grid.Column="1"
-                  HorizontalAlignment="Center"
-                  VerticalAlignment="Center"
-                  Data="M 6 6 L 14 14 L 22 6 Z"
-                  Fill="{DynamicResource PpcBorderBrush}" />
-        </Grid>
-        <ControlTemplate.Triggers>
-            <Trigger Property="ToggleButton.IsMouseOver" Value="true">
-                <Setter TargetName="Border" Property="Background" Value="#808080" />
-            </Trigger>
-            <Trigger Property="ToggleButton.IsChecked" Value="true">
-                <Setter TargetName="Border" Property="Background" Value="#E0E0E0" />
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter TargetName="Border" Property="Background" Value="#EEEEEE" />
-                <Setter TargetName="Border" Property="BorderBrush" Value="#AAAAAA" />
-                <Setter Property="Foreground" Value="#888888" />
-                <Setter TargetName="Arrow" Property="Fill" Value="#888888" />
-            </Trigger>
-        </ControlTemplate.Triggers>
+
+    <ControlTemplate x:Key="ComboBoxTextBox"
+                     TargetType="{x:Type TextBox}">
+        <Border x:Name="PART_ContentHost"
+                Background="{TemplateBinding Background}"
+                Focusable="False" />
     </ControlTemplate>
 
-    <ControlTemplate x:Key="ComboBoxToggleButton"
+    <ControlTemplate x:Key="FlatComboBoxToggleButton"
                      TargetType="{x:Type ToggleButton}">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -54,47 +20,44 @@
             </Grid.ColumnDefinitions>
             <Border x:Name="Border"
                     Grid.ColumnSpan="2"
-                    Background="{x:Null}"
+                    Background="{DynamicResource FerrettoLightGray}"
                     BorderBrush="{DynamicResource PpcBorderBrush}"
-                    BorderThickness="1" />
-            <Border x:Name="Body"
+                    BorderThickness="0,0,0,1" />
+            <Border x:Name="Border2"
                     Grid.Column="0"
                     Margin="1"
-                    Background="{x:Null}"
+                    Background="{DynamicResource FerrettoLightGray}"
                     BorderBrush="{x:Null}"
-                    BorderThickness="0" />
+                    BorderThickness="0,0,0,0" />
             <Path x:Name="Arrow"
                   Grid.Column="1"
-                  Margin="0,0,5,0"
+                  Width="27"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
-                  Data="M 4 4 L 14 14 L 24 4 Z"
-                  Fill="{DynamicResource PpcBorderBrush}" />
+                  Data="M 2 2 L 11 11 L 20 2 Z"
+                  Fill="{DynamicResource FerrettoDarkGray}"
+                  StrokeEndLineCap="Round"
+                  StrokeStartLineCap="Round" />
         </Grid>
         <ControlTemplate.Triggers>
             <Trigger Property="ToggleButton.IsMouseOver" Value="true">
                 <Setter TargetName="Border" Property="Background" Value="#808080" />
+                <Setter TargetName="Border2" Property="Background" Value="#808080" />
             </Trigger>
             <Trigger Property="ToggleButton.IsChecked" Value="true">
                 <Setter TargetName="Border" Property="Background" Value="#E0E0E0" />
+                <Setter TargetName="Border2" Property="Background" Value="#E0E0E0" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
-                <Setter TargetName="Border" Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
-                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
-                <Setter TargetName="Border" Property="BorderThickness" Value="2" />
-                <Setter TargetName="Arrow" Property="Visibility" Value="Collapsed" />
-                <Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource PpcButtonForegroundDisabled}" />
-                <Setter TargetName="Body" Property="Grid.ColumnSpan" Value="2" />
+                <Setter TargetName="Border" Property="Background" Value="#EEEEEE" />
+                <Setter TargetName="Border" Property="BorderBrush" Value="#AAAAAA" />
+                <Setter TargetName="Border2" Property="Background" Value="#EEEEEE" />
+                <Setter TargetName="Border2" Property="BorderBrush" Value="#AAAAAA" />
+                <Setter Property="Foreground" Value="#888888" />
+                <Setter TargetName="Arrow" Property="Fill" Value="#888888" />
+                <Setter TargetName="Arrow" Property="Visibility" Value="Hidden" />
             </Trigger>
         </ControlTemplate.Triggers>
-    </ControlTemplate>
-
-    <ControlTemplate x:Key="ComboBoxTextBox"
-                     TargetType="{x:Type TextBox}">
-        <Border x:Name="PART_ContentHost"
-                Background="{TemplateBinding Background}"
-                Focusable="False" />
     </ControlTemplate>
 
     <Style x:Key="FlatComboBoxStyle"
@@ -104,8 +67,10 @@
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
-        <Setter Property="MinWidth" Value="120" />
-        <Setter Property="MinHeight" Value="20" />
+        <Setter Property="Foreground" Value="{DynamicResource FerrettoDarkGray}" />
+        <Setter Property="ItemContainerStyle" Value="{DynamicResource ComboBoxItemStyle}" />
+        <Setter Property="MinWidth" Value="100" />
+        <Setter Property="Height" Value="32" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ComboBox}">
@@ -184,92 +149,94 @@
 
     <sys:Double x:Key="ComboBoxHeight">54</sys:Double>
 
-    <Style x:Key="ComboBoxItemStyle"
-           TargetType="{x:Type ComboBoxItem}">
-        <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ComboBoxItem}">
-                    <Border x:Name="Bd"
-                            Height="{DynamicResource ComboBoxHeight}"
-                            Padding="10,0"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}">
-                        <!--<StackPanel Orientation="Horizontal">-->
-                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                        <!--<Label Content="{Binding Title}" Width="100" />
-                            <Label Content="{Binding BranchName}" />
-                        </StackPanel>-->
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsHighlighted" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource FerrettoBlue}" />
-                            <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Foreground" Value="{DynamicResource FerrettoLightGray}" />
-                            <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
-                        </Trigger>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
-                            <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+    <ControlTemplate x:Key="ComboBoxToggleButton"
+                     TargetType="{x:Type ToggleButton}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Border x:Name="Border"
+                    Grid.ColumnSpan="2"
+                    Background="{DynamicResource PpcButtonBackground}"
+                    BorderBrush="{DynamicResource PpcBorderBrush}"
+                    BorderThickness="1" />
+            <Border x:Name="Border2"
+                    Grid.Column="0"
+                    Margin="1"
+                    Background="{DynamicResource PpcButtonBackground}"
+                    BorderBrush="{DynamicResource PpcBorderBrush}"
+                    BorderThickness="0,0,0,0" />
+            <Path x:Name="Arrow"
+                  Grid.Column="1"
+                  Width="27"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  Data="M 2 2 L 11 11 L 20 2 Z"
+                  Fill="{DynamicResource PpcButtonForeground}"
+                  StrokeEndLineCap="Round"
+                  StrokeStartLineCap="Round" />
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="ToggleButton.IsMouseOver" Value="true">
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource FerrettoMediumGray}" />
+                <Setter TargetName="Border2" Property="Background" Value="{DynamicResource FerrettoMediumGray}" />
+            </Trigger>
+            <Trigger Property="ToggleButton.IsChecked" Value="true">
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource FerrettoLightGray}" />
+                <Setter TargetName="Border2" Property="Background" Value="{DynamicResource FerrettoLightGray}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
+                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource FerrettoMediumGray}" />
+                <Setter TargetName="Border2" Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
+                <Setter TargetName="Border2" Property="BorderBrush" Value="{DynamicResource FerrettoMediumGray}" />
+                <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
+                <Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource PpcButtonForegroundDisabled}" />
+                <Setter TargetName="Arrow" Property="Visibility" Value="Hidden" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
 
     <Style x:Key="PpcComboBoxStyle"
            TargetType="{x:Type ComboBox}">
-        <Setter Property="Foreground" Value="{DynamicResource FerrettoLightGray}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-        <Setter Property="Background" Value="{x:Null}" />
-        <Setter Property="ItemContainerStyle" Value="{StaticResource ComboBoxItemStyle}" />
         <Setter Property="SnapsToDevicePixels" Value="true" />
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
-        <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
-        <Setter Property="MinWidth" Value="50" />
-        <Setter Property="MinHeight" Value="{StaticResource ComboBoxHeight}" />
+        <Setter Property="ItemContainerStyle" Value="{DynamicResource ComboBoxItemStyle}" />
+        <Setter Property="Foreground" Value="{DynamicResource PpcButtonForeground}" />
+        <Setter Property="MinWidth" Value="100" />
+        <Setter Property="Height" Value="32" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="ComboBox">
-                    <Grid Name="Grid">
-
+                <ControlTemplate TargetType="{x:Type ComboBox}">
+                    <Grid>
                         <ToggleButton Name="ToggleButton"
-                                      HorizontalAlignment="Stretch"
-                                      Background="{TemplateBinding Background}"
-                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      Grid.Column="2"
                                       ClickMode="Press"
                                       Focusable="false"
-                                      Foreground="{TemplateBinding Foreground}"
                                       IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                                       Template="{StaticResource ComboBoxToggleButton}" />
-
                         <ContentPresenter Name="ContentSite"
+                                          Margin="7,5,30,5"
                                           HorizontalAlignment="Left"
                                           VerticalAlignment="Center"
                                           Content="{TemplateBinding SelectionBoxItem}"
                                           ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
                                           ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
                                           IsHitTestVisible="False" />
-
                         <TextBox x:Name="PART_EditableTextBox"
-                                 Margin="0"
-                                 HorizontalAlignment="Center"
+                                 Margin="7,5,30,5"
+                                 HorizontalAlignment="Left"
                                  VerticalAlignment="Center"
+                                 Background="Transparent"
                                  Focusable="True"
                                  IsReadOnly="{TemplateBinding IsReadOnly}"
                                  Style="{x:Null}"
                                  Template="{StaticResource ComboBoxTextBox}"
                                  Visibility="Hidden" />
-
                         <Popup Name="Popup"
                                AllowsTransparency="True"
                                Focusable="False"
@@ -281,9 +248,9 @@
                                   MaxHeight="{TemplateBinding MaxDropDownHeight}"
                                   SnapsToDevicePixels="True">
                                 <Border x:Name="DropDownBorder"
-                                        Background="{DynamicResource FerrettoDarkGray}"
-                                        BorderBrush="{DynamicResource FerrettoMediumGray}"
-                                        BorderThickness="2" />
+                                        Background="{DynamicResource PpcButtonBackground}"
+                                        BorderBrush="{DynamicResource PpcBorderBrush}"
+                                        BorderThickness="1" />
                                 <ScrollViewer Margin="4,6,4,6"
                                               SnapsToDevicePixels="True">
                                     <StackPanel IsItemsHost="True"
@@ -296,24 +263,51 @@
                         <Trigger Property="HasItems" Value="false">
                             <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95" />
                         </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Foreground" Value="{DynamicResource PpcButtonForeground}" />
+                            <Setter TargetName="ContentSite" Property="Margin" Value="7,5,7,5" />
+                            <Setter TargetName="PART_EditableTextBox" Property="Margin" Value="7,5,7,5" />
+                        </Trigger>
                         <Trigger Property="IsGrouping" Value="true">
                             <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
                         </Trigger>
                         <Trigger SourceName="Popup" Property="Popup.AllowsTransparency" Value="true">
-                            <Setter TargetName="DropDownBorder" Property="CornerRadius" Value="0" />
+                            <Setter TargetName="DropDownBorder" Property="CornerRadius" Value="4" />
                             <Setter TargetName="DropDownBorder" Property="Margin" Value="0,2,0,0" />
                         </Trigger>
                         <Trigger Property="IsEditable" Value="true">
                             <Setter Property="IsTabStop" Value="false" />
                             <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible" />
                             <Setter TargetName="ContentSite" Property="Visibility" Value="Hidden" />
-                            <Setter TargetName="ContentSite" Property="Margin" Value="5,3,30,3" />
+                            <Setter TargetName="ContentSite" Property="Margin" Value="7,5,30,5" />
+                            <Setter TargetName="PART_EditableTextBox" Property="Margin" Value="7,5,30,5" />
+                            <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
                         </Trigger>
-                        <Trigger Property="IsEditable" Value="false">
-                            <Setter Property="IsTabStop" Value="true" />
-                            <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Hidden" />
-                            <Setter TargetName="ContentSite" Property="Visibility" Value="Visible" />
-                            <Setter TargetName="ContentSite" Property="Margin" Value="5,3" />
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers />
+    </Style>
+
+    <Style x:Key="ComboBoxItemStyle"
+           TargetType="{x:Type ComboBoxItem}">
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+                    <Border Name="Border"
+                            Padding="2"
+                            SnapsToDevicePixels="true">
+                        <ContentPresenter />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsHighlighted" Value="true">
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource FerrettoLightGray}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
