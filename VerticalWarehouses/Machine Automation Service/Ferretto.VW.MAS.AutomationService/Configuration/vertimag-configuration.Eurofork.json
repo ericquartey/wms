@@ -10,7 +10,7 @@
       "MissionsCount": 0,
       "NetWeight": 0.0,
       "Status": "Undefined",
-      "Tare": 120.0,
+      "Tare": 125.0,
       "Id": 1
     },
     {
@@ -22,7 +22,7 @@
       "MissionsCount": 0,
       "NetWeight": 0.0,
       "Status": "Undefined",
-      "Tare": 120.0,
+      "Tare": 125.0,
       "Id": 2
     },
     {
@@ -34,7 +34,7 @@
       "MissionsCount": 0,
       "NetWeight": 0.0,
       "Status": "Undefined",
-      "Tare": 120.0,
+      "Tare": 125.0,
       "Id": 3
     }
   ],
@@ -468,7 +468,7 @@
       "Id": 1
     },
     "Height": 7661.0,
-    "LoadUnitMaxHeight": 395.0, // 145 to simulate first load test, else 395.0,
+    "LoadUnitMaxHeight": 300, //395.0, // 150 to simulate first load test, else 395.0,
     "LoadUnitMaxNetWeight": 800.0,
     "LoadUnitMinHeight": 150.0,
     "LoadUnitTare": 125.0,
