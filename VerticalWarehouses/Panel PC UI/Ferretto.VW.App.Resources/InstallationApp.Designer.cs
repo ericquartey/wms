@@ -3591,11 +3591,11 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Press Repeat to run the procedure again, Complete to finish..
+        ///   Looks up a localized string similar to Press Repeat to run the procedure again..
         /// </summary>
-        public static string RepeatOrComplete {
+        public static string RepeatProcedure {
             get {
-                return ResourceManager.GetString("RepeatOrComplete", resourceCulture);
+                return ResourceManager.GetString("RepeatProcedure", resourceCulture);
             }
         }
         

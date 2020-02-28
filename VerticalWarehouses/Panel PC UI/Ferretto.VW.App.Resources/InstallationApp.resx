@@ -1804,8 +1804,8 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="Repeat" xml:space="preserve">
     <value>Repeat</value>
   </data>
-  <data name="RepeatOrComplete" xml:space="preserve">
-    <value>Press Repeat to run the procedure again, Complete to finish.</value>
+  <data name="RepeatProcedure" xml:space="preserve">
+    <value>Press Repeat to run the procedure again.</value>
   </data>
   <data name="ResetCycles" xml:space="preserve">
     <value>Reset Cycles</value>
