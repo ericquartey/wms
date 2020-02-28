@@ -260,7 +260,7 @@
                            Margin="0,20,0,0"
                            FontSize="18"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{x:Static res:InstallationApp.RepeatOrComplete}"
+                           Text="{x:Static res:InstallationApp.RepeatProcedure}"
                            TextWrapping="Wrap"
                            Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}" />
 

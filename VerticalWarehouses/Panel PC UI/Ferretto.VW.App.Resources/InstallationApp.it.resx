@@ -1731,8 +1731,8 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="Repeat" xml:space="preserve">
     <value>Ripeti</value>
   </data>
-  <data name="RepeatOrComplete" xml:space="preserve">
-    <value>Premere Ripeti per eseguire nuovamente la procedura, Concludi per terminare.</value>
+  <data name="RepeatProcedure" xml:space="preserve">
+    <value>Premere Ripeti per eseguire nuovamente la procedura.</value>
   </data>
   <data name="ResetCycles" xml:space="preserve">
     <value>Reset cicli</value>
