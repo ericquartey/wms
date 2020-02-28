@@ -468,7 +468,7 @@
       "Id": 1
     },
     "Height": 7661.0,
-    "LoadUnitMaxHeight": 300, //395.0, // 150 to simulate first load test, else 395.0,
+    "LoadUnitMaxHeight": 395.0, // 150 to simulate first load test, else 395.0,
     "LoadUnitMaxNetWeight": 800.0,
     "LoadUnitMinHeight": 150.0,
     "LoadUnitTare": 125.0,
