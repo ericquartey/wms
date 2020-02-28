@@ -15,6 +15,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
+using System.Collections.Generic;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -54,7 +55,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private double? cyclesPercent;
 
-        private DateTime firstTime = DateTime.Now;
+        private TimeSpan firstCycleTime = new TimeSpan();
 
         private bool isCalibrationCompletedOrStopped;
 
@@ -69,7 +70,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isExecutingStopInPhase;
 
         private bool isTuningBay;
-        
+
         private double? newErrorValue;
 
         private int oldPerformedCycle = 0;
@@ -86,9 +87,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private int sessionPerformedCycles;
 
+        private long singleRaisingTicks = 0;
+
         private DelegateCommand startCalibrationCommand;
 
         private int startPerformedCycles;
+
+        private DateTime startTime = DateTime.Now;
 
         private SubscriptionToken stepChangedToken;
 
@@ -753,7 +758,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.SessionPerformedCycles = 0;
 
                     this.oldPerformedCycle = this.PerformedCycles;
-                    this.firstTime = DateTime.Now;
+                    this.startTime = DateTime.Now;
+
+                    if (this.RemainingTime != null)
+                    { this.RemainingTime = new TimeSpan(); }
 
                     this.IsExecutingProcedure = true;
                     this.RaiseCanExecuteChanged();
@@ -869,24 +877,37 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if ((this.oldPerformedCycle == 0) && (this.PerformedCycles == 0))
                 {
+                    this.singleRaisingTicks = 0;
+
+                    if (this.firstCycleTime != null)
+                    { this.firstCycleTime = new TimeSpan(); }
+
+                    if (this.RemainingTime != null)
+                    { this.RemainingTime = new TimeSpan(); }
                 }
                 else
                 {
-                    if (this.PerformedCycles > this.oldPerformedCycle)
+                    if ((this.PerformedCycles > this.oldPerformedCycle))
                     {
                         this.oldPerformedCycle = this.PerformedCycles;
 
-                        if ((this.PerformedCycles%10)==0)
-                        { 
-                        var totalCycleTime = DateTime.Now - this.firstTime;
+                        // escludiamo il primo in quanto è affetto da ritardi (8s vs 4s circa)
+                        if (this.PerformedCycles == 1)
+                        {
+                            this.firstCycleTime = DateTime.Now - this.startTime;
+                        }
+                        else
+                        {
+                            // ogni 30 cicli ricalcolo il tempo per singolo ciclo...
+                            if ((this.PerformedCycles % 30) == 0 || this.PerformedCycles == 2)
+                            {
+                                var totalCycleTime = DateTime.Now - this.startTime - this.firstCycleTime;
 
-                        if (this.PerformedCycles < 0)
-                        { return; }
+                                this.singleRaisingTicks = totalCycleTime.Ticks / (this.PerformedCycles - 1);
+                            }
+                        }
 
-                        var singleRaisingTicks = totalCycleTime.Ticks / this.PerformedCycles;
-
-                        this.RemainingTime = TimeSpan.FromTicks(singleRaisingTicks * (this.RequiredCycles - this.PerformedCycles));
-                  }
+                        this.RemainingTime = TimeSpan.FromTicks(this.singleRaisingTicks * (this.RequiredCycles - this.PerformedCycles));
                     }
                 }
             }

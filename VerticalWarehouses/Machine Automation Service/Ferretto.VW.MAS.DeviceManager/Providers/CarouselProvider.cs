@@ -228,9 +228,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"direction: {direction}; " +
                 $"LoadUnitId: {loadUnitId}; " +
                 $"targetPosition: {targetPosition}; " +
-                $"speed: {speed}; " +
-                $"acceleration: {acceleration}; " +
-                $"deceleration: {deceleration};");
+                $"speed: {speed[0]:0.00}; " +
+                $"acceleration: {acceleration[0]:0.00}; " +
+                $"deceleration: {deceleration[0]:0.00};");
 
             this.PublishCommand(
                 messageData,
@@ -277,9 +277,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"direction: {direction}; " +
                 $"targetPosition: {targetPosition}; " +
                 $"feedrate: {procedureParameters.FeedRate}; " +
-                $"speed: {speed}; " +
-                $"acceleration: {acceleration}; " +
-                $"deceleration: {deceleration};");
+                $"speed: {speed[0]:0.00}; " +
+                $"acceleration: {acceleration[0]:0.00}; " +
+                $"deceleration: {deceleration[0]:0.00};");
 
             this.PublishCommand(
                 messageData,
@@ -329,9 +329,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"bayNumber: {bayNumber}; " +
                 $"targetPosition: {targetPosition}; " +
                 $"feedrate: {procedureParameters.FeedRate}; " +
-                $"speed: {speed}; " +
-                $"acceleration: {acceleration}; " +
-                $"deceleration: {deceleration};");
+                $"speed: {speed[0]:0.00}; " +
+                $"acceleration: {acceleration[0]:0.00}; " +
+                $"deceleration: {deceleration[0]:0.00};");
 
             this.PublishCommand(
                 messageData,
@@ -390,9 +390,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"LoadUnitId: {loadUnitId}; " +
                 $"targetPosition: {targetPosition}; " +
                 $"feedrate: {procedureParameters.FeedRate}; " +
-                $"speed: {speed}; " +
-                $"acceleration: {acceleration}; " +
-                $"deceleration: {deceleration};");
+                $"speed: {speed[0]:0.00}; " +
+                $"acceleration: {acceleration[0]:0.00}; " +
+                $"deceleration: {deceleration[0]:0.00};");
 
             this.PublishCommand(
                 messageData,
