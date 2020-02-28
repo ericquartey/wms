@@ -321,9 +321,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
             {
                 this.IsExecutingProcedure = true;
 
-                await this.machineSetupStatusWebService.ConfirmSetupAsync();
+                var messageBoxResult = this.dialogService.ShowMessage("Vuoi confermare il completamento del collaudo?", InstallationApp.ConfirmSetup, DialogType.Question, DialogButtons.YesNo);
+                if (messageBoxResult == DialogResult.Yes)
+                {
+                    await this.machineSetupStatusWebService.ConfirmSetupAsync();
 
-                await this.UpdateSetupStatusAsync();
+                    await this.UpdateSetupStatusAsync();
+                }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -542,7 +546,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 this.ProceduresCompleted = this.source.Count(c => c.Status == InstallationStatus.Complete);
 
                 this.SetupListCompleted = !this.source.Where(c => c.Text != "Conferma collaudo").Any(c => c.Status != InstallationStatus.Complete);
-
+                
                 this.ProceduresCompletedPercent = (int)((double)this.ProceduresCompleted / (double)this.ProceduresCount * 100.0);
 
                 this.RaiseCanExecuteChanged();

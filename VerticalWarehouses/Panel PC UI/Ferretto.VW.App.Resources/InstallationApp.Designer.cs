@@ -871,6 +871,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ConfirmSetup.
+        /// </summary>
+        public static string ConfirmSetup {
+            get {
+                return ResourceManager.GetString("ConfirmSetup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm update.
         /// </summary>
         public static string ConfirmUpdate {

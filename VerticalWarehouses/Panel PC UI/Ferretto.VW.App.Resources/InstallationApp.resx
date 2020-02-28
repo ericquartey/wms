@@ -1822,4 +1822,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="RaisingsPerformed" xml:space="preserve">
     <value>Raisings Performed</value>
   </data>
+  <data name="ConfirmSetup" xml:space="preserve">
+    <value>ConfirmSetup</value>
+  </data>
 </root>
