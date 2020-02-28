@@ -219,6 +219,7 @@
       "title": "Cancella file temporanei",
       "description": "Elimina i file temporanei creati durante la fase di aggiornamento.",
       "script": "Remove-Item $(Backup:Root:Path)\\Staging -Recurse",
+      "setupMode": "update",
       "skipRollback": true
     },
     {
