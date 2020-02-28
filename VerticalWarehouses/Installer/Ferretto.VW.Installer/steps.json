@@ -134,18 +134,29 @@
     },
     /*{
       "$type": "Ferretto.VW.Installer.Core.MergeAppConfig, Ferretto.VW.Installer.Core",
-      "number": 13,
+      "number": 14,
       "title": "Configura App PanelPC",
       "description": "Aggiorna il file di configurazione del Panel PC.",
       "newPathName": "$(Install:Root:Path)\\$(Install:PPC:Path)\\Ferretto.VW.App.exe.config",
       "oldPathName": "$(Backup:Root:Path)\\Staging\\App\\$(Install:PPC:Path)\\Ferretto.VW.App.exe.config"
-    },*/
+    },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
       "number": 14,
       "title": "Copia file configurazione App PanelPC",
       "description": "Aggiorna il file di configurazione del Panel PC.",
       "script": "cp $(Backup:Root:Path)\\Staging\\$(Install:PPC:Path)\\Ferretto.VW.App.exe.config $(Install:Root:Path)\\$(Install:PPC:Path)\\Ferretto.VW.App.exe.config"
+    },*/
+    {
+      "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
+      "number": 14,
+      "title": "Configura App PanelPC",
+      "description": "Aggiorna il file di configurazione del Panel PC.",
+      "script": "$NewAppConfigFile = \"$(Update:Temp:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath).config\";$CurrentAppConfigFile= \"$(Install:Root:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath).config\";$NewAppConfigFileOrig = \"$($NewAppConfigFile).orig\";[xml]$NewAppConfigXml = Get-Content -Path $NewAppConfigFile;[xml]$CurrentAppConfigXml = Get-Content -Path $CurrentAppConfigFile;$NewAppConfigXml.Save($NewAppConfigFileOrig);Foreach ($Node in $NewAppConfigXml.configuration.appSettings.ChildNodes) { $currNode = $CurrentAppConfigXml.SelectSingleNode(\"//add[@key=\"\"$($node.key)\"\"]/@value\"); if ($currNode.Value) { $Node.value = $currNode.Value; } }; $CurrentAppConfigXml.Save($CurrentAppConfigFile)",
+      "rollbackScript": "$NewAppConfigFile = \"$(Update:Temp:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath).config\";$NewAppConfigFileOrig = \"$($NewAppConfigFile).orig\";if (Test-Path $NewAppConfigFileOrig) { Rename-item –path $NewAppConfigFileOrig –newname $($NewAppConfigFile) -Force  };",
+      "setupMode": "update"
+      //"script": "timeout /T 2", // ** fake
+      //"rollbackScript": "timeout /T 2" // ** fake
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
