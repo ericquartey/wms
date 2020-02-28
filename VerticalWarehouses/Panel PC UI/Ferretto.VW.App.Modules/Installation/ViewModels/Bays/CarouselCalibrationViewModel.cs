@@ -535,7 +535,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     var nev = this.NewErrorValue;
-                    var measuredCorrection = this.IsErrorNegative ? -this.NewErrorValue : this.NewErrorValue;
+                    var measuredCorrection = this.IsErrorNegative ? this.NewErrorValue : -this.NewErrorValue;
 
                     var correctionForEachMovement = measuredCorrection / this.SessionPerformedCycles;
 
