@@ -50,6 +50,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 Machine = this.machineProvider.Get(),
                 SetupProcedures = this.setupProceduresDataProvider.GetAll(),
                 LoadingUnits = this.loadingUnitsDataProvider.GetAll(),
+                MachineStatistics = this.machineProvider.GetStatistics(),
             };
             return r;
         }
@@ -67,6 +68,7 @@ namespace Ferretto.VW.MAS.AutomationService
                         this.machineProvider.Import(vertimagConfiguration.Machine, this.dataContext);
                         this.loadingUnitsDataProvider.Import(vertimagConfiguration.LoadingUnits, this.dataContext);
                         this.setupProceduresDataProvider.Import(vertimagConfiguration.SetupProcedures, this.dataContext);
+                        this.machineProvider.ImportMachineStatistics(vertimagConfiguration.MachineStatistics, this.dataContext);
 
                         this.dataContext.SaveChanges();
 
@@ -95,6 +97,7 @@ namespace Ferretto.VW.MAS.AutomationService
                         this.machineProvider.Update(vertimagConfiguration.Machine, this.dataContext);
                         this.loadingUnitsDataProvider.UpdateRange(vertimagConfiguration.LoadingUnits, this.dataContext);
                         this.setupProceduresDataProvider.Update(vertimagConfiguration.SetupProcedures, this.dataContext);
+                        this.machineProvider.UpdateMachineStatistics(vertimagConfiguration.MachineStatistics, this.dataContext);
 
                         transaction.Commit();
                         this.logger.LogInformation($"Configuration Provider update");

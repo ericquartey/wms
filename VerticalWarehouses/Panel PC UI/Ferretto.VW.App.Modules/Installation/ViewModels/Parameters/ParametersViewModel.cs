@@ -114,6 +114,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
 #if DEBUG
             this.exportableDrives = new ReadOnlyCollection<DriveInfo>(DriveInfo.GetDrives().ToList());
+            this.importableFiles = new ReadOnlyCollection<FileInfo>(DriveInfo.GetDrives().First().FindConfigurationFiles().ToList());
 #endif
 
             await base.OnAppearedAsync();

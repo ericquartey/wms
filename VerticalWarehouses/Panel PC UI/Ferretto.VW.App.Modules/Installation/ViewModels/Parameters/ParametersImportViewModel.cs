@@ -161,7 +161,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             this.IsBusy = true;
             UsbWatcherService usb = this._usbWatcher;
-            var configurationFiles = this.configurationFiles = usb.Drives.FindConfigurationFiles();
+            IEnumerable<FileInfo> configurationFiles = null;
+
+#if DEBUG
+            configurationFiles = this.configurationFiles = DriveInfo.GetDrives().First().FindConfigurationFiles();
+#else
+            configurationFiles = this.configurationFiles = usb.Drives.FindConfigurationFiles();
+#endif
+
             this.RaisePropertyChanged(nameof(this.ConfigurationFiles));
             if (!configurationFiles.Any())
             {

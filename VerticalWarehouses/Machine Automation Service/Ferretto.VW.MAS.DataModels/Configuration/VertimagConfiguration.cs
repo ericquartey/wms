@@ -12,6 +12,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public Machine Machine { get; set; }
 
+        public MachineStatistics MachineStatistics { get; set; }
+
         public SetupProceduresSet SetupProcedures { get; set; }
 
         #endregion

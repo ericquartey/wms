@@ -15,7 +15,6 @@
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
-
     <ctrls:View.Resources>
         <converters:DriveToVertimagFilenameConverter x:Key="DriveToVertimagFilenameConverter" />
 

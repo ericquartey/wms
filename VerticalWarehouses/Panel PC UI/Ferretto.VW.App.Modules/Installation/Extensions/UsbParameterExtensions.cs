@@ -13,8 +13,13 @@ namespace Ferretto.VW.App
         {
             try
             {
+#if DEBUG
+                return (drive ?? throw new ArgumentNullException(nameof(drive)))
+                       .RootDirectory.GetFiles("*.json");
+#else
                 return (drive ?? throw new ArgumentNullException(nameof(drive)))
                        .RootDirectory.GetFiles("*.json", System.IO.SearchOption.AllDirectories);
+#endif
             }
             catch
             {

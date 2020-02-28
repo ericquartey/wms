@@ -209,6 +209,15 @@ namespace Ferretto.VW.MAS.DataLayer
             context.Machines.Add(machine);
         }
 
+        public void ImportMachineStatistics(MachineStatistics machineStatistics, DataLayerContext context)
+        {
+            _ = machineStatistics ?? throw new System.ArgumentNullException(nameof(machineStatistics));
+
+            context.MachineStatistics.RemoveRange(context.MachineStatistics);
+
+            context.MachineStatistics.Add(machineStatistics);
+        }
+
         public bool IsOneTonMachine()
         {
             lock (this.dataContext)
@@ -366,6 +375,20 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.dataContext.SaveChanges();
                 }
             }
+        }
+
+        public void UpdateMachineStatistics(MachineStatistics machineStatistics, DataLayerContext dataContext)
+        {
+            _ = machineStatistics ?? throw new System.ArgumentNullException(nameof(machineStatistics));
+
+            if (dataContext is null)
+            {
+                dataContext = this.dataContext;
+            }
+
+            dataContext.AddOrUpdate(machineStatistics, (e) => e.Id);
+
+            dataContext.SaveChanges();
         }
 
         public void UpdateMissionTime(TimeSpan duration)
