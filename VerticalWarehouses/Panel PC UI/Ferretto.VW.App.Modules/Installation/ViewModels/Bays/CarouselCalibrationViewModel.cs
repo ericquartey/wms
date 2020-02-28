@@ -590,7 +590,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return !this.IsKeyboardOpened &&
                    !this.IsMoving &&
                    !this.SensorsService.IsHorizontalInconsistentBothLow &&
-                   !this.SensorsService.IsHorizontalInconsistentBothHigh;
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh &&
+                   this.SensorsService.BayZeroChain;
         }
 
         private bool CanStop()
@@ -612,9 +613,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return this.CanBaseExecute() &&
                    !this.IsTuningBay &&
                    this.MachineStatus.LoadingUnitPositionDownInBay is null &&
-                   this.MachineStatus.LoadingUnitPositionUpInBay is null
-                   //&&
-                   //!this.SensorsService.Sensors.ACUBay1S3IND
+                   this.MachineStatus.LoadingUnitPositionUpInBay is null &&
+                   this.SensorsService.BayZeroChain
                    ;
         }
 

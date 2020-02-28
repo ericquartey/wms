@@ -25,6 +25,7 @@ namespace Ferretto.VW.App.Services
         ShutterSensors ShutterSensors { get; }
         bool IsHorizontalInconsistentBothLow { get; }
         bool IsHorizontalInconsistentBothHigh { get; }
+        bool BayZeroChain { get; }
 
         event EventHandler<EventArgs> OnUpdateSensors;
 
