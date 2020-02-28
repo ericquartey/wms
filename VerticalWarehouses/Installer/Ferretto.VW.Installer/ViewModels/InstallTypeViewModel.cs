@@ -223,7 +223,8 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private IPEndPoint CheckMasHost()
         {
-            int? ipPort = null;
+            this.MessageSlave = string.Empty;
+            int ? ipPort = null;
             try
             {
                 if (int.TryParse(ConfigurationManager.AppSettings.GetInstallDefaultMasIpport(), out var port))
@@ -254,8 +255,7 @@ namespace Ferretto.VW.Installer.ViewModels
             }
 
             if (!this.isMasConfiguration)
-            {
-                this.MessageSlave = string.Empty;
+            {                
                 this.isSlaveConfigurationValid = !(this.masIpEndpoint is null);
                 if (this.isSlaveConfigurationValid)
                 {
