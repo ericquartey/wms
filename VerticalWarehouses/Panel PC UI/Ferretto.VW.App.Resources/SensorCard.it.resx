@@ -138,6 +138,9 @@
   <data name="Horizontal" xml:space="preserve">
     <value>Orizzontale (mm)</value>
   </data>
+  <data name="NetWeight" xml:space="preserve">
+    <value>Peso netto</value>
+  </data>
   <data name="Position" xml:space="preserve">
     <value>Posizione</value>
   </data>

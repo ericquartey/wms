@@ -124,7 +124,7 @@
     <value>Current cell</value>
   </data>
   <data name="Displacement" xml:space="preserve">
-    <value>Displacement [mm]</value>
+    <value>Displacement (mm)</value>
   </data>
   <data name="DrawerIdentificationCompleted" xml:space="preserve">
     <value>Drawer identification completed, switch to automatic mode.</value>

@@ -138,6 +138,9 @@
   <data name="Horizontal" xml:space="preserve">
     <value>Horizontal (mm)</value>
   </data>
+  <data name="NetWeight" xml:space="preserve">
+    <value>Net Weight</value>
+  </data>
   <data name="Position" xml:space="preserve">
     <value>Position</value>
   </data>

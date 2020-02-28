@@ -1323,6 +1323,11 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification("Missioni in errore...", NotificationSeverity.Warning);
                         }
+                        else if (view.Equals("CarouselCalibrationView", StringComparison.InvariantCultureIgnoreCase) &&
+                                !this.sensorsService.BayZeroChain)
+                        {
+                            this.ShowNotification("Impossibile eseguire la calibrazione della giostra. \r\n La catena della baia non è in posizione di zero.", NotificationSeverity.Warning);
+                        }
                         else
                         {
                             this.ClearNotifications();

@@ -79,7 +79,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Displacement [mm].
+        ///   Looks up a localized string similar to Displacement (mm).
         /// </summary>
         public static string Displacement {
             get {
