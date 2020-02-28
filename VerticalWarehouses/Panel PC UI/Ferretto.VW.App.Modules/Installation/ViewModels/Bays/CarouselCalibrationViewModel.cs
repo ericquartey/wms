@@ -675,11 +675,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.CurrentStep = CarouselCalibrationStep.ConfirmAdjustment;
 
-                if (this.MachineError != null)
+                if ((this.MachineError != null))
                 {
                     this.IsCalibrationNotCompleted = true;
-                    return;
+                
                 }
+                return;
             }
 
             // ad ogni ciclo completato...aggiornamento dati
