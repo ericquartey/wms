@@ -373,7 +373,7 @@
     <value>Totale cassetti</value>
   </data>
   <data name="DrawerSpaceSaturazionDrawerMeasure" xml:space="preserve">
-    <value>Dimensione cassetti [mm]</value>
+    <value>Dimensione cassetti (mm)</value>
   </data>
   <data name="DrawerSpaceSaturazionFillingMachine" xml:space="preserve">
     <value>Riempimento macchina</value>
@@ -388,19 +388,19 @@
     <value>Totale cassetti</value>
   </data>
   <data name="DrawerWeightSaturationMaxGrossRange" xml:space="preserve">
-    <value>Portata lorda max. [kg]</value>
+    <value>Portata lorda max. (kg)</value>
   </data>
   <data name="DrawerWeightSaturationMaxNetRange" xml:space="preserve">
-    <value>Portata netta max. [kg]</value>
+    <value>Portata netta max. (kg)</value>
   </data>
   <data name="DrawerWeightSaturationWeightGrossLoaded" xml:space="preserve">
-    <value>Peso lordo caricato [kg]</value>
+    <value>Peso lordo caricato (kg)</value>
   </data>
   <data name="DrawerWeightSaturationWeightNetLoaded" xml:space="preserve">
-    <value>Peso netto caricato [kg]</value>
+    <value>Peso netto caricato (kg)</value>
   </data>
   <data name="DrawerWeightSaturationNetLoadedWeight" xml:space="preserve">
-    <value>Peso netto caricato [%]</value>
+    <value>Peso netto caricato (%)</value>
   </data>
   <data name="DetailListInWaitHeader" xml:space="preserve">
     <value>Righe lista eseguibili</value>
@@ -712,16 +712,16 @@
     <value>Codice cassetto</value>
   </data>
   <data name="DrawerActivityLocalCallHeight" xml:space="preserve">
-    <value>Altezza attuale cassetto [mm]</value>
+    <value>Altezza attuale cassetto (mm)</value>
   </data>
   <data name="DrawerActivityLocalCallGrossWeight" xml:space="preserve">
-    <value>Peso Lordo [kg]</value>
+    <value>Peso Lordo (kg)</value>
   </data>
   <data name="DrawerActivityLocalCallActualWeight" xml:space="preserve">
-    <value>Peso attuale [kg]</value>
+    <value>Peso attuale (kg)</value>
   </data>
   <data name="DrawerActivityLocalCallMaxCapacity" xml:space="preserve">
-    <value>Portata netta massima [kg]</value>
+    <value>Portata netta massima (kg)</value>
   </data>
   <data name="DrawerActivityLocalCallMissions" xml:space="preserve">
     <value>Numero missioni eseguite</value>

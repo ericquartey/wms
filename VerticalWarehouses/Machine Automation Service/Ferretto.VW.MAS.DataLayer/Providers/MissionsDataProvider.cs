@@ -142,6 +142,15 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
+                if (this.dataContext.Missions.Any(m => m.LoadUnitId == loadingUnitId
+                         && m.TargetBay == bayNumber
+                         && (m.Status == MissionStatus.New || m.Status == MissionStatus.Executing || m.Status == MissionStatus.Waiting)
+                        )
+                    )
+                {
+                    this.logger.LogError($"Another mission is active for load unit {loadingUnitId} on bay {bayNumber}");
+                    throw new InvalidOperationException($"An active mission for load unit {loadingUnitId} on bay {bayNumber} already exists.");
+                }
                 var entry = this.dataContext.Missions
                     .Add(
                     new Mission

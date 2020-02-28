@@ -11,6 +11,7 @@ using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.IO;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Newtonsoft.Json;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
@@ -176,8 +177,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 var output = this.ExportingConfiguration;
                 var configuration = this.Data as VertimagConfiguration;
 
-                string json = Newtonsoft.Json.JsonConvert.SerializeObject(output,
-                    new Newtonsoft.Json.JsonConverter[]
+                string json = JsonConvert.SerializeObject(
+                    output,
+                    Formatting.Indented,
+                    new JsonConverter[]
                     {
                         new CommonUtils.Converters.IPAddressConverter(),
                         new Newtonsoft.Json.Converters.StringEnumConverter(),

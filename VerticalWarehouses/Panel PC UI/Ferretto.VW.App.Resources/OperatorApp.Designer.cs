@@ -638,7 +638,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Height [mm].
+        ///   Looks up a localized string similar to Height (mm).
         /// </summary>
         public static string DrawerActivityLocalCallHeight {
             get {

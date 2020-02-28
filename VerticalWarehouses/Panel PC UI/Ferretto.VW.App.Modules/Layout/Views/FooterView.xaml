@@ -212,7 +212,11 @@
                 Padding="15,5"
                 Background="{Binding NotificationSeverity, Converter={StaticResource NSTBC}}"
                 Visibility="{Binding NotificationMessage, Converter={StaticResource RTVC}}">
-            <StackPanel Orientation="Horizontal">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
                 <iconPacks:PackIconModern Width="32"
                                           Height="32"
                                           Margin="0,0,15,0"
@@ -220,14 +224,15 @@
                                           VerticalAlignment="Center"
                                           Foreground="{Binding NotificationSeverity, Converter={StaticResource NSTFC}}"
                                           Kind="{Binding NotificationSeverity, Converter={StaticResource NSTINC}}" />
-                <TextBlock Margin="0"
+                <TextBlock Grid.Column="1"
+                           Margin="0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Center"
                            Foreground="{Binding NotificationSeverity, Converter={StaticResource NSTFC}}"
                            Style="{StaticResource VWAPP_ViewErrorTextBlockStyle}"
                            Text="{Binding NotificationMessage}"
                            TextWrapping="WrapWithOverflow" />
-            </StackPanel>
+            </Grid>
         </Border>
 
         <StackPanel Name="StackPanelButtons"

@@ -23,6 +23,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void Import(Machine machine, DataLayerContext context);
 
+        void ImportMachineStatistics(MachineStatistics machineStatistics, DataLayerContext context);
+
         bool IsOneTonMachine();
 
         void Update(Machine machine, DataLayerContext context);
@@ -32,6 +34,8 @@ namespace Ferretto.VW.MAS.DataLayer
         void UpdateBayLoadUnitStatistics(BayNumber bayNumber, int loadUnitId);
 
         void UpdateHorizontalAxisStatistics(double distance);
+
+        void UpdateMachineStatistics(MachineStatistics machineStatistics, DataLayerContext dataContext);
 
         void UpdateMissionTime(TimeSpan duration);
 

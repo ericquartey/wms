@@ -20,6 +20,7 @@
            d:DesignWidth="800"
            prism:ViewModelLocator.AutoWireViewModel="True"
            mc:Ignorable="d">
+
     <view:View.InputBindings>
         <KeyBinding Key="Return"
                     Command="{Binding LoginCommand}" />
@@ -171,7 +172,7 @@
                                           FontFamily="{DynamicResource VWAPP_TitleFont}"
                                           FontSize="22"
                                           FontWeight="Light"
-                                          SelectedValue="{Binding UserLogin.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                          SelectedValue="{Binding UserLogin.UserName}"
                                           Style="{DynamicResource FlatComboBoxStyle}">
                                     <ComboBox.ItemsSource>
                                         <x:Array Type="{x:Type clr:String}">
