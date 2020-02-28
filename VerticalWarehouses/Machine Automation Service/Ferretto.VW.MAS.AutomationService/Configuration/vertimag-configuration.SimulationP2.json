@@ -55,24 +55,24 @@
           }
         },
         "EmptyLoadMovement": {
-          "Acceleration": 1,
-          "Deceleration": 1,
-          "Speed": 1
+          "Acceleration": 200,
+          "Deceleration": 500,
+          "Speed": 110
         },
         "FullLoadMovement": {
           "Acceleration": 200,
           "Deceleration": 500,
-          "Speed": 110
+          "Speed": 77
         },
         "Carousel": {
           "ElevatorDistance": 460,
           "HomingFastSpeed": 22,
           "HomingCreepSpeed": 5,
           "ManualMovements": {
-            "FeedRate": 0.1
+            "FeedRate": 0.2
           },
           "AssistedMovements": {
-            "FeedRate": 0.2
+            "FeedRate": 1
           }
         },
         "Laser": {

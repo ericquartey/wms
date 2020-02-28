@@ -53,10 +53,10 @@
         },
         "Carousel": {
           "AssistedMovements": {
-            "FeedRate": 0.2,
+            "FeedRate": 1.0,
             "Id": 1
           },
-          "ElevatorDistance": 448.6245,
+          "ElevatorDistance": 448.238271,
           "HomingCreepSpeed": 5.0,
           "HomingFastSpeed": 22.0,
           "LastIdealPosition": 0.0,
@@ -66,7 +66,7 @@
           },
           "Id": 1
         },
-        "ChainOffset": -8,
+        "ChainOffset": -8.0,
         "Inverter": {
           "Index": "Slave3",
           "TcpPort": 0,
@@ -247,26 +247,26 @@
                 {
                   "AdjustByWeight": false,
                   "Number": 0,
-                  "Position": 125.0,
+                  "Position": 115.0,
                   "Acceleration": 5000.0,
                   "Deceleration": 0.0,
-                  "Speed": 830.0,
+                  "Speed": 600.0,
                   "Id": 7
                 },
                 {
                   "AdjustByWeight": false,
                   "Number": 1,
                   "Position": 450.0,
-                  "Acceleration": 2000.0,
+                  "Acceleration": 5000.0,
                   "Deceleration": 0.0,
-                  "Speed": 100.0,
+                  "Speed": 250.0,
                   "Id": 13
                 },
                 {
                   "AdjustByWeight": true,
                   "Number": 2,
                   "Position": 866.0,
-                  "Acceleration": 2000.0,
+                  "Acceleration": 1500.0,
                   "Deceleration": 0.0,
                   "Speed": 600.0,
                   "Id": 12
@@ -299,26 +299,26 @@
                 {
                   "AdjustByWeight": false,
                   "Number": 0,
-                  "Position": 125.0,
+                  "Position": 115.0,
                   "Acceleration": 5000.0,
                   "Deceleration": 0.0,
-                  "Speed": 830.0,
+                  "Speed": 600.0,
                   "Id": 23
                 },
                 {
                   "AdjustByWeight": true,
                   "Number": 1,
                   "Position": 450.0,
-                  "Acceleration": 2000.0,
+                  "Acceleration": 5000.0,
                   "Deceleration": 0.0,
-                  "Speed": 100.0,
+                  "Speed": 250.0,
                   "Id": 22
                 },
                 {
                   "AdjustByWeight": true,
                   "Number": 2,
                   "Position": 866.0,
-                  "Acceleration": 2000.0,
+                  "Acceleration": 1500.0,
                   "Deceleration": 0.0,
                   "Speed": 600.0,
                   "Id": 16
@@ -379,9 +379,9 @@
                   "AdjustByWeight": false,
                   "Number": 3,
                   "Position": 1200.0,
-                  "Acceleration": 5000.0,
+                  "Acceleration": 2000.0,
                   "Deceleration": 0.0,
-                  "Speed": 400.0,
+                  "Speed": 200.0,
                   "Id": 25
                 },
                 {
@@ -431,9 +431,9 @@
                   "AdjustByWeight": false,
                   "Number": 3,
                   "Position": 1200.0,
-                  "Acceleration": 5000.0,
+                  "Acceleration": 2000.0,
                   "Deceleration": 0.0,
-                  "Speed": 400.0,
+                  "Speed": 200.0,
                   "Id": 24
                 },
                 {
@@ -470,7 +470,7 @@
     "Height": 7661.0,
     "LoadUnitMaxHeight": 395.0, // 145 to simulate first load test, else 395.0,
     "LoadUnitMaxNetWeight": 800.0,
-    "LoadUnitMinHeight": 145.0,
+    "LoadUnitMinHeight": 150.0,
     "LoadUnitTare": 125.0,
     "MaxGrossWeight": 58767.0,
     "ModelName": "VERTIMAG (NEW 2020) 103XL800-GIO-H7645",
@@ -5455,7 +5455,7 @@
   },
   "SetupProcedures": {
     "Bay1CarouselCalibration": {
-      "InProgress": false,
+      "InProgress": true,
       "PerformedCycles": 0,
       "RequiredCycles": 600,
       "FeedRate": 0.9,
@@ -5480,8 +5480,8 @@
       "ProfileDegrees": 5.0,
       "ProfileTotalDistance": 265.0,
       "FeedRate": 1.0,
-      "IsBypassed": false,
-      "IsCompleted": false,
+      "IsBypassed": true,
+      "IsCompleted": true,
       "Id": 22
     },
     "Bay1ShutterTest": {
@@ -5497,7 +5497,7 @@
       "InProgress": false,
       "PerformedCycles": 0,
       "RequiredCycles": 600,
-      "FeedRate": 0.9,
+      "FeedRate": 1.0,
       "IsBypassed": false,
       "IsCompleted": false,
       "Id": 20
@@ -5536,7 +5536,7 @@
       "InProgress": false,
       "PerformedCycles": 0,
       "RequiredCycles": 600,
-      "FeedRate": 0.9,
+      "FeedRate": 1.0,
       "IsBypassed": false,
       "IsCompleted": false,
       "Id": 14
@@ -5581,11 +5581,11 @@
       "Id": 6
     },
     "CellPanelsCheck": {
-      "InProgress": true,
+      "InProgress": false,
       "Step": 0.5,
       "FeedRate": 0.2,
       "IsBypassed": false,
-      "IsCompleted": false,
+      "IsCompleted": true,
       "Id": 13
     },
     "CellsHeightCheck": {
@@ -5610,7 +5610,7 @@
       "Step": 0.0,
       "FeedRate": 0.2,
       "IsBypassed": false,
-      "IsCompleted": false,
+      "IsCompleted": true,
       "Id": 10
     },
     "ShutterHeightCheck": {
