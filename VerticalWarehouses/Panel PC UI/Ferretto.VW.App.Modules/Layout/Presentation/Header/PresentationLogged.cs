@@ -93,7 +93,7 @@ namespace Ferretto.VW.App.Modules.Layout
         public ICommand ToggleThemeCommand =>
          this.toggleThemeCommand
          ??
-         (this.toggleThemeCommand = new DelegateCommand(this.ExecuteToggleThemeCommand));
+         (this.toggleThemeCommand = new DelegateCommand(this.ExecuteToggleThemeCommand, () => false));
 
         public string UserName
         {

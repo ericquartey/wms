@@ -787,7 +787,7 @@
                                                Text="Bypassato">
                                         <TextBlock.LayoutTransform>
                                             <TransformGroup>
-                                                <RotateTransform Angle="296" CenterX="0.5" CenterY="0.5" />
+                                                <RotateTransform Angle="300" CenterX="0.5" CenterY="0.5" />
                                             </TransformGroup>
                                         </TextBlock.LayoutTransform>
                                     </TextBlock>

@@ -12,6 +12,11 @@ namespace Ferretto.VW.Installer.ViewModels
     public class InstallBayViewModel : Core.BindableBase, IOperationResult
     {
         #region Fields
+        private const string APPSETTINGS = "appSettings";
+
+        private const string APPSETTINGSBAYNUMBER = "BayNumber";
+
+        private const string APPSETTINGSAUTOMATIONSERVICEURL = "AutomationService:Url";
 
         private readonly InstallationService installationService;
 
@@ -176,14 +181,14 @@ namespace Ferretto.VW.Installer.ViewModels
 
             foreach (XmlElement element in xmlDoc.DocumentElement)
             {
-                if (element.Name == "appSettings")
+                if (element.Name == APPSETTINGS)
                 {
-                    if (element.ChildNodes.OfType<XmlElement>().FirstOrDefault(a => a.Name == "BayNumber") is XmlElement bayNumberNode)
+                    if (element.ChildNodes.OfType<XmlElement>().FirstOrDefault(a => a.Name == APPSETTINGSBAYNUMBER) is XmlElement bayNumberNode)
                     {
                         bayNumberNode.Value = ((int)this.selectedBay.Number).ToString();
                     }
 
-                    if (element.ChildNodes.OfType<XmlElement>().FirstOrDefault(a => a.Name == "AutomationService:Url") is XmlElement ipMasNode)
+                    if (element.ChildNodes.OfType<XmlElement>().FirstOrDefault(a => a.Name == APPSETTINGSAUTOMATIONSERVICEURL) is XmlElement ipMasNode)
                     {
                         var masIp= (this.installationService.MasIpAddress is null)? ConfigurationManager.AppSettings.GetInstallDefaultMasIpaddress() :this.installationService.MasIpAddress.ToString();                        
                         ipMasNode.Value = $"{masIp}:{ConfigurationManager.AppSettings.GetInstallDefaultMasIpport()}";

@@ -84,7 +84,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                     this.Show(PresentationTypes.Logged, false);
                     this.Show(PresentationTypes.MachineMode, false);
                     this.Show(PresentationTypes.MachineMarch, false);
-                    this.Show(PresentationTypes.Theme, true);
+                    this.Show(PresentationTypes.Theme, false);
 #if DEBUG
                     this.Show(PresentationTypes.Shutdown, true);
 #endif

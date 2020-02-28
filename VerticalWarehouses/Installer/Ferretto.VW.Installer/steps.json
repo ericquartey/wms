@@ -134,18 +134,29 @@
     },
     /*{
       "$type": "Ferretto.VW.Installer.Core.MergeAppConfig, Ferretto.VW.Installer.Core",
-      "number": 13,
+      "number": 14,
       "title": "Configura App PanelPC",
       "description": "Aggiorna il file di configurazione del Panel PC.",
       "newPathName": "$(Install:Root:Path)\\$(Install:PPC:Path)\\Ferretto.VW.App.exe.config",
       "oldPathName": "$(Backup:Root:Path)\\Staging\\App\\$(Install:PPC:Path)\\Ferretto.VW.App.exe.config"
-    },*/
+    },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
       "number": 14,
       "title": "Copia file configurazione App PanelPC",
       "description": "Aggiorna il file di configurazione del Panel PC.",
       "script": "cp $(Backup:Root:Path)\\Staging\\$(Install:PPC:Path)\\Ferretto.VW.App.exe.config $(Install:Root:Path)\\$(Install:PPC:Path)\\Ferretto.VW.App.exe.config"
+    },*/
+    {
+      "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
+      "number": 14,
+      "title": "Configura App PanelPC",
+      "description": "Aggiorna il file di configurazione del Panel PC.",
+      "script": "$NewAppConfigFile = \"$(Update:Temp:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath).config\";$CurrentAppConfigFile= \"$(Install:Root:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath).config\";$NewAppConfigFileOrig = \"$($NewAppConfigFile).orig\";[xml]$NewAppConfigXml = Get-Content -Path $NewAppConfigFile;[xml]$CurrentAppConfigXml = Get-Content -Path $CurrentAppConfigFile;$NewAppConfigXml.Save($NewAppConfigFileOrig);Foreach ($Node in $NewAppConfigXml.configuration.appSettings.ChildNodes) { $currNode = $CurrentAppConfigXml.SelectSingleNode(\"//add[@key=\"\"$($node.key)\"\"]/@value\"); if ($currNode.Value) { $Node.value = $currNode.Value; } }; $CurrentAppConfigXml.Save($CurrentAppConfigFile)",
+      "rollbackScript": "$NewAppConfigFile = \"$(Update:Temp:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath).config\";$NewAppConfigFileOrig = \"$($NewAppConfigFile).orig\";if (Test-Path $NewAppConfigFileOrig) { Rename-item –path $NewAppConfigFileOrig –newname $($NewAppConfigFile) -Force  };",
+      "setupMode": "update"
+      //"script": "timeout /T 2", // ** fake
+      //"rollbackScript": "timeout /T 2" // ** fake
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
@@ -155,17 +166,18 @@
       "script": "cp $(Backup:Root:Path)\\Staging\\$(Install:MAS:Path)\\appsettings.json $(Install:Root:Path)\\$(Install:MAS:Path)\\appsettings.json",
       "machineRole": "master"
     },
-    /**********************
-    {
-      "$type": "Ferretto.VW.Installer.Core.UpdateMASConfig, Ferretto.VW.Installer.Core",
-      "number": 15,
-      "title": "Aggiorna MAS",
-      "description": "Aggiorna il file di configurazione del MAS."
-    },
-    */
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 16,
+      "title": "Aggiorna MAS",
+      "description": "Aggiorna il file di configurazione del MAS.",
+      "script": "function Join-Objects($source, $extend){ if($source.GetType().Name -eq \\\"PSCustomObject\\\" -and $extend.GetType().Name -eq \\\"PSCustomObject\\\"){ foreach($Property in $source | Get-Member -type NoteProperty, Property){ if($extend.$($Property.Name) -eq $null){ continue; } $source.$($Property.Name) = Join-Objects $source.$($Property.Name) $extend.$($Property.Name)  } } else{ $source = $extend;};if($source.GetType().Name -eq \\\"Object[]\\\" -and $source.Count -lt 2){ return ,$source} else {return $source } };function AddPropertyRecurse($source, $toExtend){  if($source.GetType().Name -eq \\\"PSCustomObject\\\") { foreach($Property in $source | Get-Member -type NoteProperty, Property){if($toExtend.$($Property.Name) -eq $null) { $toExtend | Add-Member -MemberType NoteProperty -Value $source.$($Property.Name) -Name $Property.Name  } else{ $toExtend.$($Property.Name) = AddPropertyRecurse $source.$($Property.Name) $toExtend.$($Property.Name) }}} return $toExtend};function Json-Merge($source, $extend){ $merged = Join-Objects $source $extend; return $merged;};$NewAppsettingsFile = \"$(Update:Temp:Path)\\$(Install:MAS:Path)\\appsettings.json\";$CurrAppsettingsFile = \"$(Install:Root:Path)\\$(Install:MAS:Path)\\appsettings.json\";$NewAppSettingFileCopy = \"$(Update:Temp:Path)\\$(Install:MAS:Path)\\appsettings.orig\";$1 = Get-Content -Raw -Path $NewAppSettingsFile | ConvertFrom-Json;$2 = Get-Content -Path $CurrAppsettingsFile| ConvertFrom-Json;$3 = Json-Merge $1 $2;Copy-Item -Path $NewAppsettingsFile -Destination $NewAppSettingFileCopy;$3 | ConvertTo-Json -depth 100 | Out-File $NewAppsettingsFile",
+      "rollbackScript": "$NewAppsettingsFile = \"$(Update:Temp:Path)\\$(Install:MAS:Path)\\appsettings.json\";$NewAppsettingsFileOrig = \"$(Update:Temp:Path)\\$(Install:MAS:Path)\\appsettings.orig\";if (Test-Path $NewAppsettingsFileOrig) { Rename-item –path $NewAppsettingsFileOrig –newname $($NewAppsettingsFile) -Force  };",
+      "setupMode": "update"
+    },
+    {
+      "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
+      "number": 17,
       "title": "Avvia il MAS",
       "description": "Avvia il servizio di automazione aggiornato così che il database venga aggiornato.",
       "script": "Start-Service \"$(MAS:ServiceName)\"",
@@ -176,7 +188,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.MasHealthCheckStep, Ferretto.VW.Installer.Core",
-      "number": 17,
+      "number": 18,
       "title": "Verifica stato del MAS",
       "description": "Verifica che il servizio di automazione dichiari di essere operativo.",
       "url": "$(MAS:BaseUrl)/health/live",
@@ -185,7 +197,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 18,
+      "number": 19,
       "title": "Cancella backup precedente",
       "description": "Elimina, se esiste, l'archivio contenente il backup della versione precedente a quella installata prima dell'aggiornamento.",
       "script": "if(Test-Path $(Backup:Root:Path)\\Backup.zip -PathType Leaf) { Remove-Item $(Backup:Root:Path)\\Backup.zip -ErrorAction SilentlyContinue }",
@@ -194,7 +206,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 19,
+      "number": 20,
       "title": "Rinomina backup corrente",
       "description": "Rinomina lo zip della versione corrente.",
       "script": "Rename-Item $(Backup:Root:Path)\\Current_Version_Backup.zip $(Backup:Root:Path)\\Backup.zip",
@@ -203,7 +215,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 20,
+      "number": 21,
       "title": "Cancella file temporanei",
       "description": "Elimina i file temporanei creati durante la fase di aggiornamento.",
       "script": "Remove-Item $(Backup:Root:Path)\\Staging -Recurse",
@@ -211,7 +223,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
-      "number": 21,
+      "number": 22,
       "title": "Riabilita UWF",
       "description": "Riabilita la protezione del disco fisso per sigillare il PanelPC.",
       //"script": "uwfmgr filter enable",
@@ -222,7 +234,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
-      "number": 22,
+      "number": 23,
       "title": "Riavvia il sistema",
       "description": "Riavvia il sistema operativo per completare l'abilitazione della protezione.",
       //"script": "shutdown /r /t 0 /f /d p:4:2 /c \"Vertimag Software Setup\"",
@@ -231,7 +243,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
-      "number": 23,
+      "number": 24,
       "title": "Controlla stato UWF",
       "description": "Controlla che la protezione del disco fisso sia abilitata.",
       //"script": "$NAMESPACE = \"root\\standardcimv2\\embedded\";$uwfInstance = Get-WmiObject -Namespace $NAMESPACE -Class UWF_Filter -List;if(!$uwfInstance){throw  \"UWF is NOT installed.\"};$uwfInstance = Get-WmiObject -Namespace $NAMESPACE -Class UWF_Filter;if($uwfInstance.CurrentEnabled){throw  \"UWF is currently NOT disaabled.\"};",
@@ -241,7 +253,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 24,
+      "number": 25,
       "title": "Auto Avvio PPC",
       "description": "Imposta l'applicazione del PanelPC in avvio automatico dopo il login.",
       //"script": "Set-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(Install:Root:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath)\"",
@@ -251,7 +263,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
-      "number": 25,
+      "number": 26,
       "title": "Riavvia il sistema",
       "description": "Riavvia il sistema operativo per l'auto avvio del software PanelPC.",
       //"script": "shutdown /r /t 0 /f /d p:4:2 /c \"Vertimag Software Setup\"",
