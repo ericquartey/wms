@@ -953,8 +953,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         if (this.IsBracketSensorError())
                         {
                             this.Logger.LogError($"Bracket sensor error");
-                            this.Stop(StopRequestReason.Stop);
-                            status = MessageStatus.OperationError;
+                            this.Stop(StopRequestReason.Error);
+                            break;
                         }
                         else
                         {
