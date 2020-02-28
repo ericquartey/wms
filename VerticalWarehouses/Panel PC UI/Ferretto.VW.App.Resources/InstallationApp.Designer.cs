@@ -70,7 +70,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Acceptable weight tolerance [%].
+        ///   Looks up a localized string similar to Acceptable weight tolerance (%).
         /// </summary>
         public static string AcceptableWeightTolerance {
             get {
@@ -2275,7 +2275,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inserted weight [kg].
+        ///   Looks up a localized string similar to Inserted weight (kg).
         /// </summary>
         public static string InsertedWeight {
             get {
@@ -2500,7 +2500,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Max weight drawer portance [kg].
+        ///   Looks up a localized string similar to Max weight drawer portance (kg).
         /// </summary>
         public static string LoadFirstDrawerMaxWeight {
             get {
@@ -2599,7 +2599,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Max weight portance [kg].
+        ///   Looks up a localized string similar to Max weight portance (kg).
         /// </summary>
         public static string LoadingDrawersMaxWeight {
             get {
@@ -2977,7 +2977,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Measured weight [kg].
+        ///   Looks up a localized string similar to Measured weight (kg).
         /// </summary>
         public static string MeasuredWeight {
             get {
@@ -3175,7 +3175,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Net Weight [kg].
+        ///   Looks up a localized string similar to Net Weight (kg).
         /// </summary>
         public static string NetWeight {
             get {
@@ -3591,11 +3591,11 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Press Repeat to run the procedure again, Complete to finish..
+        ///   Looks up a localized string similar to Press Repeat to run the procedure again..
         /// </summary>
-        public static string RepeatOrComplete {
+        public static string RepeatProcedure {
             get {
-                return ResourceManager.GetString("RepeatOrComplete", resourceCulture);
+                return ResourceManager.GetString("RepeatProcedure", resourceCulture);
             }
         }
         
@@ -4518,7 +4518,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tray Tare [kg].
+        ///   Looks up a localized string similar to Tray Tare (kg).
         /// </summary>
         public static string TrayTare {
             get {
@@ -4545,7 +4545,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tray Weight [kg].
+        ///   Looks up a localized string similar to Tray Weight (kg).
         /// </summary>
         public static string TrayWeight {
             get {

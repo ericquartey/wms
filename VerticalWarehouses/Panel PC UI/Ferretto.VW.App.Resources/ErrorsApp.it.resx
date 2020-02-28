@@ -124,7 +124,7 @@
     <value>Cella selezionata</value>
   </data>
   <data name="Displacement" xml:space="preserve">
-    <value>Spostamento [mm]</value>
+    <value>Spostamento (mm)</value>
   </data>
   <data name="DrawerIdentificationCompleted" xml:space="preserve">
     <value>Terminata la procedura di identificazione cassetto, passa in autmatico.</value>
@@ -154,7 +154,7 @@
     <value>Id</value>
   </data>
   <data name="InitialPosition" xml:space="preserve">
-    <value>Quota iniziale [mm]</value>
+    <value>Quota iniziale (mm)</value>
   </data>
   <data name="InverterFaultErrorRestore" xml:space="preserve">
     <value>Ripristino errore INVERTER FAULT</value>

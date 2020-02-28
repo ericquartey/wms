@@ -461,13 +461,13 @@
     <value>Gate Height Control</value>
   </data>
   <data name="AcceptableWeightTolerance" xml:space="preserve">
-    <value>Acceptable weight tolerance [%]</value>
+    <value>Acceptable weight tolerance (%)</value>
   </data>
   <data name="InsertedWeight" xml:space="preserve">
-    <value>Inserted weight [kg]</value>
+    <value>Inserted weight (kg)</value>
   </data>
   <data name="MeasuredWeight" xml:space="preserve">
-    <value>Measured weight [kg]</value>
+    <value>Measured weight (kg)</value>
   </data>
   <data name="MeasuredWeightInTolerance" xml:space="preserve">
     <value>Measured weight is in tolerance.</value>
@@ -687,7 +687,7 @@
     <comment>Label text</comment>
   </data>
   <data name="LoadingDrawersMaxWeight" xml:space="preserve">
-    <value>Max weight portance [kg]</value>
+    <value>Max weight portance (kg)</value>
     <comment>Label text</comment>
   </data>
   <data name="LoadingDrawersInsertedDrawers" xml:space="preserve">
@@ -726,7 +726,7 @@
     <value>Drawer to insert</value>
   </data>
   <data name="LoadFirstDrawerMaxWeight" xml:space="preserve">
-    <value>Max weight drawer portance [kg]</value>
+    <value>Max weight drawer portance (kg)</value>
   </data>
   <data name="LoadFirstDrawerStartLoading" xml:space="preserve">
     <value>Insert Drawer</value>
@@ -1006,7 +1006,7 @@
     <value>Embark</value>
   </data>
   <data name="TrayWeight" xml:space="preserve">
-    <value>Tray Weight [kg]</value>
+    <value>Tray Weight (kg)</value>
   </data>
   <data name="ElevatorHorizontalPosition" xml:space="preserve">
     <value>Horizontal Position [mm]</value>
@@ -1127,10 +1127,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Weight Analysis</value>
   </data>
   <data name="TrayTare" xml:space="preserve">
-    <value>Tray Tare [kg]</value>
+    <value>Tray Tare (kg)</value>
   </data>
   <data name="NetWeight" xml:space="preserve">
-    <value>Net Weight [kg]</value>
+    <value>Net Weight (kg)</value>
   </data>
   <data name="DisembarkBackwards" xml:space="preserve">
     <value>Disembark backwards</value>
@@ -1804,8 +1804,8 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="Repeat" xml:space="preserve">
     <value>Repeat</value>
   </data>
-  <data name="RepeatOrComplete" xml:space="preserve">
-    <value>Press Repeat to run the procedure again, Complete to finish.</value>
+  <data name="RepeatProcedure" xml:space="preserve">
+    <value>Press Repeat to run the procedure again.</value>
   </data>
   <data name="ResetCycles" xml:space="preserve">
     <value>Reset Cycles</value>

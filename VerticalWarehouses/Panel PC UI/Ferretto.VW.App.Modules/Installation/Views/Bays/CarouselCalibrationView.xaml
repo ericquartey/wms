@@ -260,7 +260,7 @@
                            Margin="0,20,0,0"
                            FontSize="18"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{x:Static res:InstallationApp.RepeatOrComplete}"
+                           Text="{x:Static res:InstallationApp.RepeatProcedure}"
                            TextWrapping="Wrap"
                            Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}" />
 
@@ -321,7 +321,7 @@
                    VerticalAlignment="Top"
                    FontSize="{DynamicResource FontSize_Small}"
                    Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                   Text="{x:Static res:HelpDescriptions.ResolutionCalibrationFunctionDescription}"
+                   Text="{x:Static res:HelpDescriptions.CarouselCalibrationFunctionDescription}"
                    TextWrapping="Wrap" />
         <!--#endregion-->
 

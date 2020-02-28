@@ -550,6 +550,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.ShowNotification(
                             VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated,
                             Services.Models.NotificationSeverity.Success);
+
+                    this.CurrentStep = CarouselCalibrationStep.StartCalibration;
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
@@ -590,7 +592,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return !this.IsKeyboardOpened &&
                    !this.IsMoving &&
                    !this.SensorsService.IsHorizontalInconsistentBothLow &&
-                   !this.SensorsService.IsHorizontalInconsistentBothHigh;
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh &&
+                   this.SensorsService.BayZeroChain;
         }
 
         private bool CanStop()
@@ -612,9 +615,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return this.CanBaseExecute() &&
                    !this.IsTuningBay &&
                    this.MachineStatus.LoadingUnitPositionDownInBay is null &&
-                   this.MachineStatus.LoadingUnitPositionUpInBay is null
-                   //&&
-                   //!this.SensorsService.Sensors.ACUBay1S3IND
+                   this.MachineStatus.LoadingUnitPositionUpInBay is null &&
+                   this.SensorsService.BayZeroChain
                    ;
         }
 
@@ -675,11 +677,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.CurrentStep = CarouselCalibrationStep.ConfirmAdjustment;
 
-                if (this.MachineError != null)
+                if ((this.MachineError != null))
                 {
                     this.IsCalibrationNotCompleted = true;
-                    return;
+                
                 }
+                return;
             }
 
             // ad ogni ciclo completato...aggiornamento dati
