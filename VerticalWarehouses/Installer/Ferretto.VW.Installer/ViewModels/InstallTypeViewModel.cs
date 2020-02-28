@@ -44,13 +44,15 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private IPEndPoint masIpEndpoint;
 
-        private string message;
+        private string messageMaster;
 
         private RelayCommand nextCommand;
 
         private RelayCommand openFileCommand;
 
         private IServiceContainer serviceContainer = null;
+
+        private string messageSlave;
 
         #endregion
 
@@ -96,10 +98,16 @@ namespace Ferretto.VW.Installer.ViewModels
             set => this.SetProperty(ref this.masIpAddress, value, this.EvaluateCheckMasHost);
         }
 
-        public string Message
+        public string MessageMaster
         {
-            get => this.message;
-            set => this.SetProperty(ref this.message, value);
+            get => this.messageMaster;
+            set => this.SetProperty(ref this.messageMaster, value);
+        }
+
+        public string MessageSlave
+        {
+            get => this.messageSlave;
+            set => this.SetProperty(ref this.messageSlave, value);
         }
 
         public ICommand NextCommand =>
@@ -147,6 +155,7 @@ namespace Ferretto.VW.Installer.ViewModels
 
         public async Task OpenFileAsync()
         {
+            this.MessageMaster = string.Empty;
             this.OpenFileDialogService.Filter = this.Filter;
             this.OpenFileDialogService.FilterIndex = this.FilterIndex;
             this.DialogResult = this.OpenFileDialogService.ShowDialog();
@@ -157,6 +166,8 @@ namespace Ferretto.VW.Installer.ViewModels
             }
             else
             {
+
+               
                 var file = this.OpenFileDialogService.Files.First();
                 string fileContents;
                 using (var stream = file.OpenText())
@@ -168,13 +179,15 @@ namespace Ferretto.VW.Installer.ViewModels
 
                 if (this.isMasConfigurationValid)
                 {
-                    var configurationFilepath = $"{ConfigurationManager.AppSettings.GetUpdateTempPath()}\\{ConfigurationManager.AppSettings.GetInstallMasPath()}\\Configuration\\vertimag-configuration.json";
-                    File.WriteAllText(configurationFilepath, fileContents);
+                    var configurationFilePath = $"{ConfigurationManager.AppSettings.GetUpdateTempPath()}\\{ConfigurationManager.AppSettings.GetInstallMasPath()}\\Configuration\\vertimag-configuration.json";
+                    this.installationService.SaveVertimagConfiguration(configurationFilePath, fileContents);
                 }
             }
 
             await this.EvaluateCanNextAsync();
         }
+
+
 
         public void Save()
         {
@@ -210,7 +223,6 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private IPEndPoint CheckMasHost()
         {
-            IPAddress ip = null;
             int? ipPort = null;
             try
             {
@@ -224,9 +236,9 @@ namespace Ferretto.VW.Installer.ViewModels
                     }
                 }
             }
-            catch (SocketException ex)
+            catch
             {
-                this.Message = $"Servizio di automazione non raggiungibile host:{ip?.ToString()}:{ipPort} {ex.Message}";
+                this.MessageSlave = $"Servizio di automazione non raggiungibile, host: {this.masIpAddress?.ToString()}:{ipPort}";
             }
 
             return null;
@@ -243,6 +255,7 @@ namespace Ferretto.VW.Installer.ViewModels
 
             if (!this.isMasConfiguration)
             {
+                this.MessageSlave = string.Empty;
                 this.isSlaveConfigurationValid = !(this.masIpEndpoint is null);
                 if (this.isSlaveConfigurationValid)
                 {
@@ -277,7 +290,7 @@ namespace Ferretto.VW.Installer.ViewModels
             }
             catch (Exception ex)
             {
-                this.Message = $"Servizio di automazione non raggiungibile host:{ipEndPoint?.ToString()}/Application/Configuration {ex.Message}";
+                this.MessageMaster = $"Servizio di automazione non raggiungibile host:{ipEndPoint?.ToString()}/Application/Configuration {ex.Message}";
             }
 
             return null;

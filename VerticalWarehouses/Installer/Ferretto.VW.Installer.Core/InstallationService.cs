@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -365,6 +366,20 @@ namespace Ferretto.VW.Installer.Core
         {
             this.MachineRole = (this.masIpAddress is null) ? MachineRole.Master : MachineRole.Slave;
             this.LoadSteps();
+        }
+
+        public void SaveVertimagConfiguration(string configurationFilePath, string fileContents)
+        {
+            try
+            {
+               File.WriteAllText(configurationFilePath, fileContents);
+            }
+            catch (Exception ex)
+            {
+                var msg = $" Error wrting configuration file \"{configurationFilePath}\"";
+                this.logger.Error(ex, msg);
+                throw new InvalidOperationException(msg);
+            }
         }
 
         public void LoadSteps()

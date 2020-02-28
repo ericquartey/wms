@@ -18,7 +18,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="10" />
+            
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -55,7 +55,7 @@
         <RadioButton Grid.Row="4"
                      Grid.Column="1"
                      Grid.ColumnSpan="2"
-                     Margin="10,30,10,0"
+                     Margin="10,20,10,0"
                      HorizontalAlignment="Stretch"
                      HorizontalContentAlignment="Stretch"
                      GroupName="test"
@@ -63,12 +63,16 @@
             <RadioButton.Content>
                 <StackPanel Orientation="Vertical">
                     <TextBlock Grid.Row="2"
-                               Margin="0,25"
+                               Margin="0,20"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Top"
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"                               
                                Text="Baia Master" />
                     <Grid IsEnabled="{Binding IsMasConfiguration}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition Width="Auto"/>
@@ -89,6 +93,14 @@
                                 Style="{StaticResource ButtonStyle}"
                                 Command="{Binding OpenFileCommand}">
                         </Button>
+                        <TextBlock
+                               Grid.Row="1"
+                               Grid.ColumnSpan="2"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               FontSize="{DynamicResource FontSize_Normal}"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               Text="{Binding MessageMaster}" />
                     </Grid>
                 </StackPanel>
             </RadioButton.Content>
@@ -101,12 +113,16 @@
                      GroupName="test">
             <RadioButton.Content>
                 <StackPanel Orientation="Vertical">
-                    <TextBlock Margin="0,25"
+                    <TextBlock Margin="0,10"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"                           
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                            Text="Baia slave" />
                     <Grid IsEnabled="{Binding IsMasConfiguration, Converter={StaticResource BNC}}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition Width="Auto"/>
@@ -143,6 +159,14 @@
                                 </Button>
                             </Grid>
                         </StackPanel>
+                        <TextBlock
+                                   Grid.Row="1"
+                                   Grid.ColumnSpan="2"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"                            
+                                   FontSize="{DynamicResource FontSize_Normal}"
+                                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                                   Text="{Binding MessageSlave}" />
                     </Grid>
                 </StackPanel>
             </RadioButton.Content>
