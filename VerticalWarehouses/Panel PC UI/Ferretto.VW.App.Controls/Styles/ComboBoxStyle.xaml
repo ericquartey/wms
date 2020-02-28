@@ -281,13 +281,16 @@
                             <Setter TargetName="ContentSite" Property="Visibility" Value="Hidden" />
                             <Setter TargetName="ContentSite" Property="Margin" Value="7,5,30,5" />
                             <Setter TargetName="PART_EditableTextBox" Property="Margin" Value="7,5,30,5" />
-                            <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Style.Triggers />
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="Foreground" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Disabled}" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <Style x:Key="ComboBoxItemStyle"

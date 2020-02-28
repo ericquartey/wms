@@ -159,7 +159,7 @@
                     <ComboBox Margin="0,4,5,5"
                               FontFamily="{DynamicResource VWAPP_TitleFont}"
                               FontSize="{DynamicResource VWAPP_PpcTextBox_TextBox_FontSize}"
-                              IsEnabled="False"
+                              IsEnabled="{Binding IsEditStatus}"
                               ItemsSource="{Binding Status}"
                               SelectedValue="{Binding SelectedLU.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                               Style="{DynamicResource PpcComboBoxStyle}" />
