@@ -94,13 +94,6 @@
                                      LabelText="Code" />
 
                 <controls:PpcTextBox Grid.Column="2"
-                                     HorizontalAlignment="Stretch"
-                                     VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.CellId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                     IsEnabled="{Binding IsEnabledEditing}"
-                                     LabelText="CellId" />
-
-                <controls:PpcTextBox Grid.Column="3"
                                      Grid.ColumnSpan="3"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
@@ -108,47 +101,22 @@
                                      IsEnabled="{Binding IsEnabledEditing}"
                                      LabelText="Description" />
 
-                <controls:PpcTextBox Grid.Column="6"
+                <controls:PpcTextBox Grid.Column="5"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
                                      InputText="{Binding SelectedLU.MissionsCount, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                      IsEnabled="{Binding IsEnabledEditing}"
                                      LabelText="MissionsCount" />
 
-                <controls:PpcTextBox Grid.Row="1"
-                                     Grid.Column="0"
+                <controls:PpcTextBox Grid.Column="6"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.GrossWeight, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                     IsEnabled="{Binding IsEnabledEditing}"
-                                     LabelText="GrossWeight" />
-
-                <controls:PpcTextBox Grid.Row="1"
-                                     Grid.Column="1"
-                                     HorizontalAlignment="Stretch"
-                                     VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.NetWeight}"
+                                     InputText="{Binding SelectedLU.IsIntoMachine}"
                                      IsEnabled="False"
-                                     LabelText="NetWeight" />
-
-                <controls:PpcTextBox Grid.Row="1"
-                                     Grid.Column="2"
-                                     HorizontalAlignment="Stretch"
-                                     VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.MaxNetWeight, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                     IsEnabled="{Binding IsEnabledEditing}"
-                                     LabelText="MaxNetWeight" />
-
-                <controls:PpcTextBox Grid.Row="1"
-                                     Grid.Column="3"
-                                     HorizontalAlignment="Stretch"
-                                     VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.Height, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                     IsEnabled="{Binding IsEnabledEditing}"
-                                     LabelText="Height" />
+                                     LabelText="IsIntoMachine" />
 
                 <StackPanel Grid.Row="1"
-                            Grid.Column="4"
+                            Grid.Column="0"
                             Margin="0,1,0,0"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
@@ -166,6 +134,82 @@
                 </StackPanel>
 
                 <controls:PpcTextBox Grid.Row="1"
+                                     Grid.Column="1"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"
+                                     InputText="{Binding SelectedBayPositionId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsEditStatus}"
+                                     LabelText="BayPositionId">
+                    <controls:PpcTextBox.Style>
+                        <Style TargetType="{x:Type controls:PpcTextBox}">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedLU.Status}"
+                                             Value="InBay">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </controls:PpcTextBox.Style>
+                </controls:PpcTextBox>
+
+                <controls:PpcTextBox Grid.Row="1"
+                                     Grid.Column="1"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"
+                                     InputText="{Binding SelectedLU.CellId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsEnabledEditing}"
+                                     LabelText="CellId">
+                    <controls:PpcTextBox.Style>
+                        <Style TargetType="{x:Type controls:PpcTextBox}">
+                            <Setter Property="Visibility" Value="Visible" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedLU.Status}"
+                                             Value="InBay">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </controls:PpcTextBox.Style>
+                </controls:PpcTextBox>
+
+                <controls:PpcTextBox Grid.Row="1"
+                                     Grid.Column="2"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"
+                                     InputText="{Binding SelectedLU.Height, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsEnabledEditing}"
+                                     LabelText="Height">
+                    <controls:PpcTextBox.Style>
+                        <Style TargetType="{x:Type controls:PpcTextBox}">
+                            <Setter Property="Visibility" Value="Visible" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedLU.Status}"
+                                             Value="InBay">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </controls:PpcTextBox.Style>
+                </controls:PpcTextBox>
+
+                <controls:PpcTextBox Grid.Row="1"
+                                     Grid.Column="3"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"
+                                     InputText="{Binding SelectedLU.MaxNetWeight, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsEnabledEditing}"
+                                     LabelText="MaxNetWeight" />
+
+                <controls:PpcTextBox Grid.Row="1"
+                                     Grid.Column="4"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"
+                                     InputText="{Binding SelectedLU.GrossWeight, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsEnabledEditing}"
+                                     LabelText="GrossWeight" />
+
+                <controls:PpcTextBox Grid.Row="1"
                                      Grid.Column="5"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
@@ -177,9 +221,10 @@
                                      Grid.Column="6"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
-                                     InputText="{Binding SelectedLU.IsIntoMachine}"
+                                     InputText="{Binding SelectedLU.NetWeight}"
                                      IsEnabled="False"
-                                     LabelText="IsIntoMachine" />
+                                     LabelText="NetWeight" />
+
 
             </Grid>
         </Border>

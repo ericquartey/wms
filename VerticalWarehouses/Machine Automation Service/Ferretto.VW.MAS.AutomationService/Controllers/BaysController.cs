@@ -140,11 +140,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult SetLoadUnitOnBay(int bayPositionId, int loadingUnitId)
         {
-            var currentError = this.errorsProvider.GetCurrent();
-            if (currentError != null)
-            {
-                this.baysDataProvider.SetLoadingUnit(bayPositionId, loadingUnitId);
-            }
+            this.baysDataProvider.SetLoadingUnit(bayPositionId, loadingUnitId);
             return this.Accepted();
         }
 
