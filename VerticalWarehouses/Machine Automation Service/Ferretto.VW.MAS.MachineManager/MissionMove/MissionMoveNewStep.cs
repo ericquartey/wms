@@ -470,7 +470,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 return false;
             }
 
-            var activeMission = this.MissionsDataProvider.GetAllActiveMissionsByBay(this.Mission.TargetBay)
+            var activeMission = this.MissionsDataProvider.GetAllActiveMissions()
                 .FirstOrDefault(x => x.Status == MissionStatus.Executing);
 
             if (activeMission != null)

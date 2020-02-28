@@ -618,12 +618,12 @@ namespace Ferretto.VW.MAS.MissionManager
             var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
             var moveLoadingUnitProvider = serviceProvider.GetRequiredService<IMoveLoadUnitProvider>();
+            var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
             if (sensorProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
             {
                 var loadUnit = elevatorDataProvider.GetLoadingUnitOnBoard();
                 if (loadUnit is null)
                 {
-                    var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
                     errorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnElevator);
 
                     this.machineVolatileDataProvider.Mode = MachineMode.Manual;
@@ -652,7 +652,6 @@ namespace Ferretto.VW.MAS.MissionManager
                         {
                             if (position.LoadingUnit is null)
                             {
-                                var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
                                 errorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnBay);
 
                                 this.machineVolatileDataProvider.Mode = MachineMode.Manual;
@@ -671,6 +670,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     }
                 }
             }
+            errorsProvider.ResolveAll();
             return false;
         }
 
