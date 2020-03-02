@@ -13,17 +13,29 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private readonly IMachineItemsWebService itemWebService;
 
+        private readonly IMachineWmsStatusWebService wmsStatusWebService;
+
+        private bool isEnabled;
+
         #endregion
 
         #region Constructors
 
         public WmsDataProvider(
             IBayManager bayManager,
-            IMachineItemsWebService itemWebService)
+            IMachineItemsWebService itemWebService,
+            IMachineWmsStatusWebService wmsStatusWebService)
         {
             this.bayManager = bayManager ?? throw new System.ArgumentNullException(nameof(bayManager));
             this.itemWebService = itemWebService ?? throw new System.ArgumentNullException(nameof(itemWebService));
+            this.wmsStatusWebService = wmsStatusWebService ?? throw new System.ArgumentNullException(nameof(wmsStatusWebService));
         }
+
+        #endregion
+
+        #region Properties
+
+        public bool IsEnabled => this.isEnabled;
 
         #endregion
 
@@ -46,7 +58,7 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             if (!this.bayManager.Identity.AreaId.HasValue)
             {
-                return;
+                throw new InvalidOperationException("The area of the machine is unknown.");
             }
 
             var bay = await this.bayManager.GetBayAsync();
@@ -77,6 +89,27 @@ namespace Ferretto.VW.App.Modules.Operator
                 MachineId = this.bayManager.Identity.Id,
                 RequestedQuantity = requestedQuantity,
                 RunImmediately = true,
+            });
+        }
+
+        public void Start()
+        {
+            Task.Run(async () =>
+            {
+                do
+                {
+                    try
+                    {
+                        this.isEnabled = await this.wmsStatusWebService.IsEnabledAsync();
+                    }
+                    catch
+                    {
+                    }
+                    finally
+                    {
+                        await Task.Delay(5000);
+                    }
+                } while (true);
             });
         }
 

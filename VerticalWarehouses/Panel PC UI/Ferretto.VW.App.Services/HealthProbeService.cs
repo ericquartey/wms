@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using NLog;
 using Prism.Events;
 
@@ -15,8 +16,6 @@ namespace Ferretto.VW.App.Services
         private const int DefaultPollInterval = 3000;
 
         private readonly Uri baseMasAddress;
-
-        private readonly Uri baseWmsAddress;
 
         private readonly Task healthProbeMasTask;
 
@@ -32,6 +31,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly CancellationTokenSource tokenSource = new CancellationTokenSource();
 
+        private readonly IMachineWmsStatusWebService wmsStatusWebService;
+
         private HealthStatus healthMasStatus;
 
         private HealthStatus healthWmsStatus;
@@ -44,15 +45,15 @@ namespace Ferretto.VW.App.Services
 
         public HealthProbeService(
             Uri baseMasAddress,
-            Uri baseWmsAddress,
             string liveHealthCheckPath,
             string readyHealthCheckPath,
+            IMachineWmsStatusWebService wmsStatusWebService,
             IEventAggregator eventAggregator)
         {
             this.baseMasAddress = baseMasAddress ?? throw new ArgumentNullException(nameof(baseMasAddress));
-            this.baseWmsAddress = baseWmsAddress;
             this.liveHealthCheckPath = liveHealthCheckPath ?? throw new ArgumentNullException(nameof(liveHealthCheckPath));
             this.readyHealthCheckPath = readyHealthCheckPath ?? throw new ArgumentNullException(nameof(readyHealthCheckPath));
+            this.wmsStatusWebService = wmsStatusWebService ?? throw new ArgumentNullException(nameof(wmsStatusWebService));
 
             if (eventAggregator is null)
             {
@@ -65,11 +66,8 @@ namespace Ferretto.VW.App.Services
             this.healthProbeMasTask = new Task(
                 async () => await this.RunHealthProbeMasAsync(this.tokenSource.Token), this.tokenSource.Token);
 
-            if (ConfigurationManager.AppSettings.GetWmsDataServiceEnabled() && !(this.baseWmsAddress is null))
-            {
-                this.healthProbeWmsTask = new Task(
-                    async () => await this.RunHealthProbeWmsAsync(this.tokenSource.Token), this.tokenSource.Token);
-            }
+            this.healthProbeWmsTask = new Task(
+                async () => await this.RunHealthProbeWmsAsync(this.tokenSource.Token), this.tokenSource.Token);
         }
 
         #endregion
@@ -104,7 +102,7 @@ namespace Ferretto.VW.App.Services
                 {
                     this.healthWmsStatus = value;
 
-                    this.logger.Debug($"Service at '{this.baseWmsAddress}' is {this.healthWmsStatus}.");
+                    this.logger.Debug($"WMS service is {this.healthWmsStatus}.");
 
                     this.healthStatusChangedEvent
                         .Publish(new HealthStatusChangedEventArgs(this.healthMasStatus, this.healthWmsStatus));
@@ -235,20 +233,24 @@ namespace Ferretto.VW.App.Services
         {
             do
             {
-                using (var client = new HttpClient { BaseAddress = this.baseWmsAddress })
+                try
                 {
-                    if (this.HealthWmsStatus == HealthStatus.Unknown
-                        ||
-                        this.HealthWmsStatus == HealthStatus.Unhealthy
-                        ||
-                        this.HealthWmsStatus == HealthStatus.Initializing)
+                    var healthStatusString = await this.wmsStatusWebService.GetHealthAsync();
+
+                    if (Enum.TryParse<HealthStatus>(healthStatusString, out var healthStatus))
                     {
-                        this.HealthWmsStatus = await this.CheckReadinessStatus(client, cancellationToken);
+                        this.HealthWmsStatus = healthStatus;
                     }
                     else
                     {
-                        this.HealthWmsStatus = await this.CheckLivelinessStatus(client, cancellationToken);
+                        this.logger.Debug($"Unable to parse health status of WMS (response was '{healthStatus}').");
+
+                        this.HealthWmsStatus = HealthStatus.Unknown;
                     }
+                }
+                catch
+                {
+                    this.HealthWmsStatus = HealthStatus.Unhealthy;
                 }
 
                 await Task.Delay(this.pollInterval);

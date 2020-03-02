@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Configuration;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Resources;
-using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 using Prism.Events;
@@ -20,8 +17,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private readonly IMachineItemsWebService itemsWebService;
 
         private readonly IOperatorNavigationService operatorNavigationService;
-
-        private readonly IWmsDataProvider wmsDataProvider;
 
         private bool canInputQuantity;
 
@@ -61,12 +56,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IOperatorNavigationService operatorNavigationService,
             IEventAggregator eventAggregator,
             IWmsDataProvider wmsDataProvider)
-            : base(machineLoadingUnitsWebService, missionOperationsService, eventAggregator)
+            : base(machineLoadingUnitsWebService, missionOperationsService, eventAggregator, wmsDataProvider)
         {
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
             this.compartmentsWebService = compartmentsWebService ?? throw new ArgumentNullException(nameof(compartmentsWebService));
             this.operatorNavigationService = operatorNavigationService ?? throw new ArgumentNullException(nameof(operatorNavigationService));
-            this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
         }
 
         #endregion
@@ -202,7 +196,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 var activeOperation = this.MissionOperationsService.ActiveWmsOperation;
 
-                if (ConfigurationManager.AppSettings.GetWmsDataServiceEnabled())
+                if (this.WmsDataProvider.IsEnabled)
                 {
                     await this.MissionOperationsService.CompleteCurrentAsync(1);
                 }
@@ -299,7 +293,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.IsWaitingForResponse = true;
 
-                    await this.wmsDataProvider.PickAsync(
+                    await this.WmsDataProvider.PickAsync(
                         this.SelectedItem.ItemId.Value,
                         this.InputQuantity.Value);
                 }
@@ -307,7 +301,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.IsWaitingForResponse = true;
 
-                    await this.wmsDataProvider.PutAsync(
+                    await this.WmsDataProvider.PutAsync(
                         this.SelectedItem.ItemId.Value,
                         this.InputQuantity.Value);
                 }
