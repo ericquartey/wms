@@ -943,6 +943,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current [A].
+        /// </summary>
+        public static string Current {
+            get {
+                return ResourceManager.GetString("Current", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CurrentBayChainPosition.
         /// </summary>
         public static string CurrentBayChainPosition {
@@ -3211,6 +3220,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Move to elevator position.
+        /// </summary>
+        public static string MoveToElevatorPosition {
+            get {
+                return ResourceManager.GetString("MoveToElevatorPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Move to initial position.
         /// </summary>
         public static string MoveToInitialPosition {
@@ -4523,6 +4541,15 @@ namespace Ferretto.VW.App.Resources {
         public static string TestToRunMustBePositive {
             get {
                 return ResourceManager.GetString("TestToRunMustBePositive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time [s].
+        /// </summary>
+        public static string Time {
+            get {
+                return ResourceManager.GetString("Time", resourceCulture);
             }
         }
         

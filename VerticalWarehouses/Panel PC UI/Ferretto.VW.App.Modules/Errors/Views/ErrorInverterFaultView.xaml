@@ -104,7 +104,7 @@
                            Padding="10,5,10,5"
                            Background="{DynamicResource FerrettoRed}"
                            Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
-                           Text="{Binding Error.DetailCode, StringFormat={}0x{0}}"
+                           Text="{Binding Error.DetailCode, StringFormat={}0x{0:X8}}"
                            TextAlignment="Center"
                            TextWrapping="Wrap" />
             </StackPanel>
