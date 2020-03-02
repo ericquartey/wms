@@ -85,14 +85,14 @@
                                 VerticalAlignment="Center"
                                 Path="{Binding SelectedItemCompartment.ItemId}"
                                 Stretch="UniformToFill" />
-                
+
                 <controls:PpcLabeledText Grid.Column="2"
                                          Margin="10,0,0,0"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
                                          ContentText="{Binding SelectedItemCompartment.ItemDescription}"
                                          LabelText="{x:Static res:OperatorApp.CommonItemDescription}" />
-                
+
                 <controls:PpcLabeledText Grid.Row="1"
                                          Grid.Column="2"
                                          Margin="10,0,0,0"
@@ -115,7 +115,8 @@
                                        Increment="{Binding QuantityIncrement}"
                                        IsEnabled="{Binding CanInputQuantity}"
                                        LabelText="{Binding InputQuantityInfo}"
-                                       Mask="{Binding QuantityTolerance, StringFormat=F{0}}" />
+                                       Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
+                                       MinValue="0" />
 
                     <controls:PpcButton Grid.Row="2"
                                         Grid.Column="1"
