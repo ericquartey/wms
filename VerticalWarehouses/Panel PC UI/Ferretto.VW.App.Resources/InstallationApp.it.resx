@@ -1830,4 +1830,13 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="VerifyConfirmWarn" xml:space="preserve">
     <value>Verificare il nuovo valore di offset calcolato e premere Salva per rendere la modifica effettiva. Tutti i posizionamenti successivi terranno conto della correzione.</value>
   </data>
+  <data name="FullTest" xml:space="preserve">
+    <value>Test completo</value>
+  </data>
+  <data name="FullTestDescription" xml:space="preserve">
+    <value>La procedura permette di eseguire il test completo dei cassetti. Per avviare la procedura inserire il numero di cicli e poi premere Inizia</value>
+  </data>
+  <data name="FullTestSessionCycles" xml:space="preserve">
+    <value>Cicli sessione</value>
+  </data>
 </root>

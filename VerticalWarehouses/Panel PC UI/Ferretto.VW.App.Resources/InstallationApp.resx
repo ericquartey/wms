@@ -1903,4 +1903,13 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="VerifyConfirmWarn" xml:space="preserve">
     <value>Check the new calculated offset value and press Save to make the change effective. All subsequent placements will be affected by the correction.</value>
   </data>
+  <data name="FullTest" xml:space="preserve">
+    <value>Full Test</value>
+  </data>
+  <data name="FullTestDescription" xml:space="preserve">
+    <value>The procedure allows to perform the complete test of the drawers. To start the procedure, enter the number of cycles and then press Start</value>
+  </data>
+  <data name="FullTestSessionCycles" xml:space="preserve">
+    <value>Session cycles</value>
+  </data>
 </root>
