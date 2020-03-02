@@ -669,7 +669,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped, Services.Models.NotificationSeverity.Warning);
 
                 this.IsCalibrationCompletedOrStopped = false;
-                this.NewErrorValue = this.MachineService.Bay.ChainOffset;
+                this.NewErrorValue = Math.Abs(this.MachineService.Bay.ChainOffset);
 
                 this.IsExecutingProcedure = false;
 
@@ -680,7 +680,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if ((this.MachineError != null))
                 {
                     this.IsCalibrationNotCompleted = true;
-                
+
                 }
                 return;
             }

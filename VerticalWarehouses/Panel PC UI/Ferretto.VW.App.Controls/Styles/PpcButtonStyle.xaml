@@ -313,6 +313,11 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
                 <Setter Property="Content" Value="{x:Static res:InstallationApp.FirstTest}" />
             </DataTrigger>
+            <DataTrigger Binding="{Binding IsMissionInErrorByLoadUnitOperations}"
+                         Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoYellow}" />
+                <Setter Property="Content" Value="{x:Static res:InstallationApp.Restore}" />
+            </DataTrigger>
         </Style.Triggers>
     </Style>
 

@@ -916,7 +916,7 @@
 
                     <TextBlock Grid.Row="0"
                                Grid.Column="1"
-                               Margin="28,0,0,0"
+                               Margin="15,0,0,0"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
                                FontSize="{StaticResource FontSize_High}"
@@ -966,7 +966,7 @@
 
                     <TextBlock Grid.Row="1"
                                Grid.Column="1"
-                               Margin="28,0,0,0"
+                               Margin="15,0,0,0"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
                                FontSize="{StaticResource FontSize_High}"

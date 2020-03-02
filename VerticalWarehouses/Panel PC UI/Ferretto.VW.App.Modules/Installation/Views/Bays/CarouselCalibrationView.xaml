@@ -204,9 +204,10 @@
                                    Height="90"
                                    Margin="0,0,0,15"
                                    HorizontalAlignment="Center"
-                                   EditValue="{Binding NewErrorValue, StringFormat={}{0:F0}, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                   EditValue="{Binding NewErrorValue, StringFormat={}{0:F2}, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                    IsEnabled="{Binding IsCalibrationCompletedOrStopped}"
                                    LabelText="{x:Static res:InstallationApp.ErrorInMillimiters}"
+                                   Mask="#.##"
                                    MinValue="0"
                                    Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}" />
 
