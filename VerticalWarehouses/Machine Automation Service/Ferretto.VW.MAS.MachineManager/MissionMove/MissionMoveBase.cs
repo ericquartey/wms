@@ -255,6 +255,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
+                        this.BaysDataProvider.Light(this.Mission.TargetBay, true);
                         newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     }
                 }
