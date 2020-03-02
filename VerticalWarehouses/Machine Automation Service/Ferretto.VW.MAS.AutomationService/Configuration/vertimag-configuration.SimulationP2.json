@@ -102,6 +102,11 @@
         "IsActive": true,
         "IsDouble": true,
         "IsExternal": false,
+        "FullLoadMovement": {
+          "Acceleration": 200,
+          "Deceleration": 500,
+          "Speed": 77
+        },
         "Laser": {
           "BayId": 1,
           "IpAddress": "127.0.0.1",
