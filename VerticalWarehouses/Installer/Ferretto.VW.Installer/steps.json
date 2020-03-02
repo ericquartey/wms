@@ -5,7 +5,8 @@
       "number": 1,
       "title": "Imposta chiavi di registro",
       "description": "Cambia, aggiunge chiavi di registro per configurazione iniziale.",
-      "script": "Rename-NetAdapter -Name \"$(PPC:Ethernet:Machine:FactoryAlias)\" -NewName \"Ethernet-Machine\";Set-ItemProperty HKCU:\\Software\\Microsoft\\Wisp\\Touch -Name TouchMode_hold  -Value '0';uwfmgr.exe registry add-exclusion HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run;uwfmgr.exe registry add-exclusion HKLM\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Schedule;schtasks.exe /Create /SC ONLOGON /TN \"$(Install:TaskScheduler:Installer)\" /TR \"$(Update:Temp:Path)\\$(Install:Installer:Path)\\$(Install:Installer:FilePath)\" /RL HIGHEST /F",
+      //"script": "Rename-NetAdapter -Name \"$(PPC:Ethernet:Machine:FactoryAlias)\" -NewName \"Ethernet-Machine\";Set-ItemProperty HKCU:\\Software\\Microsoft\\Wisp\\Touch -Name TouchMode_hold  -Value '0';uwfmgr.exe registry add-exclusion HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run;uwfmgr.exe registry add-exclusion HKLM\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Schedule;schtasks.exe /Create /SC ONLOGON /TN \"$(Install:TaskScheduler:Installer)\" /TR \"$(Update:Temp:Path)\\$(Install:Installer:Path)\\$(Install:Installer:FilePath)\" /RL HIGHEST /F",
+      "script": "timeout /T 2", // ** fake
       "setupMode": "install",
       "skipOnResume": "true"
     },
@@ -55,11 +56,10 @@
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 6,
       "title": "Auto-avvio installer",
-      "description": "Imposta l'installatore in avvio automatico.",
-      //"rollbackScript": "Set-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(Install:Root:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath)\"",
-      //"script": "Set-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(EmbeddedInstallationFilePath)\"",
-      "script": "Remove-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key);schtasks.exe /Create /SC ONLOGON /TN \"$(Install:TaskScheduler:Installer)\" /TR \"$(Update:Temp:Path)\\$(Install:Installer:Path)\\$(Install:Installer:FilePath)\" /RL HIGHEST /F",
+      "description": "Imposta l'installatore in avvio automatico.",      
+      //"script": "Remove-ItemProperty -Path $(PPC:Registry:Path) -Name $(PPC:Registry:Key);schtasks.exe /Create /SC ONLOGON /TN \"$(Install:TaskScheduler:Installer)\" /TR \"$(Update:Temp:Path)\\$(Install:Installer:Path)\\$(Install:Installer:FilePath)\" /RL HIGHEST /F",
       "rollbackScript": "Set-ItemProperty $(PPC:Registry:Path) -Name $(PPC:Registry:Key) -Value \"$(Install:Root:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath)\";schtasks.exe /Delete /TN \"$(Install:TaskScheduler:Installer)\" /F",
+	  "script": "timeout /T 2", // ** fake
       "setupMode": "update",
       "skipOnResume": "true"
     },
@@ -152,7 +152,7 @@
       "number": 14,
       "title": "Configura App PanelPC",
       "description": "Aggiorna il file di configurazione del Panel PC.",
-      "script": "$NewAppConfigFile = \"$(Update:Temp:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath).config\";$CurrentAppConfigFile= \"$(Install:Root:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath).config\";$NewAppConfigFileOrig = \"$($NewAppConfigFile).orig\";[xml]$NewAppConfigXml = Get-Content -Path $NewAppConfigFile;[xml]$CurrentAppConfigXml = Get-Content -Path $CurrentAppConfigFile;$NewAppConfigXml.Save($NewAppConfigFileOrig);Foreach ($Node in $NewAppConfigXml.configuration.appSettings.ChildNodes) { $currNode = $CurrentAppConfigXml.SelectSingleNode(\"//add[@key=\"\"$($node.key)\"\"]/@value\"); if ($currNode.Value) { $Node.value = $currNode.Value; } }; $CurrentAppConfigXml.Save($CurrentAppConfigFile)",
+      "script": "$NewAppConfigFile = \"$(Update:Temp:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath).config\";$CurrentAppConfigFile= \"$(Install:Root:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath).config\";$NewAppConfigFileOrig = $NewAppConfigFile + \".orig\";[xml]$NewAppConfigXml = Get-Content -Path $NewAppConfigFile;[xml]$CurrentAppConfigXml = Get-Content -Path $CurrentAppConfigFile;$NewAppConfigXml.Save($NewAppConfigFileOrig);Foreach ($Node in $NewAppConfigXml.configuration.appSettings.ChildNodes) { $currNode = $CurrentAppConfigXml.SelectSingleNode(\"//add[@key=\"\" + $node.key + \"\"]/@value\"); if ($currNode.Value) { $Node.value = $currNode.Value; } }; $CurrentAppConfigXml.Save($CurrentAppConfigFile)",
       "rollbackScript": "$NewAppConfigFile = \"$(Update:Temp:Path)\\$(Install:PPC:Path)\\$(Install:PPC:FilePath).config\";$NewAppConfigFileOrig = \"$($NewAppConfigFile).orig\";if (Test-Path $NewAppConfigFileOrig) { Rename-item –path $NewAppConfigFileOrig –newname $($NewAppConfigFile) -Force  };",
       "setupMode": "update"
       //"script": "timeout /T 2", // ** fake

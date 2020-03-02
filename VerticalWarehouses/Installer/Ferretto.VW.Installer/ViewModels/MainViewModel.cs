@@ -57,6 +57,8 @@ namespace Ferretto.VW.Installer.ViewModels
                 // no configuration file found
             }
 
+            this.installationService.SetArgsStartup();
+
             this.installationService.LoadSteps();
 
             this.installationService.PropertyChanged += this.InstallationService_PropertyChanged;
