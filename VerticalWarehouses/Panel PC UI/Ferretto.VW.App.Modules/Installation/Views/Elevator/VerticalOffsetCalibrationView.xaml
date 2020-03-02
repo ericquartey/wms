@@ -348,7 +348,7 @@
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
                                         Command="{Binding MoveToConfirmCommand}"
-                                        Content="{x:Static res:InstallationApp.Next}"
+                                        Content="{x:Static res:InstallationApp.NextLarge}"
                                         Style="{StaticResource WizardConfirmButton}" />
                 </Grid>
 
