@@ -24,6 +24,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineBaysWebService machineBaysWebService;
 
+        private readonly IMachineElevatorWebService machineElevatorWebService;
+
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private readonly ISessionService sessionService;
@@ -62,6 +64,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public LoadingUnitsViewModel(
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+            IMachineElevatorWebService machineElevatorWebService,
             IMachineBaysWebService machineBaysWebService,
             IHealthProbeService healthProbeService,
             ISessionService sessionService)
@@ -70,6 +73,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
+            this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
         }
 
@@ -333,6 +337,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (this.SelectedLU.Status == LoadingUnitStatus.InBay && this.SelectedBayPositionId.HasValue)
                 {
                     await this.machineBaysWebService.SetLoadUnitOnBayAsync(this.SelectedBayPositionId.Value, this.SelectedLU.Id);
+                }
+
+                if (this.SelectedLU.Status == LoadingUnitStatus.InElevator)
+                {
+                    await this.machineElevatorWebService.SetLoadUnitOnElevatorAsync(this.SelectedLU.Id);
                 }
 
                 if (this.error)

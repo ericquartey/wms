@@ -30,6 +30,8 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private readonly IMachineService machineService;
 
+        private readonly SubscriptionToken machineStatusChangesToken;
+
         private readonly IRegionManager regionManager;
 
         private HealthStatus healthStatus;
@@ -49,6 +51,8 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         private bool isMachineInSwitchingToLoadUnitOperations;
 
         private bool isMachineInTestMode;
+
+        private bool isMissionInErrorByLoadUnitOperations;
 
         private bool isUnknownState;
 
@@ -95,8 +99,17 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                     ThreadOption.UIThread,
                     false);
 
+            this.machineStatusChangesToken = this.machineStatusChangesToken
+                ?? this.EventAggregator
+                    .GetEvent<MachineStatusChangedPubSubEvent>()
+                    .Subscribe(
+                        (m) => this.IsMissionInErrorByLoadUnitOperations = this.machineService.IsMissionInErrorByLoadUnitOperations,
+                        ThreadOption.UIThread,
+                        false);
+
             this.MachineMode = this.machineModeService.MachineMode;
             this.MachinePowerState = this.machineModeService.MachinePower;
+            this.IsMissionInErrorByLoadUnitOperations = this.machineService.IsMissionInErrorByLoadUnitOperations;
         }
 
         #endregion
@@ -145,6 +158,12 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             set => this.SetProperty(ref this.isMachineInTestMode, value);
         }
 
+        public bool IsMissionInErrorByLoadUnitOperations
+        {
+            get => this.isMissionInErrorByLoadUnitOperations;
+            set => this.SetProperty(ref this.isMissionInErrorByLoadUnitOperations, value);
+        }
+
         public bool IsUnknownState
         {
             get => this.isUnknownState;
@@ -181,7 +200,11 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         public override async Task ExecuteAsync()
         {
-            if (this.machineMode is MachineMode.Automatic)
+            if (this.IsMissionInErrorByLoadUnitOperations)
+            {
+                await this.machineModeWebService.SetAutomaticAsync();
+            }
+            else if (this.machineMode is MachineMode.Automatic)
             {
                 await this.machineModeWebService.SetManualAsync();
             }
@@ -242,6 +265,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                 this.machineModeChangedToken.Dispose();
                 this.machinePowerChangedToken.Dispose();
                 this.healthStatusChangedToken.Dispose();
+                this.machineStatusChangesToken.Dispose();
             }
 
             this.isDisposed = true;
@@ -279,6 +303,8 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             this.IsMachineInSwitchingToLoadUnitOperations = this.MachineMode is MachineMode.SwitchingToLoadUnitOperations;
             this.IsMachineInCompact = this.MachineMode is MachineMode.Compact;
             this.IsMachineInFirstTest = this.MachineMode is MachineMode.FirstTest;
+
+            this.IsMissionInErrorByLoadUnitOperations = this.machineService.IsMissionInErrorByLoadUnitOperations;
 
             this.IsBusy =
                 this.MachineMode is MachineMode.SwitchingToLoadUnitOperations

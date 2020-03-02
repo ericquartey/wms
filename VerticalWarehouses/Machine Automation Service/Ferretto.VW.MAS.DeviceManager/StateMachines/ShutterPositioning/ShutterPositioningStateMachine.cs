@@ -137,7 +137,9 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             errorText = string.Empty;
             errorCode = DataModels.MachineErrorCode.ConditionsNotMetForPositioning;
 
-            if (this.machineData.MachineSensorsStatus.IsDrawerPartiallyOnCradle)
+            if (this.machineData.MachineSensorsStatus.IsDrawerPartiallyOnCradle
+                && this.machineData.PositioningMessageData.MovementType != MovementType.Relative
+                )
             {
                 ok = false;
                 errorText = ErrorDescriptions.InvalidPresenceSensors;

@@ -463,7 +463,7 @@
       "Zone": "4thRow",
       "Cells": [
         {
-          "Width": "2*",
+          "Width": "1.25*",
           "KeyStyleResource": "AccentKeyboardButtonStyle",
           "Key": {
             "Command": {
@@ -489,7 +489,7 @@
           }
         },
         {
-          "Width": "4.75*",
+          "Width": "5*",
           "Key": {
             "Command": {
               "Caption": " ",
@@ -515,14 +515,6 @@
         },
         {
           "Width": "Auto",
-          "Key": {
-            "Command": {
-              "CommandText": "@"
-            }
-          }
-        },
-        {
-          "Width": "1*",
           "KeyStyleResource": "AccentKeyboardButtonStyle",
           "Key": {
             "Command": {
@@ -532,7 +524,7 @@
           }
         },
         {
-          "Width": "1*",
+          "Width": "Auto",
           "KeyStyleResource": "AccentKeyboardButtonStyle",
           "Key": {
             "Command": {

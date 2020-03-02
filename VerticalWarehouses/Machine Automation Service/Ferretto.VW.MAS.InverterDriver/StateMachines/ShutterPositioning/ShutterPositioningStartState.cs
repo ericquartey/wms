@@ -210,11 +210,18 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                         this.dataset = InverterDataset.ShutterAbsoluteHalf;
                         if (this.shutterPositionData.ShutterMovementDirection == ShutterMovementDirection.Down)
                         {
-                            this.Duration = (short)(this.shutterPositionData.HighSpeedHalfDurationOpen ?? this.shutterPositionData.HighSpeedDurationOpen * 0.45);
+                            if (this.currentShutterPosition != ShutterPosition.Opened)
+                            {
+                                this.Duration = (short)(this.shutterPositionData.HighSpeedHalfDurationOpen ?? this.shutterPositionData.HighSpeedDurationOpen * 0.45);
+                            }
+                            else
+                            {
+                                this.Duration = (short)(this.shutterPositionData.HighSpeedHalfDurationClose ?? this.shutterPositionData.HighSpeedDurationClose * 0.45);
+                            }
                         }
                         else
                         {
-                            this.Duration = (short)(this.shutterPositionData.HighSpeedHalfDurationClose ?? this.shutterPositionData.HighSpeedDurationClose * 0.45);
+                            this.Duration = (short)(this.shutterPositionData.HighSpeedHalfDurationOpen ?? this.shutterPositionData.HighSpeedDurationOpen * 0.45);
                         }
                         break;
 

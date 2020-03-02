@@ -184,7 +184,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"minspeed: {parameters.MinSpeed}; " +
                 $"maxspeed: {parameters.MaxSpeed}; " +
                 $"highspeeddurationopen: {parameters.HighSpeedDurationOpen}; " +
-                $"highspeeddurationclose: {parameters.HighSpeedDurationClose}");
+                $"highspeeddurationclose: {parameters.HighSpeedDurationClose};" +
+                $"highspeedHalfdurationopen: {parameters.HighSpeedHalfDurationOpen}; " +
+                $"highspeedHalfdurationclose: {parameters.HighSpeedHalfDurationClose}");
 
             this.PublishCommand(
                 messageData,
@@ -248,7 +250,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"minspeed: {parameters.MinSpeed}; " +
                 $"maxspeed: {parameters.MaxSpeed}; " +
                 $"highspeeddurationopen: {parameters.HighSpeedDurationOpen}; " +
-                $"highspeeddurationclose: {parameters.HighSpeedDurationClose}");
+                $"highspeeddurationclose: {parameters.HighSpeedDurationClose}" +
+                $"highspeedHalfdurationopen: {parameters.HighSpeedHalfDurationOpen}; " +
+                $"highspeedHalfdurationclose: {parameters.HighSpeedHalfDurationClose}");
 
             this.PublishCommand(
                 messageData,

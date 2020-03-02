@@ -102,6 +102,11 @@
         "IsActive": true,
         "IsDouble": true,
         "IsExternal": false,
+        "FullLoadMovement": {
+          "Acceleration": 200,
+          "Deceleration": 500,
+          "Speed": 77
+        },
         "Laser": {
           "BayId": 1,
           "IpAddress": "127.0.0.1",
@@ -6032,11 +6037,9 @@
   "SetupProcedures": {
     "Bay1CarouselCalibration": {
       "InProgress": false,
-      "PerformedCycles": 100,
-      "RequiredCycles": 100,
       "FeedRate": 0.9,
       "IsBypassed": false,
-      "IsCompleted": true,
+      "IsCompleted": false,
       "Id": 18
     },
     "Bay1HeightCheck": {
@@ -6065,8 +6068,8 @@
       "PerformedCycles": 0,
       "RequiredCycles": 20,
       "FeedRate": 1.0,
-      "IsBypassed": true,
-      "IsCompleted": true,
+      "IsBypassed": false,
+      "IsCompleted": false,
       "Id": 23
     },
     "Bay2CarouselCalibration": {
@@ -6201,13 +6204,13 @@
       "Step": 0.5,
       "FeedRate": 0.2,
       "IsBypassed": false,
-      "IsCompleted": true,
+      "IsCompleted": false,
       "Id": 10
     },
     "VerticalOriginCalibration": {
       "FeedRate": 1.0,
       "IsBypassed": false,
-      "IsCompleted": true,
+      "IsCompleted": false,
       "Id": 9
     },
     "VerticalResolutionCalibration": {
@@ -6216,7 +6219,7 @@
       "StartPosition": 500.0,
       "FeedRate": 0.2,
       "IsBypassed": false,
-      "IsCompleted": true,
+      "IsCompleted": false,
       "Id": 22
     },
     "WeightMeasurement": {

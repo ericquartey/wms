@@ -461,7 +461,7 @@ namespace Ferretto.VW.App.Scaffolding.Controls
 
         private void TryEdit(Models.ScaffoldedEntity entity)
         {
-            if (entity?.IsEditable() == true)
+            if (entity?.IsEditable() == true && !this.IsBusy)
             {
                 this.EditingEntity = entity;
             }
