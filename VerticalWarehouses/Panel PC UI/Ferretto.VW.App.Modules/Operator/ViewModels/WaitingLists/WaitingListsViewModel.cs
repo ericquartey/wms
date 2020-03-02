@@ -234,8 +234,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             return
                 this.areaId.HasValue
                 &&
-                !this.IsWaitingForResponse
-                &&
                 this.SelectedList != null
                 &&
                 this.SelectedList.ExecutionMode != ListExecutionMode.None;
@@ -244,25 +242,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool CanSelectNext()
         {
             return
-                this.currentItemIndex < this.lists.Count - 1
-                &&
-                !this.IsWaitingForResponse;
+                this.currentItemIndex < this.lists.Count - 1;
         }
 
         private bool CanSelectPrevious()
         {
             return
-                this.currentItemIndex > 0
-                &&
-                !this.IsWaitingForResponse;
+                this.currentItemIndex > 0;
         }
 
         private bool CanShowDetailCommand()
         {
-            return
-                !this.IsWaitingForResponse
-                &&
-                this.SelectedList != null;
+            return this.SelectedList != null;
         }
 
         private async Task LoadListsAsync()
