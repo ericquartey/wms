@@ -315,7 +315,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
                 else
                 {
-                    luDb.Status = DataModels.Enumerations.LoadingUnitStatus.Undefined;
+                    luDb.Status = DataModels.Enumerations.LoadingUnitStatus.InLocation;
                 }
 
                 this.dataContext.SaveChanges();

@@ -349,6 +349,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.ClearNotifications();
                     this.error = false;
                 }
+                else
+                {
+                    await this.MachineService.GetLoadUnits();
+                }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

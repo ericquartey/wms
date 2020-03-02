@@ -168,6 +168,10 @@
                                              Value="InBay">
                                     <Setter Property="Visibility" Value="Collapsed" />
                                 </DataTrigger>
+                                <DataTrigger Binding="{Binding SelectedLU.Status}"
+                                             Value="InElevator">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </controls:PpcTextBox.Style>
@@ -186,6 +190,10 @@
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding SelectedLU.Status}"
                                              Value="InBay">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding SelectedLU.Status}"
+                                             Value="InElevator">
                                     <Setter Property="Visibility" Value="Collapsed" />
                                 </DataTrigger>
                             </Style.Triggers>
