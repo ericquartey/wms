@@ -1755,4 +1755,88 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="LoadingUnitFromCellToCellDescription" xml:space="preserve">
     <value>La procedura permette di spostare un cassetto da una cella di origine a quella di destinazione. Per avviare la procedura inserire l'id del cassetto, l'id della cella di destinazione e poi premere Inizia</value>
   </data>
+  <data name="InsertLoadingUnitFromBayToCellDescription" xml:space="preserve">
+    <value>La procedura permette di spostare un cassetto dalla baia di origine alla cella di destinazione. Per avviare la procedura inserire l'id del cassetto e poi premere Inizia</value>
+  </data>
+  <data name="InsertLoadingUnitFromBayToCellSelectDrawerPickingPosition" xml:space="preserve">
+    <value>Selezionare la posizione di prelievo del cassetto</value>
+  </data>
+  <data name="LoadingUnitFromBayToBay" xml:space="preserve">
+    <value>Spostamento cassetto da baia a baia</value>
+  </data>
+  <data name="LoadingUnitFromBayToBayDescription" xml:space="preserve">
+    <value>La procedura permette di spostare un cassetto dalla baia di origine a quella di destinazione. Per avviare la procedura inserire l'id del cassetto e poi premere Inizia</value>
+  </data>
+  <data name="LoadingUnitFromBayToBaySelectDrawerPosition" xml:space="preserve">
+    <value>Selezionare la posizione di destinazione del cassetto</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBayDescription" xml:space="preserve">
+    <value>La procedura permette di rimuovere un cassetto. Per avviare la procedura inserire l'id del cassetto e poi premere Inizia</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBayDrawerManagement" xml:space="preserve">
+    <value>Gestione Cassetti</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBaySelectDestinationDrawerPosition" xml:space="preserve">
+    <value>Selezionare la posizione di destinazione del cassetto</value>
+  </data>
+  <data name="ConfirmNewOffset" xml:space="preserve">
+    <value>Conferma nuovo offset</value>
+  </data>
+  <data name="CorrectElevatorPositionNext" xml:space="preserve">
+    <value>Correggere la posizione dell'elevatore fino al perfetto allineamento e premere Avanti.</value>
+  </data>
+  <data name="Current" xml:space="preserve">
+    <value>Corrente [A]</value>
+  </data>
+  <data name="ExecuteCellMeasurement" xml:space="preserve">
+    <value>Eseguire la misurazione di una cella</value>
+  </data>
+  <data name="ExecuteElevatorCellPositioning" xml:space="preserve">
+    <value>Eseguire il posizionamento dell'elevatore di fronte ad una cella.</value>
+  </data>
+  <data name="ExecuteOriginCalibration" xml:space="preserve">
+    <value>Eseguire calibrazione dell'origine</value>
+  </data>
+  <data name="MoveElevatorToPlaceMeter" xml:space="preserve">
+    <value>Posizionare l'elevatore ad una altezza tale che permetta di attaccare il metro.</value>
+  </data>
+  <data name="MoveToElevatorPosition" xml:space="preserve">
+    <value>Sposta a posizione elevatore</value>
+  </data>
+  <data name="MoveToQuote" xml:space="preserve">
+    <value>Vai a quota</value>
+  </data>
+  <data name="NewOffset" xml:space="preserve">
+    <value>Nuovo offset (mm)</value>
+  </data>
+  <data name="PlaceMeter" xml:space="preserve">
+    <value>Attaccare il metro</value>
+  </data>
+  <data name="RemoveCarterRestore" xml:space="preserve">
+    <value>Procedere alla rimozione di uno dei carter laterali e al posizionamento del metro. Completare riposizionando il carter e ripristinare lo stato di marcia.</value>
+  </data>
+  <data name="RepeatOriginCalibration" xml:space="preserve">
+    <value>A causa del cambiamento dell'offset appena eseguito, è richiesta nuovamente la calibrazione dell'origine dell'asse verticale. Premi su Inizia per cominciare.</value>
+  </data>
+  <data name="SelectedCell" xml:space="preserve">
+    <value>Cella selezionata</value>
+  </data>
+  <data name="StartQuote" xml:space="preserve">
+    <value>Quota di partenza</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Tempo [s]</value>
+  </data>
+  <data name="VerifyConfirmWarn" xml:space="preserve">
+    <value>Verificare il nuovo valore di offset calcolato e premere Salva per rendere la modifica effettiva. Tutti i posizionamenti successivi terranno conto della correzione.</value>
+  </data>
+  <data name="FullTest" xml:space="preserve">
+    <value>Test completo</value>
+  </data>
+  <data name="FullTestDescription" xml:space="preserve">
+    <value>La procedura permette di eseguire il test completo dei cassetti. Per avviare la procedura inserire il numero di cicli e poi premere Inizia</value>
+  </data>
+  <data name="FullTestSessionCycles" xml:space="preserve">
+    <value>Cicli sessione</value>
+  </data>
 </root>

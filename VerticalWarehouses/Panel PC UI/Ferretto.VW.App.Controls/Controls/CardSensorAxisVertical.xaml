@@ -18,7 +18,7 @@
                       CardText="{x:Static res:SensorCard.Vertical}"
                       CardValue="{Binding ElevatorVerticalPosition, StringFormat={}{0:F2}}"
                       LuHeight="{Binding EmbarkedLoadingUnit.Height, StringFormat={}{0:F2}}"
-                      LuWeight="{Binding EmbarkedLoadingUnit.GrossWeight, StringFormat={}{0:F2}}"
+                      LuWeight="{Binding EmbarkedLoadingUnit.NetWeight, StringFormat={}{0:F2}}"
                       Sensor1="{Binding SensorsService.IsZeroVertical}"
                       Sensor2="{Binding SensorsService.IsExtraVertical}"
                       Sensor3="False"

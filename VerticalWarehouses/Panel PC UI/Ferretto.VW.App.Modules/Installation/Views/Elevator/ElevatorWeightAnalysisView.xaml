@@ -90,7 +90,7 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Command="{Binding MoveToBayCommand}"
-                            Content="Sposta a posizione elevatore" />
+                            Content="{x:Static res:InstallationApp.MoveToElevatorPosition}" />
 
 
         <dxc:ChartControl Grid.Row="3"
@@ -112,7 +112,7 @@
                             <dxc:AxisLabel Foreground="{DynamicResource VWAPP_PpcTextBox_TextBlock_Foreground_Normal}" />
                         </dxc:AxisY2D.Label>
                         <dxc:AxisY2D.Title>
-                            <dxc:AxisTitle Content="Corrente [A]"
+                            <dxc:AxisTitle Content="{x:Static res:InstallationApp.Current}"
                                            Foreground="{DynamicResource VWAPP_PpcTextBox_TextBlock_Foreground_Normal}" />
                         </dxc:AxisY2D.Title>
                     </dxc:AxisY2D>
@@ -129,7 +129,7 @@
                             <dxc:AxisLabel Foreground="{DynamicResource VWAPP_PpcTextBox_TextBlock_Foreground_Normal}" />
                         </dxc:AxisX2D.Label>
                         <dxc:AxisX2D.Title>
-                            <dxc:AxisTitle Content="Tempo [s]"
+                            <dxc:AxisTitle Content="{x:Static res:InstallationApp.Time}"
                                            Foreground="{DynamicResource VWAPP_PpcTextBox_TextBlock_Foreground_Normal}" />
                         </dxc:AxisX2D.Title>
                     </dxc:AxisX2D>
