@@ -940,7 +940,7 @@
     <value>La richiesta di prelievo per l'articolo {0} (quantità {1}) è stata accettata.</value>
   </data>
   <data name="WaitingListDataGridHeaderExecutable" xml:space="preserve">
-    <value>Eseguibile</value>
+    <value>Prelevabile</value>
   </data>
   <data name="Empty" xml:space="preserve">
     <value>Vuoto</value>
@@ -1228,4 +1228,11 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="DrawerCompacting" xml:space="preserve">
     <value>Compattazione</value>
   </data>
+  <data name="Code" xml:space="preserve">
+    <value>Codice</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
 </root>
+
