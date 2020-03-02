@@ -87,7 +87,8 @@
                                Increment="{Binding QuantityIncrement}"
                                IsEnabled="{Binding CanInputQuantity}"
                                LabelText="{Binding MeasureUnit, StringFormat={x:Static resources:OperatorApp.DrawerActivityRefillingQtyRefilled}}"
-                               Mask="{Binding QuantityTolerance, StringFormat=F{0}}" />
+                               Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
+                               MinValue="0" />
 
             <StackPanel Grid.Row="4"
                         Grid.ColumnSpan="4"
