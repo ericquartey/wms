@@ -32,6 +32,8 @@ namespace Ferretto.VW.MAS.AutomationService
 
         public static int Main(string[] args)
         {
+            Debugger.Launch();
+            
             var isService = !Debugger.IsAttached && args.Contains(ServiceConsoleArgument);
 
             ILogger logger = null;
