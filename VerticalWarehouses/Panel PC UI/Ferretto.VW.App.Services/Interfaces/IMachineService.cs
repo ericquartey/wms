@@ -38,6 +38,10 @@ namespace Ferretto.VW.App.Services
 
         bool IsHoming { get; }
 
+        bool IsMissionInError { get; }
+
+        bool IsMissionInErrorByLoadUnitOperations { get; }
+
         bool IsShutterThreeSensors { get; }
 
         bool IsTuningCompleted { get; }

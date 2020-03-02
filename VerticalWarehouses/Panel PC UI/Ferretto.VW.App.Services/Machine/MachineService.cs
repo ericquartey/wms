@@ -98,6 +98,8 @@ namespace Ferretto.VW.App.Services
 
         private bool isMissionInError;
 
+        private bool isMissionInErrorByLoadUnitOperations;
+
         private bool isShutterThreeSensors;
 
         private bool isTuningCompleted;
@@ -240,6 +242,12 @@ namespace Ferretto.VW.App.Services
         {
             get => this.isMissionInError;
             private set => this.SetProperty(ref this.isMissionInError, value);
+        }
+
+        public bool IsMissionInErrorByLoadUnitOperations
+        {
+            get => this.isMissionInErrorByLoadUnitOperations;
+            private set => this.SetProperty(ref this.isMissionInErrorByLoadUnitOperations, value);
         }
 
         public bool IsShutterThreeSensors
@@ -530,6 +538,8 @@ namespace Ferretto.VW.App.Services
         {
             this.IsMissionInError = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
 
+            this.IsMissionInErrorByLoadUnitOperations = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined && a.MissionType == MAS.AutomationService.Contracts.MissionType.LoadUnitOperation);
+
             this.bays = await this.machineBaysWebService.GetAllAsync();
 
             this.Bay = await this.bayManagerService.GetBayAsync();
@@ -815,6 +825,8 @@ namespace Ferretto.VW.App.Services
                             if (this.MachineStatus.IsMovingLoadingUnit)
                             {
                                 this.IsMissionInError = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
+
+                                this.IsMissionInErrorByLoadUnitOperations = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined && a.MissionType == MAS.AutomationService.Contracts.MissionType.LoadUnitOperation);
                             }
 
                             var embarkedLoadingUnit = await this.GetLodingUnitOnBoardAsync();
@@ -1116,6 +1128,8 @@ namespace Ferretto.VW.App.Services
         private async Task UpdateBay()
         {
             this.IsMissionInError = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
+
+            this.IsMissionInErrorByLoadUnitOperations = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined && a.MissionType == MAS.AutomationService.Contracts.MissionType.LoadUnitOperation);
 
             // Devo aggiornare i dati delle posizioni della baia
             this.Bay = await this.bayManagerService.GetBayAsync();
