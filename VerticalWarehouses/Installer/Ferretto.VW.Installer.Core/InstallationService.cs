@@ -143,9 +143,7 @@ namespace Ferretto.VW.Installer.Core
         }
 
         public bool CanStart()
-        {
-            this.SetArgsStartup();
-
+        {            
             if (this.SetupMode == SetupMode.Any)
             {
                 if (this.Steps.FirstOrDefault(s => s.StartTime != null) is null)
@@ -346,7 +344,7 @@ namespace Ferretto.VW.Installer.Core
             }
         }
 
-        private void SetArgsStartup()
+        public void SetArgsStartup()
         {
             var args = Environment.GetCommandLineArgs();
             foreach (var arg in args)
