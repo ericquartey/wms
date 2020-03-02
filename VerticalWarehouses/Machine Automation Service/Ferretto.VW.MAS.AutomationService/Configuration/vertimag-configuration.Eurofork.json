@@ -951,6 +951,16 @@
   "Machine": {
     "Bays": [
       {
+        "EmptyLoadMovement": {
+          "Acceleration": 200,
+          "Deceleration": 500,
+          "Speed": 110
+        },
+        "FullLoadMovement": {
+          "Acceleration": 200,
+          "Deceleration": 500,
+          "Speed": 110
+        },
         "Carousel": {
           "AssistedMovements": {
             "FeedRate": 1.0,

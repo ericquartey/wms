@@ -124,7 +124,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             {
                 if (this.TargetPositionReached)
                 {
-                    if (this.SignalsArrived)
+                    if (this.SignalsArrived || this.InverterStatus.SystemIndex > InverterIndex.Slave1)
                     {
                         this.Logger.LogDebug("Target position reached.");
 
