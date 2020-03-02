@@ -1788,4 +1788,13 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="Time" xml:space="preserve">
     <value>Tempo [s]</value>
   </data>
+  <data name="FullTest" xml:space="preserve">
+    <value>Test completo</value>
+  </data>
+  <data name="FullTestDescription" xml:space="preserve">
+    <value>La procedura permette di eseguire il test completo dei cassetti. Per avviare la procedura inserire il numero di cicli e poi premere Inizia</value>
+  </data>
+  <data name="FullTestSessionCycles" xml:space="preserve">
+    <value>Cicli sessione</value>
+  </data>
 </root>

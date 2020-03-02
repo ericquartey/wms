@@ -1861,4 +1861,13 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="Time" xml:space="preserve">
     <value>Time [s]</value>
   </data>
+  <data name="FullTest" xml:space="preserve">
+    <value>Full Test</value>
+  </data>
+  <data name="FullTestDescription" xml:space="preserve">
+    <value>The procedure allows to perform the complete test of the drawers. To start the procedure, enter the number of cycles and then press Start</value>
+  </data>
+  <data name="FullTestSessionCycles" xml:space="preserve">
+    <value>Session cycles</value>
+  </data>
 </root>

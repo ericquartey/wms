@@ -1636,6 +1636,33 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Full Test.
+        /// </summary>
+        public static string FullTest {
+            get {
+                return ResourceManager.GetString("FullTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The procedure allows to perform the complete test of the drawers. To start the procedure, enter the number of cycles and then press Start.
+        /// </summary>
+        public static string FullTestDescription {
+            get {
+                return ResourceManager.GetString("FullTestDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Session cycles.
+        /// </summary>
+        public static string FullTestSessionCycles {
+            get {
+                return ResourceManager.GetString("FullTestSessionCycles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gate.
         /// </summary>
         public static string Gate {
