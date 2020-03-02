@@ -1755,4 +1755,13 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="LoadingUnitFromCellToCellDescription" xml:space="preserve">
     <value>La procedura permette di spostare un cassetto da una cella di origine a quella di destinazione. Per avviare la procedura inserire l'id del cassetto, l'id della cella di destinazione e poi premere Inizia</value>
   </data>
+  <data name="LoadingUnitFromBayToBay" xml:space="preserve">
+    <value>Spostamento cassetto da baia a baia</value>
+  </data>
+  <data name="LoadingUnitFromBayToBayDescription" xml:space="preserve">
+    <value>La procedura permette di spostare un cassetto dalla baia di origine a quella di destinazione. Per avviare la procedura inserire l'id del cassetto e poi premere Inizia</value>
+  </data>
+  <data name="LoadingUnitFromBayToBaySelectDrawerPosition" xml:space="preserve">
+    <value>Select the target location of the drawer</value>
+  </data>
 </root>

@@ -2671,6 +2671,33 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Drawer movement from bay to bay.
+        /// </summary>
+        public static string LoadingUnitFromBayToBay {
+            get {
+                return ResourceManager.GetString("LoadingUnitFromBayToBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The procedure allows you to move a drawer from the source bay to the destination one. To start the procedure, enter the drawer ID and then press Start.
+        /// </summary>
+        public static string LoadingUnitFromBayToBayDescription {
+            get {
+                return ResourceManager.GetString("LoadingUnitFromBayToBayDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string LoadingUnitFromBayToBaySelectDrawerPosition {
+            get {
+                return ResourceManager.GetString("LoadingUnitFromBayToBaySelectDrawerPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Move loading unit from cell to cell.
         /// </summary>
         public static string LoadingUnitFromCellToCell {

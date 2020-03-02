@@ -1828,4 +1828,13 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="LoadingUnitFromCellToCellDescription" xml:space="preserve">
     <value>The procedure moves a tray from a source cell to the destination cell. To start the procedure enter the drawer id, the id of the destination cell and then press Start</value>
   </data>
+  <data name="LoadingUnitFromBayToBay" xml:space="preserve">
+    <value>Drawer movement from bay to bay</value>
+  </data>
+  <data name="LoadingUnitFromBayToBayDescription" xml:space="preserve">
+    <value>The procedure allows you to move a drawer from the source bay to the destination one. To start the procedure, enter the drawer ID and then press Start</value>
+  </data>
+  <data name="LoadingUnitFromBayToBaySelectDrawerPosition" xml:space="preserve">
+    <value />
+  </data>
 </root>
