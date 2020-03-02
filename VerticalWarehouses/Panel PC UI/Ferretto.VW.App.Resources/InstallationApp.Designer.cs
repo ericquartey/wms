@@ -2680,6 +2680,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The procedure moves a tray from a source cell to the destination cell. To start the procedure enter the drawer id, the id of the destination cell and then press Start.
+        /// </summary>
+        public static string LoadingUnitFromCellToCellDescription {
+            get {
+                return ResourceManager.GetString("LoadingUnitFromCellToCellDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading unit id.
         /// </summary>
         public static string LoadingUnitId {
