@@ -113,7 +113,7 @@ namespace Ferretto.VW.Installer.Core
                 throw new ArgumentNullException(nameof(value));
             }
 
-            var regex = new Regex(@"\$\((?<var_name>[^\)]+)\)");
+            var regex = new Regex(@"\$\((?<var_name>[^\$)]+)\)");
 
             var match = regex.Match(value);
 
@@ -121,7 +121,6 @@ namespace Ferretto.VW.Installer.Core
             while (match.Success)
             {
                 var varName = match.Groups["var_name"].Value;
-
                 string varValue;
                 if (varName == EmbeddedInstallationFilePath)
                 {

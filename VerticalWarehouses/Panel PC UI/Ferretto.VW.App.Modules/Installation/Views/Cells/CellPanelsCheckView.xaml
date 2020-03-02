@@ -310,38 +310,7 @@
             </Grid>
         </DataTemplate>
 
-        <DataTemplate x:Key="DataTemplateConfirm">
-            <Grid Margin="20"
-                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-
-                <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock FontSize="24"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Controllo terinato:"
-                               TextWrapping="Wrap" />
-
-                    <TextBlock Grid.ColumnSpan="2"
-                               FontSize="18"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="Assicurarsi di aver controllato tutti i pannelli."
-                               TextWrapping="Wrap" />
-                </StackPanel>
-            </Grid>
-        </DataTemplate>
-
         <local:CellPanelsCheckStepTemplateSelector x:Key="selector"
-                                                   EnumConfirm="{StaticResource DataTemplateConfirm}"
                                                    EnumInizialize="{StaticResource DataTemplateInizialize}"
                                                    EnumMeasured="{StaticResource DataTemplateMeasured}" />
         <!--#endregion-->
@@ -497,7 +466,6 @@
                 <RowDefinition Height="1" />
                 <RowDefinition Height="4*" />
                 <RowDefinition Height="4*" />
-                <RowDefinition Height="4*" />
                 <RowDefinition Height="1" />
             </Grid.RowDefinitions>
             <!--#region Body-->
@@ -553,22 +521,6 @@
                 <Path Style="{DynamicResource BorderTimeLinePath}" />
             </Grid>
 
-            <Grid Grid.Row="3">
-                <Border Background="{Binding HasStepConfirm, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
-                        Style="{DynamicResource BorderTimeLineCirle}" />
-                <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                           Text="3" />
-            </Grid>
-            <Grid Grid.Row="3"
-                  Grid.Column="1"
-                  Grid.ColumnSpan="2"
-                  Visibility="{Binding HasStepConfirm, Converter={StaticResource BTVC}, Mode=OneWay}">
-                <Path Height="24"
-                      VerticalAlignment="Center"
-                      StrokeThickness="0"
-                      Style="{DynamicResource BorderTimeLinePath}" />
-                <Path Style="{DynamicResource BorderTimeLinePath}" />
-            </Grid>
             <!--#endregion-->
         </Grid>
         <!--#endregion-->

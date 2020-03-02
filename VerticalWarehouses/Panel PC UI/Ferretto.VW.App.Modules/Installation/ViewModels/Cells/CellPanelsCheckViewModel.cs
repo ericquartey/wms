@@ -25,8 +25,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         Inizialize,
 
         Measured,
-
-        Confirm,
     }
 
     [Warning(WarningsArea.Installation)]
@@ -206,9 +204,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
            (this.goToCellHeightCommand = new DelegateCommand(
                async () => await this.GoToCellHeightAsync(),
                this.CanGoToCellHeight));
-
-        public bool HasStepConfirm => this.currentStep is CellPanelsCheckStep.Confirm;
-
+        
         public bool HasStepInitialize => this.currentStep is CellPanelsCheckStep.Inizialize;
 
         public bool HasStepMeasured => this.currentStep is CellPanelsCheckStep.Measured;
@@ -404,24 +400,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                         this.RaiseCanExecuteChanged();
                     }
-                    else if (e.Next && this.CurrentPanelNumber == this.Panels.Count())
-                    {
-                        this.CurrentStep = CellPanelsCheckStep.Confirm;
-                    }
                     else if (e.Back && this.CurrentPanelNumber == 1)
                     {
                         this.CurrentStep = CellPanelsCheckStep.Inizialize;
                     }
 
                     this.Displacement = 0;
-
-                    break;
-
-                case CellPanelsCheckStep.Confirm:
-                    if (!e.Next)
-                    {
-                        this.CurrentStep = CellPanelsCheckStep.Measured;
-                    }
 
                     break;
 
@@ -603,18 +587,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.ShowPrevStepSinglePage(true, true);
                     this.ShowNextStepSinglePage(true, true);
                     break;
-
-                case CellPanelsCheckStep.Confirm:
-                    this.ShowPrevStepSinglePage(true, true);
-                    this.ShowNextStepSinglePage(true, false);
-                    break;
             }
 
             this.ShowAbortStep(true, true);
 
             this.RaisePropertyChanged(nameof(this.HasStepInitialize));
             this.RaisePropertyChanged(nameof(this.HasStepMeasured));
-            this.RaisePropertyChanged(nameof(this.HasStepConfirm));
         }
 
         #endregion

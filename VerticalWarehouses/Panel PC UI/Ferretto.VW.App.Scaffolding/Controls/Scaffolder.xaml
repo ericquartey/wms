@@ -275,7 +275,7 @@
         UI
         ===================================
     -->
-    <Grid>
+    <Grid IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
         <Grid.Visibility>
             <Binding Converter="{StaticResource TTUI}"
                      Path="Model"

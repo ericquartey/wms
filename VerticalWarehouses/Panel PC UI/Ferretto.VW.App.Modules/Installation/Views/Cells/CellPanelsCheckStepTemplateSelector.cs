@@ -11,8 +11,6 @@ namespace Ferretto.VW.App.Installation.Views
 {
     public class CellPanelsCheckStepTemplateSelector : DataTemplateSelector
     {
-        public DataTemplate EnumConfirm { get; set; }
-
         public DataTemplate EnumInizialize { get; set; }
 
         public DataTemplate EnumMeasured { get; set; }
@@ -27,9 +25,6 @@ namespace Ferretto.VW.App.Installation.Views
 
                 case CellPanelsCheckStep.Measured:
                     return this.EnumMeasured;
-
-                case CellPanelsCheckStep.Confirm:
-                    return this.EnumConfirm;
             }
 
             return base.SelectTemplate(item, container);
