@@ -1755,6 +1755,12 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="LoadingUnitFromCellToCellDescription" xml:space="preserve">
     <value>La procedura permette di spostare un cassetto da una cella di origine a quella di destinazione. Per avviare la procedura inserire l'id del cassetto, l'id della cella di destinazione e poi premere Inizia</value>
   </data>
+  <data name="InsertLoadingUnitFromBayToCellDescription" xml:space="preserve">
+    <value>La procedura permette di spostare un cassetto dalla baia di origine alla cella di destinazione. Per avviare la procedura inserire l'id del cassetto e poi premere Inizia</value>
+  </data>
+  <data name="InsertLoadingUnitFromBayToCellSelectDrawerPickingPosition" xml:space="preserve">
+    <value>Selezionare la posizione di prelievo del cassetto</value>
+  </data>
   <data name="LoadingUnitFromBayToBay" xml:space="preserve">
     <value>Spostamento cassetto da baia a baia</value>
   </data>
@@ -1762,6 +1768,15 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>La procedura permette di spostare un cassetto dalla baia di origine a quella di destinazione. Per avviare la procedura inserire l'id del cassetto e poi premere Inizia</value>
   </data>
   <data name="LoadingUnitFromBayToBaySelectDrawerPosition" xml:space="preserve">
-    <value>Select the target location of the drawer</value>
+    <value>Selezionare la posizione di destinazione del cassetto</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBayDescription" xml:space="preserve">
+    <value>La procedura permette di rimuovere un cassetto. Per avviare la procedura inserire l'id del cassetto e poi premere Inizia</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBayDrawerManagement" xml:space="preserve">
+    <value>Gestione Cassetti</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBaySelectDestinationDrawerPosition" xml:space="preserve">
+    <value>Selezionare la posizione di destinazione del cassetto</value>
   </data>
 </root>

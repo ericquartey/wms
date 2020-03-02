@@ -2302,6 +2302,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The procedure allows you to move a drawer from the source bay to the destination cell. To start the procedure, enter the drawer ID and then press Start.
+        /// </summary>
+        public static string InsertLoadingUnitFromBayToCellDescription {
+            get {
+                return ResourceManager.GetString("InsertLoadingUnitFromBayToCellDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the drawer pick position.
+        /// </summary>
+        public static string InsertLoadingUnitFromBayToCellSelectDrawerPickingPosition {
+            get {
+                return ResourceManager.GetString("InsertLoadingUnitFromBayToCellSelectDrawerPickingPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Insert measured initial position..
         /// </summary>
         public static string InsertMeasuredInitialPosition {
@@ -2689,7 +2707,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Select the target location of the drawer.
         /// </summary>
         public static string LoadingUnitFromBayToBaySelectDrawerPosition {
             get {
@@ -3126,6 +3144,33 @@ namespace Ferretto.VW.App.Resources {
         public static string MoveLoadingUnitFromCellToBay {
             get {
                 return ResourceManager.GetString("MoveLoadingUnitFromCellToBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The procedure allows you to remove a drawer. To start the procedure, enter the drawer ID and then press Start.
+        /// </summary>
+        public static string MoveLoadingUnitFromCellToBayDescription {
+            get {
+                return ResourceManager.GetString("MoveLoadingUnitFromCellToBayDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drawer management.
+        /// </summary>
+        public static string MoveLoadingUnitFromCellToBayDrawerManagement {
+            get {
+                return ResourceManager.GetString("MoveLoadingUnitFromCellToBayDrawerManagement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the target location of the drawer.
+        /// </summary>
+        public static string MoveLoadingUnitFromCellToBaySelectDestinationDrawerPosition {
+            get {
+                return ResourceManager.GetString("MoveLoadingUnitFromCellToBaySelectDestinationDrawerPosition", resourceCulture);
             }
         }
         
