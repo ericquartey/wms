@@ -1825,4 +1825,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="ConfirmSetup" xml:space="preserve">
     <value>ConfirmSetup</value>
   </data>
+  <data name="LoadingUnitFromCellToCellDescription" xml:space="preserve">
+    <value>The procedure moves a tray from a source cell to the destination cell. To start the procedure enter the drawer id, the id of the destination cell and then press Start</value>
+  </data>
 </root>
