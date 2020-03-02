@@ -48,7 +48,7 @@
                    VerticalAlignment="Top"
                    FontSize="{DynamicResource FontSize_Small}"
                    Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                   Text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                   Text="{x:Static res:InstallationApp.InsertLoadingUnitFromBayToCellDescription}"
                    TextWrapping="Wrap" />
 
         <controls:CardSensorAxisVertical Grid.Row="2"
@@ -135,7 +135,7 @@
                    HorizontalAlignment="Right"
                    VerticalAlignment="Top"
                    FontSize="{DynamicResource FontSize_Small}"
-                   Text="Selezionare la posizione di prelievo del cassetto"
+                   Text="{x:Static res:InstallationApp.InsertLoadingUnitFromBayToCellSelectDrawerPickingPosition}"
                    TextWrapping="Wrap">
             <TextBlock.Style>
                 <Style BasedOn="{StaticResource VWAPP_ViewTitleSmallTextBlockStyle}"

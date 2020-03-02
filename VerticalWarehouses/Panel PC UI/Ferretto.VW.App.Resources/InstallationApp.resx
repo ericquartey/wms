@@ -1828,6 +1828,12 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="LoadingUnitFromCellToCellDescription" xml:space="preserve">
     <value>The procedure moves a tray from a source cell to the destination cell. To start the procedure enter the drawer id, the id of the destination cell and then press Start</value>
   </data>
+  <data name="InsertLoadingUnitFromBayToCellDescription" xml:space="preserve">
+    <value>The procedure allows you to move a drawer from the source bay to the destination cell. To start the procedure, enter the drawer ID and then press Start</value>
+  </data>
+  <data name="InsertLoadingUnitFromBayToCellSelectDrawerPickingPosition" xml:space="preserve">
+    <value>Select the drawer pick position</value>
+  </data>
   <data name="LoadingUnitFromBayToBay" xml:space="preserve">
     <value>Drawer movement from bay to bay</value>
   </data>
@@ -1835,7 +1841,16 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>The procedure allows you to move a drawer from the source bay to the destination one. To start the procedure, enter the drawer ID and then press Start</value>
   </data>
   <data name="LoadingUnitFromBayToBaySelectDrawerPosition" xml:space="preserve">
-    <value />
+    <value>Select the target location of the drawer</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBayDescription" xml:space="preserve">
+    <value>The procedure allows you to remove a drawer. To start the procedure, enter the drawer ID and then press Start</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBayDrawerManagement" xml:space="preserve">
+    <value>Drawer management</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBaySelectDestinationDrawerPosition" xml:space="preserve">
+    <value>Select the target location of the drawer</value>
   </data>
   <data name="ConfirmNewOffset" xml:space="preserve">
     <value>Confirm new offset</value>
