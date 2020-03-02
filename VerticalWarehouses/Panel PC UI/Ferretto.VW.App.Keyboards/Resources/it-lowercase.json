@@ -463,7 +463,7 @@
       "Zone": "4thRow",
       "Cells": [
         {
-          "Width": "1.25*",
+          "Width": "100",
           "KeyStyleResource": "AccentKeyboardButtonStyle",
           "Key": {
             "Command": {
@@ -489,7 +489,7 @@
           }
         },
         {
-          "Width": "5*",
+          "Width": "255",
           "Key": {
             "Command": {
               "Caption": " ",
@@ -534,7 +534,7 @@
           }
         }
       ],
-      "HorizontalAlignment": "Stretch"
+      "HorizontalAlignment": "Left"
     }
   ],
   "KeyMargin": "5",

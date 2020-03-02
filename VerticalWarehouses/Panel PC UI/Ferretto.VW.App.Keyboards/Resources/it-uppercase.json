@@ -534,7 +534,7 @@
           }
         }
       ],
-      "HorizontalAlignment": "Stretch"
+      "HorizontalAlignment": "Left"
     }
   ],
   "KeyMargin": "5",
