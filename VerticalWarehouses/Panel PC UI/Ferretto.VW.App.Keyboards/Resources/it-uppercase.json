@@ -515,14 +515,6 @@
         },
         {
           "Width": "Auto",
-          "Key": {
-            "Command": {
-              "CommandText": "@"
-            }
-          }
-        },
-        {
-          "Width": "Auto",
           "KeyStyleResource": "AccentKeyboardButtonStyle",
           "Key": {
             "Command": {

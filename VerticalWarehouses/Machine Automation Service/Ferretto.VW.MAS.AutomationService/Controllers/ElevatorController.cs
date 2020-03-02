@@ -339,11 +339,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult SetLoadUnitOnElevator(int loadingUnitId)
         {
-            var currentError = this.errorsProvider.GetCurrent();
-            if (currentError != null)
-            {
-                this.elevatorDataProvider.SetLoadingUnit(loadingUnitId);
-            }
+            this.elevatorDataProvider.SetLoadingUnit(loadingUnitId);
             return this.Accepted();
         }
 
