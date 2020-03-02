@@ -88,31 +88,39 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 && this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator
                 && this.Mission.LoadUnitDestination != LoadingUnitLocation.LoadUnit
                 && this.Mission.LoadUnitDestination != LoadingUnitLocation.NoLocation
-                && this.Mission.MissionType != MissionType.Manual
-                && this.Mission.MissionType != MissionType.LoadUnitOperation
                 && this.Mission.MissionType != MissionType.FirstTest
                 )
             {
-                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
-
-                if (bay.Positions.Count() == 1
-                    || bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitDestination).IsUpper
-                    || bay.Carousel is null)
+                if (this.Mission.MissionType == MissionType.Manual
+                    || this.Mission.MissionType == MissionType.LoadUnitOperation
+                    )
                 {
-                    if (this.Mission.MissionType == MissionType.OUT
-                        || this.Mission.MissionType == MissionType.WMS
-                        )
-                    {
-                        newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                    }
-                    else
-                    {
-                        newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                    }
+                    this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+                    newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 }
                 else
                 {
-                    newStep = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+
+                    if (bay.Positions.Count() == 1
+                        || bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitDestination).IsUpper
+                        || bay.Carousel is null)
+                    {
+                        if (this.Mission.MissionType == MissionType.OUT
+                            || this.Mission.MissionType == MissionType.WMS
+                            )
+                        {
+                            newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        }
+                        else
+                        {
+                            newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        }
+                    }
+                    else
+                    {
+                        newStep = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    }
                 }
             }
             else

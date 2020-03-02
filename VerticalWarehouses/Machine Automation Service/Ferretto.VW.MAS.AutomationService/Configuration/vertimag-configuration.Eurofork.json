@@ -1022,10 +1022,10 @@
         "Shutter": {
           "AssistedMovements": {
             "FeedRate": 0.2,
-            "HighSpeedDurationClose": 13.0,
+            "HighSpeedDurationClose": 14.0,
             "HighSpeedDurationOpen": 14.0,
-            "HighSpeedHalfDurationClose": 5.0,
-            "HighSpeedHalfDurationOpen": 6.0,
+            "HighSpeedHalfDurationClose": 6.0,
+            "HighSpeedHalfDurationOpen": 7.0,
             "MaxSpeed": 40000.0,
             "MinSpeed": 5000.0,
             "Id": 2
@@ -1125,9 +1125,9 @@
           "BrakeReleaseTime": 0.0,
           "ChainOffset": -6.5,
           "EmptyLoadMovement": {
-            "Acceleration": 1500.0,
-            "Deceleration": 1500.0,
-            "Speed": 650.0,
+            "Acceleration": 2000.0,
+            "Deceleration": 2000.0,
+            "Speed": 700.0,
             "Id": 2
           },
           "FullLoadMovement": {
@@ -1160,25 +1160,25 @@
                   "AdjustByWeight": false,
                   "Number": 0,
                   "Position": 115.0,
-                  "Acceleration": 5000.0,
+                  "Acceleration": 6000.0,
                   "Deceleration": 0.0,
-                  "Speed": 600.0,
+                  "Speed": 830.0,
                   "Id": 7
                 },
                 {
                   "AdjustByWeight": false,
                   "Number": 1,
-                  "Position": 450.0,
-                  "Acceleration": 5000.0,
+                  "Position": 250.0,
+                  "Acceleration": 6000.0,
                   "Deceleration": 0.0,
-                  "Speed": 250.0,
+                  "Speed": 100.0,
                   "Id": 13
                 },
                 {
                   "AdjustByWeight": true,
                   "Number": 2,
-                  "Position": 866.0,
-                  "Acceleration": 1500.0,
+                  "Position": 900.0,
+                  "Acceleration": 1750.0,
                   "Deceleration": 0.0,
                   "Speed": 600.0,
                   "Id": 12
@@ -1212,25 +1212,25 @@
                   "AdjustByWeight": false,
                   "Number": 0,
                   "Position": 115.0,
-                  "Acceleration": 5000.0,
+                  "Acceleration": 6000.0,
                   "Deceleration": 0.0,
-                  "Speed": 600.0,
+                  "Speed": 830.0,
                   "Id": 23
                 },
                 {
                   "AdjustByWeight": true,
                   "Number": 1,
-                  "Position": 450.0,
-                  "Acceleration": 5000.0,
+                  "Position": 250.0,
+                  "Acceleration": 6000.0,
                   "Deceleration": 0.0,
-                  "Speed": 250.0,
+                  "Speed": 100.0,
                   "Id": 22
                 },
                 {
                   "AdjustByWeight": true,
                   "Number": 2,
-                  "Position": 866.0,
-                  "Acceleration": 1500.0,
+                  "Position": 900.0,
+                  "Acceleration": 1750.0,
                   "Deceleration": 0.0,
                   "Speed": 600.0,
                   "Id": 16
@@ -1291,7 +1291,7 @@
                   "AdjustByWeight": false,
                   "Number": 3,
                   "Position": 1200.0,
-                  "Acceleration": 2000.0,
+                  "Acceleration": 1000.0,
                   "Deceleration": 0.0,
                   "Speed": 200.0,
                   "Id": 25
@@ -1343,7 +1343,7 @@
                   "AdjustByWeight": false,
                   "Number": 3,
                   "Position": 1200.0,
-                  "Acceleration": 2000.0,
+                  "Acceleration": 1000.0,
                   "Deceleration": 0.0,
                   "Speed": 200.0,
                   "Id": 24
@@ -6363,6 +6363,27 @@
     "SerialNumber": "MV20-0004",
     "Simulation": false,
     "Id": 2
+  },
+  "MachineStatistics": {
+    "AutomaticTimePercentage": 0.0,
+    "TotalAutomaticTime": "00:00:00",
+    "TotalBayChainKilometers1": 0.0,
+    "TotalBayChainKilometers2": 0.0,
+    "TotalBayChainKilometers3": 0.0,
+    "TotalHorizontalAxisCycles": 134,
+    "TotalHorizontalAxisKilometers": 0.188969313926941,
+    "TotalLoadUnitsInBay1": 58,
+    "TotalLoadUnitsInBay2": 0,
+    "TotalLoadUnitsInBay3": 0,
+    "TotalMissionTime": "01:23:46.2653899",
+    "TotalPowerOnTime": "00:00:00",
+    "TotalVerticalAxisCycles": 133,
+    "TotalVerticalAxisKilometers": 0.25443699819875187,
+    "TotalWeightBack": 3130.1187499999996,
+    "TotalWeightFront": 3143.3491369999992,
+    "UsageTimePercentage": 0.0,
+    "WeightCapacityPercentage": 10.6751542311161,
+    "Id": -1
   },
   "SetupProcedures": {
     "Bay1CarouselCalibration": {
