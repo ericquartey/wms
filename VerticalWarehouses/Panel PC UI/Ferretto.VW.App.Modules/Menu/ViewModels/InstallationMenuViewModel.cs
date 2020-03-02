@@ -311,6 +311,11 @@ namespace Ferretto.VW.App.Menu.ViewModels
             }
         }
 
+        public string SubTitleLabel =>
+            this.ProceduresCompletedPercent == 100 ?
+            "Stato installazione completato." :
+            $"Stato installazione incompleto. Eseguite {this.ProceduresCompleted}/{this.ProceduresCount} procedure.";
+
         #endregion
 
         #region Methods
@@ -382,6 +387,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             base.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.Source));
+            this.RaisePropertyChanged(nameof(this.SubTitleLabel));
         }
 
         private async Task UpdateSetupStatusAsync()
@@ -546,7 +552,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 this.ProceduresCompleted = this.source.Count(c => c.Status == InstallationStatus.Complete);
 
                 this.SetupListCompleted = !this.source.Where(c => c.Text != "Conferma collaudo").Any(c => c.Status != InstallationStatus.Complete);
-                
+
                 this.ProceduresCompletedPercent = (int)((double)this.ProceduresCompleted / (double)this.ProceduresCount * 100.0);
 
                 this.RaiseCanExecuteChanged();

@@ -66,6 +66,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 UserName = "installer",
                 Password = "vertimag2020",
             };
+#else
+            this.UserLogin = new UserLogin { };
 #endif
 
             this.UserLogin.PropertyChanged += this.UserLogin_PropertyChanged;
