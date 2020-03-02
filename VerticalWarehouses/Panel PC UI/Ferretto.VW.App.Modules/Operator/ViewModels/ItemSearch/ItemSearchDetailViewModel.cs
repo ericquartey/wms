@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Modules.Operator;
 using Ferretto.VW.App.Modules.Operator.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
